@@ -11,8 +11,9 @@ describe('index', function() {
       it('should expose supported formats', function(){
         expect(specConverter.Formats).to.be.a('Object');
       });
-      it('should be raml supported', function(){
-        expect(specConverter.Formats.RAML).to.be.a('Object');
+      it('should be raml 08 and 10 supported', function(){
+        expect(specConverter.Formats.RAML08).to.be.a('Object');
+        expect(specConverter.Formats.RAML10).to.be.a('Object');
       });
       it('should be swagger supported', function(){
         expect(specConverter.Formats.SWAGGER).to.be.a('Object');
@@ -26,9 +27,11 @@ describe('index', function() {
     });
 
     describe('exporters', function(){
-      it('should expose raml exporter api', function(){
-        var exporterInstance = new specConverter.Exporter.factory(specConverter.Formats.RAML);
-        expect(exporterInstance).to.be.an.instanceof(require('../lib/exporters/raml'));
+      it('should expose raml 08 and 10 exporter api', function(){
+        var exporter08Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML08);
+        expect(exporter08Instance).to.be.an.instanceof(require('../lib/exporters/raml08'));
+        var exporter10Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML10);
+        expect(exporter10Instance).to.be.an.instanceof(require('../lib/exporters/raml10'));
       });
       it('should expose swagger exporter api', function(){
         var exporterInstance = new specConverter.Exporter.factory(specConverter.Formats.SWAGGER);
@@ -38,8 +41,11 @@ describe('index', function() {
 
     describe('importers', function(){
       it('should expose raml importer api', function(){
-        var importerInstance = new specConverter.Importer.factory(specConverter.Formats.RAML);
-        expect(importerInstance).to.be.an.instanceof(require('../lib/importers/raml'));
+        var importer08Instance = new specConverter.Importer.factory(specConverter.Formats.RAML08);
+        expect(importer08Instance).to.be.an.instanceof(require('../lib/importers/raml08'));
+        var importer10Instance = new specConverter.Importer.factory(specConverter.Formats.RAML10);
+        expect(importer10Instance).to.be.an.instanceof(require('../lib/importers/raml10'));
+
       });
       it('should expose swagger importer api', function(){
         var importerInstance = new specConverter.Importer.factory(specConverter.Formats.SWAGGER);

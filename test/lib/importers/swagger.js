@@ -128,7 +128,7 @@ describe('Swagger Importer', function() {
       expect(schemas).to.not.be.undefined;
       expect(schemas.length).to.be.equal(1);
       expect(schemas[0]).to.be.instanceOf(Schema);
-      expect(JSON.parse(schemas[0].Definition)).to.not.equal(schemaData);
+      expect(schemas[0].Definition).to.not.equal(schemaData);
     });
   });
 

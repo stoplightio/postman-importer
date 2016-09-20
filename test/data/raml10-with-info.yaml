@@ -1,0 +1,127 @@
+#%RAML 1.0
+title: Swagger Petstore
+version: 1.0.0
+description: This is a sample server Petstore.
+(externalDocs):
+  description: Find more information here
+  url: http://swagger.io
+(info):
+  contact:
+    name: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://helloreverb.com/terms/
+protocols:
+  - HTTP
+annotationTypes:
+  tags: string[]
+  deprecated: boolean
+  externalDocs:
+    properties:
+      description: string
+      url: string
+  info:
+    properties:
+      contact?:
+        properties:
+          email?: string
+          name?: string
+          url?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+      termsOfService?: string
+securitySchemes:
+  internalApiKey:
+    type: Pass Through
+    description: Api Key Authentication
+    describedBy:
+      headers:
+        api_key:
+          type: string
+  petstore_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: http://swagger.io/api/oauth/dialog
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes: [write:users, read:users]
+mediaType: application/json
+baseUri: http://localhost:3000/api
+/users:
+  displayName: users
+  get:
+    (tags):
+      - get_method
+    (deprecated): true
+    (externalDocs):
+      description: Find more information here
+      url: http://swagger.io
+    displayName: GET_users
+    description: my method summary. Get basic information about a user.
+    securedBy:
+      - petstore_auth: {scopes:[read:users]}
+      - internalApiKey
+    responses:
+      '200':
+        body:
+          application/json:
+            properties:
+              data:
+                type: User
+            type: object
+        description: The user object
+types:
+  User:
+    properties:
+      id_int:
+        type: integer
+        format: int32
+        required: false
+      id_long:
+        type: integer
+        format: int64
+        required: false
+      id_float:
+        type: number
+        format: float
+        required: false
+      id_double:
+        type: number
+        format: double
+        required: false
+      username:
+        type: string
+      username_byte:
+        type: string
+        required: false
+      username_binary:
+        type: string
+        required: false
+      username_boolean:
+        type: boolean
+        required: false
+      username_date:
+        type: date-only
+        required: false
+      username_datetime:
+        type: datetime
+        format: rfc3339
+        required: false
+      user_password:
+        type: string
+        required: false
+      //:
+        type: string
+    discriminator: username
+    example:
+      username: xyz
+      user_password: zyx
+  SuperUser:
+    type: User
+    properties:
+      superuser:
+        type: boolean

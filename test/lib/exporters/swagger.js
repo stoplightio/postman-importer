@@ -557,7 +557,7 @@ describe('Swagger Exporter', function(){
   describe('_export', function(){
     it('should perform export for loaded data', function(done){
       swaggerExporter.loadSLData(require(__dirname+'/../../data/stoplight.json'), function(err){
-        expect(err).to.equal(undefined);
+        if (err)return done(err);
         swaggerExporter.export('yaml')
         .then(function(exportedData){
           fs.writeFileSync('temp.yaml', exportedData, 'utf8');

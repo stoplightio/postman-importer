@@ -1,0 +1,152 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger Petstore",
+    "contact": {
+      "name": "apiteam@swagger.io"
+    },
+    "termsOfService": "http://helloreverb.com/terms/",
+    "description": "This is a sample server Petstore.",
+    "license" : {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "externalDocs": {
+    "description" : "Find more information here",
+    "url": "http://swagger.io"
+  },
+  "produces": ["application/json"],
+  "schemes": ["http"],
+  "basePath": "/api",
+  "host": "localhost:3000",
+  "paths": {
+    "/users": {
+      "get": {
+        "externalDocs": {
+          "description" : "Find more information here",
+          "url": "http://swagger.io"
+        },
+        "tags": ["get_method"],
+        "deprecated": true,
+        "description": "Get basic information about a user.",
+        "summary": "my method summary",
+        "security": [
+          {
+            "internalApiKey": []
+          },
+          {
+            "petstore_auth": [
+              "read:users"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "internalApiKey": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "api_key",
+      "description": "Api Key Authentication"
+    },
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://swagger.io/api/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:users": "modify users",
+        "read:users": "read users"
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "discriminator": "username",
+      "properties": {
+        "id_int": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "id_long": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "id_float": {
+          "type": "number",
+          "format": "float"
+        },
+        "id_double": {
+          "type": "number",
+          "format": "double"
+        },
+        "username": {
+          "type": "string"
+        },
+        "username_byte": {
+          "type": "string",
+          "format": "byte"
+        },
+        "username_binary": {
+          "type": "string",
+          "format": "binary"
+        },
+        "username_boolean": {
+          "type": "boolean"
+        },
+        "username_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "username_datetime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user_password": {
+          "type": "string",
+          "format": "password"
+        }
+      },
+      "required": [
+        "username"
+      ],
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "username": "xyz",
+        "user_password": "zyx"
+      }
+    },
+    "SuperUser": {
+      "allOf": {
+        "$ref": "#/definitions/User",
+        "type": "object",
+        "required": [
+          "superuser"
+        ],
+        "properties" : {
+          "superuser": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

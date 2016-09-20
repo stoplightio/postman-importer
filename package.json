@@ -1,7 +1,7 @@
 {
   "name": "api-spec-converter",
   "version": "0.1.0",
-  "description": "",
+  "description": "This package helps to convert between different API specifications (Postman, Swagger, RAML, StopLight).",
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover _mocha -- -R spec"
@@ -22,7 +22,7 @@
     "json-schema-compatibility": "1.x.x",
     "jsonschema": "1.x.x",
     "lodash": "4.x.x",
-    "raml-parser": "0.x.x",
+    "raml-1-parser": "^1.1.2",
     "request": "2.x.x",
     "swagger-parser": "4.0.0-beta.2"
   },
@@ -35,6 +35,23 @@
     "gulp-eslint": "^2.0.0",
     "jscover": "^1.0.0",
     "mocha": "^2.4.5",
-    "mocha-lcov-reporter": "^1.2.0"
+    "mocha-lcov-reporter": "^1.2.0",
+    "browser-request": "^0.3.3",
+    "browserify-global-shim": "^1.0.3"
+  },
+  "browser": {
+    "request": "browser-request"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-global-shim"
+    ]
+  },
+  "browserify-global-shim": {
+    "raml-1-parser": "RAML.Parser"
+  },
+  "directories": {
+    "example": "example",
+    "test": "test"
   }
 }

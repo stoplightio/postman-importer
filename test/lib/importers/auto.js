@@ -42,10 +42,10 @@ describe('Auto Importer', function() {
     });
 
     it('should detect RAML', function() {
-      var fileContent = fs.readFileSync(path.join(dataPath, 'raml.yaml'), 'utf8'),
+      var fileContent = fs.readFileSync(path.join(dataPath, 'raml08.yaml'), 'utf8'),
           format = importer.detectFormat(fileContent);
 
-      expect(format).to.be.equal('RAML');
+      expect(format).to.be.equal('RAML08');
     });
 
     it('should detect SWAGGER', function() {
@@ -91,7 +91,7 @@ describe('Auto Importer', function() {
     });
 
     it('should be able to parse a valid RAML .yaml file', function(done) {
-      importer.loadFile(path.join(dataPath, 'raml.yaml'), function(err) {
+      importer.loadFile(path.join(dataPath, 'raml08.yaml'), function(err) {
         if (err) {
           return done(err);
         }
@@ -128,6 +128,26 @@ describe('Auto Importer', function() {
       importer.loadFile(path.join(dataPath, 'invalid', 'empty.json'), function(err) {
         expect(err).to.be.an('error').and.to.have
           .property('message', 'No data provided');
+        done();
+      });
+    });
+
+    it('should be able to load a valid raml 0.8 yaml file', function(done){
+      importer.loadFile(__dirname+'/../../data/raml08.yaml', function(err){
+        if (err) return done(err);
+        importer.import();
+        expect(importer.project).to.be.instanceOf(Project);
+        expect(importer.project.Endpoints.length).to.gt(0);
+        done();
+      });
+    });
+
+    it('should be able to load a valid raml 1.0 yaml file', function(done){
+      importer.loadFile(__dirname+'/../../data/raml10-json-type.yaml', function(err){
+        if (err) return done(err);
+        importer.import();
+        expect(importer.project).to.be.instanceOf(Project);
+        expect(importer.project.Endpoints.length).to.gt(0);
         done();
       });
     });

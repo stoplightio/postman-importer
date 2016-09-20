@@ -1,0 +1,63 @@
+#%RAML 1.0
+title: Swagger Petstore
+version: 1.0.0
+baseUri: 'http://petstore.swagger.io/v2'
+protocols:
+  - HTTP
+description: This is a sample server Petstore server.
+/pet:
+  displayName: pet
+  '/{petId}':
+    displayName: '{petId}'
+    uriParameters:
+      petId:
+        description: ID of pet to return
+        type: string
+        displayName: ID of pet to return
+    get:
+      displayName: getPetById
+      description: Returns a single pet
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Pet
+          description: successful operation
+        '400':
+          body:
+            application/json: {}
+          description: Invalid ID supplied
+        '404':
+          body:
+            application/json: {}
+          description: Pet not found
+  post:
+    displayName: addPet
+    description: Add a new pet to the store
+    body:
+      application/json:
+        description: Pet object that needs to be added to the store
+        type: Pet
+    responses:
+      '405':
+        description: Invalid input
+types:
+  Category:
+    properties:
+      id:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+  Pet:
+    properties:
+      category:
+        type: Category
+        required: false
+      id:
+        type: string
+        required: false
+      name:
+        example: doggie
+        type: string

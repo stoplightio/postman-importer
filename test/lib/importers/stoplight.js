@@ -25,7 +25,7 @@ describe('Stoplight Importer', function(){
       expect(importer.data).to.be.null;
       importer.loadFile( __dirname + '/../../data/invalid/stoplight.json', function(err){
         expect(err).not.to.be.null;
-        expect(err.message).to.equal('Unexpected token i');
+        expect(err.message).to.startsWith('Unexpected token i');
         expect(importer.data).to.be.null;
         done();
       });
