@@ -168,7 +168,7 @@ describe('Converter', function() {
 });
 
 
-describe('reversable - from swagger to raml to swagger', function () {
+describe('reversable - from swagger 2 raml 2 swagger', function () {
 	var baseDir = __dirname + '/../data/reversable/swagger';
 	var testFiles = fs.readdirSync(baseDir);
 	
@@ -211,7 +211,7 @@ describe('reversable - from swagger to raml to swagger', function () {
 });
 
 
-describe('reversable - from raml to swagger to raml', function () {
+describe('reversable - from raml 2 swagger 2 raml', function () {
 	var baseDir = __dirname + '/../data/reversable/raml';
 	var testFiles = fs.readdirSync(baseDir);
 	

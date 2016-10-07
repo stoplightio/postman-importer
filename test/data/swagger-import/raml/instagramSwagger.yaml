@@ -1,0 +1,1089 @@
+#%RAML 1.0
+title: Instagram API
+version: v1
+baseUri: 'https://api.instagram.com/v1'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: |
+  The first version of the Instagram API is an exciting step forward towards
+  making it easier for users to have open access to their data. We created it
+  so that you can surface the amazing content Instagram users share every
+  second, in fun and innovative ways.
+
+  Build something great!
+
+  Once you've
+  [registered your client](http://instagram.com/developer/register/) it's easy
+  to start requesting data from Instagram.
+
+  All endpoints are only accessible via https and are located at
+  `api.instagram.com`. For instance: you can grab the most popular photos at
+  the moment by accessing the following URL with your client ID
+  (replace CLIENT-ID with your own):
+  ```
+    https://api.instagram.com/v1/media/popular?client_id=CLIENT-ID
+  ```
+  You're best off using an access_token for the authenticated user for each
+  endpoint, though many endpoints don't require it.
+  In some cases an access_token will give you more access to information, and
+  in all cases, it means that you are operating under a per-access_token limit
+  vs. the same limit for your single client_id.
+
+
+  ## Limits
+  Be nice. If you're sending too many requests too quickly, we'll send back a
+  `503` error code (server unavailable).
+  You are limited to 5000 requests per hour per `access_token` or `client_id`
+  overall. Practically, this means you should (when possible) authenticate
+  users so that limits are well outside the reach of a given user.
+
+  ## Deleting Objects
+  We do our best to have all our URLs be
+  [RESTful](http://en.wikipedia.org/wiki/Representational_state_transfer).
+  Every endpoint (URL) may support one of four different http verbs. GET
+  requests fetch information about an object, POST requests create objects,
+  PUT requests update objects, and finally DELETE requests will delete
+  objects.
+
+  Since many old browsers don't support PUT or DELETE, we've made it easy to
+  fake PUTs and DELETEs. All you have to do is do a POST with _method=PUT or
+  _method=DELETE as a parameter and we will treat it as if you used PUT or
+  DELETE respectively.
+
+  ## Structure
+
+  ### The Envelope
+  Every response is contained by an envelope. That is, each response has a
+  predictable set of keys with which you can expect to interact:
+  ```json
+  {
+      "meta": {
+          "code": 200
+      },
+      "data": {
+          ...
+      },
+      "pagination": {
+          "next_url": "...",
+          "next_max_id": "13872296"
+      }
+  }
+  ```
+
+  #### META
+  The meta key is used to communicate extra information about the response to
+  the developer. If all goes well, you'll only ever see a code key with value
+  200. However, sometimes things go wrong, and in that case you might see a
+  response like:
+  ```json
+  {
+      "meta": {
+          "error_type": "OAuthException",
+          "code": 400,
+          "error_message": "..."
+      }
+  }
+  ```
+
+  #### DATA
+  The data key is the meat of the response. It may be a list or dictionary,
+  but either way this is where you'll find the data you requested.
+  #### PAGINATION
+  Sometimes you just can't get enough. For this reason, we've provided a
+  convenient way to access more data in any request for sequential data.
+  Simply call the url in the next_url parameter and we'll respond with the
+  next set of data.
+  ```json
+  {
+      ...
+      "pagination": {
+          "next_url": "https://api.instagram.com/v1/tags/puppy/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&max_id=13872296",
+          "next_max_id": "13872296"
+      }
+  }
+  ```
+  On views where pagination is present, we also support the "count" parameter.
+  Simply set this to the number of items you'd like to receive. Note that the
+  default values should be fine for most applications - but if you decide to
+  increase this number there is a maximum value defined on each endpoint.
+
+  ### JSONP
+  If you're writing an AJAX application, and you'd like to wrap our response
+  with a callback, all you have to do is specify a callback parameter with
+  any API call:
+  ```
+  https://api.instagram.com/v1/tags/coffee/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&callback=callbackFunction
+  ```
+  Would respond with:
+  ```js
+  callbackFunction({
+      ...
+  });
+  ```
+(info):
+  termsOfService: 'http://instagram.com/about/legal/terms/api'
+securitySchemes:
+  oauth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=token'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - basic
+        - comments
+        - relationships
+        - likes
+  key:
+    type: Pass Through
+    describedBy:
+      queryParameters:
+        access_token:
+          type: string
+/media:
+  displayName: media
+  '/{media-id}':
+    displayName: '{media-id}'
+    /comments:
+      displayName: comments
+      get:
+        displayName: GET_media-media-id-comments
+        description: |
+          Get a list of recent comments on a media object.
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  meta:
+                    properties:
+                      code:
+                        type: number
+                  data:
+                    type: array
+                    items:
+                      type: Comment
+            description: OK
+        (tags):
+          - Comments
+      post:
+        displayName: POST_media-media-id-comments
+        description: |
+          Create a comment on a media object with the following rules:
+
+          * The total length of the comment cannot exceed 300 characters.
+          * The comment cannot contain more than 4 hashtags.
+          * The comment cannot contain more than 1 URL.
+          * The comment cannot consist of all capital letters.
+        body:
+          application/json:
+            type: number
+            description: |
+              Text to post as a comment on the media object as specified in
+              media-id.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: object
+                properties:
+                  meta:
+                    properties:
+                      code:
+                        type: number
+                  data:
+                    type: object
+            description: OK
+        securedBy:
+          - oauth:
+              scopes:
+                - comments
+        (tags):
+          - Comments
+          - Media
+      delete:
+        displayName: DELETE_media-media-id-comments
+        description: |
+          Remove a comment either on the authenticated user's media object or
+          authored by the authenticated user.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: object
+                properties:
+                  meta:
+                    properties:
+                      code:
+                        type: number
+                  data:
+                    type: object
+            description: OK
+        (tags):
+          - Comments
+    /likes:
+      displayName: likes
+      get:
+        displayName: GET_media-media-id-likes
+        description: |
+          Get a list of users who have liked this media.
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  meta:
+                    properties:
+                      code:
+                        type: number
+                  data:
+                    type: array
+                    items:
+                      type: Like
+            description: OK
+        (tags):
+          - Likes
+          - Media
+      post:
+        displayName: POST_media-media-id-likes
+        description: Set a like on this media by the currently authenticated user.
+        body: {}
+        responses:
+          '200':
+            body:
+              application/json:
+                type: object
+                properties:
+                  meta:
+                    properties:
+                      code:
+                        type: number
+                  data:
+                    type: object
+            description: OK
+        securedBy:
+          - oauth:
+              scopes:
+                - comments
+        (tags):
+          - Likes
+      delete:
+        displayName: DELETE_media-media-id-likes
+        description: |
+          Remove a like on this media by the currently authenticated user.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: object
+                properties:
+                  meta:
+                    properties:
+                      code:
+                        type: number
+                  data:
+                    type: object
+            description: OK
+        (tags):
+          - Likes
+    uriParameters:
+      media-id:
+        description: The media ID
+        type: integer
+        displayName: The media ID
+    get:
+      displayName: GET_media-media-id
+      description: |
+        Get information about a media object.
+        The returned type key will allow you to differentiate between `image`
+        and `video` media.
+
+        Note: if you authenticate with an OAuth Token, you will receive the
+        `user_has_liked` key which quickly tells you whether the current user
+        has liked this media item.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Media
+          description: OK
+      (tags):
+        - Media
+  /popular:
+    displayName: popular
+    get:
+      displayName: GET_media-popular
+      description: |
+        Get a list of what media is most popular at the moment.
+        Can return mix of image and video types.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Media
+              properties:
+                distance:
+                  required: false
+                  type: number
+          description: OK
+      (tags):
+        - Media
+  /search:
+    displayName: search
+    get:
+      displayName: GET_media-search
+      description: |
+        Search for media in a given area. The default time span is set to 5
+        days. The time span must not exceed 7 days. Defaults time stamps cover
+        the last 5 days. Can return mix of image and video types.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: object
+              description: List of all media with added `distance` property
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: Media
+                    properties:
+                      distance:
+                        required: false
+                        type: number
+          description: OK
+      queryParameters:
+        LAT:
+          description: |
+            Latitude of the center search coordinate. If used, lng is required.
+          type: number
+          displayName: |
+            Latitude of the center search coordinate. If used, lng is required.
+        MIN_TIMESTAMP:
+          description: |
+            A unix timestamp. All media returned will be taken later than
+            this timestamp.
+          type: integer
+          displayName: |
+            A unix timestamp. All media returned will be taken later than
+            this timestamp.
+        LNG:
+          description: |
+            Longitude of the center search coordinate. If used, lat is required.
+          type: number
+          displayName: |
+            Longitude of the center search coordinate. If used, lat is required.
+        MAX_TIMESTAMP:
+          description: |
+            A unix timestamp. All media returned will be taken earlier than this
+            timestamp.
+          type: integer
+          displayName: |
+            A unix timestamp. All media returned will be taken earlier than this
+            timestamp.
+        DISTANCE:
+          description: 'Default is 1km (distance=1000), max distance is 5km.'
+          type: integer
+          maximum: 5000
+          default: 1000
+          displayName: 'Default is 1km (distance=1000), max distance is 5km.'
+      (tags):
+        - Media
+/geographies:
+  displayName: geographies
+  '/{geo-id}':
+    displayName: '{geo-id}'
+    /media:
+      displayName: media
+      /recent:
+        displayName: recent
+        get:
+          displayName: GET_geographies-geo-id-media-recent
+          description: |
+            Get recent media from a geography subscription that you created.
+            **Note**: You can only access Geographies that were explicitly created
+            by your OAuth client. Check the Geography Subscriptions section of the
+            [real-time updates page](https://instagram.com/developer/realtime/).
+            When you create a subscription to some geography
+            that you define, you will be returned a unique geo-id that can be used
+            in this query. To backfill photos from the location covered by this
+            geography, use the [media search endpoint
+            ](https://instagram.com/developer/endpoints/media/).
+          responses:
+            '200':
+              body:
+                application/json: {}
+              description: OK
+          queryParameters:
+            count:
+              description: Max number of media to return.
+              type: integer
+              displayName: Max number of media to return.
+            min_id:
+              description: Return media before this `min_id`.
+              type: integer
+              displayName: Return media before this `min_id`.
+/users:
+  displayName: users
+  '/{user-id}':
+    displayName: '{user-id}'
+    uriParameters:
+      user-id:
+        description: The user identifier number
+        type: number
+        displayName: The user identifier number
+    get:
+      displayName: GET_users-user-id
+      description: Get basic information about a user.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: object
+              properties:
+                data:
+                  type: User
+          description: The user object
+      securedBy:
+        - oauth:
+            scopes:
+              - basic
+        - key
+      (tags):
+        - Users
+    /media:
+      displayName: media
+      /recent:
+        displayName: recent
+        get:
+          displayName: GET_users-user-id-media-recent
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: Media
+              description: |
+                Get the most recent media published by a user. To get the most recent
+                media published by the owner of the access token, you can use `self`
+                instead of the `user-id`.
+          queryParameters:
+            count:
+              description: Count of media to return.
+              type: integer
+              displayName: Count of media to return.
+            max_timestamp:
+              description: Return media before this UNIX timestamp.
+              type: integer
+              displayName: Return media before this UNIX timestamp.
+            min_timestamp:
+              description: Return media after this UNIX timestamp.
+              type: integer
+              displayName: Return media after this UNIX timestamp.
+            min_id:
+              description: Return media later than this min_id.
+              type: string
+              displayName: Return media later than this min_id.
+            max_id:
+              description: Return media earlier than this max_id.
+              type: string
+              displayName: Return media earlier than this max_id.
+          (tags):
+            - Users
+    /followed-by:
+      displayName: followed-by
+      get:
+        displayName: GET_users-user-id-followed-by
+        description: Get the list of users this user is followed by.
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: MiniProfile
+            description: OK
+        (tags):
+          - Relationships
+    /relationship:
+      displayName: relationship
+      post:
+        displayName: POST_users-user-id-relationship
+        description: |
+          Modify the relationship between the current user and thetarget user.
+        body:
+          application/json:
+            type: string
+            enum:
+              - follow
+              - unfollow
+              - block
+              - unblock
+              - approve
+            description: One of follow/unfollow/block/unblock/approve/ignore.
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: MiniProfile
+            description: OK
+        securedBy:
+          - oauth:
+              scopes:
+                - relationships
+        (tags):
+          - Relationships
+    /follows:
+      displayName: follows
+      get:
+        displayName: GET_users-user-id-follows
+        description: Get the list of users this user follows.
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: MiniProfile
+            description: OK
+        (tags):
+          - Relationships
+  /search:
+    displayName: search
+    get:
+      displayName: GET_users-search
+      description: Search for a user by name.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: MiniProfile
+          description: OK
+      queryParameters:
+        q:
+          description: A query string
+          type: string
+          displayName: A query string
+        count:
+          description: Number of users to return.
+          type: string
+          displayName: Number of users to return.
+      (tags):
+        - Users
+  /self:
+    displayName: self
+    /media:
+      displayName: media
+      /liked:
+        displayName: liked
+        get:
+          displayName: GET_users-self-media-liked
+          description: |
+            See the list of media liked by the authenticated user.
+            Private media is returned as long as the authenticated user
+            has permissionto view that media. Liked media lists are only
+            available for the currently authenticated user.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: Media
+              description: OK
+          queryParameters:
+            count:
+              description: Count of media to return.
+              type: integer
+              displayName: Count of media to return.
+            max_like_id:
+              description: Return media liked before this id.
+              type: integer
+              displayName: Return media liked before this id.
+          (tags):
+            - Users
+    /feed:
+      displayName: feed
+      get:
+        displayName: GET_users-self-feed
+        description: See the authenticated user's feed.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: Media
+            description: OK
+        queryParameters:
+          count:
+            description: Count of media to return.
+            type: integer
+            displayName: Count of media to return.
+          max_id:
+            description: Return media earlier than this max_id.s
+            type: integer
+            displayName: Return media earlier than this max_id.s
+          min_id:
+            description: Return media later than this min_id.
+            type: integer
+            displayName: Return media later than this min_id.
+        (tags):
+          - Users
+    /requested-by:
+      displayName: requested-by
+      get:
+        displayName: GET_users-self-requested-by
+        description: |
+          List the users who have requested this user's permission to follow.
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  meta:
+                    properties:
+                      code:
+                        type: integer
+                  data:
+                    type: array
+                    items:
+                      type: MiniProfile
+            description: OK
+        (tags):
+          - Relationships
+/tags:
+  displayName: tags
+  '/{tag-name}':
+    displayName: '{tag-name}'
+    uriParameters:
+      tag-name:
+        description: Tag name
+        type: string
+        displayName: Tag name
+    get:
+      displayName: GET_tags-tag-name
+      description: Get information about a tag object.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Tag
+          description: OK
+      (tags):
+        - Tags
+    /media:
+      displayName: media
+      /recent:
+        displayName: recent
+        get:
+          displayName: GET_tags-tag-name-media-recent
+          description: |
+            Get a list of recently tagged media. Use the `max_tag_id` and
+            `min_tag_id` parameters in the pagination response to paginate through
+            these objects.
+          responses:
+            '200':
+              body:
+                application/json:
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: Tag
+              description: OK
+          (tags):
+            - Tags
+  /search:
+    displayName: search
+    get:
+      displayName: GET_tags-search
+      responses:
+        '200':
+          body:
+            application/json:
+              type: object
+              properties:
+                meta:
+                  properties:
+                    code:
+                      type: integer
+                data:
+                  type: array
+                  items:
+                    type: Tag
+          description: OK
+      queryParameters:
+        q:
+          description: |
+            A valid tag name without a leading #. (eg. snowy, nofilter)
+          type: string
+          displayName: |
+            A valid tag name without a leading #. (eg. snowy, nofilter)
+      (tags):
+        - Tags
+/media1:
+  displayName: media1
+  '/{shortcode}':
+    displayName: '{shortcode}'
+    uriParameters:
+      shortcode:
+        description: The media shortcode
+        type: string
+        displayName: The media shortcode
+    get:
+      displayName: GET_media1-shortcode
+      description: |
+        This endpoint returns the same response as **GET** `/media/media-id`.
+
+        A media object's shortcode can be found in its shortlink URL.
+        An example shortlink is `http://instagram.com/p/D/`
+        Its corresponding shortcode is D.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Media
+          description: OK
+      (tags):
+        - Media
+/locations:
+  displayName: locations
+  /search:
+    displayName: search
+    get:
+      displayName: GET_locations-search
+      description: Search for a location by geographic coordinate.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: Location
+          description: OK
+      queryParameters:
+        distance:
+          description: 'Default is 1000m (distance=1000), max distance is 5000.'
+          type: integer
+          displayName: 'Default is 1000m (distance=1000), max distance is 5000.'
+        facebook_places_id:
+          description: |
+            Returns a location mapped off of a Facebook places id. If used, a
+            Foursquare id and lat, lng are not required.
+          type: integer
+          displayName: |
+            Returns a location mapped off of a Facebook places id. If used, a
+            Foursquare id and lat, lng are not required.
+        foursquare_id:
+          description: |
+            returns a location mapped off of a foursquare v1 api location id.
+            If used, you are not required to use lat and lng. Note that this
+            method is deprecated; you should use the new foursquare IDs with V2
+            of their API.
+          type: integer
+          displayName: |
+            returns a location mapped off of a foursquare v1 api location id.
+            If used, you are not required to use lat and lng. Note that this
+            method is deprecated; you should use the new foursquare IDs with V2
+            of their API.
+        lat:
+          description: |
+            atitude of the center search coordinate. If used, lng is required.
+          type: number
+          displayName: |
+            atitude of the center search coordinate. If used, lng is required.
+        lng:
+          description: |
+            ongitude of the center search coordinate. If used, lat is required.
+          type: number
+          displayName: |
+            ongitude of the center search coordinate. If used, lat is required.
+        foursquare_v2_id:
+          description: |
+            Returns a location mapped off of a foursquare v2 api location id. If
+            used, you are not required to use lat and lng.
+          type: integer
+          displayName: |
+            Returns a location mapped off of a foursquare v2 api location id. If
+            used, you are not required to use lat and lng.
+      (tags):
+        - Location
+  '/{location-id}':
+    displayName: '{location-id}'
+    /media:
+      displayName: media
+      /recent:
+        displayName: recent
+        get:
+          displayName: GET_locations-location-id-media-recent
+          description: Get a list of recent media objects from a given location.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: Media
+              description: OK
+          queryParameters:
+            max_timestamp:
+              description: Return media before this UNIX timestamp.
+              type: integer
+              displayName: Return media before this UNIX timestamp.
+            min_timestamp:
+              description: Return media after this UNIX timestamp.
+              type: integer
+              displayName: Return media after this UNIX timestamp.
+            min_id:
+              description: Return media later than this min_id.
+              type: string
+              displayName: Return media later than this min_id.
+            max_id:
+              description: Return media earlier than this max_id.
+              type: string
+              displayName: Return media earlier than this max_id.
+          (tags):
+            - Location
+            - Media
+    uriParameters:
+      location-id:
+        description: Location ID
+        type: integer
+        displayName: Location ID
+    get:
+      displayName: GET_locations-location-id
+      description: Get information about a location.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: object
+              properties:
+                data:
+                  type: Location
+          description: OK
+      (tags):
+        - Location
+annotationTypes:
+  tags: 'string[]'
+  info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+types:
+  User:
+    properties:
+      id:
+        type: integer
+        required: false
+      username:
+        type: string
+        required: false
+      full_name:
+        type: string
+        required: false
+      profile_picture:
+        type: string
+        required: false
+      bio:
+        type: string
+        required: false
+      website:
+        type: string
+        required: false
+      counts:
+        type: object
+        properties:
+          media:
+            type: integer
+          follows:
+            type: integer
+          follwed_by:
+            type: integer
+        required: false
+  Media:
+    properties:
+      created_time:
+        description: Epoc time (ms)
+        type: integer
+        required: false
+      type:
+        type: string
+        required: false
+      filter:
+        type: string
+        required: false
+      tags:
+        type: array
+        items:
+          type: Tag
+        required: false
+      id:
+        type: integer
+        required: false
+      user:
+        type: MiniProfile
+        required: false
+      users_in_photo:
+        type: array
+        items:
+          type: MiniProfile
+        required: false
+      location:
+        type: Location
+        required: false
+      'comments:':
+        type: object
+        properties:
+          count:
+            type: integer
+          data:
+            type: array
+            items:
+              type: Comment
+        required: false
+      likes:
+        type: object
+        properties:
+          count:
+            type: integer
+          data:
+            type: array
+            items:
+              type: MiniProfile
+        required: false
+      images:
+        properties:
+          low_resolution:
+            type: Image
+          thumbnail:
+            type: Image
+          standard_resolution:
+            type: Image
+        required: false
+      videos:
+        properties:
+          low_resolution:
+            type: Image
+          standard_resolution:
+            type: Image
+        required: false
+  Location:
+    properties:
+      id:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+      latitude:
+        type: number
+        required: false
+      longitude:
+        type: number
+        required: false
+  Comment:
+    properties:
+      id:
+        type: string
+        required: false
+      created_time:
+        type: string
+        required: false
+      text:
+        type: string
+        required: false
+      from:
+        type: MiniProfile
+        required: false
+  Like:
+    properties:
+      user_name:
+        type: string
+        required: false
+      first_name:
+        type: string
+        required: false
+      last_name:
+        type: string
+        required: false
+      type:
+        type: string
+        required: false
+      id:
+        type: string
+        required: false
+  Tag:
+    properties:
+      media_count:
+        type: integer
+        required: false
+      name:
+        type: string
+        required: false
+  Image:
+    properties:
+      width:
+        type: integer
+        required: false
+      height:
+        type: integer
+        required: false
+      url:
+        type: string
+        required: false
+  MiniProfile:
+    description: A shorter version of User for likes array
+    properties:
+      user_name:
+        type: string
+        required: false
+      full_name:
+        type: string
+        required: false
+      id:
+        type: integer
+        required: false
+      profile_picture:
+        type: string
+        required: false
