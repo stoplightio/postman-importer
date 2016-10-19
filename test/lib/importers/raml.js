@@ -193,15 +193,19 @@ describe('RAML 1.0 Importer', function(){
 
     it ('should return error importing yaml file including non exisiting type file', function (done) {
       ramlImporter.loadFile(__dirname+'/../../data/invalid/raml10-include-type.yaml', function(err){
-        if (err) return done(err);
-        try {
-          ramlImporter.import();
-          done(err);
-        }
-        catch(err){
-          expect(err).not.to.be.undefined;
-          done();
-        }
+        if (err) {
+					expect(err).not.to.be.undefined;
+					done();
+				} else {
+					try {
+						ramlImporter.import();
+						done(err);
+					}
+					catch(err){
+						expect(err).not.to.be.undefined;
+						done();
+					}
+				}
       });
     });
 

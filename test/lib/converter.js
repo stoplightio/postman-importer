@@ -92,18 +92,14 @@ describe('Converter', function() {
           return done(err);
         }
 
-        try {
-          newConverterInstance.convert('json', function(err, convertedData) {
-            if (err) {
-              done(err);
-            }
+				newConverterInstance.convert('json', function(err, convertedData) {
+					if (err) {
+						done(err);
+					}
 
-            expect(JSON.parse(JSON.stringify(convertedData))).to.deep.equal(originalData);
-            done();
-          });
-        } catch (err) {
-          done(err);
-        }
+					expect(JSON.parse(JSON.stringify(convertedData))).to.deep.equal(originalData);
+					done();
+				});
       });
     });
 
@@ -182,26 +178,18 @@ describe('reversable - from swagger 2 raml 2 swagger', function () {
 			var ramlToSwaggerConverter = new specConverter.Converter(ramlVersion,  specConverter.Formats.SWAGGER);
 
 			swaggerToRamlConverter.loadFile(testFilePath, function(){
-				try{
-					swaggerToRamlConverter.convert('yaml', function(err, covertedRAML){
-						if (err)return done(err);
-						ramlToSwaggerConverter.loadData(covertedRAML)
-							.then(function(){
-								try{
-									ramlToSwaggerConverter.convert('json', function(err, resultSwagger){
-										if(err)return done(err);
-										expect(resultSwagger).to.deep.equal(require(testFilePath));
-										done();
-									});
-								} catch(err) {
-									done(err);
-								}
-							})
-							.catch(done);
-					});
-				} catch(err) {
-					done(err);
-				}
+				swaggerToRamlConverter.convert('yaml', function(err, covertedRAML){
+					if (err)return done(err);
+					ramlToSwaggerConverter.loadData(covertedRAML)
+						.then(function(){
+							ramlToSwaggerConverter.convert('json', function(err, resultSwagger){
+								if(err)return done(err);
+								expect(resultSwagger).to.deep.equal(require(testFilePath));
+								done();
+							});
+						})
+						.catch(done);
+				});
 			});
 		};
 	};
@@ -227,26 +215,18 @@ describe('reversable - from raml 2 swagger 2 raml', function () {
 			var swaggerToRamlConverter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
 
 			ramlToSwaggerConverter.loadFile(testFilePath, function(){
-				try{
-					ramlToSwaggerConverter.convert('json', function(err, resultSwagger){
-						if (err)return done(err);
-						swaggerToRamlConverter.loadData(JSON.stringify(resultSwagger))
-							.then(function(){
-								try{
-									swaggerToRamlConverter.convert('yaml', function(err, covertedRAML){
-										if(err)return done(err);
-										expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(testFilePath, 'utf8')));
-										done();
-									});
-								} catch(err) {
-									done(err);
-								}
-							})
-							.catch(done);
-					});
-				} catch(err) {
-					done(err);
-				}
+				ramlToSwaggerConverter.convert('json', function(err, resultSwagger){
+					if (err)return done(err);
+					swaggerToRamlConverter.loadData(JSON.stringify(resultSwagger))
+						.then(function(){
+							swaggerToRamlConverter.convert('yaml', function(err, covertedRAML){
+								if(err)return done(err);
+								expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(testFilePath, 'utf8')));
+								done();
+							});
+						})
+						.catch(done);
+				});
 			});
 		};
 	};
@@ -267,32 +247,28 @@ describe('from swagger to raml', function () {
       var ramlVersion = _.includes(sourceFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			var converter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
 			converter.loadFile(sourceFile, function(){
-				try{
-					converter.convert('yaml', function(err, covertedRAML){
-						if (err)return done(err);
-						
-						var notExistsTarget = !fs.existsSync(targetFile);
-						
-						if (notExistsTarget) {
-							console.log('Content for non existing target file ' + targetFile + '\n.');
-							console.log('********** Begin file **********\n');
-							console.log(covertedRAML);
-							console.log('********** Finish file **********\n');
-
-							done(err);
-						}
-
-						if (stringCompare == true) {
-							expect(covertedRAML).to.deep.equal(fs.readFileSync(targetFile, 'utf8'));
-						} else {
-							expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
-						}
-
-						done();
-					});
-				} catch(err) {
-					done(err);
-				}
+				converter.convert('yaml', function(err, covertedRAML){
+					if (err)return done(err);
+					
+					var notExistsTarget = !fs.existsSync(targetFile);
+					
+					if (notExistsTarget) {
+						console.log('Content for non existing target file ' + targetFile + '\n.');
+						console.log('********** Begin file **********\n');
+						console.log(covertedRAML);
+						console.log('********** Finish file **********\n');
+	
+						done(err);
+					}
+	
+					if (stringCompare == true) {
+						expect(covertedRAML).to.deep.equal(fs.readFileSync(targetFile, 'utf8'));
+					} else {
+						expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+					}
+	
+					done();
+				});
 			});
 		};
 	};
@@ -313,7 +289,7 @@ describe('from swagger to raml', function () {
 	
 	if (!process.env.fileToTest) {
 		it('should convert from swagger petstore with external refs to raml 1.0',
-			testWithData(__dirname + '/../data/petstore-separate/spec/swagger.json', __dirname + '/../data/petstore-separate/raml10.yaml', true));
+			testWithData(__dirname + '/../data/petstore-separate/spec/swagger.json', __dirname + '/../data/petstore-separate/spec/raml10.yaml', true));
 	}
 });
 
@@ -355,26 +331,22 @@ describe('from raml to swagger', function () {
 			var ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			var converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
 			converter.loadFileWithOptions(testFilePath, myOptions, function() {
-				try{
-					converter.convert('json', function(err, resultSwagger){
-						if (err)return done(err);
-						var targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
-						
-						var notExistsTarget = !fs.existsSync(targetFile);
-						if (notExistsTarget) {
-							console.log('Content for non existing target file ' + targetFile + '\n.');
-							console.log('********** Begin file **********\n');
-							console.log(JSON.stringify(resultSwagger));
-							console.log('********** Finish file **********\n');
-							done(err);
-						} else {
-							expect(resultSwagger).to.deep.equal(require(targetFile));
-							done();
-						}
-					});
-				} catch(err) {
-					done(err);
-				}
+				converter.convert('json', function(err, resultSwagger){
+					if (err)return done(err);
+					var targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
+					
+					var notExistsTarget = !fs.existsSync(targetFile);
+					if (notExistsTarget) {
+						console.log('Content for non existing target file ' + targetFile + '\n.');
+						console.log('********** Begin file **********\n');
+						console.log(JSON.stringify(resultSwagger));
+						console.log('********** Finish file **********\n');
+						done(err);
+					} else {
+						expect(resultSwagger).to.deep.equal(require(targetFile));
+						done();
+					}
+				});
 			});
 		};
 	};
