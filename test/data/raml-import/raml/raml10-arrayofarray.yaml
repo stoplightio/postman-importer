@@ -1,0 +1,34 @@
+#%RAML 1.0
+title: Swagger Petstore
+/pet:
+  get:
+    displayName: getPet
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Pet1
+  post:
+    displayName: addPet
+    body:
+      application/json:
+        type: Pet2
+    responses:
+      '200':
+        description: ok
+types:
+  Category:
+    properties:
+      id:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+  Pet1:
+    type: array
+    items:
+      type: array
+      items: Category
+  Pet2:
+    type: Category[][]
