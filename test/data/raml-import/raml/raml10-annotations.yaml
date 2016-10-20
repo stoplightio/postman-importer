@@ -1,0 +1,52 @@
+#%RAML 1.0
+title: Swagger Petstore
+version: 1.0.0
+baseUri: 'http://petstore.swagger.io/v2'
+protocols:
+  - HTTP
+description: This is a sample server Petstore server.
+annotationTypes:
+  testHarness:
+    type: string
+/pet:
+  displayName: pet
+  '/{petId}':
+    displayName: '{petId}'
+    uriParameters:
+      petId:
+        description: ID of pet to return
+        type: string
+        displayName: ID of pet to return
+        (testHarness): parameter description
+    get:
+      (testHarness): method description
+      displayName: getPetById
+      description: Returns a single pet
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Pet
+          description: successful operation
+types:
+  Category:
+    (testHarness): type description
+    properties:
+      id:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+        (testHarness): property type description
+  Pet:
+    properties:
+      category:
+        type: Category
+        required: false
+      id:
+        type: string
+        required: false
+      name:
+        example: doggie
+        type: string
