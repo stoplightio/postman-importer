@@ -47,7 +47,8 @@ securitySchemes:
           displayName: ID of the order that needs to be deleted
       get:
         displayName: getOrderById
-        description: Find purchase order by ID. For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
+        description: For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
+        (summary): Find purchase order by ID
         responses:
           '200':
             body:
@@ -66,7 +67,8 @@ securitySchemes:
           - store
       delete:
         displayName: deleteOrder
-        description: Delete purchase order by ID. For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
+        description: For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
+        (summary): Delete purchase order by ID
         responses:
           '400':
             body:
@@ -80,7 +82,7 @@ securitySchemes:
           - store
     post:
       displayName: placeOrder
-      description: Place an order for a pet
+      (summary): Place an order for a pet
       body:
         application/json:
           type: Order
@@ -101,7 +103,8 @@ securitySchemes:
     displayName: inventory
     get:
       displayName: getInventory
-      description: Returns pet inventories by status. Returns a map of status codes to quantities
+      description: Returns a map of status codes to quantities
+      (summary): Returns pet inventories by status
       responses:
         '200':
           body:
@@ -126,7 +129,8 @@ securitySchemes:
         displayName: 'The name that needs to be fetched. Use user1 for testing. '
     delete:
       displayName: deleteUser
-      description: Delete user. This can only be done by the logged in user.
+      description: This can only be done by the logged in user.
+      (summary): Delete user
       responses:
         '400':
           body:
@@ -140,7 +144,8 @@ securitySchemes:
         - user
     put:
       displayName: updateUser
-      description: Updated user. This can only be done by the logged in user.
+      description: This can only be done by the logged in user.
+      (summary): Updated user
       body:
         application/json:
           type: User
@@ -158,7 +163,7 @@ securitySchemes:
         - user
     get:
       displayName: getUserByName
-      description: Get user by user name
+      (summary): Get user by user name
       responses:
         '200':
           body:
@@ -177,7 +182,8 @@ securitySchemes:
         - user
   post:
     displayName: createUser
-    description: Create user. This can only be done by the logged in user.
+    description: This can only be done by the logged in user.
+    (summary): Create user
     body:
       application/json:
         type: User
@@ -189,7 +195,7 @@ securitySchemes:
     displayName: createWithArray
     post:
       displayName: createUsersWithArrayInput
-      description: Creates list of users with given input array
+      (summary): Creates list of users with given input array
       body:
         application/json:
           type: array
@@ -203,7 +209,7 @@ securitySchemes:
     displayName: createWithList
     post:
       displayName: createUsersWithListInput
-      description: Creates list of users with given input array
+      (summary): Creates list of users with given input array
       body:
         application/json:
           type: array
@@ -217,7 +223,7 @@ securitySchemes:
     displayName: logout
     get:
       displayName: logoutUser
-      description: Logs out current logged in user session
+      (summary): Logs out current logged in user session
       responses: {}
       (tags):
         - user
@@ -225,7 +231,7 @@ securitySchemes:
     displayName: login
     get:
       displayName: loginUser
-      description: Logs user into the system
+      (summary): Logs user into the system
       responses:
         '200':
           body:
@@ -251,7 +257,7 @@ securitySchemes:
   displayName: pet
   post:
     displayName: addPet
-    description: Add a new pet to the store
+    (summary): Add a new pet to the store
     body:
       application/json:
         type: Pet
@@ -272,7 +278,8 @@ securitySchemes:
     displayName: findByStatus
     get:
       displayName: findPetsByStatus
-      description: Finds Pets by status. Multiple status values can be provided with comma separated strings
+      description: Multiple status values can be provided with comma separated strings
+      (summary): Finds Pets by status
       responses:
         '200':
           body:
@@ -313,7 +320,8 @@ securitySchemes:
         displayName: ID of pet that needs to be updated
     get:
       displayName: getPetById
-      description: Find pet by ID. Returns a single pet
+      description: Returns a single pet
+      (summary): Find pet by ID
       responses:
         '200':
           body:
@@ -334,7 +342,7 @@ securitySchemes:
         - pet
     delete:
       displayName: deletePet
-      description: Deletes a pet
+      (summary): Deletes a pet
       headers:
         api_key:
           type: string
@@ -358,7 +366,7 @@ securitySchemes:
       displayName: uploadImage
       post:
         displayName: uploadFile
-        description: uploads an image
+        (summary): uploads an image
         body:
           multipart/form-data:
             properties:
@@ -386,7 +394,7 @@ securitySchemes:
           - pet
     post:
       displayName: updatePetWithForm
-      description: Updates a pet in the store with form data
+      (summary): Updates a pet in the store with form data
       body:
         multipart/form-data:
           properties:
@@ -415,7 +423,8 @@ securitySchemes:
     displayName: findByTags
     get:
       displayName: findPetsByTags
-      description: 'Finds Pets by tags. Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.'
+      description: 'Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.'
+      (summary): Finds Pets by tags
       responses:
         '200':
           body:
@@ -445,7 +454,7 @@ securitySchemes:
       (deprecated): true
   put:
     displayName: updatePet
-    description: Update an existing pet
+    (summary): Update an existing pet
     body:
       application/json:
         type: Pet
@@ -473,6 +482,7 @@ securitySchemes:
 annotationTypes:
   tags: 'string[]'
   deprecated: boolean
+  summary: string
   externalDocs:
     properties:
       description?: string
