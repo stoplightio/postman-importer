@@ -288,7 +288,8 @@ describe('from swagger to raml', function () {
   			}
   		}
   		else {
-  			it('test: ' + testFile, testWithData(sourceFile, targetFile, false));
+				var stringCompare = _.includes(testFile, 'stringcompare');
+  			it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare));
   		}
     }
 	});
