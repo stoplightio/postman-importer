@@ -41,6 +41,27 @@ description: This is a sample server Petstore server.
     responses:
       '405':
         description: Invalid input
+/pet2:
+  displayName: pet2
+  '/':
+    displayName: 'pet2'
+    get:
+      displayName: getPetById
+      description: Returns a single pet
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ResourceLink
+          description: successful operation
+        '400':
+          body:
+            application/json: {}
+          description: Invalid ID supplied
+        '404':
+          body:
+            application/json: {}
+          description: Pet not found
 types:
   CustomDate:
     type: string
@@ -50,3 +71,14 @@ types:
   PossibleMeetingDate:
     type: CustomDate
     noHolidays: true
+  ResourceLink:
+    description: a description
+    properties:
+      href: string
+      rel:
+        enum: [self, next, prev]
+      method?:
+        default: get
+        facets:
+          a?: string
+          b?: number
