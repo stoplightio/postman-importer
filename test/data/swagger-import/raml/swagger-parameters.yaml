@@ -1,0 +1,92 @@
+#%RAML 1.0
+title: Simple API
+version: 0.0.0
+mediaType: application/json
+/param_formdata:
+  displayName: param_formdata
+  post:
+    displayName: POST_param_formdata
+    body:
+      multipart/form-data:
+        properties:
+          username:
+            description: The person's username
+            type: string
+            required: true
+        description: The person's username
+    responses:
+      '200':
+        description: History information for the given user
+        body:
+          application/json:
+            type: Person
+/param_body:
+  displayName: param_body
+  post:
+    displayName: POST_param_body
+    body:
+      application/json:
+        type: Person
+        description: person to add to the system
+    responses:
+      '200':
+        description: History information for the given user
+        body:
+          application/json:
+            type: Person
+/param_header:
+  displayName: param_header
+  get:
+    headers:
+      token:
+        description: token description
+        type: string
+        required: true
+    displayName: GET_param_header
+    responses:
+      '200':
+        description: History information for the given user
+        body:
+          application/json:
+            type: Person
+/param_query:
+  displayName: param_query
+  get:
+    displayName: GET_param_query
+    queryParameters:
+      pageNumber:
+        description: Page number
+        displayName: Page number
+        type: integer
+    responses:
+      '200':
+        description: History information for the given user
+        body:
+          application/json:
+            type: Person
+/param_path:
+  displayName: param_path
+  '/{username}':
+    displayName: '{username}'
+    uriParameters:
+      username:
+        description: The person's username
+        type: string
+        displayName: The person's username
+    get:
+      displayName: GET_param_path-username
+      responses:
+        '200':
+          description: History information for the given user
+          body:
+            application/json:
+              type: Person
+types:
+  Person:
+    properties:
+      firstName:
+        type: string
+        required: false
+      lastName:
+        type: string
+        required: false

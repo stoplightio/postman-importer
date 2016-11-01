@@ -1,0 +1,77 @@
+swagger: '2.0'
+info:
+  version: 0.0.0
+  title: Simple API
+produces:
+  - application/json
+paths:
+  /param_path/{username}:
+    parameters:
+      - name: username
+        in: path
+        description: The person's username
+        type: string
+    get:
+      responses:
+        '200':
+          description: History information for the given user
+          schema:
+            $ref: '#/definitions/Person'
+  /param_query:
+    get:
+      parameters:
+        - name: pageNumber
+          in: query
+          description: Page number
+          type: integer
+      responses:
+        '200':
+          description: History information for the given user
+          schema:
+            $ref: '#/definitions/Person'
+  /param_header:
+    get:
+      parameters:
+        - name: token
+          in: header
+          description: token description
+          required: true
+          type: string
+      responses:
+        '200':
+          description: History information for the given user
+          schema:
+            $ref: '#/definitions/Person'
+  /param_body:
+    post:
+      parameters:
+        - name: person
+          in: body
+          description: person to add to the system
+          schema:
+            $ref: '#/definitions/Person'
+      responses:
+        '200':
+          description: History information for the given user
+          schema:
+            $ref: '#/definitions/Person'
+  /param_formdata:
+    post:
+      parameters:
+        - name: username
+          in: formData
+          description: The person's username
+          required: true
+          type: string
+      responses:
+        '200':
+          description: History information for the given user
+          schema:
+            $ref: '#/definitions/Person'
+definitions:
+  Person:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
