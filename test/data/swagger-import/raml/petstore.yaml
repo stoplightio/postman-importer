@@ -209,6 +209,15 @@ securitySchemes:
       (summary): Logs user into the system
       responses:
         '200':
+          headers:
+            X-Expires-After:
+              description: date in UTC when token expires
+              type: datetime
+              format: rfc3339
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              type: integer
+              format: int32
           body:
             application/json:
               type: string
