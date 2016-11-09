@@ -338,7 +338,7 @@ describe('from raml to swagger', function () {
 			var testFilePath = baseDir + '/' + testFile;
 			var ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			var converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
-			converter.loadFileWithOptions(testFilePath, myOptions, function() {
+			converter.loadFile(testFilePath, function() {
 				converter.convert('json', function(err, resultSwagger){
 					if (err)return done(err);
 					var targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
@@ -355,7 +355,7 @@ describe('from raml to swagger', function () {
 						done();
 					}
 				});
-			});
+			}, myOptions);
 		};
 	};
 

@@ -160,7 +160,7 @@ describe('RAML 1.0 Importer', function(){
         fsResolver : myFsResolver
       };
 
-      ramlImporter.loadFileWithOptions(__dirname+'/../../data/raml-import/raml/raml10-include-fsresolver-type.yaml', myOptions, function(err){
+      ramlImporter.loadFile(__dirname+'/../../data/raml-import/raml/raml10-include-fsresolver-type.yaml', function(err){
         if (err) return done(err);
         try {
           var slProject = ramlImporter.import();
@@ -172,7 +172,7 @@ describe('RAML 1.0 Importer', function(){
         catch(err){
           done(err);
         }
-      });
+      }, myOptions);
     });
 
     it ('should be able to load a valid yaml file including raml type definiton', function (done) {
