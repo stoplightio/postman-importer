@@ -5,10 +5,10 @@ baseUri: 'http://petstore.swagger.io/v2'
 protocols:
   - HTTP
 description: 'This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.'
-(externalDocs):
+(oas-externalDocs):
   description: Find out more about Swagger
   url: 'http://swagger.io'
-(info):
+(oas-info):
   contact:
     email: apiteam@swagger.io
   termsOfService: 'http://swagger.io/terms/'
@@ -50,7 +50,7 @@ securitySchemes:
       get:
         displayName: getOrderById
         description: For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
-        (summary): Find purchase order by ID
+        (oas-summary): Find purchase order by ID
         responses:
           '200':
             body:
@@ -61,22 +61,22 @@ securitySchemes:
             description: Invalid ID supplied
           '404':
             description: Order not found
-        (tags):
+        (oas-tags):
           - store
       delete:
         displayName: deleteOrder
         description: For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
-        (summary): Delete purchase order by ID
+        (oas-summary): Delete purchase order by ID
         responses:
           '400':
             description: Invalid ID supplied
           '404':
             description: Order not found
-        (tags):
+        (oas-tags):
           - store
     post:
       displayName: placeOrder
-      (summary): Place an order for a pet
+      (oas-summary): Place an order for a pet
       body:
         application/json:
           type: Order
@@ -89,14 +89,14 @@ securitySchemes:
           description: successful operation
         '400':
           description: Invalid Order
-      (tags):
+      (oas-tags):
         - store
   /inventory:
     displayName: inventory
     get:
       displayName: getInventory
       description: Returns a map of status codes to quantities
-      (summary): Returns pet inventories by status
+      (oas-summary): Returns pet inventories by status
       responses:
         '200':
           body:
@@ -108,7 +108,7 @@ securitySchemes:
           description: successful operation
       securedBy:
         - api_key
-      (tags):
+      (oas-tags):
         - store
 /user:
   displayName: user
@@ -123,18 +123,18 @@ securitySchemes:
     delete:
       displayName: deleteUser
       description: This can only be done by the logged in user.
-      (summary): Delete user
+      (oas-summary): Delete user
       responses:
         '400':
           description: Invalid username supplied
         '404':
           description: User not found
-      (tags):
+      (oas-tags):
         - user
     put:
       displayName: updateUser
       description: This can only be done by the logged in user.
-      (summary): Updated user
+      (oas-summary): Updated user
       body:
         application/json:
           type: User
@@ -144,11 +144,11 @@ securitySchemes:
           description: Invalid user supplied
         '404':
           description: User not found
-      (tags):
+      (oas-tags):
         - user
     get:
       displayName: getUserByName
-      (summary): Get user by user name
+      (oas-summary): Get user by user name
       responses:
         '200':
           body:
@@ -159,56 +159,56 @@ securitySchemes:
           description: Invalid username supplied
         '404':
           description: User not found
-      (tags):
+      (oas-tags):
         - user
   post:
     displayName: createUser
     description: This can only be done by the logged in user.
-    (summary): Create user
+    (oas-summary): Create user
     body:
       application/json:
         type: User
         description: Created user object
-    (tags):
+    (oas-tags):
       - user
   /createWithArray:
     displayName: createWithArray
     post:
       displayName: createUsersWithArrayInput
-      (summary): Creates list of users with given input array
+      (oas-summary): Creates list of users with given input array
       body:
         application/json:
           type: array
           items:
             type: User
           description: List of user object
-      (tags):
+      (oas-tags):
         - user
   /createWithList:
     displayName: createWithList
     post:
       displayName: createUsersWithListInput
-      (summary): Creates list of users with given input array
+      (oas-summary): Creates list of users with given input array
       body:
         application/json:
           type: array
           items:
             type: User
           description: List of user object
-      (tags):
+      (oas-tags):
         - user
   /logout:
     displayName: logout
     get:
       displayName: logoutUser
-      (summary): Logs out current logged in user session
-      (tags):
+      (oas-summary): Logs out current logged in user session
+      (oas-tags):
         - user
   /login:
     displayName: login
     get:
       displayName: loginUser
-      (summary): Logs user into the system
+      (oas-summary): Logs user into the system
       responses:
         '200':
           body:
@@ -237,16 +237,16 @@ securitySchemes:
           required: true
           type: string
           displayName: The password for login in clear text
-          (allowEmptyValue): true
-          (exclusiveMaximum): true
-          (exclusiveMinimum): false
-      (tags):
+          (oas-allowEmptyValue): true
+          (oas-exclusiveMaximum): true
+          (oas-exclusiveMinimum): false
+      (oas-tags):
         - user
 /pet:
   displayName: pet
   post:
     displayName: addPet
-    (summary): Add a new pet to the store
+    (oas-summary): Add a new pet to the store
     protocols:
       - HTTPS
     body:
@@ -261,14 +261,14 @@ securitySchemes:
           scopes:
             - 'write:pets'
             - 'read:pets'
-    (tags):
+    (oas-tags):
       - pet
   /findByStatus:
     displayName: findByStatus
     get:
       displayName: findPetsByStatus
       description: Multiple status values can be provided with comma separated strings
-      (summary): Finds Pets by status
+      (oas-summary): Finds Pets by status
       responses:
         '200':
           body:
@@ -292,13 +292,13 @@ securitySchemes:
               - pending
               - sold
             default: available
-          (collectionFormat): multi
+          (oas-collectionFormat): multi
       securedBy:
         - petstore_auth:
             scopes:
               - 'write:pets'
               - 'read:pets'
-      (tags):
+      (oas-tags):
         - pet
   '/{petId}':
     displayName: '{petId}'
@@ -312,7 +312,7 @@ securitySchemes:
     get:
       displayName: getPetById
       description: Returns a single pet
-      (summary): Find pet by ID
+      (oas-summary): Find pet by ID
       responses:
         '200':
           body:
@@ -325,11 +325,11 @@ securitySchemes:
           description: Pet not found
       securedBy:
         - api_key
-      (tags):
+      (oas-tags):
         - pet
     delete:
       displayName: deletePet
-      (summary): Deletes a pet
+      (oas-summary): Deletes a pet
       headers:
         api_key:
           type: string
@@ -343,13 +343,13 @@ securitySchemes:
             scopes:
               - 'write:pets'
               - 'read:pets'
-      (tags):
+      (oas-tags):
         - pet
     /uploadImage:
       displayName: uploadImage
       post:
         displayName: uploadFile
-        (summary): uploads an image
+        (oas-summary): uploads an image
         body:
           multipart/form-data:
             properties:
@@ -373,11 +373,11 @@ securitySchemes:
               scopes:
                 - 'write:pets'
                 - 'read:pets'
-        (tags):
+        (oas-tags):
           - pet
     post:
       displayName: updatePetWithForm
-      (summary): Updates a pet in the store with form data
+      (oas-summary): Updates a pet in the store with form data
       body:
         multipart/form-data:
           properties:
@@ -389,9 +389,9 @@ securitySchemes:
               description: Updated status of the pet
               required: false
               type: string
-              (allowEmptyValue): true
-              (exclusiveMaximum): true
-              (exclusiveMinimum): false
+              (oas-allowEmptyValue): true
+              (oas-exclusiveMaximum): true
+              (oas-exclusiveMinimum): false
           description: Updated status of the pet
       responses:
         '405':
@@ -401,14 +401,14 @@ securitySchemes:
             scopes:
               - 'write:pets'
               - 'read:pets'
-      (tags):
+      (oas-tags):
         - pet
   /findByTags:
     displayName: findByTags
     get:
       displayName: findPetsByTags
       description: 'Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.'
-      (summary): Finds Pets by tags
+      (oas-summary): Finds Pets by tags
       responses:
         '200':
           body:
@@ -427,18 +427,18 @@ securitySchemes:
           displayName: Tags to filter by
           items:
             type: string
-          (collectionFormat): multi
+          (oas-collectionFormat): multi
       securedBy:
         - petstore_auth:
             scopes:
               - 'write:pets'
               - 'read:pets'
-      (tags):
+      (oas-tags):
         - pet
-      (deprecated): true
+      (oas-deprecated): true
   put:
     displayName: updatePet
-    (summary): Update an existing pet
+    (oas-summary): Update an existing pet
     body:
       application/json:
         type: Pet
@@ -455,21 +455,21 @@ securitySchemes:
           scopes:
             - 'write:pets'
             - 'read:pets'
-    (tags):
+    (oas-tags):
       - pet
 annotationTypes:
-  tags: 'string[]'
-  deprecated: boolean
-  summary: string
-  allowEmptyValue: boolean
-  exclusiveMaximum: boolean
-  exclusiveMinimum: boolean
-  collectionFormat: string
-  externalDocs:
+  oas-tags: 'string[]'
+  oas-deprecated: boolean
+  oas-summary: string
+  oas-allowEmptyValue: boolean
+  oas-exclusiveMaximum: boolean
+  oas-exclusiveMinimum: boolean
+  oas-collectionFormat: string
+  oas-externalDocs:
     properties:
       description?: string
       url: string
-  info:
+  oas-info:
     properties:
       termsOfService?: string
       contact?:
