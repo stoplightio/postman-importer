@@ -233,6 +233,9 @@ securitySchemes:
           description: The password for login in clear text
           type: string
           displayName: The password for login in clear text
+          (allowEmptyValue): true
+          (exclusiveMaximum): true
+          (exclusiveMinimum): false
       (tags):
         - user
 /pet:
@@ -274,6 +277,7 @@ securitySchemes:
           description: Invalid status value
       queryParameters:
         status:
+          (collectionFormat): multi
           description: Status values that need to be considered for filter
           type: array
           displayName: Status values that need to be considered for filter
@@ -379,6 +383,9 @@ securitySchemes:
               description: Updated status of the pet
               type: string
               required: false
+              (allowEmptyValue): true
+              (exclusiveMaximum): true
+              (exclusiveMinimum): false
           description: Updated status of the pet
       responses:
         '405':
@@ -408,6 +415,7 @@ securitySchemes:
           description: Invalid tag value
       queryParameters:
         tags:
+          (collectionFormat): multi
           description: Tags to filter by
           type: array
           displayName: Tags to filter by
@@ -443,6 +451,10 @@ securitySchemes:
     (tags):
       - pet
 annotationTypes:
+  allowEmptyValue: boolean
+  collectionFormat: string
+  exclusiveMaximum: boolean
+  exclusiveMinimum: boolean
   tags: 'string[]'
   deprecated: boolean
   summary: string
