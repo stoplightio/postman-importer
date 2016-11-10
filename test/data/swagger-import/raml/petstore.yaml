@@ -41,10 +41,11 @@ securitySchemes:
       uriParameters:
         orderId:
           description: ID of the order that needs to be deleted
+          required: true
           type: integer
-          format: int64
           maximum: 10
           minimum: 1
+          format: int64
           displayName: ID of the order that needs to be deleted
       get:
         displayName: getOrderById
@@ -116,6 +117,7 @@ securitySchemes:
     uriParameters:
       username:
         description: 'The name that needs to be fetched. Use user1 for testing. '
+        required: true
         type: string
         displayName: 'The name that needs to be fetched. Use user1 for testing. '
     delete:
@@ -209,28 +211,30 @@ securitySchemes:
       (summary): Logs user into the system
       responses:
         '200':
-          headers:
-            X-Expires-After:
-              description: date in UTC when token expires
-              type: datetime
-              format: rfc3339
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              type: integer
-              format: int32
           body:
             application/json:
               type: string
           description: successful operation
+          headers:
+            X-Rate-Limit:
+              type: integer
+              description: calls per hour allowed by the user
+              format: int32
+            X-Expires-After:
+              type: datetime
+              description: date in UTC when token expires
+              format: rfc3339
         '400':
           description: Invalid username/password supplied
       queryParameters:
         username:
           description: The user name for login
+          required: true
           type: string
           displayName: The user name for login
         password:
           description: The password for login in clear text
+          required: true
           type: string
           displayName: The password for login in clear text
           (allowEmptyValue): true
@@ -277,8 +281,8 @@ securitySchemes:
           description: Invalid status value
       queryParameters:
         status:
-          (collectionFormat): multi
           description: Status values that need to be considered for filter
+          required: true
           type: array
           displayName: Status values that need to be considered for filter
           items:
@@ -288,6 +292,7 @@ securitySchemes:
               - pending
               - sold
             default: available
+          (collectionFormat): multi
       securedBy:
         - petstore_auth:
             scopes:
@@ -300,6 +305,7 @@ securitySchemes:
     uriParameters:
       petId:
         description: ID of pet that needs to be updated
+        required: true
         type: integer
         format: int64
         displayName: ID of pet that needs to be updated
@@ -349,12 +355,12 @@ securitySchemes:
             properties:
               additionalMetadata:
                 description: Additional data to pass to server
-                type: string
                 required: false
+                type: string
               file:
                 description: file to upload
-                type: file
                 required: false
+                type: file
             description: file to upload
         responses:
           '200':
@@ -377,12 +383,12 @@ securitySchemes:
           properties:
             name:
               description: Updated name of the pet
-              type: string
               required: false
+              type: string
             status:
               description: Updated status of the pet
-              type: string
               required: false
+              type: string
               (allowEmptyValue): true
               (exclusiveMaximum): true
               (exclusiveMinimum): false
@@ -415,12 +421,13 @@ securitySchemes:
           description: Invalid tag value
       queryParameters:
         tags:
-          (collectionFormat): multi
           description: Tags to filter by
+          required: true
           type: array
           displayName: Tags to filter by
           items:
             type: string
+          (collectionFormat): multi
       securedBy:
         - petstore_auth:
             scopes:
@@ -451,13 +458,13 @@ securitySchemes:
     (tags):
       - pet
 annotationTypes:
-  allowEmptyValue: boolean
-  collectionFormat: string
-  exclusiveMaximum: boolean
-  exclusiveMinimum: boolean
   tags: 'string[]'
   deprecated: boolean
   summary: string
+  allowEmptyValue: boolean
+  exclusiveMaximum: boolean
+  exclusiveMinimum: boolean
+  collectionFormat: string
   externalDocs:
     properties:
       description?: string

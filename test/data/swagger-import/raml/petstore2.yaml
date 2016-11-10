@@ -18,10 +18,16 @@ description: A sample API that uses a petstore as an example to demonstrate feat
     displayName: '{id}'
     uriParameters:
       id:
-        description: ID of pet to fetch
-        type: integer
-        format: int64
-        displayName: ID of pet to fetch
+        description: IDs of pet to fetch
+        type: array
+        items:
+          type: integer
+          format: int64
+        displayName: IDs of pet to fetch
+        minItems: 10
+        maxItems: 100
+        uniqueItems: true
+        required: true
     delete:
       displayName: deletePet
       description: deletes a single pet based on the ID supplied
