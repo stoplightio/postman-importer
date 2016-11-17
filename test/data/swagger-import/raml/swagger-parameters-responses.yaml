@@ -1,0 +1,130 @@
+#%RAML 1.0
+title: Simple API
+version: 1.1.0
+baseUri: 'https://simple.api/openapi101'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: A simple API to learn how to write OpenAPI Specification.
+(oas-externalDocs):
+  description: documentation describing how to use this API
+  url: 'http://doc.simple.api/'
+(oas-info):
+  contact:
+    name: John Doe
+    url: 'http://simple.api/contact'
+    email: contact@simple.api
+  termsOfService: 'http://simple.api/terms-of-service'
+  license:
+    name: Apache-2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+/persons:
+  displayName: persons
+  '/{username}':
+    displayName: '{username}'
+    uriParameters:
+      username:
+        required: true
+        description: The person's username
+        type: string
+        displayName: The person's username
+    get:
+      displayName: readPerson
+      description: Returns a single person for its username.
+      (oas-summary): Gets a person
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Person
+          description: A Person
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+        '404':
+          description: Person does not exist.
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+        '500':
+          body:
+            application/json:
+              description: Give full information about the problem
+              properties:
+                code:
+                  description: A human readable code (death to numeric error codes!)
+                  type: string
+          description: An unexpected error occured.
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+      (oas-tags):
+        - Persons
+annotationTypes:
+  oas-tags: 'string[]'
+  oas-summary: string
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+types:
+  Person:
+    description: A person which can be the user itself or one of his friend
+    properties:
+      firstName:
+        description: first name
+        type: string
+        example: John
+        required: false
+      lastName:
+        description: last name
+        type: string
+        example: Doe
+        required: false
+      username:
+        description: Username used to connect to the service
+        type: string
+        pattern: '[a-z0-9]{8,64}'
+        minLength: 8
+        maxLength: 64
+        example: john1doe6
+  Error:
+    description: Give full information about the problem
+    properties:
+      code:
+        description: A human readable code (death to numeric error codes!)
+        type: string
+traits:
+  userAgent:
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true

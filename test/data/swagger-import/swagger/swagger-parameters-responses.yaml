@@ -1,0 +1,144 @@
+swagger: '2.0'
+
+info:
+  version: 1.1.0
+  title: Simple API
+  description: A simple API to learn how to write OpenAPI Specification.
+  termsOfService: http://simple.api/terms-of-service
+  contact:
+    name: John Doe
+    url: http://simple.api/contact
+    email: contact@simple.api
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+
+externalDocs:
+  description: documentation describing how to use this API
+  url: http://doc.simple.api/
+
+tags:
+  - name: Persons
+    description: Everything you need to handle `users` and `friends`
+    externalDocs:
+      description: People category documentation
+      url: http://doc.simple.api/people
+
+schemes:
+  - https
+host: simple.api
+basePath: /openapi101
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  '/persons/{username}':
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/userAgent'
+    get:
+      summary: Gets a person
+      description: Returns a single person for its username.
+      operationId: readPerson
+      tags:
+        - Persons
+      responses:
+        '200':
+          description: A Person
+          schema:
+            $ref: '#/definitions/Person'
+          headers:
+            X-Rate-Limit-Remaining:
+              description: How many calls consumer can do
+              type: integer
+            X-Rate-Limit-Reset:
+              description: When rate limit will be reset
+              type: string
+              format: date-time
+        '404':
+          $ref: '#/responses/PersonDoesNotExistResponse'
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+        default:
+          $ref: '#/responses/TotallyUnexpectedResponse'
+
+definitions:
+  Person:
+    title: Human
+    description: A person which can be the user itself or one of his friend
+    required:
+      - username
+    properties:
+      firstName:
+        description: first name
+        type: string
+        example: John
+      lastName:
+        description: last name
+        type: string
+        example: Doe
+      username:
+        description: Username used to connect to the service
+        type: string
+        pattern: '[a-z0-9]{8,64}'
+        minLength: 8
+        maxLength: 64
+        example: john1doe6
+  Error:
+    title: MultiLingualMultiDeviceError
+    description: Give full information about the problem
+    required:
+      - code
+    properties:
+      code:
+        description: A human readable code (death to numeric error codes!)
+        type: string
+responses:
+  Standard500ErrorResponse:
+    description: An unexpected error occured.
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset
+        type: string
+        format: date-time
+    schema:
+      $ref: '#/definitions/Error'
+  PersonDoesNotExistResponse:
+    description: Person does not exist.
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset
+        type: string
+        format: date-time
+  TotallyUnexpectedResponse:
+    description: A totally unexpected response
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset
+        type: string
+        format: date-time
+parameters:
+  username:
+    name: username
+    in: path
+    required: true
+    description: The person's username
+    type: string
+  userAgent:
+    name: User-Agent
+    description: All API consumers MUST provide a user agent
+    type: string
+    in: header
+    required: true

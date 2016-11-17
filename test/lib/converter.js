@@ -328,10 +328,9 @@ describe('from raml to swagger', function () {
 		}
 	};
 
-	var testWithData = function (testFile, expand) {
+	var testWithData = function (testFile) {
 		var myOptions = {
-			fsResolver : myFsResolver,
-			expand: expand
+			fsResolver : myFsResolver
 		};
 
 		return function (done) {
@@ -360,14 +359,13 @@ describe('from raml to swagger', function () {
 	};
 
 	testFiles.forEach(function (testFile) {
-		var expand = !_.includes(testFile, 'noexpand');
     if (!_.startsWith(testFile, '.')) {
   		if (process.env.fileToTest) {
   			if (_.endsWith(testFile, process.env.fileToTest)) {
-  				it('test: ' + testFile, testWithData(testFile, expand));
+  				it('test: ' + testFile, testWithData(testFile));
   			}
   		} else {
-  			it('test: ' + testFile, testWithData(testFile, expand));
+  			it('test: ' + testFile, testWithData(testFile));
   		}
     }
 	});
