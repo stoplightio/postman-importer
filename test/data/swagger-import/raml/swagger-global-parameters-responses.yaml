@@ -1,0 +1,170 @@
+#%RAML 1.0
+title: Simple API
+version: 1.1.0
+baseUri: 'https://simple.api/openapi101'
+mediaType:
+  - application/json
+  - application/x-yaml
+protocols:
+  - HTTPS
+description: A simple API to learn how to write OpenAPI Specification.
+(oas-externalDocs):
+  description: documentation describing how to use this API
+  url: 'http://doc.simple.api/'
+(oas-info):
+  contact:
+    name: John Doe
+    url: 'http://simple.api/contact'
+    email: contact@simple.api
+  termsOfService: 'http://simple.api/terms-of-service'
+  license:
+    name: Apache-2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+/images:
+  displayName: images
+  '/{imageId}':
+    displayName: '{imageId}'
+    uriParameters:
+      imageId:
+        required: true
+        type: string
+    get:
+      displayName: readImage
+      description: Return an image
+      (oas-summary): Gets an image
+      responses:
+        '200':
+          description: The image
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+        '404':
+          description: Image do not exists
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+        '500':
+          body:
+            image/png:
+              description: Give full information about the problem
+              properties:
+                code:
+                  description: A human readable code (death to numeric error codes!)
+                  type: string
+                  enum:
+                    - DBERR
+                    - NTERR
+                    - UNERR
+                  example: UNERR
+                message:
+                  description: An multilingual error message (hashmap) with a long and a short description
+                  additionalProperties:
+                    description: An error message with a long and a short description
+                    properties:
+                      longMessage:
+                        description: A long error description
+                        type: string
+                      shortMessage:
+                        description: A short error description
+                        type: string
+                    required: false
+                  properties:
+                    defaultLanguage:
+                      description: An error message with a long and a short description
+                      properties:
+                        longMessage:
+                          description: A long error description
+                          type: string
+                        shortMessage:
+                          description: A short error description
+                          type: string
+                      required: false
+                  example:
+                    defaultLanguage:
+                      longMessage: We're deeply sorry but an error occured
+                      shortMessage: Error
+                    fr:
+                      longMessage: Nous sommes désolé mais une erreur est survenu
+                      shortMessage: Erreur
+          description: An unexpected error occured.
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+annotationTypes:
+  oas-summary: string
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+types:
+  ErrorMessage:
+    description: An error message with a long and a short description
+    properties:
+      longMessage:
+        description: A long error description
+        type: string
+      shortMessage:
+        description: A short error description
+        type: string
+  MultilingualErrorMessage:
+    description: An multilingual error message (hashmap) with a long and a short description
+    properties:
+      defaultLanguage:
+        type: ErrorMessage
+        required: false
+      //:
+        type: ErrorMessage
+    example:
+      defaultLanguage:
+        longMessage: We're deeply sorry but an error occured
+        shortMessage: Error
+      fr:
+        longMessage: Nous sommes désolé mais une erreur est survenu
+        shortMessage: Erreur
+  Error:
+    description: Give full information about the problem
+    properties:
+      code:
+        description: A human readable code (death to numeric error codes!)
+        type: string
+        enum:
+          - DBERR
+          - NTERR
+          - UNERR
+        example: UNERR
+      message:
+        type: MultilingualErrorMessage
+traits:
+  userAgent:
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true

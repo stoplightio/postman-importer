@@ -1,0 +1,154 @@
+swagger: '2.0'
+
+info:
+  version: 1.1.0
+  title: Simple API
+  description: A simple API to learn how to write OpenAPI Specification.
+  termsOfService: http://simple.api/terms-of-service
+  contact:
+    name: John Doe
+    url: http://simple.api/contact
+    email: contact@simple.api
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+
+externalDocs:
+  description: documentation describing how to use this API
+  url: http://doc.simple.api/
+
+schemes:
+  - https
+host: simple.api
+basePath: /openapi101
+
+consumes:
+  - application/json
+  - application/x-yaml
+produces:
+  - application/json
+  - application/x-yaml
+
+paths:
+  /images/{imageId}:
+    parameters:
+      - $ref: '#/parameters/userAgent'
+    get:
+      summary: Gets an image
+      description: Return an image
+      operationId: readImage
+      parameters:
+        - name: imageId
+          in: path
+          required: true
+          type: string
+      produces:
+        - image/png
+        - image/gif
+        - image/jpeg
+        - application/json
+        - application/x-yaml
+      responses:
+        '200':
+          description: The image
+          headers:
+            X-Rate-Limit-Remaining:
+              description: How many calls consumer can do
+              type: integer
+            X-Rate-Limit-Reset:
+              description: When rate limit will be reset
+              type: string
+              format: date-time
+        '404':
+          description: Image do not exists
+          headers:
+            X-Rate-Limit-Remaining:
+              description: How many calls consumer can do
+              type: integer
+            X-Rate-Limit-Reset:
+              description: When rate limit will be reset
+              type: string
+              format: date-time
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+        default:
+          $ref: '#/responses/TotallyUnexpectedResponse'
+
+definitions:
+  ErrorMessage:
+    title: MultiDeviceErrorMessage
+    description: An error message with a long and a short description
+    required:
+      - longMessage
+      - shortMessage
+    properties:
+      longMessage:
+        description: A long error description
+        type: string
+      shortMessage:
+        description: A short error description
+        type: string
+  MultilingualErrorMessage:
+    title: MultiLingualMultiDeviceErrorMessage
+    description: An multilingual error message (hashmap) with a long and a short description
+    additionalProperties:
+      $ref: '#/definitions/ErrorMessage'
+    properties:
+      defaultLanguage:
+        $ref: '#/definitions/ErrorMessage'
+    example:
+      defaultLanguage:
+        longMessage: We're deeply sorry but an error occured
+        shortMessage: Error
+      fr:
+        longMessage: Nous sommes désolé mais une erreur est survenu
+        shortMessage: Erreur
+
+  Error:
+    title: MultiLingualMultiDeviceError
+    description: Give full information about the problem
+    required:
+      - code
+      - message
+    properties:
+      code:
+        description: A human readable code (death to numeric error codes!)
+        type: string
+        enum:
+          - DBERR
+          - NTERR
+          - UNERR
+        example: UNERR
+      message:
+        $ref: '#/definitions/MultilingualErrorMessage'
+responses:
+  Standard500ErrorResponse:
+    description: An unexpected error occured.
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset
+        type: string
+        format: date-time
+    schema:
+      $ref: '#/definitions/Error'
+  TotallyUnexpectedResponse:
+    description: A totally unexpected response
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset
+        type: string
+        format: date-time
+
+parameters:
+  userAgent:
+    name: User-Agent
+    description: All API consumers MUST provide a user agent
+    type: string
+    in: header
+    required: true
