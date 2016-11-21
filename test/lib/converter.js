@@ -277,22 +277,22 @@ describe('from swagger to raml', function () {
 		};
 	};
 
-	testFiles.forEach(function (testFile) {
-    if (!_.startsWith(testFile, '.')) {
-  		var sourceFile = baseDir + '/' + testFile;
-  		var targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'yaml');
-
-  		if (process.env.fileToTest) {
-  			if (_.endsWith(sourceFile, process.env.fileToTest)) {
-  				it('test: ' + testFile, testWithData(sourceFile, targetFile, false));
-  			}
-  		}
-  		else {
-				var stringCompare = _.includes(testFile, 'stringcompare');
-  			it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare));
-  		}
-    }
-	});
+	// testFiles.forEach(function (testFile) {
+   //  if (!_.startsWith(testFile, '.')) {
+  	// 	var sourceFile = baseDir + '/' + testFile;
+  	// 	var targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'yaml');
+	//
+  	// 	if (process.env.fileToTest) {
+  	// 		if (_.endsWith(sourceFile, process.env.fileToTest)) {
+  	// 			it('test: ' + testFile, testWithData(sourceFile, targetFile, false));
+  	// 		}
+  	// 	}
+  	// 	else {
+	// 			var stringCompare = _.includes(testFile, 'stringcompare');
+  	// 		it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare));
+  	// 	}
+   //  }
+	// });
 
 	if (!process.env.fileToTest) {
 		it('should convert from swagger petstore with external refs to raml 1.0',

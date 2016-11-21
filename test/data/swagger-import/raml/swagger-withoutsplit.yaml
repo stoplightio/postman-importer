@@ -65,6 +65,11 @@ securitySchemes:
       displayName: readImage
       description: Return an image
       (oas-summary): Gets an image
+      headers:
+        User-Agent:
+          type: string
+          description: All API consumers MUST provide a user agent
+          required: true
       responses:
         '200':
           description: The image
@@ -156,6 +161,11 @@ securitySchemes:
           image:
             type: file
             required: false
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
     responses:
       '200':
         body:
@@ -250,6 +260,11 @@ securitySchemes:
           Returns a list containing all items this person is looking for.
           The list supports paging.
         (oas-summary): Gets a person's collecting items list
+        headers:
+          User-Agent:
+            type: string
+            description: All API consumers MUST provide a user agent
+            required: true
         responses:
           '200':
             body:
@@ -388,6 +403,11 @@ securitySchemes:
         displayName: readPersonsFriends
         description: Returns a list containing all persons. The list supports paging.
         (oas-summary): Gets a person's friends
+        headers:
+          User-Agent:
+            type: string
+            description: All API consumers MUST provide a user agent
+            required: true
         responses:
           '200':
             body:
@@ -516,6 +536,11 @@ securitySchemes:
       displayName: deletePerson
       description: Delete a single person identified via its username
       (oas-summary): Deletes a person
+      headers:
+        User-Agent:
+          type: string
+          description: All API consumers MUST provide a user agent
+          required: true
       responses:
         '204':
           description: Person successfully deleted.
@@ -601,6 +626,11 @@ securitySchemes:
       displayName: readPerson
       description: Returns a single person for its username.
       (oas-summary): Gets a person
+      headers:
+        User-Agent:
+          type: string
+          description: All API consumers MUST provide a user agent
+          required: true
       responses:
         '200':
           body:
@@ -693,6 +723,11 @@ securitySchemes:
       application/json:
         type: Person
         description: The person to create.
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
     responses:
       '204':
         description: Person succesfully created.
@@ -783,6 +818,11 @@ securitySchemes:
     displayName: searchUsers
     description: Returns a list containing all persons. The list supports paging.
     (oas-summary): Gets some persons
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
     responses:
       '200':
         body:
@@ -915,6 +955,11 @@ securitySchemes:
           dateOfBirth:
             type: date-only
             required: false
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
     responses:
       '204':
         description: Person succesfully created.
@@ -1166,46 +1211,3 @@ types:
           type: CollectingItem
         required: false
     type: Paging
-traits:
-  pageSize:
-    queryParameters:
-      pageSize:
-        type: integer
-        description: Number of persons returned
-        format: int32
-        maximum: 100
-        default: 20
-  pageNumber:
-    queryParameters:
-      pageNumber:
-        type: integer
-        description: Page number
-        default: 1
-  includeNonVerifiedUsers:
-    queryParameters:
-      includeNonVerifiedUsers:
-        type: boolean
-        description: Result will not include non verified user by default if this parameter is not provided
-  sortPersons:
-    queryParameters:
-      sort:
-        type: array
-        description: Result will be sorted by lastTimeOnline descending and username ascending by default if this parameter is not provided
-        uniqueItems: true
-        minItems: 1
-        maxItems: 3
-        default:
-          - '-lastTimeOnline'
-          - +username
-  filterItemTypes:
-    queryParameters:
-      itemType:
-        type: array
-        description: Filter collected items on their type
-        uniqueItems: true
-  userAgent:
-    headers:
-      User-Agent:
-        type: string
-        description: All API consumers MUST provide a user agent
-        required: true

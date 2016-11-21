@@ -36,11 +36,29 @@ produces:
 
 paths:
   '/persons/{username}':
-    parameters:
-      - $ref: '#/parameters/username'
-      - $ref: '#/parameters/userAgent'
-      - $ref: '#/parameters/pageSize'
     get:
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The person's username
+          type: string
+        - name: userAgent
+          description: All API consumers MUST provide a user agent
+          type: string
+          in: header
+          required: true
+        - name: pageSize
+          in: query
+          description: Number of persons returned
+          type: integer
+          format: int32
+          required: true
+        - name: userData
+          in: formData
+          description: The person's data
+          required: true
+          type: string
       summary: Gets a person
       description: Returns a single person for its username.
       operationId: readPerson
@@ -65,13 +83,49 @@ paths:
           $ref: '#/responses/Standard500ErrorResponse'
         default:
           $ref: '#/responses/TotallyUnexpectedResponse'
+  '/persons2':
+    get:
+      parameters:
+        - name: userBody
+          in: body
+          required: true
+          description: The person body.
+          schema:
+            $ref: '#/definitions/Person'
+      summary: Gets a person
+      description: Returns a single person for its username.
+      operationId: readPerson2
+      tags:
+        - Persons
+      responses:
+        '200':
+          description: A Person
+          schema:
+            $ref: '#/definitions/Person'
   '/persons3/{username}':
-    parameters:
-      - $ref: '#/parameters/username'
-      - $ref: '#/parameters/userAgent'
-      - $ref: '#/parameters/pageSize'
-      - $ref: '#/parameters/userData'
     post:
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The person's username
+          type: string
+        - name: userAgent
+          description: All API consumers MUST provide a user agent
+          type: string
+          in: header
+          required: true
+        - name: pageSize
+          in: query
+          description: Number of persons returned
+          type: integer
+          format: int32
+          required: true
+        - name: userData
+          in: formData
+          description: The person's data
+          required: true
+          type: string
       summary: Creates a person
       description: Adds a new person to the persons list.
       operationId: createUser3
@@ -79,9 +133,14 @@ paths:
         '204':
           description: Person succesfully created.
   '/persons4':
-    parameters:
-      - $ref: '#/parameters/userBody'
     post:
+      parameters:
+        - name: userBody
+          in: body
+          required: true
+          description: The person body.
+          schema:
+            $ref: '#/definitions/Person'
       summary: Creates a person
       description: Adds a new person to the persons list.
       operationId: createUser4
@@ -153,36 +212,3 @@ responses:
         description: When rate limit will be reset
         type: string
         format: date-time
-parameters:
-  username:
-    name: username
-    in: path
-    required: true
-    description: The person's username
-    type: string
-  userAgent:
-    name: userAgent
-    description: All API consumers MUST provide a user agent
-    type: string
-    in: header
-    required: true
-  pageSize:
-    name: pageSize
-    in: query
-    description: Number of persons returned
-    type: integer
-    format: int32
-    required: true
-  userData:
-    name: userData
-    in: formData
-    description: The person's data
-    required: true
-    type: string
-  userBody:
-    name: userBody
-    in: body
-    required: true
-    description: The person body.
-    schema:
-      $ref: '#/definitions/Person'

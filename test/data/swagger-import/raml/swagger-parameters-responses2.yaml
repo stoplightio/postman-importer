@@ -42,21 +42,6 @@ description: A simple API to learn how to write OpenAPI Specification.
         type: string
         displayName: The person's username
     post:
-      responses:
-        '204':
-          description: Person succesfully created.
-      headers:
-        userAgent:
-          type: string
-          description: All API consumers MUST provide a user agent
-          required: true
-      queryParameters:
-        pageSize:
-          description: Number of persons returned
-          type: integer
-          format: int32
-          required: true
-          displayName: Number of persons returned
       displayName: createUser3
       description: Adds a new person to the persons list.
       (oas-summary): Creates a person
@@ -68,6 +53,35 @@ description: A simple API to learn how to write OpenAPI Specification.
               required: true
               type: string
           description: The person's data
+      headers:
+        userAgent:
+          type: string
+          description: All API consumers MUST provide a user agent
+          required: true
+      responses:
+        '204':
+          description: Person succesfully created.
+      queryParameters:
+        pageSize:
+          description: Number of persons returned
+          type: integer
+          format: int32
+          required: true
+          displayName: Number of persons returned
+/persons2:
+  displayName: persons2
+  get:
+    displayName: readPerson2
+    description: Returns a single person for its username.
+    (oas-summary): Gets a person
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Person
+        description: A Person
+    (oas-tags):
+      - Persons
 /persons:
   displayName: persons
   '/{username}':
@@ -79,21 +93,14 @@ description: A simple API to learn how to write OpenAPI Specification.
         type: string
         displayName: The person's username
     get:
+      displayName: readPerson
+      description: Returns a single person for its username.
+      (oas-summary): Gets a person
       headers:
         userAgent:
           type: string
           description: All API consumers MUST provide a user agent
           required: true
-      queryParameters:
-        pageSize:
-          description: Number of persons returned
-          type: integer
-          format: int32
-          required: true
-          displayName: Number of persons returned
-      displayName: readPerson
-      description: Returns a single person for its username.
-      (oas-summary): Gets a person
       responses:
         '200':
           body:
@@ -135,6 +142,13 @@ description: A simple API to learn how to write OpenAPI Specification.
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+      queryParameters:
+        pageSize:
+          description: Number of persons returned
+          type: integer
+          format: int32
+          required: true
+          displayName: Number of persons returned
       (oas-tags):
         - Persons
 annotationTypes:

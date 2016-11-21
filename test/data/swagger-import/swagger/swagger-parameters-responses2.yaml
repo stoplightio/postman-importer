@@ -36,11 +36,12 @@ produces:
 
 paths:
   '/persons/{username}':
-    parameters:
-      - $ref: '#/parameters/username'
-      - $ref: '#/parameters/userAgent'
-      - $ref: '#/parameters/pageSize'
     get:
+      parameters:
+        - $ref: '#/parameters/username'
+        - $ref: '#/parameters/userAgent'
+        - $ref: '#/parameters/pageSize'
+        - $ref: '#/parameters/userData'
       summary: Gets a person
       description: Returns a single person for its username.
       operationId: readPerson
@@ -65,13 +66,27 @@ paths:
           $ref: '#/responses/Standard500ErrorResponse'
         default:
           $ref: '#/responses/TotallyUnexpectedResponse'
+  '/persons2':
+    get:
+      parameters:
+        - $ref: '#/parameters/userBody'
+      summary: Gets a person
+      description: Returns a single person for its username.
+      operationId: readPerson2
+      tags:
+        - Persons
+      responses:
+        '200':
+          description: A Person
+          schema:
+            $ref: '#/definitions/Person'
   '/persons3/{username}':
-    parameters:
-      - $ref: '#/parameters/username'
-      - $ref: '#/parameters/userAgent'
-      - $ref: '#/parameters/pageSize'
-      - $ref: '#/parameters/userData'
     post:
+      parameters:
+        - $ref: '#/parameters/username'
+        - $ref: '#/parameters/userAgent'
+        - $ref: '#/parameters/pageSize'
+        - $ref: '#/parameters/userData'
       summary: Creates a person
       description: Adds a new person to the persons list.
       operationId: createUser3
@@ -79,9 +94,9 @@ paths:
         '204':
           description: Person succesfully created.
   '/persons4':
-    parameters:
-      - $ref: '#/parameters/userBody'
     post:
+      parameters:
+        - $ref: '#/parameters/userBody'
       summary: Creates a person
       description: Adds a new person to the persons list.
       operationId: createUser4
