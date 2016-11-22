@@ -61,6 +61,61 @@ securitySchemes:
     (oas-externalDocs):
       description: Find more information here
       url: 'http://swagger.io'
+types:
+  User:
+    discriminator: username
+    properties:
+      id_int:
+        type: integer
+        format: int32
+        required: false
+      id_long:
+        type: integer
+        format: int64
+        required: false
+      id_float:
+        type: number
+        format: float
+        required: false
+      id_double:
+        type: number
+        format: double
+        required: false
+      username:
+        type: string
+      username_byte:
+        type: string
+        format: byte
+        facets:
+          format: string
+        required: false
+      username_binary:
+        type: string
+        format: binary
+        facets:
+          format: string
+        required: false
+      username_boolean:
+        type: boolean
+        required: false
+      username_date:
+        type: date-only
+        required: false
+      username_datetime:
+        type: datetime
+        format: rfc3339
+        required: false
+      user_password:
+        type: string
+        format: password
+        facets:
+          format: string
+        required: false
+      //:
+        type: string
+    example:
+      username: xyz
+      user_password: zyx
 annotationTypes:
   oas-tags:
     type: 'string[]'
@@ -91,49 +146,3 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-types:
-  User:
-    discriminator: username
-    properties:
-      id_int:
-        type: integer
-        format: int32
-        required: false
-      id_long:
-        type: integer
-        format: int64
-        required: false
-      id_float:
-        type: number
-        format: float
-        required: false
-      id_double:
-        type: number
-        format: double
-        required: false
-      username:
-        type: string
-      username_byte:
-        type: string
-        required: false
-      username_binary:
-        type: string
-        required: false
-      username_boolean:
-        type: boolean
-        required: false
-      username_date:
-        type: date-only
-        required: false
-      username_datetime:
-        type: datetime
-        format: rfc3339
-        required: false
-      user_password:
-        type: string
-        required: false
-      //:
-        type: string
-    example:
-      username: xyz
-      user_password: zyx
