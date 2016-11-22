@@ -61,55 +61,17 @@ description: A simple API to learn how to write OpenAPI Specification.
         '500':
           body:
             image/png:
-              description: Give full information about the problem
-              properties:
-                code:
-                  description: A human readable code (death to numeric error codes!)
-                  type: string
-                  enum:
-                    - DBERR
-                    - NTERR
-                    - UNERR
-                  example: UNERR
-                message:
-                  description: An multilingual error message (hashmap) with a long and a short description
-                  additionalProperties:
-                    description: An error message with a long and a short description
-                    properties:
-                      longMessage:
-                        description: A long error description
-                        type: string
-                      shortMessage:
-                        description: A short error description
-                        type: string
-                    required: false
-                  properties:
-                    defaultLanguage:
-                      description: An error message with a long and a short description
-                      properties:
-                        longMessage:
-                          description: A long error description
-                          type: string
-                        shortMessage:
-                          description: A short error description
-                          type: string
-                      required: false
-                  example:
-                    defaultLanguage:
-                      longMessage: We're deeply sorry but an error occured
-                      shortMessage: Error
-                    fr:
-                      longMessage: Nous sommes désolé mais une erreur est survenu
-                      shortMessage: Erreur
+              type: Error
           description: An unexpected error occured.
           headers:
             X-Rate-Limit-Remaining:
-              type: integer
               description: How many calls consumer can do
+              type: integer
             X-Rate-Limit-Reset:
-              type: datetime
               description: When rate limit will be reset
+              type: datetime
               format: rfc3339
+
 annotationTypes:
   oas-summary: string
   oas-externalDocs:
