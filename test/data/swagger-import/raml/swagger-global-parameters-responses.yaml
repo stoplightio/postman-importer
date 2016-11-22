@@ -71,6 +71,47 @@ description: A simple API to learn how to write OpenAPI Specification.
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+types:
+  ErrorMessage:
+    description: An error message with a long and a short description
+    properties:
+      longMessage:
+        description: A long error description
+        type: string
+      shortMessage:
+        description: A short error description
+        type: string
+    (oas-schema-title): MultiDeviceErrorMessage
+  MultilingualErrorMessage:
+    description: An multilingual error message (hashmap) with a long and a short description
+    properties:
+      defaultLanguage:
+        type: ErrorMessage
+        required: false
+      //:
+        type: ErrorMessage
+    (oas-schema-title): MultiLingualMultiDeviceErrorMessage
+    example:
+      defaultLanguage:
+        longMessage: We're deeply sorry but an error occured
+        shortMessage: Error
+      fr:
+        longMessage: Nous sommes désolé mais une erreur est survenu
+        shortMessage: Erreur
+  Error:
+    description: Give full information about the problem
+    properties:
+      code:
+        description: A human readable code (death to numeric error codes!)
+        type: string
+        enum:
+          - DBERR
+          - NTERR
+          - UNERR
+        example: UNERR
+      message:
+        type: MultilingualErrorMessage
+    (oas-schema-title): MultiLingualMultiDeviceError
 annotationTypes:
   oas-summary:
     type: string
@@ -95,41 +136,6 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-types:
-  ErrorMessage:
-    description: An error message with a long and a short description
-    properties:
-      longMessage:
-        description: A long error description
-        type: string
-      shortMessage:
-        description: A short error description
-        type: string
-  MultilingualErrorMessage:
-    description: An multilingual error message (hashmap) with a long and a short description
-    properties:
-      defaultLanguage:
-        type: ErrorMessage
-        required: false
-      //:
-        type: ErrorMessage
-    example:
-      defaultLanguage:
-        longMessage: We're deeply sorry but an error occured
-        shortMessage: Error
-      fr:
-        longMessage: Nous sommes désolé mais une erreur est survenu
-        shortMessage: Erreur
-  Error:
-    description: Give full information about the problem
-    properties:
-      code:
-        description: A human readable code (death to numeric error codes!)
-        type: string
-        enum:
-          - DBERR
-          - NTERR
-          - UNERR
-        example: UNERR
-      message:
-        type: MultilingualErrorMessage
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration

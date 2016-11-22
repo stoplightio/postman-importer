@@ -93,6 +93,9 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
 (oas-externalDocs):
   description: |
     **Complete** documentation describing how to use this API
@@ -757,6 +760,7 @@ types:
       spokenLanguages:
         type: SpokenLanguages
         required: false
+    (oas-schema-title): Human
   SpokenLanguages:
     description: A hashmap of spoken languages
     properties:
@@ -768,6 +772,7 @@ types:
       //:
         description: An additional spoken language
         type: string
+    (oas-schema-title): Languages
     example:
       defaultLanguage: french
       it: italian
@@ -794,6 +799,7 @@ types:
             username: jdoe1234
             dateOfBirth: '1980-05-12T00:00:00.000Z'
             lastTimeOnline: '2016-05-12T19:23:59.014Z'
+    (oas-schema-title): Humans
   ErrorMessage:
     description: An error message with a long and a short description
     properties:
@@ -803,6 +809,7 @@ types:
       shortMessage:
         description: A short error description
         type: string
+    (oas-schema-title): MultiDeviceErrorMessage
   MultilingualErrorMessage:
     description: An multilingual error message (hashmap) with a long and a short description
     properties:
@@ -811,6 +818,7 @@ types:
         required: false
       //:
         type: ErrorMessage
+    (oas-schema-title): MultiLingualMultiDeviceErrorMessage
     example:
       defaultLanguage:
         longMessage: We're deeply sorry but an error occured
@@ -831,6 +839,7 @@ types:
         example: UNERR
       message:
         type: MultilingualErrorMessage
+    (oas-schema-title): MultiLingualMultiDeviceError
   CollectingItem:
     discriminator: itemType
     properties:
