@@ -6,27 +6,92 @@ mediaType: application/json
 protocols:
   - HTTPS
 description: 'Code against the Bitbucket API to automate simple tasks, embed Bitbucket data into your own site, build mobile or desktop apps, or even add custom UI add-ons into Bitbucket itself using the Connect framework.'
-(oas-info):
-  (oas-x-apisguru-categories):
-    - developer_tools
-  (oas-x-logo):
-    url: 'https://api.apis.guru/v2/cache/logo/https_d301sr5gafysq2.cloudfront.net_0c55837759e5_img_homepage_bitbucket-logo-blue.svg'
-  (oas-x-origin):
-    format: swagger
-    url: 'https://bitbucket.org/api/swagger.json'
-    version: '2.0'
-  (oas-x-preferred): true
-  (oas-x-providerName): bitbucket.org
-  (oas-x-tags):
-    - code repository
-    - code collaboration
-    - git
-  contact:
-    name: Bitbucket Support
-    url: 'https://bitbucket.org/support'
-    email: support@bitbucket.org
-  termsOfService: 'https://www.atlassian.com/legal/customer-agreement'
+(oas-tags-definition):
+  - description: ''
+    name: users
+  - description: ''
+    name: teams
+  - description: ''
+    name: repositories
+  - description: ''
+    name: refs
+  - description: ''
+    name: commits
+  - description: ''
+    name: pullrequests
+  - description: |-
+      The issues resource provides functionality for getting information on
+      issues in an issue tracker, creating new issues, updating them and deleting
+      them.
+
+      You can access public issues without authentication, but you can't gain access
+      to private repositories' issues. By authenticating, you will get the ability
+      to create issues, as well as access to updating data or deleting issues you
+      have access to.
+    name: issue_tracker
+  - description: ''
+    name: wiki
+  - description: ''
+    name: downloads
+  - description: ''
+    name: snippets
+  - description: |
+      Webhooks provide a way to configure Bitbucket Cloud to make requests to
+      your server (or another external service) whenever certain events occur in
+      Bitbucket Cloud.
+
+      A webhook consists of:
+
+      * A subject -- The resource that generates the events. Currently, this resource
+        is the repository, user account, or team where you create the webhook.
+      * One or more event -- The default event is a repository push, but you can
+        select multiple events that can trigger the webhook.
+      * A URL -- The endpoint where you want Bitbucket to send the event payloads
+        when a matching event happens.
+
+      There are two parts to getting a webhook to work: creating the webhook and
+      triggering the webhook. After you create a webhook for an event, every time
+      that event occurs, Bitbucket sends a payload request that describes the event
+      to the specified URL. Thus, you can think of webhooks as a kind of
+      notification system.
+
+      Use webhooks to integrate applications with Bitbucket Cloud. The following
+      use cases provides examples of when you would want to use webhooks:
+
+      * Every time a user pushes commits in a repository, you may want to notify
+        your CI server to start a build.
+      * Every time a user pushes commits or creates a pull request, you may want to
+        display a notification in your application.
+    name: webhooks
+  - description: |
+      Commit statuses provide a way to tag commits with meta data,
+      like automated build results.
+    name: commitstatuses
+  - description: |
+      Repository owners and administrators can set branch management
+      rules on a repository that control what can be pushed by whom.
+      Through these rules, you can enforce a project or team
+      workflow. For example, owners or administrators can:
+
+      * Limit push powers
+      * Prevent branch (bookmark) deletion
+      * Prevent history re-writes (Git only)
+    name: branchrestrictions
+  - description: |
+      Bitbucket Cloud projects make it easier for teams to focus on
+      a goal, product, or process by organizing their repositories.
+    name: projects
 annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
   oas-x-apisguru-categories: any
   oas-x-logo: any
   oas-x-origin: any
@@ -53,6 +118,26 @@ annotationTypes:
           url?: string
   oas-x-radar-pages: any
   oas-x-revision: any
+(oas-info):
+  (oas-x-apisguru-categories):
+    - developer_tools
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_d301sr5gafysq2.cloudfront.net_0c55837759e5_img_homepage_bitbucket-logo-blue.svg'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://bitbucket.org/api/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): bitbucket.org
+  (oas-x-tags):
+    - code repository
+    - code collaboration
+    - git
+  contact:
+    name: Bitbucket Support
+    url: 'https://bitbucket.org/support'
+    email: support@bitbucket.org
+  termsOfService: 'https://www.atlassian.com/legal/customer-agreement'
 (oas-externalDocs):
   url: 'https://bitbucket.org/api'
 securitySchemes:

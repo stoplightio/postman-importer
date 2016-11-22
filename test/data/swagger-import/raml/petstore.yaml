@@ -5,23 +5,36 @@ baseUri: 'http://petstore.swagger.io/v2'
 protocols:
   - HTTP
 description: 'This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.'
-(oas-info):
-  (oas-x-extension4): value4
-  contact:
-    email: apiteam@swagger.io
-    (oas-x-extension2): value2
-  termsOfService: 'http://swagger.io/terms/'
-  license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-    (oas-x-extension3): value3
+(oas-tags-definition):
+  - name: pet
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: store
+    description: Access to Petstore orders
+  - name: user
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: 'http://swagger.io'
 annotationTypes:
-  oas-paths: any
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
   oas-x-extension4: any
   oas-x-extension7: any
   oas-x-extension2: any
   oas-x-extension3: any
   oas-x-extension5: any
+  oas-paths: any
   oas-x-extension10: any
   oas-x-extension8: any
   oas-tags: 'string[]'
@@ -48,6 +61,16 @@ annotationTypes:
           name?: string
           url?: string
   oas-x-extension1: any
+(oas-info):
+  (oas-x-extension4): value4
+  contact:
+    email: apiteam@swagger.io
+    (oas-x-extension2): value2
+  termsOfService: 'http://swagger.io/terms/'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    (oas-x-extension3): value3
 (oas-externalDocs):
   description: Find out more about Swagger
   url: 'http://swagger.io'

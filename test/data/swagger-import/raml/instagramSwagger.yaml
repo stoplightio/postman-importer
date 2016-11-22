@@ -121,6 +121,56 @@ description: |
       ...
   });
   ```
+(oas-tags-definition):
+  - name: Users
+  - name: Relationships
+    description: |
+      Relationships are expressed using the following terms:
+
+      **outgoing_status**: Your relationship to the user. Can be "follows",
+        "requested", "none".
+      **incoming_status**: A user's relationship to you. Can be "followed_by",
+        "requested_by", "blocked_by_you", "none".
+  - name: Media
+    description: |
+      At this time, uploading via the API is not possible. We made a conscious
+      choice not to add this for the following reasons:
+
+      * Instagram is about your life on the go – we hope to encourage photos
+        from within the app.
+      * We want to fight spam & low quality photos. Once we allow uploading
+        from other sources, it's harder to control what comes into the Instagram
+        ecosystem. All this being said, we're working on ways to ensure users
+        have a consistent and high-quality experience on our platform.
+  - name: Commnts
+  - name: Likes
+  - name: Tags
+  - name: Location
+  - name: Subscribtions
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+  oas-tags: 'string[]'
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
 (oas-info):
   termsOfService: 'http://instagram.com/about/legal/terms/api'
 securitySchemes:
@@ -936,20 +986,6 @@ securitySchemes:
           description: OK
       (oas-tags):
         - Location
-annotationTypes:
-  oas-tags: 'string[]'
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
 types:
   User:
     properties:

@@ -6,6 +6,41 @@ mediaType: application/json
 protocols:
   - HTTPS
 description: A simple API to learn how to write OpenAPI Specification.
+(oas-tags-definition):
+  - name: Persons
+    description: Everything you need to handle `users` and `friends`
+    externalDocs:
+      description: People category documentation
+      url: 'http://doc.simple.api/people'
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+  oas-tags: 'string[]'
+  oas-summary: string
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -147,25 +182,6 @@ description: A simple API to learn how to write OpenAPI Specification.
           displayName: Number of persons returned
       (oas-tags):
         - Persons
-annotationTypes:
-  oas-tags: 'string[]'
-  oas-summary: string
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
 types:
   Person:
     description: A person which can be the user itself or one of his friend

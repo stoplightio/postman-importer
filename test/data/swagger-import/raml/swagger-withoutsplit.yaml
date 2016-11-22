@@ -19,6 +19,61 @@ description: |
     "anotherKey": "anotherValue"
   }
   ```
+(oas-tags-definition):
+  - name: Persons
+    description: Everything you need to handle `users` and `friends`
+    externalDocs:
+      description: People category documentation
+      url: 'http://doc.simple.api/people'
+  - name: Items
+    description: Everything you need to handle items collected by users
+    externalDocs:
+      description: Items category documentation
+      url: 'http://doc.simple.api/items'
+  - name: Media
+    description: Everything you need to handle images
+    externalDocs:
+      description: Media category documentation
+      url: 'http://doc.simple.api/media'
+  - name: JSLess
+    description: Specific operations for JS less consumers
+    externalDocs:
+      description: JS Less Consumers documentation
+      url: 'http://doc.simple.api/jsless'
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+  oas-tags: 'string[]'
+  oas-deprecated: boolean
+  oas-summary: string
+  oas-allowEmptyValue: boolean
+  oas-exclusiveMaximum: boolean
+  oas-exclusiveMinimum: boolean
+  oas-collectionFormat: string
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
 (oas-externalDocs):
   description: |
     **Complete** documentation describing how to use this API
@@ -640,30 +695,6 @@ securitySchemes:
       - JSLess
       - Persons
     (oas-deprecated): true
-annotationTypes:
-  oas-tags: 'string[]'
-  oas-deprecated: boolean
-  oas-summary: string
-  oas-allowEmptyValue: boolean
-  oas-exclusiveMaximum: boolean
-  oas-exclusiveMinimum: boolean
-  oas-collectionFormat: string
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
 types:
   Person:
     description: A person which can be the user itself or one of his friend
@@ -694,11 +725,11 @@ types:
         description: The last time this person was connected to the service as a
         type: datetime
         format: rfc3339
-        example: '2016-06-10T12:36:58.014Z'
-        required: false
         readOnly: true
+        example: '2016-06-10T12:36:58.014Z'
         facets:
           readOnly?: boolean
+        required: false
       avatarBase64PNG:
         description: An avatar PNG image as a base64 encoded string ready to use as an src in img html tag
         type: string
