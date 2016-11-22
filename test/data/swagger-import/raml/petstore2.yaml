@@ -19,15 +19,15 @@ description: A sample API that uses a petstore as an example to demonstrate feat
     uriParameters:
       id:
         description: IDs of pet to fetch
+        required: true
         type: array
-        items:
-          type: integer
-          format: int64
-        displayName: IDs of pet to fetch
         minItems: 10
         maxItems: 100
         uniqueItems: true
-        required: true
+        displayName: IDs of pet to fetch
+        items:
+          type: integer
+          format: int64
     delete:
       displayName: deletePet
       description: deletes a single pet based on the ID supplied
@@ -81,7 +81,9 @@ description: A sample API that uses a petstore as an example to demonstrate feat
         format: int32
         displayName: maximum number of results to return
 annotationTypes:
-  oas-collectionFormat: string
+  oas-collectionFormat:
+    type: string
+    allowedTargets: TypeDeclaration
   oas-info:
     properties:
       termsOfService?: string
@@ -94,6 +96,7 @@ annotationTypes:
         properties:
           name?: string
           url?: string
+    allowedTargets: API
 types:
   Pet:
     properties:

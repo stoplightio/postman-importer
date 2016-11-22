@@ -27,6 +27,35 @@ version: 0.0.0
   - name: Tags
   - name: Location
   - name: Subscribtions
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+  oas-x-custom: any
 /users:
   displayName: users
   get:
@@ -49,7 +78,6 @@ version: 0.0.0
         displayName: The media ID
     get:
       displayName: GET_media-media-id
-      (oas-summary): Get info about a media object.
       description: |
         Get information about a media object.
         The returned type key will allow you to differentiate between `image`
@@ -58,6 +86,7 @@ version: 0.0.0
         Note: if you authenticate with an OAuth Token, you will receive the
         `user_has_liked` key which quickly tells you whether the current user
         has liked this media item.
+      (oas-summary): Get info about a media object.
       responses:
         '200':
           description: OK
@@ -79,22 +108,3 @@ version: 0.0.0
       description: find more info here
       url: 'https://swagger.io/about'
 (oas-x-custom): Hi
-annotationTypes:
-  oas-tags: 'string[]'
-  oas-deprecated: boolean
-  oas-summary: string
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-  oas-x-custom: any
-  oas-tags-definition:
-    type: array
-    items:
-      properties:
-        name: string
-        description?: string
-        externalDocs?:
-          properties:
-            description?: string
-            url: string

@@ -20,13 +20,13 @@ description: A sample API that uses a petstore as an example to demonstrate feat
     displayName: '{petId}'
     uriParameters:
       petId:
-        (oas-collectionFormat): csv
         description: ID of pet that needs to be fetched
-        type: array
         required: true
+        type: array
         displayName: ID of pet that needs to be fetched
         items:
           type: string
+        (oas-collectionFormat): csv
     get:
       displayName: getPetsById
       description: Returns a pet based on ID
@@ -38,8 +38,12 @@ description: A sample API that uses a petstore as an example to demonstrate feat
               type: string
           description: pet response
 annotationTypes:
-  oas-collectionFormat: string
-  oas-summary: string
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-collectionFormat:
+    type: string
+    allowedTargets: TypeDeclaration
   oas-info:
     properties:
       termsOfService?: string
@@ -52,3 +56,4 @@ annotationTypes:
         properties:
           name?: string
           url?: string
+    allowedTargets: API

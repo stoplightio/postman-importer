@@ -65,19 +65,23 @@ description: A simple API to learn how to write OpenAPI Specification.
           description: An unexpected error occured.
           headers:
             X-Rate-Limit-Remaining:
-              description: How many calls consumer can do
               type: integer
+              description: How many calls consumer can do
             X-Rate-Limit-Reset:
-              description: When rate limit will be reset
               type: datetime
+              description: When rate limit will be reset
               format: rfc3339
-
 annotationTypes:
-  oas-summary: string
+  oas-summary:
+    type: string
+    allowedTargets: Method
   oas-externalDocs:
     properties:
       description?: string
       url: string
+    allowedTargets:
+      - API
+      - Method
   oas-info:
     properties:
       termsOfService?: string
@@ -90,6 +94,7 @@ annotationTypes:
         properties:
           name?: string
           url?: string
+    allowedTargets: API
 types:
   ErrorMessage:
     description: An error message with a long and a short description

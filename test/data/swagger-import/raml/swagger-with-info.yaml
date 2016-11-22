@@ -1,84 +1,99 @@
 #%RAML 1.0
 title: Swagger Petstore
 version: 1.0.0
+baseUri: 'http://localhost:3000/api'
+mediaType: application/json
+protocols:
+  - HTTP
 description: This is a sample server Petstore.
 (oas-externalDocs):
   description: Find more information here
-  url: http://swagger.io
+  url: 'http://swagger.io'
 (oas-info):
   contact:
     name: apiteam@swagger.io
+  termsOfService: 'http://helloreverb.com/terms/'
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://helloreverb.com/terms/
-protocols:
-  - HTTP
-annotationTypes:
-  oas-tags: string[]
-  oas-deprecated: boolean
-  oas-summary: string
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-  oas-info:
-    properties:
-      contact?:
-        properties:
-          email?: string
-          name?: string
-          url?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-      termsOfService?: string
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 securitySchemes:
+  petstore_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'http://swagger.io/api/oauth/dialog'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'write:users'
+        - 'read:users'
   internalApiKey:
     type: Pass Through
-    description: Api Key Authentication
     describedBy:
       headers:
         api_key:
           type: string
-  petstore_auth:
-    type: OAuth 2.0
-    settings:
-      authorizationUri: http://swagger.io/api/oauth/dialog
-      accessTokenUri: ''
-      authorizationGrants:
-        - implicit
-      scopes: [write:users, read:users]
-mediaType: application/json
-baseUri: http://localhost:3000/api
+    description: Api Key Authentication
 /users:
   displayName: users
   get:
+    displayName: GET_users
+    description: Get basic information about a user.
+    (oas-summary): my method summary
+    responses:
+      '200':
+        body:
+          application/json:
+            type: object
+            properties:
+              data:
+                type: User
+                required: false
+        description: The user object
+    securedBy:
+      - petstore_auth:
+          scopes:
+            - 'read:users'
+      - internalApiKey
     (oas-tags):
       - get_method
     (oas-deprecated): true
     (oas-externalDocs):
       description: Find more information here
-      url: http://swagger.io
-    displayName: GET_users
-    (oas-summary): my method summary
-    description: Get basic information about a user.
-    securedBy:
-      - petstore_auth: {scopes:[read:users]}
-      - internalApiKey
-    responses:
-      '200':
-        body:
-          application/json:
-            properties:
-              data:
-                type: User
-                required: false
-            type: object
-        description: The user object
+      url: 'http://swagger.io'
+annotationTypes:
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
 types:
   User:
+    discriminator: username
     properties:
       id_int:
         type: integer
@@ -119,7 +134,6 @@ types:
         required: false
       //:
         type: string
-    discriminator: username
     example:
       username: xyz
       user_password: zyx
