@@ -81,6 +81,9 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
   oas-x-extension1: any
 (oas-info):
   (oas-x-extension4): value4
@@ -163,6 +166,7 @@ securitySchemes:
       body:
         application/json:
           type: Order
+          (oas-body-name): body
           description: order placed for purchasing the pet
       responses:
         '200':
@@ -222,6 +226,7 @@ securitySchemes:
       body:
         application/json:
           type: User
+          (oas-body-name): body
           description: Updated user object
       responses:
         '400':
@@ -252,6 +257,7 @@ securitySchemes:
     body:
       application/json:
         type: User
+        (oas-body-name): body
         description: Created user object
     (oas-tags):
       - user
@@ -265,6 +271,7 @@ securitySchemes:
           type: array
           items:
             type: User
+          (oas-body-name): body
           description: List of user object
       (oas-tags):
         - user
@@ -278,6 +285,7 @@ securitySchemes:
           type: array
           items:
             type: User
+          (oas-body-name): body
           description: List of user object
       (oas-tags):
         - user
@@ -337,6 +345,7 @@ securitySchemes:
     body:
       application/json:
         type: Pet
+        (oas-body-name): body
         description: Pet object that needs to be added to the store
     responses:
       '405':
@@ -527,6 +536,7 @@ securitySchemes:
     body:
       application/json:
         type: Pet
+        (oas-body-name): body
         description: Pet object that needs to be added to the store
     responses:
       '400':

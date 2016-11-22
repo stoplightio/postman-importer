@@ -175,6 +175,9 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
 (oas-info):
   termsOfService: 'http://instagram.com/about/legal/terms/api'
 securitySchemes:
@@ -237,6 +240,7 @@ securitySchemes:
         body:
           application/json:
             type: number
+            (oas-body-name): TEXT
             description: |
               Text to post as a comment on the media object as specified in
               media-id.
@@ -603,6 +607,7 @@ securitySchemes:
               - block
               - unblock
               - approve
+            (oas-body-name): action
             description: One of follow/unfollow/block/unblock/approve/ignore.
         responses:
           '200':

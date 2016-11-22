@@ -18,7 +18,6 @@ description: A sample API
         description: Upload a new pet photo
         body:
           multipart/form-data:
-            description: The pet photo
             properties:
               id:
                 description: The photo ID (generated automatically)
@@ -26,24 +25,22 @@ description: A sample API
                 required: false
               label:
                 description: A label for the photo
-                type: string
                 required: true
+                type: string
               description:
                 description: An optional description of the photo
                 type: string
                 required: false
               photo:
                 description: The pet photo
-                type: string
                 required: true
+                type: string
+            description: The pet photo
         responses:
           '400':
             body:
               application/json:
                 properties:
-                  description:
-                    type: string
-                    required: false
                   id:
                     type: integer
                     format: int32
@@ -51,15 +48,18 @@ description: A sample API
                   label:
                     type: string
                     required: false
+                  description:
+                    type: string
+                    required: false
                   photo:
-                    description: Information about the photo (size, file name, etc.)
+                    description: 'Information about the photo (size, file name, etc.)'
                     required: false
             description: Returns the photo information
     uriParameters:
       petName:
         description: name for the pet
-        type: string
         required: true
+        type: string
         displayName: name for the pet
     patch:
       displayName: updatePet
@@ -67,6 +67,7 @@ description: A sample API
       body:
         application/json:
           type: pet
+          (oas-body-name): body
       responses:
         '400':
           body:
@@ -152,3 +153,7 @@ types:
         minimum: 10000
         maximum: 99999
         required: false
+annotationTypes:
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration

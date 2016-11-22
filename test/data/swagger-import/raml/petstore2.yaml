@@ -49,6 +49,7 @@ description: A sample API that uses a petstore as an example to demonstrate feat
     body:
       application/json:
         type: NewPet
+        (oas-body-name): pet
         description: Pet to add to the store
     responses:
       '200':
@@ -80,23 +81,6 @@ description: A sample API that uses a petstore as an example to demonstrate feat
         type: integer
         format: int32
         displayName: maximum number of results to return
-annotationTypes:
-  oas-collectionFormat:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
 types:
   Pet:
     properties:
@@ -118,3 +102,23 @@ types:
         format: int32
       message:
         type: string
+annotationTypes:
+  oas-collectionFormat:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
