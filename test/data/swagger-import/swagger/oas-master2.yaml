@@ -1,0 +1,314 @@
+swagger: '2.0'
+info:
+  version: 1.1.0
+  title: Simple API
+  description: |
+    A simple API to learn how to write OpenAPI Specification.
+    This file uses almost every single aspect of the [Open API Specification](https://openapis.org/).
+    This API will use JSON.
+    JSON looks like this:
+
+    ```JSON
+    {
+      "key": "value",
+      "anotherKey": "anotherValue"
+    }
+    ```
+  termsOfService: http://simple.api/terms-of-service
+  contact:
+    name: John Doe
+    url: http://simple.api/contact
+    email: contact@simple.api
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+
+externalDocs:
+  description: |
+    **Complete** documentation describing how to use this API
+  url: http://doc.simple.api/
+
+schemes:
+  - https
+host: simple.api
+basePath: /openapi101
+
+consumes:
+  - application/json
+  - application/x-yaml
+produces:
+  - application/json
+  - application/x-yaml
+
+paths:
+  /persons:
+    parameters:
+      - $ref: '#/parameters/userAgent'
+    get:
+      summary: Gets some persons
+      description: Returns a list containing all persons. The list supports paging.
+      operationId: searchUsers
+      tags:
+        - Persons
+      parameters:
+        - $ref: '#/parameters/pageSize'
+        - $ref: '#/parameters/pageNumber'
+        - $ref: '#/parameters/includeNonVerifiedUsers'
+        - $ref: '#/parameters/sortPersons'
+      responses:
+        '200':
+          description: A list of Person
+          schema:
+            $ref: '#/definitions/Persons'
+          headers:
+            X-Rate-Limit-Remaining:
+              description: How many calls consumer can do
+              type: integer
+            X-Rate-Limit-Reset:
+              description: When rate limit will be reset
+              type: string
+              format: date-time
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+        default:
+          $ref: '#/responses/TotallyUnexpectedResponse'
+    post:
+      summary: Creates a person
+      description: Adds a new person to the persons list.
+      operationId: createUser
+      parameters:
+        - name: person
+          in: body
+          required: true
+          description: The person to create.
+          schema:
+            $ref: '#/definitions/Person'
+      responses:
+        '204':
+          description: Person succesfully created.
+          headers:
+            X-Rate-Limit-Remaining:
+              description: How many calls consumer can do
+              type: integer
+            X-Rate-Limit-Reset:
+              description: When rate limit will be reset
+              type: string
+              format: date-time
+        '400':
+          description: Person couldn't have been created.
+          headers:
+            X-Rate-Limit-Remaining:
+              description: How many calls consumer can do
+              type: integer
+            X-Rate-Limit-Reset:
+              description: When rate limit will be reset
+              type: string
+              format: date-time
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+        default:
+          $ref: '#/responses/TotallyUnexpectedResponse'
+  '/persons/{username}':
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/userAgent'
+    get:
+      summary: Gets a person
+      description: Returns a single person for its username.
+      operationId: readPerson
+      responses:
+        '200':
+          description: A Person
+          schema:
+            $ref: '#/definitions/Person'
+          headers:
+            X-Rate-Limit-Remaining:
+              description: How many calls consumer can do
+              type: integer
+            X-Rate-Limit-Reset:
+              description: When rate limit will be reset
+              type: string
+              format: date-time
+        '404':
+          $ref: '#/responses/PersonDoesNotExistResponse'
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+        default:
+          $ref: '#/responses/TotallyUnexpectedResponse'
+
+definitions:
+  Person:
+    title: Human
+    description: A person which can be the user itself or one of his friend
+    required:
+      - username
+    properties:
+      firstName:
+        description: first name
+        type: string
+        example: John
+      lastName:
+        description: last name
+        type: string
+        example: Doe
+      username:
+        description: Username used to connect to the service
+        type: string
+        pattern: '[a-z0-9]{8,64}'
+        minLength: 8
+        maxLength: 64
+        example: john1doe6
+  Persons:
+    title: Humans
+    description: A list of users or friends
+    required:
+      - items
+    properties:
+      items:
+        description: Array containg the list
+        type: array
+        minItems: 1
+        maxItems: 100
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/Person'
+        example:
+          - firstName: Robert
+            lastName: Doe
+            username: robdo1234
+          - firstName: Jane
+            lastName: Doe
+            username: jdoe12345
+  ErrorMessage:
+    title: MultiDeviceErrorMessage
+    description: An error message with a long and a short description
+    required:
+      - longMessage
+      - shortMessage
+    properties:
+      longMessage:
+        description: A long error description
+        type: string
+      shortMessage:
+        description: A short error description
+        type: string
+  MultilingualErrorMessage:
+    title: MultiLingualMultiDeviceErrorMessage
+    description: An multilingual error message (hashmap) with a long and a short description
+    additionalProperties:
+      $ref: '#/definitions/ErrorMessage'
+    properties:
+      defaultLanguage:
+        $ref: '#/definitions/ErrorMessage'
+    example:
+      defaultLanguage:
+        longMessage: We're deeply sorry but an error occured
+        shortMessage: Error
+      fr:
+        longMessage: Nous sommes désolé mais une erreur est survenu
+        shortMessage: Erreur
+
+  Error:
+    title: MultiLingualMultiDeviceError
+    description: Give full information about the problem
+    required:
+      - code
+      - message
+    properties:
+      code:
+        description: A human readable code (death to numeric error codes!)
+        type: string
+        enum:
+          - DBERR
+          - NTERR
+          - UNERR
+        example: UNERR
+      message:
+        $ref: '#/definitions/MultilingualErrorMessage'
+responses:
+  Standard500ErrorResponse:
+    description: An unexpected error occured.
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset
+        type: string
+        format: date-time
+    schema:
+      $ref: '#/definitions/Error'
+  PersonDoesNotExistResponse:
+    description: Person does not exist.
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset
+        type: string
+        format: date-time
+  TotallyUnexpectedResponse:
+    description: A totally unexpected response
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset
+        type: string
+        format: date-time
+
+parameters:
+  username:
+    name: username
+    in: path
+    required: true
+    description: The person's username
+    type: string
+  pageSize:
+    name: pageSize
+    in: query
+    description: Number of persons returned
+    type: integer
+    format: int32
+    minimum: 0
+    exclusiveMinimum: true
+    maximum: 100
+    exclusiveMaximum: false
+    multipleOf: 10
+    default: 20
+  pageNumber:
+    name: pageNumber
+    in: query
+    description: Page number
+    type: integer
+    default: 1
+  includeNonVerifiedUsers:
+    name: includeNonVerifiedUsers
+    in: query
+    description: Result will not include non verified user by default if this parameter is not provided
+    type: boolean
+    default: false
+    allowEmptyValue: true
+  sortPersons:
+    name: sort
+    in: query
+    description: Result will be sorted by lastTimeOnline descending and username ascending by default if this parameter is not provided
+    type: array
+    uniqueItems: true
+    minItems: 1
+    maxItems: 3
+    collectionFormat: pipes
+    items:
+      type: string
+      pattern: '[-+](username|lastTimeOnline|firstname|lastname)'
+    default:
+      - -lastTimeOnline
+      - +username
+  userAgent:
+    name: User-Agent
+    description: All API consumers MUST provide a user agent
+    type: string
+    in: header
+    required: true

@@ -30,6 +30,9 @@ annotationTypes:
   oas-summary:
     type: string
     allowedTargets: Method
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
   oas-externalDocs:
     properties:
       description?: string
@@ -53,9 +56,6 @@ annotationTypes:
   oas-schema-title:
     type: string
     allowedTargets: TypeDeclaration
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -74,14 +74,11 @@ annotationTypes:
     displayName: createUser4
     description: Adds a new person to the persons list.
     (oas-summary): Creates a person
-    body:
-      application/json:
-        (oas-body-name): userBody
-        type: Person
-        description: The person body.
     responses:
       '204':
         description: Person succesfully created.
+  is:
+    - userBody
 /persons3:
   displayName: persons3
   '/{username}':
@@ -96,29 +93,13 @@ annotationTypes:
       displayName: createUser3
       description: Adds a new person to the persons list.
       (oas-summary): Creates a person
-      body:
-        multipart/form-data:
-          properties:
-            userData:
-              description: The person's data
-              required: true
-              type: string
-          description: The person's data
-      headers:
-        userAgent:
-          type: string
-          description: All API consumers MUST provide a user agent
-          required: true
       responses:
         '204':
           description: Person succesfully created.
-      queryParameters:
-        pageSize:
-          description: Number of persons returned
-          type: integer
-          format: int32
-          required: true
-          displayName: Number of persons returned
+    is:
+      - userAgent
+      - pageSize
+      - userData
 /persons:
   displayName: persons
   '/{username}':
@@ -133,11 +114,6 @@ annotationTypes:
       displayName: readPerson
       description: Returns a single person for its username.
       (oas-summary): Gets a person
-      headers:
-        userAgent:
-          type: string
-          description: All API consumers MUST provide a user agent
-          required: true
       responses:
         '200':
           body:
@@ -175,18 +151,13 @@ annotationTypes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-      queryParameters:
-        pageSize:
-          description: Number of persons returned
-          type: integer
-          format: int32
-          required: true
-          displayName: Number of persons returned
       (oas-tags):
         - Persons
+    is:
+      - userAgent
+      - pageSize
 types:
   Person:
-    (oas-schema-title): Human
     description: A person which can be the user itself or one of his friend
     properties:
       firstName:
@@ -206,10 +177,40 @@ types:
         minLength: 8
         maxLength: 64
         example: john1doe6
+    (oas-schema-title): Human
   Error:
-    (oas-schema-title): MultiLingualMultiDeviceError
     description: Give full information about the problem
     properties:
       code:
         description: A human readable code (death to numeric error codes!)
         type: string
+    (oas-schema-title): MultiLingualMultiDeviceError
+traits:
+  pageSize:
+    queryParameters:
+      pageSize:
+        type: integer
+        description: Number of persons returned
+        format: int32
+        required: true
+  userAgent:
+    headers:
+      userAgent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
+  userData:
+    body:
+      multipart/form-data:
+        properties:
+          userData:
+            description: The person's data
+            required: true
+            type: string
+        description: The person's data
+  userBody:
+    body:
+      application/json:
+        (oas-body-name): userBody
+        type: Person
+        description: The person body.

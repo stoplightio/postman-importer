@@ -74,11 +74,7 @@ annotationTypes:
     displayName: createUser4
     description: Adds a new person to the persons list.
     (oas-summary): Creates a person
-    body:
-      application/json:
-        (oas-body-name): userBody
-        type: Person
-        description: The person body.
+    is: [ "userBody" ]
     responses:
       '204':
         description: Person succesfully created.
@@ -96,33 +92,15 @@ annotationTypes:
       displayName: createUser3
       description: Adds a new person to the persons list.
       (oas-summary): Creates a person
-      body:
-        multipart/form-data:
-          properties:
-            userData:
-              description: The person's data
-              required: true
-              type: string
-          description: The person's data
-      headers:
-        userAgent:
-          type: string
-          description: All API consumers MUST provide a user agent
-          required: true
+      is: [ "userAgent", "pageSize", "userData" ]
       responses:
         '204':
           description: Person succesfully created.
-      queryParameters:
-        pageSize:
-          description: Number of persons returned
-          type: integer
-          format: int32
-          required: true
-          displayName: Number of persons returned
 /persons2:
   displayName: persons2
   get:
     displayName: readPerson2
+    is: [ "userBody" ]
     description: Returns a single person for its username.
     (oas-summary): Gets a person
     responses:
@@ -147,11 +125,7 @@ annotationTypes:
       displayName: readPerson
       description: Returns a single person for its username.
       (oas-summary): Gets a person
-      headers:
-        userAgent:
-          type: string
-          description: All API consumers MUST provide a user agent
-          required: true
+      is: [ "userAgent", "pageSize", "userData" ]
       responses:
         '200':
           body:
@@ -189,13 +163,6 @@ annotationTypes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-      queryParameters:
-        pageSize:
-          description: Number of persons returned
-          type: integer
-          format: int32
-          required: true
-          displayName: Number of persons returned
       (oas-tags):
         - Persons
 types:
@@ -227,3 +194,32 @@ types:
         description: A human readable code (death to numeric error codes!)
         type: string
     (oas-schema-title): MultiLingualMultiDeviceError
+traits:
+  pageSize:
+    queryParameters:
+      pageSize:
+        type: integer
+        description: Number of persons returned
+        format: int32
+        required: true
+  userAgent:
+    headers:
+      userAgent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
+  userData:
+    body:
+      multipart/form-data:
+        properties:
+          userData:
+            description: The person's data
+            required: true
+            type: string
+        description: The person's data
+  userBody:
+    body:
+      application/json:
+        (oas-body-name): userBody
+        type: Person
+        description: The person body.

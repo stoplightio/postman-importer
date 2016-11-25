@@ -28,15 +28,11 @@ description: A simple API to learn how to write OpenAPI Specification.
       imageId:
         required: true
         type: string
+    is: [ "userAgent" ]
     get:
       displayName: readImage
       description: Return an image
       (oas-summary): Gets an image
-      headers:
-        User-Agent:
-          type: string
-          description: All API consumers MUST provide a user agent
-          required: true
       responses:
         '200':
           description: The image
@@ -71,6 +67,13 @@ description: A simple API to learn how to write OpenAPI Specification.
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+traits:
+  userAgent:
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
 types:
   ErrorMessage:
     description: An error message with a long and a short description

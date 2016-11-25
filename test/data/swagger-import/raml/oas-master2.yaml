@@ -1,0 +1,321 @@
+#%RAML 1.0
+title: Simple API
+version: 1.1.0
+baseUri: 'https://simple.api/openapi101'
+mediaType:
+  - application/json
+  - application/x-yaml
+protocols:
+  - HTTPS
+description: |
+  A simple API to learn how to write OpenAPI Specification.
+  This file uses almost every single aspect of the [Open API Specification](https://openapis.org/).
+  This API will use JSON.
+  JSON looks like this:
+
+  ```JSON
+  {
+    "key": "value",
+    "anotherKey": "anotherValue"
+  }
+  ```
+(oas-externalDocs):
+  description: |
+    **Complete** documentation describing how to use this API
+  url: 'http://doc.simple.api/'
+(oas-info):
+  contact:
+    name: John Doe
+    url: 'http://simple.api/contact'
+    email: contact@simple.api
+  termsOfService: 'http://simple.api/terms-of-service'
+  license:
+    name: Apache-2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+/persons:
+  displayName: persons
+  '/{username}':
+    uriParameters:
+      username:
+        required: true
+        description: The person's username
+        type: string
+        displayName: The person's username
+    displayName: '{username}'
+    get:
+      displayName: readPerson
+      description: Returns a single person for its username.
+      (oas-summary): Gets a person
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Person
+          description: A Person
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+        '404':
+          description: Person does not exist.
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+        '500':
+          body:
+            application/json:
+              type: Error
+          description: An unexpected error occured.
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+    is:
+      - userAgent
+  post:
+    displayName: createUser
+    description: Adds a new person to the persons list.
+    (oas-summary): Creates a person
+    body:
+      application/json:
+        type: Person
+        (oas-body-name): person
+        description: The person to create.
+    responses:
+      '204':
+        description: Person succesfully created.
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
+      '400':
+        description: Person couldn't have been created.
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
+      '500':
+        body:
+          application/json:
+            type: Error
+        description: An unexpected error occured.
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
+  is:
+    - userAgent
+  get:
+    displayName: searchUsers
+    description: Returns a list containing all persons. The list supports paging.
+    (oas-summary): Gets some persons
+    is:
+      - pageSize
+      - pageNumber
+      - includeNonVerifiedUsers
+      - sortPersons
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Persons
+        description: A list of Person
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
+      '500':
+        body:
+          application/json:
+            type: Error
+        description: An unexpected error occured.
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
+    (oas-tags):
+      - Persons
+types:
+  Person:
+    description: A person which can be the user itself or one of his friend
+    properties:
+      firstName:
+        description: first name
+        type: string
+        example: John
+        required: false
+      lastName:
+        description: last name
+        type: string
+        example: Doe
+        required: false
+      username:
+        description: Username used to connect to the service
+        type: string
+        pattern: '[a-z0-9]{8,64}'
+        minLength: 8
+        maxLength: 64
+        example: john1doe6
+    (oas-schema-title): Human
+  Persons:
+    description: A list of users or friends
+    properties:
+      items:
+        description: Array containg the list
+        type: array
+        minItems: 1
+        maxItems: 100
+        uniqueItems: true
+        items:
+          type: Person
+        example:
+          - firstName: Robert
+            lastName: Doe
+            username: robdo1234
+          - firstName: Jane
+            lastName: Doe
+            username: jdoe12345
+    (oas-schema-title): Humans
+  ErrorMessage:
+    description: An error message with a long and a short description
+    properties:
+      longMessage:
+        description: A long error description
+        type: string
+      shortMessage:
+        description: A short error description
+        type: string
+    (oas-schema-title): MultiDeviceErrorMessage
+  MultilingualErrorMessage:
+    description: An multilingual error message (hashmap) with a long and a short description
+    properties:
+      defaultLanguage:
+        type: ErrorMessage
+        required: false
+      //:
+        type: ErrorMessage
+    (oas-schema-title): MultiLingualMultiDeviceErrorMessage
+    example:
+      defaultLanguage:
+        longMessage: We're deeply sorry but an error occured
+        shortMessage: Error
+      fr:
+        longMessage: Nous sommes désolé mais une erreur est survenu
+        shortMessage: Erreur
+  Error:
+    description: Give full information about the problem
+    properties:
+      code:
+        description: A human readable code (death to numeric error codes!)
+        type: string
+        enum:
+          - DBERR
+          - NTERR
+          - UNERR
+        example: UNERR
+      message:
+        type: MultilingualErrorMessage
+    (oas-schema-title): MultiLingualMultiDeviceError
+traits:
+  pageSize:
+    queryParameters:
+      pageSize:
+        type: integer
+        description: Number of persons returned
+        format: int32
+        maximum: 100
+        default: 20
+  pageNumber:
+    queryParameters:
+      pageNumber:
+        type: integer
+        description: Page number
+        default: 1
+  includeNonVerifiedUsers:
+    queryParameters:
+      includeNonVerifiedUsers:
+        type: boolean
+        description: Result will not include non verified user by default if this parameter is not provided
+  sortPersons:
+    queryParameters:
+      sort:
+        type: array
+        description: Result will be sorted by lastTimeOnline descending and username ascending by default if this parameter is not provided
+        uniqueItems: true
+        minItems: 1
+        maxItems: 3
+        default:
+          - '-lastTimeOnline'
+          - +username
+  userAgent:
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
+annotationTypes:
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
