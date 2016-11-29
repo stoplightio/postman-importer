@@ -46,6 +46,16 @@ description: |
       displayName: readPerson
       description: Returns a single person for its username.
       (oas-summary): Gets a person
+      (oas-responses-default):
+        description: A totally unexpected response
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
       responses:
         '200':
           body:
@@ -83,16 +93,6 @@ description: |
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-      (oas-responses-default):
-        description: A totally unexpected response
-        headers:
-          X-Rate-Limit-Remaining:
-            type: integer
-            description: How many calls consumer can do
-          X-Rate-Limit-Reset:
-            type: datetime
-            description: When rate limit will be reset
-            format: rfc3339
     is:
       - userAgent
   post:
@@ -104,6 +104,16 @@ description: |
         type: Person
         (oas-body-name): person
         description: The person to create.
+    (oas-responses-default):
+      description: A totally unexpected response
+      headers:
+        X-Rate-Limit-Remaining:
+          type: integer
+          description: How many calls consumer can do
+        X-Rate-Limit-Reset:
+          type: datetime
+          description: When rate limit will be reset
+          format: rfc3339
     responses:
       '204':
         description: Person succesfully created.
@@ -138,16 +148,6 @@ description: |
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
-    (oas-responses-default):
-      description: A totally unexpected response
-      headers:
-        X-Rate-Limit-Remaining:
-          type: integer
-          description: How many calls consumer can do
-        X-Rate-Limit-Reset:
-          type: datetime
-          description: When rate limit will be reset
-          format: rfc3339
   is:
     - userAgent
   get:
@@ -159,6 +159,16 @@ description: |
       - pageNumber
       - includeNonVerifiedUsers
       - sortPersons
+    (oas-responses-default):
+      description: A totally unexpected response
+      headers:
+        X-Rate-Limit-Remaining:
+          type: integer
+          description: How many calls consumer can do
+        X-Rate-Limit-Reset:
+          type: datetime
+          description: When rate limit will be reset
+          format: rfc3339
     responses:
       '200':
         body:
@@ -186,16 +196,6 @@ description: |
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
-    (oas-responses-default):
-      description: A totally unexpected response
-      headers:
-        X-Rate-Limit-Remaining:
-          type: integer
-          description: How many calls consumer can do
-        X-Rate-Limit-Reset:
-          type: datetime
-          description: When rate limit will be reset
-          format: rfc3339
     (oas-tags):
       - Persons
 types:
@@ -286,8 +286,14 @@ traits:
         type: integer
         description: Number of persons returned
         format: int32
+        minimum: 0
+        exclusiveMinimum: true
         maximum: 100
+        exclusiveMaximum: false
         default: 20
+        facets:
+          exclusiveMinimum: boolean
+          exclusiveMaximum: boolean
   pageNumber:
     queryParameters:
       pageNumber:
@@ -299,6 +305,10 @@ traits:
       includeNonVerifiedUsers:
         type: boolean
         description: Result will not include non verified user by default if this parameter is not provided
+        default: false
+        allowEmptyValue: true
+        facets:
+          allowEmptyValue: boolean
   sortPersons:
     queryParameters:
       sort:
@@ -307,9 +317,12 @@ traits:
         uniqueItems: true
         minItems: 1
         maxItems: 3
+        collectionFormat: pipes
         default:
           - '-lastTimeOnline'
           - +username
+        facets:
+          collectionFormat: string
   userAgent:
     headers:
       User-Agent:

@@ -49,18 +49,6 @@ annotationTypes:
   oas-summary:
     type: string
     allowedTargets: Method
-  oas-allowEmptyValue:
-    type: boolean
-    allowedTargets: TypeDeclaration
-  oas-exclusiveMaximum:
-    type: boolean
-    allowedTargets: TypeDeclaration
-  oas-exclusiveMinimum:
-    type: boolean
-    allowedTargets: TypeDeclaration
-  oas-collectionFormat:
-    type: string
-    allowedTargets: TypeDeclaration
   oas-externalDocs:
     properties:
       description?: string
@@ -338,9 +326,13 @@ securitySchemes:
           required: true
           type: string
           displayName: The password for login in clear text
-          (oas-allowEmptyValue): true
-          (oas-exclusiveMaximum): true
-          (oas-exclusiveMinimum): false
+          facets:
+            allowEmptyValue: boolean
+            exclusiveMaximum: boolean
+            exclusiveMinimum: boolean
+          allowEmptyValue: true
+          exclusiveMaximum: true
+          exclusiveMinimum: false
       (oas-tags):
         - user
 /pet:
@@ -395,7 +387,9 @@ securitySchemes:
               - pending
               - sold
             default: available
-          (oas-collectionFormat): multi
+          facets:
+            collectionFormat: string
+          collectionFormat: multi
       securedBy:
         - petstore_auth:
             scopes:
@@ -436,6 +430,7 @@ securitySchemes:
       headers:
         api_key:
           type: string
+          required: false
       responses:
         '400':
           description: Invalid ID supplied
@@ -492,9 +487,13 @@ securitySchemes:
               description: Updated status of the pet
               required: false
               type: string
-              (oas-allowEmptyValue): true
-              (oas-exclusiveMaximum): true
-              (oas-exclusiveMinimum): false
+              facets:
+                allowEmptyValue: boolean
+                exclusiveMaximum: boolean
+                exclusiveMinimum: boolean
+              allowEmptyValue: true
+              exclusiveMaximum: true
+              exclusiveMinimum: false
           description: Updated status of the pet
       responses:
         '405':
@@ -530,7 +529,9 @@ securitySchemes:
           displayName: Tags to filter by
           items:
             type: string
-          (oas-collectionFormat): multi
+          facets:
+            collectionFormat: string
+          collectionFormat: multi
       securedBy:
         - petstore_auth:
             scopes:
