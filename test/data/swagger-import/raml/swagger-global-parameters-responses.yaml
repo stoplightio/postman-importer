@@ -28,7 +28,6 @@ description: A simple API to learn how to write OpenAPI Specification.
       imageId:
         required: true
         type: string
-    is: [ "userAgent" ]
     get:
       displayName: readImage
       description: Return an image
@@ -67,13 +66,18 @@ description: A simple API to learn how to write OpenAPI Specification.
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-traits:
-  userAgent:
-    headers:
-      User-Agent:
-        type: string
-        description: All API consumers MUST provide a user agent
-        required: true
+        (oas-responses-default):
+          description: A totally unexpected response
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+    is:
+      - userAgent
 types:
   ErrorMessage:
     description: An error message with a long and a short description
@@ -115,7 +119,38 @@ types:
       message:
         type: MultilingualErrorMessage
     (oas-schema-title): MultiLingualMultiDeviceError
+traits:
+  userAgent:
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
+(oas-responses):
+  Standard500ErrorResponse:
+    body:
+      type: Error
+    description: An unexpected error occured.
+    headers:
+      X-Rate-Limit-Remaining:
+        type: integer
+        description: How many calls consumer can do
+      X-Rate-Limit-Reset:
+        type: datetime
+        description: When rate limit will be reset
+        format: rfc3339
+  TotallyUnexpectedResponse:
+    description: A totally unexpected response
+    headers:
+      X-Rate-Limit-Remaining:
+        type: integer
+        description: How many calls consumer can do
+      X-Rate-Limit-Reset:
+        type: datetime
+        description: When rate limit will be reset
+        format: rfc3339
 annotationTypes:
+  oas-responses: any
   oas-summary:
     type: string
     allowedTargets: Method
@@ -142,3 +177,4 @@ annotationTypes:
   oas-schema-title:
     type: string
     allowedTargets: TypeDeclaration
+  oas-responses-default: any

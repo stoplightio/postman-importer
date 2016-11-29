@@ -24,15 +24,13 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  oas-responses: any
   oas-tags:
     type: 'string[]'
     allowedTargets: Method
   oas-summary:
     type: string
     allowedTargets: Method
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
   oas-externalDocs:
     properties:
       description?: string
@@ -56,6 +54,10 @@ annotationTypes:
   oas-schema-title:
     type: string
     allowedTargets: TypeDeclaration
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default: any
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -151,6 +153,16 @@ annotationTypes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+        (oas-responses-default):
+          description: A totally unexpected response
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
       (oas-tags):
         - Persons
     is:
@@ -211,6 +223,39 @@ traits:
   userBody:
     body:
       application/json:
-        (oas-body-name): userBody
         type: Person
+        (oas-body-name): userBody
         description: The person body.
+(oas-responses):
+  Standard500ErrorResponse:
+    body:
+      type: Error
+    description: An unexpected error occured.
+    headers:
+      X-Rate-Limit-Remaining:
+        type: integer
+        description: How many calls consumer can do
+      X-Rate-Limit-Reset:
+        type: datetime
+        description: When rate limit will be reset
+        format: rfc3339
+  PersonDoesNotExistResponse:
+    description: Person does not exist.
+    headers:
+      X-Rate-Limit-Remaining:
+        type: integer
+        description: How many calls consumer can do
+      X-Rate-Limit-Reset:
+        type: datetime
+        description: When rate limit will be reset
+        format: rfc3339
+  TotallyUnexpectedResponse:
+    description: A totally unexpected response
+    headers:
+      X-Rate-Limit-Remaining:
+        type: integer
+        description: How many calls consumer can do
+      X-Rate-Limit-Reset:
+        type: datetime
+        description: When rate limit will be reset
+        format: rfc3339

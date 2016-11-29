@@ -35,13 +35,13 @@ description: |
 /persons:
   displayName: persons
   '/{username}':
+    displayName: '{username}'
     uriParameters:
       username:
         required: true
         description: The person's username
         type: string
         displayName: The person's username
-    displayName: '{username}'
     get:
       displayName: readPerson
       description: Returns a single person for its username.
@@ -75,6 +75,16 @@ description: |
             application/json:
               type: Error
           description: An unexpected error occured.
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+        (oas-responses-default):
+          description: A totally unexpected response
           headers:
             X-Rate-Limit-Remaining:
               type: integer
@@ -128,6 +138,16 @@ description: |
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
+      (oas-responses-default):
+        description: A totally unexpected response
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
   is:
     - userAgent
   get:
@@ -158,6 +178,16 @@ description: |
           application/json:
             type: Error
         description: An unexpected error occured.
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
+      (oas-responses-default):
+        description: A totally unexpected response
         headers:
           X-Rate-Limit-Remaining:
             type: integer
@@ -286,7 +316,41 @@ traits:
         type: string
         description: All API consumers MUST provide a user agent
         required: true
+(oas-responses):
+  Standard500ErrorResponse:
+    body:
+      type: Error
+    description: An unexpected error occured.
+    headers:
+      X-Rate-Limit-Remaining:
+        type: integer
+        description: How many calls consumer can do
+      X-Rate-Limit-Reset:
+        type: datetime
+        description: When rate limit will be reset
+        format: rfc3339
+  PersonDoesNotExistResponse:
+    description: Person does not exist.
+    headers:
+      X-Rate-Limit-Remaining:
+        type: integer
+        description: How many calls consumer can do
+      X-Rate-Limit-Reset:
+        type: datetime
+        description: When rate limit will be reset
+        format: rfc3339
+  TotallyUnexpectedResponse:
+    description: A totally unexpected response
+    headers:
+      X-Rate-Limit-Remaining:
+        type: integer
+        description: How many calls consumer can do
+      X-Rate-Limit-Reset:
+        type: datetime
+        description: When rate limit will be reset
+        format: rfc3339
 annotationTypes:
+  oas-responses: any
   oas-tags:
     type: 'string[]'
     allowedTargets: Method
@@ -319,3 +383,4 @@ annotationTypes:
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
+  oas-responses-default: any

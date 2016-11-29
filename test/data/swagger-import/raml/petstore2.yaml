@@ -34,6 +34,11 @@ description: A sample API that uses a petstore as an example to demonstrate feat
       responses:
         '204':
           description: pet deleted
+        (oas-responses-default):
+          body:
+            application/json:
+              type: ErrorModel
+          description: unexpected error
     get:
       displayName: findPetById
       description: 'Returns a user based on a single ID, if the user does not have access to the pet'
@@ -43,6 +48,11 @@ description: A sample API that uses a petstore as an example to demonstrate feat
             application/xml:
               type: Pet
           description: pet response
+        (oas-responses-default):
+          body:
+            application/xml:
+              type: ErrorModel
+          description: unexpected error
   post:
     displayName: addPet
     description: Creates a new pet in the store.  Duplicates are allowed
@@ -57,6 +67,11 @@ description: A sample API that uses a petstore as an example to demonstrate feat
           application/json:
             type: Pet
         description: pet response
+      (oas-responses-default):
+        body:
+          application/json:
+            type: ErrorModel
+        description: unexpected error
   get:
     displayName: findPets
     description: Returns all pets from the system that the user has access to
@@ -68,6 +83,11 @@ description: A sample API that uses a petstore as an example to demonstrate feat
             items:
               type: Pet
         description: pet response
+      (oas-responses-default):
+        body:
+          application/xml:
+            type: ErrorModel
+        description: unexpected error
     queryParameters:
       tags:
         description: tags to filter by
@@ -122,3 +142,4 @@ annotationTypes:
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
+  oas-responses-default: any
