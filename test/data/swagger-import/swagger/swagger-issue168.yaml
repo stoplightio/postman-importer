@@ -1,0 +1,160 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Echo
+  description: |
+    #### Echos back every URL, method, parameter and header
+    Feel free to make a path or an operation and use **Try Operation** to test it. The echo server will
+    render back everything.
+  termsOfService:   http://helloreverb.com/terms/
+  contact:
+    name: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+schemes:
+  - http
+produces:
+  - application/json
+host: mazimi-prod.apigee.net
+basePath: /echo
+externalDocs:
+  description: Find more info here
+  url: https://swagger.io
+x-apisguru-categories:
+  - developer_tools
+x-logo:
+  url: 'https://api.apis.guru/v2/cache/logo/https_d301sr5gafysq2.cloudfront.net_0c55837759e5_img_homepage_bitbucket-logo-blue.svg'
+x-origin:
+  format: swagger
+  url: 'https://bitbucket.org/api/swagger.json'
+  version: '2.0'
+x-preferred: true
+x-providerName: bitbucket.org
+x-tags:
+   - code repository
+   - code collaboration
+   - git
+tags:
+  - name: Users
+    externalDocs:
+      description: Find more info here in external doc for users
+      url: https://swagger.io
+  - name: Relationships
+    externalDocs:
+      url: https://swagger.io
+    description: |
+      Relationships are expressed using the following terms:
+
+      **outgoing_status**: Your relationship to the user. Can be "follows",
+        "requested", "none".
+      **incoming_status**: A user's relationship to you. Can be "followed_by",
+        "requested_by", "blocked_by_you", "none".
+  - name: Media
+    description: |
+      At this time, uploading via the API is not possible. We made a conscious
+      choice not to add this for the following reasons:
+
+      * Instagram is about your life on the go – we hope to encourage photos
+        from within the app.
+      * We want to fight spam & low quality photos. Once we allow uploading
+        from other sources, it's harder to control what comes into the Instagram
+        ecosystem. All this being said, we're working on ways to ensure users
+        have a consistent and high-quality experience on our platform.
+  - name: Commnts
+  - name: Likes
+  - name: Tags
+  - name: Location
+  - name: Subscribtions
+paths:
+  /:
+    get:
+      summary: gets echo test
+      tags:
+        - Location
+      externalDocs:
+        description: external Doc at operation level
+        url: https://swagger.io
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: An unexpected error occured.
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    post:
+      summary: post echo
+      externalDocs:
+        url: https://swagger.io
+      responses:
+        200:
+          description: Echo POST
+      parameters:
+        - name: name
+          in: formData
+          description: name
+          type: string
+        - name: year
+          in: formData
+          description: year
+          type: string
+
+  /test-path/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID
+        type: string
+        required: true
+    get:
+      deprecated: false
+      summary: test path get summary
+      responses:
+        200:
+          description: Echo test-path
+        201:
+          description: Error
+
+  '/media/{media-id}':
+    parameters:
+      - name: media-id
+        in: path
+        description: The media ID
+        type: integer
+        required: true
+    get:
+      deprecated: true
+      tags:
+        - Media
+      description: |
+        Get information about a media object.
+        The returned type key will allow you to differentiate between `image`
+        and `video` media.
+
+        Note: if you authenticate with an OAuth Token, you will receive the
+        `user_has_liked` key which quickly tells you whether the current user
+        has liked this media item.
+      responses:
+        '200':
+          description: OK
+
+definitions:
+  ErrorModel:
+    type: object
+    title: error model
+    required:
+    - message
+    - code
+    externalDocs:
+      url: https:swagger.io
+    properties:
+      message:
+        type: string
+      code:
+        type: integer
+        minimum: 100
+        maximum: 600
+    example:
+      message: Error in Echo API
+      code: 500

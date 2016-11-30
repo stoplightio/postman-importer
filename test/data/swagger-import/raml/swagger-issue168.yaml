@@ -1,0 +1,213 @@
+#%RAML 1.0
+title: Echo
+version: 1.0.0
+baseUri: 'http://mazimi-prod.apigee.net/echo'
+mediaType: application/json
+protocols:
+  - HTTP
+description: |
+  #### Echos back every URL, method, parameter and header
+  Feel free to make a path or an operation and use **Try Operation** to test it. The echo server will
+  render back everything.
+(oas-tags-definition):
+  - name: Users
+    externalDocs:
+      description: Find more info here in external doc for users
+      url: 'https://swagger.io'
+  - name: Relationships
+    externalDocs:
+      url: 'https://swagger.io'
+    description: |
+      Relationships are expressed using the following terms:
+
+      **outgoing_status**: Your relationship to the user. Can be "follows",
+        "requested", "none".
+      **incoming_status**: A user's relationship to you. Can be "followed_by",
+        "requested_by", "blocked_by_you", "none".
+  - name: Media
+    description: |
+      At this time, uploading via the API is not possible. We made a conscious
+      choice not to add this for the following reasons:
+
+      * Instagram is about your life on the go – we hope to encourage photos
+        from within the app.
+      * We want to fight spam & low quality photos. Once we allow uploading
+        from other sources, it's harder to control what comes into the Instagram
+        ecosystem. All this being said, we're working on ways to ensure users
+        have a consistent and high-quality experience on our platform.
+  - name: Commnts
+  - name: Likes
+  - name: Tags
+  - name: Location
+  - name: Subscribtions
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-tags: any
+(oas-externalDocs):
+  description: Find more info here
+  url: 'https://swagger.io'
+(oas-info):
+  contact:
+    name: apiteam@swagger.io
+  termsOfService: 'http://helloreverb.com/terms/'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+/media:
+  displayName: media
+  '/{media-id}':
+    displayName: '{media-id}'
+    uriParameters:
+      media-id:
+        description: The media ID
+        type: integer
+        required: true
+        displayName: The media ID
+    get:
+      displayName: GET_media-media-id
+      description: |
+        Get information about a media object.
+        The returned type key will allow you to differentiate between `image`
+        and `video` media.
+
+        Note: if you authenticate with an OAuth Token, you will receive the
+        `user_has_liked` key which quickly tells you whether the current user
+        has liked this media item.
+      responses:
+        '200':
+          description: OK
+      (oas-tags):
+        - Media
+      (oas-deprecated): true
+/test-path:
+  displayName: test-path
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: ID
+        type: string
+        required: true
+        displayName: ID
+    get:
+      displayName: GET_test-path-id
+      (oas-summary): test path get summary
+      responses:
+        '200':
+          description: Echo test-path
+        '201':
+          description: Error
+/:
+  post:
+    displayName: POST_root
+    (oas-summary): post echo
+    body:
+      multipart/form-data:
+        properties:
+          name:
+            description: name
+            type: string
+            required: false
+          year:
+            description: year
+            type: string
+            required: false
+        description: year
+    responses:
+      '200':
+        description: Echo POST
+    (oas-externalDocs):
+      url: 'https://swagger.io'
+  get:
+    displayName: GET_root
+    (oas-summary): gets echo test
+    responses:
+      '200':
+        description: OK
+      '500':
+        body:
+          application/json:
+            type: ErrorModel
+        description: An unexpected error occured.
+    (oas-tags):
+      - Location
+    (oas-externalDocs):
+      description: external Doc at operation level
+      url: 'https://swagger.io'
+types:
+  ErrorModel:
+    (oas-externalDocs):
+      url: 'https:swagger.io'
+    properties:
+      message:
+        type: string
+      code:
+        type: integer
+        minimum: 100
+        maximum: 600
+    (oas-schema-title): error model
+    example:
+      message: Error in Echo API
+      code: 500
+(oas-x-apisguru-categories):
+  - developer_tools
+(oas-x-logo):
+  url: 'https://api.apis.guru/v2/cache/logo/https_d301sr5gafysq2.cloudfront.net_0c55837759e5_img_homepage_bitbucket-logo-blue.svg'
+(oas-x-origin):
+  format: swagger
+  url: 'https://bitbucket.org/api/swagger.json'
+  version: '2.0'
+(oas-x-preferred): true
+(oas-x-providerName): bitbucket.org
+(oas-x-tags):
+  - code repository
+  - code collaboration
+  - git
