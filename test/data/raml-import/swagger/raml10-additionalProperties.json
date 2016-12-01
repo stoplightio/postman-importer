@@ -1,0 +1,78 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Swagger Petstore"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "schemes": ["http"],
+  "basePath": "/api",
+  "host": "localhost:3000",
+  "paths": {
+    "/users": {
+      "post": {
+        "parameters" : [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Person"
+                }
+              },
+              "required" : [
+                "data"
+              ],
+              "type": "object",
+              "additionalProperties": {
+                "type": "boolean"
+              }
+            }
+          }
+        ],
+        "operationId": "POST_users",
+        "responses": {
+          "200": {
+            "description": "The user object",
+            "schema": {
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Person"
+                }
+              },
+              "required" : [
+                "data"
+              ],
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Person": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "age": {
+          "type" : "number"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}
