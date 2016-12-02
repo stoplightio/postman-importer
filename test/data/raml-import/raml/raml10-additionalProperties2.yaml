@@ -1,0 +1,41 @@
+#%RAML 1.0
+title: Swagger Petstore
+version: 1.0.0
+protocols:
+  - HTTP
+mediaType: application/json
+baseUri: http://localhost:3000/api
+
+/users:
+  displayName: users
+  post:
+    displayName: POST_users
+    body:
+      application/json:
+        properties:
+          data:
+            type: Person
+          /^note\d+$/:
+            type: boolean
+    responses:
+      '200':
+        body:
+          application/json:
+            properties:
+              data:
+                type: Person
+              /^note\d+$/:
+                type: string
+        description: The user object
+
+types:
+  Person:
+    properties:
+      name:
+        required: true
+        type: string
+      age:
+        required: false
+        type: number
+      /^note\d+$/:
+        type: string
