@@ -165,8 +165,8 @@ describe('RAML 1.0 Importer', function(){
         try {
           var slProject = ramlImporter.import();
           expect(slProject).to.be.instanceOf(Project);
-          expect(slProject.Schemas[0].definition.description).to.eq('Person details');
-          expect(slProject.Schemas[1].definition.description).to.eq('Error details');
+          expect(slProject.Schemas[1].definition.description).to.eq('Person details');
+          expect(slProject.Schemas[2].definition.description).to.eq('Error details');
           done();
         }
         catch(err){

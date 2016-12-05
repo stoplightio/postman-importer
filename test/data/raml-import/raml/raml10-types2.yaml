@@ -1,0 +1,62 @@
+#%RAML 1.0
+title: Swagger Petstore
+version: 1.0.0
+baseUri: http://{environmentType}.musicapi.com/{version}
+protocols:
+  - HTTP
+description: This is a sample server Petstore server.
+/pet:
+  displayName: pet
+  '/{environmentType}/{environmentUriParameter}':
+    displayName: '{petId}'
+    uriParameters:
+      environmentUriParameter:
+        description: ID of pet to return
+        type: environmentType
+        displayName: ID of pet to return
+    get:
+      headers:
+        environmentHeaderRequest:
+          type: environmentType
+      displayName: getPetById
+      description: Returns a single pet
+      queryString:
+          type: environmentType
+          description: my description2
+          required: false
+      responses:
+        '200':
+          headers:
+            environmentHeaderResponse:
+              type: environmentType
+          body:
+            application/json:
+              type: environmentType
+          description: successful operation
+        '400':
+          body:
+            application/json: {}
+          description: Invalid ID supplied
+        '404':
+          body:
+            application/json: {}
+          description: Pet not found
+  post:
+    displayName: addPet
+    description: Add a new pet to the store
+    queryString:
+      properties:
+        prop1: integer
+        prop2: string
+    body:
+      application/json:
+        description: Pet object that needs to be added to the store
+        type: environmentType
+    responses:
+      '405':
+        description: Invalid input
+types:
+  environmentType:
+    properties:
+      username:
+        type: string
