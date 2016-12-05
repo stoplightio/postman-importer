@@ -5,6 +5,7 @@ import Toolbar from './component/Toolbar'
 import CodeEditor from './component/CodeEditor'
 import ace from 'brace'
 import AlertMessage from './component/AlertMessage'
+import NavBar from './component/NavBar'
 
 class App extends Component {
 
@@ -28,13 +29,13 @@ class App extends Component {
             switch (message.type) {
                 case 'error':
                     this.setState({
-                        errorMessage: message.convertedData,
+                        errorMessage: message.payload,
                         showAlert: true,
                         converting: false
                     })
                     break
                 case 'ok':
-                    this.handleConvertedData(message.convertedData)
+                    this.handleConvertedData(message.payload)
                     break
                 default:
                     break
@@ -71,6 +72,13 @@ class App extends Component {
         editor.session.setMode(`ace/mode/${mode}`)
     }
 
+    changeEditorsTheme(theme) {
+        let leftEditor = ace.edit(App.leftEditorId)
+        let rightEditor = ace.edit(App.rightEditorId)
+        leftEditor.setTheme(`ace/theme/${theme}`)
+        rightEditor.setTheme(`ace/theme/${theme}`)
+    }
+
     handleDetectionMode(isAuto) {
         this.setState({isAuto: isAuto})
     }
@@ -81,7 +89,9 @@ class App extends Component {
 
     render() {
         return (
-            <div className="app-content">
+            <div className="app-container">
+                <NavBar onTheme={this.changeEditorsTheme}/>
+
                 <Toolbar converting={this.state.converting}
                          onConvert={this.sendForConvertion.bind(this)}
                          changeMode={this.changeEditorMode}
@@ -93,14 +103,16 @@ class App extends Component {
                                   changeAlertState={this.toggleAlert.bind(this)}/>
                 </div>
 
-                <Row id="editors-container">
-                    <Col id="left" className="editor-container" xs={6}>
-                        {this.renderEditor(App.leftEditorId)}
-                    </Col>
-                    <Col id="right" className="editor-container" xs={6}>
-                        {this.renderEditor(App.rightEditorId)}
-                    </Col>
-                </Row>
+                <div className="editors">
+                    <Row>
+                        <Col id="left" className="editor-container" xs={6}>
+                            {this.renderEditor(App.leftEditorId)}
+                        </Col>
+                        <Col id="right" className="editor-container" xs={6}>
+                            {this.renderEditor(App.rightEditorId)}
+                        </Col>
+                    </Row>
+                </div>
             </div>
         );
     }

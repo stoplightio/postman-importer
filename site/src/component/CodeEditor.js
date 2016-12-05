@@ -2,10 +2,15 @@ import React, { Component } from 'react'
 import AceEditor from 'react-ace'
 
 import 'brace/mode/json'
-import 'brace/theme/github'
 import 'brace/mode/yaml'
-
-export const mode = "json"
+import 'brace/theme/github'
+import 'brace/theme/monokai'
+import 'brace/theme/tomorrow'
+import 'brace/theme/kuroir'
+import 'brace/theme/twilight'
+import 'brace/theme/xcode'
+import 'brace/theme/textmate'
+import 'brace/theme/terminal'
 
 class CodeEditor extends Component {
 
@@ -14,11 +19,11 @@ class CodeEditor extends Component {
     }
 
     render() {
-        return <AceEditor mode={mode}
+        return <AceEditor mode="json"
                           theme="github"
                           name={this.props.name}
                           width={"100%"}
-                          height={"90vh"}
+                          height={"100%"}
                           setOptions={{printMargin: false, wrap: true}}
                           onChange={this.props.autoMode}/>
     }

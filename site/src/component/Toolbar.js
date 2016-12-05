@@ -9,7 +9,7 @@ class Toolbar extends Component {
     static from = "from"
     static to = "to"
     static options = []
-    static defaultMessage = "Select a language"
+    static defaultMessage = "Select"
 
     constructor(props) {
         super(props)
@@ -154,7 +154,7 @@ class Toolbar extends Component {
         return (
             <Row id="appToolbar">
                 <Col id="leftToolbar" xs={6}>
-                    <span>From language:</span>
+                    <span>From specification:</span>
                     <DropdownButton title={this.state.fromSelectionObj.name}
                                     id={Toolbar.from}
                                     bsStyle="primary"
@@ -181,7 +181,7 @@ class Toolbar extends Component {
                     </div>
                 </Col>
                 <Col id="rightToolbar" xs={6}>
-                    <span>To language:</span>
+                    <span>To specification:</span>
                     <DropdownButton title={this.state.toSelectionObj.name}
                                     id={Toolbar.to}
                                     bsStyle="primary"
