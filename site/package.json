@@ -25,6 +25,7 @@
     "eject": "react-scripts eject",
     "deploy": "npm run build&&gh-pages -d build",
     "build:bundle": "browserify ./worker-src/converter.js -o ./public/build/converter-bundle.js",
-    "build:minify": "browserify ./worker-src/converter.js -o ./public/build/converter-bundle.js | uglifyjs -mc > ./public/build/converter-bundle.min.js"
+    "build:minify": "npm run build:bundle && npm run minify",
+    "minify": "uglifyjs ./public/build/converter-bundle.js -mc > ./public/build/converter-bundle.min.js"
   }
 }
