@@ -1,0 +1,114 @@
+#%RAML 1.0
+title: API Program Title.
+version: 0.0.1
+baseUri: 'http://10.5.18.223:8181/onos/v1/devices'
+protocols:
+  - HTTP
+  - HTTPS
+description: API Program description
+(oas-info):
+  contact:
+    name: API Docs
+    url: 'http://example.com/contact'
+    email: apidocs@example.com
+  termsOfService: 'http://example.com/about/terms'
+  license:
+    name: Apache 2.0
+    url: 'http://example.com'
+securitySchemes:
+  basicAuth:
+    type: Basic Authentication
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+/:
+  get:
+    displayName: uniqueId
+    description: API Method Description
+    (oas-summary): Short Summary of API Method
+    responses:
+      '200':
+        body:
+          application/json:
+            description: ''
+            type: object
+            properties:
+              devices:
+                type: array
+                uniqueItems: true
+                minItems: 1
+                items:
+                  properties:
+                    id:
+                      type: string
+                      minLength: 1
+                    type:
+                      type: string
+                      minLength: 1
+                    available:
+                      type: boolean
+                    role:
+                      type: string
+                      minLength: 1
+                    mfr:
+                      type: string
+                      minLength: 1
+                    hw:
+                      type: string
+                      minLength: 1
+                    sw:
+                      type: string
+                      minLength: 1
+                    serial:
+                      type: string
+                      minLength: 1
+                    chassisId:
+                      type: string
+                      minLength: 1
+                    annotations:
+                      type: object
+                      required: false
+                      properties:
+                        managementAddress:
+                          type: string
+                          minLength: 1
+                        protocol:
+                          type: string
+                          minLength: 1
+                        channelId:
+                          type: string
+                          minLength: 1
+        description: OK
+    securedBy:
+      - basicAuth
+    (oas-tags):
+      - api2swagger
+    (oas-externalDocs):
+      description: Find out more
+      url: 'http://docs.example.com/management/apis/get/entities'
+annotationTypes:
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
