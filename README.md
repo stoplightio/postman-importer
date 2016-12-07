@@ -1,124 +1,144 @@
-# API Spec Transformer [![Build Status](https://travis-ci.org/stoplightio/api-spec-converter.svg)](https://travis-ci.org/stoplightio/api-spec-converter) [![Coverage Status](https://coveralls.io/repos/stoplightio/api-spec-converter/badge.svg?branch=master&service=github)](https://coveralls.io/github/stoplightio/api-spec-converter?branch=master)
+# OAS RAML Converter [![Build Status](https://travis-ci.org/mulesoft/api-spec-converter.svg)](https://travis-ci.org/mulesoft/api-spec-converter) [![Coverage Status](https://coveralls.io/repos/stoplightio/api-spec-converter/badge.svg?branch=master&service=github)](https://coveralls.io/github/mulesoft/api-spec-converter?branch=master)
 
-This package helps to convert between different API specifications. It currently supports OAS (Swagger 2), RAML 0.8, RAML 1.0, and Postman collections.
+This package helps to convert between different API specifications. It was originally forked from [the stoplight.io converter](https://github.com/stoplightio/api-spec-converter). 
 
-This package is used in production @ [https://stoplight.io](https://stoplight.io). If you are using this package in production, please let us know and we will link you.
+## Supported Conversions
 
-## Note
+- OAS (Swagger 2.0) -> RAML 0.8
+- OAS (Swagger 2.0) -> RAML 1.0
+- RAML 0.8 -> OAS (Swagger 2.0)
+- RAML 1.0 -> OAS (Swagger 2.0)
+- RAML 0.8 -> RAML 1.0
 
-A prior version of this library was available, but not published on NPM. If you are directly referencing the git URL in your package.json files, please update them to use the `api-spec-transformer` package name, instead of `https://github.com/stoplightio/api-spec-converter`. We will be re-naming the git repository to `https://github.com/stoplightio/api-spec-transformer` in the near future.
+## Using
 
-## Installation
+### 1. Online web page
 
-### NodeJS or Browser
+For an online conversion, see: [https://mulesoft.github.io/api-spec-converter](https://mulesoft.github.io/api-spec-converter).
 
-```bash
-npm install --save api-spec-transformer
+### 2. Command line tool
+
 ```
-
-## Command line tool
-
-```
-./bin/api-spec-converter.js -from SWAGGER -to RAML10 ./path/to/swagger.json
+chmod +x ./bin/converter.js
+./bin/converter.js --from SWAGGER --to RAML10 ./path/to/swagger.json
 ```
 
 Or install globally:
 
 ```
 npm install -g
-api-spec-converter --help
+oas-raml-converter --from SWAGGER --to RAML10 ./path/to/swagger.json
 ```
 
-## Usage
+### 3. As a service
 
-### Convert RAML to OAS (Swagger), from a file.
+To run in an express server:
+```
+npm start
+```
+
+Then, make a post request with the file content to `/convert?from=SWAGGER&to=RAML10`:
+```
+wget --quiet \
+  --method POST \
+  --body-data <the swagger document> \
+  --output-document \
+  - http://localhost:3000/convert?from=SWAGGER&to=RAML10
+```
+
+You can also deploy it in a serverless fashion as a AWS lambdas function. Use `index-serverless.js` to configure your AWS lamda function.
+
+### 4. As a dependency
+
+#### Installation (NodeJS or Browser)
+
+```bash
+npm install --save oas-raml-converter
+```
+
+#### Initializing a converter
+
+Raml 1.0 to OAS 2.0:
+```js
+var converter = require('oas-raml-converter');
+var ramlToSwagger = new converter.Converter(converter.Formats.RAML10, converter.Formats.OAS);
+```
+
+OAS 2.0 to Raml 1.0:
+```js
+var converter = require('oas-raml-converter');
+var swaggerToRaml = new converter.Converter(converter.Formats.OAS, converter.Formats.RAML10);
+```
+
+You can tell the converter to detect the input format automatically by passing `AUTO` format:
+```js
+var converter = require('oas-raml-converter');
+var autoToRaml = new converter.Converter(converter.Formats.AUTO, converter.Formats.RAML10);
+```
+
+#### Converting from a file
 
 ```js
-var transformer = require('api-spec-transformer');
-
-var ramlToSwagger = new transformer.Converter(transformer.Formats.RAML, transformer.Formats.SWAGGER);
-
-ramlToSwagger.loadFile('/source/raml.yaml', function(err) {
-  if (err) {
-    console.log(err.stack);
-    return;
-  }
-
-  ramlToSwagger.convert('yaml')
-    .then(function(convertedData) {
-      // convertedData is swagger YAML string
-    })
-    .catch(function(err){
-      console.log(err);
-    });
+swaggerToRaml.convertFile('/path/to/swagger.json').then(function(raml) {
+  console.log(raml); // raml is raml yaml string
+})
+.catch(function(err) {
+  console.error(err);
 });
 ```
 
-### Convert OAS (Swagger) to RAML, from a URL.
+#### Converting from a url
 
 ```js
-var transformer = require('api-spec-transformer');
-
-// Convert swagger to raml, from a url.
-
-var swaggerToRaml = new transformer.Converter(transformer.Formats.SWAGGER, transformer.Formats.RAML);
-
-swaggerToRaml.loadFile('http://petstore.swagger.io/v2/swagger.json', function(err) {
-  if (err) {
-    console.log(err.stack);
-    return;
-  }
-
-  swaggerToRaml.convert('yaml')
-    .then(function(convertedData) {
-      // convertedData is a raml YAML string
-    })
-    .catch(function(err){
-      console.log(err);
-    });
+swaggerToRaml.convertUrl('http://petstore.swagger.io/v2/swagger.json').then(function(raml) {
+  console.log(raml); // raml is raml yaml string
+})
+.catch(function(err) {
+  console.error(err);
 });
 ```
 
-### Convert unknown input to RAML:
-
-You can tell the converter to detect the input format automatically (by passing `AUTO` format), it will detect the right format for the input.
+#### Converting from a string or json
 
 ```js
-var transformer = require('api-spec-transformer');
-
-var myConverter = new transformer.Converter(transformer.Formats.AUTO, transformer.Formats.RAML);
-
-swaggerToRaml.loadFile('http://petstore.swagger.io/v2/swagger.json', function(err) {
-  // Will identify the input as swagger - the rest is the same as above.
-});
-```
-
-### Load a string:
-
-```js
-var transformer = require('api-spec-transformer');
-
-var swaggerToRaml = new transformer.Converter(transformer.Formats.SWAGGER, transformer.Formats.RAML);
-
 var mySwaggerString = '...';
-
-swaggerToRaml.loadData(mySwaggerString)
-  .then(function() {
-    // Do the converstion, as in the first two examples.
-  });
+swaggerToRaml.convertData(mySwaggerString).then(function(raml) {
+  console.log(raml); // raml is raml yaml string
+})
+.catch(function(err) {
+  console.error(err);
+});
 ```
 
-## Supported Conversions
+#### Passing options
 
-- OAS (Swagger 2) -> RAML 0.8
-- OAS (Swagger 2) -> RAML 1.0
-- RAML 1.0 -> OAS (Swagger 2)
-- RAML 0.8 -> OAS (Swagger 2)
-- Postman -> OAS (Swagger 2) * Experimental
-- Postman -> RAML 0.8 * Experimental
-- Postman -> RAML 1.0 * Experimental
+```js
+var options = {
+    validateInput: false, // Parse the input to check that its a valid document before converting
+    validateOutput: false, // Parse the output to check that its a valid document after converting
+    fs: { ... } // Use a custom file solver
+};
 
-## Development
+swaggerToRaml.convertFile('/path/to/swagger.json', options).then(function(raml) {
+  console.log(raml); // raml is raml yaml string
+})
+.catch(function(err) {
+  console.error(err);
+});
+```
+
+## Contributing
+
+Contributions are welcome! Please check the current issues to make sure what you are trying to do has not already been discussed.
+
+### Steps
+
+1. Fork.
+2. Make changes.
+3. Write tests.
+4. Send a pull request.
+
+### Develop
 
 Install dependencies:
 ```bash
@@ -132,14 +152,5 @@ npm test
 
 Run eslint to check linting errors:
 ```bash
-gulp lint
+npm run lint
 ```
-
-## Contributing
-
-Contributions are welcome! Please check the current issues to make sure what you are trying to do has not already been discussed.
-
-1. Fork.
-2. Make changes.
-3. Write tests.
-4. Send a pull request.
