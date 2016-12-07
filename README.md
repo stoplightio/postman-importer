@@ -16,6 +16,18 @@ A prior version of this library was available, but not published on NPM. If you 
 npm install --save api-spec-transformer
 ```
 
+## Command line tool
+
+```
+./bin.js -from SWAGGER -to RAML10 ./path/to/swagger.json
+```
+
+Or install globally:
+
+```
+npm install -g
+api-spec-converter --help
+```
 
 ## Usage
 
