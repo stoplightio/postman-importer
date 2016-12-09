@@ -23,12 +23,12 @@ describe('RAML 0.8 Importer', function(){
   });
   describe('loadFile', function(){
     it('should be able to load a valid yaml file', function(done){
-      ramlImporter.loadFile(filePath, function(){
+      ramlImporter.loadFile(filePath).then(function(){
         done();
       });
     });
     it('should return error for invalid file', function(done){
-      ramlImporter.loadFile(__dirname+'/../../data/invalid/raml08.yaml', function(err){
+      ramlImporter.loadFile(__dirname+'/../../data/invalid/raml08.yaml').catch(function(err){
         expect(err).not.to.be.undefined;
         expect(err.message).to.equal("Invalid first line. A RAML document is expected to start with '#%RAML <version> <?fragment type>'.");
         done();
@@ -37,7 +37,7 @@ describe('RAML 0.8 Importer', function(){
   });
   describe('import', function(){
     it('should perform import operation on loaded data', function(done){
-      ramlImporter.loadFile(filePath, function(){
+      ramlImporter.loadFile(filePath).then(function(){
         try {
           var slProject = ramlImporter.import();
           expect(slProject).to.be.instanceOf(Project);
@@ -111,12 +111,12 @@ describe('RAML 1.0 Importer', function(){
   });
   describe('loadFile', function(){
     it('should be able to load a valid yaml file', function(done){
-      ramlImporter.loadFile(filePath, function(){
+      ramlImporter.loadFile(filePath).then(function(){
         done();
       });
     });
     it('should return error for invalid file', function(done){
-      ramlImporter.loadFile(__dirname+'/../../data/invalid/raml10.yaml', function(err){
+      ramlImporter.loadFile(__dirname+'/../../data/invalid/raml10.yaml').catch(function(err){
         expect(err).not.to.be.undefined;
         expect(err.message).to.equal("Invalid first line. A RAML document is expected to start with '#%RAML <version> <?fragment type>'.");
         done();
@@ -124,18 +124,45 @@ describe('RAML 1.0 Importer', function(){
     });
 
     it ('should be able to load a valid yaml file including external type definiton', function (done) {
-      ramlImporter.loadFile(__dirname+'/../../data/raml-import/raml/raml10-include-type.yaml', function(err){
-        if (err) return done(err);
-        try {
-          var slProject = ramlImporter.import();
-          expect(slProject).to.be.instanceOf(Project);
-          expect(slProject.Schemas.length).to.eq(2);
-          done();
-        }
-        catch(err){
-          done(err);
-        }
-      });
+			let myFsResolver = {
+				content: function (path) {},
+				contentAsync: function (path) {
+					return new Promise(function(resolve, reject){
+						try {
+							if (path.indexOf('/types/') > 0) {
+								path = path.replace('/types/', '/../../types/');
+							}
+							if (path.indexOf('Person.xyz') > 0) {
+								path = path.replace('Person.xyz', 'Person.json');
+							}
+							resolve(fs.readFileSync(path, 'UTF8'));
+						}
+						catch (e) {
+							reject(e);
+						}
+					});
+				}
+			};
+	
+			let myOptions = {
+				fsResolver : myFsResolver
+			};
+			
+      ramlImporter.loadFile(__dirname+'/../../data/raml-import/raml/raml10-include-type.yaml', myOptions)
+				.then(function () {
+					try {
+						var slProject = ramlImporter.import();
+						expect(slProject).to.be.instanceOf(Project);
+						expect(slProject.Schemas.length).to.eq(2);
+						done();
+					}
+					catch(err){
+						done(err);
+					}
+				})
+				.catch(function (err) {
+					return done(err);
+				});
     });
 
     it ('should be able to load a valid yaml file including external type definiton using fsResolver', function (done) {
@@ -143,15 +170,18 @@ describe('RAML 1.0 Importer', function(){
         content: function (path) {},
         contentAsync: function (path) {
           return new Promise(function(resolve, reject){
-            try {
-              if (path.indexOf('Person.xyz') > 0) {
-                path = path.replace('types/Person.xyz', '../../types/Person.json');
-              }
-              resolve(fs.readFileSync(path, 'UTF8'));
-            }
-            catch (e) {
-              reject(e);
-            }
+						try {
+							if (path.indexOf('/types/') > 0) {
+								path = path.replace('/types/', '/../../types/');
+							}
+							if (path.indexOf('Person.xyz') > 0) {
+								path = path.replace('Person.xyz', 'Person.json');
+							}
+							resolve(fs.readFileSync(path, 'UTF8'));
+						}
+						catch (e) {
+							reject(e);
+						}
           });
         }
       };
@@ -160,43 +190,45 @@ describe('RAML 1.0 Importer', function(){
         fsResolver : myFsResolver
       };
 
-      ramlImporter.loadFile(__dirname+'/../../data/raml-import/raml/raml10-include-fsresolver-type.yaml', function(err){
-        if (err) return done(err);
-        try {
-          var slProject = ramlImporter.import();
-          expect(slProject).to.be.instanceOf(Project);
-          expect(slProject.Schemas[1].definition.description).to.eq('Person details');
-          expect(slProject.Schemas[2].definition.description).to.eq('Error details');
-          done();
-        }
-        catch(err){
-          done(err);
-        }
-      }, myOptions);
+      ramlImporter.loadFile(__dirname+'/../../data/raml-import/raml/raml10-include-fsresolver-type.yaml', myOptions)
+				.then(function () {
+					try {
+						var slProject = ramlImporter.import();
+						expect(slProject).to.be.instanceOf(Project);
+						expect(slProject.Schemas[1].definition.description).to.eq('Person details');
+						expect(slProject.Schemas[2].definition.description).to.eq('Error details');
+						done();
+					}
+					catch(err){
+						done(err);
+					}
+				})
+				.catch(function (err) {
+					return done(err);
+				});
     });
 
     it ('should be able to load a valid yaml file including raml type definiton', function (done) {
-      ramlImporter.loadFile(__dirname+'/../../data/raml-import/raml/raml10-y-type.yaml', function(err){
-        if (err) return done(err);
-        try {
-          var slProject = ramlImporter.import();
-          expect(slProject).to.be.instanceOf(Project);
-          expect(slProject.Schemas.length).to.eq(2);
-          done();
-        }
-        catch(err){
-          done(err);
-        }
-      });
+      ramlImporter.loadFile(__dirname+'/../../data/raml-import/raml/raml10-y-type.yaml')
+				.then(function(){
+					try {
+						var slProject = ramlImporter.import();
+						expect(slProject).to.be.instanceOf(Project);
+						expect(slProject.Schemas.length).to.eq(2);
+						done();
+					}
+					catch(err){
+						done(err);
+					}
+				})
+				.catch(function(err) {
+					return done(err);
+				});
     });
 
-
     it ('should return error importing yaml file including non exisiting type file', function (done) {
-      ramlImporter.loadFile(__dirname+'/../../data/invalid/raml10-include-type.yaml', function(err){
-        if (err) {
-					expect(err).not.to.be.undefined;
-					done();
-				} else {
+      ramlImporter.loadFile(__dirname+'/../../data/invalid/raml10-include-type.yaml')
+				.then(function () {
 					try {
 						ramlImporter.import();
 						done(err);
@@ -205,28 +237,35 @@ describe('RAML 1.0 Importer', function(){
 						expect(err).not.to.be.undefined;
 						done();
 					}
-				}
-      });
+				})
+				.catch (function (err) {
+					if (err) {
+						expect(err).not.to.be.undefined;
+						done();
+					}
+				});
     });
 
   });
   describe('import', function(){
     it('should perform import operation on loaded data', function(done){
-      ramlImporter.loadFile(filePath, function(err){
-        if (err) {
-          done(err);
-        }
-
-        try {
-          var slProject = ramlImporter.import();
-          expect(slProject).to.be.instanceOf(Project);
-          expect(slProject.Endpoints.length).to.gt(0);
-          done();
-        }
-        catch(err){
-          done(err);
-        }
-      });
+      ramlImporter.loadFile(filePath)
+				.then(function () {
+					try {
+						var slProject = ramlImporter.import();
+						expect(slProject).to.be.instanceOf(Project);
+						expect(slProject.Endpoints.length).to.gt(0);
+						done();
+					}
+					catch(err){
+						done(err);
+					}
+				})
+				.catch(function (err) {
+					if (err) {
+						done(err);
+					}
+				});
     });
   });
 

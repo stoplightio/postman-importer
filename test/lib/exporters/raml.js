@@ -25,18 +25,19 @@ describe('RAML Exporter', function(){
 
   describe('_export', function(){
     it('should perform export for loaded data', function(done){
-      ramlExporter.loadSLData(slData, function(err){
-        if(err)return done(err);
-        ramlExporter.export('yaml')
-        .then(function(ramlData, err){
-          if (err) return done(err);
-          expect(ramlData).to.not.be.empty;
-          done();
-        })
-        .catch(function(err){
-          done(err);
-        });
-      });
+			ramlExporter.loadSLData(slData)
+				.then(function() {
+				ramlExporter.export('yaml')
+					.then(function(ramlData) {
+						expect(ramlData).to.not.be.empty;
+						done();
+					})
+					.catch(function(err) {
+						done(err);
+					})
+			}).catch(function(err) {
+				done(err);
+			});
     });
   });
 

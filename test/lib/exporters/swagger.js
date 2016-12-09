@@ -512,25 +512,28 @@ describe('Swagger Exporter', function(){
 
   describe('_export', function(){
     it('should perform export for loaded data', function(done){
-      swaggerExporter.loadSLData(require(__dirname+'/../../data/stoplight.json'), function(err){
-        if (err)return done(err);
-        swaggerExporter.export('yaml')
-        .then(function(exportedData){
-          fs.writeFileSync('temp.yaml', exportedData, 'utf8');
-          parser.parse('temp.yaml')
-          .then(function(api, metadata) {
-            done();
-          })
-          .catch(function(err) {
-            expect(err).to.equal(undefined);
-            done();
-          });
-        })
-        .catch(function(err){
-          done(err);
-        });
+      swaggerExporter.loadSLData(require(__dirname+'/../../data/stoplight.json'))
+				.then(function() {
+					swaggerExporter.export('yaml')
+						.then(function(exportedData){
+							fs.writeFileSync('temp.yaml', exportedData, 'utf8');
+							parser.parse('temp.yaml')
+								.then(function(api, metadata) {
+									done();
+								})
+								.catch(function(err) {
+									expect(err).to.equal(undefined);
+									done();
+								});
+						})
+						.catch(function(err){
+							done(err);
+						});
+				})
+				.catch(function (err) {
+					return done(err);
+				});
       });
     });
     it('shouldn\'t contain duplicate produces values');
-  });
 });

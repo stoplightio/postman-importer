@@ -36,25 +36,26 @@ describe('Stoplight Exporter', function() {
     });
 
     it('should export tests', function(done) {
-      importer.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        importer.import();
-
-        exporter.loadProject(importer.project);
-        exporter._export();
-
-        var tests = exporter.data['x-tests'];
-
-        expect(tests).to.be.an('object');
-        expect(Object.keys(tests)).to.have.lengthOf(5);
-        expect(tests['WuCyPM8JXTvGAGKHr'].steps[1])
-          .to.have.property('$ref', '#/x-tests/SuDCFmBBcvmyA7dCh');
-
-        done();
-      });
+      importer.loadFile(filePath)
+				.then(function () {
+					importer.import();
+					
+					exporter.loadProject(importer.project);
+					exporter._export();
+					
+					var tests = exporter.data['x-tests'];
+					
+					expect(tests).to.be.an('object');
+					expect(Object.keys(tests)).to.have.lengthOf(5);
+					expect(tests['WuCyPM8JXTvGAGKHr'].steps[1])
+						.to.have.property('$ref', '#/x-tests/SuDCFmBBcvmyA7dCh');
+					done();
+				})
+				.catch(function(err) {
+        	if (err) {
+          	return done(err);
+        	}
+      	});
     });
   });
 });

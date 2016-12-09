@@ -28,61 +28,67 @@ describe('Swagger Importer', function() {
 
   describe('loadFile', function() {
     it('should be able to load a valid json file', function(done) {
-      swaggerImporter.loadFile(__dirname + '/../../data/swagger.json', function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        done();
-      });
+      swaggerImporter.loadFile(__dirname + '/../../data/swagger.json')
+				.then(function() {
+					done();
+				})
+				.catch(function (err){
+					if (err) {
+						return done(err);
+					}
+				});
     });
 
     it('should be able to load a valid yaml file', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        done();
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function() {
+					done();
+				})
+				.catch(function (err){
+					if (err) {
+						done(err);
+					}
+				});
     });
 
     it('should return error for invalid Swagger syntax', function(done) {
       var invalidPath = __dirname + '/../../data/invalid/swagger.json';
-      swaggerImporter.loadFile(invalidPath, function(err) {
-        expect(err).to.be.an('error').and.to.have
-          .property('message', invalidPath + ' is not a valid Swagger API definition');
-        done();
+      swaggerImporter.loadFile(invalidPath)
+				.catch(function(err) {
+        	expect(err).to.be.an('error').and.to.have.property('message', invalidPath + ' is not a valid Swagger API definition');
+        	done();
       });
     });
 
     it('should return error for invalid file', function(done) {
       var invalidPath = __dirname + '/../../data/invalid/missing-comma-swagger.json';
-      swaggerImporter.loadFile(invalidPath, function(err) {
-        expect(err).to.be.an('error').and.to.have
-          .property('reason', 'missed comma between flow collection entries');
-        done();
-      });
+      swaggerImporter.loadFile(invalidPath)
+				.catch(function(err) {
+        	expect(err).to.be.an('error').and.to.have.property('reason', 'missed comma between flow collection entries');
+        	done();
+      	});
     });
   });
 
   describe('import', function() {
     it('should perform import operation on loaded data', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        try {
-          var slProject = swaggerImporter.import();
-          expect(slProject).to.be.instanceOf(Project);
-          expect(slProject.Endpoints.length).to.gt(0);
-          done();
-        }
-        catch (err) {
-          done(err);
-        }
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function () {
+					try {
+						var slProject = swaggerImporter.import();
+						expect(slProject).to.be.instanceOf(Project);
+						expect(slProject.Endpoints.length).to.gt(0);
+						done();
+					}
+					catch (err) {
+						done(err);
+					}
+				})
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
     });
   });
 
@@ -134,90 +140,102 @@ describe('Swagger Importer', function() {
 
   describe('_mapEndpoints', function() {
     it('should map endpoints successfully', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        swaggerImporter.import();
-        expect(swaggerImporter.project.Endpoints).to.have.length.above(0);
-        expect(swaggerImporter.project.Endpoints[0]).to.be.instanceOf(Endpoint);
-
-        done();
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function() {
+					swaggerImporter.import();
+					expect(swaggerImporter.project.Endpoints).to.have.length.above(0);
+					expect(swaggerImporter.project.Endpoints[0]).to.be.instanceOf(Endpoint);
+					
+					done();
+				})
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
     });
 
     it('should not create request body for method with no body or formData params', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        swaggerImporter.import();
-        var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
-
-        expect(endpoint.request.bodies).to.be.empty;
-        done();
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function() {
+					swaggerImporter.import();
+					var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
+					
+					expect(endpoint.request.bodies).to.be.empty;
+					done();
+				})
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
     });
 
     it('should set request mimeType to undefined for methods with no consumes', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        swaggerImporter.import();
-        var endpoint = _.find(swaggerImporter.project.Endpoints, {description: 'Updates a pet by name'});
-
-        expect(swaggerImporter.project.Environment.Consumes[0]).to.be.eq('application/json');
-        expect(endpoint.Consumes).to.be.undefined;
-        done();
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function() {
+					swaggerImporter.import();
+					var endpoint = _.find(swaggerImporter.project.Endpoints, {description: 'Updates a pet by name'});
+					
+					expect(swaggerImporter.project.Environment.Consumes[0]).to.be.eq('application/json');
+					expect(endpoint.Consumes).to.be.undefined;
+					done();
+				})
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
     });
 
     it('should set request mimeType to undefined for methods with empty consumes', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        swaggerImporter.import();
-        var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
-
-        expect(swaggerImporter.project.Environment.Consumes[0]).to.be.eq('application/json');
-        expect(endpoint.Consumes[0]).to.be.eq('multipart/form-data');
-        done();
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function() {
+					swaggerImporter.import();
+					var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
+					
+					expect(swaggerImporter.project.Environment.Consumes[0]).to.be.eq('application/json');
+					expect(endpoint.Consumes[0]).to.be.eq('multipart/form-data');
+					done();
+				})
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
     });
 
     it('should set response mimeType to default for methods with no produces', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        swaggerImporter.import();
-        var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
-
-        expect(swaggerImporter.project.Environment.Produces[0]).to.be.eq('application/json');
-        expect(endpoint.produces).to.be.undefined;
-        done();
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function() {
+					swaggerImporter.import();
+					var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
+					
+					expect(swaggerImporter.project.Environment.Produces[0]).to.be.eq('application/json');
+					expect(endpoint.produces).to.be.undefined;
+					done();
+				})
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
     });
 
     it('should not set response mimeType for methods with empty produces', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        swaggerImporter.import();
-        var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
-
-        expect(endpoint.Produces).to.be.empty;
-        done();
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function() {
+					swaggerImporter.import();
+					var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
+					
+					expect(endpoint.Produces).to.be.empty;
+					done();
+				})
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
     });
   });
 
@@ -247,18 +265,20 @@ describe('Swagger Importer', function() {
 
   describe('_mapSecurityDefinitions', function() {
     it('should map apiKey security definitions to stoplight successfully', function(done) {
-      swaggerImporter.loadFile(filePath, function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        swaggerImporter.import();
-
-        var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'addPet'});
-
-        expect(endpoint.securedBy.apiKey).to.be.true;
-        done();
-      });
+      swaggerImporter.loadFile(filePath)
+				.then(function() {
+					swaggerImporter.import();
+					
+					var endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'addPet'});
+					
+					expect(endpoint.securedBy.apiKey).to.be.true;
+					done();
+				})
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
     });
 
     it('should map oauth2 security definitions to stoplight successfully');
