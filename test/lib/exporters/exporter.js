@@ -1,9 +1,9 @@
-var expect   = require('chai').expect,
+const expect   = require('chai').expect,
     Exporter = require('../../../lib/exporters/exporter'),
     Project = require('../../../lib/entities/project');
 
 describe('Exporter', function(){
-  var exporter;
+  let exporter;
   beforeEach(function(){
     exporter = new Exporter();
   });
@@ -15,7 +15,7 @@ describe('Exporter', function(){
   });
   describe('loadSLData', function(){
     it('should load Stoplight data successfully', function(done){
-      var slData = require(__dirname + '/../../data/stoplight');
+      let slData = require(__dirname + '/../../data/stoplight');
       try {
         expect(exporter.project).to.equal(null);
 				exporter.loadSLData(slData)
@@ -26,11 +26,6 @@ describe('Exporter', function(){
 					.catch(function (err) {
 						done(err);
 					});
-        // exporter.loadSLData(slData, function(err){
-        //   expect(err).to.equal(undefined);
-        //   expect(exporter.project).to.not.be.null;
-        //   done();
-        // });
       } catch(err) {
         done(err);
       }
@@ -52,7 +47,7 @@ describe('Exporter', function(){
     });
   });
   describe('export', function(){
-    var dummyData;
+    let dummyData;
     beforeEach(function(){
       exporter._export = function(){
         //
@@ -64,10 +59,11 @@ describe('Exporter', function(){
     });
 
     it('should perform export and return raw data with given format', function(){
-      exporter.export('json', function(err, exportedData){
-        expect(err).to.be.null;
-        expect(exportedData).to.equal(dummyData);
-      });
+      exporter.export('json').then(function (exportedData) {
+				expect(exportedData).to.equal(dummyData);
+			}).catch(function (err) {
+				done(err);
+			});
     });
     it('should return error if format not supported');
   });

@@ -1,11 +1,11 @@
-var expect = require('chai').expect,
+const expect = require('chai').expect,
     fs = require('fs'),
     path = require('path'),
     Auto = require('../../../lib/importers/auto'),
     Project = require('../../../lib/entities/project');
 
 describe('Auto Importer', function() {
-  var importer,
+  let importer,
       dataPath = path.join(__dirname, '..', '..', 'data');
 
   beforeEach(function() {
@@ -28,35 +28,35 @@ describe('Auto Importer', function() {
 
   describe('detectFormat', function() {
     it('should detect STOPLIGHTX', function() {
-      var fileContent = fs.readFileSync(path.join(dataPath, 'stoplightx.json'), 'utf8'),
+      let fileContent = fs.readFileSync(path.join(dataPath, 'stoplightx.json'), 'utf8'),
           format = importer.detectFormat(fileContent);
 
       expect(format).to.be.equal('STOPLIGHTX');
     });
 
     it('should detect POSTMAN', function() {
-      var fileContent = fs.readFileSync(path.join(dataPath, 'postman.json'), 'utf8'),
+      let fileContent = fs.readFileSync(path.join(dataPath, 'postman.json'), 'utf8'),
           format = importer.detectFormat(fileContent);
 
       expect(format).to.be.equal('POSTMAN');
     });
 
     it('should detect RAML', function() {
-      var fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml08.yaml'), 'utf8'),
+      let fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml08.yaml'), 'utf8'),
           format = importer.detectFormat(fileContent);
 
       expect(format).to.be.equal('RAML08');
     });
 
     it('should detect SWAGGER', function() {
-      var fileContent = fs.readFileSync(path.join(dataPath, 'swagger.yaml'), 'utf8'),
+      let fileContent = fs.readFileSync(path.join(dataPath, 'swagger.yaml'), 'utf8'),
           format = importer.detectFormat(fileContent);
 
       expect(format).to.be.equal('SWAGGER');
     });
 
     it('should detect UNKNOWN', function() {
-      var fileContent = fs.readFileSync(path.join(dataPath, 'invalid', 'postman.json'), 'utf8'),
+      let fileContent = fs.readFileSync(path.join(dataPath, 'invalid', 'postman.json'), 'utf8'),
           format = importer.detectFormat(fileContent);
 
       expect(format).to.be.equal('UNKNOWN');

@@ -1,4 +1,4 @@
-var expect   = require('chai').expect,
+const expect   = require('chai').expect,
     Endpoint = require('../../../lib/entities/endpoint'),
     fs = require('fs');
 

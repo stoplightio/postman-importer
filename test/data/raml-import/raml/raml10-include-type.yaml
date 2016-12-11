@@ -23,7 +23,7 @@ securitySchemes:
             combination is invalid, or the user is not allowed to access
             the content provided by the requested URL.
 types:
-  Foo:   !include types/Foo.json
+  Foo:   !include types/Foo.yaml
   Error: |
     { "$schema": "http://json-schema.org/schema",
        "type": "object",
@@ -41,19 +41,19 @@ types:
         body:
           application/json:
             type: Foo[]
-            example: !include examples/Foos.json
+            example: !include ../../examples/Foos.json
   post:
     description: Create a new Foo
     body:
       application/json:
         type: Foo
-        example: !include examples/Foo.json
+        example: !include ../../examples/Foo.json
     responses:
       201:
         body:
           application/json:
             type: Foo
-            example: !include examples/Foo.json
+            example: !include ../../examples/Foo.json
   /{id}:
     get:
       description: Get a Foo by id
@@ -62,29 +62,29 @@ types:
           body:
             application/json:
               type: Foo
-              example: !include examples/Foo.json
+              example: !include ../../examples/Foo.json
         404:
           body:
             application/json:
               type: Error
-              example: !include examples/Error.json
+              example: !include ../../examples/Error.json
     put:
       description: Update a Foo by id
       body:
         application/json:
           type: Foo
-          example: !include examples/Foo.json
+          example: !include ../../examples/Foo.json
       responses:
         200:
           body:
             application/json:
               type: Foo
-              example: !include examples/Foo.json
+              example: !include ../../examples/Foo.json
         404:
           body:
             application/json:
               type: Error
-              example: !include examples/Error.json
+              example: !include ../../examples/Error.json
     delete:
       description: Delete a Foo by id
       responses:
@@ -93,7 +93,7 @@ types:
           body:
             application/json:
               type: Error
-              example: !include examples/Error.json
+              example: !include ../../examples/Error.json
   /name/{name}:
     get:
       description: List all Foos with a certain name
@@ -102,4 +102,4 @@ types:
           body:
             application/json:
               type: Foo[]
-              example: !include examples/Foos.json
+              example: !include ../../examples/Foos.json

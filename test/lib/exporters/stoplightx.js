@@ -1,12 +1,12 @@
-var expect = require('chai').expect,
+const expect = require('chai').expect,
     StoplightX = require('../../../lib/exporters/stoplightx'),
     StoplightXImporter = require('../../../lib/importers/stoplightx'),
     Project = require('../../../lib/entities/project');
 
 describe('Stoplight Exporter', function() {
-  var exporter;
-  var importer;
-  var filePath = __dirname + '/../../data/stoplightx.json';
+  let exporter;
+  let importer;
+  let filePath = __dirname + '/../../data/stoplightx.json';
 
   before(function() {
     exporter = new StoplightX();
@@ -43,7 +43,7 @@ describe('Stoplight Exporter', function() {
 					exporter.loadProject(importer.project);
 					exporter._export();
 					
-					var tests = exporter.data['x-tests'];
+					let tests = exporter.data['x-tests'];
 					
 					expect(tests).to.be.an('object');
 					expect(Object.keys(tests)).to.have.lengthOf(5);

@@ -1,236 +1,274 @@
 {
-  "x-basePath": "/api/{version}",
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Baeldung Foo REST Services API",
+    "description": ""
+  },
+  "host": "rest-api.baeldung.com",
+  "schemes": [
+    "https"
+  ],
   "consumes": [
     "application/json"
   ],
-  "definitions": {
-    "Error": {
-      "$schema": "http://json-schema.org/schema",
-      "description": "Error details",
-      "type": "object"
-    },
-    "Foo": {
-        "description": "Foo details",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "name": {
-            "type": "string"
-          },
-          "ownerName": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "ownerName"
-        ],
-        "type": "object"
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic",
+      "description": "Each request must contain the headers necessary for basic authentication"
     }
   },
-  "host": "rest-api.baeldung.com",
-  "info": {
-    "description": "",
-    "title": "Baeldung Foo REST Services API",
-    "version": "v1"
-  },
   "paths": {
-    "/foos": {
+    "/foos/name/{name}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "in": "path",
+          "description": "",
+          "required": true,
+          "type": "string"
+        }
+      ],
       "get": {
-        "description": "List all Foos matching query criteria, if provided; otherwise list all Foos",
-        "operationId": "GET_foos",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "name",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "ownerName",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "operationId": "GET_foos-name-name",
+        "description": "List all Foos with a certain name",
         "responses": {
           "200": {
             "description": "",
-            "examples": {
-              "application/json": "can not resolve examples/Foos.json"
-            },
             "schema": {
+              "type": "array",
               "items": {
                 "$ref": "#/definitions/Foo"
-              },
-              "type": "array"
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Create a new Foo",
-        "operationId": "POST_foos",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/Foo",
-              "example": "can not resolve examples/Foo.json"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "",
-            "examples": {
-              "application/json": "can not resolve examples/Foo.json"
+              }
             },
-            "schema": {
-              "$ref": "#/definitions/Foo"
+            "examples": {
+              "application/json": [
+                {
+                  "id": "first1",
+                  "name": "last1"
+                },
+                {
+                  "id": "first2",
+                  "name": "last2"
+                }
+              ]
             }
           }
         }
       }
     },
-    "/foos/name/{name}": {
-      "get": {
-        "description": "List all Foos with a certain name",
-        "operationId": "GET_foos-name-name",
-        "responses": {
-          "200": {
-            "description": "",
-            "examples": {
-              "application/json": "can not resolve examples/Foos.json"
-            },
-            "schema": {
-              "items": {
-                "$ref": "#/definitions/Foo"
-              },
-              "type": "array"
-            }
-          }
-        }
-      },
+    "/foos/{id}": {
       "parameters": [
         {
-          "description": "",
-          "in": "path",
           "name": "id",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "description": "",
           "in": "path",
-          "name": "name",
+          "description": "",
           "required": true,
           "type": "string"
         }
-      ]
-    },
-    "/foos/{id}": {
+      ],
       "delete": {
-        "description": "Delete a Foo by id",
         "operationId": "DELETE_foos-id",
+        "description": "Delete a Foo by id",
         "responses": {
           "204": {
             "description": ""
           },
           "404": {
             "description": "",
-            "examples": {
-              "application/json": "can not resolve examples/Error.json"
-            },
             "schema": {
               "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "description": "error"
+              }
             }
           }
         }
       },
-      "get": {
-        "description": "Get a Foo by id",
-        "operationId": "GET_foos-id",
-        "responses": {
-          "200": {
-            "description": "",
-            "examples": {
-              "application/json": "can not resolve examples/Foo.json"
-            },
-            "schema": {
-              "$ref": "#/definitions/Foo"
-            }
-          },
-          "404": {
-            "description": "",
-            "examples": {
-              "application/json": "can not resolve examples/Error.json"
-            },
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "parameters": [
-        {
-          "description": "",
-          "in": "path",
-          "name": "id",
-          "required": true,
-          "type": "string"
-        }
-      ],
       "put": {
-        "description": "Update a Foo by id",
         "operationId": "PUT_foos-id",
+        "description": "Update a Foo by id",
         "parameters": [
           {
-            "in": "body",
             "name": "body",
+            "in": "body",
             "schema": {
-              "$ref": "#/definitions/Foo",
-              "example": "can not resolve examples/Foo.json"
+              "example": {
+                "id": "first",
+                "name": "last"
+              },
+              "$ref": "#/definitions/Foo"
             }
           }
         ],
         "responses": {
           "200": {
             "description": "",
-            "examples": {
-              "application/json": "can not resolve examples/Foo.json"
-            },
             "schema": {
               "$ref": "#/definitions/Foo"
+            },
+            "examples": {
+              "application/json": {
+                "id": "first",
+                "name": "last"
+              }
             }
           },
           "404": {
             "description": "",
-            "examples": {
-              "application/json": "can not resolve examples/Error.json"
-            },
             "schema": {
               "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "description": "error"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GET_foos-id",
+        "description": "Get a Foo by id",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Foo"
+            },
+            "examples": {
+              "application/json": {
+                "id": "first",
+                "name": "last"
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "examples": {
+              "application/json": {
+                "description": "error"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foos": {
+      "post": {
+        "operationId": "POST_foos",
+        "description": "Create a new Foo",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "example": {
+                "id": "first",
+                "name": "last"
+              },
+              "$ref": "#/definitions/Foo"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Foo"
+            },
+            "examples": {
+              "application/json": {
+                "id": "first",
+                "name": "last"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GET_foos",
+        "description": "List all Foos matching query criteria, if provided; otherwise list all Foos",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ownerName",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Foo"
+              }
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "id": "first1",
+                  "name": "last1"
+                },
+                {
+                  "id": "first2",
+                  "name": "last2"
+                }
+              ]
             }
           }
         }
       }
     }
   },
-  "produces": [
-    "application/json"
-  ],
-  "schemes": [
-    "https"
-  ],
-  "securityDefinitions": {
-    "basicAuth": {
-      "description": "Each request must contain the headers necessary for basic authentication",
-      "type": "basic"
+  "definitions": {
+    "Foo": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ownerName": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "ownerName"
+      ],
+      "description": "Foo details"
+    },
+    "Error": {
+      "type": "object",
+      "description": "Error details"
     }
   },
-  "swagger": "2.0"
+  "x-basePath": "/api/{version}"
 }

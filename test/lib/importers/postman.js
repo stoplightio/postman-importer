@@ -1,10 +1,10 @@
-var expect = require('chai').expect,
+const expect = require('chai').expect,
   Postman = require('../../../lib/importers/postman'),
   Project = require('../../../lib/entities/project'),
   _ = require('lodash');
 
 describe('Postman Importer', function() {
-  var postmanImporter;
+  let postmanImporter;
 
   beforeEach(function() {
     postmanImporter = new Postman();
@@ -52,7 +52,7 @@ describe('Postman Importer', function() {
           return done(err);
         }
 
-        var slProject = postmanImporter.import();
+        let slProject = postmanImporter.import();
         expect(slProject).to.be.instanceOf(Project);
         expect(slProject.Endpoints.length).to.gt(0);
 
@@ -73,7 +73,7 @@ describe('Postman Importer', function() {
           return done(err);
         }
 
-        var slProject = postmanImporter.import();
+        let slProject = postmanImporter.import();
         expect(slProject).to.be.instanceOf(Project);
 
         done();
@@ -87,7 +87,7 @@ describe('Postman Importer', function() {
             return done(err);
           }
 
-          var slProject = postmanImporter.import();
+          let slProject = postmanImporter.import();
           expect(postmanImporter.data.requests.length).to.gt(slProject.Endpoints.length);
 
           done();
@@ -100,8 +100,8 @@ describe('Postman Importer', function() {
             return done(err);
           }
 
-          var slProject = postmanImporter.import();
-          var endpoint = _.find(slProject.endpoints, {
+          let slProject = postmanImporter.import();
+          let endpoint = _.find(slProject.endpoints, {
             request: {
               path: 'http://petstore.swagger.io/v2/pet/1467573987135',
               method: 'post'
@@ -120,14 +120,14 @@ describe('Postman Importer', function() {
             return done(err);
           }
 
-          var slProject = postmanImporter.import();
-          var endpoint = _.find(slProject.endpoints, {
+          let slProject = postmanImporter.import();
+          let endpoint = _.find(slProject.endpoints, {
             request: {
               path: 'http://petstore.swagger.io/v2/pet/1467573987135',
               method: 'get'
             }
           });
-          var headers = JSON.parse(endpoint.request.headers);
+          let headers = JSON.parse(endpoint.request.headers);
 
           expect(headers.properties).to.contain.all.keys('header1', 'header2');
 
@@ -141,11 +141,11 @@ describe('Postman Importer', function() {
             return done(err);
           }
 
-          var slProject = postmanImporter.import();
-          var mergedEndpoint = _.find(slProject.endpoints, {
+          let slProject = postmanImporter.import();
+          let mergedEndpoint = _.find(slProject.endpoints, {
             request: {path: 'http://petstore.swagger.io/v2/pet/1467573987135'}
           });
-          var queryString = JSON.parse(mergedEndpoint.request.queryString);
+          let queryString = JSON.parse(mergedEndpoint.request.queryString);
 
           expect(queryString.properties).to.contain.all.keys('queryparam1', 'queryparam2');
 
@@ -161,7 +161,7 @@ describe('Postman Importer', function() {
             return done(err);
           }
 
-          var slProject = postmanImporter.import();
+          let slProject = postmanImporter.import();
 
           expect(slProject).to.be.instanceOf(Project);
           expect(slProject.SavedEntries).to.have.length.above(0);
@@ -177,8 +177,8 @@ describe('Postman Importer', function() {
             return done(err);
           }
 
-          var slProject = postmanImporter.import();
-          var groups = slProject.environment.resourcesOrder.savedEntries;
+          let slProject = postmanImporter.import();
+          let groups = slProject.environment.resourcesOrder.savedEntries;
 
           expect(groups).to.have.length.above(0);
           expect(groups[1]).to.have.property('name', 'Petstore');

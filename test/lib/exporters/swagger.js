@@ -1,4 +1,4 @@
-var expect   = require('chai').expect,
+const expect   = require('chai').expect,
     Swagger = require('../../../lib/exporters/swagger'),
     Schema = require('../../../lib/entities/schema'),
     Endpoint = require('../../../lib/entities/endpoint'),
@@ -9,7 +9,7 @@ var expect   = require('chai').expect,
     fs = require('fs');
 
 describe('Swagger Exporter', function(){
-  var swaggerExporter;
+  let swaggerExporter;
   beforeEach(function(){
     swaggerExporter = new Swagger();
   });
@@ -29,10 +29,10 @@ describe('Swagger Exporter', function(){
 
   describe('_getResponseTypes', function(){
     it('should include all response mime types from all responses', function(){
-      var endpoint = new Endpoint('test'),
+      let endpoint = new Endpoint('test'),
           produces = ['application/json', 'multipart/form-data'];
       endpoint.Produces = produces;
-      var respTypes = swaggerExporter._getResponseTypes(endpoint);
+      let respTypes = swaggerExporter._getResponseTypes(endpoint);
       expect(respTypes).to.be.an('array');
       expect(respTypes.length).to.equal(2);
       expect(respTypes[0]).to.equal('application/json');
@@ -42,7 +42,7 @@ describe('Swagger Exporter', function(){
 
   describe('_getRequestTypes', function(){
     it('should be no content type for request', function(){
-      var endpoint = new Endpoint('test'), requestType, parameters = [];
+      let endpoint = new Endpoint('test'), requestType, parameters = [];
       endpoint.Body = {
       };
       parameters.push({
@@ -58,7 +58,7 @@ describe('Swagger Exporter', function(){
     });
 
     it('should set form data for having file type param', function(){
-      var endpoint = new Endpoint('test'), requestType, parameters = [];
+      let endpoint = new Endpoint('test'), requestType, parameters = [];
       endpoint.Consumes = ['application/json'];
       endpoint.Body = {
       };
@@ -75,7 +75,7 @@ describe('Swagger Exporter', function(){
     });
 
     it('should include endpoint body type if match for file type', function(){
-      var endpoint = new Endpoint('test'), requestType, parameters = [];
+      let endpoint = new Endpoint('test'), requestType, parameters = [];
       endpoint.Consumes = ['application/x-www-form-urlencoded'];
       parameters.push({
         name : 'myparam',
@@ -92,7 +92,7 @@ describe('Swagger Exporter', function(){
 
   describe('_validateParameters', function(){
     it('should change type not valid parameter types', function(){
-      var parameters = [
+      let parameters = [
         {
           name : 'myparam',
           in: 'header',
@@ -109,8 +109,8 @@ describe('Swagger Exporter', function(){
 
   describe('_constructTags', function(){
     it('should return constructed tags from given data', function(){
-      var endpoint = new Endpoint('test');
-      var env = new Environment();
+      let endpoint = new Endpoint('test');
+      let env = new Environment();
 
       swaggerExporter.project = new Project('test project');
       endpoint.Id = 'POST_pet';
@@ -131,7 +131,7 @@ describe('Swagger Exporter', function(){
 
   describe('_constructSwaggerMethod', function(){
     it('should return constructed swagger method from given data', function(){
-      var responses = [], endpoint, parameters = [], env, swaggerMethod;
+      let responses = [], endpoint, parameters = [], env, swaggerMethod;
 
       swaggerExporter.project = new Project('test project');
 
@@ -168,10 +168,10 @@ describe('Swagger Exporter', function(){
     it('should push only unique items to consumes', function() {
       swaggerExporter.project = new Project('test project');
 
-      var endpoint = new Endpoint('test');
+      let endpoint = new Endpoint('test');
       endpoint.Consumes = ['application/json'];
 
-      var swaggerMethod = swaggerExporter._constructSwaggerMethod(endpoint, [],
+      let swaggerMethod = swaggerExporter._constructSwaggerMethod(endpoint, [],
         endpoint.Responses, new Environment());
       expect(swaggerMethod).to.be.an('object');
 
@@ -182,15 +182,15 @@ describe('Swagger Exporter', function(){
     it('should not set consumes mimeType if equals default request type', function() {
       swaggerExporter.project = new Project('test project');
 
-      var env = new Environment();
+      let env = new Environment();
       env.Consumes = ['application/json'];
       env.Produces = ['application/json'];
 
-      var endpoint = new Endpoint('test');
+      let endpoint = new Endpoint('test');
       endpoint.Produces = ['application/json'];
       endpoint.Consumes = ['application/json'];
 
-      var swaggerMethod = swaggerExporter._constructSwaggerMethod(endpoint, [], endpoint.Responses, env);
+      let swaggerMethod = swaggerExporter._constructSwaggerMethod(endpoint, [], endpoint.Responses, env);
       expect(swaggerMethod).to.be.an('object');
       expect(swaggerMethod.consumes).to.be.undefined;
       expect(swaggerMethod.produces).to.be.undefined;
@@ -199,7 +199,7 @@ describe('Swagger Exporter', function(){
 
   describe('_mapSecurityDefinitions', function(){
     it('should map apiKey security definitions from sl security schemes successfully', function(){
-      var schemes = {
+      let schemes = {
         'apiKey' : {
           'headers' : [
             {
@@ -210,7 +210,7 @@ describe('Swagger Exporter', function(){
         }
       };
 
-      var mappedSchemes;
+      let mappedSchemes;
 
       mappedSchemes = swaggerExporter._mapSecurityDefinitions(schemes);
       expect(Object.keys(mappedSchemes).length).equal(1);
@@ -221,7 +221,7 @@ describe('Swagger Exporter', function(){
     });
 
     it('should able to map oauth2 security definitions successfully', function(){
-        var schemes = {
+        let schemes = {
           'oauth2' : {
               'authorizationUrl' : 'http://swagger.io/api/oauth/dialog',
               'scopes' : [
@@ -239,7 +239,7 @@ describe('Swagger Exporter', function(){
           }
         };
 
-        var mappedSchemes;
+        let mappedSchemes;
 
         mappedSchemes = swaggerExporter._mapSecurityDefinitions(schemes);
         expect(Object.keys(mappedSchemes).length).equal(1);
@@ -258,7 +258,7 @@ describe('Swagger Exporter', function(){
         expect(mappedSchemes.oauth2.scopes['read:pets']).to.be.equal('read your pets');
       });
     it('should map basic security definitions to stoplight successfully', function(){
-      var schemes = {
+      let schemes = {
         'basic' : {
           'name' : 'test',
           'value' : '',
@@ -266,7 +266,7 @@ describe('Swagger Exporter', function(){
         }
       };
 
-      var mappedSchemes;
+      let mappedSchemes;
 
       mappedSchemes = swaggerExporter._mapSecurityDefinitions(schemes);
       expect(Object.keys(mappedSchemes).length).equal(1);
@@ -277,11 +277,11 @@ describe('Swagger Exporter', function(){
 
   describe('_mapEndpointSecurity', function(){
     it('should map apiKey security for endpoint', function(){
-      var securedBy = {
+      let securedBy = {
         none: true,
         apiKey: true
       };
-      var securityDefinitions = {
+      let securityDefinitions = {
         apiKey: {
           headers: [
             {
@@ -297,7 +297,7 @@ describe('Swagger Exporter', function(){
           ]
         }
       };
-      var result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
+      let result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
       expect(result).to.be.an('array');
       expect(result.length).to.be.equal(2);
       expect(result[0]).to.be.an('object');
@@ -306,29 +306,29 @@ describe('Swagger Exporter', function(){
     });
 
     it('should map basic security for endpoint', function(){
-      var securedBy = {
+      let securedBy = {
         none: true,
         basic: true
       };
-      var securityDefinitions = {
+      let securityDefinitions = {
         basic: {
           name: 'abcd',
           value: '',
           description: 'test desc'
         }
       };
-      var result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
+      let result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
       expect(result).to.be.an('array');
       expect(result.length).to.be.equal(1);
       expect(result[0]).to.be.an('object');
       expect(Object.keys(result[0])[0]).to.be.equal('abcd');
     });
     it('should map oauth2 security for endpoint', function(){
-      var securedBy = {
+      let securedBy = {
         none: true,
         oauth2: true
       };
-      var securityDefinitions = {
+      let securityDefinitions = {
         oauth2 : {
             'flow' : 'implicit',
             'authorizationUrl' : 'http://test-authorization',
@@ -341,7 +341,7 @@ describe('Swagger Exporter', function(){
             ]
         }
       };
-      var result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
+      let result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
       expect(result).to.be.an('array');
       expect(result.length).to.be.equal(1);
       expect(result[0]).to.be.an('object');
@@ -351,7 +351,7 @@ describe('Swagger Exporter', function(){
 
   describe('_mapRequestBody', function(){
     it('should map map request body params and return successfully', function(){
-      var stoplightParams = {
+      let stoplightParams = {
         'type': 'object',
         'properties': {
           'id': {
@@ -367,17 +367,17 @@ describe('Swagger Exporter', function(){
           'photo'
         ]
       };
-      var stoplightBody = {
+      let stoplightBody = {
         body: JSON.stringify(stoplightParams)
       };
 
-      var params = swaggerExporter._mapRequestBody(stoplightBody, ['application/x-www-form-urlencoded']);
+      let params = swaggerExporter._mapRequestBody(stoplightBody, ['application/x-www-form-urlencoded']);
       expect(params).to.not.be.undefined;
       expect(params).to.have.lengthOf(2);
     });
 
     it('should map as formData param for file type prop existence', function(){
-      var stoplightParams = {
+      let stoplightParams = {
         'type': 'object',
         'properties': {
           'id': {
@@ -393,11 +393,11 @@ describe('Swagger Exporter', function(){
           'photo'
         ]
       };
-      var stoplightBody = {
+      let stoplightBody = {
         body: JSON.stringify(stoplightParams)
       };
 
-      var params = swaggerExporter._mapRequestBody(stoplightBody);
+      let params = swaggerExporter._mapRequestBody(stoplightBody);
       expect(params).to.not.be.undefined;
       expect(params.length).to.be.equal(2);
       expect(params[0].name).to.be.equal('id');
@@ -407,7 +407,7 @@ describe('Swagger Exporter', function(){
 
   describe('_mapResponseBody', function() {
     it('should map responses and return successfully', function() {
-      var endpoint = new Endpoint('test');
+      let endpoint = new Endpoint('test');
       endpoint.Produces = ['application/json'];
       endpoint.Responses = [
         {
@@ -422,7 +422,7 @@ describe('Swagger Exporter', function(){
           description: 'not found'
         }
       ];
-      var res = swaggerExporter._mapResponseBody(endpoint);
+      let res = swaggerExporter._mapResponseBody(endpoint);
       expect(res).to.have.keys('200', '404');
       expect(res).to.have.deep.property('404.schema.$ref', '#/definitions/global:ErrorResponse');
     });
@@ -434,7 +434,7 @@ describe('Swagger Exporter', function(){
 
   describe('_mapSchema', function(){
     it('should able to parse sl schemas to swagger schemas as key/schema structure', function(){
-      var schemas = [], schema1, schema2, mappedSchemas;
+      let schemas = [], schema1, schema2, mappedSchemas;
 
       schema1 = new Schema('abcd');
       schema1.Definition = JSON.stringify({
@@ -474,8 +474,8 @@ describe('Swagger Exporter', function(){
 
   describe('_mapHostAndProtocol', function(){
     it('Should map host and protocols successfully', function(){
-      var swaggerDef = new SwaggerDefinition('test', 'test');
-      var env = new Environment();
+      let swaggerDef = new SwaggerDefinition('test', 'test');
+      let env = new Environment();
       env.Host = 'http://localhost:3000';
       env.Protocols = ['http', 'https'];
       swaggerExporter._mapHostAndProtocol(env, swaggerDef);
@@ -484,23 +484,23 @@ describe('Swagger Exporter', function(){
       expect(swaggerDef.schemes.length).to.equal(2);
     });
     it('Should not include host if empty', function(){
-      var swaggerDef = new SwaggerDefinition('test', 'test');
-      var env = new Environment();
+      let swaggerDef = new SwaggerDefinition('test', 'test');
+      let env = new Environment();
       env.Host = '';
       swaggerExporter._mapHostAndProtocol(env, swaggerDef);
       expect(swaggerDef).to.not.have.property('host');
     });
     it('Should not include protocol if not supported', function(){
-      var swaggerDef = new SwaggerDefinition('test', 'test');
-      var env = new Environment();
+      let swaggerDef = new SwaggerDefinition('test', 'test');
+      let env = new Environment();
       env.Protocols = ['abcd'];
       swaggerExporter._mapHostAndProtocol(env, swaggerDef);
       expect(swaggerDef.schemes).to.be.an('array');
       expect(swaggerDef.schemes.length).to.equal(0);
     });
     it('Should include protocol from host if available', function(){
-      var swaggerDef = new SwaggerDefinition('test', 'test');
-      var env = new Environment();
+      let swaggerDef = new SwaggerDefinition('test', 'test');
+      let env = new Environment();
       env.Host = 'https://localhost:3000';
       env.Protocols = [];
       swaggerExporter._mapHostAndProtocol(env, swaggerDef);
