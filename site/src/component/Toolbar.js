@@ -124,8 +124,8 @@ class Toolbar extends Component {
     handleSwipeOptions() {
         let indexToAux = this.state.toSelectionObj.index
         let indexFromAux = this.state.fromSelectionObj.index
-        const fromFormat = this.state.toSelectionObj.selectedFormat;
-        const toFormat = this.state.fromSelectionObj.selectedFormat;
+        const fromFormat = this.state.toSelectionObj.selectedFormat
+        const toFormat = this.state.fromSelectionObj.selectedFormat
 
         this.setState({
             fromSelectionObj: {

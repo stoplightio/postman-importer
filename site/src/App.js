@@ -6,6 +6,8 @@ import CodeEditor from './component/CodeEditor'
 import ace from 'brace'
 import AlertMessage from './component/AlertMessage'
 import NavBar from './component/NavBar'
+import Json from 'brace/mode/json'
+import Yaml from 'brace/mode/yaml'
 
 class App extends Component {
 
@@ -44,7 +46,7 @@ class App extends Component {
     }
 
     renderEditor(name) {
-        return <CodeEditor name={name} autoMode={this.state.isAuto ? this.detectMode.bind(this) : null}/>
+        return <CodeEditor name={name} autoMode={this.state.isAuto ? this.detectMode.bind(this) : undefined}/>
     }
 
     detectMode(editorText) {
@@ -69,7 +71,7 @@ class App extends Component {
 
     changeEditorMode(left, mode) {
         let editor = left ? ace.edit(App.leftEditorId) : ace.edit(App.rightEditorId)
-        editor.session.setMode(`ace/mode/${mode}`)
+        editor.session.setMode(mode === "json" ? Json : Yaml)
     }
 
     changeEditorsTheme(theme) {
@@ -114,7 +116,7 @@ class App extends Component {
                     </Row>
                 </div>
             </div>
-        );
+        )
     }
 }
 
