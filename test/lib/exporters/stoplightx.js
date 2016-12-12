@@ -1,42 +1,42 @@
 const expect = require('chai').expect,
-    StoplightX = require('../../../lib/exporters/stoplightx'),
-    StoplightXImporter = require('../../../lib/importers/stoplightx'),
-    Project = require('../../../lib/entities/project');
+	StoplightX = require('../../../lib/exporters/stoplightx'),
+	StoplightXImporter = require('../../../lib/importers/stoplightx'),
+	Project = require('../../../lib/entities/project');
 
-describe('Stoplight Exporter', function() {
-  let exporter;
-  let importer;
-  let filePath = __dirname + '/../../data/stoplightx.json';
-
-  before(function() {
-    exporter = new StoplightX();
-    importer = new StoplightXImporter();
-  });
-
-  describe('constructor', function() {
-    it('create new instance of StoplightX exporter successfully', function() {
-      expect(exporter).to.be.an.instanceof(StoplightX);
-    });
-  });
-
-  describe('_export', function() {
-    it('should export project to data', function() {
-      expect(exporter.data).to.equal(null);
-      //pre-requisite
-      exporter.loadProject(new Project('testProject'));
-      exporter._export();
-      expect(exporter.data).to.not.equal(null);
-    });
-
-    it('exported data should be of swagger format', function() {
-      exporter.loadProject(new Project('testProject'));
-      exporter._export();
-      expect(exporter.data).to.include.keys('swagger');
-      expect(exporter.data).to.be.an('object');
-    });
-
-    it('should export tests', function(done) {
-      importer.loadFile(filePath)
+describe('Stoplight Exporter', function () {
+	let exporter;
+	let importer;
+	let filePath = __dirname + '/../../data/stoplightx.json';
+	
+	before(function () {
+		exporter = new StoplightX();
+		importer = new StoplightXImporter();
+	});
+	
+	describe('constructor', function () {
+		it('create new instance of StoplightX exporter successfully', function () {
+			expect(exporter).to.be.an.instanceof(StoplightX);
+		});
+	});
+	
+	describe('_export', function () {
+		it('should export project to data', function () {
+			expect(exporter.data).to.equal(null);
+			//pre-requisite
+			exporter.loadProject(new Project('testProject'));
+			exporter._export();
+			expect(exporter.data).to.not.equal(null);
+		});
+		
+		it('exported data should be of swagger format', function () {
+			exporter.loadProject(new Project('testProject'));
+			exporter._export();
+			expect(exporter.data).to.include.keys('swagger');
+			expect(exporter.data).to.be.an('object');
+		});
+		
+		it('should export tests', function (done) {
+			importer.loadFile(filePath)
 				.then(function () {
 					importer.import();
 					
@@ -51,11 +51,11 @@ describe('Stoplight Exporter', function() {
 						.to.have.property('$ref', '#/x-tests/SuDCFmBBcvmyA7dCh');
 					done();
 				})
-				.catch(function(err) {
-        	if (err) {
-          	return done(err);
-        	}
-      	});
-    });
-  });
+				.catch(function (err) {
+					if (err) {
+						return done(err);
+					}
+				});
+		});
+	});
 });
