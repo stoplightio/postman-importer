@@ -2,6 +2,7 @@ const expect = require('chai').expect,
 	StoplightX = require('../../../lib/exporters/stoplightx'),
 	StoplightXImporter = require('../../../lib/importers/stoplightx'),
 	Project = require('../../../lib/entities/project');
+import {describe, it} from "mocha";
 
 describe('Stoplight Exporter', function () {
 	let exporter;

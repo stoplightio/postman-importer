@@ -3,6 +3,7 @@ const expect = require('chai').expect,
 	path = require('path'),
 	Auto = require('../../../lib/importers/auto'),
 	Project = require('../../../lib/entities/project');
+import {describe, beforeEach, it} from "mocha";
 
 describe('Auto Importer', function () {
 	let importer,
@@ -20,7 +21,6 @@ describe('Auto Importer', function () {
 		it('should possess generic importer prototype', function () {
 			expect(importer).to.respondTo('loadFile');
 			expect(importer).to.respondTo('loadData');
-			expect(importer).to.respondTo('detectFormat');
 			expect(importer).to.respondTo('_import');
 			expect(importer).to.respondTo('import');
 		});
@@ -29,35 +29,35 @@ describe('Auto Importer', function () {
 	describe('detectFormat', function () {
 		it('should detect STOPLIGHTX', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, 'stoplightx.json'), 'utf8'),
-				format = importer.detectFormat(fileContent);
+				format = Auto.detectFormat(fileContent);
 			
 			expect(format).to.be.equal('STOPLIGHTX');
 		});
 		
 		it('should detect POSTMAN', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, 'postman.json'), 'utf8'),
-				format = importer.detectFormat(fileContent);
+				format = Auto.detectFormat(fileContent);
 			
 			expect(format).to.be.equal('POSTMAN');
 		});
 		
 		it('should detect RAML', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml08.yaml'), 'utf8'),
-				format = importer.detectFormat(fileContent);
+				format = Auto.detectFormat(fileContent);
 			
 			expect(format).to.be.equal('RAML08');
 		});
 		
 		it('should detect SWAGGER', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, 'swagger.yaml'), 'utf8'),
-				format = importer.detectFormat(fileContent);
+				format = Auto.detectFormat(fileContent);
 			
 			expect(format).to.be.equal('SWAGGER');
 		});
 		
 		it('should detect UNKNOWN', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, 'invalid', 'postman.json'), 'utf8'),
-				format = importer.detectFormat(fileContent);
+				format = Auto.detectFormat(fileContent);
 			
 			expect(format).to.be.equal('UNKNOWN');
 		});

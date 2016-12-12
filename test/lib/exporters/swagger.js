@@ -7,6 +7,7 @@ const expect = require('chai').expect,
 	SwaggerDefinition = require('../../../lib/entities/swagger/definition'),
 	parser = require('swagger-parser'),
 	fs = require('fs');
+import {describe, it} from "mocha";
 
 describe('Swagger Exporter', function () {
 	let swaggerExporter;
@@ -29,9 +30,8 @@ describe('Swagger Exporter', function () {
 	
 	describe('_getResponseTypes', function () {
 		it('should include all response mime types from all responses', function () {
-			let endpoint = new Endpoint('test'),
-				produces = ['application/json', 'multipart/form-data'];
-			endpoint.Produces = produces;
+			let endpoint = new Endpoint('test');
+			endpoint.Produces = ['application/json', 'multipart/form-data'];
 			let respTypes = swaggerExporter._getResponseTypes(endpoint);
 			expect(respTypes).to.be.an('array');
 			expect(respTypes.length).to.equal(2);
@@ -97,7 +97,7 @@ describe('Swagger Exporter', function () {
 					type: 'abcd'
 				}
 			];
-			parameters = swaggerExporter._validateParameters(parameters);
+			parameters = Swagger._validateParameters(parameters);
 			expect(parameters.length).equal(1);
 			
 			//should assign string type for non valid types
@@ -210,7 +210,7 @@ describe('Swagger Exporter', function () {
 			
 			let mappedSchemes;
 			
-			mappedSchemes = swaggerExporter._mapSecurityDefinitions(schemes);
+			mappedSchemes = Swagger._mapSecurityDefinitions(schemes);
 			expect(Object.keys(mappedSchemes).length).equal(1);
 			expect(mappedSchemes.api_key).to.be.an('object');
 			expect(mappedSchemes.api_key).to.have.property('in');
@@ -239,7 +239,7 @@ describe('Swagger Exporter', function () {
 			
 			let mappedSchemes;
 			
-			mappedSchemes = swaggerExporter._mapSecurityDefinitions(schemes);
+			mappedSchemes = Swagger._mapSecurityDefinitions(schemes);
 			expect(Object.keys(mappedSchemes).length).equal(1);
 			
 			expect(mappedSchemes.oauth2).to.be.an('object');
@@ -266,7 +266,7 @@ describe('Swagger Exporter', function () {
 			
 			let mappedSchemes;
 			
-			mappedSchemes = swaggerExporter._mapSecurityDefinitions(schemes);
+			mappedSchemes = Swagger._mapSecurityDefinitions(schemes);
 			expect(Object.keys(mappedSchemes).length).equal(1);
 			expect(mappedSchemes.test).to.be.an('object');
 			expect(mappedSchemes.test.type).to.equal('basic');
@@ -295,7 +295,7 @@ describe('Swagger Exporter', function () {
 					]
 				}
 			};
-			let result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
+			let result = Swagger._mapEndpointSecurity(securedBy, securityDefinitions);
 			expect(result).to.be.an('array');
 			expect(result.length).to.be.equal(2);
 			expect(result[0]).to.be.an('object');
@@ -315,7 +315,7 @@ describe('Swagger Exporter', function () {
 					description: 'test desc'
 				}
 			};
-			let result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
+			let result = Swagger._mapEndpointSecurity(securedBy, securityDefinitions);
 			expect(result).to.be.an('array');
 			expect(result.length).to.be.equal(1);
 			expect(result[0]).to.be.an('object');
@@ -339,7 +339,7 @@ describe('Swagger Exporter', function () {
 					]
 				}
 			};
-			let result = swaggerExporter._mapEndpointSecurity(securedBy, securityDefinitions);
+			let result = Swagger._mapEndpointSecurity(securedBy, securityDefinitions);
 			expect(result).to.be.an('array');
 			expect(result.length).to.be.equal(1);
 			expect(result[0]).to.be.an('object');
@@ -514,7 +514,7 @@ describe('Swagger Exporter', function () {
 						.then(function (exportedData) {
 							fs.writeFileSync('temp.yaml', exportedData, 'utf8');
 							parser.parse('temp.yaml')
-								.then(function (api, metadata) {
+								.then(function () {
 									done();
 								})
 								.catch(function (err) {

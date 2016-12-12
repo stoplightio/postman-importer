@@ -1,6 +1,7 @@
 const chai = require('chai'),
 	expect = chai.expect,
 	jsonHelper = require('../../../lib/utils/json');
+import {describe, it} from "mocha";
 
 chai.use(require('chai-fuzzy'));
 

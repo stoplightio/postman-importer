@@ -1,6 +1,7 @@
 const expect = require('chai').expect,
 	_ = require('lodash'),
 	StoplightX = require('../../../lib/importers/stoplightx');
+import {describe, beforeEach, it} from "mocha";
 
 describe('StoplightX Importer', function () {
 	let importer;

@@ -1,6 +1,6 @@
-const expect = require('chai').expect,
-	Endpoint = require('../../../lib/entities/endpoint'),
+const Endpoint = require('../../../lib/entities/endpoint'),
 	fs = require('fs');
+import {describe, it} from "mocha";
 
 describe('Endpoint Entity', function () {
 	describe('constructor', function () {

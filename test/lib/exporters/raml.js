@@ -1,6 +1,7 @@
 const expect = require('chai').expect,
 	RAML10 = require('../../../lib/exporters/raml10'),
 	fs = require('fs');
+import {describe, beforeEach, it} from "mocha";
 
 describe('RAML Exporter', function () {
 	
@@ -46,7 +47,7 @@ describe('RAML Exporter', function () {
 			ramlExporter.loadSLData(slData)
 				.then(function () {
 					try {
-						let ramlData = ramlExporter.export('json');
+						ramlExporter.export('json');
 						//force fail as not expected
 						expect(true).to.be.equal(false);
 					}

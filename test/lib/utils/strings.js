@@ -1,6 +1,7 @@
 const chai = require('chai'),
 	expect = chai.expect,
 	stringsHelper = require('../../../lib/utils/strings');
+import {describe, it} from "mocha";
 
 describe('strings utility library', function () {
 	describe('computeOperationId', function () {

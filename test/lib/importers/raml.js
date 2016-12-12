@@ -3,6 +3,7 @@ const expect = require('chai').expect,
 	RAML10 = require('../../../lib/importers/raml10'),
 	Project = require('../../../lib/entities/project'),
 	fs = require('fs');
+import {describe, beforeEach, it} from "mocha";
 
 describe('RAML 0.8 Importer', function () {
 	let ramlImporter, filePath = __dirname + '/../../data/raml-import/raml/raml08.yaml';
