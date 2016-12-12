@@ -19,7 +19,7 @@ npm install --save api-spec-transformer
 ## Command line tool
 
 ```
-./bin.js -from SWAGGER -to RAML10 ./path/to/swagger.json
+./bin/api-spec-converter.js -from SWAGGER -to RAML10 ./path/to/swagger.json
 ```
 
 Or install globally:
