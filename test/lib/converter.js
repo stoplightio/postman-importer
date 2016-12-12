@@ -308,13 +308,13 @@ describe('from swagger to raml', function () {
 	let baseDir = __dirname + '/../data/swagger-import/swagger';
 	let testFiles = fs.readdirSync(baseDir);
 	
-	let testWithData = function (sourceFile, targetFile, stringCompare) {
+	let testWithData = function (sourceFile, targetFile, stringCompare, validate) {
 		
 		return function (done) {
 			let ramlVersion = _.includes(sourceFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			let converter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
 			let validateOptions = {
-				validate: true,
+				validate: validate,
 				fsResolver: myFsResolver
 			};
 			converter.loadFile(sourceFile, validateOptions).then(function () {
@@ -357,14 +357,15 @@ describe('from swagger to raml', function () {
 			let sourceFile = baseDir + '/' + testFile;
 			let targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'yaml');
 			let stringCompare = _.includes(testFile, 'stringcompare');
+			let validate = !_.includes(testFile, 'novalidate');
 			
 			if (process.env.fileToTest) {
 				if (_.endsWith(sourceFile, process.env.fileToTest)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate));
 				}
 			}
 			else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate));
 			}
 		}
 	});
