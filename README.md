@@ -14,12 +14,11 @@ This package helps to convert between different API specifications. It was origi
 
 ### 1. Online web page
 
-For an online conversion, see: [https://mulesoft.github.io/api-spec-converter](https://mulesoft.github.io/api-spec-converter).
+For an online conversion, use: [https://mulesoft.github.io/api-spec-converter](https://mulesoft.github.io/api-spec-converter).
 
 ### 2. Command line tool
 
 ```
-chmod +x ./lib/bin/converter.js
 ./lib/bin/converter.js --from SWAGGER --to RAML10 ./path/to/swagger.json
 ```
 
@@ -32,12 +31,12 @@ oas-raml-converter --from SWAGGER --to RAML10 ./path/to/swagger.json
 
 ### 3. As a service
 
-To run in an express server:
+Start the converter in an express server:
 ```
 npm start
 ```
 
-Then, make a post request with the file content to `/convert/SWAGGER/to/RAML10`:
+Then, make a post with the file content to `/convert/SWAGGER/to/RAML10`:
 ```
 wget --quiet \
   --method POST \
@@ -46,7 +45,7 @@ wget --quiet \
   - http://localhost:3000/convert/SWAGGER/to/RAML10
 ```
 
-You can also deploy it in a serverless fashion as a AWS lambdas function. Use `index-server-less.js` to configure your AWS lambda function.
+You can also deploy it in a server-less fashion as a AWS lambdas function. Use `index-server-less.js` to configure your AWS lambda function.
 
 ### 4. As a dependency
 
