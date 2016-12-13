@@ -19,8 +19,8 @@ For an online conversion, see: [https://mulesoft.github.io/api-spec-converter](h
 ### 2. Command line tool
 
 ```
-chmod +x ./bin/converter.js
-./bin/converter.js --from SWAGGER --to RAML10 ./path/to/swagger.json
+chmod +x ./lib/bin/converter.js
+./lib/bin/converter.js --from SWAGGER --to RAML10 ./path/to/swagger.json
 ```
 
 Or install globally:
@@ -37,16 +37,16 @@ To run in an express server:
 npm start
 ```
 
-Then, make a post request with the file content to `/convert?from=SWAGGER&to=RAML10`:
+Then, make a post request with the file content to `/convert/SWAGGER/to/RAML10`:
 ```
 wget --quiet \
   --method POST \
   --body-data <the swagger document> \
   --output-document \
-  - http://localhost:3000/convert?from=SWAGGER&to=RAML10
+  - http://localhost:3000/convert/SWAGGER/to/RAML10
 ```
 
-You can also deploy it in a serverless fashion as a AWS lambdas function. Use `index-serverless.js` to configure your AWS lamda function.
+You can also deploy it in a serverless fashion as a AWS lambdas function. Use `index-server-less.js` to configure your AWS lambda function.
 
 ### 4. As a dependency
 
@@ -114,8 +114,7 @@ swaggerToRaml.convertData(mySwaggerString).then(function(raml) {
 
 ```js
 var options = {
-    validateInput: false, // Parse the input to check that its a valid document before converting
-    validateOutput: false, // Parse the output to check that its a valid document after converting
+    validate: false, // Parse the output to check that its a valid document
     fs: { ... } // Use a custom file solver
 };
 

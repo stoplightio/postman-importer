@@ -23,7 +23,7 @@ self.addEventListener('message', (e) => {
     converter.convert(format, {validate: true}).then((success) =>
       resolve(null, success)
     ).catch((error) => {
-      // if an error is found, do a second pass to retrive the output
+      // if an error is found, try to retrieve the invalid output
       converter.convert(format, {validate: false}).then((success) =>
         resolve(error, success)
       ).catch(resolve)
