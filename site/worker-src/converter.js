@@ -1,20 +1,33 @@
-var converter = require('../../index');
+const Converter = require('../../index').Converter
 
-self.addEventListener('message', function (e) {
-    var message = e.data;
+const stringify = (data) => {
+  if (typeof data === 'string') return data
+  const result = JSON.stringify(data, null, 2);
+  return result === '{}' ? '' : result;
+}
 
-    var conv = new converter.Converter(message.fromLanguage, message.toLanguage);
+const resolve = (error, result) => {
+  self.postMessage({
+    result: !result ? '' : stringify(result.info || result),
+    error: !error ? '' : stringify(error),
+    message: !error ? '' : error.message
+  })
+}
 
-    conv.loadData(message.rawData).then(function (success) {
-        conv.convert(message.format.toLowerCase()).then(function (success, err) {
-            self.postMessage({
-                type: 'ok',
-                payload: typeof success === "string" ? success : JSON.stringify(success.info, null, 2)
-            });
-        }, function (error) {
-            self.postMessage({type: 'error', payload: error.message});
-        });
-    }, function (error) {
-        self.postMessage({type: 'error', payload: error.message});
-    });
-}, false);
+self.addEventListener('message', (e) => {
+  const message = e.data
+  const format = message.format.toLowerCase();
+  const converter = new Converter(message.fromLanguage, message.toLanguage)
+
+  converter.loadData(message.rawData).then(() => {
+    converter.convert(format, {validate: true}).then((success) =>
+      resolve(null, success)
+    ).catch((error) => {
+      // if an error is found, do a second pass to retrive the output
+      converter.convert(format, {validate: false}).then((success) =>
+        resolve(error, success)
+      ).catch(resolve)
+    })
+  }).catch(resolve)
+
+}, false)

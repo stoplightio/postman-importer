@@ -6,118 +6,110 @@ import CodeEditor from './component/CodeEditor'
 import ace from 'brace'
 import AlertMessage from './component/AlertMessage'
 import NavBar from './component/NavBar'
-import Json from 'brace/mode/json'
-import Yaml from 'brace/mode/yaml'
 
 class App extends Component {
 
-    static leftEditorId = "leftEditor"
-    static rightEditorId = "rightEditor"
+  static leftEditorId = "leftEditor"
+  static rightEditorId = "rightEditor"
 
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
 
-        this.converterWorker = new Worker(`${process.env.PUBLIC_URL}/build/converter-bundle${process.env.NODE_ENV === 'development' ? ".js" : ".min.js"}`)
+    this.converterWorker = new Worker(`${process.env.PUBLIC_URL}/build/converter-bundle${process.env.NODE_ENV === 'development' ? ".js" : ".min.js"}`)
 
-        this.state = {
-            converting: false,
-            isAuto: true,
-            autoFormat: '',
-            showAlert: false
-        }
-
-        this.converterWorker.addEventListener('message', (e) => {
-            const message = e.data
-            switch (message.type) {
-                case 'error':
-                    this.setState({
-                        errorMessage: message.payload,
-                        showAlert: true,
-                        converting: false
-                    })
-                    break
-                case 'ok':
-                    this.handleConvertedData(message.payload)
-                    break
-                default:
-                    break
-            }
-        }, false)
+    this.state = {
+      converting: false,
+      isAuto: true,
+      autoFormat: '',
+      showAlert: false
     }
 
-    renderEditor(name) {
-        return <CodeEditor name={name} autoMode={this.state.isAuto ? this.detectMode.bind(this) : undefined}/>
-    }
+    this.converterWorker.addEventListener('message', (e) => {
+      this.setState({converting: false})
 
-    detectMode(editorText) {
-        const mode = editorText.charAt(0) === '{' ? 'json' : 'yaml'
-        this.setState({autoFormat: mode})
-        this.changeEditorMode(true, mode)
-    }
+      const response = e.data
+      const rightEditor = ace.edit(App.rightEditorId)
+      rightEditor.setValue(response.result)
+      rightEditor.gotoLine(0)
 
-    handleConvertedData(newValue) {
-        this.setState({converting: false})
-        const rightEditor = ace.edit(App.rightEditorId)
-        rightEditor.setValue(newValue)
-        rightEditor.gotoLine(0)
-    }
+      if (response.error || response.message) {
+        this.setState({
+          errorMessage: response.message,
+          errorDetail: response.error,
+          showAlert: true
+        })
+      }
 
-    sendForConvertion(from, to, toFormat) {
-        this.setState({converting: true})
-        const leftEditor = ace.edit(App.leftEditorId)
-        const message = {rawData: leftEditor.getValue(), fromLanguage: from, toLanguage: to, format: toFormat}
-        this.converterWorker.postMessage(message)
-    }
+    }, false)
+  }
 
-    changeEditorMode(left, mode) {
-        let editor = left ? ace.edit(App.leftEditorId) : ace.edit(App.rightEditorId)
-        editor.session.setMode(mode === "json" ? Json : Yaml)
-    }
+  renderEditor(name) {
+    return <CodeEditor name={name} autoMode={this.state.isAuto ? this.detectMode.bind(this) : undefined}/>
+  }
 
-    changeEditorsTheme(theme) {
-        let leftEditor = ace.edit(App.leftEditorId)
-        let rightEditor = ace.edit(App.rightEditorId)
-        leftEditor.setTheme(`ace/theme/${theme}`)
-        rightEditor.setTheme(`ace/theme/${theme}`)
-    }
+  detectMode(editorText) {
+    const mode = editorText.charAt(0) === '{' ? 'json' : 'yaml'
+    this.setState({autoFormat: mode})
+    this.changeEditorMode(true, mode)
+  }
 
-    handleDetectionMode(isAuto) {
-        this.setState({isAuto: isAuto})
-    }
+  sendForConversion(from, to, toFormat) {
+    this.setState({converting: true, showAlert: false})
+    const leftEditor = ace.edit(App.leftEditorId)
+    const message = {rawData: leftEditor.getValue(), fromLanguage: from, toLanguage: to, format: toFormat}
+    this.converterWorker.postMessage(message)
+  }
 
-    toggleAlert() {
-        this.setState({showAlert: false})
-    }
+  changeEditorMode(left, mode) {
+    let editor = left ? ace.edit(App.leftEditorId) : ace.edit(App.rightEditorId)
+    editor.session.setMode(`ace/mode/${mode}`)
+  }
 
-    render() {
-        return (
-            <div className="app-container">
-                <NavBar onTheme={this.changeEditorsTheme}/>
+  changeEditorsTheme(theme) {
+    let leftEditor = ace.edit(App.leftEditorId)
+    let rightEditor = ace.edit(App.rightEditorId)
+    leftEditor.setTheme(`ace/theme/${theme}`)
+    rightEditor.setTheme(`ace/theme/${theme}`)
+  }
 
-                <Toolbar converting={this.state.converting}
-                         onConvert={this.sendForConvertion.bind(this)}
-                         changeMode={this.changeEditorMode}
-                         autoMode={this.handleDetectionMode.bind(this)}/>
+  handleDetectionMode(isAuto) {
+    this.setState({isAuto: isAuto})
+  }
 
-                <div className="alert-container">
-                    <AlertMessage message={this.state.errorMessage}
-                                  alertState={this.state.showAlert}
-                                  changeAlertState={this.toggleAlert.bind(this)}/>
-                </div>
+  toggleAlert() {
+    this.setState({showAlert: false})
+  }
 
-                <div className="editors">
-                    <Row>
-                        <Col id="left" className="editor-container" xs={6}>
-                            {this.renderEditor(App.leftEditorId)}
-                        </Col>
-                        <Col id="right" className="editor-container" xs={6}>
-                            {this.renderEditor(App.rightEditorId)}
-                        </Col>
-                    </Row>
-                </div>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div className="app-container">
+        <NavBar onTheme={this.changeEditorsTheme}/>
+
+        <Toolbar converting={this.state.converting}
+                 onConvert={this.sendForConversion.bind(this)}
+                 changeMode={this.changeEditorMode}
+                 autoMode={this.handleDetectionMode.bind(this)}/>
+
+        <div className="alert-container">
+          <AlertMessage message={this.state.errorMessage}
+                        detail={this.state.errorDetail}
+                        alertState={this.state.showAlert}
+                        changeAlertState={this.toggleAlert.bind(this)}/>
+        </div>
+
+        <div className="editors">
+          <Row>
+            <Col id="left" className="editor-container" xs={6}>
+              {this.renderEditor(App.leftEditorId)}
+            </Col>
+            <Col id="right" className="editor-container" xs={6}>
+              {this.renderEditor(App.rightEditorId)}
+            </Col>
+          </Row>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default App

@@ -4,22 +4,49 @@ import {Alert} from 'react-bootstrap'
 
 class AlertMessage extends Component {
 
-    render() {
-        if (this.props.alertState) {
-            setTimeout(() => this.handleAlertDismiss(), 5000)
-            return (
-                <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
-                    <h4>Oh snap! You got an error!</h4>
-                    <p>{this.props.message}</p>
-                </Alert>
-            );
-        }
-        return null
+  constructor() {
+    super();
+    this.state = {
+      showDetail: false
     }
+  }
 
-    handleAlertDismiss() {
-        this.props.changeAlertState()
+  render() {
+    if (this.props.alertState) {
+      if (!this.props.detail) {
+        return (
+          <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
+            {this.props.message}
+          </Alert>
+        )
+      }
+      else if (this.state.showDetail) {
+        return (
+          <div>
+            <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
+              {this.props.message} <a href="#" onClick={this.handleDetail.bind(this)}> (hide details) </a>
+            </Alert>
+            <pre>{this.props.detail}</pre>
+          </div>
+        )
+      } else {
+        return (
+          <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
+            {this.props.message} <a href="#" onClick={this.handleDetail.bind(this)}> (show details) </a>
+          </Alert>
+        )
+      }
     }
+    return null
+  }
+
+  handleDetail() {
+    this.setState({showDetail: !this.state.showDetail})
+  }
+
+  handleAlertDismiss() {
+    this.props.changeAlertState()
+  }
 }
 
 export default AlertMessage
