@@ -15,8 +15,6 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    // todo .min.js version for production is not working, it throws "No data provided"
-    // this.converterWorker = new Worker(`${process.env.PUBLIC_URL}/build/converter-bundle${process.env.NODE_ENV === 'development' ? ".js" : ".min.js"}`)
     this.converterWorker = new Worker(`${process.env.PUBLIC_URL}/build/converter-bundle.js`)
 
     this.state = {

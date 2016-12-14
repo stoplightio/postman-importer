@@ -7,8 +7,7 @@
     "babelify": "^7.3.0",
     "browserify": "^13.1.1",
     "gh-pages": "^0.12.0",
-    "react-scripts": "0.7.0",
-    "uglifyjs": "^2.4.10"
+    "react-scripts": "0.7.0"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
@@ -21,13 +20,11 @@
     "react-progress-button": "^5.0.1"
   },
   "scripts": {
-    "start": "npm run build:bundle && react-scripts start",
-    "build": "npm run build:minify && react-scripts build",
+    "start": "npm run browserify && react-scripts start",
+    "build": "npm run browserify && react-scripts build",
+    "deploy": "npm run build && gh-pages -d build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && gh-pages -d build",
-    "build:bundle": "browserify ./worker-src/converter.js -t babelify -o ./public/build/converter-bundle.js",
-    "build:minify": "npm run build:bundle && npm run minify",
-    "minify": "uglifyjs ./public/build/converter-bundle.js -mc > ./public/build/converter-bundle.min.js"
+    "browserify": "browserify ./worker-src/converter.js -t babelify -o ./public/build/converter-bundle.js"
   }
 }
