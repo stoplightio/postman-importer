@@ -317,19 +317,18 @@ describe('from swagger to raml', function () {
 				validate: validate,
 				fsResolver: myFsResolver
 			};
-			converter.loadFile(sourceFile, validateOptions).then(function () {
-				converter.convert('yaml', validateOptions).then(function (covertedRAML) {
+			converter.convertFile(sourceFile, validateOptions).then(function (covertedRAML) {
 					let notExistsTarget = !fs.existsSync(targetFile);
-					
+
 					if (notExistsTarget) {
 						console.log('Content for non existing target file ' + targetFile + '\n.');
 						console.log('********** Begin file **********\n');
 						console.log(covertedRAML);
 						console.log('********** Finish file **********\n');
-						
+
 						done('Error');
 					}
-					
+
 					try {
 						if (stringCompare == true) {
 							expect(covertedRAML).to.deep.equal(fs.readFileSync(targetFile, 'utf8'));
@@ -340,15 +339,10 @@ describe('from swagger to raml', function () {
 					} catch (e) {
 						done(e);
 					}
-				})
-					.catch(function (err) {
-						console.log('Error exporting file.');
-						done(err);
-					})
-			}).catch(function (err) {
-				console.log('Error loading input file.');
-				done(err);
-			});
+				}).catch(function (err) {
+					console.log('Error exporting file.');
+					done(err);
+				});
 		};
 	};
 	
@@ -390,14 +384,12 @@ describe('from raml to swagger', function () {
 			let testFilePath = baseDir + '/' + testFile;
 			let ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			let converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
-			converter.loadFile(testFilePath, validateOptions)
-				.then(function () {
-					converter.convert('json', validateOptions)
+			converter.convertFile(testFilePath, validateOptions)
 						.then(function (resultSwagger) {
-							
+
 							try {
 								let targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
-								
+
 								let notExistsTarget = !fs.existsSync(targetFile);
 								if (notExistsTarget) {
 									console.log('Content for non existing target file ' + targetFile + '\n.');
@@ -412,16 +404,10 @@ describe('from raml to swagger', function () {
 							} catch (e) {
 								done(e);
 							}
-						})
-						.catch(function (err) {
-							console.log('error exporting file.');
+						}).catch(function (err) {
+							console.error('error exporting file.');
 							done(err);
-						})
-				})
-				.catch(function (err) {
-					console.log('error loading input file.');
-					done(err);
-				});
+						});
 		};
 	};
 	
