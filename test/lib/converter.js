@@ -5,6 +5,10 @@ const chai = require('chai'),
 	YAML = require('js-yaml'),
 	_ = require('lodash'),
 	path = require('path');
+const beforeEach = require("mocha/lib/mocha.js").beforeEach;
+const afterEach = require("mocha/lib/mocha.js").afterEach;
+const it = require("mocha/lib/mocha.js").it;
+const describe = require("mocha/lib/mocha.js").describe;
 
 chai.use(require('chai-string'));
 

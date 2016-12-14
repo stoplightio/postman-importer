@@ -2,7 +2,6 @@ const expect = require('chai').expect,
 	Postman = require('../../../lib/importers/postman'),
 	Project = require('../../../lib/entities/project'),
 	_ = require('lodash');
-import {describe, beforeEach, it} from "mocha";
 
 describe('Postman Importer', function () {
 	let postmanImporter;

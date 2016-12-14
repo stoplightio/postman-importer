@@ -1,5 +1,3 @@
-const expect = require('chai').expect,
-	Environment = require('../../../lib/entities/environment');
 
 describe('Endpoint Entity', function () {
 	describe('constructor', function () {

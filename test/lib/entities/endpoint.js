@@ -1,6 +1,3 @@
-const Endpoint = require('../../../lib/entities/endpoint'),
-	fs = require('fs');
-import {describe, it} from "mocha";
 
 describe('Endpoint Entity', function () {
 	describe('constructor', function () {

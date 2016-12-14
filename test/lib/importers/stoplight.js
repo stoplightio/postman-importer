@@ -1,8 +1,6 @@
 const expect = require('chai').expect,
 	Stoplight = require('../../../lib/importers/stoplight');
 
-import {describe, beforeEach, it} from "mocha";
-
 describe('Stoplight Importer', function () {
 	let importer, filePath = __dirname + '/../../data/stoplight.json';
 	let slData = require(filePath);

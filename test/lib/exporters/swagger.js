@@ -7,7 +7,6 @@ const expect = require('chai').expect,
 	SwaggerDefinition = require('../../../lib/entities/swagger/definition'),
 	parser = require('swagger-parser'),
 	fs = require('fs');
-import {describe, it} from "mocha";
 
 describe('Swagger Exporter', function () {
 	let swaggerExporter;

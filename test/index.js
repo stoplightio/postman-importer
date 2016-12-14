@@ -1,6 +1,5 @@
 let expect   = require('chai').expect,
     specConverter = require('../index');
-import {describe, it} from "mocha";
 
 describe('index', function() {
 

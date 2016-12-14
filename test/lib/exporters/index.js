@@ -3,7 +3,6 @@ const expect = require('chai').expect,
 	exporterDir = baseDir + '/lib/exporters',
 	exporterFactory = require(exporterDir + '/index'),
 	formats = require(baseDir + '/index').Formats;
-import {describe, it} from "mocha";
 
 describe('Exporter Factory', function () {
 	describe('hasSupport', function () {

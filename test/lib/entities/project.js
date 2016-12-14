@@ -1,6 +1,3 @@
-const expect = require('chai').expect,
-	Project = require('../../../lib/entities/project'),
-	fs = require('fs');
 
 describe('Project Entity', function () {
 	describe('constructor', function () {

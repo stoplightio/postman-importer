@@ -3,7 +3,6 @@ const expect = require('chai').expect,
 	RAML10 = require('../../../lib/importers/raml10'),
 	Project = require('../../../lib/entities/project'),
 	fs = require('fs');
-import {describe, beforeEach, it} from "mocha";
 
 describe('RAML 0.8 Importer', function () {
 	let ramlImporter, filePath = __dirname + '/../../data/raml-import/raml/raml08.yaml';
@@ -126,7 +125,7 @@ describe('RAML 1.0 Importer', function () {
 		
 		it('should be able to load a valid yaml file including external type definiton', function (done) {
 			let myFsResolver = {
-				content: function (path) {
+				content: function () {
 				},
 				contentAsync: function (path) {
 					return new Promise(function (resolve, reject) {
@@ -169,7 +168,7 @@ describe('RAML 1.0 Importer', function () {
 		
 		it('should be able to load a valid yaml file including external type definiton using fsResolver', function (done) {
 			let myFsResolver = {
-				content: function (path) {
+				content: function () {
 				},
 				contentAsync: function (path) {
 					return new Promise(function (resolve, reject) {

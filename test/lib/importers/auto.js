@@ -3,7 +3,6 @@ const expect = require('chai').expect,
 	path = require('path'),
 	Auto = require('../../../lib/importers/auto'),
 	Project = require('../../../lib/entities/project');
-import {describe, beforeEach, it} from "mocha";
 
 describe('Auto Importer', function () {
 	let importer,

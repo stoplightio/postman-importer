@@ -1,6 +1,5 @@
 const expect = require('chai').expect,
 	Exporter = require('../../../lib/exporters/exporter');
-import {describe, beforeEach, it} from "mocha";
 
 describe('Exporter', function () {
 	let exporter;

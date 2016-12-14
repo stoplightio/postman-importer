@@ -1,7 +1,5 @@
 const expect = require('chai').expect,
-	RAML10 = require('../../../lib/exporters/raml10'),
-	fs = require('fs');
-import {describe, beforeEach, it} from "mocha";
+	RAML10 = require('../../../lib/exporters/raml10');
 
 describe('RAML Exporter', function () {
 	

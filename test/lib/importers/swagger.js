@@ -4,7 +4,6 @@ const expect = require('chai').expect,
 	Project = require('../../../lib/entities/project'),
 	Schema = require('../../../lib/entities/schema'),
 	Endpoint = require('../../../lib/entities/endpoint');
-import {describe, beforeEach, it} from "mocha";
 
 describe('Swagger Importer', function () {
 	let swaggerImporter,
