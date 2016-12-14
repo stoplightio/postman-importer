@@ -59,6 +59,7 @@ annotationTypes:
     type: string
     allowedTargets: TypeDeclaration
   oas-responses-default: any
+  oas-global-response-definition: any
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -132,6 +133,7 @@ annotationTypes:
               description: When rate limit will be reset
               format: rfc3339
         '404':
+          (oas-global-response-definition): PersonDoesNotExistResponse
           description: Person does not exist.
           headers:
             X-Rate-Limit-Remaining:
@@ -142,6 +144,7 @@ annotationTypes:
               description: When rate limit will be reset
               format: rfc3339
         '500':
+          (oas-global-response-definition): Standard500ErrorResponse
           body:
             application/json:
               type: Error
@@ -155,6 +158,7 @@ annotationTypes:
               description: When rate limit will be reset
               format: rfc3339
       (oas-responses-default):
+        (oas-global-response-definition): TotallyUnexpectedResponse
         description: A totally unexpected response
         headers:
           X-Rate-Limit-Remaining:

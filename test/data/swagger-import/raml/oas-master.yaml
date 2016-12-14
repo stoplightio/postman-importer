@@ -90,6 +90,7 @@ annotationTypes:
     type: string
     allowedTargets: TypeDeclaration
   oas-responses-default: any
+  oas-global-response-definition: any
 (oas-externalDocs):
   description: |
     **Complete** documentation describing how to use this API
@@ -106,7 +107,6 @@ annotationTypes:
 securitySchemes:
   OauthSecurity:
     type: OAuth 2.0
-    description: New Oauth security system. Do not use MediaSecurity or LegacySecurity.
     settings:
       authorizationUri: 'https://oauth.simple.api/authorization'
       accessTokenUri: 'https://oauth.simple.api/token'
@@ -115,6 +115,7 @@ securitySchemes:
       scopes:
         - admin
         - user
+    description: New Oauth security system. Do not use MediaSecurity or LegacySecurity.
   LegacySecurity:
     type: Basic Authentication
     description: Legacy security system for backward compatibility. Use OauthSecurity instead.
@@ -147,6 +148,7 @@ securitySchemes:
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
+        (oas-global-response-definition): TotallyUnexpectedResponse
       responses:
         '200':
           description: The image
@@ -181,6 +183,7 @@ securitySchemes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+          (oas-global-response-definition): Standard500ErrorResponse
       (oas-tags):
         - Media
     is:
@@ -205,6 +208,7 @@ securitySchemes:
           type: datetime
           description: When rate limit will be reset
           format: rfc3339
+      (oas-global-response-definition): TotallyUnexpectedResponse
     responses:
       '200':
         body:
@@ -235,6 +239,7 @@ securitySchemes:
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
+        (oas-global-response-definition): Standard500ErrorResponse
     securedBy:
       - MediaSecurity
     (oas-tags):
@@ -270,6 +275,7 @@ securitySchemes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+          (oas-global-response-definition): TotallyUnexpectedResponse
         responses:
           '200':
             body:
@@ -315,6 +321,7 @@ securitySchemes:
                 type: datetime
                 description: When rate limit will be reset
                 format: rfc3339
+            (oas-global-response-definition): PersonDoesNotExistResponse
           '500':
             body:
               application/json:
@@ -328,6 +335,7 @@ securitySchemes:
                 type: datetime
                 description: When rate limit will be reset
                 format: rfc3339
+            (oas-global-response-definition): Standard500ErrorResponse
         (oas-tags):
           - Items
       is:
@@ -353,6 +361,7 @@ securitySchemes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+          (oas-global-response-definition): TotallyUnexpectedResponse
         responses:
           '200':
             body:
@@ -377,6 +386,7 @@ securitySchemes:
                 type: datetime
                 description: When rate limit will be reset
                 format: rfc3339
+            (oas-global-response-definition): PersonDoesNotExistResponse
           '500':
             body:
               application/json:
@@ -390,6 +400,7 @@ securitySchemes:
                 type: datetime
                 description: When rate limit will be reset
                 format: rfc3339
+            (oas-global-response-definition): Standard500ErrorResponse
         (oas-tags):
           - Persons
       is:
@@ -414,6 +425,7 @@ securitySchemes:
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
+        (oas-global-response-definition): TotallyUnexpectedResponse
       responses:
         '204':
           description: Person successfully deleted.
@@ -435,6 +447,7 @@ securitySchemes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+          (oas-global-response-definition): PersonDoesNotExistResponse
         '500':
           body:
             application/json:
@@ -448,6 +461,7 @@ securitySchemes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+          (oas-global-response-definition): Standard500ErrorResponse
       (oas-tags):
         - Persons
     is:
@@ -466,6 +480,7 @@ securitySchemes:
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
+        (oas-global-response-definition): TotallyUnexpectedResponse
       responses:
         '200':
           body:
@@ -490,6 +505,7 @@ securitySchemes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+          (oas-global-response-definition): PersonDoesNotExistResponse
         '500':
           body:
             application/json:
@@ -503,6 +519,7 @@ securitySchemes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
+          (oas-global-response-definition): Standard500ErrorResponse
       (oas-tags):
         - Persons
   post:
@@ -524,6 +541,7 @@ securitySchemes:
           type: datetime
           description: When rate limit will be reset
           format: rfc3339
+      (oas-global-response-definition): TotallyUnexpectedResponse
     responses:
       '204':
         description: Person succesfully created.
@@ -558,6 +576,7 @@ securitySchemes:
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
+        (oas-global-response-definition): Standard500ErrorResponse
     securedBy:
       - OauthSecurity:
           scopes:
@@ -586,6 +605,7 @@ securitySchemes:
           type: datetime
           description: When rate limit will be reset
           format: rfc3339
+      (oas-global-response-definition): TotallyUnexpectedResponse
     responses:
       '200':
         body:
@@ -613,6 +633,7 @@ securitySchemes:
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
+        (oas-global-response-definition): Standard500ErrorResponse
     (oas-tags):
       - Persons
 /js-less-consumer-persons:
@@ -649,6 +670,7 @@ securitySchemes:
           type: datetime
           description: When rate limit will be reset
           format: rfc3339
+      (oas-global-response-definition): TotallyUnexpectedResponse
     responses:
       '204':
         description: Person succesfully created.
@@ -919,9 +941,9 @@ traits:
         type: boolean
         description: Result will not include non verified user by default if this parameter is not provided
         default: false
+        allowEmptyValue: true
         facets:
           allowEmptyValue: boolean
-        allowEmptyValue: true
   sortPersons:
     queryParameters:
       sort:
@@ -930,21 +952,21 @@ traits:
         uniqueItems: true
         minItems: 1
         maxItems: 3
-        facets:
-          collectionFormat: string
         collectionFormat: pipes
         default:
           - '-lastTimeOnline'
           - +username
+        facets:
+          collectionFormat: string
   filterItemTypes:
     queryParameters:
       itemType:
         type: array
         description: Filter collected items on their type
-        facets:
-          collectionFormat: string
         collectionFormat: multi
         uniqueItems: true
+        facets:
+          collectionFormat: string
   userAgent:
     headers:
       User-Agent:
