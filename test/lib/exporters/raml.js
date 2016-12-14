@@ -44,14 +44,14 @@ describe('RAML Exporter', function () {
 		it('should contain custom implementation as doesn\'t support json export', function () {
 			ramlExporter.loadSLData(slData)
 				.then(function () {
-					try {
-						ramlExporter.export('json');
-						//force fail as not expected
-						expect(true).to.be.equal(false);
-					}
-					catch (err) {
-						expect(err).to.not.equal(undefined);
-					}
+					ramlExporter.export('json')
+						.then(function () {
+							//force fail as not expected
+							expect(true).to.be.equal(false);
+						})
+						.catch(function (err) {
+							expect(err).to.not.equal(undefined);
+						});
 				})
 				.catch(function (err) {
 					done(err);
