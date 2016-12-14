@@ -5,7 +5,6 @@ const chai = require('chai'),
 	YAML = require('js-yaml'),
 	_ = require('lodash'),
 	path = require('path');
-import {describe, beforeEach, afterEach, it} from "mocha";
 
 chai.use(require('chai-string'));
 
