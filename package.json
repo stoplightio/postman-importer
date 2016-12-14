@@ -4,9 +4,7 @@
   "description": "This package helps to convert between different API specifications. Supports OAS (Swagger 2), RAML 0.8, RAML 1.0.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register",
-    "lint": "gulp lint",
-    "coverall": "gulp coverall"
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "bin": {
     "oas-raml-converter": "./lib/bin/converter.js",
@@ -42,12 +40,13 @@
     "chai-fuzzy": "1.x.x",
     "chai-string": "^1.2.0",
     "commander": "^2.9.0",
-    "coveralls": "^2.11.8",
+    "coveralls": "^2.11.15",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "gulp": "^3.9.1",
     "gulp-coveralls": "^0.1.4",
     "gulp-eslint": "^3.0.1",
+    "istanbul": "^0.4.5",
     "jscover": "^1.0.0",
     "mocha": "^2.4.5",
     "mocha-lcov-reporter": "^1.2.0"
