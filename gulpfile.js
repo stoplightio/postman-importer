@@ -3,7 +3,7 @@ var gulp = require('gulp'),
     coveralls = require('gulp-coveralls');
 
 gulp.task('lint', function() {
-  return gulp.src(['**/*.js', '!node_modules/**', '!coverage/**'])
+  return gulp.src(['**/*.js', '!node_modules/**', '!coverage/**', '!site/**'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
