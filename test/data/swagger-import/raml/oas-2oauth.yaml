@@ -1,0 +1,57 @@
+#%RAML 1.0
+title: Simple API
+version: 0.0.0
+securitySchemes:
+  githubAccessCode:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://github.com/login/oauth/authorize'
+      accessTokenUri: 'https://github.com/login/oauth/access_token'
+      authorizationGrants:
+        - authorization_code
+      scopes:
+        - user
+        - 'user:email'
+        - 'user:follow'
+        - public_repo
+        - repo
+        - repo_deployment
+        - 'repo:status'
+        - delete_repo
+        - notifications
+        - gist
+        - 'read:repo_hook'
+        - 'write:repo_hook'
+        - 'admin:repo_hook'
+        - 'read:org'
+        - 'write:org'
+        - 'admin:org'
+        - 'read:public_key'
+        - 'write:public_key'
+        - 'admin:public_key'
+  oauth_2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://petstore.swagger.io/oauth/dialog'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - emails
+/users:
+  displayName: users
+  get:
+    displayName: GET_users
+    responses:
+      '200':
+        description: OK
+    securedBy:
+      - oauth_2:
+          scopes:
+            - emails
+/:
+  get:
+    displayName: GET_root
+    responses:
+      '200':
+        description: OK

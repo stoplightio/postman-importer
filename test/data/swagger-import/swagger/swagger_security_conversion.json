@@ -36,6 +36,9 @@
         "security": [
           {
             "basicAuth": []
+          },
+          {
+            "internalApiKey2": []
           }
         ],
         "responses": {
@@ -70,6 +73,11 @@
         "security": [
           {
             "internalApiKey": []
+          },
+          {
+            "oauth22": [
+              "read:dogs"
+            ]
           }
         ],
         "responses": {
@@ -106,6 +114,47 @@
             "oauth2": [
               "read:pets"
             ]
+          },
+          {
+            "basicAuth2": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`"
+          }
+        }
+      }
+    },
+    "/getMixed": {
+      "get": {
+        "security": [
+          {
+            "oauth2": [
+              "read:pets"
+            ]
+          },
+          {
+            "internalApiKey3": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`"
+          }
+        }
+      }
+    },
+    "/getMixed2": {
+      "get": {
+        "security": [
+          {
+            "oauth2": [
+              "read:pets"
+            ]
+          },
+          {
+            "internalApiKey4": []
           }
         ],
         "responses": {
@@ -121,11 +170,33 @@
       "type": "basic",
       "description": "HTTP Basic Authentication. Works over `HTTP` and `HTTPS`"
     },
+    "basicAuth2": {
+      "type": "basic",
+      "description": "HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2."
+    },
     "internalApiKey": {
       "type": "apiKey",
       "in": "header",
       "name": "api_key",
       "description": "Api Key Authentication"
+    },
+    "internalApiKey2": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "api_key2",
+      "description": "Api Key Authentication. Version 2."
+    },
+    "internalApiKey3": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "api_key3",
+      "description": "Api Key Authentication. Version 3."
+    },
+    "internalApiKey4": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "api_key4",
+      "description": "Api Key Authentication. Version 4."
     },
     "oauth2": {
       "type": "oauth2",
@@ -134,6 +205,15 @@
       "scopes": {
         "write:pets": "modify pets in your account",
         "read:pets": "read your pets"
+      }
+    },
+    "oauth22": {
+      "type": "oauth2",
+      "authorizationUrl": "http://swagger2.io/api/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:dogs": "modify dogs in your account",
+        "read:dogs": "read your dogs"
       }
     }
   }

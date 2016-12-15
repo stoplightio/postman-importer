@@ -256,11 +256,11 @@ describe('Swagger Exporter', function () {
 		});
 		it('should map basic security definitions to stoplight successfully', function () {
 			let schemes = {
-				'basic': {
+				'basic': [{
 					'name': 'test',
 					'value': '',
 					'description': ''
-				}
+				}]
 			};
 			
 			let mappedSchemes;

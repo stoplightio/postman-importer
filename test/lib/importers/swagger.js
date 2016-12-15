@@ -271,7 +271,7 @@ describe('Swagger Importer', function () {
 					
 					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'addPet'});
 					
-					expect(endpoint.securedBy.apiKey).to.be.true;
+					expect(endpoint.securedBy.apiKey.name).to.be.eq('api_key');
 					done();
 				})
 				.catch(function (err) {
