@@ -384,9 +384,9 @@ describe('from raml to swagger', function () {
 	let baseDir = __dirname + '/../data/raml-import/raml';
 	let testFiles = fs.readdirSync(baseDir);
 	
-	let testWithData = function (testFile) {
+	let testWithData = function (testFile, validate) {
 		let validateOptions = {
-			validate: true,
+			validate: validate,
 			fsResolver: myFsResolver
 		};
 		
@@ -431,12 +431,13 @@ describe('from raml to swagger', function () {
 	
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
+			let validate = !_.includes(testFile, 'novalidate');
 			if (process.env.fileToTest) {
 				if (_.endsWith(testFile, process.env.fileToTest)) {
-					it('test: ' + testFile, testWithData(testFile));
+					it('test: ' + testFile, testWithData(testFile, validate));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(testFile));
+				it('test: ' + testFile, testWithData(testFile, validate));
 			}
 		}
 	});
