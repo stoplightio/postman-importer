@@ -506,6 +506,9 @@ describe('Swagger Exporter', function () {
 	});
 	
 	describe('_export', function () {
+		afterEach(function () {
+			fs.unlinkSync('temp.yaml');
+		});
 		it('should perform export for loaded data', function (done) {
 			swaggerExporter.loadSLData(require(__dirname + '/../../data/stoplight.json'))
 				.then(function () {
