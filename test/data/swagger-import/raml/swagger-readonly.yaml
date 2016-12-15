@@ -1,0 +1,97 @@
+#%RAML 1.0
+title: Billing Engine Process APIs
+version: v1
+baseUri: /invoiceengineprocessapi
+description: Billing Engine Process APIs
+(oas-info):
+  termsOfService: None
+/:
+  get:
+    displayName: GET_root
+    responses:
+      '200':
+        description: OK
+types:
+  ServiceResponse:
+    properties:
+      success:
+        type: boolean
+        readOnly: true
+        required: false
+        facets:
+          readOnly?: boolean
+      message:
+        type: string
+        readOnly: true
+        facets:
+          readOnly?: boolean
+        required: false
+      error:
+        type: string
+        readOnly: true
+        facets:
+          readOnly?: boolean
+        required: false
+      responseObject:
+        type: string
+        readOnly: true
+        facets:
+          readOnly?: boolean
+        required: false
+      warning:
+        type: string
+        readOnly: true
+        facets:
+          readOnly?: boolean
+        required: false
+  InvoiceAdjustmentDTO:
+    properties:
+      invoiceNumber:
+        type: string
+        required: false
+  ServiceResponse2:
+    properties:
+      success:
+        type: boolean
+        readOnly: true
+        required: false
+        facets:
+          readOnly?: boolean
+      message:
+        type: string
+        readOnly: true
+        facets:
+          readOnly?: boolean
+        required: false
+      error:
+        type: string
+        readOnly: true
+        facets:
+          readOnly?: boolean
+        required: false
+      responseObject:
+        readOnly: true
+        type: InvoiceAdjustmentDTO
+        required: false
+        facets:
+          readOnly?: boolean
+      warning:
+        type: string
+        readOnly: true
+        facets:
+          readOnly?: boolean
+        required: false
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
