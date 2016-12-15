@@ -1,0 +1,1271 @@
+{
+  "basePath": "/invoiceengineprocessapi",
+  "definitions": {
+    "AdjustInvoiceItemDTO": {
+      "properties": {
+        "adjustmentDescription": {
+          "type": "string"
+        },
+        "amount": {
+          "format": "double",
+          "type": "number"
+        },
+        "externalReferenceDetails": {
+          "type": "string"
+        },
+        "invoiceItemAdjustmentDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "invoiceItemAdjustmentId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "otherReasonCode": {
+          "type": "string"
+        },
+        "percentage": {
+          "format": "double",
+          "type": "number"
+        },
+        "reasonCode": {
+          "type": "string"
+        },
+        "reversalFlag": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GenerateInvoiceAccountDto": {
+      "properties": {
+        "accountTypeCode": {
+          "type": "string"
+        },
+        "contacts": {
+          "items": {
+            "$ref": "#/definitions/GenerateInvoiceContactDto"
+          },
+          "type": "array"
+        },
+        "defaultCurrencyCode": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/definitions/GenerateInvoiceLocationDTO"
+        },
+        "name": {
+          "type": "string"
+        },
+        "partyId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "paymentTermCode": {
+          "type": "string"
+        },
+        "paymentTermId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "accountTypeCode",
+        "name",
+        "email"
+      ],
+      "type": "object"
+    },
+    "GenerateInvoiceContactDto": {
+      "properties": {
+        "contactTypeCode": {
+          "enum": [
+            "Unknown",
+            "NA",
+            "BillTo",
+            "Payer",
+            "ShipFrom",
+            "ShipTo",
+            "SoldFrom",
+            "SoldTo"
+          ],
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "isPrimaryContact": {
+          "type": "boolean"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/definitions/GenerateInvoiceLocationDTO"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "firstName",
+        "email",
+        "isPrimaryContact"
+      ],
+      "type": "object"
+    },
+    "GenerateInvoiceDto": {
+      "properties": {
+        "billToAccount": {
+          "$ref": "#/definitions/GenerateInvoiceAccountDto"
+        },
+        "comments": {
+          "type": "string"
+        },
+        "companyAddress": {
+          "$ref": "#/definitions/GenerateInvoiceLocationDTO"
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "createdByUserID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "currencyCode": {
+          "type": "string"
+        },
+        "documentTypeCode": {
+          "enum": [
+            "Unknown",
+            "NA",
+            "BookingInvoice",
+            "CreditNote",
+            "FinalInvoice",
+            "OEMInvoice",
+            "PerformaInvoice",
+            "ReturnInvoice",
+            "SelfInvoice",
+            "TeslaEnergy"
+          ],
+          "type": "string"
+        },
+        "entityCode": {
+          "type": "string"
+        },
+        "invoiceAdjustments": {
+          "items": {
+            "$ref": "#/definitions/InvoiceAdjustmentDTO"
+          },
+          "type": "array"
+        },
+        "invoiceDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "invoiceDueDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "invoiceId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "invoiceInstallments": {
+          "items": {
+            "$ref": "#/definitions/GenerateInvoiceInstallmentDTO"
+          },
+          "type": "array"
+        },
+        "invoiceItemAdjustments": {
+          "items": {
+            "$ref": "#/definitions/GenerateInvoiceItemAdjustmentDTO"
+          },
+          "type": "array"
+        },
+        "invoiceItems": {
+          "items": {
+            "$ref": "#/definitions/GenerateInvoiceItemDto"
+          },
+          "type": "array"
+        },
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "locationCode": {
+          "type": "string"
+        },
+        "payerAccount": {
+          "$ref": "#/definitions/GenerateInvoiceAccountDto"
+        },
+        "referenceNumber": {
+          "type": "string"
+        },
+        "referenceType": {
+          "type": "string"
+        },
+        "shipFromAccount": {
+          "$ref": "#/definitions/GenerateInvoiceAccountDto"
+        },
+        "shipToAccount": {
+          "$ref": "#/definitions/GenerateInvoiceAccountDto"
+        },
+        "soldToAccount": {
+          "$ref": "#/definitions/GenerateInvoiceAccountDto"
+        },
+        "taxNumber": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "documentTypeCode",
+        "entityCode"
+      ],
+      "type": "object"
+    },
+    "GenerateInvoiceInstallmentDTO": {
+      "properties": {
+        "amount": {
+          "format": "double",
+          "type": "number"
+        },
+        "dueDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "invoiceId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "invoiceId",
+        "dueDate",
+        "amount"
+      ],
+      "type": "object"
+    },
+    "GenerateInvoiceItemAdjustmentDTO": {
+      "properties": {
+        "adjustmentDescription": {
+          "type": "string"
+        },
+        "amount": {
+          "format": "double",
+          "type": "number"
+        },
+        "externalReferenceDetails": {
+          "type": "string"
+        },
+        "invoiceId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "invoiceItemAdjustmentDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "invoiceItemAdjustmentId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "invoiceItemId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "otherReasonCode": {
+          "type": "string"
+        },
+        "percentage": {
+          "format": "double",
+          "type": "number"
+        },
+        "reasonCode": {
+          "type": "string"
+        },
+        "reversalFlag": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GenerateInvoiceItemDto": {
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "inputPrice": {
+          "format": "double",
+          "type": "number"
+        },
+        "isTaxIncluded": {
+          "type": "boolean"
+        },
+        "isTaxable": {
+          "type": "boolean"
+        },
+        "item": {
+          "type": "string"
+        },
+        "itemDescription": {
+          "type": "string"
+        },
+        "lineNumber": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "partReferenceId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "quantity": {
+          "format": "double",
+          "type": "number"
+        },
+        "referenceNumber": {
+          "type": "string"
+        },
+        "referenceType": {
+          "type": "string"
+        },
+        "taxReferenceCode": {
+          "type": "string"
+        },
+        "taxes": {
+          "items": {
+            "$ref": "#/definitions/GenerateInvoiceTaxItemDto"
+          },
+          "type": "array"
+        },
+        "unitCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "item",
+        "inputPrice",
+        "quantity"
+      ],
+      "type": "object"
+    },
+    "GenerateInvoiceLocationDTO": {
+      "properties": {
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "address3": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string"
+        },
+        "district": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "address1"
+      ],
+      "type": "object"
+    },
+    "GenerateInvoiceTaxItemDto": {
+      "properties": {
+        "amount": {
+          "format": "double",
+          "type": "number"
+        },
+        "invoiceItemId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "taxCode": {
+          "type": "string"
+        },
+        "taxDescription": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "InvoiceAdjustmentDTO": {
+      "properties": {
+        "adjustmentDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "adjustmentDescription": {
+          "type": "string"
+        },
+        "adjustmentTypeCode": {
+          "enum": [
+            "Unknown",
+            "NA",
+            "AdjType1",
+            "AdjType2"
+          ],
+          "type": "string"
+        },
+        "amount": {
+          "format": "double",
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "number"
+        },
+        "createdByUserID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "currencyCode": {
+          "type": "string"
+        },
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "isReversal": {
+          "type": "boolean"
+        },
+        "percentage": {
+          "format": "double",
+          "type": "number"
+        },
+        "reasonCode": {
+          "enum": [
+            "Unknown",
+            "NA",
+            "ArError",
+            "Cancellation",
+            "CreditAndRebill",
+            "DuplicateBilling",
+            "EmployeeDiscount",
+            "FreeProduct",
+            "ItemDiscount",
+            "LatePayment",
+            "ReferalCredit",
+            "SalesTaxError",
+            "ShippingAndHandling",
+            "WrongFreight",
+            "WrongTaxRate"
+          ],
+          "type": "string"
+        },
+        "referenceNumber": {
+          "type": "string"
+        },
+        "referenceType": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "adjustmentTypeCode",
+        "reasonCode",
+        "adjustmentDate"
+      ],
+      "type": "object"
+    },
+    "InvoiceDTO": {
+      "properties": {
+        "billToContactId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "billToId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "comments": {
+          "type": "string"
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "createdByUserID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "currencyCode": {
+          "type": "string"
+        },
+        "entityCode": {
+          "type": "string"
+        },
+        "invoiceDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "invoiceDueDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "invoiceId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "invoiceItemAdjustments": {
+          "items": {
+            "$ref": "#/definitions/InvoiceItemAdjustmentForInvoiceDTO"
+          },
+          "type": "array"
+        },
+        "invoiceItems": {
+          "items": {
+            "$ref": "#/definitions/InvoiceItemForInvoiceDTO"
+          },
+          "type": "array"
+        },
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "isProformaInvoice": {
+          "type": "boolean"
+        },
+        "payerContactId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "payerId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "referenceNumber": {
+          "type": "string"
+        },
+        "referenceType": {
+          "type": "string"
+        },
+        "shipToContactId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "shipToId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "soldToContactId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "soldToId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "vatTaxNumber": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "invoiceDate",
+        "isProformaInvoice"
+      ],
+      "type": "object"
+    },
+    "InvoiceItemAdjustmentForInvoiceDTO": {
+      "properties": {
+        "adjustmentDescription": {
+          "type": "string"
+        },
+        "amount": {
+          "format": "double",
+          "type": "number"
+        },
+        "createdByUserID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "currencyCode": {
+          "type": "string"
+        },
+        "invoiceItemId": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "lineNumber": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "reasonCode": {
+          "enum": [
+            "Unknown",
+            "NA",
+            "ArError",
+            "Cancellation",
+            "CreditAndRebill",
+            "DuplicateBilling",
+            "EmployeeDiscount",
+            "FreeProduct",
+            "ItemDiscount",
+            "LatePayment",
+            "ReferalCredit",
+            "SalesTaxError",
+            "ShippingAndHandling",
+            "WrongFreight",
+            "WrongTaxRate"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "InvoiceItemForInvoiceDTO": {
+      "properties": {
+        "inputPrice": {
+          "format": "double",
+          "type": "number"
+        },
+        "invoiceItemId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "invoiceNumber": {
+          "type": "string"
+        },
+        "isTaxIncluded": {
+          "type": "boolean"
+        },
+        "isTaxable": {
+          "type": "boolean"
+        },
+        "item": {
+          "type": "string"
+        },
+        "itemDescription": {
+          "type": "string"
+        },
+        "lineNumber": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "productId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "quantity": {
+          "format": "double",
+          "maximum": 2147483647,
+          "minimum": 1,
+          "type": "number"
+        },
+        "referenceNumber": {
+          "type": "string"
+        },
+        "referenceType": {
+          "type": "string"
+        },
+        "uomCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "inputPrice",
+        "quantity"
+      ],
+      "type": "object"
+    },
+    "ProcessAccountAdjustmentAccountDTO": {
+      "properties": {
+        "accountId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "bemPartyId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ProcessAccountAdjustmentDTO": {
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/ProcessAccountAdjustmentAccountDTO"
+        },
+        "accountAdjustmentId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "adjustmentDescription": {
+          "type": "string"
+        },
+        "amount": {
+          "format": "double",
+          "type": "number"
+        },
+        "createdByUserID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "currencyCode": {
+          "type": "string"
+        },
+        "isReversal": {
+          "type": "boolean"
+        },
+        "otherReasonCode": {
+          "type": "string"
+        },
+        "reasonCode": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProcessPaymentAccountDTO": {
+      "properties": {
+        "accountId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "bemPartyId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ProcessPaymentDTO": {
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/ProcessPaymentAccountDTO"
+        },
+        "invoices": {
+          "items": {
+            "$ref": "#/definitions/ProcessPaymentInvoiceDTO"
+          },
+          "type": "array"
+        },
+        "payments": {
+          "items": {
+            "$ref": "#/definitions/ProcessPaymentInfoDTO"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ProcessPaymentInfoDTO": {
+      "properties": {
+        "amount": {
+          "format": "double",
+          "type": "number"
+        },
+        "currencyCode": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "paymentDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "paymentId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "paymentMethodCode": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "paymentReference": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProcessPaymentInvoiceDTO": {
+      "properties": {
+        "appliedCreditBalance": {
+          "format": "double",
+          "type": "number"
+        },
+        "appliedCreditBalanceCurrencyCode": {
+          "type": "string"
+        },
+        "appliedInvoiceAmount": {
+          "format": "double",
+          "type": "number"
+        },
+        "appliedInvoiceAmountCurrencyCode": {
+          "type": "string"
+        },
+        "effectiveDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "invoiceId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "invoiceNumber": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ServiceResponse[InvoiceAdjustmentDTO]": {
+      "properties": {
+        "error": {
+          "readOnly": true,
+          "type": "string"
+        },
+        "message": {
+          "readOnly": true,
+          "type": "string"
+        },
+        "responseObject": {
+          "$ref": "#/definitions/InvoiceAdjustmentDTO",
+          "readOnly": true
+        },
+        "success": {
+          "readOnly": true,
+          "type": "boolean"
+        },
+        "warning": {
+          "readOnly": true,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ServiceResponse[String]": {
+      "properties": {
+        "error": {
+          "readOnly": true,
+          "type": "string"
+        },
+        "message": {
+          "readOnly": true,
+          "type": "string"
+        },
+        "responseObject": {
+          "readOnly": true,
+          "type": "string"
+        },
+        "success": {
+          "readOnly": true,
+          "type": "boolean"
+        },
+        "warning": {
+          "readOnly": true,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SplitInvoiceDTO": {
+      "properties": {
+        "invoiceId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "invoiceInstallments": {
+          "items": {
+            "$ref": "#/definitions/SplitInvoiceInstallmentDTO"
+          },
+          "type": "array"
+        },
+        "invoiceNumber": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "invoiceInstallments"
+      ],
+      "type": "object"
+    },
+    "SplitInvoiceInstallmentDTO": {
+      "properties": {
+        "amount": {
+          "format": "double",
+          "type": "number"
+        },
+        "dueDate": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dueDate",
+        "amount"
+      ],
+      "type": "object"
+    }
+  },
+  "info": {
+    "description": "Billing Engine Process APIs",
+    "termsOfService": "None",
+    "title": "Billing Engine Process APIs",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Accounts": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "deprecated": false,
+        "operationId": "ApiAccountsPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "adjustmentDTO",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ProcessAccountAdjustmentDTO"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse[String]"
+            }
+          }
+        },
+        "tags": [
+          "Accounts"
+        ]
+      }
+    },
+    "/api/Invoice": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "deprecated": false,
+        "operationId": "ApiInvoicePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "invoice",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/GenerateInvoiceDto"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse[String]"
+            }
+          }
+        },
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/Invoice/GenerateSplitInvoices": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "deprecated": false,
+        "operationId": "ApiInvoiceGenerateSplitInvoicesPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "invoice",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/SplitInvoiceDTO"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse[String]"
+            }
+          }
+        },
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/Invoice/{id}/item/{invoiceItemId}/Adjust": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "deprecated": false,
+        "operationId": "ApiInvoiceByIdItemByInvoiceItemIdAdjustGet",
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "invoiceItemId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "adjustment",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/GenerateInvoiceItemAdjustmentDTO"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse[String]"
+            }
+          }
+        },
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/Invoice/{invoiceId}": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "ApiInvoiceByInvoiceIdGet",
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/InvoiceDTO"
+            }
+          }
+        },
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/Invoice/{invoiceId}/Adjust": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "deprecated": false,
+        "operationId": "ApiInvoiceByInvoiceIdAdjustPost",
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "invoiceAdjustmentDto",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/InvoiceAdjustmentDTO"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse[InvoiceAdjustmentDTO]"
+            }
+          }
+        },
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/Invoice/{invoiceId}/item/{invoiceItemId}/Adjust2": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "deprecated": false,
+        "operationId": "ApiInvoiceByInvoiceIdItemByInvoiceItemIdAdjustPost",
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "invoiceId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "invoiceItemId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "adjustment",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/AdjustInvoiceItemDTO"
+            }
+          }
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceResponse[String]"
+            }
+          }
+        },
+        "tags": [
+          "Invoice"
+        ]
+      }
+    },
+    "/api/Payments": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/json-patch+json"
+        ],
+        "deprecated": false,
+        "operationId": "ApiPaymentsPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "processPaymentDTO",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ProcessPaymentDTO"
+            }
+          }
+        ],
+        "produces": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {},
+  "swagger": "2.0"
+}
