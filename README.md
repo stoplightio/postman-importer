@@ -4,7 +4,6 @@ This package helps to convert between different API specifications. It was origi
 
 ## Supported Conversions
 
-- OAS (Swagger 2.0) -> RAML 0.8
 - OAS (Swagger 2.0) -> RAML 1.0
 - RAML 0.8 -> OAS (Swagger 2.0)
 - RAML 1.0 -> OAS (Swagger 2.0)
