@@ -22,10 +22,9 @@ For an online conversion, use: [https://mulesoft.github.io/api-spec-converter](h
 ./lib/bin/converter.js --from SWAGGER --to RAML10 ./path/to/swagger.json
 ```
 
-Or install globally:
+Or install globally and then:
 
 ```
-npm install -g
 oas-raml-converter --from SWAGGER --to RAML10 ./path/to/swagger.json
 ```
 
