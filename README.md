@@ -29,7 +29,7 @@ npm install -g
 oas-raml-converter --from SWAGGER --to RAML10 ./path/to/swagger.json
 ```
 
-### 3. As a service
+### 3. As a service (not yet available)
 
 Start the converter in an express server:
 ```
@@ -75,21 +75,10 @@ var converter = require('oas-raml-converter');
 var autoToRaml = new converter.Converter(converter.Formats.AUTO, converter.Formats.RAML10);
 ```
 
-#### Converting from a file
+#### Converting from a file or url
 
 ```js
 swaggerToRaml.convertFile('/path/to/swagger.json').then(function(raml) {
-  console.log(raml); // raml is raml yaml string
-})
-.catch(function(err) {
-  console.error(err);
-});
-```
-
-#### Converting from a url
-
-```js
-swaggerToRaml.convertUrl('http://petstore.swagger.io/v2/swagger.json').then(function(raml) {
   console.log(raml); // raml is raml yaml string
 })
 .catch(function(err) {
@@ -114,7 +103,8 @@ swaggerToRaml.convertData(mySwaggerString).then(function(raml) {
 ```js
 var options = {
     validate: false, // Parse the output to check that its a valid document
-    fs: { ... } // Use a custom file solver
+    format: 'yaml', // Output format: json (default for OAS) or yaml (default for RAML)
+    fs: { ... } // Use a custom file system solver (not yet available)
 };
 
 swaggerToRaml.convertFile('/path/to/swagger.json', options).then(function(raml) {
