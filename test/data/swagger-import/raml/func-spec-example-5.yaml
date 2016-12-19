@@ -1,0 +1,44 @@
+#%RAML 1.0
+title: Swagger Petstore
+version: '1.0'
+(oas-tags-definition):
+  - name: pet
+    description: Everything you need to handle pets
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-responses-default: any
+/pets:
+  displayName: pets
+  /findByStatus:
+    displayName: findByStatus
+    get:
+      displayName: findPetsByStatus
+      description: status value
+      (oas-summary): Finds Pets by status
+      (oas-responses-default):
+        description: Default response
+      queryParameters:
+        status:
+          description: Status value
+          type: array
+          displayName: Status value
+          items:
+            type: string
+      (oas-tags):
+        - pet

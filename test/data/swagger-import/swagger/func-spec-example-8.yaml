@@ -1,0 +1,63 @@
+swagger: "2.0"
+info:
+    version: "1.0"
+    title: Swagger Petstore
+tags:
+  - name: pet
+    description: Everything you need to handle pets
+definitions:
+    Order:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+          petId:
+            type: integer
+            format: int64
+          quantity:
+            type: integer
+            format: int32
+          shipDate:
+            type: string
+            format: date-time
+          status:
+            type: string
+            description: Order Status
+          complete:
+            type: boolean
+
+paths:
+    "/pet/{petId}":
+      post:
+        tags:
+        - pet
+        summary: Updates a pet in the store 
+                 with form data
+        operationId: updatePetWithForm
+        consumes:
+        - application/x-www-form-urlencoded
+        produces:
+        - application/json
+        - application/xml
+        parameters:
+        - name: petId
+          in: path
+          description: ID of pet that needs 
+                to be updated
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: formData
+          description: Updated name of the pet
+          required: false
+          type: string
+        - name: status
+          in: formData
+          description: Updated status of the pet
+          required: false
+          type: string
+        responses:
+          '405':
+            description: Invalid input

@@ -1,0 +1,76 @@
+#%RAML 1.0
+title: Swagger Petstore
+version: '1.0'
+(oas-tags-definition):
+  - name: pet
+    description: Everything you need to handle pets
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/store:
+  displayName: store
+  /order:
+    displayName: order
+    post:
+      displayName: placeOrder
+      (oas-summary): Place an order for a pet
+      body:
+        application/json:
+          type: Order
+          (oas-body-name): body
+          description: order placed for purchasing 
+                 the pet
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Order
+          description: successful operation
+        '400':
+          description: Invalid Order
+      (oas-tags):
+        - store
+types:
+  Order:
+    properties:
+      id:
+        type: integer
+        format: int64
+        required: false
+      petId:
+        type: integer
+        format: int64
+        required: false
+      quantity:
+        type: integer
+        format: int32
+        required: false
+      shipDate:
+        type: datetime
+        format: rfc3339
+        required: false
+      status:
+        type: string
+        description: Order Status
+        required: false
+      complete:
+        type: boolean
+        required: false
