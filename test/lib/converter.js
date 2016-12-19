@@ -389,30 +389,30 @@ describe('from raml to swagger', function () {
 			let ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			let converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
 			converter.convertFile(testFilePath, validateOptions)
-						.then(function (resultSwagger) {
+				.then(function (resultSwagger) {
 
-							try {
-								let targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
+					try {
+						let targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
 
-								let notExistsTarget = !fs.existsSync(targetFile);
-								if (notExistsTarget) {
-									let data = JSON.stringify(resultSwagger);
-									console.log('Content for non existing target file ' + targetFile + '\n.');
-									console.log('********** Begin file **********\n');
-									console.log(data);
-									console.log('********** Finish file **********\n');
-									return done(data);
-								} else {
-									expect(resultSwagger).to.deep.equal(require(targetFile));
-									done();
-								}
-							} catch (e) {
-								done(e);
-							}
-						}).catch(function (err) {
-							console.error('error exporting file.');
-							done(err);
-						});
+						let notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							let data = JSON.stringify(resultSwagger);
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(data);
+							console.log('********** Finish file **********\n');
+							return done(data);
+						} else {
+							expect(resultSwagger).to.deep.equal(require(targetFile));
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch(function (err) {
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 	
