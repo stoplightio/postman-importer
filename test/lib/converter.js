@@ -396,11 +396,12 @@ describe('from raml to swagger', function () {
 
 								let notExistsTarget = !fs.existsSync(targetFile);
 								if (notExistsTarget) {
+									let data = JSON.stringify(resultSwagger);
 									console.log('Content for non existing target file ' + targetFile + '\n.');
 									console.log('********** Begin file **********\n');
-									console.log(JSON.stringify(resultSwagger));
+									console.log(data);
 									console.log('********** Finish file **********\n');
-									return done(err);
+									return done(data);
 								} else {
 									expect(resultSwagger).to.deep.equal(require(targetFile));
 									done();
