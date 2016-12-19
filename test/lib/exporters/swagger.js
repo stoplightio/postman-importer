@@ -197,29 +197,30 @@ describe('Swagger Exporter', function () {
 	describe('_mapSecurityDefinitions', function () {
 		it('should map apiKey security definitions from sl security schemes successfully', function () {
 			let schemes = {
-				'apiKey': {
+				'apiKey': [{
 					'headers': [
 						{
 							'name': 'api_key',
 							'value': ''
 						}
-					]
-				}
+					],
+					'name': 'myApiKey'
+				}]
 			};
 			
 			let mappedSchemes;
 			
 			mappedSchemes = Swagger._mapSecurityDefinitions(schemes);
 			expect(Object.keys(mappedSchemes).length).equal(1);
-			expect(mappedSchemes.api_key).to.be.an('object');
-			expect(mappedSchemes.api_key).to.have.property('in');
-			expect(mappedSchemes.api_key.in).to.equal('header');
-			expect(mappedSchemes.api_key.type).to.equal('apiKey');
+			expect(mappedSchemes.myApiKey).to.be.an('object');
+			expect(mappedSchemes.myApiKey).to.have.property('in');
+			expect(mappedSchemes.myApiKey.in).to.equal('header');
+			expect(mappedSchemes.myApiKey.type).to.equal('apiKey');
 		});
 		
 		it('should able to map oauth2 security definitions successfully', function () {
 			let schemes = {
-				'oauth2': {
+				'oauth2': [{
 					'authorizationUrl': 'http://swagger.io/api/oauth/dialog',
 					'scopes': [
 						{
@@ -232,8 +233,9 @@ describe('Swagger Exporter', function () {
 						}
 					],
 					'tokenUrl': '',
-					'flow': 'accessCode'
-				}
+					'flow': 'accessCode',
+					'name': 'myoauth2'
+				}]
 			};
 			
 			let mappedSchemes;
@@ -241,18 +243,18 @@ describe('Swagger Exporter', function () {
 			mappedSchemes = Swagger._mapSecurityDefinitions(schemes);
 			expect(Object.keys(mappedSchemes).length).equal(1);
 			
-			expect(mappedSchemes.oauth2).to.be.an('object');
-			expect(mappedSchemes.oauth2).to.have.property('authorizationUrl');
-			expect(mappedSchemes.oauth2).to.have.property('tokenUrl');
-			expect(mappedSchemes.oauth2).to.have.property('flow');
-			expect(mappedSchemes.oauth2).to.have.property('scopes');
+			expect(mappedSchemes.myoauth2).to.be.an('object');
+			expect(mappedSchemes.myoauth2).to.have.property('authorizationUrl');
+			expect(mappedSchemes.myoauth2).to.have.property('tokenUrl');
+			expect(mappedSchemes.myoauth2).to.have.property('flow');
+			expect(mappedSchemes.myoauth2).to.have.property('scopes');
 			
 			//verify individual data
-			expect(mappedSchemes.oauth2.authorizationUrl).to.be.equal('http://swagger.io/api/oauth/dialog');
-			expect(mappedSchemes.oauth2.tokenUrl).to.be.equal('');
-			expect(mappedSchemes.oauth2.scopes).to.be.an('object');
-			expect(mappedSchemes.oauth2.scopes['write:pets']).to.be.equal('modify pets in your account');
-			expect(mappedSchemes.oauth2.scopes['read:pets']).to.be.equal('read your pets');
+			expect(mappedSchemes.myoauth2.authorizationUrl).to.be.equal('http://swagger.io/api/oauth/dialog');
+			expect(mappedSchemes.myoauth2.tokenUrl).to.be.equal('');
+			expect(mappedSchemes.myoauth2.scopes).to.be.an('object');
+			expect(mappedSchemes.myoauth2.scopes['write:pets']).to.be.equal('modify pets in your account');
+			expect(mappedSchemes.myoauth2.scopes['read:pets']).to.be.equal('read your pets');
 		});
 		it('should map basic security definitions to stoplight successfully', function () {
 			let schemes = {
@@ -274,12 +276,9 @@ describe('Swagger Exporter', function () {
 	
 	describe('_mapEndpointSecurity', function () {
 		it('should map apiKey security for endpoint', function () {
-			let securedBy = {
-				none: true,
-				apiKey: true
-			};
+			let securedBy = ['myApiKey'];
 			let securityDefinitions = {
-				apiKey: {
+				apiKey: [{
 					headers: [
 						{
 							name: 'api_key',
@@ -291,28 +290,25 @@ describe('Swagger Exporter', function () {
 							'name': 'qs',
 							'value': ''
 						}
-					]
-				}
+					],
+					'name': 'myApiKey'
+				}]
 			};
 			let result = Swagger._mapEndpointSecurity(securedBy, securityDefinitions);
 			expect(result).to.be.an('array');
-			expect(result.length).to.be.equal(2);
+			expect(result.length).to.be.equal(1);
 			expect(result[0]).to.be.an('object');
-			expect(Object.keys(result[0])[0]).to.be.equal('api_key');
-			expect(Object.keys(result[1])[0]).to.be.equal('qs');
+			expect(Object.keys(result[0])[0]).to.be.equal('myApiKey');
 		});
 		
 		it('should map basic security for endpoint', function () {
-			let securedBy = {
-				none: true,
-				basic: true
-			};
+			let securedBy = ['abcd'];
 			let securityDefinitions = {
-				basic: {
+				basic: [{
 					name: 'abcd',
 					value: '',
 					description: 'test desc'
-				}
+				}]
 			};
 			let result = Swagger._mapEndpointSecurity(securedBy, securityDefinitions);
 			expect(result).to.be.an('array');
@@ -321,12 +317,9 @@ describe('Swagger Exporter', function () {
 			expect(Object.keys(result[0])[0]).to.be.equal('abcd');
 		});
 		it('should map oauth2 security for endpoint', function () {
-			let securedBy = {
-				none: true,
-				oauth2: true
-			};
+			let securedBy = ['myoauth2'];
 			let securityDefinitions = {
-				oauth2: {
+				oauth2: [{
 					'flow': 'implicit',
 					'authorizationUrl': 'http://test-authorization',
 					'tokenUrl': '',
@@ -334,15 +327,16 @@ describe('Swagger Exporter', function () {
 						{
 							'name': 'write:posts',
 							'value': ''
-						}
-					]
-				}
+						},
+					],
+					'name': 'myoauth2'
+				}]
 			};
 			let result = Swagger._mapEndpointSecurity(securedBy, securityDefinitions);
 			expect(result).to.be.an('array');
 			expect(result.length).to.be.equal(1);
 			expect(result[0]).to.be.an('object');
-			expect(Object.keys(result[0])[0]).to.be.equal('oauth2');
+			expect(Object.keys(result[0])[0]).to.be.equal('myoauth2');
 		});
 	});
 	
