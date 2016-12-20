@@ -1,0 +1,36 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Security tryout
+  description: #### Tries out different security
+               configurations
+
+paths:
+  /getApiKey:
+    get:
+      parameters:
+      - name: count
+        in: query
+        description: Count of media to return.
+        type: integer
+      - name: max_id
+        in: query
+        description: Return media earlier than this 
+                     max_id.s
+        type: integer
+      - name: min_id
+        in: query
+        description: Return media later than this 
+                     min_id.
+        type: integer
+      security:
+      - internalApiKey: []
+      responses:
+        '200':
+          description: InternalApiKey. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`
+securityDefinitions:
+    internalApiKey:
+        type: apiKey
+        in: header
+        name: api_key
+        description: Api Key Authentication

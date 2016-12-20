@@ -1,0 +1,42 @@
+#%RAML 1.0
+title: Security tryout
+version: 1.0.0
+baseUri: 'http://mazimi-prod.apigee.net/security'
+protocols:
+  - HTTP
+description: Tries out different security configurations
+securitySchemes:
+  oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'http://swagger.io/api/oauth/dialog'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'write:pets'
+        - 'read:pets'
+/getOauth2Auth:
+  displayName: getOauth2Auth
+  get:
+    displayName: GET_getOauth2Auth
+    responses:
+      '200':
+        description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is successful, otherwise it will send `Unauthorized`'
+    queryParameters:
+      count:
+        description: Count of media to return.
+        type: integer
+        displayName: Count of media to return.
+      max_id:
+        description: Return media earlier than this max_id.s
+        type: integer
+        displayName: Return media earlier than this max_id.s
+      min_id:
+        description: Return media later than this min_id.
+        type: integer
+        displayName: Return media later than this min_id.
+    securedBy:
+      - oauth2:
+          scopes:
+            - 'read:pets'

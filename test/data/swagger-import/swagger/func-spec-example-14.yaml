@@ -1,0 +1,42 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Security tryout
+  description: Tries out different security configurations
+schemes:
+- http
+host: mazimi-prod.apigee.net
+basePath: /security
+paths:
+  /getOauth2Auth:
+    get:
+      parameters:
+      - name: count
+        in: query
+        description: Count of media to return.
+        type: integer
+      - name: max_id
+        in: query
+        description: Return media earlier than 
+                     this max_id.s
+        type: integer
+      - name: min_id
+        in: query
+        description: Return media later than this 
+                     min_id.
+        type: integer
+      security:
+      - oauth2:
+        - read:pets
+      responses:
+        '200':
+          description: Oauth2 Authorization. Will send `Authenticated` if authentication is successful, otherwise it will send `Unauthorized`
+securityDefinitions:
+  oauth2:
+    type: oauth2
+    authorizationUrl: 
+           http://swagger.io/api/oauth/dialog
+    flow: implicit
+    scopes:
+      write:pets: modify pets in your account
+      read:pets: read your pets

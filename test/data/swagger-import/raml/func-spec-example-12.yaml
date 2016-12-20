@@ -1,0 +1,36 @@
+#%RAML 1.0
+title: Security tryout
+version: 1.0.0
+description: configurations
+securitySchemes:
+  internalApiKey:
+    type: Pass Through
+    describedBy:
+      headers:
+        api_key:
+          type: string
+    description: Api Key Authentication
+/getApiKey:
+  displayName: getApiKey
+  get:
+    displayName: GET_getApiKey
+    responses:
+      '200':
+        description: 'InternalApiKey. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+    queryParameters:
+      count:
+        description: Count of media to return.
+        type: integer
+        displayName: Count of media to return.
+      max_id:
+        description: Return media earlier than 
+                     this max_id.s
+        type: integer
+        displayName: Return media earlier than
+                     this max_id.s
+      min_id:
+        description: Return media later than this min_id.
+        type: integer
+        displayName: Return media later than this min_id.
+    securedBy:
+      - internalApiKey
