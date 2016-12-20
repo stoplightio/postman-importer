@@ -1,0 +1,86 @@
+swagger: '2.0'
+
+info:
+  version: 1.1.0
+  title: Simple API
+
+definitions:
+  Person:
+    title: Human
+    description: A person which can be the user itself or one of his friend
+    required:
+      - username
+    properties:
+      firstName:
+        description: first name
+        type: string
+        example: John
+      lastName:
+        description: last name
+        type: string
+        example: Doe
+      username:
+        description: Username used to connect to the service
+        type: string
+        pattern: '[a-z0-9]{8,64}'
+        minLength: 8
+        maxLength: 64
+        example: john1doe6
+parameters:
+  username:
+    name: username
+    in: path
+    required: true
+    description: The person's username
+    type: string
+  userAgent:
+    name: userAgent
+    description: All API consumers MUST provide a user agent
+    type: string
+    in: header
+    required: true
+  pageSize:
+    name: pageSize
+    in: query
+    description: Number of persons returned
+    type: integer
+    format: int32
+    required: true
+  userData:
+    name: userData
+    in: formData
+    description: The person's data
+    required: true
+    type: string
+  userBody:
+    name: userBody
+    in: body
+    required: true
+    description: The person body.
+    schema:
+      $ref: '#/definitions/Person'
+
+paths:
+  '/persons/{username}':
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/userAgent'
+      - $ref: '#/parameters/pageSize'
+    get:
+      summary: Gets a person
+      description: Returns a single person for its username.
+      operationId: readPerson
+
+      responses:
+        '200':
+          description: A Person
+          schema:
+            $ref: '#/definitions/Person'
+          headers:
+            X-Rate-Limit-Remaining:
+              description: How many calls consumer can do
+              type: integer
+            X-Rate-Limit-Reset:
+              description: When rate limit will be reset
+              type: string
+              format: date-time
