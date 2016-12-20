@@ -1,0 +1,111 @@
+#%RAML 1.0
+title: Simple API
+version: 1.1.0
+/persons:
+  displayName: persons
+  '/{username}':
+    displayName: '{username}'
+    uriParameters:
+      username:
+        required: true
+        description: The person's username
+        type: string
+        displayName: The person's username
+    get:
+      displayName: readPerson
+      description: Returns a single person for its username.
+      (oas-summary): Gets a person
+      responses:
+        '200':
+          body:
+            type: Person
+          description: A Person
+          headers:
+            X-Rate-Limit-Remaining:
+              type: integer
+              description: How many calls consumer can do
+            X-Rate-Limit-Reset:
+              type: datetime
+              description: When rate limit will be reset
+              format: rfc3339
+
+    is:
+      - userAgent
+      - pageSize
+
+types:
+  Person:
+    description: A person which can be the user itself or one of his friend
+    properties:
+      firstName:
+        description: first name
+        type: string
+        example: John
+        required: false
+      lastName:
+        description: last name
+        type: string
+        example: Doe
+        required: false
+      username:
+        description: Username used to connect to the service
+        type: string
+        pattern: '[a-z0-9]{8,64}'
+        minLength: 8
+        maxLength: 64
+        example: john1doe6
+    (oas-schema-title): Human
+  Error:
+    description: Give full information about the problem
+    properties:
+      code:
+        description: A human readable code 
+                 (death to numeric error codes!)
+        type: string
+    (oas-schema-title): MultiLingualMultiDeviceError
+
+traits:
+  pageSize:
+    queryParameters:
+      pageSize:
+        type: integer
+        description: Number of persons returned
+        format: int32
+        required: true
+  userAgent:
+    headers:
+      userAgent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
+  userData:
+    body:
+      multipart/form-data:
+        properties:
+          userData:
+            description: The person's data
+            required: true
+            type: string
+        description: The person's data
+  userBody:
+    body:
+      application/json:
+        type: Person
+        (oas-body-name): userBody
+        description: The person body.
+
+annotationTypes:
+  oas-responses: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default: any
