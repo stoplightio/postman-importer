@@ -27,7 +27,7 @@ describe('Importer', function () {
 	describe('loadData', function () {
 		it('should be able to load data directly', function (done) {
 			importer.loadData(require(filePath))
-				.then(function () {
+				.then(() => {
 					done();
 				})
 				.catch(done);

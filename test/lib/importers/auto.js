@@ -65,54 +65,54 @@ describe('Auto Importer', function () {
 	describe('_parse<format>', function () {
 		it('should be able to parse a valid StopLightX .json file', function (done) {
 			importer.loadFile(path.join(dataPath, 'stoplightx.json'))
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
 		
 		it('should be able to parse a valid Postman .json file', function (done) {
 			importer.loadFile(path.join(dataPath, 'postman.json'))
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
 		
 		it('should be able to parse a valid RAML .yaml file', function (done) {
 			importer.loadFile(path.join(dataPath, '/raml-import/raml/raml08.yaml'))
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();
 					
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
 		
 		it('should be able to parse a valid Swagger .yaml file', function (done) {
 			importer.loadFile(path.join(dataPath, 'swagger.yaml'))
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();
 					
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
@@ -135,26 +135,26 @@ describe('Auto Importer', function () {
 		
 		it('should be able to load a valid raml 0.8 yaml file', function (done) {
 			importer.loadFile(__dirname + '/../../data/raml-import/raml/raml08.yaml')
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
 		
 		it('should be able to load a valid raml 1.0 yaml file', function (done) {
 			importer.loadFile(__dirname + '/../../data/raml-import/raml/raml10-simple.yaml')
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					console.log(err);
 					done(err);
 				});
@@ -164,26 +164,26 @@ describe('Auto Importer', function () {
 	describe('loadFile', function () {
 		it('should be able to load a local file', function (done) {
 			importer.loadFile(path.join(dataPath, 'swagger.json'))
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
 		
 		it('should be able to load a remote file', function (done) {
 			importer.loadFile('http://petstore.swagger.io/v2/swagger.json')
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
@@ -192,12 +192,12 @@ describe('Auto Importer', function () {
 	describe('getDetectedFormat', function () {
 		it('should return detected format', function (done) {
 			importer.loadFile(path.join(dataPath, 'stoplightx.json'))
-				.then(function () {
+				.then(() => {
 					expect(importer.getDetectedFormat()).to.be.equal('STOPLIGHTX');
 					expect(importer.detectedFormat).to.be.equal('STOPLIGHTX');
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});

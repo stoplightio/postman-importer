@@ -25,16 +25,16 @@ describe('RAML Exporter', function () {
 	describe('_export', function () {
 		it('should perform export for loaded data', function (done) {
 			ramlExporter.loadSLData(slData)
-				.then(function () {
+				.then(() => {
 					ramlExporter.export('yaml')
-						.then(function (ramlData) {
+						.then((ramlData) => {
 							expect(ramlData).to.not.be.empty;
 							done();
 						})
-						.catch(function (err) {
+						.catch((err) => {
 							done(err);
 						})
-				}).catch(function (err) {
+				}).catch((err) => {
 				done(err);
 			});
 		});
@@ -43,17 +43,17 @@ describe('RAML Exporter', function () {
 	describe('_getData', function () {
 		it('should contain custom implementation as doesn\'t support json export', function () {
 			ramlExporter.loadSLData(slData)
-				.then(function () {
+				.then(() => {
 					ramlExporter.export('json')
-						.then(function () {
+						.then(() => {
 							//force fail as not expected
 							expect(true).to.be.equal(false);
 						})
-						.catch(function (err) {
+						.catch((err) => {
 							expect(err).to.not.equal(undefined);
 						});
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					done(err);
 				});
 		});

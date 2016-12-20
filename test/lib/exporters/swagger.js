@@ -505,24 +505,24 @@ describe('Swagger Exporter', function () {
 		});
 		it('should perform export for loaded data', function (done) {
 			swaggerExporter.loadSLData(require(__dirname + '/../../data/stoplight.json'))
-				.then(function () {
+				.then(() => {
 					swaggerExporter.export('yaml')
-						.then(function (exportedData) {
+						.then((exportedData) => {
 							fs.writeFileSync('temp.yaml', exportedData, 'utf8');
 							parser.parse('temp.yaml')
-								.then(function () {
+								.then(() => {
 									done();
 								})
-								.catch(function (err) {
+								.catch((err) => {
 									expect(err).to.equal(undefined);
 									done();
 								});
 						})
-						.catch(function (err) {
+						.catch((err) => {
 							done(err);
 						});
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});

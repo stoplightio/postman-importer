@@ -18,11 +18,11 @@ describe('Exporter', function () {
 			try {
 				expect(exporter.project).to.equal(null);
 				exporter.loadSLData(slData)
-					.then(function () {
+					.then(() => {
 						expect(exporter.project).to.not.be.null;
 						done();
 					})
-					.catch(function (err) {
+					.catch((err) => {
 						done(err);
 					});
 			} catch (err) {
@@ -58,9 +58,9 @@ describe('Exporter', function () {
 		});
 		
 		it('should perform export and return raw data with given format', function () {
-			exporter.export('json').then(function (exportedData) {
+			exporter.export('json').then((exportedData) => {
 				expect(exportedData).to.equal(dummyData);
-			}).catch(function (err) {
+			}).catch((err) => {
 				done(err);
 			});
 		});

@@ -36,7 +36,7 @@ describe('Stoplight Importer', function () {
 			expect(importer.project).to.equal(null);
 			//pre-requisite
 			importer.loadData(slData)
-				.then(function () {
+				.then(() => {
 					try {
 						importer._import();
 						expect(importer.project).to.not.equal(null);
@@ -50,7 +50,7 @@ describe('Stoplight Importer', function () {
 		});
 		it('exported data should have at least one endpoint', function (done) {
 			importer.loadData(slData)
-				.then(function () {
+				.then(() => {
 					importer._import();
 					expect(importer.project.Endpoints.length).to.gt(0);
 					done();

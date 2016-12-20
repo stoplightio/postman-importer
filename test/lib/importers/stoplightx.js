@@ -21,11 +21,11 @@ describe('StoplightX Importer', function () {
 			expect(importer.data).to.be.null;
 			
 			importer.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					expect(importer.data).not.to.be.null;
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -40,13 +40,13 @@ describe('StoplightX Importer', function () {
 			
 			//pre-requisite
 			importer.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.not.equal(null);
 					expect(importer.project.Endpoints.length).gt(0);
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -55,9 +55,9 @@ describe('StoplightX Importer', function () {
 		
 		it('should fail to import if test step ref is not found', function (done) {
 			importer.loadFile(__dirname + '/../../data/invalid/stoplightx.json')
-				.then(function () {
+				.then(() => {
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					expect(err).to.be.an('error');
 					done();
 				});
@@ -71,13 +71,13 @@ describe('StoplightX Importer', function () {
 	describe('mapEndpoint', function () {
 		it('should set proper tags for an endpoint', function (done) {
 			importer.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					importer.import();
 					let endpoint = _.find(importer.project.Endpoints, {operationId: 'deletePetPhoto'});
 					expect(endpoint.tags).to.have.lengthOf(1).and.to.include('Group1');
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -97,13 +97,13 @@ describe('StoplightX Importer', function () {
 		it('should map tests successfully', function (done) {
 			//
 			importer.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					importer.import();
 					expect(importer.project).to.not.equal(null);
 					expect(importer.project.Tests).to.have.length.above(0);
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -113,7 +113,7 @@ describe('StoplightX Importer', function () {
 		it('should map test steps successfully', function (done) {
 			//
 			importer.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					importer.import();
 					let test = importer.project.Tests[4];
 					
@@ -123,7 +123,7 @@ describe('StoplightX Importer', function () {
 					
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}

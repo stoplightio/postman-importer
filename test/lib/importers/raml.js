@@ -23,12 +23,12 @@ describe('RAML 0.8 Importer', function () {
 	});
 	describe('loadFile', function () {
 		it('should be able to load a valid yaml file', function (done) {
-			ramlImporter.loadFile(filePath).then(function () {
+			ramlImporter.loadFile(filePath).then(() => {
 				done();
 			});
 		});
 		it('should return error for invalid file', function (done) {
-			ramlImporter.loadFile(__dirname + '/../../data/invalid/raml08.yaml').catch(function (err) {
+			ramlImporter.loadFile(__dirname + '/../../data/invalid/raml08.yaml').catch((err) => {
 				expect(err).not.to.be.undefined;
 				expect(err.message).to.equal("Invalid first line. A RAML document is expected to start with '#%RAML <version> <?fragment type>'.");
 				done();
@@ -37,7 +37,7 @@ describe('RAML 0.8 Importer', function () {
 	});
 	describe('import', function () {
 		it('should perform import operation on loaded data', function (done) {
-			ramlImporter.loadFile(filePath).then(function () {
+			ramlImporter.loadFile(filePath).then(() => {
 				try {
 					let slProject = ramlImporter.import();
 					expect(slProject).to.be.instanceOf(Project);
@@ -111,12 +111,12 @@ describe('RAML 1.0 Importer', function () {
 	});
 	describe('loadFile', function () {
 		it('should be able to load a valid yaml file', function (done) {
-			ramlImporter.loadFile(filePath).then(function () {
+			ramlImporter.loadFile(filePath).then(() => {
 				done();
 			});
 		});
 		it('should return error for invalid file', function (done) {
-			ramlImporter.loadFile(__dirname + '/../../data/invalid/raml10.yaml').catch(function (err) {
+			ramlImporter.loadFile(__dirname + '/../../data/invalid/raml10.yaml').catch((err) => {
 				expect(err).not.to.be.undefined;
 				expect(err.message).to.equal("Invalid first line. A RAML document is expected to start with '#%RAML <version> <?fragment type>'.");
 				done();
@@ -150,7 +150,7 @@ describe('RAML 1.0 Importer', function () {
 			};
 			
 			ramlImporter.loadFile(__dirname + '/../../data/raml-import/raml/raml10-include-type.yaml', myOptions)
-				.then(function () {
+				.then(() => {
 					try {
 						let slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
@@ -161,7 +161,7 @@ describe('RAML 1.0 Importer', function () {
 						done(err);
 					}
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
@@ -193,7 +193,7 @@ describe('RAML 1.0 Importer', function () {
 			};
 			
 			ramlImporter.loadFile(__dirname + '/../../data/raml-import/raml/raml10-include-fsresolver-type.yaml', myOptions)
-				.then(function () {
+				.then(() => {
 					try {
 						let slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
@@ -205,14 +205,14 @@ describe('RAML 1.0 Importer', function () {
 						done(err);
 					}
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
 		
 		it('should be able to load a valid yaml file including raml type definiton', function (done) {
 			ramlImporter.loadFile(__dirname + '/../../data/raml-import/raml/raml10-y-type.yaml')
-				.then(function () {
+				.then(() => {
 					try {
 						let slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
@@ -223,14 +223,14 @@ describe('RAML 1.0 Importer', function () {
 						done(err);
 					}
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					return done(err);
 				});
 		});
 		
 		it('should return error importing yaml file including non exisiting type file', function (done) {
 			ramlImporter.loadFile(__dirname + '/../../data/invalid/raml10-include-type.yaml')
-				.then(function () {
+				.then(() => {
 					try {
 						ramlImporter.import();
 						done(err);
@@ -240,7 +240,7 @@ describe('RAML 1.0 Importer', function () {
 						done();
 					}
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						expect(err).not.to.be.undefined;
 						done();
@@ -252,7 +252,7 @@ describe('RAML 1.0 Importer', function () {
 	describe('import', function () {
 		it('should perform import operation on loaded data', function (done) {
 			ramlImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					try {
 						let slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
@@ -263,7 +263,7 @@ describe('RAML 1.0 Importer', function () {
 						done(err);
 					}
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						done(err);
 					}

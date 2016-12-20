@@ -29,10 +29,10 @@ describe('Swagger Importer', function () {
 	describe('loadFile', function () {
 		it('should be able to load a valid json file', function (done) {
 			swaggerImporter.loadFile(__dirname + '/../../data/swagger.json')
-				.then(function () {
+				.then(() => {
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -41,10 +41,10 @@ describe('Swagger Importer', function () {
 		
 		it('should be able to load a valid yaml file', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						done(err);
 					}
@@ -54,7 +54,7 @@ describe('Swagger Importer', function () {
 		it('should return error for invalid Swagger syntax', function (done) {
 			let invalidPath = __dirname + '/../../data/invalid/swagger.json';
 			swaggerImporter.loadFile(invalidPath)
-				.catch(function (err) {
+				.catch((err) => {
 					expect(err).to.be.an('error').and.to.have.property('message', invalidPath + ' is not a valid Swagger API definition');
 					done();
 				});
@@ -63,7 +63,7 @@ describe('Swagger Importer', function () {
 		it('should return error for invalid file', function (done) {
 			let invalidPath = __dirname + '/../../data/invalid/missing-comma-swagger.json';
 			swaggerImporter.loadFile(invalidPath)
-				.catch(function (err) {
+				.catch((err) => {
 					expect(err).to.be.an('error').and.to.have.property('reason', 'missed comma between flow collection entries');
 					done();
 				});
@@ -73,7 +73,7 @@ describe('Swagger Importer', function () {
 	describe('import', function () {
 		it('should perform import operation on loaded data', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					try {
 						let slProject = swaggerImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
@@ -84,7 +84,7 @@ describe('Swagger Importer', function () {
 						done(err);
 					}
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -141,14 +141,14 @@ describe('Swagger Importer', function () {
 	describe('_mapEndpoints', function () {
 		it('should map endpoints successfully', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					swaggerImporter.import();
 					expect(swaggerImporter.project.Endpoints).to.have.length.above(0);
 					expect(swaggerImporter.project.Endpoints[0]).to.be.instanceOf(Endpoint);
 					
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -157,14 +157,14 @@ describe('Swagger Importer', function () {
 		
 		it('should not create request body for method with no body or formData params', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					swaggerImporter.import();
 					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
 					
 					expect(endpoint.request.bodies).to.be.empty;
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -173,7 +173,7 @@ describe('Swagger Importer', function () {
 		
 		it('should set request mimeType to undefined for methods with no consumes', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() =>  {
 					swaggerImporter.import();
 					let endpoint = _.find(swaggerImporter.project.Endpoints, {description: 'Updates a pet by name'});
 					
@@ -181,7 +181,7 @@ describe('Swagger Importer', function () {
 					expect(endpoint.Consumes).to.be.undefined;
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -190,7 +190,7 @@ describe('Swagger Importer', function () {
 		
 		it('should set request mimeType to undefined for methods with empty consumes', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					swaggerImporter.import();
 					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
 					
@@ -198,7 +198,7 @@ describe('Swagger Importer', function () {
 					expect(endpoint.Consumes[0]).to.be.eq('multipart/form-data');
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -207,7 +207,7 @@ describe('Swagger Importer', function () {
 		
 		it('should set response mimeType to default for methods with no produces', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					swaggerImporter.import();
 					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
 					
@@ -215,7 +215,7 @@ describe('Swagger Importer', function () {
 					expect(endpoint.produces).to.be.undefined;
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -224,14 +224,14 @@ describe('Swagger Importer', function () {
 		
 		it('should not set response mimeType for methods with empty produces', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					swaggerImporter.import();
 					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
 					
 					expect(endpoint.Produces).to.be.empty;
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
@@ -266,7 +266,7 @@ describe('Swagger Importer', function () {
 	describe('_mapSecurityDefinitions', function () {
 		it('should map apiKey security definitions to stoplight successfully', function (done) {
 			swaggerImporter.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					swaggerImporter.import();
 					
 					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'addPet'});
@@ -274,7 +274,7 @@ describe('Swagger Importer', function () {
 					expect(endpoint.securedBy.apiKey.name).to.be.eq('api_key');
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}

@@ -37,7 +37,7 @@ describe('Stoplight Exporter', function () {
 		
 		it('should export tests', function (done) {
 			importer.loadFile(filePath)
-				.then(function () {
+				.then(() => {
 					importer.import();
 					
 					exporter.loadProject(importer.project);
@@ -51,7 +51,7 @@ describe('Stoplight Exporter', function () {
 						.to.have.property('$ref', '#/x-tests/SuDCFmBBcvmyA7dCh');
 					done();
 				})
-				.catch(function (err) {
+				.catch((err) => {
 					if (err) {
 						return done(err);
 					}
