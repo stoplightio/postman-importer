@@ -389,7 +389,7 @@ describe('from raml to swagger', function () {
 			let ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			let converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
 			converter.convertFile(testFilePath, validateOptions)
-				.then((resultSwagger) => {
+				.then(resultSwagger => {
 
 					try {
 						let targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
