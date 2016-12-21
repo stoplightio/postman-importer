@@ -1,0 +1,63 @@
+{
+  "definitions": {
+    "Employee": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Person"
+        },
+        {
+          "properties": {
+            "employeeId": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "employeeId"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "Person": {
+      "discriminator": "kind",
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "name"
+      ],
+      "type": "object"
+    },
+    "User": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Person"
+        },
+        {
+          "properties": {
+            "userId": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "userId"
+          ],
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "info": {
+    "description": "",
+    "title": "My API With Types",
+    "version": ""
+  },
+  "paths": {},
+  "swagger": "2.0"
+}
