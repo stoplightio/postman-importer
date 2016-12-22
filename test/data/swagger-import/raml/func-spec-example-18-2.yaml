@@ -1,0 +1,50 @@
+#%RAML 1.0
+title: External files example
+version: 1.1.0
+/persons:
+  displayName: persons
+  get:
+    displayName: GET_persons
+    description: Returns a list containing all persons. The list supports paging.
+    (oas-summary): Gets some persons
+    is:
+      - pageSize
+      - pageNumber
+    (oas-responses-default):
+      description: Default response
+  is:
+    - userAgent
+traits:
+  pageSize:
+    queryParameters:
+      pageSize:
+        type: integer
+        description: Number of items returned
+        format: int32
+        minimum: 0
+        exclusiveMinimum: true
+        maximum: 100
+        exclusiveMaximum: false
+        default: 20
+        facets:
+          exclusiveMinimum: boolean
+          exclusiveMaximum: boolean
+  pageNumber:
+    queryParameters:
+      pageNumber:
+        type: integer
+        description: Page number
+        default: 1
+  userAgent:
+    headers:
+      User-Agent:
+        type: string
+        description: All API consumers MUST provide a user agent
+        required: true
+annotationTypes:
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
