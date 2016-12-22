@@ -1,0 +1,26 @@
+#%RAML 1.0
+title: External files example
+version: 1.0.0
+
+securitySchemes:
+ OauthSecurity:
+   description: New Oauth security system. Do not use MediaSecurity or LegacySecurity.
+   type: OAuth 2.0
+   settings:
+     authorizationUri: 'https://oauth.simple.api/authorization'
+     accessTokenUri: 'https://oauth.simple.api/token'
+     authorizationGrants:
+       - authorization_code
+     scopes:
+       - admin
+       - user
+ LegacySecurity:
+   type: Basic Authentication
+   description: Legacy security system for backward compatibility. Use OauthSecurity instead.
+ MediaSecurity:
+   type: Pass Through
+   describedBy:
+     queryParameters:
+       media-api-key:
+         type: string
+   description: Specific media security for backward compatibility. Use OauthSecurity instead.

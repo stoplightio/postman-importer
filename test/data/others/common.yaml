@@ -1,0 +1,44 @@
+securityDefinitions:
+  OauthSecurity:
+    description: New Oauth security system. Do not use MediaSecurity or LegacySecurity.
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: 'https://oauth.simple.api/authorization'
+    tokenUrl: 'https://oauth.simple.api/token'
+    scopes:
+      admin: Admin scope
+      user: User scope
+  MediaSecurity:
+    description: Specific media security for backward compatibility. Use OauthSecurity instead.
+    type: apiKey
+    in: query
+    name: media-api-key
+  LegacySecurity:
+    description: Legacy security system for backward compatibility. Use OauthSecurity instead.
+    type: basic
+
+parameters:
+  userAgent:
+    name: User-Agent
+    description: All API consumers MUST provide a user agent
+    type: string
+    in: header
+    required: true
+  pageSize:
+    name: pageSize
+    in: query
+    description: Number of items returned
+    type: integer
+    format: int32
+    minimum: 0
+    exclusiveMinimum: true
+    maximum: 100
+    exclusiveMaximum: false
+    multipleOf: 10
+    default: 20
+  pageNumber:
+    name: pageNumber
+    in: query
+    description: Page number
+    type: integer
+    default: 1
