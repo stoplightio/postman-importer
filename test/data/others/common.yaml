@@ -17,6 +17,31 @@ securityDefinitions:
     description: Legacy security system for backward compatibility. Use OauthSecurity instead.
     type: basic
 
+my_params:
+  userAgent:
+    name: User-Agent
+    description: All API consumers MUST provide a user agent
+    type: string
+    in: header
+    required: true
+  pageSize:
+    name: pageSize
+    in: query
+    description: Number of items returned
+    type: integer
+    format: int32
+    minimum: 0
+    exclusiveMinimum: true
+    maximum: 100
+    exclusiveMaximum: false
+    multipleOf: 10
+    default: 20
+  pageNumber:
+    name: pageNumber
+    in: query
+    description: Page number
+    type: integer
+    default: 1
 parameters:
   userAgent:
     name: User-Agent
