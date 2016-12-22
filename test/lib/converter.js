@@ -16,7 +16,8 @@ const filePathMap = {
 	'/types/Complex.json': '/data/types/Complex.json',
 	'/Pet.json': '/data/petstore-separate/spec/Pet.json',
 	'/NewPet.json': '/data/petstore-separate/spec/NewPet.json',
-	'/common/Error.json': '/data/petstore-separate/common/Error.json'
+	'/common/Error.json': '/data/petstore-separate/common/Error.json',
+	'/types/Address.yaml': '/data/types/Address.yaml'
 };
 
 
