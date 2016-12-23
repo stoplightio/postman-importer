@@ -422,6 +422,8 @@ describe('from raml to swagger', function () {
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
 			let validate = !_.includes(testFile, 'novalidate');
+			let skip = _.includes(testFile, 'skip');
+			if (skip) return ;
 			if (process.env.fileToTest) {
 				if (_.endsWith(testFile, process.env.fileToTest)) {
 					it('test: ' + testFile, testWithData(testFile, validate));
