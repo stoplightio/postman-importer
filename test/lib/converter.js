@@ -4,11 +4,13 @@ const chai = require('chai'),
 	fs = require('fs'),
 	YAML = require('js-yaml'),
 	_ = require('lodash'),
-	path = require('path');
+	path = require('path'),
+    urlHelper = require('../../lib/utils/url');
 const beforeEach = require("mocha/lib/mocha.js").beforeEach;
 const afterEach = require("mocha/lib/mocha.js").afterEach;
 const it = require("mocha/lib/mocha.js").it;
 const describe = require("mocha/lib/mocha.js").describe;
+const json = require("json5/lib/json5.js").describe;
 
 chai.use(require('chai-string'));
 
@@ -429,4 +431,55 @@ describe('from raml to swagger', function () {
 			}
 		}
 	});
+});
+
+describe.skip('from swagger to raml using apiguru', function () {
+    const testWithUrl = (url) => {
+    	return new Promise((resolve, reject) => {
+            const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
+            const validateOptions = {
+                validate: true
+            };
+
+            converter.convertFile(url, validateOptions).then((convertedRAML) => {
+                console.log('Output from' + url + '\n', convertedRAML);
+                resolve();
+            }).catch((err) => {
+                console.log('Error exporting', url, '\n', err);
+                reject(err);
+            });
+		})
+    };
+
+    const testNextUrl = (iter, done) => {
+        const url = iter.next().value;
+        if (!url)  {
+        	done()
+        } else {
+			testWithUrl(url).then(() => {
+				testNextUrl(iter, done);
+			}).catch((err) => done(err))
+		}
+    }
+
+    it('Test all urls', done => {
+        urlHelper.get('https://api.apis.guru/v2/list.json').then((body) => {
+            const apis = JSON.parse(body);
+            const urls = [];
+            Object.keys(apis).forEach(key => {
+                const api = apis[key];
+                Object.keys(api.versions).forEach(key => {
+                    const version = api.versions[key];
+                    urls.push(version.swaggerUrl);
+                })
+            })
+			// comment until test passes
+			const iter = urls[Symbol.iterator]();
+            testNextUrl(iter, done)
+
+        }).catch((error) => {
+            console.error(error)
+            done(error)
+        })
+    })
 });
