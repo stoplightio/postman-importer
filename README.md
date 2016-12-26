@@ -2,7 +2,7 @@
 
 This package helps to convert between different API specifications. It was originally forked from [the stoplight.io converter](https://github.com/stoplightio/api-spec-converter). 
 
-## Supported Conversions
+## Supported Conversions (beta)
 
 - OAS (Swagger 2.0) -> RAML 1.0
 - RAML 0.8 -> OAS (Swagger 2.0)
