@@ -13,7 +13,7 @@ This package helps to convert between different API specifications. It was origi
 
 ### 1. Online web page
 
-For an online conversion, use: [https://mulesoft.github.io/api-spec-converter](https://mulesoft.github.io/oas-raml-converter).
+For an online conversion, use: [https://mulesoft.github.io/oas-raml-converter](https://mulesoft.github.io/oas-raml-converter).
 
 ### 2. Command line tool
 
