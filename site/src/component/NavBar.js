@@ -20,7 +20,7 @@ class NavBar extends Component {
             <Navbar id="app-navbar" inverse fluid={true}>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a>API Spec Converter</a>
+                        <a>OAS RAML Converter</a>
                     </Navbar.Brand>
                     <Navbar.Toggle/>
                 </Navbar.Header>
