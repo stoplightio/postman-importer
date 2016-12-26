@@ -1,4 +1,4 @@
-# OAS RAML Converter [![Build Status](https://travis-ci.org/mulesoft/api-spec-converter.svg)](https://travis-ci.org/mulesoft/api-spec-converter) [![Coverage Status](https://coveralls.io/repos/github/mulesoft/api-spec-converter/badge.svg?branch=master)](https://coveralls.io/github/mulesoft/api-spec-converter?branch=master)
+# OAS RAML Converter [![Build Status](https://travis-ci.org/mulesoft/oas-raml-converter.svg)](https://travis-ci.org/mulesoft/oas-raml-converter) [![Coverage Status](https://coveralls.io/repos/github/mulesoft/oas-raml-converter/badge.svg?branch=master)](https://coveralls.io/github/mulesoft/oas-raml-converter?branch=master)
 
 This package helps to convert between different API specifications. It was originally forked from [the stoplight.io converter](https://github.com/stoplightio/api-spec-converter). 
 
@@ -13,7 +13,7 @@ This package helps to convert between different API specifications. It was origi
 
 ### 1. Online web page
 
-For an online conversion, use: [https://mulesoft.github.io/api-spec-converter](https://mulesoft.github.io/api-spec-converter).
+For an online conversion, use: [https://mulesoft.github.io/api-spec-converter](https://mulesoft.github.io/oas-raml-converter).
 
 ### 2. Command line tool
 
@@ -42,8 +42,6 @@ wget --quiet \
   --output-document \
   - http://localhost:3000/convert/SWAGGER/to/RAML10
 ```
-
-You can also deploy it in a server-less fashion as a AWS lambdas function. Use `index-server-less.js` to configure your AWS lambda function.
 
 ### 4. As a dependency
 
