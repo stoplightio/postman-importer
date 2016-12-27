@@ -94,7 +94,7 @@ describe('Auto Importer', function () {
 				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Endpoints.length).to.gt(0);
+					expect(importer.project.Resources.length).to.gt(0);
 					done();
 					
 				})
@@ -138,7 +138,7 @@ describe('Auto Importer', function () {
 				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Endpoints.length).to.gt(0);
+					expect(importer.project.Resources.length).to.gt(0);
 					done();
 				})
 				.catch((err) => {
@@ -151,7 +151,7 @@ describe('Auto Importer', function () {
 				.then(() => {
 					importer.import();
 					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Endpoints.length).to.gt(0);
+					expect(importer.project.Resources.length).to.gt(0);
 					done();
 				})
 				.catch((err) => {

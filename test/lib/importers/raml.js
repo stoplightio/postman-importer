@@ -41,7 +41,7 @@ describe('RAML 0.8 Importer', function () {
 				try {
 					let slProject = ramlImporter.import();
 					expect(slProject).to.be.instanceOf(Project);
-					expect(slProject.Endpoints.length).to.gt(0);
+					expect(slProject.Resources.length).to.gt(0);
 					done();
 				}
 				catch (err) {
@@ -256,7 +256,7 @@ describe('RAML 1.0 Importer', function () {
 					try {
 						let slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
-						expect(slProject.Endpoints.length).to.gt(0);
+						expect(slProject.Resources.length).to.gt(0);
 						done();
 					}
 					catch (err) {
