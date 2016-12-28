@@ -436,52 +436,60 @@ describe('from raml to swagger', function () {
 });
 
 describe.skip('from swagger to raml using apiguru', function () {
-    const testWithUrl = (url) => {
-    	return new Promise((resolve, reject) => {
-            const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
-            const validateOptions = {
-                validate: true
-            };
+	const testWithUrl = (url) => {
+		return new Promise((resolve, reject) => {
+			const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
+			const validateOptions = {
+				validate: true
+			};
 
-            converter.convertFile(url, validateOptions).then((convertedRAML) => {
-                console.log('Output from' + url + '\n', convertedRAML);
-                resolve();
-            }).catch((err) => {
-                console.log('Error exporting', url, '\n', err);
-                reject(err);
-            });
+			converter.convertFile(url, validateOptions).then((convertedRAML) => {
+				console.log('Output from ' + url + '\n', convertedRAML);
+				resolve();
+			}).catch((err) => {
+				console.log('Error exporting', url, '\n', err);
+				reject(err);
+			});
 		})
-    };
+	};
 
-    const testNextUrl = (iter, done) => {
-        const url = iter.next().value;
-        if (!url)  {
-        	done()
-        } else {
+	let ok = 0;
+	let fail = 0;
+	const testNextUrl = (iter, done) => {
+		const url = iter.next().value;
+		if (!url) {
+			console.log('Ok: ' + ok + ', Fail: ' +fail)
+			done()
+		} else {
 			testWithUrl(url).then(() => {
+				ok++
+				console.log('OK: ' + ok + ' ' + url)
 				testNextUrl(iter, done);
-			}).catch((err) => done(err))
+			}).catch(() => {
+				fail++
+				console.log('FAIL: ' + fail + ' ' + url)
+				testNextUrl(iter, done);
+			})
 		}
-    }
-
-    it('Test all urls', done => {
-        urlHelper.get('https://api.apis.guru/v2/list.json').then((body) => {
-            const apis = JSON.parse(body);
-            const urls = [];
-            Object.keys(apis).forEach(key => {
-                const api = apis[key];
-                Object.keys(api.versions).forEach(key => {
-                    const version = api.versions[key];
-                    urls.push(version.swaggerUrl);
-                })
-            })
+	}
+	
+	it('Test all urls', done => {
+		urlHelper.get('https://api.apis.guru/v2/list.json').then((body) => {
+			const apis = JSON.parse(body);
+			const urls = [];
+			Object.keys(apis).forEach(key => {
+				const api = apis[key];
+				Object.keys(api.versions).forEach(key => {
+					const version = api.versions[key];
+					urls.push(version.swaggerUrl);
+				})
+			})
 			// comment until test passes
 			const iter = urls[Symbol.iterator]();
-            testNextUrl(iter, done)
-
-        }).catch((error) => {
-            console.error(error)
-            done(error)
-        })
-    })
+			testNextUrl(iter, done)
+		}).catch((error) => {
+			console.error(error)
+			done(error)
+		})
+	})
 });
