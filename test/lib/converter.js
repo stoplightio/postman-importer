@@ -305,7 +305,7 @@ describe('reversable - from raml 2 swagger 2 raml', function () {
 	};
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.')) {
+		if (!_.startsWith(testFile, '.') && !_.includes(testFile, 'ignore')) {
 			it('test: ' + testFile, testWithData(testFile));
 		}
 	});

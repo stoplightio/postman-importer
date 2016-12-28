@@ -1,0 +1,35 @@
+#%RAML 1.0
+title: Illustrating annotations
+mediaType: application/json
+annotationTypes:
+  deprecated: nil
+  experimental: string?
+  feedbackRequested: string
+  testHarness:
+    type: string # This line may be omitted as it's the default type
+  badge:          # This annotation type, too, allows string values
+  clearanceLevel:
+    properties:
+      level:
+        enum: [ low, medium, high ]
+        required: true
+      signature:
+        pattern: "\\d{3}-\\w{12}"
+        required: true
+/groups:
+  displayName : a displayName for groups resource
+  description: a description for groups resource
+  (experimental):
+  (feedbackRequested): black friday!
+/users:
+  (testHarness): usersTest
+  (badge): tested.gif
+  (clearanceLevel):
+    level: high
+    signature: 230-ghtwvfrs1itr
+  get:
+    (deprecated):
+    (experimental):
+    (feedbackRequested): Feedback committed!
+    responses:
+      200:
