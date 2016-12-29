@@ -44,7 +44,7 @@ describe('Auto Importer', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml08.yaml'), 'utf8'),
 				format = Auto.detectFormat(fileContent);
 			
-			expect(format).to.be.equal('RAML08');
+			expect(format).to.be.equal('RAML08Importer');
 		});
 		
 		it('should detect SWAGGER', function () {
