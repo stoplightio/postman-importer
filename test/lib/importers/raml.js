@@ -173,9 +173,6 @@ describe('RAML 1.0 Importer', function () {
 				contentAsync: function (path) {
 					return new Promise(function (resolve, reject) {
 						try {
-							if (path.indexOf('/types/') > 0) {
-								path = path.replace('/types/', '/../../types/');
-							}
 							if (path.indexOf('Person.xyz') > 0) {
 								path = path.replace('Person.xyz', 'Person.json');
 							}

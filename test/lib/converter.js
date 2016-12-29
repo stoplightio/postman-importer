@@ -10,7 +10,6 @@ const beforeEach = require("mocha/lib/mocha.js").beforeEach;
 const afterEach = require("mocha/lib/mocha.js").afterEach;
 const it = require("mocha/lib/mocha.js").it;
 const describe = require("mocha/lib/mocha.js").describe;
-const json = require("json5/lib/json5.js").describe;
 
 chai.use(require('chai-string'));
 
@@ -34,11 +33,8 @@ const myFsResolver = {
 				let p = path.parse(filePath);
 				
 				if (p.dir.indexOf('types') > 0) {
-					let baseDir = p.dir.replace('types', '../../types/');
 					let fileName = p.base === 'Person.xyz' ? 'Person.json' : p.base;
-					
-					resolve(fs.readFileSync(baseDir + fileName, 'UTF8'));
-					
+					resolve(fs.readFileSync(p.dir + '/' + fileName, 'UTF8'));
 				} else {
 					resolve(fs.readFileSync(filePath, 'UTF8'));
 				}
@@ -458,20 +454,20 @@ describe.skip('from swagger to raml using apiguru', function () {
 	const testNextUrl = (iter, done) => {
 		const url = iter.next().value;
 		if (!url) {
-			console.log('Ok: ' + ok + ', Fail: ' +fail)
+			console.log('Ok: ' + ok + ', Fail: ' +fail);
 			done()
 		} else {
 			testWithUrl(url).then(() => {
-				ok++
-				console.log('OK: ' + ok + ' ' + url)
+				ok++;
+				console.log('OK: ' + ok + ' ' + url);
 				testNextUrl(iter, done);
 			}).catch(() => {
-				fail++
-				console.log('FAIL: ' + fail + ' ' + url)
+				fail++;
+				console.log('FAIL: ' + fail + ' ' + url);
 				testNextUrl(iter, done);
 			})
 		}
-	}
+	};
 	
 	it('Test all urls', done => {
 		urlHelper.get('https://api.apis.guru/v2/list.json').then((body) => {
@@ -483,12 +479,12 @@ describe.skip('from swagger to raml using apiguru', function () {
 					const version = api.versions[key];
 					urls.push(version.swaggerUrl);
 				})
-			})
+			});
 			// comment until test passes
 			const iter = urls[Symbol.iterator]();
 			testNextUrl(iter, done)
 		}).catch((error) => {
-			console.error(error)
+			console.error(error);
 			done(error)
 		})
 	})
