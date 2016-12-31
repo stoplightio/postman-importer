@@ -1,6 +1,7 @@
 const Converter = require('../../index').Converter
 
 const stringify = (data) => {
+  if (!data) return ''
   if (typeof data === 'string') return data
   const result = JSON.stringify(data, null, 2);
   return result === '{}' ? '' : result;
@@ -8,9 +9,9 @@ const stringify = (data) => {
 
 const resolve = (error, result) => {
   self.postMessage({
-    result: !result ? '' : stringify(result.info || result),
-    error: !error ? '' : stringify(error),
-    message: !error ? '' : error.message
+    result: stringify(result),
+    error: stringify(error),
+    message: error ? error.message : ''
   })
 }
 
