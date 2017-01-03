@@ -429,6 +429,7 @@ describe('from raml to swagger', function () {
 			}
 		}
 	});
+	// it('test: ', testWithData("raml10-arrayofarray.yaml", false));
 });
 
 describe.skip('from swagger to raml using apiguru', function () {
