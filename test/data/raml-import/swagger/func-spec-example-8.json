@@ -1,0 +1,63 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1",
+		"title": "example",
+		"description":""
+	},
+	"definitions": {
+		"Person": {
+			"type": "object",
+			"discriminator": "kind",
+			"properties": {
+				"kind": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"kind",
+				"name"
+			]
+		},
+		"Employee": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/Person"
+				},
+				{
+					"type": "object",
+					"properties": {
+						"employeeId": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"employeeId"
+					]
+				}
+			]
+		},
+		"User": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/Person"
+				},
+				{
+					"type": "object",
+					"properties": {
+						"userId": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"userId"
+					]
+				}
+			]
+		}
+	},
+	"paths": {}
+}
