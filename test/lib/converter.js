@@ -432,6 +432,12 @@ describe('from raml to swagger', function () {
 });
 
 describe.skip('from swagger to raml using apiguru', function () {
+	const excludedUrls = [
+		'https://api.apis.guru/v2/specs/azure.com/arm-insights/2015-04-01/swagger.json',
+		'https://api.apis.guru/v2/specs/azure.com/arm-insights/2015-07-01/swagger.json',
+		'https://api.apis.guru/v2/specs/azure.com/arm-insights/2016-03-01/swagger.json'
+	];
+	
 	const testWithUrl = (url) => {
 		return new Promise((resolve, reject) => {
 			const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
@@ -458,18 +464,26 @@ describe.skip('from swagger to raml using apiguru', function () {
 			done()
 		} else {
 			testWithUrl(url).then(() => {
-				ok++;
-				console.log('OK: ' + ok + ' ' + url);
+				ok++
+				console.log(`OK: ${url}, ok:${ok}, fail:${fail}`)
 				testNextUrl(iter, done);
 			}).catch(() => {
-				fail++;
-				console.log('FAIL: ' + fail + ' ' + url);
+				fail++
+				console.log(`FAIL: ${url}, ok:${ok}, fail:${fail}`)
 				testNextUrl(iter, done);
 			})
 		}
 	};
 	
-	it('Test all urls', done => {
+	xit('Test one url', done => {
+		testWithUrl('https://api.apis.guru/v2/specs/azure.com/arm-mobileengagement/2014-12-01/swagger.json'). //#36
+		// testWithUrl('https://api.apis.guru/v2/specs/azure.com/arm-search/2015-08-19/swagger.json'). //#53
+		// testWithUrl('https://api.apis.guru/v2/specs/azure.com/arm-web/2015-08-01/swagger.json'). //#62
+		// testWithUrl('https://api.apis.guru/v2/specs/azure.com/insights/2015-04-01/swagger.json'). //#65
+		then(()=> done()).catch((err)=> done(err) )
+	})
+	
+	xit('Test all urls', done => {
 		urlHelper.get('https://api.apis.guru/v2/list.json').then((body) => {
 			const apis = JSON.parse(body);
 			const urls = [];
@@ -477,10 +491,9 @@ describe.skip('from swagger to raml using apiguru', function () {
 				const api = apis[key];
 				Object.keys(api.versions).forEach(key => {
 					const version = api.versions[key];
-					urls.push(version.swaggerUrl);
+					if (!excludedUrls.includes(version.swaggerUrl)) urls.push(version.swaggerUrl);
 				})
 			});
-			// comment until test passes
 			const iter = urls[Symbol.iterator]();
 			testNextUrl(iter, done)
 		}).catch((error) => {
