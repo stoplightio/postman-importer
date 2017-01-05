@@ -27,21 +27,9 @@ Or install globally and then:
 oas-raml-converter --from SWAGGER --to RAML10 ./path/to/swagger.json
 ```
 
-### 3. As a service (not yet available)
+### 3. As a service
 
-Start the converter in an express server:
-```
-npm start
-```
-
-Then, make a post with the file content to `/convert/SWAGGER/to/RAML10`:
-```
-wget --quiet \
-  --method POST \
-  --body-data <the swagger document> \
-  --output-document \
-  - http://localhost:3000/convert/SWAGGER/to/RAML10
-```
+For a REST API of the converter, you can start it in an express server, checkout the [oas-raml-converter-service](https://github.com/mulesoft/oas-raml-converter-service) project.
 
 ### 4. As a dependency
 
