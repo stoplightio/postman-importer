@@ -431,81 +431,17 @@ describe('from raml to swagger', function () {
 	});
 });
 
-describe.skip('from swagger to raml using apiguru', function () {
-	const excludedUrls = [
-		'https://api.apis.guru/v2/specs/azure.com/arm-insights/2015-04-01/swagger.json',
-		'https://api.apis.guru/v2/specs/azure.com/arm-insights/2015-07-01/swagger.json',
-		'https://api.apis.guru/v2/specs/azure.com/arm-insights/2016-03-01/swagger.json'
-	];
-	
-	const testWithUrl = (url) => {
-		return new Promise((resolve, reject) => {
-			const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
-			const validateOptions = {
-				validate: true
-			};
-
-			converter.convertFile(url, validateOptions).then((convertedRAML) => {
-				console.log('Output from ' + url + '\n', convertedRAML);
-				resolve();
-			}).catch((err) => {
-				console.log('Error exporting', url, '\n', err);
-				reject(err);
-			});
-		})
-	};
-
-	let ok = 0;
-	let fail = 0;
-	const testNextUrl = (iter, done) => {
-		const url = iter.next().value;
-		if (!url) {
-			console.log('Ok: ' + ok + ', Fail: ' +fail);
-			done()
-		} else {
-			testWithUrl(url).then(() => {
-				ok++
-				console.log(`OK: ${url}, ok:${ok}, fail:${fail}`)
-				testNextUrl(iter, done);
-			}).catch(() => {
-				fail++
-				console.log(`FAIL: ${url}, ok:${ok}, fail:${fail}`)
-				testNextUrl(iter, done);
-			})
-		}
-	};
-	
-	xit('Test all urls', done => {
-		urlHelper.get('https://api.apis.guru/v2/list.json').then((body) => {
-			const apis = JSON.parse(body);
-			const urls = [];
-			Object.keys(apis).forEach(key => {
-				const api = apis[key];
-				Object.keys(api.versions).forEach(key => {
-					const version = api.versions[key];
-					if (!excludedUrls.includes(version.swaggerUrl)) urls.push(version.swaggerUrl);
-				})
-			});
-			const iter = urls[Symbol.iterator]();
-			testNextUrl(iter, done)
-		}).catch((error) => {
-			console.error(error);
-			done(error)
-		})
-	})
-});
-
 describe.skip('from swagger to raml: apis-guru', function () {
 	let baseDir = __dirname + '/../data/apis-guru/swagger';
 	let testFiles = fs.readdirSync(baseDir);
 	
-	const excluded = [
+	const excludedValidation = [
 		'azure.com/arm-insights/2015-04-01/swagger.json',
 		'azure.com/arm-insights/2015-07-01/swagger.json',
 		'azure.com/arm-insights/2016-03-01/swagger.json'
 	]
 	
-	let testWithData = function (sourceFile, targetFile, stringCompare, validate) {
+	let testWithData = function (sourceFile, targetFile, validate) {
 		
 		return function (done) {
 			let converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
@@ -526,11 +462,7 @@ describe.skip('from swagger to raml: apis-guru', function () {
 				}
 				
 				try {
-					if (stringCompare == true) {
-						expect(covertedRAML).to.deep.equal(fs.readFileSync(targetFile, 'utf8'));
-					} else {
-						expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
-					}
+					expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
 					done();
 				} catch (e) {
 					done(e);
@@ -546,19 +478,18 @@ describe.skip('from swagger to raml: apis-guru', function () {
 	};
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && !excluded.includes(testFile)) {
+		if (!_.startsWith(testFile, '.')) {
 			let sourceFile = baseDir + '/' + testFile;
 			let targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'raml');
-			let stringCompare = _.includes(testFile, 'stringcompare');
-			let validate = !_.includes(testFile, 'novalidate');
+			let validate = !excludedValidation.includes(testFile);
 			
 			if (process.env.fileToTest) {
 				if (_.endsWith(sourceFile, process.env.fileToTest)) {
-					xit('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate));
+					xit('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
 				}
 			}
 			else {
-				xit('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate));
+				xit('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
 			}
 		}
 	});

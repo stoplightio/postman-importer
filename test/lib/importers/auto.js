@@ -30,35 +30,42 @@ describe('Auto Importer', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, 'stoplightx.json'), 'utf8'),
 				format = Auto.detectFormat(fileContent);
 			
-			expect(format).to.be.equal('STOPLIGHTX');
+			expect(format.name).to.be.equal('StopLightX');
 		});
 		
 		it('should detect POSTMAN', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, 'postman.json'), 'utf8'),
 				format = Auto.detectFormat(fileContent);
 			
-			expect(format).to.be.equal('POSTMAN');
+			expect(format.name).to.be.equal('Postman');
 		});
 		
-		it('should detect RAML', function () {
+		it('should detect RAML 0.8', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml08.yaml'), 'utf8'),
 				format = Auto.detectFormat(fileContent);
 			
-			expect(format).to.be.equal('RAML08Importer');
+			expect(format.name).to.be.equal('RAML 0.8');
+		});
+
+		it('should detect RAML 1.0', function () {
+			let fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml10-file.yaml'), 'utf8'),
+				format = Auto.detectFormat(fileContent);
+
+			expect(format.name).to.be.equal('RAML 1.0');
 		});
 		
 		it('should detect SWAGGER', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, 'swagger.yaml'), 'utf8'),
 				format = Auto.detectFormat(fileContent);
 			
-			expect(format).to.be.equal('SWAGGER');
+			expect(format.name).to.be.equal('OAS 2.0');
 		});
 		
 		it('should detect UNKNOWN', function () {
 			let fileContent = fs.readFileSync(path.join(dataPath, 'invalid', 'postman.json'), 'utf8'),
 				format = Auto.detectFormat(fileContent);
 			
-			expect(format).to.be.equal('UNKNOWN');
+			expect(format).to.be.undefined;
 		});
 	});
 	
@@ -193,8 +200,8 @@ describe('Auto Importer', function () {
 		it('should return detected format', function (done) {
 			importer.loadFile(path.join(dataPath, 'stoplightx.json'))
 				.then(() => {
-					expect(importer.getDetectedFormat()).to.be.equal('STOPLIGHTX');
-					expect(importer.detectedFormat).to.be.equal('STOPLIGHTX');
+					expect(importer.getDetectedFormat().name).to.be.equal('StopLightX');
+					expect(importer.detectedFormat.name).to.be.equal('StopLightX');
 					done();
 				})
 				.catch((err) => {
