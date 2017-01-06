@@ -1,0 +1,764 @@
+#%RAML 1.0
+title: SearchManagementClient
+version: '2015-08-19'
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: Client that can be used to manage Azure Search services and API keys.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-search/2015-08-19/swagger/search.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-search
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-enum: any
+  oas-x-ms-client-name: any
+  oas-x-ms-mutability: any
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-x-ms-client-flatten: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.Search:
+            displayName: Microsoft.Search
+            /searchServices:
+              displayName: searchServices
+              '/{searchServiceName}':
+                displayName: '{searchServiceName}'
+                /regenerateAdminKey:
+                  displayName: regenerateAdminKey
+                  '/{keyKind}':
+                    displayName: '{keyKind}'
+                    uriParameters:
+                      keyKind:
+                        description: Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
+                        enum:
+                          - primary
+                          - secondary
+                        required: true
+                        type: string
+                        displayName: Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
+                    post:
+                      displayName: AdminKeys_Regenerate
+                      description: Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
+                      is:
+                        - clientRequestIdParameter
+                        - apiVersionParameter
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: 'HTTP 404 (Not Found): The subscription, resource group, or Search service could not be found. HTTP 409 (Conflict): The specified subscription is disabled.'
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: AdminKeyResult
+                              example:
+                                primaryKey: <your primary admin API key>
+                                secondaryKey: <your secondary admin API key>
+                          description: 'The specified admin key was successfully regenerated. Both admin keys are included in the response, including the newly-regenerated key.'
+                      (oas-tags):
+                        - AdminKeys
+                      (oas-externalDocs):
+                        url: 'https://aka.ms/search-manage'
+                /listQueryKeys:
+                  displayName: listQueryKeys
+                  get:
+                    (oas-x-ms-pageable): {}
+                    displayName: QueryKeys_ListBySearchService
+                    description: Returns the list of query API keys for the given Azure Search service.
+                    is:
+                      - clientRequestIdParameter
+                      - apiVersionParameter
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: 'HTTP 404 (Not Found): The subscription, resource group, or Search service could not be found. HTTP 409 (Conflict): The specified subscription is disabled.'
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ListQueryKeysResult
+                            example:
+                              value:
+                                value:
+                                  - key: <a query API key>
+                                    name: Query key for browser-based clients
+                                  - key: <another query API key>
+                                    name: Query key for mobile clients
+                        description: All query keys for the given Search service were successfully retrieved and are in the response. You can use any of the query keys as the value of the 'api-key' parameter in the Azure Search Service REST API or SDK to perform read-only operations on your Search indexes such as querying and looking up documents by ID.
+                    (oas-tags):
+                      - QueryKeys
+                    (oas-externalDocs):
+                      url: 'https://aka.ms/search-manage'
+                /listAdminKeys:
+                  displayName: listAdminKeys
+                  post:
+                    displayName: AdminKeys_Get
+                    description: Gets the primary and secondary admin API keys for the specified Azure Search service.
+                    is:
+                      - clientRequestIdParameter
+                      - apiVersionParameter
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: 'HTTP 404 (Not Found): The subscription, resource group, or Search service could not be found. HTTP 409 (Conflict): The specified subscription is disabled.'
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: AdminKeyResult
+                            example:
+                              primaryKey: <your primary admin API key>
+                              secondaryKey: <your secondary admin API key>
+                        description: 'The admin keys were successfully retrieved and are in the response. You can use either the primary or secondary key as the value of the ''api-key'' parameter in the Azure Search Service REST API or SDK to perform any operations on your Search service, including privileged operations. Privileged operations include managing resources like indexes and data sources as well as uploading, modifying, or deleting data in your indexes.'
+                    (oas-tags):
+                      - AdminKeys
+                    (oas-externalDocs):
+                      url: 'https://aka.ms/search-manage'
+                /deleteQueryKey:
+                  displayName: deleteQueryKey
+                  '/{key}':
+                    displayName: '{key}'
+                    uriParameters:
+                      key:
+                        description: 'The query key to be deleted. Query keys are identified by value, not by name.'
+                        required: true
+                        type: string
+                        displayName: 'The query key to be deleted. Query keys are identified by value, not by name.'
+                    delete:
+                      displayName: QueryKeys_Delete
+                      description: 'Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating a query key is to delete and then recreate it.'
+                      is:
+                        - clientRequestIdParameter
+                        - apiVersionParameter
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: 'HTTP 409 (Conflict): The specified subscription is disabled.'
+                      responses:
+                        '200':
+                          description: The query key was successfully deleted.
+                        '204':
+                          description: The query key was successfully deleted.
+                        '404':
+                          description: 'The subscription, resource group, Search service, or query key could not be found.'
+                      (oas-tags):
+                        - QueryKeys
+                      (oas-externalDocs):
+                        url: 'https://aka.ms/search-manage'
+                /createQueryKey:
+                  displayName: createQueryKey
+                  '/{name}':
+                    displayName: '{name}'
+                    uriParameters:
+                      name:
+                        description: The name of the new query API key.
+                        required: true
+                        type: string
+                        displayName: The name of the new query API key.
+                    post:
+                      displayName: QueryKeys_Create
+                      description: Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+                      is:
+                        - clientRequestIdParameter
+                        - apiVersionParameter
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: 'HTTP 404 (Not Found): The subscription, resource group, or Search service could not be found. HTTP 409 (Conflict): The specified subscription is disabled.'
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: QueryKey
+                              example:
+                                key: <a query API key>
+                                name: Query key for browser-based clients
+                          description: The query key was successfully created and is in the response. You can use the query key as the value of the 'api-key' parameter in the Azure Search Service REST API or SDK to perform read-only operations on your Search indexes such as querying and looking up documents by ID.
+                      (oas-tags):
+                        - QueryKeys
+                      (oas-externalDocs):
+                        url: 'https://aka.ms/search-manage'
+                uriParameters:
+                  searchServiceName:
+                    description: The name of the Azure Search service associated with the specified resource group.
+                    required: true
+                    type: string
+                    displayName: The name of the Azure Search service associated with the specified resource group.
+                put:
+                  displayName: Services_CreateOrUpdate
+                  description: 'Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.'
+                  is:
+                    - clientRequestIdParameter
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: SearchService
+                      (oas-body-name): service
+                      description: The definition of the Search service to create or update.
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: CloudError
+                    description: 'HTTP 400 (Bad Request): The given service name or service definition is invalid; See the error code and message in the response for details. HTTP 404 (Not Found): The subscription or resource group could not be found. HTTP 409 (Conflict): The specified subscription is disabled.'
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: SearchService
+                          example:
+                            id: /subscriptions/<your subscription ID here>/resourceGroups/Default-ResourceGroup/providers/Microsoft.Search/searchServices/your-service-name-here
+                            location: westus
+                            name: your-service-name-here
+                            properties:
+                              hostingMode: default
+                              partitionCount: 1
+                              provisioningState: provisioning
+                              replicaCount: 3
+                              status: provisioning
+                              statusDetails: ''
+                            sku:
+                              name: standard
+                            tags:
+                              app-name: My e-commerce app
+                            type: Microsoft.Search/searchServices
+                      description: 'The existing service definition was successfully updated. If you changed the number of replicas or partitions, the scale operation will happen asynchronously. You can periodically get your service definition and monitor progress via the provisioningState property.'
+                    '201':
+                      body:
+                        application/json:
+                          type: SearchService
+                          example:
+                            id: /subscriptions/<your subscription ID here>/resourceGroups/Default-ResourceGroup/providers/Microsoft.Search/searchServices/your-service-name-here
+                            location: westus
+                            name: your-service-name-here
+                            properties:
+                              hostingMode: default
+                              partitionCount: 1
+                              provisioningState: provisioning
+                              replicaCount: 3
+                              status: provisioning
+                              statusDetails: ''
+                            sku:
+                              name: standard
+                            tags:
+                              app-name: My e-commerce app
+                            type: Microsoft.Search/searchServices
+                      description: 'If you requested creation of a free Search service, the service is now provisioned and ready to use, subject to DNS propagation delay. For other SKU types, provisioning happens asynchronously. You can periodically get your service definition and monitor progress via the provisioningState property.'
+                  (oas-tags):
+                    - Services
+                  (oas-externalDocs):
+                    url: 'https://aka.ms/search-manage'
+                get:
+                  displayName: Services_Get
+                  description: Gets the Search service with the given name in the given resource group.
+                  is:
+                    - clientRequestIdParameter
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: CloudError
+                    description: 'HTTP 404 (Not Found): The subscription, resource group, or Search service name could not be found.'
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: SearchService
+                          example:
+                            id: /subscriptions/<your subscription ID here>/resourceGroups/Default-ResourceGroup/providers/Microsoft.Search/searchServices/your-service-name-here
+                            location: westus
+                            name: your-service-name-here
+                            properties:
+                              hostingMode: default
+                              partitionCount: 1
+                              provisioningState: succeeded
+                              replicaCount: 3
+                              status: running
+                              statusDetails: ''
+                            sku:
+                              name: standard
+                            tags:
+                              app-name: My e-commerce app
+                            type: Microsoft.Search/searchServices
+                      description: 'The Search service definition was successfully retrieved and is in the response. If you are polling for the completion of a provisioning or scale operation, you can check its status via the provisioningState property.'
+                  (oas-tags):
+                    - Services
+                  (oas-externalDocs):
+                    url: 'https://aka.ms/search-manage'
+                delete:
+                  displayName: Services_Delete
+                  description: 'Deletes a Search service in the given resource group, along with its associated resources.'
+                  is:
+                    - clientRequestIdParameter
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: CloudError
+                    description: An unexpected error occurred during the operation.
+                  responses:
+                    '200':
+                      description: The Search service was successfully deleted.
+                    '204':
+                      description: The Search service was successfully deleted.
+                    '404':
+                      description: 'The subscription, resource group, or Search service could not be found.'
+                  (oas-tags):
+                    - Services
+                  (oas-externalDocs):
+                    url: 'https://aka.ms/search-manage'
+              get:
+                (oas-x-ms-pageable): {}
+                displayName: Services_ListByResourceGroup
+                description: Gets a list of all Search services in the given resource group.
+                is:
+                  - clientRequestIdParameter
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: CloudError
+                  description: An unexpected error occurred during the operation.
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: SearchServiceListResult
+                        example:
+                          value:
+                            value:
+                              - id: /subscriptions/<your subscription ID here>/resourceGroups/Default-ResourceGroup/providers/Microsoft.Search/searchServices/your-service-name-here
+                                location: westus
+                                name: your-service-name-here
+                                properties:
+                                  hostingMode: default
+                                  partitionCount: 1
+                                  provisioningState: succeeded
+                                  replicaCount: 3
+                                  status: running
+                                  statusDetails: ''
+                                sku:
+                                  name: standard
+                                tags:
+                                  app-name: My e-commerce app
+                                type: Microsoft.Search/searchServices
+                              - id: /subscriptions/<your subscription ID here>/resourceGroups/Default-ResourceGroup/providers/Microsoft.Search/searchServices/your-second-service-name-here
+                                location: eastus
+                                name: your-second-service-name-here
+                                properties:
+                                  hostingMode: default
+                                  partitionCount: 1
+                                  provisioningState: succeeded
+                                  replicaCount: 1
+                                  status: running
+                                  statusDetails: ''
+                                sku:
+                                  name: basic
+                                tags:
+                                  app-name: My e-commerce app
+                                type: Microsoft.Search/searchServices
+                    description: The operation succeeded. The response contains the list of all Search service definitions for the given resource group.
+                (oas-tags):
+                  - Services
+                (oas-externalDocs):
+                  url: 'https://aka.ms/search-manage'
+    /providers:
+      displayName: providers
+      /Microsoft.Search:
+        displayName: Microsoft.Search
+        /checkNameAvailability:
+          displayName: checkNameAvailability
+          post:
+            displayName: Services_CheckNameAvailability
+            description: 'Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://<name>.search.windows.net).'
+            is:
+              - clientRequestIdParameter
+              - apiVersionParameter
+            body:
+              application/json:
+                type: CheckNameAvailabilityInput
+                (oas-body-name): checkNameAvailabilityInput
+                description: The resource name and type to check.
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: CloudError
+              description: 'HTTP 400 (Bad Request): The given resource type is not ''searchServices''.'
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: CheckNameAvailabilityOutput
+                    example:
+                      message: ''
+                      nameAvailable: false
+                      reason: AlreadyExists
+                description: 'The name check completed. The response contains details of whether the name is valid and available. If the name is invalid, the response also contains a message explaining why not.'
+            (oas-tags):
+              - Services
+            (oas-externalDocs):
+              url: 'https://aka.ms/search-manage'
+types:
+  AdminKeyResult:
+    description: Response containing the primary and secondary admin API keys for a given Azure Search service.
+    properties:
+      primaryKey:
+        description: The primary admin API key of the Search service.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      secondaryKey:
+        description: The secondary admin API key of the Search service.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  CheckNameAvailabilityInput:
+    description: Input of check name availability API.
+    properties:
+      name:
+        description: 'The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.'
+        type: string
+      type:
+        description: The type of the resource whose name is to be validated. This value must always be 'searchServices'.
+        enum:
+          - searchServices
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: ResourceType
+    example:
+      name: your-service-name-here
+      type: searchServices
+  CheckNameAvailabilityOutput:
+    description: Output of check name availability API.
+    properties:
+      message:
+        description: A message that explains why the name is invalid and provides resource naming requirements. Available only if 'Invalid' is returned in the 'reason' property.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      nameAvailable:
+        description: A value indicating whether the name is available.
+        readOnly: true
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-x-ms-client-name): IsNameAvailable
+      reason:
+        description: 'The reason why the name is not available. ''Invalid'' indicates the name provided does not match the naming requirements (incorrect length, unsupported characters, etc.). ''AlreadyExists'' indicates that the name is already in use and is therefore unavailable.'
+        enum:
+          - Invalid
+          - AlreadyExists
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: UnavailableNameReason
+  CloudError:
+    description: Contains information about an API error.
+    properties:
+      error:
+        type: CloudErrorBody
+        required: false
+  CloudErrorBody:
+    description: Describes a particular API error with an error code and a message.
+    properties:
+      code:
+        description: An error code that describes the error condition more precisely than an HTTP status code. Can be used to programatically handle specific error cases.
+        type: string
+        required: false
+      details:
+        description: Contains nested errors that are related to this error.
+        items:
+          type: CloudErrorBody
+        type: array
+        required: false
+      message:
+        description: A message that describes the error in detail and provides debugging information.
+        type: string
+        required: false
+      target:
+        description: 'The target of the particular error (for example, the name of the property in error).'
+        type: string
+        required: false
+  ListQueryKeysResult:
+    description: Response containing the query API keys for a given Azure Search service.
+    properties:
+      value:
+        description: The query keys for the Azure Search service.
+        items:
+          type: QueryKey
+        readOnly: true
+        type: array
+        facets:
+          readOnly?: boolean
+        required: false
+  QueryKey:
+    description: Describes an API key for a given Azure Search service that has permissions for query operations only.
+    properties:
+      key:
+        description: The value of the query API key.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: The name of the query API key; may be empty.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  Resource:
+    description: Base type for all Azure resources.
+    properties:
+      id:
+        description: The ID of the resource. This can be used with the Azure Resource Manager to link resources together.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-externalDocs):
+          url: 'https://aka.ms/search-linked-resources'
+      location:
+        description: 'The geographic location of the resource. This must be one of the supported and registered Azure Geo Regions (for example, West US, East US, Southeast Asia, and so forth).'
+        type: string
+        (oas-x-ms-mutability):
+          - create
+          - read
+        (oas-externalDocs):
+          url: 'https://aka.ms/search-rp-info'
+      name:
+        description: The name of the resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-externalDocs):
+          url: 'https://aka.ms/search-naming-rules'
+      tags:
+        additionalProperties:
+          type: string
+        description: Tags to help categorize the resource in the Azure portal.
+        type: object
+        required: false
+      type:
+        description: The resource type.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  SearchService:
+    type: Resource
+    example:
+      location: westus
+      properties:
+        hostingMode: default
+        partitionCount: 1
+        replicaCount: 3
+      sku:
+        name: standard
+      tags:
+        app-name: My e-commerce app
+  SearchServiceListResult:
+    description: Response containing a list of Azure Search services.
+    properties:
+      value:
+        description: The list of Search services.
+        items:
+          type: SearchService
+        readOnly: true
+        type: array
+        facets:
+          readOnly?: boolean
+        required: false
+  SearchServiceProperties:
+    description: Properties of the Search service.
+    properties:
+      hostingMode:
+        default: default
+        description: 'Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for any other SKU. For the standard3 SKU, the value is either ''default'' or ''highDensity''. For all other SKUs, this value must be ''default''.'
+        enum:
+          - default
+          - highDensity
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: HostingMode
+      partitionCount:
+        default: 1
+        description: 'The number of partitions in the Search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For ''standard3'' services with hostingMode set to ''highDensity'', the allowed values are between 1 and 3.'
+        format: int32
+        maximum: 12
+        minimum: 1
+        type: integer
+        required: false
+      provisioningState:
+        description: 'The state of the last provisioning operation performed on the Search service. Provisioning is an intermediate state that occurs while service capacity is being established. After capacity is set up, provisioningState changes to either ''succeeded'' or ''failed''. Client applications can poll provisioning status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search Service operation to see when an operation is completed. If you are using the free service, this value tends to come back as ''succeeded'' directly in the call to Create Search service. This is because the free service uses capacity that is already set up.'
+        enum:
+          - succeeded
+          - provisioning
+          - failed
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: ProvisioningState
+      replicaCount:
+        default: 1
+        description: 'The number of replicas in the Search service. If specified, it must be a value between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.'
+        format: int32
+        maximum: 12
+        minimum: 1
+        type: integer
+        required: false
+      status:
+        description: 'The status of the Search service. Possible values include: ''running'': The Search service is running and no provisioning operations are underway. ''provisioning'': The Search service is being provisioned or scaled up or down. ''deleting'': The Search service is being deleted. ''degraded'': The Search service is degraded. This can occur when the underlying search units are not healthy. The Search service is most likely operational, but performance might be slow and some requests might be dropped. ''disabled'': The Search service is disabled. In this state, the service will reject all API requests. ''error'': The Search service is in an error state. If your service is in the degraded, disabled, or error states, it means the Azure Search team is actively investigating the underlying issue. Dedicated services in these states are still chargeable based on the number of search units provisioned.'
+        enum:
+          - running
+          - provisioning
+          - deleting
+          - degraded
+          - disabled
+          - error
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: SearchServiceStatus
+      statusDetails:
+        description: The details of the Search service status.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  Sku:
+    description: 'Defines the SKU of an Azure Search Service, which determines price tier and capacity limits.'
+    properties:
+      name:
+        description: 'The SKU of the Search service. Valid values include: ''free'': Shared service. ''basic'': Dedicated service with up to 3 replicas. ''standard'': Dedicated service with up to 12 partitions and 12 replicas. ''standard2'': Similar to standard, but with more capacity per search unit. ''standard3'': Offers maximum capacity per search unit with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the hostingMode property to ''highDensity'').'
+        enum:
+          - free
+          - basic
+          - standard
+          - standard2
+          - standard3
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: SkuName
+    (oas-externalDocs):
+      url: 'https://azure.microsoft.com/documentation/articles/search-sku-tier/'
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: The API version to use for each request. The current version is 2015-08-19.
+        required: true
+  clientRequestIdParameter:
+    headers:
+      x-ms-client-request-id:
+        type: string
+        description: 'A client-generated GUID value that identifies this request. If specified, this will be included in response information as a way to track the request.'
+        format: uuid
+        required: false
+        facets:
+          format: string

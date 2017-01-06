@@ -1,0 +1,728 @@
+#%RAML 1.0
+title: Sandbox
+version: v1
+baseUri: 'https://getsandbox.com/api'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: Sandbox API
+(oas-tags-definition):
+  - name: Activity
+  - name: Sandbox
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-tags: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+(oas-info):
+  (oas-x-apisguru-categories):
+    - developer_tools
+  (oas-x-logo):
+    backgroundColor: '#161924'
+    url: 'https://api.apis.guru/v2/cache/logo/https_getsandbox.com_lib_img_logo-white-72dpi.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://getsandbox.com/lib/js/vendor/swagger/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): getsandbox.com
+  (oas-x-tags):
+    - sandbox
+    - API
+    - REST
+    - SOAP
+    - Swagger
+    - OpenAPI
+  contact:
+    name: Sandbox Support
+    url: 'https://getsandbox.com'
+    email: hello@getsandbox.com
+  termsOfService: 'https://getsandbox.com/policy/customer-agreement'
+(oas-externalDocs):
+  url: 'https://getsandbox.com/docs/api/overview'
+securitySchemes:
+  api_key:
+    type: Pass Through
+    describedBy:
+      headers:
+        API_Key:
+          type: string
+/1:
+  displayName: '1'
+  /sandboxes:
+    displayName: sandboxes
+    '/{sandboxName}':
+      displayName: '{sandboxName}'
+      /state:
+        displayName: state
+        get:
+          displayName: getSandboxState
+          (oas-summary): getSandboxState
+          (oas-responses-default):
+            description: successful operation
+          (oas-tags):
+            - Sandbox
+        delete:
+          displayName: deleteSandboxState
+          (oas-summary): deleteSandboxState
+          (oas-responses-default):
+            description: successful operation
+          (oas-tags):
+            - Sandbox
+      /fork:
+        displayName: fork
+        get:
+          displayName: forkSandbox
+          (oas-summary): forkSandbox
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Sandbox
+                  example:
+                    id: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                    name: testbox
+                    description: ''
+                    configuredRoutes: []
+                    hasRepository: true
+                    apiDefinition: None
+                    stackType: JavaScript
+                    runtimeVersion: VERSION_2
+                    proxyStatus: STARTED
+                    transportType: HTTP
+                    properties: {}
+                    gitUrl: 'http://git.getsandbox.com/testbox.git'
+                    sandboxUrl: 'http://testbox.getsandbox.com'
+              description: successful operation
+          (oas-tags):
+            - Sandbox
+      uriParameters:
+        sandboxName:
+          description: Name of the Sandbox
+          required: true
+          type: string
+          displayName: Name of the Sandbox
+      put:
+        displayName: updateSandbox
+        (oas-summary): updateSandbox
+        body:
+          application/json:
+            type: Sandbox
+            (oas-body-name): body
+            description: Fields to updated on given Sandbox
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Sandbox
+                example:
+                  id: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                  name: testbox
+                  description: ''
+                  configuredRoutes: []
+                  hasRepository: true
+                  apiDefinition: None
+                  stackType: JavaScript
+                  runtimeVersion: VERSION_2
+                  proxyStatus: STARTED
+                  transportType: HTTP
+                  properties: {}
+                  gitUrl: 'http://git.getsandbox.com/testbox.git'
+                  sandboxUrl: 'http://testbox.getsandbox.com'
+            description: successful operation
+        (oas-tags):
+          - Sandbox
+      get:
+        displayName: getSandbox
+        (oas-summary): getSandbox
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Sandbox
+                example:
+                  id: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                  name: testbox
+                  description: ''
+                  configuredRoutes: []
+                  hasRepository: true
+                  apiDefinition: None
+                  stackType: JavaScript
+                  runtimeVersion: VERSION_2
+                  proxyStatus: STARTED
+                  transportType: HTTP
+                  properties: {}
+                  gitUrl: 'http://git.getsandbox.com/testbox.git'
+                  sandboxUrl: 'http://testbox.getsandbox.com'
+            description: successful operation
+        (oas-tags):
+          - Sandbox
+      delete:
+        displayName: deleteSandbox
+        (oas-summary): deleteSandbox
+        (oas-responses-default):
+          description: successful operation
+        (oas-tags):
+          - Sandbox
+    post:
+      displayName: createSandbox
+      (oas-summary): createSandbox
+      body:
+        application/json:
+          type: CreateSandbox
+          (oas-body-name): body
+          description: Sandbox to be created
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Sandbox
+              example:
+                id: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                name: testbox
+                description: ''
+                configuredRoutes: []
+                hasRepository: true
+                apiDefinition: None
+                stackType: JavaScript
+                runtimeVersion: VERSION_2
+                proxyStatus: STARTED
+                transportType: HTTP
+                properties: {}
+                gitUrl: 'http://git.getsandbox.com/testbox.git'
+                sandboxUrl: 'http://testbox.getsandbox.com'
+          description: successful operation
+      (oas-tags):
+        - Sandbox
+    get:
+      displayName: getSandboxes
+      (oas-summary): getSandboxes
+      responses:
+        '200':
+          body:
+            application/json:
+              items:
+                type: Sandbox
+              type: array
+              example:
+                - id: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                  name: testbox
+                  description: ''
+                  configuredRoutes: []
+                  hasRepository: true
+                  apiDefinition: None
+                  stackType: JavaScript
+                  runtimeVersion: VERSION_2
+                  proxyStatus: STARTED
+                  transportType: HTTP
+                  properties: {}
+                  gitUrl: 'http://git.getsandbox.com/testbox.git'
+                  sandboxUrl: 'http://testbox.getsandbox.com'
+          description: successful operation
+      queryParameters:
+        filterType:
+          required: false
+          type: string
+      (oas-tags):
+        - Sandbox
+  /activity:
+    displayName: activity
+    /search:
+      displayName: search
+      get:
+        displayName: getSandboxesActivity
+        (oas-summary): searchActivity
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: ActivityMessage
+                type: array
+                example:
+                  - createdTimestamp: 1464829513623
+                    messageType: request
+                    sandboxId: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                    messageObject:
+                      request:
+                        transport: HTTP
+                        sandboxId: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                        sandboxName: testbox
+                        fullSandboxName: testbox
+                        fullSandboxId: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                        headers:
+                          Accept: '*/*'
+                          Host: testbox.getsandbox.com
+                          User-Agent: curl/7.43.0
+                          X-Forwarded-For: 10.0.2.2
+                        properties: {}
+                        body: ''
+                        ip: 10.0.2.2
+                        cookies: {}
+                        query: {}
+                        accepted:
+                          - '*/*'
+                        url: /hello
+                        params: {}
+                        method: GET
+                        path: /hello
+                        rawUrl: /hello
+                        received_timestamp: 1464829513575
+                      responses:
+                        - transport: HTTP
+                          body: |-
+                            [
+                              "hello"
+                            ]
+                          headers:
+                            Content-Type: application/json
+                          cookies: []
+                          responded_timestamp: 1464829513609
+                          duration_ms: 34
+                          status: 200
+                  - createdTimestamp: 1464829507925
+                    messageType: request
+                    sandboxId: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                    messageObject:
+                      request:
+                        transport: HTTP
+                        sandboxId: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                        sandboxName: testbox
+                        fullSandboxName: testbox
+                        fullSandboxId: s-328f0d3a-7cf8-400c-a5e8-dc0e84b737b3
+                        headers:
+                          Accept: '*/*'
+                          Host: testbox.getsandbox.com
+                          User-Agent: curl/7.43.0
+                          X-Forwarded-For: 10.0.2.2
+                        properties: {}
+                        body: ''
+                        ip: 10.0.2.2
+                        cookies: {}
+                        query: {}
+                        accepted:
+                          - '*/*'
+                        url: /hello
+                        params: {}
+                        method: GET
+                        path: /hello
+                        rawUrl: /hello
+                        received_timestamp: 1464829507856
+                      responses:
+                        - transport: HTTP
+                          body: |-
+                            [
+                              "hello",
+                              "hello",
+                              "hello",
+                              "hello",
+                              "hello",
+                              "hello"
+                            ]
+                          headers:
+                            Content-Type: application/json
+                          cookies: []
+                          responded_timestamp: 1464829507885
+                          duration_ms: 29
+                          status: 200
+            description: successful operation
+        queryParameters:
+          fromTimestamp:
+            description: 'Timestamp to start search from, epoch time in milliseconds.'
+            format: int64
+            required: false
+            type: integer
+            displayName: 'Timestamp to start search from, epoch time in milliseconds.'
+          sourceSandboxes:
+            description: Comma-separated list of Sandbox names to search.
+            required: false
+            type: string
+            displayName: Comma-separated list of Sandbox names to search.
+          keyword:
+            description: 'A keyword to search activities by, will match any part of the ActivityMessage.'
+            required: false
+            type: string
+            displayName: 'A keyword to search activities by, will match any part of the ActivityMessage.'
+          allTypes:
+            description: 'Flag to return all types of activity, defaults to just Requests'
+            required: false
+            type: boolean
+            displayName: 'Flag to return all types of activity, defaults to just Requests'
+          maxResults:
+            description: Maximum number of results to return
+            format: int32
+            required: false
+            type: integer
+            displayName: Maximum number of results to return
+        (oas-tags):
+          - Activity
+types:
+  ActivityMessage:
+    properties:
+      createdTimestamp:
+        description: Epoch time in milliseconds when the message was created
+        format: int64
+        type: integer
+        required: false
+      message:
+        description: The details of the message when type is 'log'
+        type: string
+        required: false
+      messageObject:
+        description: The details of the message when type is 'request'
+        type: RuntimeTransaction
+        required: false
+      messageType:
+        enum:
+          - request
+          - log
+        type: string
+        required: false
+      sandboxId:
+        description: The ID of the sandbox that generated this message
+        type: string
+        required: false
+  ConfiguredRouteDetails:
+    properties:
+      activeErrorOverride:
+        default: false
+        description: Whether error overrides are enabled or not.
+        type: boolean
+        required: false
+      activeLatency:
+        default: false
+        description: Whether latency delays are enabled or not.
+        type: boolean
+        required: false
+      defaultLatency:
+        description: A delay in milliseconds applied to requests at a 'normal' level.
+        format: int32
+        maximum: 30000
+        minimum: 0
+        type: integer
+        required: false
+      errorOverrideType:
+        description: The type of error override applied to this route.
+        enum:
+          - NONE
+          - TIMEOUT
+          - SERVICE_DOWN
+        type: string
+      loadLatency:
+        description: A delay in milliseconds applied to requests at a 'high' level.
+        format: int32
+        maximum: 30000
+        minimum: 0
+        type: integer
+        required: false
+      loadThreshold:
+        description: The threshold in transactions/second to signify 'high' load
+        format: int32
+        maximum: 100
+        minimum: 0
+        type: integer
+        required: false
+      method:
+        type: string
+        required: false
+      path:
+        type: string
+        required: false
+      properties:
+        additionalProperties:
+          type: string
+        type: object
+        required: false
+      transport:
+        type: string
+        required: false
+  CreateSandbox:
+    properties:
+      commitBaseTemplate:
+        default: false
+        description: Whether to commit the example Sandbox definition upon creation.
+        type: boolean
+        required: false
+      description:
+        description: Text describing this Sandbox.
+        maxLength: 255
+        minLength: 0
+        pattern: '^[A-Za-z-_ 0-9]*$'
+        type: string
+        required: false
+      name:
+        description: 'Optional name to give the Sandbox, will be generated if omitted.'
+        pattern: '^[A-Za-z-_ 0-9]*$'
+        type: string
+        required: false
+      ownerOrganisationName:
+        description: Name of the team this Sandbox should be created under.
+        maxLength: 36
+        minLength: 2
+        pattern: '^[a-zA-Z-_0-9]*$'
+        type: string
+        required: false
+      parentSandboxName:
+        description: 'Name of the Sandbox this should be created under, if exists will be a ''clone''.'
+        pattern: '^[A-Za-z-_ 0-9]*$'
+        type: string
+        required: false
+      transportType:
+        enum:
+          - HTTP
+          - JMS
+        type: string
+        required: false
+  Error:
+    properties:
+      code:
+        type: string
+        required: false
+      detailedMessage:
+        description: Longer message describing the error.
+        type: string
+        required: false
+      field:
+        description: Message describing which field the error relates to.
+        type: string
+        required: false
+      message:
+        description: Short message describing the error.
+        type: string
+        required: false
+  RuntimeRequest:
+    properties:
+      body:
+        description: The body of the given request.
+        type: string
+        required: false
+      contentType:
+        description: 'The content type of the body, for example ''application/json''.'
+        type: string
+        required: false
+      fullSandboxId:
+        description: The parent ID of the Sandbox that received the request.
+        type: string
+        required: false
+      fullSandboxName:
+        description: The parent name of the Sandbox that received the request.
+        type: string
+        required: false
+      headers:
+        additionalProperties:
+          type: string
+        description: Transport headers for the given request.
+        type: object
+        required: false
+      ip:
+        description: The requestor IP address.
+        type: string
+        required: false
+      properties:
+        additionalProperties:
+          type: string
+        type: object
+        required: false
+      receivedTimestamp:
+        description: The epoch time in milliseconds when the request was received.
+        format: int64
+        type: integer
+        required: false
+      sandboxId:
+        description: The ID of the Sandbox that received the request.
+        type: string
+        required: false
+      sandboxName:
+        description: The name of the Sandbox that received the request.
+        type: string
+        required: false
+      transport:
+        description: 'Which transport the request was for, ''HTTP'' or ''JMS''.'
+        type: string
+        required: false
+  RuntimeResponse:
+    properties:
+      body:
+        description: The body of the given response.
+        type: string
+        required: false
+      durationMillis:
+        description: Duration in milliseconds of the processing time in Sandbox.
+        format: int64
+        type: integer
+        required: false
+      error:
+        type: Error
+        required: false
+      headers:
+        additionalProperties:
+          type: string
+        description: Transport headers for the given response.
+        type: object
+        required: false
+      respondedTimestamp:
+        description: The epoch time in milliseconds when the response was sent.
+        format: int64
+        type: integer
+        required: false
+      transport:
+        description: 'Which transport the request was for, ''HTTP'' or ''JMS''.'
+        type: string
+        required: false
+  RuntimeTransaction:
+    properties:
+      request:
+        type: RuntimeRequest
+        required: false
+      responses:
+        items:
+          type: RuntimeResponse
+        type: array
+        required: false
+      sandboxName:
+        description: The source sandbox name.
+        type: string
+        required: false
+  Sandbox:
+    properties:
+      apiDefinition:
+        description: The import source of this Sandbox.
+        enum:
+          - None
+          - Apiary
+          - Swagger_V2_Json
+          - RAML_V08
+          - WSDL
+        type: string
+        required: false
+      childSandboxes:
+        description: Clones of this Sandbox.
+        items:
+          type: Sandbox
+        type: array
+        uniqueItems: true
+        required: false
+      configuredRoutes:
+        description: 'Extra configuration applied to some routes, delays, overrides etc.'
+        items:
+          type: ConfiguredRouteDetails
+        type: array
+        uniqueItems: true
+        required: false
+      description:
+        maxLength: 255
+        minLength: 0
+        pattern: '^[A-Za-z0-9 _\-]*$'
+        type: string
+        required: false
+      gitAccessToken:
+        type: string
+        required: false
+      gitUrl:
+        description: The git clone URL.
+        type: string
+        required: false
+      hasRepository:
+        default: false
+        description: Whether this Sandbox has a git repository or not.
+        type: boolean
+        required: false
+      id:
+        description: The ID of the Sandbox.
+        type: string
+        required: false
+      ipWhitelist:
+        description: 'The list of IPs allowed to make requests, all allowed if omitted.'
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+        required: false
+      name:
+        pattern: '^[a-z0-9\-]*$'
+        type: string
+      parentSandbox:
+        description: 'If the Sandbox is a clone, which is it a clone of.'
+        type: Sandbox
+        required: false
+      properties:
+        additionalProperties:
+          type: object
+        type: object
+        required: false
+      proxyStatus:
+        description: The listener status.
+        enum:
+          - STARTED
+          - STOPPED
+        type: string
+        required: false
+      runtimeVersion:
+        description: The library version of this Sandbox.
+        enum:
+          - VERSION_1
+          - VERSION_2
+        type: string
+        required: false
+      sandboxUrl:
+        description: The request URL for this Sandbox.
+        type: string
+        required: false
+      stackType:
+        enum:
+          - JavaScript
+        type: string
+        required: false
+      transportType:
+        description: The listener transport.
+        enum:
+          - HTTP
+          - JMS
+        type: string
+        required: false

@@ -1,0 +1,382 @@
+#%RAML 1.0
+title: Enterprise License Manager
+version: v1
+baseUri: 'https://www.googleapis.com/apps/licensing/v1/product'
+protocols:
+  - HTTPS
+description: Licensing API to view and manage license for your domain.
+(oas-tags-definition):
+  - name: licenseAssignments
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/licensing/v1/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): licensing
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/google-apps/licensing/'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/apps.licensing'
+    description: Oauth 2.0 authentication
+'/{productId}':
+  displayName: '{productId}'
+  /users:
+    displayName: users
+    get:
+      displayName: licensing.licenseAssignments.listForProduct
+      description: List license assignments for given product of the customer.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: LicenseAssignmentList
+          description: Successful response
+      queryParameters:
+        customerId:
+          description: CustomerId represents the customer for whom licenseassignments are queried
+          required: true
+          type: string
+          displayName: CustomerId represents the customer for whom licenseassignments are queried
+        maxResults:
+          default: 100
+          description: Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is 100.
+          maximum: 1000
+          minimum: 1
+          type: integer
+          displayName: Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is 100.
+        pageToken:
+          default: ''
+          description: Token to fetch the next page.Optional. By default server will return first page
+          type: string
+          displayName: Token to fetch the next page.Optional. By default server will return first page
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/apps.licensing'
+      (oas-tags):
+        - licenseAssignments
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /sku:
+    displayName: sku
+    '/{skuId}':
+      displayName: '{skuId}'
+      /users:
+        displayName: users
+        get:
+          displayName: licensing.licenseAssignments.listForProductAndSku
+          description: List license assignments for given product and sku of the customer.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: LicenseAssignmentList
+              description: Successful response
+          queryParameters:
+            customerId:
+              description: CustomerId represents the customer for whom licenseassignments are queried
+              required: true
+              type: string
+              displayName: CustomerId represents the customer for whom licenseassignments are queried
+            maxResults:
+              default: 100
+              description: Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is 100.
+              maximum: 1000
+              minimum: 1
+              type: integer
+              displayName: Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is 100.
+            pageToken:
+              default: ''
+              description: Token to fetch the next page.Optional. By default server will return first page
+              type: string
+              displayName: Token to fetch the next page.Optional. By default server will return first page
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/apps.licensing'
+          (oas-tags):
+            - licenseAssignments
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      /user:
+        displayName: user
+        '/{userId}':
+          displayName: '{userId}'
+          uriParameters:
+            userId:
+              description: email id or unique Id of the user
+              required: true
+              type: string
+              displayName: email id or unique Id of the user
+          put:
+            displayName: licensing.licenseAssignments.update
+            description: Assign License.
+            body:
+              application/json:
+                type: LicenseAssignment
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: LicenseAssignment
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/apps.licensing'
+            (oas-tags):
+              - licenseAssignments
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+          patch:
+            displayName: licensing.licenseAssignments.patch
+            description: Assign License. This method supports patch semantics.
+            body:
+              application/json:
+                type: LicenseAssignment
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: LicenseAssignment
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/apps.licensing'
+            (oas-tags):
+              - licenseAssignments
+          get:
+            displayName: licensing.licenseAssignments.get
+            description: Get license assignment of a particular product and sku for a user
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: LicenseAssignment
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/apps.licensing'
+            (oas-tags):
+              - licenseAssignments
+          delete:
+            displayName: licensing.licenseAssignments.delete
+            description: Revoke License.
+            responses:
+              '200':
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/apps.licensing'
+            (oas-tags):
+              - licenseAssignments
+        post:
+          displayName: licensing.licenseAssignments.insert
+          description: Assign License.
+          body:
+            application/json:
+              type: LicenseAssignmentInsert
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: LicenseAssignment
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/apps.licensing'
+          (oas-tags):
+            - licenseAssignments
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+types:
+  LicenseAssignment:
+    description: Template for LiscenseAssignment Resource
+    properties:
+      etags:
+        description: ETag of the resource.
+        type: string
+        required: false
+      kind:
+        default: 'licensing#licenseAssignment'
+        description: Identifies the resource as a LicenseAssignment.
+        type: string
+        required: false
+      productId:
+        description: Name of the product.
+        type: string
+        required: false
+      selfLink:
+        description: Link to this page.
+        type: string
+        required: false
+      skuId:
+        description: Name of the sku of the product.
+        type: string
+        required: false
+      userId:
+        description: Email id of the user.
+        type: string
+        required: false
+  LicenseAssignmentInsert:
+    description: Template for LicenseAssignment Insert request
+    properties:
+      userId:
+        description: Email id of the user
+        type: string
+        required: false
+  LicenseAssignmentList:
+    description: LicesnseAssignment List for a given product/sku for a customer.
+    properties:
+      etag:
+        description: ETag of the resource.
+        type: string
+        required: false
+      items:
+        description: The LicenseAssignments in this page of results.
+        items:
+          type: LicenseAssignment
+        type: array
+        required: false
+      kind:
+        default: 'licensing#licenseAssignmentList'
+        description: Identifies the resource as a collection of LicenseAssignments.
+        type: string
+        required: false
+      nextPageToken:
+        description: 'The continuation token, used to page through large result sets. Provide this value in a subsequent request to return the next page of results.'
+        type: string
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

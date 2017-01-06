@@ -1,0 +1,1411 @@
+#%RAML 1.0
+title: IntuneResourceManagementClient
+version: 2015-01-14-preview
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: Microsoft.Intune Resource provider Api features in the swagger-2.0 specification
+(oas-info):
+  (oas-x-apisguru-categories):
+    - enterprise
+    - cloud
+    - collaboration
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-intune/2015-01-14-preview/swagger/intune.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-intune
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - mobile
+    - Office
+    - security
+    - management
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-client-flatten: any
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+/providers:
+  displayName: providers
+  /Microsoft.Intune:
+    displayName: Microsoft.Intune
+    /locations:
+      displayName: locations
+      '/{hostName}':
+        displayName: '{hostName}'
+        /flaggedUsers:
+          displayName: flaggedUsers
+          '/{userName}':
+            displayName: '{userName}'
+            /flaggedEnrolledApps:
+              displayName: flaggedEnrolledApps
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextlink
+                displayName: GetMAMUserFlaggedEnrolledApps
+                description: Returns Intune flagged enrolled app collection for the User
+                is:
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: Error
+                  description: unexpected error
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: FlaggedEnrolledAppCollection
+                    description: Flagged enrolled Apps as collection response
+                queryParameters:
+                  $filter:
+                    description: The filter to apply on the operation.
+                    required: false
+                    type: string
+                    displayName: The filter to apply on the operation.
+                  $top:
+                    format: int32
+                    required: false
+                    type: integer
+                  $select:
+                    description: select specific fields in entity.
+                    required: false
+                    type: string
+                    displayName: select specific fields in entity.
+            uriParameters:
+              userName:
+                description: Flagged userName
+                required: true
+                type: string
+                displayName: Flagged userName
+            get:
+              displayName: GetMAMFlaggedUserByName
+              description: Returns Intune flagged user details
+              is:
+                - apiVersionParameter
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: FlaggedUser
+                  description: Flagged user details in response
+              queryParameters:
+                $select:
+                  description: select specific fields in entity.
+                  required: false
+                  type: string
+                  displayName: select specific fields in entity.
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextlink
+            displayName: GetMAMFlaggedUsers
+            description: Returns Intune flagged user collection
+            is:
+              - apiVersionParameter
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: Error
+              description: unexpected error
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: FlaggedUserCollection
+                description: Flagged users as collection response
+            queryParameters:
+              $filter:
+                description: The filter to apply on the operation.
+                required: false
+                type: string
+                displayName: The filter to apply on the operation.
+              $top:
+                format: int32
+                required: false
+                type: integer
+              $select:
+                description: select specific fields in entity.
+                required: false
+                type: string
+                displayName: select specific fields in entity.
+        /users:
+          displayName: users
+          '/{userName}':
+            displayName: '{userName}'
+            /devices:
+              displayName: devices
+              '/{deviceName}':
+                displayName: '{deviceName}'
+                /wipe:
+                  displayName: wipe
+                  post:
+                    displayName: WipeMAMUserDevice
+                    description: Wipe a device for a user.
+                    is:
+                      - apiVersionParameter
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: Error
+                      description: unexpected error
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: WipeDeviceOperationResult
+                        description: Wipe operation result.
+                uriParameters:
+                  deviceName:
+                    description: device name
+                    required: true
+                    type: string
+                    displayName: device name
+                get:
+                  displayName: GetMAMUserDeviceByDeviceName
+                  description: Get a unique device for a user.
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Device
+                      description: Device entity.
+                  queryParameters:
+                    $select:
+                      description: select specific fields in entity.
+                      required: false
+                      type: string
+                      displayName: select specific fields in entity.
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextlink
+                displayName: GetMAMUserDevices
+                description: Get devices for a user.
+                is:
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: Error
+                  description: unexpected error
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: DeviceCollection
+                    description: devices as collection response
+                queryParameters:
+                  $filter:
+                    description: The filter to apply on the operation.
+                    required: false
+                    type: string
+                    displayName: The filter to apply on the operation.
+                  $top:
+                    format: int32
+                    required: false
+                    type: integer
+                  $select:
+                    description: select specific fields in entity.
+                    required: false
+                    type: string
+                    displayName: select specific fields in entity.
+        /iosPolicies:
+          displayName: iosPolicies
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextlink
+            displayName: Ios_GetMAMPolicies
+            description: Returns Intune iOSPolicies.
+            is:
+              - apiVersionParameter
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: Error
+              description: unexpected error
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: IOSMAMPolicyCollection
+                description: applications as collection response
+            queryParameters:
+              $filter:
+                description: The filter to apply on the operation.
+                required: false
+                type: string
+                displayName: The filter to apply on the operation.
+              $top:
+                format: int32
+                required: false
+                type: integer
+              $select:
+                description: select specific fields in entity.
+                required: false
+                type: string
+                displayName: select specific fields in entity.
+          '/{policyName}':
+            displayName: '{policyName}'
+            uriParameters:
+              policyName:
+                description: Unique name for the policy
+                required: true
+                type: string
+                displayName: Unique name for the policy
+            delete:
+              displayName: Ios_DeleteMAMPolicy
+              description: Delete Ios Policy
+              is:
+                - apiVersionParameter
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  description: No-Content.
+                '204':
+                  description: No-Content.
+            get:
+              displayName: Ios_GetMAMPolicyByName
+              description: Returns Intune iOS policies.
+              is:
+                - apiVersionParameter
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: iOSMAMPolicy
+                  description: iOSMAMPolicy entity.
+              queryParameters:
+                $select:
+                  description: select specific fields in entity.
+                  required: false
+                  type: string
+                  displayName: select specific fields in entity.
+            patch:
+              displayName: Ios_PatchMAMPolicy
+              description: ' patch an iOSMAMPolicy.'
+              is:
+                - apiVersionParameter
+              body:
+                application/json:
+                  type: iOSMAMPolicy
+                  (oas-body-name): parameters
+                  description: Parameters supplied to the Create or update an android policy operation.
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: iOSMAMPolicy
+                  description: iOSMAMPolicy entity.
+            put:
+              displayName: Ios_CreateOrUpdateMAMPolicy
+              description: Creates or updates iOSMAMPolicy.
+              is:
+                - apiVersionParameter
+              body:
+                application/json:
+                  type: iOSMAMPolicy
+                  (oas-body-name): parameters
+                  description: Parameters supplied to the Create or update an android policy operation.
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: iOSMAMPolicy
+                  description: iOSMAMPolicy entity.
+            /apps:
+              displayName: apps
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextlink
+                displayName: Ios_GetAppForMAMPolicy
+                description: Get apps for an iOSMAMPolicy.
+                is:
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: Error
+                  description: unexpected error
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: ApplicationCollection
+                    description: applications as collection response
+                queryParameters:
+                  $filter:
+                    description: The filter to apply on the operation.
+                    required: false
+                    type: string
+                    displayName: The filter to apply on the operation.
+                  $top:
+                    format: int32
+                    required: false
+                    type: integer
+                  $select:
+                    description: select specific fields in entity.
+                    required: false
+                    type: string
+                    displayName: select specific fields in entity.
+              '/{appName}':
+                displayName: '{appName}'
+                uriParameters:
+                  appName:
+                    description: application unique Name
+                    required: true
+                    type: string
+                    displayName: application unique Name
+                delete:
+                  displayName: Ios_DeleteAppForMAMPolicy
+                  description: Delete App for Ios Policy
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      description: No-Content.
+                    '204':
+                      description: No-Content.
+                put:
+                  displayName: Ios_AddAppForMAMPolicy
+                  description: Add app to an iOSMAMPolicy.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: MAMPolicyAppIdOrGroupIdPayload
+                      (oas-body-name): parameters
+                      description: Parameters supplied to add an app to an ios policy.
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      description: No-Content.
+                    '204':
+                      description: No-Content.
+            /groups:
+              displayName: groups
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextlink
+                displayName: Ios_GetGroupsForMAMPolicy
+                description: Returns groups for a given iOSMAMPolicy.
+                is:
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: Error
+                  description: unexpected error
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: GroupsCollection
+                    description: groups as collection response
+              '/{groupId}':
+                displayName: '{groupId}'
+                uriParameters:
+                  groupId:
+                    description: group Id
+                    required: true
+                    type: string
+                    displayName: group Id
+                delete:
+                  displayName: Ios_DeleteGroupForMAMPolicy
+                  description: Delete Group for iOS Policy
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      description: No-Content.
+                    '204':
+                      description: No-Content.
+                put:
+                  displayName: Ios_AddGroupForMAMPolicy
+                  description: Add group to an iOSMAMPolicy.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: MAMPolicyAppIdOrGroupIdPayload
+                      (oas-body-name): parameters
+                      description: Parameters supplied to the Create or update app to an android policy operation.
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      description: No-Content.
+                    '204':
+                      description: No-Content.
+        /AndroidPolicies:
+          displayName: AndroidPolicies
+          '/{policyName}':
+            displayName: '{policyName}'
+            /apps:
+              displayName: apps
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextlink
+                displayName: Android_GetAppForMAMPolicy
+                description: Get apps for an AndroidMAMPolicy.
+                is:
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: Error
+                  description: unexpected error
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: ApplicationCollection
+                    description: applications as collection response
+                queryParameters:
+                  $filter:
+                    description: The filter to apply on the operation.
+                    required: false
+                    type: string
+                    displayName: The filter to apply on the operation.
+                  $top:
+                    format: int32
+                    required: false
+                    type: integer
+                  $select:
+                    description: select specific fields in entity.
+                    required: false
+                    type: string
+                    displayName: select specific fields in entity.
+        /androidPolicies:
+          displayName: androidPolicies
+          '/{policyName}':
+            displayName: '{policyName}'
+            uriParameters:
+              policyName:
+                description: Unique name for the policy
+                required: true
+                type: string
+                displayName: Unique name for the policy
+            delete:
+              displayName: Android_DeleteMAMPolicy
+              description: Delete Android Policy
+              is:
+                - apiVersionParameter
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  description: No-Content.
+                '204':
+                  description: No-Content.
+            patch:
+              displayName: Android_PatchMAMPolicy
+              description: Patch AndroidMAMPolicy.
+              is:
+                - apiVersionParameter
+              body:
+                application/json:
+                  type: AndroidMAMPolicy
+                  (oas-body-name): parameters
+                  description: Parameters supplied to the Create or update an android policy operation.
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AndroidMAMPolicy
+                  description: android entity.
+            /apps:
+              displayName: apps
+              '/{appName}':
+                displayName: '{appName}'
+                uriParameters:
+                  appName:
+                    description: application unique Name
+                    required: true
+                    type: string
+                    displayName: application unique Name
+                delete:
+                  displayName: Android_DeleteAppForMAMPolicy
+                  description: Delete App for Android Policy
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      description: No-Content.
+                    '204':
+                      description: No-Content.
+                put:
+                  displayName: Android_AddAppForMAMPolicy
+                  description: Add app to an AndroidMAMPolicy.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: MAMPolicyAppIdOrGroupIdPayload
+                      (oas-body-name): parameters
+                      description: Parameters supplied to the Create or update app to an android policy operation.
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      description: No-Content.
+                    '204':
+                      description: No-Content.
+            /groups:
+              displayName: groups
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextlink
+                displayName: Android_GetGroupsForMAMPolicy
+                description: Returns groups for a given AndroidMAMPolicy.
+                is:
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: Error
+                  description: unexpected error
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: GroupsCollection
+                    description: groups as collection response
+              '/{groupId}':
+                displayName: '{groupId}'
+                uriParameters:
+                  groupId:
+                    description: application unique Name
+                    required: true
+                    type: string
+                    displayName: application unique Name
+                put:
+                  displayName: Android_AddGroupForMAMPolicy
+                  description: Add group to an AndroidMAMPolicy.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: MAMPolicyAppIdOrGroupIdPayload
+                      (oas-body-name): parameters
+                      description: Parameters supplied to the Create or update app to an android policy operation.
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      description: No-Content.
+                    '204':
+                      description: No-Content.
+                delete:
+                  displayName: Android_DeleteGroupForMAMPolicy
+                  description: Delete Group for Android Policy
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: unexpected error
+                  responses:
+                    '200':
+                      description: No-Content.
+                    '204':
+                      description: No-Content.
+            get:
+              displayName: Android_GetMAMPolicyByName
+              description: Returns AndroidMAMPolicy with given name.
+              is:
+                - apiVersionParameter
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AndroidMAMPolicy
+                  description: iOSMAMPolicy entity.
+              queryParameters:
+                $select:
+                  description: select specific fields in entity.
+                  required: false
+                  type: string
+                  displayName: select specific fields in entity.
+            put:
+              displayName: Android_CreateOrUpdateMAMPolicy
+              description: Creates or updates AndroidMAMPolicy.
+              is:
+                - apiVersionParameter
+              body:
+                application/json:
+                  type: AndroidMAMPolicy
+                  (oas-body-name): parameters
+                  description: Parameters supplied to the Create or update an android policy operation.
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AndroidMAMPolicy
+                  description: android entity.
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextlink
+            displayName: Android_GetMAMPolicies
+            description: Returns Intune Android policies.
+            is:
+              - apiVersionParameter
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: Error
+              description: unexpected error
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AndroidMAMPolicyCollection
+                description: android Policies response
+            queryParameters:
+              $filter:
+                description: The filter to apply on the operation.
+                required: false
+                type: string
+                displayName: The filter to apply on the operation.
+              $top:
+                format: int32
+                required: false
+                type: integer
+              $select:
+                description: select specific fields in entity.
+                required: false
+                type: string
+                displayName: select specific fields in entity.
+        /apps:
+          displayName: apps
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextlink
+            displayName: GetApps
+            description: Returns Intune Manageable apps.
+            is:
+              - apiVersionParameter
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: Error
+              description: unexpected error
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ApplicationCollection
+                description: applications as collection response
+            queryParameters:
+              $filter:
+                description: The filter to apply on the operation.
+                required: false
+                type: string
+                displayName: The filter to apply on the operation.
+              $top:
+                format: int32
+                required: false
+                type: integer
+              $select:
+                description: select specific fields in entity.
+                required: false
+                type: string
+                displayName: select specific fields in entity.
+        /statuses:
+          displayName: statuses
+          /default:
+            displayName: default
+            get:
+              (oas-x-ms-pageable):
+                nextLinkName: nextlink
+              displayName: GetMAMStatuses
+              description: Returns Intune Tenant level statuses.
+              is:
+                - apiVersionParameter
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: Error
+                description: unexpected error
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: StatusesDefault
+                  description: applications as collection response
+        /operationResults:
+          displayName: operationResults
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextlink
+            displayName: GetOperationResults
+            description: Returns operationResults.
+            is:
+              - apiVersionParameter
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: Error
+              description: unexpected error
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: OperationResultCollection
+                description: applications as collection response
+            queryParameters:
+              $filter:
+                description: The filter to apply on the operation.
+                required: false
+                type: string
+                displayName: The filter to apply on the operation.
+              $top:
+                format: int32
+                required: false
+                type: integer
+              $select:
+                description: select specific fields in entity.
+                required: false
+                type: string
+                displayName: select specific fields in entity.
+      get:
+        (oas-x-ms-pageable):
+          nextLinkName: nextlink
+        displayName: GetLocations
+        description: Returns location for user tenant.
+        is:
+          - apiVersionParameter
+        (oas-responses-default):
+          body:
+            application/json:
+              type: Error
+          description: unexpected error
+        responses:
+          '200':
+            body:
+              application/json:
+                type: LocationCollection
+            description: location response as a collection
+      /hostName:
+        displayName: hostName
+        get:
+          displayName: GetLocationByHostName
+          description: Returns location for given tenant.
+          is:
+            - apiVersionParameter
+          (oas-responses-default):
+            body:
+              application/json:
+                type: Error
+            description: unexpected error
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Location
+              description: single location response
+types:
+  AndroidMAMPolicy:
+    type: Resource
+  AndroidMAMPolicyCollection:
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: AndroidMAMPolicy
+        type: array
+  AndroidMAMPolicyProperties:
+    type: MAMPolicyProperties
+  Application:
+    type: Resource
+  ApplicationCollection:
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: Application
+        type: array
+  ApplicationProperties:
+    properties:
+      appId:
+        type: string
+        required: false
+      friendlyName:
+        type: string
+      platform:
+        default: ios
+        enum:
+          - ios
+          - android
+          - windows
+        type: string
+  Device:
+    type: Resource
+  DeviceCollection:
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: Device
+        type: array
+  DeviceProperties:
+    properties:
+      deviceType:
+        type: string
+      friendlyName:
+        type: string
+      platform:
+        type: string
+      platformVersion:
+        type: string
+      userId:
+        type: string
+  Error:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+  FlaggedEnrolledApp:
+    type: Resource
+  FlaggedEnrolledAppCollection:
+    description: Flagged Enrolled App collection for the given tenant.
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: FlaggedEnrolledApp
+        type: array
+  FlaggedEnrolledAppError:
+    properties:
+      errorCode:
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      severity:
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  FlaggedEnrolledAppProperties:
+    properties:
+      deviceType:
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      errors:
+        items:
+          type: FlaggedEnrolledAppError
+        type: array
+        required: false
+      friendlyName:
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      lastModifiedTime:
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      platform:
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  FlaggedUser:
+    type: Resource
+  FlaggedUserCollection:
+    description: Flagged user collection for the given tenant.
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: FlaggedUser
+        type: array
+  FlaggedUserProperties:
+    properties:
+      errorCount:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      friendlyName:
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  GroupItem:
+    type: Resource
+  GroupProperties:
+    properties:
+      friendlyName:
+        type: string
+  GroupsCollection:
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: GroupItem
+        type: array
+  IOSMAMPolicyCollection:
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: iOSMAMPolicy
+        type: array
+  Location:
+    type: Resource
+  LocationCollection:
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: Location
+        type: array
+  LocationProperties:
+    properties:
+      hostName:
+        type: string
+  MAMPolicyAppIdOrGroupIdPayload:
+    description: MAM Policy request body for properties Intune MAM.
+    properties:
+      properties:
+        type: MAMPolicyAppOrGroupIdProperties
+        required: false
+  MAMPolicyAppOrGroupIdProperties:
+    description: Android Policy request body for Intune MAM.
+    properties:
+      url:
+        type: string
+  MAMPolicyProperties:
+    properties:
+      accessRecheckOfflineTimeout:
+        format: duration
+        type: string
+        facets:
+          format: string
+        required: false
+      accessRecheckOnlineTimeout:
+        format: duration
+        type: string
+        facets:
+          format: string
+        required: false
+      appSharingFromLevel:
+        default: none
+        enum:
+          - none
+          - policyManagedApps
+          - allApps
+        type: string
+        required: false
+      appSharingToLevel:
+        default: none
+        enum:
+          - none
+          - policyManagedApps
+          - allApps
+        type: string
+        required: false
+      authentication:
+        default: required
+        enum:
+          - required
+          - notRequired
+        type: string
+        required: false
+      clipboardSharingLevel:
+        default: blocked
+        enum:
+          - blocked
+          - policyManagedApps
+          - policyManagedAppsWithPasteIn
+          - allApps
+        type: string
+        required: false
+      dataBackup:
+        default: allow
+        enum:
+          - allow
+          - block
+        type: string
+        required: false
+      description:
+        type: string
+        required: false
+      deviceCompliance:
+        default: enable
+        enum:
+          - enable
+          - disable
+        type: string
+        required: false
+      fileSharingSaveAs:
+        default: allow
+        enum:
+          - allow
+          - block
+        type: string
+        required: false
+      friendlyName:
+        type: string
+      groupStatus:
+        default: notTargeted
+        enum:
+          - notTargeted
+          - targeted
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      lastModifiedTime:
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      managedBrowser:
+        default: required
+        enum:
+          - required
+          - notRequired
+        type: string
+        required: false
+      numOfApps:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      offlineWipeTimeout:
+        format: duration
+        type: string
+        facets:
+          format: string
+        required: false
+      pin:
+        default: required
+        enum:
+          - required
+          - notRequired
+        type: string
+        required: false
+      pinNumRetry:
+        type: integer
+        required: false
+  OperationResult:
+    type: Resource
+  OperationResultCollection:
+    properties:
+      nextlink:
+        description: Gets the URL to get the next set of results.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      value:
+        items:
+          type: OperationResult
+        type: array
+  OperationResultProperties:
+    properties:
+      category:
+        type: string
+        required: false
+      friendlyName:
+        type: string
+      lastModifiedTime:
+        type: string
+        required: false
+      operationMetadata:
+        items:
+          type: operationMetadataProperties
+        type: array
+      state:
+        type: string
+        required: false
+  Resource:
+    properties:
+      id:
+        description: Resource Id
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Resource Location
+        type: string
+        required: false
+      name:
+        description: Resource name
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Resource Tags
+        type: object
+        required: false
+      type:
+        description: Resource type
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  StatusesDefault:
+    type: Resource
+  StatusesProperties:
+    properties:
+      deployedPolicies:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      enrolledUsers:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      flaggedUsers:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      lastModifiedTime:
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      policyAppliedUsers:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      wipeFailedApps:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      wipePendingApps:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      wipeSucceededApps:
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+  WipeDeviceOperationResult:
+    type: Resource
+  WipeDeviceOperationResultProperties:
+    properties:
+      value:
+        type: string
+  iOSMAMPolicy:
+    type: Resource
+  iOSMAMPolicyProperties:
+    type: MAMPolicyProperties
+  operationMetadataProperties:
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Service Api Version.
+        required: true

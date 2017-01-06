@@ -1,0 +1,1585 @@
+#%RAML 1.0
+title: Google Play Movies Partner
+version: v1
+baseUri: 'https://playmoviespartner.googleapis.com/'
+protocols:
+  - HTTPS
+description: Gets the delivery status of titles for Google Play Movies Partners.
+(oas-tags-definition):
+  - name: accounts
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/playmoviespartner/v1/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): playmoviespartner
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/playmoviespartner/'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+    description: Oauth 2.0 authentication
+/v1:
+  displayName: v1
+  /accounts:
+    displayName: accounts
+    '/{accountId}':
+      displayName: '{accountId}'
+      /storeInfos:
+        displayName: storeInfos
+        '/{videoId}':
+          displayName: '{videoId}'
+          /country:
+            displayName: country
+            '/{country}':
+              displayName: '{country}'
+              uriParameters:
+                country:
+                  description: REQUIRED. Edit country.
+                  required: true
+                  type: string
+                  displayName: REQUIRED. Edit country.
+              get:
+                displayName: playmoviespartner.accounts.storeInfos.country.get
+                description: Get a StoreInfo given its video id and country. See _Authentication and Authorization rules_ and _Get methods rules_ for more information about this method.
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: StoreInfo
+                    description: Successful response
+                securedBy:
+                  - Oauth2:
+                      scopes:
+                        - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+                (oas-tags):
+                  - accounts
+              is:
+                - accessToken
+                - alt
+                - bearerToken
+                - callback
+                - fields
+                - key
+                - oauthToken
+                - pp
+                - prettyPrint
+                - quotaUser
+                - uploadProtocol
+                - uploadType
+                - xgafv
+        get:
+          displayName: playmoviespartner.accounts.storeInfos.list
+          description: List StoreInfos owned or managed by the partner. See _Authentication and Authorization rules_ and _List methods rules_ for more information about this method.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ListStoreInfosResponse
+              description: Successful response
+          queryParameters:
+            pageSize:
+              description: See _List methods rules_ for info about this field.
+              type: integer
+              displayName: See _List methods rules_ for info about this field.
+            pageToken:
+              description: See _List methods rules_ for info about this field.
+              type: string
+              displayName: See _List methods rules_ for info about this field.
+            pphNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            studioNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            videoId:
+              description: 'Filter StoreInfos that match a given `video_id`. NOTE: this field is deprecated and will be removed on V2; `video_ids` should be used instead.'
+              type: string
+              displayName: 'Filter StoreInfos that match a given `video_id`. NOTE: this field is deprecated and will be removed on V2; `video_ids` should be used instead.'
+            countries:
+              collectionFormat: multi
+              description: 'Filter StoreInfos that match (case-insensitive) any of the given country codes, using the "ISO 3166-1 alpha-2" format (examples: "US", "us", "Us").'
+              items:
+                type: string
+              type: array
+              displayName: 'Filter StoreInfos that match (case-insensitive) any of the given country codes, using the "ISO 3166-1 alpha-2" format (examples: "US", "us", "Us").'
+              facets:
+                collectionFormat: string
+            name:
+              description: Filter that matches StoreInfos with a `name` or `show_name` that contains the given case-insensitive name.
+              type: string
+              displayName: Filter that matches StoreInfos with a `name` or `show_name` that contains the given case-insensitive name.
+            videoIds:
+              collectionFormat: multi
+              description: Filter StoreInfos that match any of the given `video_id`s.
+              items:
+                type: string
+              type: array
+              displayName: Filter StoreInfos that match any of the given `video_id`s.
+              facets:
+                collectionFormat: string
+            mids:
+              collectionFormat: multi
+              description: Filter StoreInfos that match any of the given `mid`s.
+              items:
+                type: string
+              type: array
+              displayName: Filter StoreInfos that match any of the given `mid`s.
+              facets:
+                collectionFormat: string
+            seasonIds:
+              collectionFormat: multi
+              description: Filter StoreInfos that match any of the given `season_id`s.
+              items:
+                type: string
+              type: array
+              displayName: Filter StoreInfos that match any of the given `season_id`s.
+              facets:
+                collectionFormat: string
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+          (oas-tags):
+            - accounts
+        is:
+          - accessToken
+          - alt
+          - bearerToken
+          - callback
+          - fields
+          - key
+          - oauthToken
+          - pp
+          - prettyPrint
+          - quotaUser
+          - uploadProtocol
+          - uploadType
+          - xgafv
+      /orders:
+        displayName: orders
+        '/{orderId}':
+          displayName: '{orderId}'
+          uriParameters:
+            orderId:
+              description: REQUIRED. Order ID.
+              required: true
+              type: string
+              displayName: REQUIRED. Order ID.
+          get:
+            displayName: playmoviespartner.accounts.orders.get
+            description: Get an Order given its id. See _Authentication and Authorization rules_ and _Get methods rules_ for more information about this method.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Order
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+            (oas-tags):
+              - accounts
+          is:
+            - accessToken
+            - alt
+            - bearerToken
+            - callback
+            - fields
+            - key
+            - oauthToken
+            - pp
+            - prettyPrint
+            - quotaUser
+            - uploadProtocol
+            - uploadType
+            - xgafv
+        get:
+          displayName: playmoviespartner.accounts.orders.list
+          description: List Orders owned or managed by the partner. See _Authentication and Authorization rules_ and _List methods rules_ for more information about this method.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ListOrdersResponse
+              description: Successful response
+          queryParameters:
+            pageSize:
+              description: See _List methods rules_ for info about this field.
+              type: integer
+              displayName: See _List methods rules_ for info about this field.
+            pageToken:
+              description: See _List methods rules_ for info about this field.
+              type: string
+              displayName: See _List methods rules_ for info about this field.
+            pphNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            studioNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            name:
+              description: 'Filter that matches Orders with a `name`, `show`, `season` or `episode` that contains the given case-insensitive name.'
+              type: string
+              displayName: 'Filter that matches Orders with a `name`, `show`, `season` or `episode` that contains the given case-insensitive name.'
+            status:
+              collectionFormat: multi
+              description: Filter Orders that match one of the given status.
+              items:
+                enum:
+                  - STATUS_UNSPECIFIED
+                  - STATUS_APPROVED
+                  - STATUS_FAILED
+                  - STATUS_PROCESSING
+                  - STATUS_UNFULFILLED
+                  - STATUS_NOT_AVAILABLE
+                type: string
+              type: array
+              displayName: Filter Orders that match one of the given status.
+              facets:
+                collectionFormat: string
+            customId:
+              description: 'Filter Orders that match a case-insensitive, partner-specific custom id.'
+              type: string
+              displayName: 'Filter Orders that match a case-insensitive, partner-specific custom id.'
+            videoIds:
+              collectionFormat: multi
+              description: Filter Orders that match any of the given `video_id`s.
+              items:
+                type: string
+              type: array
+              displayName: Filter Orders that match any of the given `video_id`s.
+              facets:
+                collectionFormat: string
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+          (oas-tags):
+            - accounts
+        is:
+          - accessToken
+          - alt
+          - bearerToken
+          - callback
+          - fields
+          - key
+          - oauthToken
+          - pp
+          - prettyPrint
+          - quotaUser
+          - uploadProtocol
+          - uploadType
+          - xgafv
+      /experienceLocales:
+        displayName: experienceLocales
+        '/{elId}':
+          displayName: '{elId}'
+          uriParameters:
+            elId:
+              description: 'REQUIRED. ExperienceLocale ID, as defined by Google.'
+              required: true
+              type: string
+              displayName: 'REQUIRED. ExperienceLocale ID, as defined by Google.'
+          get:
+            displayName: playmoviespartner.accounts.experienceLocales.get
+            description: Get an ExperienceLocale given its id. See _Authentication and Authorization rules_ and _Get methods rules_ for more information about this method.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ExperienceLocale
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+            (oas-tags):
+              - accounts
+          is:
+            - accessToken
+            - alt
+            - bearerToken
+            - callback
+            - fields
+            - key
+            - oauthToken
+            - pp
+            - prettyPrint
+            - quotaUser
+            - uploadProtocol
+            - uploadType
+            - xgafv
+        get:
+          displayName: playmoviespartner.accounts.experienceLocales.list
+          description: List ExperienceLocales owned or managed by the partner. See _Authentication and Authorization rules_ and _List methods rules_ for more information about this method.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ListExperienceLocalesResponse
+              description: Successful response
+          queryParameters:
+            pageSize:
+              description: See _List methods rules_ for info about this field.
+              type: integer
+              displayName: See _List methods rules_ for info about this field.
+            pageToken:
+              description: See _List methods rules_ for info about this field.
+              type: string
+              displayName: See _List methods rules_ for info about this field.
+            pphNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            studioNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            titleLevelEidr:
+              description: Filter ExperienceLocales that match a given title-level EIDR.
+              type: string
+              displayName: Filter ExperienceLocales that match a given title-level EIDR.
+            editLevelEidr:
+              description: Filter ExperienceLocales that match a given edit-level EIDR.
+              type: string
+              displayName: Filter ExperienceLocales that match a given edit-level EIDR.
+            status:
+              collectionFormat: multi
+              description: Filter ExperienceLocales that match one of the given status.
+              items:
+                enum:
+                  - STATUS_UNSPECIFIED
+                  - STATUS_APPROVED
+                  - STATUS_FAILED
+                  - STATUS_PROCESSING
+                  - STATUS_UNFULFILLED
+                  - STATUS_NOT_AVAILABLE
+                type: string
+              type: array
+              displayName: Filter ExperienceLocales that match one of the given status.
+              facets:
+                collectionFormat: string
+            customId:
+              description: 'Filter ExperienceLocales that match a case-insensitive, partner-specific custom id.'
+              type: string
+              displayName: 'Filter ExperienceLocales that match a case-insensitive, partner-specific custom id.'
+            altCutId:
+              description: 'Filter ExperienceLocales that match a case-insensitive, partner-specific Alternative Cut ID.'
+              type: string
+              displayName: 'Filter ExperienceLocales that match a case-insensitive, partner-specific Alternative Cut ID.'
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+          (oas-tags):
+            - accounts
+        is:
+          - accessToken
+          - alt
+          - bearerToken
+          - callback
+          - fields
+          - key
+          - oauthToken
+          - pp
+          - prettyPrint
+          - quotaUser
+          - uploadProtocol
+          - uploadType
+          - xgafv
+      /components:
+        displayName: components
+        '/{componentId}':
+          displayName: '{componentId}'
+          /type:
+            displayName: type
+            '/{type}':
+              displayName: '{type}'
+              uriParameters:
+                type:
+                  description: REQUIRED. Component Type.
+                  enum:
+                    - COMPONENT_TYPE_UNSPECIFIED
+                    - VIDEO
+                    - AUDIO_20
+                    - AUDIO_51
+                    - SUBTITLE
+                    - ARTWORK
+                    - METADATA
+                  required: true
+                  type: string
+                  displayName: REQUIRED. Component Type.
+              get:
+                displayName: playmoviespartner.accounts.components.type.get
+                description: Get a Component given its id.
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: Component
+                    description: Successful response
+                securedBy:
+                  - Oauth2:
+                      scopes:
+                        - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+                (oas-tags):
+                  - accounts
+              is:
+                - accessToken
+                - alt
+                - bearerToken
+                - callback
+                - fields
+                - key
+                - oauthToken
+                - pp
+                - prettyPrint
+                - quotaUser
+                - uploadProtocol
+                - uploadType
+                - xgafv
+        get:
+          displayName: playmoviespartner.accounts.components.list
+          description: List Components owned or managed by the partner. See _Authentication and Authorization rules_ and _List methods rules_ for more information about this method.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ListComponentsResponse
+              description: Successful response
+          queryParameters:
+            pageSize:
+              description: See _List methods rules_ for info about this field.
+              type: integer
+              displayName: See _List methods rules_ for info about this field.
+            pageToken:
+              description: See _List methods rules_ for info about this field.
+              type: string
+              displayName: See _List methods rules_ for info about this field.
+            pphNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            studioNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            titleLevelEidr:
+              description: Filter Components that match a given title-level EIDR.
+              type: string
+              displayName: Filter Components that match a given title-level EIDR.
+            editLevelEidr:
+              description: Filter Components that match a given edit-level EIDR.
+              type: string
+              displayName: Filter Components that match a given edit-level EIDR.
+            status:
+              collectionFormat: multi
+              description: Filter Components that match one of the given status.
+              items:
+                enum:
+                  - STATUS_UNSPECIFIED
+                  - STATUS_APPROVED
+                  - STATUS_FAILED
+                  - STATUS_PROCESSING
+                  - STATUS_UNFULFILLED
+                  - STATUS_NOT_AVAILABLE
+                type: string
+              type: array
+              displayName: Filter Components that match one of the given status.
+              facets:
+                collectionFormat: string
+            customId:
+              description: Filter Components that match a case-insensitive partner-specific custom id.
+              type: string
+              displayName: Filter Components that match a case-insensitive partner-specific custom id.
+            inventoryId:
+              description: InventoryID available in Common Manifest.
+              type: string
+              displayName: InventoryID available in Common Manifest.
+            presentationId:
+              description: PresentationID available in Common Manifest.
+              type: string
+              displayName: PresentationID available in Common Manifest.
+            playableSequenceId:
+              description: PlayableSequenceID available in Common Manifest.
+              type: string
+              displayName: PlayableSequenceID available in Common Manifest.
+            elId:
+              description: 'Experience ID, as defined by Google.'
+              type: string
+              displayName: 'Experience ID, as defined by Google.'
+            altCutId:
+              description: 'Filter Components that match a case-insensitive, partner-specific Alternative Cut ID.'
+              type: string
+              displayName: 'Filter Components that match a case-insensitive, partner-specific Alternative Cut ID.'
+            filename:
+              description: Filter Components that match a case-insensitive substring of the physical name of the delivered file.
+              type: string
+              displayName: Filter Components that match a case-insensitive substring of the physical name of the delivered file.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+          (oas-tags):
+            - accounts
+        is:
+          - accessToken
+          - alt
+          - bearerToken
+          - callback
+          - fields
+          - key
+          - oauthToken
+          - pp
+          - prettyPrint
+          - quotaUser
+          - uploadProtocol
+          - uploadType
+          - xgafv
+      /avails:
+        displayName: avails
+        '/{availId}':
+          displayName: '{availId}'
+          uriParameters:
+            availId:
+              description: REQUIRED. Avail ID.
+              required: true
+              type: string
+              displayName: REQUIRED. Avail ID.
+          get:
+            displayName: playmoviespartner.accounts.avails.get
+            description: Get an Avail given its avail group id and avail id.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Avail
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+            (oas-tags):
+              - accounts
+          is:
+            - accessToken
+            - alt
+            - bearerToken
+            - callback
+            - fields
+            - key
+            - oauthToken
+            - pp
+            - prettyPrint
+            - quotaUser
+            - uploadProtocol
+            - uploadType
+            - xgafv
+        get:
+          displayName: playmoviespartner.accounts.avails.list
+          description: List Avails owned or managed by the partner. See _Authentication and Authorization rules_ and _List methods rules_ for more information about this method.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ListAvailsResponse
+              description: Successful response
+          queryParameters:
+            pageSize:
+              description: See _List methods rules_ for info about this field.
+              type: integer
+              displayName: See _List methods rules_ for info about this field.
+            pageToken:
+              description: See _List methods rules_ for info about this field.
+              type: string
+              displayName: See _List methods rules_ for info about this field.
+            pphNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            studioNames:
+              collectionFormat: multi
+              description: See _List methods rules_ for info about this field.
+              items:
+                type: string
+              type: array
+              displayName: See _List methods rules_ for info about this field.
+              facets:
+                collectionFormat: string
+            title:
+              description: 'Filter that matches Avails with a `title_internal_alias`, `series_title_internal_alias`, `season_title_internal_alias`, or `episode_title_internal_alias` that contains the given case-insensitive title.'
+              type: string
+              displayName: 'Filter that matches Avails with a `title_internal_alias`, `series_title_internal_alias`, `season_title_internal_alias`, or `episode_title_internal_alias` that contains the given case-insensitive title.'
+            territories:
+              collectionFormat: multi
+              description: 'Filter Avails that match (case-insensitive) any of the given country codes, using the "ISO 3166-1 alpha-2" format (examples: "US", "us", "Us").'
+              items:
+                type: string
+              type: array
+              displayName: 'Filter Avails that match (case-insensitive) any of the given country codes, using the "ISO 3166-1 alpha-2" format (examples: "US", "us", "Us").'
+              facets:
+                collectionFormat: string
+            altId:
+              description: 'Filter Avails that match a case-insensitive, partner-specific custom id. NOTE: this field is deprecated and will be removed on V2; `alt_ids` should be used instead.'
+              type: string
+              displayName: 'Filter Avails that match a case-insensitive, partner-specific custom id. NOTE: this field is deprecated and will be removed on V2; `alt_ids` should be used instead.'
+            videoIds:
+              collectionFormat: multi
+              description: Filter Avails that match any of the given `video_id`s.
+              items:
+                type: string
+              type: array
+              displayName: Filter Avails that match any of the given `video_id`s.
+              facets:
+                collectionFormat: string
+            altIds:
+              collectionFormat: multi
+              description: Filter Avails that match (case-insensitive) any of the given partner-specific custom ids.
+              items:
+                type: string
+              type: array
+              displayName: Filter Avails that match (case-insensitive) any of the given partner-specific custom ids.
+              facets:
+                collectionFormat: string
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/playmovies_partner.readonly'
+          (oas-tags):
+            - accounts
+        is:
+          - accessToken
+          - alt
+          - bearerToken
+          - callback
+          - fields
+          - key
+          - oauthToken
+          - pp
+          - prettyPrint
+          - quotaUser
+          - uploadProtocol
+          - uploadType
+          - xgafv
+types:
+  Avail:
+    description: 'An Avail describes the Availability Window of a specific Edit in a given country, which means the period Google is allowed to sell or rent the Edit. Avails are exposed in EMA format Version 1.6b (available at http://www.movielabs.com/md/avails/) Studios can see the Avails for the Titles they own. Post-production houses cannot see any Avails.'
+    properties:
+      altId:
+        description: 'Other identifier referring to the Edit, as defined by partner. Example: "GOOGLER_2006"'
+        type: string
+        required: false
+      availId:
+        description: ID internally generated by Google to uniquely identify an Avail. Not part of EMA Specs.
+        type: string
+        required: false
+      captionExemption:
+        description: 'Communicating an exempt category as defined by FCC regulations. It is not required for non-US Avails. Example: "1"'
+        type: string
+        required: false
+      captionIncluded:
+        description: Communicating if caption file will be delivered.
+        type: boolean
+        required: false
+      contentId:
+        description: 'Title Identifier. This should be the Title Level EIDR. Example: "10.5240/1489-49A2-3956-4B2D-FE16-5".'
+        type: string
+        required: false
+      displayName:
+        description: 'The name of the studio that owns the Edit referred in the Avail. This is the equivalent of `studio_name` in other resources, but it follows the EMA nomenclature. Example: "Google Films".'
+        type: string
+        required: false
+      encodeId:
+        description: 'Manifestation Identifier. This should be the Manifestation Level EIDR. Example: "10.2340/1489-49A2-3956-4B2D-FE16-7"'
+        type: string
+        required: false
+      end:
+        description: 'End of term in YYYY-MM-DD format in the timezone of the country of the Avail. "Open" if no end date is available. Example: "2019-02-17"'
+        type: string
+        required: false
+      episodeAltId:
+        description: 'Other identifier referring to the episode, as defined by partner. Only available on TV avails. Example: "rs_googlers_s1_3".'
+        type: string
+        required: false
+      episodeNumber:
+        description: 'The number assigned to the episode within a season. Only available on TV Avails. Example: "3".'
+        type: string
+        required: false
+      episodeTitleInternalAlias:
+        description: 'OPTIONAL.TV Only. Title used by involved parties to refer to this episode. Only available on TV Avails. Example: "Coding at Google".'
+        type: string
+        required: false
+      formatProfile:
+        description: Indicates the format profile covered by the transaction.
+        enum:
+          - FORMAT_PROFILE_UNSPECIFIED
+          - SD
+          - HD
+        type: string
+        required: false
+      licenseType:
+        description: Type of transaction.
+        enum:
+          - LICENSE_TYPE_UNSPECIFIED
+          - EST
+          - VOD
+          - SVOD
+          - POEST
+        type: string
+        required: false
+      pphNames:
+        description: Name of the post-production houses that manage the Avail. Not part of EMA Specs.
+        items:
+          type: string
+        type: array
+        required: false
+      priceType:
+        description: 'Type of pricing that should be applied to this Avail based on how the partner classify them. Example: "Tier", "WSP", "SRP", or "Category".'
+        type: string
+        required: false
+      priceValue:
+        description: 'Value to be applied to the pricing type. Example: "4" or "2.99"'
+        type: string
+        required: false
+      productId:
+        description: 'Edit Identifier. This should be the Edit Level EIDR. Example: "10.2340/1489-49A2-3956-4B2D-FE16-6"'
+        type: string
+        required: false
+      ratingReason:
+        description: 'Value representing the rating reason. Rating reasons should be formatted as per [EMA ratings spec](http://www.movielabs.com/md/ratings/) and comma-separated for inclusion of multiple reasons. Example: "L, S, V"'
+        type: string
+        required: false
+      ratingSystem:
+        description: 'Rating system applied to the version of title within territory of Avail. Rating systems should be formatted as per [EMA ratings spec](http://www.movielabs.com/md/ratings/) Example: "MPAA"'
+        type: string
+        required: false
+      ratingValue:
+        description: 'Value representing the rating. Ratings should be formatted as per http://www.movielabs.com/md/ratings/ Example: "PG"'
+        type: string
+        required: false
+      releaseDate:
+        description: 'Release date of the Title in earliest released territory. Typically it is just the year, but it is free-form as per EMA spec. Examples: "1979", "Oct 2014"'
+        type: string
+        required: false
+      seasonAltId:
+        description: 'Other identifier referring to the season, as defined by partner. Only available on TV avails. Example: "rs_googlers_s1".'
+        type: string
+        required: false
+      seasonNumber:
+        description: 'The number assigned to the season within a series. Only available on TV Avails. Example: "1".'
+        type: string
+        required: false
+      seasonTitleInternalAlias:
+        description: 'Title used by involved parties to refer to this season. Only available on TV Avails. Example: "Googlers, The".'
+        type: string
+        required: false
+      seriesAltId:
+        description: 'Other identifier referring to the series, as defined by partner. Only available on TV avails. Example: "rs_googlers".'
+        type: string
+        required: false
+      seriesTitleInternalAlias:
+        description: 'Title used by involved parties to refer to this series. Only available on TV Avails. Example: "Googlers, The".'
+        type: string
+        required: false
+      start:
+        description: 'Start of term in YYYY-MM-DD format in the timezone of the country of the Avail. Example: "2013-05-14".'
+        type: string
+        required: false
+      storeLanguage:
+        description: 'Spoken language of the intended audience. Language shall be encoded in accordance with RFC 5646. Example: "fr".'
+        type: string
+        required: false
+      suppressionLiftDate:
+        description: 'First date an Edit could be publically announced as becoming available at a specific future date in territory of Avail. *Not* the Avail start date or pre-order start date. Format is YYYY-MM-DD. Only available for pre-orders. Example: "2012-12-10"'
+        type: string
+        required: false
+      territory:
+        description: 'ISO 3166-1 alpha-2 country code for the country or territory of this Avail. For Avails, we use Territory in lieu of Country to comply with EMA specifications. But please note that Territory and Country identify the same thing. Example: "US".'
+        type: string
+        required: false
+      titleInternalAlias:
+        description: 'Title used by involved parties to refer to this content. Example: "Googlers, The". Only available on Movie Avails.'
+        type: string
+        required: false
+      videoId:
+        description: 'Google-generated ID identifying the video linked to this Avail, once delivered. Not part of EMA Specs. Example: ''gtry456_xc'''
+        type: string
+        required: false
+      workType:
+        description: Work type as enumerated in EMA.
+        enum:
+          - TITLE_TYPE_UNSPECIFIED
+          - MOVIE
+          - SEASON
+          - EPISODE
+          - BUNDLE
+        type: string
+        required: false
+  Component:
+    description: 'A Component is an element (audio, video, subtitle, artwork, trailer, etc...) that is used in a set of ExperienceLocales. A Component is owned by a Studio and managed either by the Studio itself or by one Post-Production House. Each Component is identified by a `component_id` and its `type`.'
+    properties:
+      altCutIds:
+        description: 'List of Alternative Cut IDs, sometimes available in lieu of the main Edit-level EIDR IDs. This is not an EIDR ID, but a Partner-provided ID. Example: "206346_79838".'
+        items:
+          type: string
+        type: array
+        required: false
+      approvedTime:
+        description: Timestamp when the Component was approved.
+        type: string
+        required: false
+      componentDetailType:
+        description: Detail about the type of the Component.
+        enum:
+          - COMPONENT_DETAIL_TYPE_UNSPECIFIED
+          - COMPONENT_DETAIL_TYPE_NORMAL
+          - COMPONENT_DETAIL_TYPE_POSTER
+          - COMPONENT_DETAIL_TYPE_PRIMARY
+          - COMPONENT_DETAIL_TYPE_FORCED
+          - COMPONENT_DETAIL_TYPE_DUBBED
+          - COMPONENT_DETAIL_TYPE_SDH
+        type: string
+        required: false
+      componentId:
+        description: 'ID internally generated by Google to uniquely identify the Component. Example: ''wteyrc_647xc'''
+        type: string
+        required: false
+      customIds:
+        description: 'List of custom IDs (defined by the partner) linked to the ExperienceLocale using this Component. Example: "R86241"'
+        items:
+          type: string
+        type: array
+        required: false
+      editLevelEidrs:
+        description: 'List of Edit-level EIDR IDs. Example: "10.5240/1489-49A2-3956-4B2D-FE16-6".'
+        items:
+          type: string
+        type: array
+        required: false
+      elIds:
+        description: 'IDs internally generated by Google to uniquely identify the ExperienceLocales for which the Component is used. Example: ''KRZiVjY9h7t'''
+        items:
+          type: string
+        type: array
+        required: false
+      filename:
+        description: File name of the Component when delivered.
+        type: string
+        required: false
+      language:
+        description: 'Language of the component, using the "BCP 47" format. Examples: "en", "en-US", "es", "es-419".'
+        type: string
+        required: false
+      name:
+        description: 'Default Edit name, usually in the language of the country of origin. Example: "Googlers, The".'
+        type: string
+        required: false
+      normalizedPriority:
+        description: A simpler representation of the priority.
+        enum:
+          - NORMALIZED_PRIORITY_UNSPECIFIED
+          - LOW_PRIORITY
+          - HIGH_PRIORITY
+        type: string
+        required: false
+      playableUnitType:
+        description: Type of the playable unit for which the Component is intended.
+        enum:
+          - PLAYABLE_UNIT_TYPE_UNSPECIFIED
+          - PLAYABLE_UNIT_TYPE_FEATURE
+          - PLAYABLE_UNIT_TYPE_TRAILER
+          - PLAYBLE_UNIT_TYPE_BONUS_CONTENT
+        type: string
+        required: false
+      pphName:
+        description: Name of the post-production house that manages the Component.
+        type: string
+        required: false
+      priority:
+        description: 'Component priority, as defined by Google. The higher the value, the higher the priority.'
+        format: double
+        type: number
+        required: false
+      processingErrors:
+        description: 'Processing errors during XML file parsing. Example: ''Invalid input file'''
+        items:
+          type: string
+        type: array
+        required: false
+      receivedTime:
+        description: Timestamp when the Component was received.
+        type: string
+        required: false
+      rejectionNote:
+        description: Notes explaining why a Component has been rejected.
+        type: string
+        required: false
+      status:
+        description: High-level status of the Component.
+        enum:
+          - STATUS_UNSPECIFIED
+          - STATUS_APPROVED
+          - STATUS_FAILED
+          - STATUS_PROCESSING
+          - STATUS_UNFULFILLED
+          - STATUS_NOT_AVAILABLE
+        type: string
+        required: false
+      statusDetail:
+        description: Detailed status of the Component
+        enum:
+          - COMPONENT_STATUS_UNSPECIFIED
+          - COMPONENT_STATUS_QC_APPROVED
+          - COMPONENT_STATUS_QC_REJECTION
+          - COMPONENT_STATUS_FILE_REJECTION
+          - COMPONENT_STATUS_FILE_PROCESSING
+          - COMPONENT_STATUS_READY_FOR_QC
+        type: string
+        required: false
+      studioName:
+        description: Name of the studio that owns the Component.
+        type: string
+        required: false
+      titleLevelEidrs:
+        description: 'List of Title-level EIDR IDs. Example: "10.5240/1489-49A2-3956-4B2D-FE16-5".'
+        items:
+          type: string
+        type: array
+        required: false
+      type:
+        description: 'Type of the Component. Example: AUDIO_51'
+        enum:
+          - COMPONENT_TYPE_UNSPECIFIED
+          - VIDEO
+          - AUDIO_20
+          - AUDIO_51
+          - SUBTITLE
+          - ARTWORK
+          - METADATA
+        type: string
+        required: false
+  ExperienceLocale:
+    description: 'An ExperienceLocale tracks the fulfillment of a Title in a country using a specific language, when delivered using component-based delivery. For example, a Title in Switzerland might have 3 ExperienceLocales: they both share the same country ("CH"), but each has different languages ("de", "fr", and "it"). Each ExperienceLocale is uniquely identified by an `el_id`, which is generated by Google. Externally, an ExperienceLocale can also be identified by partners using its EIDR IDs, AltCutID or `custom_id` (when provided).'
+    properties:
+      altCutId:
+        description: 'Alternative Cut ID, sometimes available in lieu of the main Edit-level EIDR ID. This is not an EIDR ID, but a Partner-provided ID. Example: "206346_79838".'
+        type: string
+        required: false
+      approvedTime:
+        description: Timestamp when the ExperienceLocale was approved.
+        type: string
+        required: false
+      channelId:
+        description: 'YouTube Channel ID linked to the ExperienceLocale. Example: "UCRG64darCZhb".'
+        type: string
+        required: false
+      country:
+        description: 'Country where the ExperienceLocale is available, using the "ISO 3166-1 alpha-2" format. Example: "US".'
+        type: string
+        required: false
+      createdTime:
+        description: Timestamp when the ExperienceLocale was created.
+        type: string
+        required: false
+      customIds:
+        description: 'List of custom IDs (defined by the partner) linked to this ExperienceLocale. Example: "R86241"'
+        items:
+          type: string
+        type: array
+        required: false
+      earliestAvailStartTime:
+        description: Timestamp of the earliest start date of the Avails linked to this ExperienceLocale.
+        type: string
+        required: false
+      editLevelEidr:
+        description: 'Edit-level EIDR ID. Example: "10.5240/1489-49A2-3956-4B2D-FE16-6".'
+        type: string
+        required: false
+      elId:
+        description: 'ID internally generated by Google to uniquely identify a ExperienceLocale. Example: ''KRZiVjY9h7t'''
+        type: string
+        required: false
+      inventoryId:
+        description: InventoryID as defined in the EMA specs.
+        type: string
+        required: false
+      language:
+        description: 'Language of the ExperienceLocale, using the "BCP 47" format. Examples: "en", "en-US", "es", "es-419".'
+        type: string
+        required: false
+      name:
+        description: 'Default Edit name, usually in the language of the country of origin. Example: "Googlers, The".'
+        type: string
+        required: false
+      normalizedPriority:
+        description: A simpler representation of the priority.
+        enum:
+          - NORMALIZED_PRIORITY_UNSPECIFIED
+          - LOW_PRIORITY
+          - HIGH_PRIORITY
+        type: string
+        required: false
+      playableSequenceId:
+        description: PlayableSequenceID as defined in the EMA specs.
+        type: string
+        required: false
+      pphNames:
+        description: Name of the post-production houses that manage the ExperienceLocale.
+        items:
+          type: string
+        type: array
+        required: false
+      presentationId:
+        description: PresentationID as defined in the EMA specs.
+        type: string
+        required: false
+      priority:
+        description: 'ExperienceLocale priority, as defined by Google. The higher the value, the higher the priority. Example: 90'
+        format: double
+        type: number
+        required: false
+      status:
+        description: High-level status of the ExperienceLocale.
+        enum:
+          - STATUS_UNSPECIFIED
+          - STATUS_APPROVED
+          - STATUS_FAILED
+          - STATUS_PROCESSING
+          - STATUS_UNFULFILLED
+          - STATUS_NOT_AVAILABLE
+        type: string
+        required: false
+      studioName:
+        description: Name of the studio that owns the ExperienceLocale.
+        type: string
+        required: false
+      titleLevelEidr:
+        description: 'Title-level EIDR ID. Example: "10.5240/1489-49A2-3956-4B2D-FE16-5".'
+        type: string
+        required: false
+      trailerId:
+        description: 'Trailer ID, as defined by Google, linked to the trailer video in the ExperienceLocale. Example: ''gtry457_tr''.'
+        type: string
+        required: false
+      type:
+        description: Type of the Edit linked to the ExperienceLocale.
+        enum:
+          - TITLE_TYPE_UNSPECIFIED
+          - MOVIE
+          - SEASON
+          - EPISODE
+          - BUNDLE
+        type: string
+        required: false
+      videoId:
+        description: 'Video ID, as defined by Google, linked to the feature video in the ExperienceLocale. Example: ''gtry456_xc''.'
+        type: string
+        required: false
+  ListAvailsResponse:
+    description: Response to the 'ListAvails' method.
+    properties:
+      avails:
+        description: List of Avails that match the request criteria.
+        items:
+          type: Avail
+        type: array
+        required: false
+      nextPageToken:
+        description: See _List methods rules_ for info about this field.
+        type: string
+        required: false
+      totalSize:
+        description: See _List methods rules_ for more information about this field.
+        format: int32
+        type: integer
+        required: false
+  ListComponentsResponse:
+    description: Response to the 'ListComponents' method.
+    properties:
+      components:
+        description: List of Components that match the request criteria.
+        items:
+          type: Component
+        type: array
+        required: false
+      nextPageToken:
+        description: See _List methods rules_ for info about this field.
+        type: string
+        required: false
+      totalSize:
+        description: See _List methods rules_ for more information about this field.
+        format: int32
+        type: integer
+        required: false
+  ListExperienceLocalesResponse:
+    description: Response to the 'ListExperienceLocales' method.
+    properties:
+      experienceLocales:
+        description: List of ExperienceLocales that match the request criteria.
+        items:
+          type: ExperienceLocale
+        type: array
+        required: false
+      nextPageToken:
+        description: See _List methods rules_ for info about this field.
+        type: string
+        required: false
+      totalSize:
+        description: See _List methods rules_ for more information about this field.
+        format: int32
+        type: integer
+        required: false
+  ListOrdersResponse:
+    description: Response to the 'ListOrders' method.
+    properties:
+      nextPageToken:
+        description: See _List methods rules_ for info about this field.
+        type: string
+        required: false
+      orders:
+        description: List of Orders that match the request criteria.
+        items:
+          type: Order
+        type: array
+        required: false
+      totalSize:
+        description: See _List methods rules_ for more information about this field.
+        format: int32
+        type: integer
+        required: false
+  ListStoreInfosResponse:
+    description: Response to the 'ListStoreInfos' method.
+    properties:
+      nextPageToken:
+        description: See 'List methods rules' for info about this field.
+        type: string
+        required: false
+      storeInfos:
+        description: List of StoreInfos that match the request criteria.
+        items:
+          type: StoreInfo
+        type: array
+        required: false
+      totalSize:
+        description: See _List methods rules_ for more information about this field.
+        format: int32
+        type: integer
+        required: false
+  Order:
+    description: 'An Order tracks the fulfillment of an Edit when delivered using the legacy, non-component-based delivery. Each Order is uniquely identified by an `order_id`, which is generated by Google. Externally, Orders can also be identified by partners using its `custom_id` (when provided).'
+    properties:
+      approvedTime:
+        description: Timestamp when the Order was approved.
+        type: string
+        required: false
+      channelId:
+        description: 'YouTube Channel ID that should be used to fulfill the Order. Example: "UCRG64darCZhb".'
+        type: string
+        required: false
+      channelName:
+        description: 'YouTube Channel Name that should be used to fulfill the Order. Example: "Google_channel".'
+        type: string
+        required: false
+      countries:
+        description: 'Countries where the Order is available, using the "ISO 3166-1 alpha-2" format (example: "US").'
+        items:
+          type: string
+        type: array
+        required: false
+      customId:
+        description: 'ID that can be used to externally identify an Order. This ID is provided by partners when submitting the Avails. Example: ''GOOGLER_2006'''
+        type: string
+        required: false
+      earliestAvailStartTime:
+        description: Timestamp of the earliest start date of the Avails linked to this Order.
+        type: string
+        required: false
+      episodeName:
+        description: 'Default Episode name, usually in the language of the country of origin. Only available for TV Edits Example: "Googlers, The - Pilot".'
+        type: string
+        required: false
+      legacyPriority:
+        description: 'Legacy Order priority, as defined by Google. Example: ''P0'''
+        type: string
+        required: false
+      name:
+        description: 'Default Edit name, usually in the language of the country of origin. Example: "Googlers, The".'
+        type: string
+        required: false
+      normalizedPriority:
+        description: A simpler representation of the priority.
+        enum:
+          - NORMALIZED_PRIORITY_UNSPECIFIED
+          - LOW_PRIORITY
+          - HIGH_PRIORITY
+        type: string
+        required: false
+      orderId:
+        description: 'ID internally generated by Google to uniquely identify an Order. Example: ''abcde12_x'''
+        type: string
+        required: false
+      orderedTime:
+        description: Timestamp when the Order was created.
+        type: string
+        required: false
+      pphName:
+        description: Name of the post-production house that manages the Edit ordered.
+        type: string
+        required: false
+      priority:
+        description: 'Order priority, as defined by Google. The higher the value, the higher the priority. Example: 90'
+        format: double
+        type: number
+        required: false
+      receivedTime:
+        description: Timestamp when the Order was fulfilled.
+        type: string
+        required: false
+      rejectionNote:
+        description: 'Field explaining why an Order has been rejected. Example: "Trailer audio is 2ch mono, please re-deliver in stereo".'
+        type: string
+        required: false
+      seasonName:
+        description: 'Default Season name, usually in the language of the country of origin. Only available for TV Edits Example: "Googlers, The - A Brave New World".'
+        type: string
+        required: false
+      showName:
+        description: 'Default Show name, usually in the language of the country of origin. Only available for TV Edits Example: "Googlers, The".'
+        type: string
+        required: false
+      status:
+        description: High-level status of the order.
+        enum:
+          - STATUS_UNSPECIFIED
+          - STATUS_APPROVED
+          - STATUS_FAILED
+          - STATUS_PROCESSING
+          - STATUS_UNFULFILLED
+          - STATUS_NOT_AVAILABLE
+        type: string
+        required: false
+      statusDetail:
+        description: Detailed status of the order
+        enum:
+          - ORDER_STATUS_UNSPECIFIED
+          - ORDER_STATUS_QC_APPROVED
+          - ORDER_STATUS_QC_REJECTION
+          - ORDER_STATUS_INTERNAL_FIX
+          - ORDER_STATUS_OPEN_ORDER
+          - ORDER_STATUS_NOT_AVAILABLE
+          - ORDER_STATUS_AWAITING_REDELIVERY
+          - ORDER_STATUS_READY_FOR_QC
+          - ORDER_STATUS_FILE_PROCESSING
+        type: string
+        required: false
+      studioName:
+        description: Name of the studio that owns the Edit ordered.
+        type: string
+        required: false
+      type:
+        description: Type of the Edit linked to the Order.
+        enum:
+          - TITLE_TYPE_UNSPECIFIED
+          - MOVIE
+          - SEASON
+          - EPISODE
+          - BUNDLE
+        type: string
+        required: false
+      videoId:
+        description: 'Google-generated ID identifying the video linked to this Order, once delivered. Example: ''gtry456_xc''.'
+        type: string
+        required: false
+  StoreInfo:
+    description: 'Information about a playable sequence (video) associated with an Edit and available at the Google Play Store. Internally, each StoreInfo is uniquely identified by a `video_id` and `country`. Externally, Title-level EIDR or Edit-level EIDR, if provided, can also be used to identify a specific title or edit in a country.'
+    properties:
+      audioTracks:
+        description: Audio tracks available for this Edit.
+        items:
+          type: string
+        type: array
+        required: false
+      country:
+        description: 'Country where Edit is available in ISO 3166-1 alpha-2 country code. Example: "US".'
+        type: string
+        required: false
+      editLevelEidr:
+        description: 'Edit-level EIDR ID. Example: "10.5240/1489-49A2-3956-4B2D-FE16-6".'
+        type: string
+        required: false
+      episodeNumber:
+        description: 'The number assigned to the episode within a season. Only available on TV Edits. Example: "1".'
+        type: string
+        required: false
+      hasAudio51:
+        description: Whether the Edit has a 5.1 channel audio track.
+        type: boolean
+        required: false
+      hasEstOffer:
+        description: Whether the Edit has a EST offer.
+        type: boolean
+        required: false
+      hasHdOffer:
+        description: Whether the Edit has a HD offer.
+        type: boolean
+        required: false
+      hasInfoCards:
+        description: Whether the Edit has info cards.
+        type: boolean
+        required: false
+      hasSdOffer:
+        description: Whether the Edit has a SD offer.
+        type: boolean
+        required: false
+      hasVodOffer:
+        description: Whether the Edit has a VOD offer.
+        type: boolean
+        required: false
+      liveTime:
+        description: Timestamp when the Edit went live on the Store.
+        type: string
+        required: false
+      mid:
+        description: 'Knowledge Graph ID associated to this Edit, if available. This ID links the Edit to its knowledge entity, externally accessible at http://freebase.com. In the absense of Title EIDR or Edit EIDR, this ID helps link together multiple Edits across countries. Example: ''/m/0ffx29'''
+        type: string
+        required: false
+      name:
+        description: 'Default Edit name, usually in the language of the country of origin. Example: "Googlers, The".'
+        type: string
+        required: false
+      pphNames:
+        description: Name of the post-production houses that manage the Edit.
+        items:
+          type: string
+        type: array
+        required: false
+      seasonId:
+        description: 'Google-generated ID identifying the season linked to the Edit. Only available for TV Edits. Example: ''ster23ex'''
+        type: string
+        required: false
+      seasonName:
+        description: 'Default Season name, usually in the language of the country of origin. Only available for TV Edits Example: "Googlers, The - A Brave New World".'
+        type: string
+        required: false
+      seasonNumber:
+        description: 'The number assigned to the season within a show. Only available on TV Edits. Example: "1".'
+        type: string
+        required: false
+      showId:
+        description: 'Google-generated ID identifying the show linked to the Edit. Only available for TV Edits. Example: ''et2hsue_x'''
+        type: string
+        required: false
+      showName:
+        description: 'Default Show name, usually in the language of the country of origin. Only available for TV Edits Example: "Googlers, The".'
+        type: string
+        required: false
+      studioName:
+        description: Name of the studio that owns the Edit ordered.
+        type: string
+        required: false
+      subtitles:
+        description: Subtitles available for this Edit.
+        items:
+          type: string
+        type: array
+        required: false
+      titleLevelEidr:
+        description: 'Title-level EIDR ID. Example: "10.5240/1489-49A2-3956-4B2D-FE16-5".'
+        type: string
+        required: false
+      trailerId:
+        description: 'Google-generated ID identifying the trailer linked to the Edit. Example: ''bhd_4e_cx'''
+        type: string
+        required: false
+      type:
+        description: 'Edit type, like Movie, Episode or Season.'
+        enum:
+          - TITLE_TYPE_UNSPECIFIED
+          - MOVIE
+          - SEASON
+          - EPISODE
+          - BUNDLE
+        type: string
+        required: false
+      videoId:
+        description: 'Google-generated ID identifying the video linked to the Edit. Example: ''gtry456_xc'''
+        type: string
+        required: false
+traits:
+  xgafv:
+    queryParameters:
+      $.xgafv:
+        type: string
+        description: V1 error format.
+  accessToken:
+    queryParameters:
+      access_token:
+        type: string
+        description: OAuth access token.
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for response.
+        default: json
+  bearerToken:
+    queryParameters:
+      bearer_token:
+        type: string
+        description: OAuth bearer token.
+  callback:
+    queryParameters:
+      callback:
+        type: string
+        description: JSONP
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  pp:
+    queryParameters:
+      pp:
+        type: boolean
+        description: Pretty-print response.
+        default: true
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.'
+  uploadType:
+    queryParameters:
+      uploadType:
+        type: string
+        description: 'Legacy upload protocol for media (e.g. "media", "multipart").'
+  uploadProtocol:
+    queryParameters:
+      upload_protocol:
+        type: string
+        description: 'Upload protocol for media (e.g. "raw", "multipart").'

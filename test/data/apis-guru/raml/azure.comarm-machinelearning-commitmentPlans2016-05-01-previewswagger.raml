@@ -1,0 +1,567 @@
+#%RAML 1.0
+title: Azure ML Commitment Plans Management Client
+version: 2016-05-01-preview
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: 'These APIs allow end users to operate on Azure Machine Learning Commitment Plans resources and their child Commitment Association resources. They support CRUD operations for commitment plans, get and list operations for commitment associations, moving commitment associations between commitment plans, and retrieving commitment plan usage history.'
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-machinelearning/2016-05-01-preview/swagger/commitmentPlans.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-machinelearning-commitmentPlans
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.MachineLearning:
+            displayName: Microsoft.MachineLearning
+            /commitmentPlans:
+              displayName: commitmentPlans
+              '/{commitmentPlanName}':
+                displayName: '{commitmentPlanName}'
+                /usageHistory:
+                  displayName: usageHistory
+                  get:
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: UsageHistory_List
+                    description: Retrieve the usage history for an Azure ML commitment plan.
+                    is:
+                      - skipTokenParameter
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: PlanUsageHistoryListResult
+                        description: OK
+                    (oas-tags):
+                      - CommitmentPlans
+                /commitmentAssociations:
+                  displayName: commitmentAssociations
+                  '/{commitmentAssociationName}':
+                    displayName: '{commitmentAssociationName}'
+                    /move:
+                      displayName: move
+                      post:
+                        displayName: CommitmentAssociations_Move
+                        description: Re-parent a commitment association from one commitment plan to another.
+                        is:
+                          - apiVersionParameter
+                        body:
+                          application/json:
+                            type: MoveCommitmentAssociationRequest
+                            (oas-body-name): movePayload
+                            description: The move request payload.
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: CommitmentAssociation
+                            description: OK
+                        (oas-tags):
+                          - CommitmentAssociations
+                    uriParameters:
+                      commitmentAssociationName:
+                        description: The commitment association name.
+                        required: true
+                        type: string
+                        displayName: The commitment association name.
+                    get:
+                      displayName: CommitmentAssociations_Get
+                      description: Get a commitment association.
+                      is:
+                        - apiVersionParameter
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: CommitmentAssociation
+                          description: OK
+                      (oas-tags):
+                        - CommitmentAssociations
+                  get:
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: CommitmentAssociations_List
+                    description: Get all commitment associations for a parent commitment plan.
+                    is:
+                      - skipTokenParameter
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: CommitmentAssociationListResult
+                        description: OK
+                    (oas-tags):
+                      - CommitmentAssociations
+                uriParameters:
+                  commitmentPlanName:
+                    description: The Azure ML commitment plan name.
+                    required: true
+                    type: string
+                    displayName: The Azure ML commitment plan name.
+                put:
+                  displayName: CommitmentPlans_CreateOrUpdate
+                  description: Create a new Azure ML commitment plan resource or updates an existing one.
+                  body:
+                    application/json:
+                      type: CommitmentPlan
+                      (oas-body-name): createOrUpdatePayload
+                      description: The payload to create or update the Azure ML commitment plan.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: CommitmentPlan
+                      description: OK
+                    '201':
+                      body:
+                        application/json:
+                          type: CommitmentPlan
+                      description: Created
+                  (oas-tags):
+                    - CommitmentPlans
+                is:
+                  - apiVersionParameter
+                patch:
+                  displayName: CommitmentPlans_Patch
+                  description: Patch an existing Azure ML commitment plan resource.
+                  body:
+                    application/json:
+                      type: CommitmentPlanPatchPayload
+                      (oas-body-name): patchPayload
+                      description: The payload to use to patch the Azure ML commitment plan. Only tags and SKU may be modified on an existing commitment plan.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: CommitmentPlan
+                      description: OK
+                  (oas-tags):
+                    - CommitmentPlans
+                get:
+                  displayName: CommitmentPlans_Get
+                  description: 'Retrieve an Azure ML commitment plan by its subscription, resource group and name.'
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: CommitmentPlan
+                      description: OK
+                  (oas-tags):
+                    - CommitmentPlans
+                delete:
+                  displayName: CommitmentPlans_Remove
+                  description: Remove an existing Azure ML commitment plan.
+                  responses:
+                    '200':
+                      description: OK
+                  (oas-tags):
+                    - CommitmentPlans
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: CommitmentPlans_ListInResourceGroup
+                description: Retrieve all Azure ML commitment plans in a resource group.
+                is:
+                  - skipTokenParameter
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: CommitmentPlanListResult
+                    description: OK
+                (oas-tags):
+                  - CommitmentPlans
+    /providers:
+      displayName: providers
+      /Microsoft.MachineLearning:
+        displayName: Microsoft.MachineLearning
+        /commitmentPlans:
+          displayName: commitmentPlans
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: CommitmentPlans_List
+            description: Retrieve all Azure ML commitment plans in a subscription.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: CommitmentPlanListResult
+                description: OK
+            queryParameters:
+              $skipToken:
+                description: Continuation token for pagination.
+                required: false
+                type: string
+                displayName: Continuation token for pagination.
+            (oas-tags):
+              - CommitmentPlans
+types:
+  CommitmentAssociation:
+    type: Resource
+  CommitmentAssociationListResult:
+    description: A page of commitment association resources.
+    properties:
+      nextLink:
+        description: A URI to retrieve the next page of results.
+        type: string
+        required: false
+      value:
+        description: The set of results for this page.
+        items:
+          type: CommitmentAssociation
+        type: array
+        required: false
+  CommitmentAssociationProperties:
+    description: Properties of an Azure ML commitment association.
+    properties:
+      associatedResourceId:
+        description: 'The ID of the resource this association points to, such as the ARM ID of an Azure ML web service.'
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      commitmentPlanId:
+        description: The ARM ID of the parent Azure ML commitment plan.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      creationDate:
+        description: 'The date at which this commitment association was created, in ISO 8601 format.'
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+  CommitmentPlan:
+    type: Resource
+  CommitmentPlanListResult:
+    description: A page of commitment plan resources.
+    properties:
+      nextLink:
+        description: A URI to retrieve the next page of results.
+        type: string
+        required: false
+      value:
+        description: The set of results for this page.
+        items:
+          type: CommitmentPlan
+        type: array
+        required: false
+  CommitmentPlanPatchPayload:
+    description: The properties of a commitment plan which may be updated via PATCH.
+    properties:
+      sku:
+        description: The commitment plan SKU.
+        type: ResourceSku
+        required: false
+      tags:
+        description: User-defined tags for the commitment plan.
+        type: Tags
+        required: false
+  CommitmentPlanProperties:
+    description: Properties of an Azure ML commitment plan.
+    properties:
+      chargeForOverage:
+        description: Indicates whether usage beyond the commitment plan's included quantities will be charged.
+        readOnly: true
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+      chargeForPlan:
+        description: Indicates whether the commitment plan will incur a charge.
+        readOnly: true
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+      creationDate:
+        description: 'The date at which this commitment plan was created, in ISO 8601 format.'
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      includedQuantities:
+        additionalProperties:
+          type: PlanQuantity
+        description: The included resource quantities this plan gives you.
+        readOnly: true
+        type: object
+        facets:
+          readOnly?: boolean
+        required: false
+      maxAssociationLimit:
+        description: The maximum number of commitment associations that can be children of this commitment plan.
+        format: int32
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      maxCapacityLimit:
+        description: The maximum scale-out capacity for this commitment plan.
+        format: int32
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      minCapacityLimit:
+        description: The minimum scale-out capacity for this commitment plan.
+        format: int32
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      planMeter:
+        description: The Azure meter which will be used to charge for this commitment plan.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      refillFrequencyInDays:
+        description: The frequency at which this commitment plan's included quantities are refilled.
+        format: int32
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      suspendPlanOnOverage:
+        description: Indicates whether this commitment plan will be moved into a suspended state if usage goes beyond the commitment plan's included quantities.
+        readOnly: true
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+  MoveCommitmentAssociationRequest:
+    description: Specifies the destination Azure ML commitment plan for a move operation.
+    properties:
+      destinationPlanId:
+        description: The ARM ID of the commitment plan to re-parent the commitment association to.
+        type: string
+        required: false
+  PlanQuantity:
+    description: Represents the quantity a commitment plan provides of a metered resource.
+    properties:
+      allowance:
+        description: The quantity added to the commitment plan at an interval specified by its allowance frequency.
+        format: double
+        readOnly: true
+        type: number
+        facets:
+          readOnly?: boolean
+        required: false
+      amount:
+        description: The quantity available to the plan the last time usage was calculated.
+        format: double
+        readOnly: true
+        type: number
+        facets:
+          readOnly?: boolean
+        required: false
+      includedQuantityMeter:
+        description: The Azure meter for usage against included quantities.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      overageMeter:
+        description: The Azure meter for usage which exceeds included quantities.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  PlanUsageHistory:
+    description: Represents historical information about usage of the Azure resources associated with a commitment plan.
+    properties:
+      planDeletionOverage:
+        additionalProperties:
+          format: double
+          type: number
+        description: Overage incurred as a result of deleting a commitment plan.
+        type: object
+        required: false
+      planMigrationOverage:
+        additionalProperties:
+          format: double
+          type: number
+        description: Overage incurred as a result of migrating a commitment plan from one SKU to another.
+        type: object
+        required: false
+      planQuantitiesAfterUsage:
+        additionalProperties:
+          format: double
+          type: number
+        description: Included quantities remaining after usage against the commitment plan's associated resources was calculated.
+        type: object
+        required: false
+      planQuantitiesBeforeUsage:
+        additionalProperties:
+          format: double
+          type: number
+        description: Included quantities remaining before usage against the commitment plan's associated resources was calculated.
+        type: object
+        required: false
+      planUsageOverage:
+        additionalProperties:
+          format: double
+          type: number
+        description: Usage against the commitment plan's associated resources which was not covered by included quantities and is therefore overage.
+        type: object
+        required: false
+      usage:
+        additionalProperties:
+          format: double
+          type: number
+        description: Usage against the commitment plan's associated resources.
+        type: object
+        required: false
+      usageDate:
+        description: 'The date of usage, in ISO 8601 format.'
+        format: rfc3339
+        type: datetime
+        required: false
+  PlanUsageHistoryListResult:
+    description: A page of usage history.
+    properties:
+      nextLink:
+        description: A URI to retrieve the next page of results.
+        type: string
+        required: false
+      value:
+        description: The set of results for this page.
+        items:
+          type: PlanUsageHistory
+        type: array
+        required: false
+  Resource:
+    description: Common properties of an ARM resource.
+    properties:
+      id:
+        description: Resource Id.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Resource location.
+        type: string
+      name:
+        description: Resource name.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      tags:
+        description: User-defined tags for the resource.
+        type: Tags
+        required: false
+      type:
+        description: Resource type.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  ResourceSku:
+    description: The SKU of a resource.
+    properties:
+      capacity:
+        description: 'The scale-out capacity of the resource. 1 is 1x, 2 is 2x, etc. This impacts the quantities and cost of any commitment plan resource.'
+        format: int32
+        type: integer
+        required: false
+      name:
+        description: 'The SKU name. Along with tier, uniquely identifies the SKU.'
+        type: string
+        required: false
+      tier:
+        description: 'The SKU tier. Along with name, uniquely identifies the SKU.'
+        type: string
+        required: false
+  Tags:
+    description: Resource tags
+    type: object
+    properties:
+      //:
+        type: string
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: The version of the Microsoft.MachineLearning resource provider API to use.
+        required: true
+  skipTokenParameter:
+    queryParameters:
+      $skipToken:
+        type: string
+        description: Continuation token for pagination.
+        required: false

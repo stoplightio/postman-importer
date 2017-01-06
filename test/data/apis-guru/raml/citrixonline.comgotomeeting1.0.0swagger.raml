@@ -1,0 +1,1722 @@
+#%RAML 1.0
+title: GoToMeeting
+version: 1.0.0
+baseUri: 'https://api.citrixonline.com/G2M/rest'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: '<br>The Citrix GoToMeeting API provides seamless integration of GoToMeeting provisioning and meeting management into your existing infrastructure or third party applications.<br><br>For customers, the ability to add, suspend or delete an organizer in your GoToMeeting Corporate account from within your primary management systems simplifies and streamlines the entire process of account management. The ability to monitor meeting schedules, history and active meeting status allows managers to leverage GoToMeeting activities through your primary applications.<br><br>For third parties, the ability to create, update or delete a meeting from within your application makes real-time collaboration possible for your customers. The ability to update meeting schedules, view history and scheduled meetings, and view attendees from past meetings allows you to enhance your users'' experience and the value of your applications.'
+(oas-tags-definition):
+  - description: Operations on organizers. Only available to users with the admin role.
+    name: Organizers
+  - description: Operations on meetings.
+    name: Meetings
+  - description: Operations on groups. Only available to users with the admin role.
+    name: Groups
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#5F6166'
+    url: 'https://api.apis.guru/v2/cache/logo/https_developer.citrixonline.com_sites_all_themes_citrix_responsive_logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://developer.citrixonline.com/sites/default/files/citrix/citrix-apis/gotomeeting.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): citrixonline.com
+  (oas-x-serviceName): gotomeeting
+  contact:
+    name: Developer Support
+    url: 'https://developer.citrixonline.com'
+    email: developer-support@citrixonline.com
+  termsOfService: 'https://developer.citrixonline.com/terms-use'
+(oas-externalDocs):
+  url: 'https://developer.citrixonline.com/'
+/meetings:
+  displayName: meetings
+  '/{meetingId}':
+    displayName: '{meetingId}'
+    /attendees:
+      displayName: attendees
+      get:
+        displayName: GET_meetings-meetingId-attendees
+        description: 'List all attendees for specified meetingId of historical meeting. The historical meetings can be fetched using ''Get historical meetings'', ''Get historical meetings by organizer'', and ''Get historical meetings by group''. For users with the admin role this call returns attendees for any meeting. For any other user the call will return attendees for meetings on which the user is a valid organizer.'
+        (oas-summary): Get attendees by meeting
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: AttendeeByMeeting
+                type: array
+            description: OK
+          '404':
+            description: Not found
+        (oas-tags):
+          - Meetings
+    /start:
+      displayName: start
+      get:
+        displayName: GET_meetings-meetingId-start
+        description: 'Returns a host URL that can be used to start a meeting. When this URL is opened in a web browser, the GoToMeeting client will be downloaded and launched and the meeting will start. The end user is not required to login to a client.'
+        (oas-summary): Start meeting
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                type: StartUrl
+            description: OK
+        (oas-tags):
+          - Meetings
+    uriParameters:
+      meetingId:
+        description: The meeting ID
+        format: int64
+        required: true
+        type: integer
+        displayName: The meeting ID
+    delete:
+      displayName: DELETE_meetings-meetingId
+      description: Deletes the meeting identified by the meetingId.
+      (oas-summary): Delete meeting
+      is:
+        - authorization
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not found
+      (oas-tags):
+        - Meetings
+    put:
+      displayName: PUT_meetings-meetingId
+      description: Updates an existing meeting specified by meetingId.
+      (oas-summary): Update meeting
+      is:
+        - authorization
+      body:
+        application/json:
+          type: MeetingReqUpdate
+          (oas-body-name): body
+          description: The meeting details
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not found
+      (oas-tags):
+        - Meetings
+    get:
+      displayName: GET_meetings-meetingId
+      description: Returns the meeting details for the specified meeting.
+      (oas-summary): Get meeting
+      is:
+        - authorization
+      responses:
+        '200':
+          body:
+            application/json:
+              items:
+                type: MeetingById
+              type: array
+          description: OK
+        '404':
+          description: Not found
+      (oas-tags):
+        - Meetings
+  get:
+    displayName: GET_meetings
+    description: 'DEPRECATED: Please use the new API calls ''Get historical meetings'' and ''Get upcoming meetings''.  Gets historical meetings for the current authenticated organizer. Requires date range for filtering results to only meetings within specified dates. History searches will contain the parameter ''meetingInstanceKey'' which is used in conjunction with the call ''Get Attendees by Meeting'' to get attendee information for a past meeting.'
+    (oas-summary): 'DEPRECATED: Get historical meetings'
+    is:
+      - authorization
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: MeetingHistory
+            type: array
+        description: OK
+    queryParameters:
+      history:
+        description: 'When ''true'', returns all past meetings within date range'
+        type: boolean
+        displayName: 'When ''true'', returns all past meetings within date range'
+      startDate:
+        description: 'If history=true, required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+        format: rfc3339
+        type: datetime
+        displayName: 'If history=true, required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+      endDate:
+        description: 'If history=true, required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+        format: rfc3339
+        type: datetime
+        displayName: 'If history=true, required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+    (oas-tags):
+      - Meetings
+    (oas-deprecated): true
+  post:
+    displayName: POST_meetings
+    description: Create a new meeting based on the parameters specified.
+    (oas-summary): Create meeting
+    is:
+      - authorization
+    body:
+      application/json:
+        type: MeetingReqCreate
+        (oas-body-name): body
+        description: The meeting details
+    responses:
+      '201':
+        body:
+          application/json:
+            items:
+              type: MeetingCreated
+            type: array
+        description: Created
+      '400':
+        description: Bad Request
+    (oas-tags):
+      - Meetings
+/upcomingMeetings:
+  displayName: upcomingMeetings
+  get:
+    displayName: GET_upcomingMeetings
+    description: Gets upcoming meetings for the current authenticated organizer.
+    (oas-summary): Get upcoming meetings
+    is:
+      - authorization
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: UpcomingMeeting
+            type: array
+        description: OK
+      '403':
+        description: Forbidden
+    (oas-tags):
+      - Meetings
+/groups:
+  displayName: groups
+  get:
+    displayName: GET_groups
+    description: List all groups for an account. This API call is only available to users with the admin role.
+    (oas-summary): Get groups
+    is:
+      - authorization
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: Group
+            type: array
+        description: OK
+      '403':
+        description: Forbidden
+    (oas-tags):
+      - Groups
+  '/{groupKey}':
+    displayName: '{groupKey}'
+    /historicalMeetings:
+      displayName: historicalMeetings
+      get:
+        displayName: GET_groups-groupKey-historicalMeetings
+        description: Get historical meetings for a specified group within a specified date range. This API call is only available to users with the admin role. This API call can be used only for groups with maximum 50 organizers.
+        (oas-summary): Get historical meetings by group
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: HistoricalMeetingByGroup
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+          '500':
+            description: Internal Server Error
+        queryParameters:
+          startDate:
+            description: 'Required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: 'Required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+          endDate:
+            description: 'Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: 'Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+        (oas-tags):
+          - Groups
+    /organizers:
+      displayName: organizers
+      get:
+        displayName: GET_groups-groupKey-organizers
+        description: Returns all the organizers within a specific group. This API call is only available to users with the admin role.
+        (oas-summary): Get organizers by group
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: OrganizerByGroup
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+        (oas-tags):
+          - Groups
+      post:
+        displayName: POST_groups-groupKey-organizers
+        description: 'Creates a new organizer and sends an email to the email address defined in request. This API call is only available to users with the admin role. You may also pass ''G2W'' or ''G2T'' or ''OPENVOICE'' as productType variables, creating organizers for those products. A G2W or G2T organizer will also have access to G2M.'
+        (oas-summary): Create organizer in group
+        is:
+          - authorization
+        body:
+          application/json:
+            type: OrganizerReq
+            (oas-body-name): body
+            description: The details of the organizer to be created
+        responses:
+          '201':
+            body:
+              application/json:
+                items:
+                  type: OrganizerShort
+                type: array
+            description: Created
+          '400':
+            description: Bad Request
+          '403':
+            description: Server Error
+          '409':
+            description: Conflict
+        (oas-tags):
+          - Groups
+    /upcomingMeetings:
+      displayName: upcomingMeetings
+      get:
+        displayName: GET_groups-groupKey-upcomingMeetings
+        description: Get upcoming meetings for a specified group. This API call is only available to users with the admin role. This API call can be used only for groups with maximum 50 organizers.
+        (oas-summary): Get upcoming meetings by group
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: UpcomingMeetingByGroup
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+          '500':
+            description: Internal Server Error
+        (oas-tags):
+          - Groups
+    /meetings:
+      displayName: meetings
+      get:
+        displayName: GET_groups-groupKey-meetings
+        description: 'DEPRECATED: Please use the new API calls ''Get historical meetings by group'' and ''Get upcoming meetings by group''. Get meetings for a specified group. Additional filters can be used to view only meetings within a specified date range. This API call is only available to users with the admin role.'
+        (oas-summary): 'DEPRECATED: Get historical meetings by group'
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: HistoryMeetingByGroup
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+        queryParameters:
+          history:
+            description: 'When ''true'', returns all past meetings within date range'
+            required: true
+            type: boolean
+            displayName: 'When ''true'', returns all past meetings within date range'
+          startDate:
+            description: 'If history=true, required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: 'If history=true, required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+          endDate:
+            description: 'If history=true, required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: 'If history=true, required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+        (oas-tags):
+          - Groups
+        (oas-deprecated): true
+    /attendees:
+      displayName: attendees
+      get:
+        displayName: GET_groups-groupKey-attendees
+        description: Returns all attendees for all meetings within specified date range held by organizers within the specified group. This API call is only available to users with the admin role. This API call can be used only for groups with maximum 50 organizers.
+        (oas-summary): Get attendees by group
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: AttendeeByGroup
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+        queryParameters:
+          startDate:
+            description: 'Start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+            format: rfc3339
+            type: datetime
+            displayName: 'Start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+          endDate:
+            description: 'End of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+            format: rfc3339
+            type: datetime
+            displayName: 'End of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+        (oas-tags):
+          - Groups
+/organizers:
+  displayName: organizers
+  delete:
+    displayName: DELETE_organizers
+    description: Deletes the individual organizer specified by the email address. This API call is only available to users with the admin role.
+    (oas-summary): Delete organizer by email
+    is:
+      - authorization
+    responses:
+      '204':
+        description: No Content
+      '400':
+        description: Bad Request
+    queryParameters:
+      email:
+        description: The email address of the organizer
+        required: true
+        type: string
+        displayName: The email address of the organizer
+    (oas-tags):
+      - Organizers
+  get:
+    displayName: GET_organizers
+    description: 'Gets the individual organizer specified by the organizer''s email address. If an email address is not specified, all organizers are returned. This API call is only available to users with the admin role.'
+    (oas-summary): Get organizer by email / Get all organizers
+    is:
+      - authorization
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: Organizer
+            type: array
+        description: OK
+      '404':
+        description: Not found
+    queryParameters:
+      email:
+        description: The email address of the organizer
+        required: false
+        type: string
+        displayName: The email address of the organizer
+    (oas-tags):
+      - Organizers
+  post:
+    displayName: POST_organizers
+    description: 'Creates a new organizer and sends an email to the email address defined in the request. This API call is only available to users with the admin role. You may also pass ''G2W'' or ''G2T'' or ''OPENVOICE'' as productType variables, creating organizers for those products. A G2W or G2T organizer will also have access to G2M.'
+    (oas-summary): Create organizer
+    is:
+      - authorization
+    body:
+      application/json:
+        type: OrganizerReq
+        (oas-body-name): body
+        description: The details of the organizer to be created
+    responses:
+      '201':
+        body:
+          application/json:
+            items:
+              type: OrganizerShort
+            type: array
+        description: Created
+      '400':
+        description: Bad Request
+      '403':
+        description: Server Error
+      '409':
+        description: Conflict
+    (oas-tags):
+      - Organizers
+  '/{organizerKey}':
+    displayName: '{organizerKey}'
+    uriParameters:
+      organizerKey:
+        description: The key of the organizer
+        format: int64
+        required: true
+        type: integer
+        displayName: The key of the organizer
+    delete:
+      displayName: DELETE_organizers-organizerKey
+      description: Deletes the individual organizer specified by the organizer key. This API call is only available to users with the admin role.
+      (oas-summary): Delete organizer
+      is:
+        - authorization
+      responses:
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+      (oas-tags):
+        - Organizers
+    get:
+      displayName: GET_organizers-organizerKey
+      description: Returns the individual organizer specified by the key. This API call is only available to users with the admin role. Non-admin users can only make this call for their own organizerKey.
+      (oas-summary): Get organizer
+      is:
+        - authorization
+      responses:
+        '200':
+          body:
+            application/json:
+              items:
+                type: Organizer
+              type: array
+          description: OK
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+      (oas-tags):
+        - Organizers
+    put:
+      displayName: PUT_organizers-organizerKey
+      description: 'Updates the products of the specified organizer. To add a product (G2M, G2W, G2T, OPENVOICE) for the organizer, the call must be sent once for each product you want to add. To remove all products for the organizer, set status to ''suspended''. The call is limited to users with the admin role.'
+      (oas-summary): Update organizer
+      is:
+        - authorization
+      body:
+        application/json:
+          type: OrganizerStatus
+          (oas-body-name): body
+          description: The organizer's status
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+      (oas-tags):
+        - Organizers
+    /upcomingMeetings:
+      displayName: upcomingMeetings
+      get:
+        displayName: GET_organizers-organizerKey-upcomingMeetings
+        description: Get upcoming meetings for a specified organizer. This API call is only available to users with the admin role.
+        (oas-summary): Get upcoming meetings by organizer
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: UpcomingMeeting
+                type: array
+            description: OK
+          '403':
+            description: Forbidden
+          '404':
+            description: Not found
+        (oas-tags):
+          - Organizers
+    /meetings:
+      displayName: meetings
+      get:
+        displayName: GET_organizers-organizerKey-meetings
+        description: 'DEPRECATED: Please use the new API calls ''Get historical meetings by organizer'' and ''Get upcoming meetings by organizer''. Gets future (scheduled) or past (history) meetings for a specified organizer. Include ''history=true'' and the past start and end dates in the URL to retrieve past meetings. Enter ''scheduled=true'' (without dates) to get scheduled meetings.'
+        (oas-summary): 'DEPRECATED: Get meetings by organizer'
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: MeetingByOrganizer
+                type: array
+            description: OK
+          '403':
+            description: Forbidden
+          '404':
+            description: Not found
+        queryParameters:
+          scheduled:
+            description: 'When ''true'', returns all future meetings. Date range not supported.'
+            type: boolean
+            displayName: 'When ''true'', returns all future meetings. Date range not supported.'
+          history:
+            description: 'When ''true'', returns all past meetings within date range'
+            type: boolean
+            displayName: 'When ''true'', returns all past meetings within date range'
+          startDate:
+            description: 'If history is ''true'', required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+            format: rfc3339
+            type: datetime
+            displayName: 'If history is ''true'', required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+          endDate:
+            description: 'If history is ''true'', required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+            format: rfc3339
+            type: datetime
+            displayName: 'If history is ''true'', required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+        (oas-tags):
+          - Organizers
+        (oas-deprecated): true
+    /historicalMeetings:
+      displayName: historicalMeetings
+      get:
+        displayName: GET_organizers-organizerKey-historicalMeetings
+        description: Get historical meetings for a specified organizer within a specified date range. This API call is only available to users with the admin role.
+        (oas-summary): Get historical meetings by organizer
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: HistoricalMeeting
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+          '404':
+            description: Not found
+        queryParameters:
+          startDate:
+            description: 'Required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: 'Required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+          endDate:
+            description: 'Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: 'Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+        (oas-tags):
+          - Organizers
+    /attendees:
+      displayName: attendees
+      get:
+        displayName: GET_organizers-organizerKey-attendees
+        description: Lists all attendees for all meetings within a specified date range for a specified organizer. This API call is only available to users with the admin role.
+        (oas-summary): Get attendees by organizer
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: AttendeeByOrganizer
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+          '404':
+            description: Not found
+        queryParameters:
+          startDate:
+            description: 'A required start of date range in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: 'A required start of date range in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+          endDate:
+            description: 'A required end of date range in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: 'A required end of date range in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+        (oas-tags):
+          - Organizers
+/historicalMeetings:
+  displayName: historicalMeetings
+  get:
+    displayName: GET_historicalMeetings
+    description: Gets historical meetings for the current authenticated organizer. Requires date range for filtering results to only meetings within specified dates.
+    (oas-summary): Get historical meetings
+    is:
+      - authorization
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: HistoricalMeeting
+            type: array
+        description: OK
+      '403':
+        description: Forbidden
+      '404':
+        description: Not found
+    queryParameters:
+      startDate:
+        description: 'Required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+        format: rfc3339
+        required: true
+        type: datetime
+        displayName: 'Required start of date range, in ISO8601 UTC format, e.g. 2015-07-01T22:00:00Z'
+      endDate:
+        description: 'Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+        format: rfc3339
+        required: true
+        type: datetime
+        displayName: 'Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z'
+    (oas-tags):
+      - Meetings
+types:
+  AttendeeByGroup:
+    description: Describes an attendee of a meeting instance held by an organizer within a specified group.
+    properties:
+      attendeeEmail:
+        description: The attendee's email address
+        type: string
+      attendeeName:
+        description: The full name of the attendee
+        type: string
+      conferenceCallInfo:
+        description: Audio options for the attended meeting
+        type: string
+      duration:
+        description: The duration of attendance in minutes
+        format: int32
+        type: integer
+      email:
+        description: The email address of the meeting organizer
+        type: string
+      endTime:
+        description: The time the meeting instance ended
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The first name of the organizer of the attended meeting
+        type: string
+      groupName:
+        description: The name of the group
+        type: string
+      joinTime:
+        description: The time the attendee joined the meeting instance
+        format: rfc3339
+        type: datetime
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      leaveTime:
+        description: The time the attendee left the meeting instance
+        format: rfc3339
+        type: datetime
+      meetingId:
+        description: The meeting ID
+        type: string
+      meetingInstanceKey:
+        description: The key of the attended meeting instance
+        format: int64
+        type: integer
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      numAttendees:
+        description: The number of attendees at the attended meeting instance
+        format: int32
+        type: integer
+      organizerKey:
+        description: The key of the meeting organizer
+        type: string
+      organizerkey:
+        description: The key of the meeting organizer. Field retained for backwards compatibility reasons
+        format: int64
+        type: integer
+      startTime:
+        description: The time the meeting instance started
+        format: rfc3339
+        type: datetime
+      subject:
+        description: The subject of the attended meeting
+        type: string
+  AttendeeByMeeting:
+    description: Describes an attendee of a specified meeting instance.
+    properties:
+      attendeeEmail:
+        description: The attendee's email address
+        type: string
+      attendeeName:
+        description: The attendee's full name
+        type: string
+      conferenceCallInfo:
+        description: Audio options for the meeting
+        type: string
+      duration:
+        description: The meeting duration in minutes
+        format: int32
+        type: integer
+      email:
+        description: The email address of the meeting organizer
+        type: string
+      endTime:
+        description: The ending time of the meeting instance
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The first name of the meeting organizer
+        type: string
+      groupName:
+        description: DEPRECATED. Returns 'NA'
+        type: string
+      joinTime:
+        description: The time the attendee joined the meeting instance
+        format: rfc3339
+        type: datetime
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      leaveTime:
+        description: The time the attendee left the meeting instance
+        format: rfc3339
+        type: datetime
+      meetingId:
+        description: The meeting ID
+        format: int64
+        type: integer
+      meetingInstanceKey:
+        description: The key of the unique meeting instance
+        format: int64
+        type: integer
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      name:
+        description: The attendee's full name
+        type: string
+      numAttendees:
+        description: The number of attendees at the meeting instance
+        format: int32
+        type: integer
+      organizerkey:
+        description: The key of the meeting organizer
+        format: int64
+        type: integer
+      startTime:
+        description: The starting time of the meeting instance
+        format: rfc3339
+        type: datetime
+      subject:
+        description: The subject of the meeting
+        type: string
+  AttendeeByOrganizer:
+    description: Describes an attendee of a meeting instance held by a specified organizer.
+    properties:
+      attendeeEmail:
+        description: The attendee's email address
+        type: string
+      attendeeName:
+        description: The full name of the attendee
+        type: string
+      conferenceCallInfo:
+        description: Audio options for the attended meeting
+        type: string
+      duration:
+        description: The duration of attendance in minutes
+        format: int32
+        type: integer
+      email:
+        description: The email address of the meeting organizer
+        type: string
+      endTime:
+        description: The time the meeting instance ended
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The first name of the meeting organizer
+        type: string
+      groupName:
+        description: The name of the group the organizer is assigned to
+        type: string
+      joinTime:
+        description: The time the attendee joined the meeting instance
+        format: rfc3339
+        type: datetime
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      leaveTime:
+        description: The time the attendee left the meeting instance
+        format: rfc3339
+        type: datetime
+      meetingId:
+        description: The meeting ID
+        format: int64
+        type: integer
+      meetingInstanceKey:
+        description: The key of the attended meeting instance
+        format: int64
+        type: integer
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      name:
+        description: The full name of the meeting organizer
+        type: string
+      newMeetingId:
+        description: The formatted meeting ID
+        type: string
+      numAttendees:
+        description: The number of attendees at the attended meeting instance
+        format: int32
+        type: integer
+      organizerkey:
+        description: The key of the meeting organizer. Field retained for backwards compatibility reasons
+        format: int64
+        type: integer
+      startTime:
+        description: The time the meeting instance started
+        format: rfc3339
+        type: datetime
+      subject:
+        description: The subject of the attended meeting
+        type: string
+  Group:
+    description: 'Describes a collection of organizers categorized by department or job function, for example. Can be a subgroup of a larger group.'
+    properties:
+      groupName:
+        description: The name of this group
+        type: string
+      groupkey:
+        description: The key of this group
+        format: int64
+        type: integer
+      numOrganizers:
+        description: The number of organizers assigned to this group
+        format: int32
+        type: integer
+      parentKey:
+        description: The key of the parent group this group belongs to. Identical with the groupkey if this group is not a subgroup
+        format: int64
+        type: integer
+      status:
+        description: 'The status of this group, i.e. whether the organizers assigned to it are able to host meetings'
+        type: Status
+  HistoricalMeeting:
+    description: Describes a historical meeting within specified dates.
+    properties:
+      accountKey:
+        description: The key of the company account
+        type: string
+      conferenceCallInfo:
+        description: Audio options for the meeting
+        type: string
+      duration:
+        description: The duration of the meeting session in minutes
+        type: string
+      email:
+        description: The meeting organizer's email address
+        type: string
+      endTime:
+        description: The time the meeting instance ended
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The meeting organizer's first name
+        type: string
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      locale:
+        description: The current language setting of the organizer in the web portal
+        type: string
+      meetingId:
+        description: The meeting ID
+        type: string
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      numAttendees:
+        description: The number of attendees at the meeting instance
+        type: string
+      organizerKey:
+        description: The key of the meeting organizer
+        type: string
+      sessionId:
+        description: The ID of the meeting session
+        type: string
+      startTime:
+        description: The time the meeting instance started
+        format: rfc3339
+        type: datetime
+      subject:
+        description: The subject of the meeting
+        type: string
+  HistoricalMeetingByGroup:
+    description: Describes a historical meeting within specified dates for a specified group.
+    properties:
+      accountKey:
+        description: The key of the company account
+        type: string
+      duration:
+        description: The duration of the meeting session in minutes
+        type: string
+      email:
+        description: The meeting organizer's email address
+        type: string
+      endTime:
+        description: The time the meeting instance ended
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The meeting organizer's first name
+        type: string
+      groupName:
+        description: The name of the group
+        type: string
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      locale:
+        description: The current language setting of the organizer in the web portal
+        type: string
+      meetingId:
+        description: The meeting ID
+        type: string
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      numAttendees:
+        description: The number of attendees at the meeting instance
+        type: string
+      organizerKey:
+        description: The key of the meeting organizer
+        type: string
+      startTime:
+        description: The time the meeting instance started
+        format: rfc3339
+        type: datetime
+      subject:
+        description: The subject of the meeting
+        type: string
+  HistoryMeetingByGroup:
+    description: Describes past meeting instance(s) held by an organizer within a specified group.
+    properties:
+      conferenceCallInfo:
+        description: Audio options for the meeting
+        type: string
+      duration:
+        description: The duration of this meeting instance in minutes
+        type: string
+      email:
+        description: The email address of the meeting organizer
+        type: string
+      endTime:
+        description: The time this meeting instance ended
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The first name of the meeting organizer
+        type: string
+      groupName:
+        description: The name of the group
+        type: string
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      meetingId:
+        description: The meeting ID
+        type: string
+      meetingInstanceKey:
+        description: The key of this meeting instance
+        format: int64
+        type: integer
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      numAttendees:
+        description: The number of attendees at this meeting instance
+        format: int32
+        type: integer
+      organizerKey:
+        description: The key of the meeting organizer
+        type: string
+      organizerkey:
+        description: The key of the meeting organizer. Field retained for backwards compatibility reasons
+        format: int64
+        type: integer
+      startTime:
+        description: The time this meeting instance started
+        format: rfc3339
+        type: datetime
+      subject:
+        description: The subject of the meeting
+        type: string
+  MeetingById:
+    description: Describes a given meeting.
+    properties:
+      conferenceCallInfo:
+        description: Audio options of the meeting
+        type: string
+      createTime:
+        description: DEPRECATED. Returns an empty string ''
+        format: rfc3339
+        type: datetime
+      duration:
+        description: The duration of the meeting in minutes
+        format: int32
+        type: integer
+      endTime:
+        description: The ending time of the meeting
+        format: rfc3339
+        type: datetime
+      maxParticipants:
+        description: The maximum number of participants allowed at the meeting
+        format: int32
+        type: integer
+      meetingId:
+        description: The meeting ID
+        format: int64
+        type: integer
+      meetingKey:
+        description: The meeting ID. Field retained for backwards compatibility reasons
+        format: int64
+        type: integer
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      passwordRequired:
+        description: Indicates whether a password is required to join the meeting
+        type: boolean
+      startTime:
+        description: The meeting starting time
+        format: rfc3339
+        type: datetime
+      status:
+        description: 'The meeting status, i.e whether the meeting is running or not'
+        type: MeetingStatus
+      subject:
+        description: The subject of the meeting
+        type: string
+      uniqueMeetingId:
+        description: The meeting ID. Field retained for backwards compatibility reasons
+        format: int64
+        type: integer
+  MeetingByOrganizer:
+    description: Describes a meeting scheduled by a specified organizer
+    properties:
+      conferenceCallInfo:
+        description: Audio options for the meeting
+        type: string
+      createTime:
+        description: DEPRECATED. Returns an empty string ''
+        format: rfc3339
+        type: datetime
+      endTime:
+        description: The ending time of the meeting
+        format: rfc3339
+        type: datetime
+      maxParticipants:
+        description: The maximum number of participants allowed at the meeting
+        format: int32
+        type: integer
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      meetingid:
+        description: The meeting ID
+        format: int64
+        type: integer
+      passwordRequired:
+        description: Indicates whether a password is required to join the meeting
+        type: boolean
+      startTime:
+        description: The starting time of the meeting
+        format: rfc3339
+        type: datetime
+      status:
+        description: 'The meeting status, i.e whether the meeting is running or not'
+        type: MeetingStatus
+      subject:
+        description: The subject of the meeting
+        type: string
+      uniqueMeetingId:
+        description: A unique ID for the meeting
+        format: int64
+        type: integer
+  MeetingCreated:
+    description: Describes a newly created meeting.
+    properties:
+      conferenceCallInfo:
+        description: Audio options for the meeting
+        type: string
+      joinURL:
+        description: The URL the meeting participants will use to join the meeting
+        type: string
+      maxParticipants:
+        description: The maximum number of participants allowed in the meeting
+        format: int32
+        type: integer
+      meetingid:
+        description: The meeting ID
+        format: int64
+        type: integer
+      uniqueMeetingId:
+        description: The meeting ID. Field retained for backwards compatibility reasons
+        format: int64
+        type: integer
+  MeetingHistory:
+    description: Describes a unique past meeting instance.
+    properties:
+      conferenceCallInfo:
+        description: Audio options for the meeting
+        type: string
+      date:
+        description: The time the meeting instance started. Field retained for backwards compatibility reasons
+        format: rfc3339
+        type: datetime
+      duration:
+        description: The duration of the meeting session in minutes
+        format: int32
+        type: integer
+      email:
+        description: The meeting organizer's email address
+        type: string
+      endTime:
+        description: The time the meeting instance ended
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The meeting organizer's first name
+        type: string
+      groupName:
+        description: DEPRECATED. An empty string '' is returned
+        type: string
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      meetingId:
+        description: The meeting ID
+        format: int64
+        type: integer
+      meetingInstanceKey:
+        description: The key of the unique meeting instance
+        format: int64
+        type: integer
+      meetingKey:
+        description: The meeting ID. Field retained for backwards compatibility reasons
+        format: int64
+        type: integer
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      newMeetingId:
+        description: Formatted meeting ID
+        type: string
+      newOrganizerKey:
+        description: The key of the meeting organizer. Field introduced for compatibility reasons
+        type: string
+      numAttendees:
+        description: The number of attendees at the meeting instance
+        format: int32
+        type: integer
+      organizerKey:
+        description: The key of the meeting organizer
+        type: string
+      organizerkey:
+        description: The key of the meeting organizer. Field retained for backwards compatibility reasons
+        type: string
+      passwordRequired:
+        description: DEPRECATED. An empty string '' is returned
+        type: boolean
+      sessionId:
+        description: The ID of the meeting session
+        format: int64
+        type: integer
+      startTime:
+        description: The time the meeting instance started
+        format: rfc3339
+        type: datetime
+      status:
+        description: DEPRECATED. An empty string '' is returned
+        type: string
+      subject:
+        description: The subject of the meeting
+        type: string
+      uniqueMeetingId:
+        description: The meeting ID. Field retained for backwards compatibility reasons
+        format: int64
+        type: integer
+  MeetingReqCreate:
+    description: Describes the information required to create a meeting.
+    properties:
+      conferencecallinfo:
+        description: 'A required string. Can be one of the following options: <br>PSTN (PSTN only), <br>Free (PSTN and VoIP), <br>Hybrid, (PSTN and VoIP), <br>Private (you provide numbers and access code), or <br>VoIP (VoIP only). <br>You may also enter plain text for numbers and access codes with a limit of 255 characters'
+        type: string
+      endtime:
+        description: 'The ending time of the meeting. Required ISO8601 UTC string, e.g. 2015-07-01T23:00:00Z'
+        format: rfc3339
+        type: datetime
+      meetingtype:
+        description: The meeting type
+        type: MeetingType
+      passwordrequired:
+        description: Indicates whether a password is required to join the meeting. Required parameter
+        type: boolean
+      starttime:
+        description: 'The starting time of the meeting. Required ISO8601 UTC string, e.g. 2015-07-01T22:00:00Z'
+        format: rfc3339
+        type: datetime
+      subject:
+        description: 'The subject of the meeting. 100 characters maximum. The characters ''&gt;'' and ''&lt;'' have to be replaced with the corresponding html character code (&amp;gt; for &#39;&gt;&#39; and &amp;lt; for &#39;&lt;&#39;)'
+        type: string
+      timezonekey:
+        description: DEPRECATED. Must be provided and set to empty string ''
+        type: string
+  MeetingReqUpdate:
+    description: Describes the information required to update a meeting.
+    properties:
+      conferencecallinfo:
+        description: 'A required string. Can be one of the following options: <br>PSTN (PSTN only), <br>Free (PSTN and VoIP), <br>Hybrid, (PSTN and VoIP), <br>Private (you provide numbers and access code), or <br>VoIP (VoIP only). <br>You may also enter plain text for numbers and access codes with a limit of 255 characters'
+        type: string
+      endtime:
+        description: 'The ending time of the meeting. A required ISO8601 UTC string, e.g. 2015-07-01T22:00:00Z'
+        format: rfc3339
+        type: datetime
+      meetingtype:
+        description: The meeting type
+        type: MeetingType
+      passwordrequired:
+        description: Indicates whether a password is required to join the meeting. Required parameter
+        type: boolean
+      starttime:
+        description: 'The starting time of the meeting. A required ISO8601 UTC string, e.g. 2015-07-01T22:00:00Z'
+        format: rfc3339
+        type: datetime
+      subject:
+        description: 'A description of the meeting. 100 characters maximum. The characters ''&gt;'' and ''&lt;'' have to be replaced with the corresponding html character code (&amp;gt; for &#39;&gt;&#39; and &amp;lt; for &#39;&lt;&#39;)'
+        type: string
+      timezonekey:
+        description: DEPRECATED. Must be provided and set to empty string ''
+        type: string
+  MeetingScheduled:
+    description: Describes a scheduled meeting.
+    properties:
+      conferenceCallInfo:
+        description: Audio options for the meeting.
+        type: string
+      createTime:
+        description: The time the meeting was created.
+        format: rfc3339
+        type: datetime
+      endTime:
+        description: The ending time of the meeting.
+        format: rfc3339
+        type: datetime
+      maxParticipants:
+        description: The maximum number of participants allowed at the meeting.
+        format: int32
+        type: integer
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      meetingid:
+        description: The meeting ID.
+        format: int64
+        type: integer
+      passwordRequired:
+        description: Indicates whether a password is required to join the meeting.
+        type: boolean
+      startTime:
+        description: The starting time of the meeting.
+        format: rfc3339
+        type: datetime
+      status:
+        description: 'The meeting status, i.e whether the meeting is running or not'
+        type: MeetingStatus
+      subject:
+        description: The subject of the meeting.
+        type: string
+      uniqueMeetingId:
+        description: The meeting ID. Field retained for backwards compatibility reasons.
+        format: int64
+        type: integer
+  MeetingStatus:
+    description: 'The meeting status, i.e whether the meeting is running or not'
+    enum:
+      - ACTIVE
+      - INACTIVE
+    type: string
+  MeetingType:
+    description: The meeting type
+    enum:
+      - immediate
+      - recurring
+      - scheduled
+    type: string
+  Organizer:
+    description: Describes an organizer.
+    properties:
+      email:
+        description: The organizer's email address
+        type: string
+      firstName:
+        description: The organizer's first name
+        type: string
+      groupId:
+        description: The key of the group this organizer is assigned to
+        format: int64
+        type: integer
+      groupName:
+        description: The name of the group this organizer is assigned to
+        type: string
+      lastName:
+        description: The organizer's surname
+        type: string
+      maxNumAttendeesAllowed:
+        description: The maximum number of attendees allowed at sessions hosted by this organizer.
+        format: int32
+        type: integer
+      organizerKey:
+        description: The key of the organizer
+        format: int64
+        type: integer
+      products:
+        description: 'The products the organizer has access to, can be ''G2M'', ''G2W'', ''G2T'' or ''OPENVOICE'''
+        items:
+          type: Product
+        type: array
+      status:
+        description: 'The status of the organizer, i.e. whether the organizer is able to host meetings'
+        type: Status
+  OrganizerByGroup:
+    description: Describes an organizer within a specified group.
+    properties:
+      email:
+        description: The organizer's email address
+        type: string
+      firstName:
+        description: The organizer's first name
+        type: string
+      groupId:
+        description: The key of the group
+        format: int64
+        type: integer
+      groupName:
+        description: The name of the group
+        type: string
+      lastName:
+        description: The organizer's surname
+        type: string
+      maxNumAttendeesAllowed:
+        description: The maximum number of attendees allowed at sessions held by this organizer
+        format: int32
+        type: integer
+      organizerKey:
+        description: The key of the organizer
+        format: int64
+        type: integer
+      products:
+        description: 'The products the organizer has access to, can be ''G2M'', ''G2W'', ''G2T'' or ''OPENVOICE'''
+        items:
+          type: Product
+        type: array
+      status:
+        description: 'The status of the organizer, i.e. whether the organizer is able to host meetings'
+        type: Status
+  OrganizerReq:
+    description: 'Describes the information required to create an organizer, with or without assigning a group.'
+    properties:
+      firstName:
+        description: The first name of the organizer
+        type: string
+      lastName:
+        description: The surname of the organizer
+        type: string
+      organizerEmail:
+        description: The email address of the organizer
+        type: string
+      productType:
+        description: 'A product the organizer has access to, can be ''G2M'', ''G2W'', ''G2T'' or ''OPENVOICE'''
+        type: Product
+  OrganizerShort:
+    description: Describes a newly created organizer.
+    properties:
+      email:
+        description: The organizer's email address
+        type: string
+      key:
+        description: The organizer's key
+        format: int64
+        type: integer
+  OrganizerStatus:
+    description: 'Describes the status of an organizer, i.e. whether they are able to host meetings.'
+    properties:
+      productType:
+        description: The product you want to add to the organizer. The call must be sent once for each product you want to add
+        type: Product
+        required: false
+      status:
+        description: The status of the organizer can be set to. Use 'suspended' to remove all products. The formerly used status 'active' is now DEPRECATED for this call. To activate the organizer please assign a product. In this case do not pass this parameter
+        enum:
+          - suspended
+        type: string
+        required: false
+  Product:
+    description: 'The products the organizer has access to, can be ''G2M'', ''G2W'', ''G2T'' or ''OPENVOICE'''
+    enum:
+      - G2M
+      - G2T
+      - G2W
+      - OPENVOICE
+    type: string
+  ScheduledMeetingByGroup:
+    description: Describes a meeting scheduled by an organizer within a specified group.
+    properties:
+      attendees:
+        description: Not in use.
+        type: string
+      conferenceCallInfo:
+        description: Audio options for the meeting.
+        type: string
+      email:
+        description: The email address of the meeting organizer.
+        type: string
+      firstName:
+        description: The first name of the meeting organizer.
+        type: string
+      groupName:
+        description: The name of the group.
+        type: string
+      lastName:
+        description: The surname of the meeting organizer.
+        type: string
+      meetingId:
+        description: The meeting ID.
+        type: string
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      organizerKey:
+        description: The key of the meeting organizer.
+        type: string
+      organizerkey:
+        description: The key of the meeting organizer. Field retained for backwards compatibility reasons.
+        format: int64
+        type: integer
+      passwordRequired:
+        description: Indicates whether a password is required to join the meeting.
+        type: boolean
+      subject:
+        description: The subject of the meeting.
+        type: string
+  StartUrl:
+    description: Host URL that can be used to start a meeting
+    properties:
+      hostURL:
+        description: The host URL that can be used to start a meeting.
+        type: string
+  Status:
+    description: 'The status of an organizer (or group), i.e. whether the organizer (or the members of the group respectively) are able to host meetings'
+    enum:
+      - active
+      - suspended
+    type: string
+  UpcomingMeeting:
+    description: Describes an upcoming meeting.
+    properties:
+      accountKey:
+        description: The key of the company account
+        type: string
+      conferenceCallInfo:
+        description: Audio options for the meeting
+        type: string
+      email:
+        description: The meeting organizer's email address
+        type: string
+      endTime:
+        description: The time the meeting instance ended
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The meeting organizer's first name
+        type: string
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      locale:
+        description: The current language setting of the organizer in the web portal
+        type: string
+      meetingId:
+        description: The meeting ID
+        type: string
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      organizerKey:
+        description: The key of the meeting organizer
+        type: string
+      passwordRequired:
+        description: Indicates whether a password is required to join the meeting or not
+        type: boolean
+      startTime:
+        description: The time the meeting instance will start
+        format: rfc3339
+        type: datetime
+      status:
+        description: 'The meeting status, i.e whether the meeting is running or not'
+        type: MeetingStatus
+      subject:
+        description: The subject of the meeting
+        type: string
+  UpcomingMeetingByGroup:
+    description: Describes an upcoming meeting of a group.
+    properties:
+      accountKey:
+        description: The key of the company account
+        type: string
+      email:
+        description: The meeting organizer's email address
+        type: string
+      endTime:
+        description: The time the meeting instance ended
+        format: rfc3339
+        type: datetime
+      firstName:
+        description: The meeting organizer's first name
+        type: string
+      groupName:
+        description: The name of the group the meeting belongs to
+        type: string
+      lastName:
+        description: The surname of the meeting organizer
+        type: string
+      locale:
+        description: The current language setting of the organizer in the web portal
+        type: string
+      meetingId:
+        description: The meeting ID
+        type: string
+      meetingType:
+        description: The meeting type
+        type: MeetingType
+      organizerKey:
+        description: The key of the meeting organizer
+        type: string
+      passwordRequired:
+        description: Indicates whether a password is required to join the meeting or not
+        type: boolean
+      startTime:
+        description: The time the meeting instance will start
+        format: rfc3339
+        type: datetime
+      status:
+        description: DEPRECATED. This status flag is always set to 'INACTIVE'. It exists for backwards compatibility reasons only
+        type: MeetingStatus
+        required: false
+      subject:
+        description: The subject of the meeting
+        type: string
+traits:
+  authorization:
+    headers:
+      Authorization:
+        type: string
+        description: Access token
+        required: true

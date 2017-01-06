@@ -1,0 +1,115 @@
+#%RAML 1.0
+title: XKCD
+version: 1.0.0
+baseUri: 'http://xkcd.com/'
+protocols:
+  - HTTP
+description: 'Webcomic of romance, sarcasm, math, and language.'
+(oas-info):
+  (oas-x-apisguru-categories):
+    - media
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_imgs.xkcd.com_static_terrible_small_logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/APIs-guru/unofficial_openapi_specs/master/xkcd.com/1.0.0/swagger.yaml'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): xkcd.com
+  (oas-x-tags):
+    - humor
+    - comics
+  (oas-x-unofficialSpec): true
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-tags: any
+  oas-x-unofficialSpec: any
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-externalDocs):
+  url: 'https://xkcd.com/json.html'
+'/{comicId}':
+  displayName: '{comicId}'
+  /info.0.json:
+    displayName: info.0.json
+    get:
+      displayName: GET_comicId-info-0-json
+      description: |
+        Fetch comics and metadata  by comic id.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: comic
+          description: OK
+/info.0.json:
+  displayName: info.0.json
+  get:
+    displayName: GET_info-0-json
+    description: |
+      Fetch current comic and metadata.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: comic
+        description: OK
+types:
+  comic:
+    properties:
+      alt:
+        type: string
+        required: false
+      day:
+        type: string
+        required: false
+      img:
+        type: string
+        required: false
+      link:
+        type: string
+        required: false
+      month:
+        type: string
+        required: false
+      news:
+        type: string
+        required: false
+      num:
+        type: number
+        required: false
+      safe_title:
+        type: string
+        required: false
+      title:
+        type: string
+        required: false
+      transcript:
+        type: string
+        required: false
+      year:
+        type: string
+        required: false

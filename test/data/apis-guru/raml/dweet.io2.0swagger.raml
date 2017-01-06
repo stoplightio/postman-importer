@@ -1,0 +1,446 @@
+#%RAML 1.0
+title: dweet.io
+version: '2.0'
+baseUri: 'https://dweet.io/'
+protocols:
+  - HTTPS
+description: 'Dweet.io allows users to share data from mobile, tablets, and pcs, and them to other devices and accounts across social media platforms. Dweet.io provides an API to access the different functionality of the Dweet.io service. Users can make REST calls to read and create dweets, lock and unlock things, and perform other calls. The API returns JSON and JSONP.'
+(oas-tags-definition):
+  - description: Alerts for things.
+    name: alerts
+  - description: Create or read dweets in short term cache.
+    name: dweets
+  - description: Lock and unlock your things.
+    name: locks
+  - description: Read dweets from long term storage.
+    name: storage
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-origin):
+    format: swagger
+    url: 'https://dweet.io/play/definition'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): dweet.io
+/get:
+  displayName: get
+  /stored:
+    displayName: stored
+    /alerts:
+      displayName: alerts
+      /for:
+        displayName: for
+        '/{thing}':
+          displayName: '{thing}'
+          uriParameters:
+            thing:
+              description: A unique name of a thing.
+              required: true
+              type: string
+              displayName: A unique name of a thing.
+          get:
+            displayName: GET_get-stored-alerts-for-thing
+            (oas-summary): Read all the saved alerts for a thing from long term storage.  You can query a maximum of 1 day per request and a granularly of 1 hour.
+            responses:
+              '200':
+                description: No response was specified
+            queryParameters:
+              key:
+                description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+                required: true
+                type: string
+                displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+              date:
+                description: The calendar date (YYYY-MM-DD) from which you'd like to start your query.  The response will be a maximum of one day.
+                required: true
+                type: string
+                displayName: The calendar date (YYYY-MM-DD) from which you'd like to start your query.  The response will be a maximum of one day.
+              hour:
+                description: 'The hour of the day represented in the date parameter in 24-hour (00-23) format.  If this parameter is included, a maximum of 1 hour will be returned starting at this hour.'
+                required: false
+                type: string
+                displayName: 'The hour of the day represented in the date parameter in 24-hour (00-23) format.  If this parameter is included, a maximum of 1 hour will be returned starting at this hour.'
+              responseType:
+                description: 'Current valid parameters for this are ''csv'' and ''json''.  If this parameter is left blank, all responses default to hapi-json dweet-speak.'
+                required: false
+                type: string
+                displayName: 'Current valid parameters for this are ''csv'' and ''json''.  If this parameter is left blank, all responses default to hapi-json dweet-speak.'
+            (oas-tags):
+              - storage
+    /dweets:
+      displayName: dweets
+      /for:
+        displayName: for
+        '/{thing}':
+          displayName: '{thing}'
+          uriParameters:
+            thing:
+              description: A unique name of a thing.
+              required: true
+              type: string
+              displayName: A unique name of a thing.
+          get:
+            displayName: GET_get-stored-dweets-for-thing
+            (oas-summary): Read all the saved dweets for a thing from long term storage.  You can query a maximum of 1 day per request and a granularly of 1 hour.
+            responses:
+              '200':
+                description: No response was specified
+            queryParameters:
+              key:
+                description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+                required: true
+                type: string
+                displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+              date:
+                description: The calendar date (YYYY-MM-DD) from which you'd like to start your query.  The response will be a maximum of one day.
+                required: true
+                type: string
+                displayName: The calendar date (YYYY-MM-DD) from which you'd like to start your query.  The response will be a maximum of one day.
+              hour:
+                description: 'The hour of the day represented in the date parameter in 24-hour (00-23) format.  If this parameter is included, a maximum of 1 hour will be returned starting at this hour.'
+                required: false
+                type: string
+                displayName: 'The hour of the day represented in the date parameter in 24-hour (00-23) format.  If this parameter is included, a maximum of 1 hour will be returned starting at this hour.'
+              responseType:
+                description: 'Current valid parameters for this are ''csv'' and ''json''.  If this parameter is left blank, all responses default to hapi-json dweet-speak.'
+                required: false
+                type: string
+                displayName: 'Current valid parameters for this are ''csv'' and ''json''.  If this parameter is left blank, all responses default to hapi-json dweet-speak.'
+            (oas-tags):
+              - storage
+  /alert:
+    displayName: alert
+    /for:
+      displayName: for
+      '/{thing}':
+        displayName: '{thing}'
+        uriParameters:
+          thing:
+            description: A unique name of a thing.
+            required: true
+            type: string
+            displayName: A unique name of a thing.
+        get:
+          displayName: GET_get-alert-for-thing
+          (oas-summary): Get the alert attached to a thing.
+          responses:
+            '200':
+              description: No response was specified
+          queryParameters:
+            key:
+              description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+              required: true
+              type: string
+              displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+          (oas-tags):
+            - alerts
+  /latest:
+    displayName: latest
+    /dweet:
+      displayName: dweet
+      /for:
+        displayName: for
+        '/{thing}':
+          displayName: '{thing}'
+          uriParameters:
+            thing:
+              description: A unique name of a thing.
+              required: true
+              type: string
+              displayName: A unique name of a thing.
+          get:
+            displayName: GET_get-latest-dweet-for-thing
+            (oas-summary): Read the latest dweet for a thing.
+            responses:
+              '200':
+                description: No response was specified
+            queryParameters:
+              key:
+                description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+                required: false
+                type: string
+                displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+            (oas-tags):
+              - dweets
+  /dweets:
+    displayName: dweets
+    /for:
+      displayName: for
+      '/{thing}':
+        displayName: '{thing}'
+        uriParameters:
+          thing:
+            description: A unique name of a thing.
+            required: true
+            type: string
+            displayName: A unique name of a thing.
+        get:
+          displayName: GET_get-dweets-for-thing
+          (oas-summary): Read the last 5 cached dweets for a thing.
+          responses:
+            '200':
+              description: No response was specified
+          queryParameters:
+            key:
+              description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+              required: false
+              type: string
+              displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+          (oas-tags):
+            - dweets
+/unlock:
+  displayName: unlock
+  '/{thing}':
+    displayName: '{thing}'
+    uriParameters:
+      thing:
+        description: A unique name of a thing.
+        required: true
+        type: string
+        displayName: A unique name of a thing.
+    get:
+      displayName: GET_unlock-thing
+      (oas-summary): Unlock a thing.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        key:
+          description: A valid dweet.io master key.
+          required: true
+          type: string
+          displayName: A valid dweet.io master key.
+      (oas-tags):
+        - locks
+/alert:
+  displayName: alert
+  '/{who}':
+    displayName: '{who}'
+    /when:
+      displayName: when
+      '/{thing}':
+        displayName: '{thing}'
+        '/{condition}':
+          displayName: '{condition}'
+          uriParameters:
+            condition:
+              description: A condition that returns a string or a true value if a condition is met.
+              required: true
+              type: string
+              displayName: A condition that returns a string or a true value if a condition is met.
+          get:
+            displayName: GET_alert-who-when-thing-condition
+            (oas-summary): Create an alert for a thing. A thing must be locked before an alert can be set.
+            responses:
+              '200':
+                description: No response was specified
+            queryParameters:
+              key:
+                description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+                required: true
+                type: string
+                displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+            (oas-tags):
+              - alerts
+/dweet:
+  displayName: dweet
+  /quietly:
+    displayName: quietly
+    /for:
+      displayName: for
+      '/{thing}':
+        displayName: '{thing}'
+        uriParameters:
+          thing:
+            description: A unique name of a thing. It is recommended that you use a GUID as to avoid name collisions.
+            required: true
+            type: string
+            displayName: A unique name of a thing. It is recommended that you use a GUID as to avoid name collisions.
+        post:
+          displayName: POST_dweet-quietly-for-thing
+          (oas-summary): 'Create a dweet for a thing.  This method differs from /dweet/for/{thing} only in that successful dweets result in an HTTP 204 response rath'
+          body:
+            application/json:
+              type: string
+              (oas-body-name): content
+              description: The actual content of the string. Can be any valid JSON string.
+          responses:
+            '200':
+              description: No response was specified
+          queryParameters:
+            key:
+              description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+              required: false
+              type: string
+              displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+          (oas-tags):
+            - dweets
+  /for:
+    displayName: for
+    '/{thing}':
+      displayName: '{thing}'
+      uriParameters:
+        thing:
+          description: A unique name of a thing. It is recommended that you use a GUID as to avoid name collisions.
+          required: true
+          type: string
+          displayName: A unique name of a thing. It is recommended that you use a GUID as to avoid name collisions.
+      post:
+        displayName: POST_dweet-for-thing
+        (oas-summary): Create a dweet for a thing.
+        body:
+          application/json:
+            type: string
+            (oas-body-name): content
+            description: The actual content of the string. Can be any valid JSON string.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          key:
+            description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+            required: false
+            type: string
+            displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+        (oas-tags):
+          - dweets
+/remove:
+  displayName: remove
+  /lock:
+    displayName: lock
+    '/{lock}':
+      displayName: '{lock}'
+      uriParameters:
+        lock:
+          description: A valid dweet.io lock.
+          required: true
+          type: string
+          displayName: A valid dweet.io lock.
+      get:
+        displayName: GET_remove-lock-lock
+        (oas-summary): Remove a lock from thing.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          key:
+            description: A valid dweet.io master key.
+            required: true
+            type: string
+            displayName: A valid dweet.io master key.
+        (oas-tags):
+          - locks
+  /alert:
+    displayName: alert
+    /for:
+      displayName: for
+      '/{thing}':
+        displayName: '{thing}'
+        uriParameters:
+          thing:
+            description: A unique name of a thing.
+            required: true
+            type: string
+            displayName: A unique name of a thing.
+        get:
+          displayName: GET_remove-alert-for-thing
+          (oas-summary): Remove an alert for a thing.
+          responses:
+            '200':
+              description: No response was specified
+          queryParameters:
+            key:
+              description: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+              required: true
+              type: string
+              displayName: 'A valid key for a locked thing. If the thing is not locked, this can be ignored.'
+          (oas-tags):
+            - alerts
+/lock:
+  displayName: lock
+  '/{thing}':
+    displayName: '{thing}'
+    uriParameters:
+      thing:
+        description: A unique name of a thing.
+        required: true
+        type: string
+        displayName: A unique name of a thing.
+    get:
+      displayName: GET_lock-thing
+      (oas-summary): Reserve and lock a thing.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        lock:
+          description: A valid dweet.io lock.
+          required: true
+          type: string
+          displayName: A valid dweet.io lock.
+        key:
+          description: A valid dweet.io master key.
+          required: true
+          type: string
+          displayName: A valid dweet.io master key.
+      (oas-tags):
+        - locks
+/listen:
+  displayName: listen
+  /for:
+    displayName: for
+    /dweets:
+      displayName: dweets
+      /from:
+        displayName: from
+        '/{thing}':
+          displayName: '{thing}'
+          uriParameters:
+            thing:
+              required: true
+              type: string
+          get:
+            displayName: GET_listen-for-dweets-from-thing
+            description: 'Sorry, this function uses HTTP chunked responses and cannot be tested here. Try something like: <pre>curl --raw https://dweet.io/listen/for/dweets/from/{thing}</pre>'
+            (oas-summary): Listen for dweets from a thing.
+            responses:
+              '200':
+                description: No response was specified
+            (oas-tags):
+              - dweets

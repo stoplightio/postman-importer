@@ -1,0 +1,834 @@
+#%RAML 1.0
+title: QPX Express
+version: v1
+baseUri: 'https://www.googleapis.com/qpxExpress/v1/trips'
+protocols:
+  - HTTPS
+description: Finds the least expensive flights between an origin and a destination.
+(oas-tags-definition):
+  - name: trips
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/qpxExpress/v1/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): qpxExpress
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'http://developers.google.com/qpx-express'
+/search:
+  displayName: search
+  post:
+    displayName: qpxExpress.trips.search
+    description: Returns a list of flights.
+    body:
+      application/json:
+        type: TripsSearchRequest
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: TripsSearchResponse
+        description: Successful response
+    (oas-tags):
+      - trips
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+types:
+  AircraftData:
+    description: 'The make, model, and type of an aircraft.'
+    properties:
+      code:
+        description: 'The aircraft code. For example, for a Boeing 777 the code would be 777.'
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#aircraftData'
+        description: 'Identifies this as an aircraftData object. Value: the fixed string qpxexpress#aircraftData'
+        type: string
+        required: false
+      name:
+        description: 'The name of an aircraft, for example Boeing 777.'
+        type: string
+        required: false
+  AirportData:
+    description: An airport.
+    properties:
+      city:
+        description: 'The city code an airport is located in. For example, for JFK airport, this is NYC.'
+        type: string
+        required: false
+      code:
+        description: 'An airport''s code. For example, for Boston Logan airport, this is BOS.'
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#airportData'
+        description: 'Identifies this as an airport object. Value: the fixed string qpxexpress#airportData.'
+        type: string
+        required: false
+      name:
+        description: 'The name of an airport. For example, for airport BOS the name is "Boston Logan International".'
+        type: string
+        required: false
+  BagDescriptor:
+    description: Information about an item of baggage.
+    properties:
+      commercialName:
+        description: Provides the commercial name for an optional service.
+        type: string
+        required: false
+      count:
+        description: How many of this type of bag will be checked on this flight.
+        format: int32
+        type: integer
+        required: false
+      description:
+        description: A description of the baggage.
+        items:
+          type: string
+        type: array
+        required: false
+      kind:
+        default: 'qpxexpress#bagDescriptor'
+        description: 'Identifies this as a baggage object. Value: the fixed string qpxexpress#bagDescriptor.'
+        type: string
+        required: false
+      subcode:
+        description: The standard IATA subcode used to identify this optional service.
+        type: string
+        required: false
+  CarrierData:
+    description: 'Information about a carrier (ie. an airline, bus line, railroad, etc) that might be useful to display to an end-user.'
+    properties:
+      code:
+        description: 'The IATA designator of a carrier (airline, etc). For example, for American Airlines, the code is AA.'
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#carrierData'
+        description: 'Identifies this as a kind of carrier (ie. an airline, bus line, railroad, etc). Value: the fixed string qpxexpress#carrierData.'
+        type: string
+        required: false
+      name:
+        description: 'The long, full name of a carrier. For example: American Airlines.'
+        type: string
+        required: false
+  CityData:
+    description: Information about a city that might be useful to an end-user; typically the city of an airport.
+    properties:
+      code:
+        description: 'The IATA character ID of a city. For example, for Boston this is BOS.'
+        type: string
+        required: false
+      country:
+        description: 'The two-character country code of the country the city is located in. For example, US for the United States of America.'
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#cityData'
+        description: 'Identifies this as a city, typically with one or more airports. Value: the fixed string qpxexpress#cityData.'
+        type: string
+        required: false
+      name:
+        description: 'The full name of a city. An example would be: New York.'
+        type: string
+        required: false
+  Data:
+    description: 'Detailed information about components found in the solutions of this response, including a trip''s airport, city, taxes, airline, and aircraft.'
+    properties:
+      aircraft:
+        description: The aircraft that is flying between an origin and destination.
+        items:
+          type: AircraftData
+        type: array
+        required: false
+      airport:
+        description: The airport of an origin or destination.
+        items:
+          type: AirportData
+        type: array
+        required: false
+      carrier:
+        description: The airline carrier of the aircraft flying between an origin and destination. Allowed values are IATA carrier codes.
+        items:
+          type: CarrierData
+        type: array
+        required: false
+      city:
+        description: The city that is either the origin or destination of part of a trip.
+        items:
+          type: CityData
+        type: array
+        required: false
+      kind:
+        default: 'qpxexpress#data'
+        description: 'Identifies this as QPX Express response resource, including a trip''s airport, city, taxes, airline, and aircraft. Value: the fixed string qpxexpress#data.'
+        type: string
+        required: false
+      tax:
+        description: The taxes due for flying between an origin and a destination.
+        items:
+          type: TaxData
+        type: array
+        required: false
+  FareInfo:
+    description: 'Complete information about a fare used in the solution to a low-fare search query. In the airline industry a fare is a price an airline charges for one-way travel between two points. A fare typically contains a carrier code, two city codes, a price, and a fare basis. (A fare basis is a one-to-eight character alphanumeric code used to identify a fare.)'
+    properties:
+      basisCode:
+        type: string
+        required: false
+      carrier:
+        description: The carrier of the aircraft or other vehicle commuting between two points.
+        type: string
+        required: false
+      destination:
+        description: The city code of the city the trip ends at.
+        type: string
+        required: false
+      id:
+        description: A unique identifier of the fare.
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#fareInfo'
+        description: 'Identifies this as a fare object. Value: the fixed string qpxexpress#fareInfo.'
+        type: string
+        required: false
+      origin:
+        description: The city code of the city the trip begins at.
+        type: string
+        required: false
+      private:
+        description: 'Whether this is a private fare, for example one offered only to select customers rather than the general public.'
+        type: boolean
+        required: false
+  FlightInfo:
+    description: 'A flight is a sequence of legs with the same airline carrier and flight number. (A leg is the smallest unit of travel, in the case of a flight a takeoff immediately followed by a landing at two set points on a particular carrier with a particular flight number.) The naive view is that a flight is scheduled travel of an aircraft between two points, with possibly intermediate stops, but carriers will frequently list flights that require a change of aircraft between legs.'
+    properties:
+      carrier:
+        type: string
+        required: false
+      number:
+        description: The flight number.
+        type: string
+        required: false
+  FreeBaggageAllowance:
+    description: Information about free baggage allowed on one segment of a trip.
+    properties:
+      bagDescriptor:
+        description: 'A representation of a type of bag, such as an ATPCo subcode, Commercial Name, or other description.'
+        items:
+          type: BagDescriptor
+        type: array
+        required: false
+      kilos:
+        description: The maximum number of kilos all the free baggage together may weigh.
+        format: int32
+        type: integer
+        required: false
+      kilosPerPiece:
+        description: The maximum number of kilos any one piece of baggage may weigh.
+        format: int32
+        type: integer
+        required: false
+      kind:
+        default: 'qpxexpress#freeBaggageAllowance'
+        description: 'Identifies this as free baggage object, allowed on one segment of a trip. Value: the fixed string qpxexpress#freeBaggageAllowance.'
+        type: string
+        required: false
+      pieces:
+        description: The number of free pieces of baggage allowed.
+        format: int32
+        type: integer
+        required: false
+      pounds:
+        description: The number of pounds of free baggage allowed.
+        format: int32
+        type: integer
+        required: false
+  LegInfo:
+    description: 'Information about a leg. (A leg is the smallest unit of travel, in the case of a flight a takeoff immediately followed by a landing at two set points on a particular carrier with a particular flight number.)'
+    properties:
+      aircraft:
+        description: 'The aircraft (or bus, ferry, railcar, etc) travelling between the two points of this leg.'
+        type: string
+        required: false
+      arrivalTime:
+        description: 'The scheduled time of arrival at the destination of the leg, local to the point of arrival.'
+        type: string
+        required: false
+      changePlane:
+        description: Whether you have to change planes following this leg. Only applies to the next leg.
+        type: boolean
+        required: false
+      connectionDuration:
+        description: 'Duration of a connection following this leg, in minutes.'
+        format: int32
+        type: integer
+        required: false
+      departureTime:
+        description: 'The scheduled departure time of the leg, local to the point of departure.'
+        type: string
+        required: false
+      destination:
+        description: The leg destination as a city and airport.
+        type: string
+        required: false
+      destinationTerminal:
+        description: The terminal the flight is scheduled to arrive at.
+        type: string
+        required: false
+      duration:
+        description: The scheduled travelling time from the origin to the destination.
+        format: int32
+        type: integer
+        required: false
+      id:
+        description: An identifier that uniquely identifies this leg in the solution.
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#legInfo'
+        description: 'Identifies this as a leg object. A leg is the smallest unit of travel, in the case of a flight a takeoff immediately followed by a landing at two set points on a particular carrier with a particular flight number. Value: the fixed string qpxexpress#legInfo.'
+        type: string
+        required: false
+      meal:
+        description: 'A simple, general description of the meal(s) served on the flight, for example: "Hot meal".'
+        type: string
+        required: false
+      mileage:
+        description: The number of miles in this leg.
+        format: int32
+        type: integer
+        required: false
+      onTimePerformance:
+        description: 'In percent, the published on time performance on this leg.'
+        format: int32
+        type: integer
+        required: false
+      operatingDisclosure:
+        description: 'Department of Transportation disclosure information on the actual operator of a flight in a code share. (A code share refers to a marketing agreement between two carriers, where one carrier will list in its schedules (and take bookings for) flights that are actually operated by another carrier.)'
+        type: string
+        required: false
+      origin:
+        description: The leg origin as a city and airport.
+        type: string
+        required: false
+      originTerminal:
+        description: The terminal the flight is scheduled to depart from.
+        type: string
+        required: false
+      secure:
+        description: Whether passenger information must be furnished to the United States Transportation Security Administration (TSA) prior to departure.
+        type: boolean
+        required: false
+  PassengerCounts:
+    description: 'The number and type of passengers. Unfortunately the definition of an infant, child, adult, and senior citizen varies across carriers and reservation systems.'
+    properties:
+      adultCount:
+        description: The number of passengers that are adults.
+        format: int32
+        type: integer
+        required: false
+      childCount:
+        description: The number of passengers that are children.
+        format: int32
+        type: integer
+        required: false
+      infantInLapCount:
+        description: The number of passengers that are infants travelling in the lap of an adult.
+        format: int32
+        type: integer
+        required: false
+      infantInSeatCount:
+        description: The number of passengers that are infants each assigned a seat.
+        format: int32
+        type: integer
+        required: false
+      kind:
+        default: 'qpxexpress#passengerCounts'
+        description: 'Identifies this as a passenger count object, representing the number of passengers. Value: the fixed string qpxexpress#passengerCounts.'
+        type: string
+        required: false
+      seniorCount:
+        description: The number of passengers that are senior citizens.
+        format: int32
+        type: integer
+        required: false
+  PricingInfo:
+    description: 'The price of one or more travel segments. The currency used to purchase tickets is usually determined by the sale/ticketing city or the sale/ticketing country, unless none are specified, in which case it defaults to that of the journey origin country.'
+    properties:
+      baseFareTotal:
+        description: The total fare in the base fare currency (the currency of the country of origin). This element is only present when the sales currency and the currency of the country of commencement are different.
+        type: string
+        required: false
+      fare:
+        description: The fare used to price one or more segments.
+        items:
+          type: FareInfo
+        type: array
+        required: false
+      fareCalculation:
+        description: The horizontal fare calculation. This is a field on a ticket that displays all of the relevant items that go into the calculation of the fare.
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#pricingInfo'
+        description: 'Identifies this as a pricing object, representing the price of one or more travel segments. Value: the fixed string qpxexpress#pricingInfo.'
+        type: string
+        required: false
+      latestTicketingTime:
+        description: The latest ticketing time for this pricing assuming the reservation occurs at ticketing time and there is no change in fares/rules. The time is local to the point of sale (POS).
+        type: string
+        required: false
+      passengers:
+        description: The number of passengers to which this price applies.
+        type: PassengerCounts
+        required: false
+      ptc:
+        description: 'The passenger type code for this pricing. An alphanumeric code used by a carrier to restrict fares to certain categories of passenger. For instance, a fare might be valid only for senior citizens.'
+        type: string
+        required: false
+      refundable:
+        description: Whether the fares on this pricing are refundable.
+        type: boolean
+        required: false
+      saleFareTotal:
+        description: The total fare in the sale or equivalent currency.
+        type: string
+        required: false
+      saleTaxTotal:
+        description: The taxes in the sale or equivalent currency.
+        type: string
+        required: false
+      saleTotal:
+        description: Total per-passenger price (fare and tax) in the sale or equivalent currency.
+        type: string
+        required: false
+      segmentPricing:
+        description: The per-segment price and baggage information.
+        items:
+          type: SegmentPricing
+        type: array
+        required: false
+      tax:
+        description: The taxes used to calculate the tax total per ticket.
+        items:
+          type: TaxInfo
+        type: array
+        required: false
+  SegmentInfo:
+    description: 'Details of a segment of a flight; a segment is one or more consecutive legs on the same flight. For example a hypothetical flight ZZ001, from DFW to OGG, would have one segment with two legs: DFW to HNL (leg 1), HNL to OGG (leg 2), and DFW to OGG (legs 1 and 2).'
+    properties:
+      bookingCode:
+        description: The booking code or class for this segment.
+        type: string
+        required: false
+      bookingCodeCount:
+        description: The number of seats available in this booking code on this segment.
+        format: int32
+        type: integer
+        required: false
+      cabin:
+        description: The cabin booked for this segment.
+        type: string
+        required: false
+      connectionDuration:
+        description: 'In minutes, the duration of the connection following this segment.'
+        format: int32
+        type: integer
+        required: false
+      duration:
+        description: The duration of the flight segment in minutes.
+        format: int32
+        type: integer
+        required: false
+      flight:
+        description: The flight this is a segment of.
+        type: FlightInfo
+        required: false
+      id:
+        description: An id uniquely identifying the segment in the solution.
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#segmentInfo'
+        description: 'Identifies this as a segment object. A segment is one or more consecutive legs on the same flight. For example a hypothetical flight ZZ001, from DFW to OGG, could have one segment with two legs: DFW to HNL (leg 1), HNL to OGG (leg 2). Value: the fixed string qpxexpress#segmentInfo.'
+        type: string
+        required: false
+      leg:
+        description: The legs composing this segment.
+        items:
+          type: LegInfo
+        type: array
+        required: false
+      marriedSegmentGroup:
+        description: 'The solution-based index of a segment in a married segment group. Married segments can only be booked together. For example, an airline might report a certain booking code as sold out from Boston to Pittsburgh, but as available as part of two married segments Boston to Chicago connecting through Pittsburgh. For example content of this field, consider the round-trip flight ZZ1 PHX-PHL ZZ2 PHL-CLT ZZ3 CLT-PHX. This has three segments, with the two outbound ones (ZZ1 ZZ2) married. In this case, the two outbound segments belong to married segment group 0, and the return segment belongs to married segment group 1.'
+        type: string
+        required: false
+      subjectToGovernmentApproval:
+        description: Whether the operation of this segment remains subject to government approval.
+        type: boolean
+        required: false
+  SegmentPricing:
+    description: The price of this segment.
+    properties:
+      fareId:
+        description: A segment identifier unique within a single solution. It is used to refer to different parts of the same solution.
+        type: string
+        required: false
+      freeBaggageOption:
+        description: Details of the free baggage allowance on this segment.
+        items:
+          type: FreeBaggageAllowance
+        type: array
+        required: false
+      kind:
+        default: 'qpxexpress#segmentPricing'
+        description: 'Identifies this as a segment pricing object, representing the price of this segment. Value: the fixed string qpxexpress#segmentPricing.'
+        type: string
+        required: false
+      segmentId:
+        description: Unique identifier in the response of this segment.
+        type: string
+        required: false
+  SliceInfo:
+    description: |-
+      Information about a slice. A slice represents a traveller's intent, the portion of a low-fare search corresponding to a traveler's request to get between two points. One-way journeys are generally expressed using 1 slice, round-trips using 2. For example, if a traveler specifies the following trip in a user interface:
+      | Origin | Destination | Departure Date | | BOS | LAX | March 10, 2007 | | LAX | SYD | March 17, 2007 | | SYD | BOS | March 22, 2007 |
+      then this is a three slice trip.
+    properties:
+      duration:
+        description: The duration of the slice in minutes.
+        format: int32
+        type: integer
+        required: false
+      kind:
+        default: 'qpxexpress#sliceInfo'
+        description: 'Identifies this as a slice object. A slice represents a traveller''s intent, the portion of a low-fare search corresponding to a traveler''s request to get between two points. One-way journeys are generally expressed using 1 slice, round-trips using 2. Value: the fixed string qpxexpress#sliceInfo.'
+        type: string
+        required: false
+      segment:
+        description: The segment(s) constituting the slice.
+        items:
+          type: SegmentInfo
+        type: array
+        required: false
+  SliceInput:
+    description: Criteria a desired slice must satisfy.
+    properties:
+      alliance:
+        description: 'Slices with only the carriers in this alliance should be returned; do not use this field with permittedCarrier. Allowed values are ONEWORLD, SKYTEAM, and STAR.'
+        type: string
+        required: false
+      date:
+        description: Departure date in YYYY-MM-DD format.
+        type: string
+        required: false
+      destination:
+        description: Airport or city IATA designator of the destination.
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#sliceInput'
+        description: 'Identifies this as a slice input object, representing the criteria a desired slice must satisfy. Value: the fixed string qpxexpress#sliceInput.'
+        type: string
+        required: false
+      maxConnectionDuration:
+        description: 'The longest connection between two legs, in minutes, you are willing to accept.'
+        format: int32
+        type: integer
+        required: false
+      maxStops:
+        description: The maximum number of stops you are willing to accept in this slice.
+        format: int32
+        type: integer
+        required: false
+      origin:
+        description: Airport or city IATA designator of the origin.
+        type: string
+        required: false
+      permittedCarrier:
+        description: A list of 2-letter IATA airline designators. Slices with only these carriers should be returned.
+        items:
+          type: string
+        type: array
+        required: false
+      permittedDepartureTime:
+        description: 'Slices must depart in this time of day range, local to the point of departure.'
+        type: TimeOfDayRange
+        required: false
+      preferredCabin:
+        description: 'Prefer solutions that book in this cabin for this slice. Allowed values are COACH, PREMIUM_COACH, BUSINESS, and FIRST.'
+        type: string
+        required: false
+      prohibitedCarrier:
+        description: A list of 2-letter IATA airline designators. Exclude slices that use these carriers.
+        items:
+          type: string
+        type: array
+        required: false
+  TaxData:
+    description: Tax data.
+    properties:
+      id:
+        description: An identifier uniquely identifying a tax in a response.
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#taxData'
+        description: 'Identifies this as a tax data object, representing some tax. Value: the fixed string qpxexpress#taxData.'
+        type: string
+        required: false
+      name:
+        description: The name of a tax.
+        type: string
+        required: false
+  TaxInfo:
+    description: Tax information.
+    properties:
+      chargeType:
+        description: Whether this is a government charge or a carrier surcharge.
+        type: string
+        required: false
+      code:
+        description: The code to enter in the ticket's tax box.
+        type: string
+        required: false
+      country:
+        description: 'For government charges, the country levying the charge.'
+        type: string
+        required: false
+      id:
+        description: Identifier uniquely identifying this tax in a response. Not present for unnamed carrier surcharges.
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#taxInfo'
+        description: 'Identifies this as a tax information object. Value: the fixed string qpxexpress#taxInfo.'
+        type: string
+        required: false
+      salePrice:
+        description: The price of the tax in the sales or equivalent currency.
+        type: string
+        required: false
+  TimeOfDayRange:
+    description: Two times in a single day defining a time range.
+    properties:
+      earliestTime:
+        description: 'The earliest time of day in HH:MM format.'
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#timeOfDayRange'
+        description: 'Identifies this as a time of day range object, representing two times in a single day defining a time range. Value: the fixed string qpxexpress#timeOfDayRange.'
+        type: string
+        required: false
+      latestTime:
+        description: 'The latest time of day in HH:MM format.'
+        type: string
+        required: false
+  TripOption:
+    description: Trip information.
+    properties:
+      id:
+        description: Identifier uniquely identifying this trip in a response.
+        type: string
+        required: false
+      kind:
+        default: 'qpxexpress#tripOption'
+        description: 'Identifies this as a trip information object. Value: the fixed string qpxexpress#tripOption.'
+        type: string
+        required: false
+      pricing:
+        description: Per passenger pricing information.
+        items:
+          type: PricingInfo
+        type: array
+        required: false
+      saleTotal:
+        description: 'The total price for all passengers on the trip, in the form of a currency followed by an amount, e.g. USD253.35.'
+        type: string
+        required: false
+      slice:
+        description: The slices that make up this trip's itinerary.
+        items:
+          type: SliceInfo
+        type: array
+        required: false
+  TripOptionsRequest:
+    description: 'A QPX Express search request, which will yield one or more solutions.'
+    properties:
+      maxPrice:
+        description: 'Do not return solutions that cost more than this price. The alphabetical part of the price is in ISO 4217. The format, in regex, is [A-Z]{3}\d+(\.\d+)? Example: $102.07'
+        type: string
+        required: false
+      passengers:
+        description: Counts for each passenger type in the request.
+        type: PassengerCounts
+        required: false
+      refundable:
+        description: Return only solutions with refundable fares.
+        type: boolean
+        required: false
+      saleCountry:
+        description: IATA country code representing the point of sale. This determines the "equivalent amount paid" currency for the ticket.
+        type: string
+        required: false
+      slice:
+        description: 'The slices that make up the itinerary of this trip. A slice represents a traveler''s intent, the portion of a low-fare search corresponding to a traveler''s request to get between two points. One-way journeys are generally expressed using one slice, round-trips using two. An example of a one slice trip with three segments might be BOS-SYD, SYD-LAX, LAX-BOS if the traveler only stopped in SYD and LAX just long enough to change planes.'
+        items:
+          type: SliceInput
+        type: array
+        required: false
+      solutions:
+        description: 'The number of solutions to return, maximum 500.'
+        format: int32
+        type: integer
+        required: false
+      ticketingCountry:
+        description: IATA country code representing the point of ticketing.
+        type: string
+        required: false
+  TripOptionsResponse:
+    description: A QPX Express search response.
+    properties:
+      data:
+        description: Informational data global to list of solutions.
+        type: Data
+        required: false
+      kind:
+        default: 'qpxexpress#tripOptions'
+        description: 'Identifies this as a QPX Express trip response object, which consists of zero or more solutions. Value: the fixed string qpxexpress#tripOptions.'
+        type: string
+        required: false
+      requestId:
+        description: An identifier uniquely identifying this response.
+        type: string
+        required: false
+      tripOption:
+        description: A list of priced itinerary solutions to the QPX Express query.
+        items:
+          type: TripOption
+        type: array
+        required: false
+  TripsSearchRequest:
+    description: A QPX Express search request.
+    properties:
+      request:
+        description: 'A QPX Express search request. Required values are at least one adult or senior passenger, an origin, a destination, and a date.'
+        type: TripOptionsRequest
+        required: false
+  TripsSearchResponse:
+    description: A QPX Express search response.
+    properties:
+      kind:
+        default: 'qpxExpress#tripsSearch'
+        description: 'Identifies this as a QPX Express API search response resource. Value: the fixed string qpxExpress#tripsSearch.'
+        type: string
+        required: false
+      trips:
+        description: All possible solutions to the QPX Express search request.
+        type: TripOptionsResponse
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

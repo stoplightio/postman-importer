@@ -1,0 +1,3092 @@
+#%RAML 1.0
+title: DevTestLabsClient
+version: '2016-05-15'
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: Azure DevTest Labs REST API.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - developer_tools
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-devtestlabs/2016-05-15/swagger/DTL.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-devtestlabs
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - virtual machines
+    - testing
+    - environments
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-odata: any
+  oas-x-ms-pageable: any
+  oas-x-ms-long-running-operation: any
+  oas-x-ms-client-flatten: any
+  oas-x-ms-enum: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-definition-name:
+    type: string
+    allowedTargets: TypeDeclaration
+securitySchemes:
+  oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: OAuth2 Implicit Grant
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.DevTestLab:
+            displayName: Microsoft.DevTestLab
+            /labs:
+              displayName: labs
+              '/{labName}':
+                displayName: '{labName}'
+                /schedules:
+                  displayName: schedules
+                  get:
+                    (oas-x-ms-odata): '#/definitions/Schedule'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: Schedule_List
+                    description: List schedules in a given lab.
+                    is:
+                      - apiVersion
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ResponseWithContinuation_Schedule_
+                        description: OK
+                    queryParameters:
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                      $top:
+                        description: The maximum number of resources to return from the operation.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The maximum number of resources to return from the operation.
+                      $orderBy:
+                        description: 'The ordering expression for the results, using OData notation.'
+                        required: false
+                        type: string
+                        displayName: 'The ordering expression for the results, using OData notation.'
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - Schedule
+                  '/{name}':
+                    displayName: '{name}'
+                    uriParameters:
+                      name:
+                        description: The name of the schedule.
+                        required: true
+                        type: string
+                        displayName: The name of the schedule.
+                    delete:
+                      displayName: Schedule_DeleteResource
+                      description: Delete schedule.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          description: OK
+                        '204':
+                          description: No Content
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - Schedule
+                    get:
+                      displayName: Schedule_GetResource
+                      description: Get schedule.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: Schedule
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - Schedule
+                    patch:
+                      displayName: Schedule_PatchResource
+                      description: Modify properties of schedules.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: Schedule
+                          (oas-body-name): schedule
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: Schedule
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - Schedule
+                    put:
+                      displayName: Schedule_CreateOrUpdateResource
+                      description: Create or replace an existing schedule.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: Schedule
+                          (oas-body-name): schedule
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: Schedule
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: Schedule
+                          description: Created
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - Schedule
+                    /execute:
+                      displayName: execute
+                      post:
+                        (oas-x-ms-long-running-operation): true
+                        displayName: Schedule_Execute
+                        description: Execute a schedule. This operation can take a while to complete.
+                        is:
+                          - apiVersion
+                        (oas-responses-default):
+                          body:
+                            application/json:
+                              type: CloudError
+                          description: BadRequest
+                        responses:
+                          '200':
+                            description: OK
+                          '202':
+                            description: Accepted
+                        securedBy:
+                          - oauth2:
+                              scopes:
+                                - user_impersonation
+                        (oas-tags):
+                          - Schedule
+                /artifactsources:
+                  displayName: artifactsources
+                  get:
+                    (oas-x-ms-odata): '#/definitions/ArtifactSource'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: ArtifactSource_List
+                    description: List artifact sources in a given lab.
+                    is:
+                      - apiVersion
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ResponseWithContinuation_ArtifactSource_
+                        description: OK
+                    queryParameters:
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                      $top:
+                        description: The maximum number of resources to return from the operation.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The maximum number of resources to return from the operation.
+                      $orderBy:
+                        description: 'The ordering expression for the results, using OData notation.'
+                        required: false
+                        type: string
+                        displayName: 'The ordering expression for the results, using OData notation.'
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - ArtifactSource
+                  '/{artifactSourceName}':
+                    displayName: '{artifactSourceName}'
+                    /artifacts:
+                      displayName: artifacts
+                      '/{name}':
+                        displayName: '{name}'
+                        uriParameters:
+                          name:
+                            description: The name of the artifact.
+                            required: true
+                            type: string
+                            displayName: The name of the artifact.
+                        get:
+                          displayName: Artifact_GetResource
+                          description: Get artifact.
+                          is:
+                            - apiVersion
+                          (oas-responses-default):
+                            body:
+                              application/json:
+                                type: CloudError
+                            description: BadRequest
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: Artifact
+                              description: OK
+                          securedBy:
+                            - oauth2:
+                                scopes:
+                                  - user_impersonation
+                          (oas-tags):
+                            - Artifact
+                        /generateArmTemplate:
+                          displayName: generateArmTemplate
+                          post:
+                            displayName: Artifact_GenerateArmTemplate
+                            description: 'Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates the generated artifact.'
+                            is:
+                              - apiVersion
+                            body:
+                              application/json:
+                                type: GenerateArmTemplateRequest
+                                (oas-body-name): generateArmTemplateRequest
+                            (oas-responses-default):
+                              body:
+                                application/json:
+                                  type: CloudError
+                              description: BadRequest
+                            responses:
+                              '200':
+                                body:
+                                  application/json:
+                                    type: ArmTemplateInfo
+                                description: OK
+                            securedBy:
+                              - oauth2:
+                                  scopes:
+                                    - user_impersonation
+                            (oas-tags):
+                              - Artifact
+                      get:
+                        (oas-x-ms-odata): '#/definitions/Artifact'
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: Artifact_List
+                        description: List artifacts in a given artifact source.
+                        is:
+                          - apiVersion
+                        (oas-responses-default):
+                          body:
+                            application/json:
+                              type: CloudError
+                          description: BadRequest
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: ResponseWithContinuation_Artifact_
+                            description: OK
+                        queryParameters:
+                          $filter:
+                            description: The filter to apply on the operation.
+                            required: false
+                            type: string
+                            displayName: The filter to apply on the operation.
+                          $top:
+                            description: The maximum number of resources to return from the operation.
+                            format: int32
+                            required: false
+                            type: integer
+                            displayName: The maximum number of resources to return from the operation.
+                          $orderBy:
+                            description: 'The ordering expression for the results, using OData notation.'
+                            required: false
+                            type: string
+                            displayName: 'The ordering expression for the results, using OData notation.'
+                        securedBy:
+                          - oauth2:
+                              scopes:
+                                - user_impersonation
+                        (oas-tags):
+                          - Artifact
+                  '/{name}':
+                    displayName: '{name}'
+                    uriParameters:
+                      name:
+                        description: The name of the artifact source.
+                        required: true
+                        type: string
+                        displayName: The name of the artifact source.
+                    delete:
+                      displayName: ArtifactSource_DeleteResource
+                      description: Delete artifact source.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          description: OK
+                        '204':
+                          description: No Content
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - ArtifactSource
+                    patch:
+                      displayName: ArtifactSource_PatchResource
+                      description: Modify properties of artifact sources.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: ArtifactSource
+                          (oas-body-name): artifactSource
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: ArtifactSource
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - ArtifactSource
+                    put:
+                      displayName: ArtifactSource_CreateOrUpdateResource
+                      description: Create or replace an existing artifact source.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: ArtifactSource
+                          (oas-body-name): artifactSource
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: ArtifactSource
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: ArtifactSource
+                          description: Created
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - ArtifactSource
+                    get:
+                      displayName: ArtifactSource_GetResource
+                      description: Get artifact source.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: ArtifactSource
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - ArtifactSource
+                /virtualmachines:
+                  displayName: virtualmachines
+                  get:
+                    (oas-x-ms-odata): '#/definitions/LabVirtualMachine'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: VirtualMachine_List
+                    description: List virtual machines in a given lab.
+                    is:
+                      - apiVersion
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ResponseWithContinuation_LabVirtualMachine_
+                        description: OK
+                    queryParameters:
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                      $top:
+                        description: The maximum number of resources to return from the operation.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The maximum number of resources to return from the operation.
+                      $orderBy:
+                        description: 'The ordering expression for the results, using OData notation.'
+                        required: false
+                        type: string
+                        displayName: 'The ordering expression for the results, using OData notation.'
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - VirtualMachine
+                  '/{name}':
+                    displayName: '{name}'
+                    uriParameters:
+                      name:
+                        description: The name of the virtual Machine.
+                        required: true
+                        type: string
+                        displayName: The name of the virtual Machine.
+                    delete:
+                      (oas-x-ms-long-running-operation): true
+                      displayName: VirtualMachine_DeleteResource
+                      description: Delete virtual machine. This operation can take a while to complete.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '202':
+                          description: Accepted
+                        '204':
+                          description: No Content
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - VirtualMachine
+                    get:
+                      displayName: VirtualMachine_GetResource
+                      description: Get virtual machine.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: LabVirtualMachine
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - VirtualMachine
+                    patch:
+                      displayName: VirtualMachine_PatchResource
+                      description: Modify properties of virtual machines.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: LabVirtualMachine
+                          (oas-body-name): labVirtualMachine
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: LabVirtualMachine
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - VirtualMachine
+                    put:
+                      (oas-x-ms-long-running-operation): true
+                      displayName: VirtualMachine_CreateOrUpdateResource
+                      description: Create or replace an existing Virtual Machine. This operation can take a while to complete.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: LabVirtualMachine
+                          (oas-body-name): labVirtualMachine
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: LabVirtualMachine
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: LabVirtualMachine
+                          description: Created
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - VirtualMachine
+                    /applyArtifacts:
+                      displayName: applyArtifacts
+                      post:
+                        (oas-x-ms-long-running-operation): true
+                        displayName: VirtualMachine_ApplyArtifacts
+                        description: Apply artifacts to Lab VM. This operation can take a while to complete.
+                        is:
+                          - apiVersion
+                        body:
+                          application/json:
+                            type: ApplyArtifactsRequest
+                            (oas-body-name): applyArtifactsRequest
+                        (oas-responses-default):
+                          body:
+                            application/json:
+                              type: CloudError
+                          description: BadRequest
+                        responses:
+                          '200':
+                            description: OK
+                          '202':
+                            description: Accepted
+                        securedBy:
+                          - oauth2:
+                              scopes:
+                                - user_impersonation
+                        (oas-tags):
+                          - VirtualMachine
+                    /start:
+                      displayName: start
+                      post:
+                        (oas-x-ms-long-running-operation): true
+                        displayName: VirtualMachine_Start
+                        description: Start a Lab VM. This operation can take a while to complete.
+                        is:
+                          - apiVersion
+                        (oas-responses-default):
+                          body:
+                            application/json:
+                              type: CloudError
+                          description: BadRequest
+                        responses:
+                          '200':
+                            description: OK
+                          '202':
+                            description: Accepted
+                        securedBy:
+                          - oauth2:
+                              scopes:
+                                - user_impersonation
+                        (oas-tags):
+                          - VirtualMachine
+                    /stop:
+                      displayName: stop
+                      post:
+                        (oas-x-ms-long-running-operation): true
+                        displayName: VirtualMachine_Stop
+                        description: Stop a Lab VM. This operation can take a while to complete.
+                        is:
+                          - apiVersion
+                        (oas-responses-default):
+                          body:
+                            application/json:
+                              type: CloudError
+                          description: BadRequest
+                        responses:
+                          '200':
+                            description: OK
+                          '202':
+                            description: Accepted
+                        securedBy:
+                          - oauth2:
+                              scopes:
+                                - user_impersonation
+                        (oas-tags):
+                          - VirtualMachine
+                /costs:
+                  displayName: costs
+                  '/{name}':
+                    displayName: '{name}'
+                    uriParameters:
+                      name:
+                        description: The name of the cost.
+                        required: true
+                        type: string
+                        displayName: The name of the cost.
+                    get:
+                      displayName: Cost_GetResource
+                      description: Get cost.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: Cost
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - Cost
+                /customimages:
+                  displayName: customimages
+                  '/{name}':
+                    displayName: '{name}'
+                    uriParameters:
+                      name:
+                        description: The name of the custom image.
+                        required: true
+                        type: string
+                        displayName: The name of the custom image.
+                    delete:
+                      (oas-x-ms-long-running-operation): true
+                      displayName: CustomImage_DeleteResource
+                      description: Delete custom image. This operation can take a while to complete.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '202':
+                          description: Accepted
+                        '204':
+                          description: No Content
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - CustomImage
+                    put:
+                      (oas-x-ms-long-running-operation): true
+                      displayName: CustomImage_CreateOrUpdateResource
+                      description: Create or replace an existing custom image. This operation can take a while to complete.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: CustomImage
+                          (oas-body-name): customImage
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: CustomImage
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: CustomImage
+                          description: Created
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - CustomImage
+                    get:
+                      displayName: CustomImage_GetResource
+                      description: Get custom image.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: CustomImage
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - CustomImage
+                  get:
+                    (oas-x-ms-odata): '#/definitions/CustomImage'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: CustomImage_List
+                    description: List custom images in a given lab.
+                    is:
+                      - apiVersion
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ResponseWithContinuation_CustomImage_
+                        description: OK
+                    queryParameters:
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                      $top:
+                        description: The maximum number of resources to return from the operation.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The maximum number of resources to return from the operation.
+                      $orderBy:
+                        description: 'The ordering expression for the results, using OData notation.'
+                        required: false
+                        type: string
+                        displayName: 'The ordering expression for the results, using OData notation.'
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - CustomImage
+                /formulas:
+                  displayName: formulas
+                  '/{name}':
+                    displayName: '{name}'
+                    uriParameters:
+                      name:
+                        description: The name of the formula.
+                        required: true
+                        type: string
+                        displayName: The name of the formula.
+                    delete:
+                      displayName: Formula_DeleteResource
+                      description: Delete formula.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          description: OK
+                        '204':
+                          description: No Content
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - Formula
+                    put:
+                      (oas-x-ms-long-running-operation): true
+                      displayName: Formula_CreateOrUpdateResource
+                      description: Create or replace an existing Formula. This operation can take a while to complete.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: Formula
+                          (oas-body-name): formula
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: Formula
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: Formula
+                          description: Created
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - Formula
+                    get:
+                      displayName: Formula_GetResource
+                      description: Get formula.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: Formula
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - Formula
+                  get:
+                    (oas-x-ms-odata): '#/definitions/Formula'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: Formula_List
+                    description: List formulas in a given lab.
+                    is:
+                      - apiVersion
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ResponseWithContinuation_Formula_
+                        description: OK
+                    queryParameters:
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                      $top:
+                        description: The maximum number of resources to return from the operation.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The maximum number of resources to return from the operation.
+                      $orderBy:
+                        description: 'The ordering expression for the results, using OData notation.'
+                        required: false
+                        type: string
+                        displayName: 'The ordering expression for the results, using OData notation.'
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - Formula
+                /policysets:
+                  displayName: policysets
+                  '/{name}':
+                    displayName: '{name}'
+                    /evaluatePolicies:
+                      displayName: evaluatePolicies
+                      post:
+                        displayName: PolicySet_EvaluatePolicies
+                        description: Evaluates Lab Policy.
+                        is:
+                          - apiVersion
+                        body:
+                          application/json:
+                            type: EvaluatePoliciesRequest
+                            (oas-body-name): evaluatePoliciesRequest
+                        (oas-responses-default):
+                          body:
+                            application/json:
+                              type: CloudError
+                          description: BadRequest
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: EvaluatePoliciesResponse
+                            description: OK
+                        securedBy:
+                          - oauth2:
+                              scopes:
+                                - user_impersonation
+                        (oas-tags):
+                          - PolicySet
+                  '/{policySetName}':
+                    displayName: '{policySetName}'
+                    /policies:
+                      displayName: policies
+                      '/{name}':
+                        displayName: '{name}'
+                        uriParameters:
+                          name:
+                            description: The name of the policy.
+                            required: true
+                            type: string
+                            displayName: The name of the policy.
+                        delete:
+                          displayName: Policy_DeleteResource
+                          description: Delete policy.
+                          is:
+                            - apiVersion
+                          (oas-responses-default):
+                            body:
+                              application/json:
+                                type: CloudError
+                            description: BadRequest
+                          responses:
+                            '200':
+                              description: OK
+                            '204':
+                              description: No Content
+                          securedBy:
+                            - oauth2:
+                                scopes:
+                                  - user_impersonation
+                          (oas-tags):
+                            - Policy
+                        patch:
+                          displayName: Policy_PatchResource
+                          description: Modify properties of policies.
+                          is:
+                            - apiVersion
+                          body:
+                            application/json:
+                              type: Policy
+                              (oas-body-name): policy
+                          (oas-responses-default):
+                            body:
+                              application/json:
+                                type: CloudError
+                            description: BadRequest
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: Policy
+                              description: OK
+                          securedBy:
+                            - oauth2:
+                                scopes:
+                                  - user_impersonation
+                          (oas-tags):
+                            - Policy
+                        put:
+                          displayName: Policy_CreateOrUpdateResource
+                          description: Create or replace an existing policy.
+                          is:
+                            - apiVersion
+                          body:
+                            application/json:
+                              type: Policy
+                              (oas-body-name): policy
+                          (oas-responses-default):
+                            body:
+                              application/json:
+                                type: CloudError
+                            description: BadRequest
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: Policy
+                              description: OK
+                            '201':
+                              body:
+                                application/json:
+                                  type: Policy
+                              description: Created
+                          securedBy:
+                            - oauth2:
+                                scopes:
+                                  - user_impersonation
+                          (oas-tags):
+                            - Policy
+                        get:
+                          displayName: Policy_GetResource
+                          description: Get policy.
+                          is:
+                            - apiVersion
+                          (oas-responses-default):
+                            body:
+                              application/json:
+                                type: CloudError
+                            description: BadRequest
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: Policy
+                              description: OK
+                          securedBy:
+                            - oauth2:
+                                scopes:
+                                  - user_impersonation
+                          (oas-tags):
+                            - Policy
+                      get:
+                        (oas-x-ms-odata): '#/definitions/Policy'
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: Policy_List
+                        description: List policies in a given policy set.
+                        is:
+                          - apiVersion
+                        (oas-responses-default):
+                          body:
+                            application/json:
+                              type: CloudError
+                          description: BadRequest
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: ResponseWithContinuation_Policy_
+                            description: OK
+                        queryParameters:
+                          $filter:
+                            description: The filter to apply on the operation.
+                            required: false
+                            type: string
+                            displayName: The filter to apply on the operation.
+                          $top:
+                            description: The maximum number of resources to return from the operation.
+                            format: int32
+                            required: false
+                            type: integer
+                            displayName: The maximum number of resources to return from the operation.
+                          $orderBy:
+                            description: 'The ordering expression for the results, using OData notation.'
+                            required: false
+                            type: string
+                            displayName: 'The ordering expression for the results, using OData notation.'
+                        securedBy:
+                          - oauth2:
+                              scopes:
+                                - user_impersonation
+                        (oas-tags):
+                          - Policy
+                /virtualnetworks:
+                  displayName: virtualnetworks
+                  get:
+                    (oas-x-ms-odata): '#/definitions/VirtualNetwork'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: VirtualNetwork_List
+                    description: List virtual networks in a given lab.
+                    is:
+                      - apiVersion
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ResponseWithContinuation_VirtualNetwork_
+                        description: OK
+                    queryParameters:
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                      $top:
+                        description: The maximum number of resources to return from the operation.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The maximum number of resources to return from the operation.
+                      $orderBy:
+                        description: 'The ordering expression for the results, using OData notation.'
+                        required: false
+                        type: string
+                        displayName: 'The ordering expression for the results, using OData notation.'
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - VirtualNetwork
+                  '/{name}':
+                    displayName: '{name}'
+                    uriParameters:
+                      name:
+                        description: The name of the virtual network.
+                        required: true
+                        type: string
+                        displayName: The name of the virtual network.
+                    delete:
+                      (oas-x-ms-long-running-operation): true
+                      displayName: VirtualNetwork_DeleteResource
+                      description: Delete virtual network. This operation can take a while to complete.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '202':
+                          description: Accepted
+                        '204':
+                          description: No Content
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - VirtualNetwork
+                    get:
+                      displayName: VirtualNetwork_GetResource
+                      description: Get virtual network.
+                      is:
+                        - apiVersion
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: VirtualNetwork
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - VirtualNetwork
+                    patch:
+                      displayName: VirtualNetwork_PatchResource
+                      description: Modify properties of virtual networks.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: VirtualNetwork
+                          (oas-body-name): virtualNetwork
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: VirtualNetwork
+                          description: OK
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - VirtualNetwork
+                    put:
+                      (oas-x-ms-long-running-operation): true
+                      displayName: VirtualNetwork_CreateOrUpdateResource
+                      description: Create or replace an existing virtual network. This operation can take a while to complete.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: VirtualNetwork
+                          (oas-body-name): virtualNetwork
+                      (oas-responses-default):
+                        body:
+                          application/json:
+                            type: CloudError
+                        description: BadRequest
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: VirtualNetwork
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: VirtualNetwork
+                          description: Created
+                      securedBy:
+                        - oauth2:
+                            scopes:
+                              - user_impersonation
+                      (oas-tags):
+                        - VirtualNetwork
+                /galleryimages:
+                  displayName: galleryimages
+                  get:
+                    (oas-x-ms-odata): '#/definitions/GalleryImage'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: GalleryImage_List
+                    description: List gallery images in a given lab.
+                    is:
+                      - apiVersion
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ResponseWithContinuation_GalleryImage_
+                        description: OK
+                    queryParameters:
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                      $top:
+                        description: The maximum number of resources to return from the operation.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The maximum number of resources to return from the operation.
+                      $orderBy:
+                        description: 'The ordering expression for the results, using OData notation.'
+                        required: false
+                        type: string
+                        displayName: 'The ordering expression for the results, using OData notation.'
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - GalleryImage
+              '/{name}':
+                displayName: '{name}'
+                /listVhds:
+                  displayName: listVhds
+                  post:
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: Lab_ListVhds
+                    description: List disk images available for custom image creation.
+                    is:
+                      - apiVersion
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ResponseWithContinuation_LabVhd_
+                        description: OK
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - Lab
+                uriParameters:
+                  name:
+                    description: The name of the lab.
+                    required: true
+                    type: string
+                    displayName: The name of the lab.
+                delete:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: Lab_DeleteResource
+                  description: Delete lab. This operation can take a while to complete.
+                  is:
+                    - apiVersion
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: CloudError
+                    description: BadRequest
+                  responses:
+                    '202':
+                      description: Accepted
+                    '204':
+                      description: No Content
+                  securedBy:
+                    - oauth2:
+                        scopes:
+                          - user_impersonation
+                  (oas-tags):
+                    - Lab
+                get:
+                  displayName: Lab_GetResource
+                  description: Get lab.
+                  is:
+                    - apiVersion
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: CloudError
+                    description: BadRequest
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Lab
+                      description: OK
+                  securedBy:
+                    - oauth2:
+                        scopes:
+                          - user_impersonation
+                  (oas-tags):
+                    - Lab
+                /generateUploadUri:
+                  displayName: generateUploadUri
+                  post:
+                    displayName: Lab_GenerateUploadUri
+                    description: Generate a URI for uploading custom disk images to a Lab.
+                    is:
+                      - apiVersion
+                    body:
+                      application/json:
+                        type: GenerateUploadUriParameter
+                        (oas-body-name): generateUploadUriParameter
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: GenerateUploadUriResponse
+                        description: OK
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - Lab
+                /createEnvironment:
+                  displayName: createEnvironment
+                  post:
+                    (oas-x-ms-long-running-operation): true
+                    displayName: Lab_CreateEnvironment
+                    description: Create virtual machines in a Lab. This operation can take a while to complete.
+                    is:
+                      - apiVersion
+                    body:
+                      application/json:
+                        type: LabVirtualMachine
+                        (oas-body-name): labVirtualMachine
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: CloudError
+                      description: BadRequest
+                    responses:
+                      '200':
+                        description: OK
+                      '202':
+                        description: Accepted
+                    securedBy:
+                      - oauth2:
+                          scopes:
+                            - user_impersonation
+                    (oas-tags):
+                      - Lab
+                put:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: Lab_CreateOrUpdateResource
+                  description: Create or replace an existing Lab. This operation can take a while to complete.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: Lab
+                      (oas-body-name): lab
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: CloudError
+                    description: BadRequest
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Lab
+                      description: OK
+                    '201':
+                      body:
+                        application/json:
+                          type: Lab
+                      description: Created
+                  securedBy:
+                    - oauth2:
+                        scopes:
+                          - user_impersonation
+                  (oas-tags):
+                    - Lab
+                patch:
+                  displayName: Lab_PatchResource
+                  description: Modify properties of labs.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: Lab
+                      (oas-body-name): lab
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: CloudError
+                    description: BadRequest
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Lab
+                      description: OK
+                  securedBy:
+                    - oauth2:
+                        scopes:
+                          - user_impersonation
+                  (oas-tags):
+                    - Lab
+              get:
+                (oas-x-ms-odata): '#/definitions/Lab'
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: Lab_ListByResourceGroup
+                description: List labs in a resource group.
+                is:
+                  - apiVersion
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: CloudError
+                  description: BadRequest
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: ResponseWithContinuation_Lab_
+                    description: OK
+                queryParameters:
+                  $filter:
+                    description: The filter to apply on the operation.
+                    required: false
+                    type: string
+                    displayName: The filter to apply on the operation.
+                  $top:
+                    description: The maximum number of resources to return from the operation.
+                    format: int32
+                    required: false
+                    type: integer
+                    displayName: The maximum number of resources to return from the operation.
+                  $orderBy:
+                    description: 'The ordering expression for the results, using OData notation.'
+                    required: false
+                    type: string
+                    displayName: 'The ordering expression for the results, using OData notation.'
+                securedBy:
+                  - oauth2:
+                      scopes:
+                        - user_impersonation
+                (oas-tags):
+                  - Lab
+    /providers:
+      displayName: providers
+      /Microsoft.DevTestLab:
+        displayName: Microsoft.DevTestLab
+        /labs:
+          displayName: labs
+          get:
+            (oas-x-ms-odata): '#/definitions/Lab'
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: Lab_ListBySubscription
+            description: List labs in a subscription.
+            is:
+              - apiVersion
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: CloudError
+              description: BadRequest
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ResponseWithContinuation_Lab_
+                description: OK
+            queryParameters:
+              $filter:
+                description: The filter to apply on the operation.
+                required: false
+                type: string
+                displayName: The filter to apply on the operation.
+              $top:
+                description: The maximum number of resources to return from the operation.
+                format: int32
+                required: false
+                type: integer
+                displayName: The maximum number of resources to return from the operation.
+              $orderBy:
+                description: 'The ordering expression for the results, using OData notation.'
+                required: false
+                type: string
+                displayName: 'The ordering expression for the results, using OData notation.'
+            securedBy:
+              - oauth2:
+                  scopes:
+                    - user_impersonation
+            (oas-tags):
+              - Lab
+types:
+  ApplyArtifactsRequest:
+    description: Request body for applying artifacts to a virtual machine.
+    properties:
+      artifacts:
+        description: The list of artifacts to apply.
+        items:
+          type: ArtifactInstallProperties
+        type: array
+        required: false
+  ArmTemplateInfo:
+    description: Information about a generated ARM template.
+    properties:
+      parameters:
+        description: The parameters of the ARM template.
+        type: Object
+        required: false
+      template:
+        description: The template's contents.
+        type: Object
+        required: false
+  Artifact:
+    description: An artifact.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: ArtifactProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  ArtifactDeploymentStatusProperties:
+    description: Properties of an artifact deployment.
+    properties:
+      artifactsApplied:
+        description: The total count of the artifacts that were successfully applied.
+        format: int32
+        type: integer
+        required: false
+      deploymentStatus:
+        description: The deployment status of the artifact.
+        type: string
+        required: false
+      totalArtifacts:
+        description: The total count of the artifacts that were tentatively applied.
+        format: int32
+        type: integer
+        required: false
+  ArtifactInstallProperties:
+    description: Properties of an artifact.
+    properties:
+      artifactId:
+        description: The artifact's identifier.
+        type: string
+        required: false
+      parameters:
+        description: The parameters of the artifact.
+        items:
+          type: ArtifactParameterProperties
+        type: array
+        required: false
+  ArtifactParameterProperties:
+    description: Properties of an artifact parameter.
+    properties:
+      name:
+        description: The name of the artifact parameter.
+        type: string
+        required: false
+      value:
+        description: The value of the artifact parameter.
+        type: string
+        required: false
+  ArtifactProperties:
+    description: Properties of an artifact.
+    properties:
+      description:
+        description: The description of the artifact.
+        type: string
+        required: false
+      filePath:
+        description: The file path of the artifact.
+        type: string
+        required: false
+      icon:
+        description: The icon of the artifact.
+        type: string
+        required: false
+      parameters:
+        description: The parameters of the artifact.
+        type: Object
+        required: false
+      targetOsType:
+        description: Gets or sets the type of the target os.
+        type: string
+        required: false
+      title:
+        description: The title of the artifact.
+        type: string
+        required: false
+  ArtifactSource:
+    description: Properties of an artifact source.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: ArtifactSourceProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  ArtifactSourceProperties:
+    description: Properties of an artifact source.
+    properties:
+      branchRef:
+        description: The branch reference of the artifact source.
+        type: string
+        required: false
+      displayName:
+        description: The display name of the artifact source.
+        type: string
+        required: false
+      folderPath:
+        description: The folder path of the artifact source.
+        type: string
+        required: false
+      provisioningState:
+        description: The provisioning status of the resource.
+        type: string
+        required: false
+      securityToken:
+        description: The security token of the artifact source.
+        type: string
+        required: false
+      sourceType:
+        description: The type of the artifact source.
+        enum:
+          - VsoGit
+          - GitHub
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: SourceControlType
+      status:
+        description: The status of the artifact source.
+        enum:
+          - Enabled
+          - Disabled
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: EnableStatus
+      uniqueIdentifier:
+        description: The unique immutable identifier of a resource (Guid).
+        type: string
+        required: false
+      uri:
+        description: The URI of the artifact source.
+        type: string
+        required: false
+  CloudError:
+    properties:
+      error:
+        type: CloudErrorBody
+        required: false
+  CloudErrorBody:
+    properties:
+      code:
+        type: string
+        required: false
+      details:
+        items:
+          type: CloudErrorBody
+        type: array
+        required: false
+      message:
+        type: string
+        required: false
+      target:
+        type: string
+        required: false
+  Cost:
+    description: A cost item.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: CostProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  CostPerDayProperties:
+    description: The properties of a lab cost item.
+    properties:
+      cost:
+        description: The cost component of the cost item.
+        format: double
+        type: number
+        required: false
+      costType:
+        description: The type of the cost.
+        enum:
+          - Unavailable
+          - Reported
+          - Projected
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: LabCostType
+      date:
+        description: The date of the cost item.
+        format: rfc3339
+        type: datetime
+        required: false
+  CostProperties:
+    description: Properties of a cost item.
+    properties:
+      costs:
+        description: The lab cost component of the cost data.
+        items:
+          type: CostPerDayProperties
+        type: array
+        required: false
+      currencyCode:
+        description: The currency code of the cost.
+        type: string
+        required: false
+      resourceCosts:
+        description: The resource cost component of the cost data.
+        items:
+          type: ResourceCostProperties
+        type: array
+        required: false
+  CustomImage:
+    description: A custom image.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: CustomImageProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  CustomImageProperties:
+    description: Properties of a custom image.
+    properties:
+      author:
+        description: The author of the custom image.
+        type: string
+        required: false
+      creationDate:
+        description: The creation date of the custom image.
+        format: rfc3339
+        type: datetime
+        required: false
+      description:
+        description: The description of the custom image.
+        type: string
+        required: false
+      provisioningState:
+        description: The provisioning status of the resource.
+        type: string
+        required: false
+      uniqueIdentifier:
+        description: The unique immutable identifier of a resource (Guid).
+        type: string
+        required: false
+      vhd:
+        description: The VHD from which the image is to be created.
+        type: CustomImagePropertiesCustom
+        required: false
+      vm:
+        description: ''
+        type: CustomImagePropertiesFromVm
+        required: false
+  CustomImagePropertiesCustom:
+    description: Properties for creating a custom image from a VHD.
+    properties:
+      imageName:
+        description: The image name.
+        type: string
+        required: false
+      osType:
+        description: The OS type of the custom image.
+        enum:
+          - Windows
+          - Linux
+          - None
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: CustomImageOsType
+      sysPrep:
+        description: Indicates whether sysprep has been run on the VHD.
+        type: boolean
+        required: false
+  CustomImagePropertiesFromVm:
+    description: Properties for creating a custom image from a virtual machine.
+    properties:
+      linuxOsInfo:
+        description: The Linux OS information of the VM.
+        type: LinuxOsInfo
+        required: false
+      sourceVmId:
+        description: The source vm identifier.
+        type: string
+        required: false
+      windowsOsInfo:
+        description: The Windows OS information of the VM.
+        type: WindowsOsInfo
+        required: false
+  DayDetails:
+    description: Properties of a daily schedule.
+    properties:
+      time:
+        type: string
+        required: false
+  EvaluatePoliciesProperties:
+    description: Properties for evaluating a policy set.
+    properties:
+      factData:
+        description: The fact data.
+        type: string
+        required: false
+      factName:
+        description: The fact name.
+        type: string
+        required: false
+      valueOffset:
+        description: The value offset.
+        type: string
+        required: false
+  EvaluatePoliciesRequest:
+    description: Request body for evaluating a policy set.
+    properties:
+      policies:
+        description: Policies to evaluate.
+        items:
+          type: EvaluatePoliciesProperties
+        type: array
+        required: false
+  EvaluatePoliciesResponse:
+    description: Response body for evaluating a policy set.
+    properties:
+      results:
+        description: Results of evaluating a policy set.
+        items:
+          type: PolicySetResult
+        type: array
+        required: false
+  Formula:
+    description: A formula.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: FormulaProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  FormulaProperties:
+    description: Properties of a formula.
+    properties:
+      author:
+        description: The author of the formula.
+        type: string
+        required: false
+      creationDate:
+        description: The creation date of the formula.
+        format: rfc3339
+        type: datetime
+        required: false
+      description:
+        description: The description of the formula.
+        type: string
+        required: false
+      formulaContent:
+        description: The content of the formula.
+        type: LabVirtualMachine
+        required: false
+      osType:
+        description: The OS type of the formula.
+        type: string
+        required: false
+      provisioningState:
+        description: The provisioning status of the resource.
+        type: string
+        required: false
+      uniqueIdentifier:
+        description: The unique immutable identifier of a resource (Guid).
+        type: string
+        required: false
+      vm:
+        description: Information about a VM from which a formula is to be created.
+        type: FormulaPropertiesFromVm
+        required: false
+  FormulaPropertiesFromVm:
+    description: Information about a VM from which a formula is to be created.
+    properties:
+      labVmId:
+        description: The identifier of the VM from which a formula is to be created.
+        type: string
+        required: false
+  GalleryImage:
+    description: A gallery image.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: GalleryImageProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  GalleryImageProperties:
+    description: Properties of a gallery image.
+    properties:
+      author:
+        description: The author of the gallery image.
+        type: string
+        required: false
+      createdDate:
+        description: The creation date of the gallery image.
+        format: rfc3339
+        type: datetime
+        required: false
+      description:
+        description: The description of the gallery image.
+        type: string
+        required: false
+      enabled:
+        description: Indicates whether this gallery image is enabled.
+        type: boolean
+        required: false
+      icon:
+        description: The icon of the gallery image.
+        type: string
+        required: false
+      imageReference:
+        description: The image reference of the gallery image.
+        type: GalleryImageReference
+        required: false
+  GalleryImageReference:
+    description: The reference information for an Azure Marketplace image.
+    properties:
+      offer:
+        description: The offer of the gallery image.
+        type: string
+        required: false
+      osType:
+        description: The OS type of the gallery image.
+        type: string
+        required: false
+      publisher:
+        description: The publisher of the gallery image.
+        type: string
+        required: false
+      sku:
+        description: The SKU of the gallery image.
+        type: string
+        required: false
+      version:
+        description: The version of the gallery image.
+        type: string
+        required: false
+  GenerateArmTemplateRequest:
+    description: Parameters for generating an ARM template for deploying artifacts.
+    properties:
+      location:
+        description: The location of the virtual machine.
+        type: string
+        required: false
+      parameters:
+        description: The parameters of the ARM template.
+        items:
+          type: ParameterInfo
+        type: array
+        required: false
+      virtualMachineName:
+        description: The resource name of the virtual machine.
+        type: string
+        required: false
+  GenerateUploadUriParameter:
+    description: Properties for generating an upload URI.
+    properties:
+      blobName:
+        description: The blob name of the upload URI.
+        type: string
+        required: false
+  GenerateUploadUriResponse:
+    description: Reponse body for generating an upload URI.
+    properties:
+      uploadUri:
+        description: The upload URI for the VHD.
+        type: string
+        required: false
+  HourDetails:
+    description: Properties of an hourly schedule.
+    properties:
+      minute:
+        description: Minutes of the hour the schedule will run.
+        format: int32
+        type: integer
+        required: false
+  Lab:
+    description: A lab.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: LabProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  LabProperties:
+    description: Properties of a lab.
+    properties:
+      artifactsStorageAccount:
+        description: The artifact storage account of the lab.
+        type: string
+        required: false
+      createdDate:
+        description: The creation date of the lab.
+        format: rfc3339
+        type: datetime
+        required: false
+      defaultStorageAccount:
+        description: The lab's default storage account.
+        type: string
+        required: false
+      labStorageType:
+        description: The type of the lab storage.
+        enum:
+          - Standard
+          - Premium
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: LabStorageType
+      provisioningState:
+        description: The provisioning status of the resource.
+        type: string
+        required: false
+      uniqueIdentifier:
+        description: The unique immutable identifier of a resource (Guid).
+        type: string
+        required: false
+      vaultName:
+        description: The name of the key vault of the lab.
+        type: string
+        required: false
+  LabVhd:
+    description: Properties of a VHD in the lab.
+    properties:
+      id:
+        description: The absolute URI of the VHD.
+        type: string
+        required: false
+  LabVirtualMachine:
+    description: A virtual machine.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: LabVirtualMachineProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  LabVirtualMachineProperties:
+    description: Properties of a virtual machine.
+    properties:
+      artifactDeploymentStatus:
+        description: The artifact deployment status for the virtual machine.
+        type: ArtifactDeploymentStatusProperties
+        required: false
+      artifacts:
+        description: The artifacts to be installed on the virtual machine.
+        items:
+          type: ArtifactInstallProperties
+        type: array
+        required: false
+      computeId:
+        description: The resource identifier (Microsoft.Compute) of the virtual machine.
+        type: string
+        required: false
+      createdByUser:
+        description: The email address of creator of the virtual machine.
+        type: string
+        required: false
+      createdByUserId:
+        description: The object identifier of the creator of the virtual machine.
+        type: string
+        required: false
+      customImageId:
+        description: The custom image identifier of the virtual machine.
+        type: string
+        required: false
+      disallowPublicIpAddress:
+        description: Indicates whether the virtual machine is to be created without a public IP address.
+        type: boolean
+        required: false
+      fqdn:
+        description: The fully-qualified domain name of the virtual machine.
+        type: string
+        required: false
+      galleryImageReference:
+        description: The Microsoft Azure Marketplace image reference of the virtual machine.
+        type: GalleryImageReference
+        required: false
+      isAuthenticationWithSshKey:
+        description: A value indicating whether this virtual machine uses an SSH key for authentication.
+        type: boolean
+        required: false
+      labSubnetName:
+        description: The lab subnet name of the virtual machine.
+        type: string
+        required: false
+      labVirtualNetworkId:
+        description: The lab virtual network identifier of the virtual machine.
+        type: string
+        required: false
+      notes:
+        description: The notes of the virtual machine.
+        type: string
+        required: false
+      osType:
+        description: The OS type of the virtual machine.
+        type: string
+        required: false
+      ownerObjectId:
+        description: The object identifier of the owner of the virtual machine.
+        type: string
+        required: false
+      password:
+        description: The password of the virtual machine administrator.
+        type: string
+        required: false
+      provisioningState:
+        description: The provisioning status of the resource.
+        type: string
+        required: false
+      size:
+        description: The size of the virtual machine.
+        type: string
+        required: false
+      sshKey:
+        description: The SSH key of the virtual machine administrator.
+        type: string
+        required: false
+      uniqueIdentifier:
+        description: The unique immutable identifier of a resource (Guid).
+        type: string
+        required: false
+      userName:
+        description: The user name of the virtual machine.
+        type: string
+        required: false
+  LinuxOsInfo:
+    description: Information about a Linux OS.
+    properties:
+      linuxOsState:
+        description: The state of the Linux OS.
+        enum:
+          - NonDeprovisioned
+          - DeprovisionRequested
+          - DeprovisionApplied
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: LinuxOsState
+  Object:
+    properties: {}
+  ParameterInfo:
+    properties:
+      name:
+        type: string
+        required: false
+      value:
+        type: string
+        required: false
+  Policy:
+    description: A Policy.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: PolicyProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  PolicyProperties:
+    description: Properties of a Policy.
+    properties:
+      description:
+        description: The description of the policy.
+        type: string
+        required: false
+      evaluatorType:
+        description: The evaluator type of the policy.
+        enum:
+          - AllowedValuesPolicy
+          - MaxValuePolicy
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: PolicyEvaluatorType
+      factData:
+        description: The fact data of the policy.
+        type: string
+        required: false
+      factName:
+        description: The fact name of the policy.
+        enum:
+          - UserOwnedLabVmCount
+          - LabVmCount
+          - LabVmSize
+          - GalleryImage
+          - UserOwnedLabVmCountInSubnet
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: PolicyFactName
+      provisioningState:
+        description: The provisioning status of the resource.
+        type: string
+        required: false
+      status:
+        description: The status of the policy.
+        enum:
+          - Enabled
+          - Disabled
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: PolicyStatus
+      threshold:
+        description: The threshold of the policy.
+        type: string
+        required: false
+      uniqueIdentifier:
+        description: The unique immutable identifier of a resource (Guid).
+        type: string
+        required: false
+  PolicySetResult:
+    description: Result of a policy set evaluation.
+    properties:
+      hasError:
+        description: A value indicating whether this policy set evaluation has discovered violations.
+        type: boolean
+        required: false
+      policyViolations:
+        description: The list of policy violations.
+        items:
+          type: PolicyViolation
+        type: array
+        required: false
+  PolicyViolation:
+    description: Policy violation.
+    properties:
+      code:
+        description: The code of the policy violation.
+        type: string
+        required: false
+      message:
+        description: The message of the policy violation.
+        type: string
+        required: false
+  ResourceCostProperties:
+    description: The properties of a resource cost item.
+    properties:
+      category:
+        description: 'The category of the resource. For VM this will be set to its size, for storage account it will be set to standard or premium'
+        type: string
+        required: false
+      exists:
+        description: Whether the resource still exists or not
+        type: boolean
+        required: false
+      owner:
+        description: The email address of the owner of the resource
+        type: string
+        required: false
+      resourceCost:
+        description: The cost component of the resource cost item.
+        format: double
+        type: number
+        required: false
+      resourceGroupName:
+        description: The name of the resource group.
+        type: string
+        required: false
+      resourceType:
+        description: 'The logical resource type (ex. virtualmachine, storageaccount)'
+        type: string
+        required: false
+      resourcename:
+        description: The name of the resource.
+        type: string
+        required: false
+  ResponseWithContinuation_ArtifactSource_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: ArtifactSource
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[ArtifactSource]'
+  ResponseWithContinuation_Artifact_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: Artifact
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[Artifact]'
+  ResponseWithContinuation_CustomImage_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: CustomImage
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[CustomImage]'
+  ResponseWithContinuation_Formula_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: Formula
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[Formula]'
+  ResponseWithContinuation_GalleryImage_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: GalleryImage
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[GalleryImage]'
+  ResponseWithContinuation_LabVhd_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: LabVhd
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[LabVhd]'
+  ResponseWithContinuation_LabVirtualMachine_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: LabVirtualMachine
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[LabVirtualMachine]'
+  ResponseWithContinuation_Lab_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: Lab
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[Lab]'
+  ResponseWithContinuation_Policy_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: Policy
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[Policy]'
+  ResponseWithContinuation_Schedule_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: Schedule
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[Schedule]'
+  ResponseWithContinuation_VirtualNetwork_:
+    description: The response of a list operation.
+    properties:
+      nextLink:
+        description: Link for next set of results.
+        type: string
+        required: false
+      value:
+        description: Results of the list operation.
+        items:
+          type: VirtualNetwork
+        type: array
+        required: false
+    (oas-definition-name): 'ResponseWithContinuation[VirtualNetwork]'
+  Schedule:
+    description: A schedule.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: ScheduleProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  ScheduleProperties:
+    description: Properties of a schedule.
+    properties:
+      dailyRecurrence:
+        description: The daily recurrence of the schedule.
+        type: DayDetails
+        required: false
+      hourlyRecurrence:
+        description: The hourly recurrence of the schedule.
+        type: HourDetails
+        required: false
+      provisioningState:
+        description: The provisioning status of the resource.
+        type: string
+        required: false
+      status:
+        description: The status of the schedule.
+        enum:
+          - Enabled
+          - Disabled
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: EnableStatus
+      taskType:
+        description: The task type of the schedule.
+        type: string
+        required: false
+      timeZoneId:
+        description: The time zone id.
+        type: string
+        required: false
+      uniqueIdentifier:
+        description: The unique immutable identifier of a resource (Guid).
+        type: string
+        required: false
+      weeklyRecurrence:
+        description: The weekly recurrence of the schedule.
+        type: WeekDetails
+        required: false
+  Subnet:
+    properties:
+      allowPublicIp:
+        enum:
+          - Default
+          - Deny
+          - Allow
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: UsagePermissionType
+      labSubnetName:
+        type: string
+        required: false
+      resourceId:
+        type: string
+        required: false
+  SubnetOverride:
+    description: Property overrides on a subnet of a virtual network.
+    properties:
+      labSubnetName:
+        description: The name given to the subnet within the lab.
+        type: string
+        required: false
+      resourceId:
+        description: The resource identifier of the subnet.
+        type: string
+        required: false
+      useInVmCreationPermission:
+        description: Indicates whether this subnet can be used during virtual machine creation.
+        enum:
+          - Default
+          - Deny
+          - Allow
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: UsagePermissionType
+      usePublicIpAddressPermission:
+        description: Indicates whether public IP addresses can be assigned to virtual machines on this subnet.
+        enum:
+          - Default
+          - Deny
+          - Allow
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: UsagePermissionType
+  SubscriptionNotification:
+    properties:
+      properties:
+        type: SubscriptionNotificationProperties
+        required: false
+      registrationDate:
+        type: string
+        required: false
+      state:
+        enum:
+          - NotDefined
+          - Registered
+          - Unregistered
+          - Warned
+          - Suspended
+          - Deleted
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: SubscriptionNotificationState
+  SubscriptionNotificationProperties:
+    properties:
+      tenantId:
+        type: string
+        required: false
+  VirtualNetwork:
+    description: A virtual network.
+    properties:
+      id:
+        description: The identifier of the resource.
+        type: string
+        required: false
+      location:
+        description: The location of the resource.
+        type: string
+        required: false
+      name:
+        description: The name of the resource.
+        type: string
+        required: false
+      properties:
+        description: The properties of the resource.
+        type: VirtualNetworkProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        type: string
+        required: false
+  VirtualNetworkProperties:
+    description: Properties of a virtual network.
+    properties:
+      allowedSubnets:
+        description: The allowed subnets of the virtual network.
+        items:
+          type: Subnet
+        type: array
+        required: false
+      description:
+        description: The description of the virtual network.
+        type: string
+        required: false
+      externalProviderResourceId:
+        description: The Microsoft.Network resource identifier of the virtual network.
+        type: string
+        required: false
+      provisioningState:
+        description: The provisioning status of the resource.
+        type: string
+        required: false
+      subnetOverrides:
+        description: The subnet overrides of the virtual network.
+        items:
+          type: SubnetOverride
+        type: array
+        required: false
+      uniqueIdentifier:
+        description: The unique immutable identifier of a resource (Guid).
+        type: string
+        required: false
+  WeekDetails:
+    description: Properties of a weekly schedule.
+    properties:
+      time:
+        description: The time of the day.
+        type: string
+        required: false
+      weekdays:
+        description: The days of the week.
+        items:
+          type: string
+        type: array
+        required: false
+  WindowsOsInfo:
+    description: Information about a Windows OS.
+    properties:
+      windowsOsState:
+        description: The state of the Windows OS.
+        enum:
+          - NonSysprepped
+          - SysprepRequested
+          - SysprepApplied
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: WindowsOsState
+traits:
+  apiVersion:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client API version.
+        default: '2016-05-15'
+        required: true

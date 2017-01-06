@@ -1,0 +1,3117 @@
+#%RAML 1.0
+title: Google Dataflow
+version: v1b3
+baseUri: 'https://dataflow.googleapis.com/'
+protocols:
+  - HTTPS
+description: 'Develops and executes data processing patterns like ETL, batch computation, and continuous computation.'
+(oas-tags-definition):
+  - name: projects
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/dataflow/v1b3/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): dataflow
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://cloud.google.com/dataflow'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/cloud-platform'
+        - 'https://www.googleapis.com/auth/userinfo.email'
+    description: Oauth 2.0 authentication
+/v1b3:
+  displayName: v1b3
+  /projects:
+    displayName: projects
+    '/{projectId}':
+      displayName: '{projectId}'
+      /jobs:
+        displayName: jobs
+        '/{jobId}':
+          displayName: '{jobId}'
+          '/workItems:reportStatus':
+            displayName: 'workItems:reportStatus'
+            post:
+              displayName: dataflow.projects.jobs.workItems.reportStatus
+              description: Reports the status of dataflow WorkItems leased by a worker.
+              body:
+                application/json:
+                  type: ReportWorkItemStatusRequest
+                  (oas-body-name): body
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: ReportWorkItemStatusResponse
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/userinfo.email'
+              (oas-tags):
+                - projects
+            is:
+              - accessToken
+              - alt
+              - bearerToken
+              - callback
+              - fields
+              - key
+              - oauthToken
+              - pp
+              - prettyPrint
+              - quotaUser
+              - uploadProtocol
+              - uploadType
+              - xgafv
+          uriParameters:
+            jobId:
+              description: Identifies a single job.
+              required: true
+              type: string
+              displayName: Identifies a single job.
+          put:
+            displayName: dataflow.projects.jobs.update
+            description: Updates the state of an existing dataflow job.
+            body:
+              application/json:
+                type: Job
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Job
+                description: Successful response
+            queryParameters:
+              location:
+                description: The location which contains this job.
+                type: string
+                displayName: The location which contains this job.
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/userinfo.email'
+            (oas-tags):
+              - projects
+          is:
+            - accessToken
+            - alt
+            - bearerToken
+            - callback
+            - fields
+            - key
+            - oauthToken
+            - pp
+            - prettyPrint
+            - quotaUser
+            - uploadProtocol
+            - uploadType
+            - xgafv
+          /debug:
+            displayName: debug
+            /sendCapture:
+              displayName: sendCapture
+              post:
+                displayName: dataflow.projects.jobs.debug.sendCapture
+                description: Send encoded debug capture data for component.
+                body:
+                  application/json:
+                    type: SendDebugCaptureRequest
+                    (oas-body-name): body
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: SendDebugCaptureResponse
+                    description: Successful response
+                securedBy:
+                  - Oauth2:
+                      scopes:
+                        - 'https://www.googleapis.com/auth/userinfo.email'
+                (oas-tags):
+                  - projects
+              is:
+                - accessToken
+                - alt
+                - bearerToken
+                - callback
+                - fields
+                - key
+                - oauthToken
+                - pp
+                - prettyPrint
+                - quotaUser
+                - uploadProtocol
+                - uploadType
+                - xgafv
+            /getConfig:
+              displayName: getConfig
+              post:
+                displayName: dataflow.projects.jobs.debug.getConfig
+                description: Get encoded debug configuration for component. Not cacheable.
+                body:
+                  application/json:
+                    type: GetDebugConfigRequest
+                    (oas-body-name): body
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: GetDebugConfigResponse
+                    description: Successful response
+                securedBy:
+                  - Oauth2:
+                      scopes:
+                        - 'https://www.googleapis.com/auth/userinfo.email'
+                (oas-tags):
+                  - projects
+              is:
+                - accessToken
+                - alt
+                - bearerToken
+                - callback
+                - fields
+                - key
+                - oauthToken
+                - pp
+                - prettyPrint
+                - quotaUser
+                - uploadProtocol
+                - uploadType
+                - xgafv
+          /metrics:
+            displayName: metrics
+            get:
+              displayName: dataflow.projects.jobs.getMetrics
+              description: Request the job status.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: JobMetrics
+                  description: Successful response
+              queryParameters:
+                startTime:
+                  description: Return only metric data that has changed since this time. Default is to return all information about all metrics for the job.
+                  type: string
+                  displayName: Return only metric data that has changed since this time. Default is to return all information about all metrics for the job.
+                location:
+                  description: The location which contains the job specified by job_id.
+                  type: string
+                  displayName: The location which contains the job specified by job_id.
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/userinfo.email'
+              (oas-tags):
+                - projects
+            is:
+              - accessToken
+              - alt
+              - bearerToken
+              - callback
+              - fields
+              - key
+              - oauthToken
+              - pp
+              - prettyPrint
+              - quotaUser
+              - uploadProtocol
+              - uploadType
+              - xgafv
+          '/workItems:lease':
+            displayName: 'workItems:lease'
+            post:
+              displayName: dataflow.projects.jobs.workItems.lease
+              description: Leases a dataflow WorkItem to run.
+              body:
+                application/json:
+                  type: LeaseWorkItemRequest
+                  (oas-body-name): body
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: LeaseWorkItemResponse
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/userinfo.email'
+              (oas-tags):
+                - projects
+            is:
+              - accessToken
+              - alt
+              - bearerToken
+              - callback
+              - fields
+              - key
+              - oauthToken
+              - pp
+              - prettyPrint
+              - quotaUser
+              - uploadProtocol
+              - uploadType
+              - xgafv
+          /messages:
+            displayName: messages
+            get:
+              displayName: dataflow.projects.jobs.messages.list
+              description: Request the job status.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: ListJobMessagesResponse
+                  description: Successful response
+              queryParameters:
+                minimumImportance:
+                  description: Filter to only get messages with importance >= level
+                  enum:
+                    - JOB_MESSAGE_IMPORTANCE_UNKNOWN
+                    - JOB_MESSAGE_DEBUG
+                    - JOB_MESSAGE_DETAILED
+                    - JOB_MESSAGE_BASIC
+                    - JOB_MESSAGE_WARNING
+                    - JOB_MESSAGE_ERROR
+                  type: string
+                  displayName: Filter to only get messages with importance >= level
+                pageSize:
+                  description: 'If specified, determines the maximum number of messages to return. If unspecified, the service may choose an appropriate default, or may return an arbitrarily large number of results.'
+                  type: integer
+                  displayName: 'If specified, determines the maximum number of messages to return. If unspecified, the service may choose an appropriate default, or may return an arbitrarily large number of results.'
+                pageToken:
+                  description: 'If supplied, this should be the value of next_page_token returned by an earlier call. This will cause the next page of results to be returned.'
+                  type: string
+                  displayName: 'If supplied, this should be the value of next_page_token returned by an earlier call. This will cause the next page of results to be returned.'
+                startTime:
+                  description: 'If specified, return only messages with timestamps >= start_time. The default is the job creation time (i.e. beginning of messages).'
+                  type: string
+                  displayName: 'If specified, return only messages with timestamps >= start_time. The default is the job creation time (i.e. beginning of messages).'
+                endTime:
+                  description: Return only messages with timestamps < end_time. The default is now (i.e. return up to the latest messages available).
+                  type: string
+                  displayName: Return only messages with timestamps < end_time. The default is now (i.e. return up to the latest messages available).
+                location:
+                  description: The location which contains the job specified by job_id.
+                  type: string
+                  displayName: The location which contains the job specified by job_id.
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/userinfo.email'
+              (oas-tags):
+                - projects
+            is:
+              - accessToken
+              - alt
+              - bearerToken
+              - callback
+              - fields
+              - key
+              - oauthToken
+              - pp
+              - prettyPrint
+              - quotaUser
+              - uploadProtocol
+              - uploadType
+              - xgafv
+          get:
+            displayName: dataflow.projects.jobs.get
+            description: Gets the state of the specified dataflow job.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Job
+                description: Successful response
+            queryParameters:
+              view:
+                description: Level of information requested in response.
+                enum:
+                  - JOB_VIEW_UNKNOWN
+                  - JOB_VIEW_SUMMARY
+                  - JOB_VIEW_ALL
+                type: string
+                displayName: Level of information requested in response.
+              location:
+                description: The location which contains this job.
+                type: string
+                displayName: The location which contains this job.
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/userinfo.email'
+            (oas-tags):
+              - projects
+        post:
+          displayName: dataflow.projects.jobs.create
+          description: Creates a dataflow job.
+          body:
+            application/json:
+              type: Job
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Job
+              description: Successful response
+          queryParameters:
+            view:
+              description: Level of information requested in response.
+              enum:
+                - JOB_VIEW_UNKNOWN
+                - JOB_VIEW_SUMMARY
+                - JOB_VIEW_ALL
+              type: string
+              displayName: Level of information requested in response.
+            replaceJobId:
+              description: DEPRECATED. This field is now on the Job message.
+              type: string
+              displayName: DEPRECATED. This field is now on the Job message.
+            location:
+              description: The location which contains this job.
+              type: string
+              displayName: The location which contains this job.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/userinfo.email'
+          (oas-tags):
+            - projects
+        is:
+          - accessToken
+          - alt
+          - bearerToken
+          - callback
+          - fields
+          - key
+          - oauthToken
+          - pp
+          - prettyPrint
+          - quotaUser
+          - uploadProtocol
+          - uploadType
+          - xgafv
+        get:
+          displayName: dataflow.projects.jobs.list
+          description: List the jobs of a project
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ListJobsResponse
+              description: Successful response
+          queryParameters:
+            filter:
+              description: The kind of filter to use.
+              enum:
+                - UNKNOWN
+                - ALL
+                - TERMINATED
+                - ACTIVE
+              type: string
+              displayName: The kind of filter to use.
+            view:
+              description: Level of information requested in response. Default is SUMMARY.
+              enum:
+                - JOB_VIEW_UNKNOWN
+                - JOB_VIEW_SUMMARY
+                - JOB_VIEW_ALL
+              type: string
+              displayName: Level of information requested in response. Default is SUMMARY.
+            pageSize:
+              description: 'If there are many jobs, limit response to at most this many. The actual number of jobs returned will be the lesser of max_responses and an unspecified server-defined limit.'
+              type: integer
+              displayName: 'If there are many jobs, limit response to at most this many. The actual number of jobs returned will be the lesser of max_responses and an unspecified server-defined limit.'
+            pageToken:
+              description: Set this to the 'next_page_token' field of a previous response to request additional results in a long list.
+              type: string
+              displayName: Set this to the 'next_page_token' field of a previous response to request additional results in a long list.
+            location:
+              description: The location which contains this job.
+              type: string
+              displayName: The location which contains this job.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/userinfo.email'
+          (oas-tags):
+            - projects
+      /templates:
+        displayName: templates
+        post:
+          displayName: dataflow.projects.templates.create
+          description: Creates a dataflow job from a template.
+          body:
+            application/json:
+              type: CreateJobFromTemplateRequest
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Job
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/userinfo.email'
+          (oas-tags):
+            - projects
+        is:
+          - accessToken
+          - alt
+          - bearerToken
+          - callback
+          - fields
+          - key
+          - oauthToken
+          - pp
+          - prettyPrint
+          - quotaUser
+          - uploadProtocol
+          - uploadType
+          - xgafv
+      /locations:
+        displayName: locations
+        '/{location}':
+          displayName: '{location}'
+          /jobs:
+            displayName: jobs
+            get:
+              displayName: dataflow.projects.locations.jobs.list
+              description: List the jobs of a project
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: ListJobsResponse
+                  description: Successful response
+              queryParameters:
+                filter:
+                  description: The kind of filter to use.
+                  enum:
+                    - UNKNOWN
+                    - ALL
+                    - TERMINATED
+                    - ACTIVE
+                  type: string
+                  displayName: The kind of filter to use.
+                view:
+                  description: Level of information requested in response. Default is SUMMARY.
+                  enum:
+                    - JOB_VIEW_UNKNOWN
+                    - JOB_VIEW_SUMMARY
+                    - JOB_VIEW_ALL
+                  type: string
+                  displayName: Level of information requested in response. Default is SUMMARY.
+                pageSize:
+                  description: 'If there are many jobs, limit response to at most this many. The actual number of jobs returned will be the lesser of max_responses and an unspecified server-defined limit.'
+                  type: integer
+                  displayName: 'If there are many jobs, limit response to at most this many. The actual number of jobs returned will be the lesser of max_responses and an unspecified server-defined limit.'
+                pageToken:
+                  description: Set this to the 'next_page_token' field of a previous response to request additional results in a long list.
+                  type: string
+                  displayName: Set this to the 'next_page_token' field of a previous response to request additional results in a long list.
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/userinfo.email'
+              (oas-tags):
+                - projects
+            is:
+              - accessToken
+              - alt
+              - bearerToken
+              - callback
+              - fields
+              - key
+              - oauthToken
+              - pp
+              - prettyPrint
+              - quotaUser
+              - uploadProtocol
+              - uploadType
+              - xgafv
+            post:
+              displayName: dataflow.projects.locations.jobs.create
+              description: Creates a dataflow job.
+              body:
+                application/json:
+                  type: Job
+                  (oas-body-name): body
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Job
+                  description: Successful response
+              queryParameters:
+                view:
+                  description: Level of information requested in response.
+                  enum:
+                    - JOB_VIEW_UNKNOWN
+                    - JOB_VIEW_SUMMARY
+                    - JOB_VIEW_ALL
+                  type: string
+                  displayName: Level of information requested in response.
+                replaceJobId:
+                  description: DEPRECATED. This field is now on the Job message.
+                  type: string
+                  displayName: DEPRECATED. This field is now on the Job message.
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/userinfo.email'
+              (oas-tags):
+                - projects
+            '/{jobId}':
+              displayName: '{jobId}'
+              uriParameters:
+                jobId:
+                  description: Identifies a single job.
+                  required: true
+                  type: string
+                  displayName: Identifies a single job.
+              get:
+                displayName: dataflow.projects.locations.jobs.get
+                description: Gets the state of the specified dataflow job.
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: Job
+                    description: Successful response
+                queryParameters:
+                  view:
+                    description: Level of information requested in response.
+                    enum:
+                      - JOB_VIEW_UNKNOWN
+                      - JOB_VIEW_SUMMARY
+                      - JOB_VIEW_ALL
+                    type: string
+                    displayName: Level of information requested in response.
+                securedBy:
+                  - Oauth2:
+                      scopes:
+                        - 'https://www.googleapis.com/auth/userinfo.email'
+                (oas-tags):
+                  - projects
+              is:
+                - accessToken
+                - alt
+                - bearerToken
+                - callback
+                - fields
+                - key
+                - oauthToken
+                - pp
+                - prettyPrint
+                - quotaUser
+                - uploadProtocol
+                - uploadType
+                - xgafv
+              put:
+                displayName: dataflow.projects.locations.jobs.update
+                description: Updates the state of an existing dataflow job.
+                body:
+                  application/json:
+                    type: Job
+                    (oas-body-name): body
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: Job
+                    description: Successful response
+                securedBy:
+                  - Oauth2:
+                      scopes:
+                        - 'https://www.googleapis.com/auth/userinfo.email'
+                (oas-tags):
+                  - projects
+              '/workItems:reportStatus':
+                displayName: 'workItems:reportStatus'
+                post:
+                  displayName: dataflow.projects.locations.jobs.workItems.reportStatus
+                  description: Reports the status of dataflow WorkItems leased by a worker.
+                  body:
+                    application/json:
+                      type: ReportWorkItemStatusRequest
+                      (oas-body-name): body
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: ReportWorkItemStatusResponse
+                      description: Successful response
+                  securedBy:
+                    - Oauth2:
+                        scopes:
+                          - 'https://www.googleapis.com/auth/userinfo.email'
+                  (oas-tags):
+                    - projects
+                is:
+                  - accessToken
+                  - alt
+                  - bearerToken
+                  - callback
+                  - fields
+                  - key
+                  - oauthToken
+                  - pp
+                  - prettyPrint
+                  - quotaUser
+                  - uploadProtocol
+                  - uploadType
+                  - xgafv
+              '/workItems:lease':
+                displayName: 'workItems:lease'
+                post:
+                  displayName: dataflow.projects.locations.jobs.workItems.lease
+                  description: Leases a dataflow WorkItem to run.
+                  body:
+                    application/json:
+                      type: LeaseWorkItemRequest
+                      (oas-body-name): body
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: LeaseWorkItemResponse
+                      description: Successful response
+                  securedBy:
+                    - Oauth2:
+                        scopes:
+                          - 'https://www.googleapis.com/auth/userinfo.email'
+                  (oas-tags):
+                    - projects
+                is:
+                  - accessToken
+                  - alt
+                  - bearerToken
+                  - callback
+                  - fields
+                  - key
+                  - oauthToken
+                  - pp
+                  - prettyPrint
+                  - quotaUser
+                  - uploadProtocol
+                  - uploadType
+                  - xgafv
+              /metrics:
+                displayName: metrics
+                get:
+                  displayName: dataflow.projects.locations.jobs.getMetrics
+                  description: Request the job status.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: JobMetrics
+                      description: Successful response
+                  queryParameters:
+                    startTime:
+                      description: Return only metric data that has changed since this time. Default is to return all information about all metrics for the job.
+                      type: string
+                      displayName: Return only metric data that has changed since this time. Default is to return all information about all metrics for the job.
+                  securedBy:
+                    - Oauth2:
+                        scopes:
+                          - 'https://www.googleapis.com/auth/userinfo.email'
+                  (oas-tags):
+                    - projects
+                is:
+                  - accessToken
+                  - alt
+                  - bearerToken
+                  - callback
+                  - fields
+                  - key
+                  - oauthToken
+                  - pp
+                  - prettyPrint
+                  - quotaUser
+                  - uploadProtocol
+                  - uploadType
+                  - xgafv
+              /messages:
+                displayName: messages
+                get:
+                  displayName: dataflow.projects.locations.jobs.messages.list
+                  description: Request the job status.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: ListJobMessagesResponse
+                      description: Successful response
+                  queryParameters:
+                    minimumImportance:
+                      description: Filter to only get messages with importance >= level
+                      enum:
+                        - JOB_MESSAGE_IMPORTANCE_UNKNOWN
+                        - JOB_MESSAGE_DEBUG
+                        - JOB_MESSAGE_DETAILED
+                        - JOB_MESSAGE_BASIC
+                        - JOB_MESSAGE_WARNING
+                        - JOB_MESSAGE_ERROR
+                      type: string
+                      displayName: Filter to only get messages with importance >= level
+                    pageSize:
+                      description: 'If specified, determines the maximum number of messages to return. If unspecified, the service may choose an appropriate default, or may return an arbitrarily large number of results.'
+                      type: integer
+                      displayName: 'If specified, determines the maximum number of messages to return. If unspecified, the service may choose an appropriate default, or may return an arbitrarily large number of results.'
+                    pageToken:
+                      description: 'If supplied, this should be the value of next_page_token returned by an earlier call. This will cause the next page of results to be returned.'
+                      type: string
+                      displayName: 'If supplied, this should be the value of next_page_token returned by an earlier call. This will cause the next page of results to be returned.'
+                    startTime:
+                      description: 'If specified, return only messages with timestamps >= start_time. The default is the job creation time (i.e. beginning of messages).'
+                      type: string
+                      displayName: 'If specified, return only messages with timestamps >= start_time. The default is the job creation time (i.e. beginning of messages).'
+                    endTime:
+                      description: Return only messages with timestamps < end_time. The default is now (i.e. return up to the latest messages available).
+                      type: string
+                      displayName: Return only messages with timestamps < end_time. The default is now (i.e. return up to the latest messages available).
+                  securedBy:
+                    - Oauth2:
+                        scopes:
+                          - 'https://www.googleapis.com/auth/userinfo.email'
+                  (oas-tags):
+                    - projects
+                is:
+                  - accessToken
+                  - alt
+                  - bearerToken
+                  - callback
+                  - fields
+                  - key
+                  - oauthToken
+                  - pp
+                  - prettyPrint
+                  - quotaUser
+                  - uploadProtocol
+                  - uploadType
+                  - xgafv
+      /WorkerMessages:
+        displayName: WorkerMessages
+        post:
+          displayName: dataflow.projects.workerMessages
+          description: Send a worker_message to the service.
+          body:
+            application/json:
+              type: SendWorkerMessagesRequest
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: SendWorkerMessagesResponse
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/userinfo.email'
+          (oas-tags):
+            - projects
+        is:
+          - accessToken
+          - alt
+          - bearerToken
+          - callback
+          - fields
+          - key
+          - oauthToken
+          - pp
+          - prettyPrint
+          - quotaUser
+          - uploadProtocol
+          - uploadType
+          - xgafv
+types:
+  ApproximateProgress:
+    description: Obsolete in favor of ApproximateReportedProgress and ApproximateSplitRequest.
+    properties:
+      percentComplete:
+        description: Obsolete.
+        format: float
+        type: number
+        required: false
+      position:
+        description: Obsolete.
+        type: Position
+        required: false
+      remainingTime:
+        description: Obsolete.
+        type: string
+        required: false
+  ApproximateReportedProgress:
+    description: A progress measurement of a WorkItem by a worker.
+    properties:
+      consumedParallelism:
+        description: 'Total amount of parallelism in the portion of input of this task that has already been consumed and is no longer active. In the first two examples above (see remaining_parallelism), the value should be 29 or 2 respectively. The sum of remaining_parallelism and consumed_parallelism should equal the total amount of parallelism in this work item. If specified, must be finite.'
+        type: ReportedParallelism
+        required: false
+      fractionConsumed:
+        description: 'Completion as fraction of the input consumed, from 0.0 (beginning, nothing consumed), to 1.0 (end of the input, entire input consumed).'
+        format: double
+        type: number
+        required: false
+      position:
+        description: A Position within the work to represent a progress.
+        type: Position
+        required: false
+      remainingParallelism:
+        description: 'Total amount of parallelism in the input of this task that remains, (i.e. can be delegated to this task and any new tasks via dynamic splitting). Always at least 1 for non-finished work items and 0 for finished. "Amount of parallelism" refers to how many non-empty parts of the input can be read in parallel. This does not necessarily equal number of records. An input that can be read in parallel down to the individual records is called "perfectly splittable". An example of non-perfectly parallelizable input is a block-compressed file format where a block of records has to be read as a whole, but different blocks can be read in parallel. Examples: * If we are processing record #30 (starting at 1) out of 50 in a perfectly splittable 50-record input, this value should be 21 (20 remaining + 1 current). * If we are reading through block 3 in a block-compressed file consisting of 5 blocks, this value should be 3 (since blocks 4 and 5 can be processed in parallel by new tasks via dynamic splitting and the current task remains processing block 3). * If we are reading through the last block in a block-compressed file, or reading or processing the last record in a perfectly splittable input, this value should be 1, because apart from the current task, no additional remainder can be split off.'
+        type: ReportedParallelism
+        required: false
+  ApproximateSplitRequest:
+    description: A suggestion by the service to the worker to dynamically split the WorkItem.
+    properties:
+      fractionConsumed:
+        description: 'A fraction at which to split the work item, from 0.0 (beginning of the input) to 1.0 (end of the input).'
+        format: double
+        type: number
+        required: false
+      position:
+        description: A Position at which to split the work item.
+        type: Position
+        required: false
+  AutoscalingSettings:
+    description: Settings for WorkerPool autoscaling.
+    properties:
+      algorithm:
+        description: The algorithm to use for autoscaling.
+        enum:
+          - AUTOSCALING_ALGORITHM_UNKNOWN
+          - AUTOSCALING_ALGORITHM_NONE
+          - AUTOSCALING_ALGORITHM_BASIC
+        type: string
+        required: false
+      maxNumWorkers:
+        description: The maximum number of workers to cap scaling at.
+        format: int32
+        type: integer
+        required: false
+  ComputationTopology:
+    description: All configuration data for a particular Computation.
+    properties:
+      computationId:
+        description: The ID of the computation.
+        type: string
+        required: false
+      inputs:
+        description: The inputs to the computation.
+        items:
+          type: StreamLocation
+        type: array
+        required: false
+      keyRanges:
+        description: The key ranges processed by the computation.
+        items:
+          type: KeyRangeLocation
+        type: array
+        required: false
+      outputs:
+        description: The outputs from the computation.
+        items:
+          type: StreamLocation
+        type: array
+        required: false
+      stateFamilies:
+        description: The state family values.
+        items:
+          type: StateFamilyConfig
+        type: array
+        required: false
+      systemStageName:
+        description: The system stage name.
+        type: string
+        required: false
+      userStageName:
+        description: The user stage name.
+        type: string
+        required: false
+  ConcatPosition:
+    description: A position that encapsulates an inner position and an index for the inner position. A ConcatPosition can be used by a reader of a source that encapsulates a set of other sources.
+    properties:
+      index:
+        description: Index of the inner source.
+        format: int32
+        type: integer
+        required: false
+      position:
+        description: Position within the inner source.
+        type: Position
+        required: false
+  CounterMetadata:
+    description: CounterMetadata includes all static non-name non-value counter attributes.
+    properties:
+      description:
+        description: Human-readable description of the counter semantics.
+        type: string
+        required: false
+      kind:
+        description: Counter aggregation kind.
+        enum:
+          - INVALID
+          - SUM
+          - MAX
+          - MIN
+          - MEAN
+          - OR
+          - AND
+          - SET
+        type: string
+        required: false
+      otherUnits:
+        description: A string referring to the unit type.
+        type: string
+        required: false
+      standardUnits:
+        description: 'System defined Units, see above enum.'
+        enum:
+          - BYTES
+          - BYTES_PER_SEC
+          - MILLISECONDS
+          - MICROSECONDS
+          - NANOSECONDS
+          - TIMESTAMP_MSEC
+          - TIMESTAMP_USEC
+          - TIMESTAMP_NSEC
+        type: string
+        required: false
+  CounterStructuredName:
+    description: Identifies a counter within a per-job namespace. Counters whose structured names are the same get merged into a single value for the job.
+    properties:
+      componentStepName:
+        description: Name of the optimized step being executed by the workers.
+        type: string
+        required: false
+      executionStepName:
+        description: Name of the stage. An execution step contains multiple component steps.
+        type: string
+        required: false
+      name:
+        description: 'Counter name. Not necessarily globally-unique, but unique within the context of the other fields. Required.'
+        type: string
+        required: false
+      originalStepName:
+        description: 'System generated name of the original step in the user''s graph, before optimization.'
+        type: string
+        required: false
+      otherOrigin:
+        description: A string containing the origin of the counter.
+        type: string
+        required: false
+      portion:
+        description: 'Portion of this counter, either key or value.'
+        enum:
+          - ALL
+          - KEY
+          - VALUE
+        type: string
+        required: false
+      standardOrigin:
+        description: One of the standard Origins defined above.
+        enum:
+          - DATAFLOW
+          - USER
+        type: string
+        required: false
+      workerId:
+        description: ID of a particular worker.
+        type: string
+        required: false
+  CounterStructuredNameAndMetadata:
+    description: A single message which encapsulates structured name and metadata for a given counter.
+    properties:
+      metadata:
+        description: Metadata associated with a counter
+        type: CounterMetadata
+        required: false
+      name:
+        description: Structured name of the counter.
+        type: CounterStructuredName
+        required: false
+  CounterUpdate:
+    description: An update to a Counter sent from a worker.
+    properties:
+      boolean:
+        description: 'Boolean value for And, Or.'
+        type: boolean
+        required: false
+      cumulative:
+        description: 'True if this counter is reported as the total cumulative aggregate value accumulated since the worker started working on this WorkItem. By default this is false, indicating that this counter is reported as a delta.'
+        type: boolean
+        required: false
+      floatingPoint:
+        description: 'Floating point value for Sum, Max, Min.'
+        format: double
+        type: number
+        required: false
+      floatingPointList:
+        description: 'List of floating point numbers, for Set.'
+        type: FloatingPointList
+        required: false
+      floatingPointMean:
+        description: Floating point mean aggregation value for Mean.
+        type: FloatingPointMean
+        required: false
+      integer:
+        description: 'Integer value for Sum, Max, Min.'
+        type: SplitInt64
+        required: false
+      integerList:
+        description: 'List of integers, for Set.'
+        type: IntegerList
+        required: false
+      integerMean:
+        description: Integer mean aggregation value for Mean.
+        type: IntegerMean
+        required: false
+      internal:
+        description: Value for internally-defined counters used by the Dataflow service.
+        required: false
+      nameAndKind:
+        description: Counter name and aggregation type.
+        type: NameAndKind
+        required: false
+      shortId:
+        description: 'The service-generated short identifier for this counter. The short_id -> (name, metadata) mapping is constant for the lifetime of a job.'
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      stringList:
+        description: 'List of strings, for Set.'
+        type: StringList
+        required: false
+      structuredNameAndMetadata:
+        description: Counter structured name and metadata.
+        type: CounterStructuredNameAndMetadata
+        required: false
+  CreateJobFromTemplateRequest:
+    description: Request to create a Dataflow job.
+    properties:
+      gcsPath:
+        description: A path to the serialized JSON representation of the job.
+        type: string
+        required: false
+      jobName:
+        description: The job name to use for the created job..
+        type: string
+        required: false
+      parameters:
+        additionalProperties:
+          type: string
+        description: Dynamic parameterization of the job's runtime environment.
+        type: object
+        required: false
+  CustomSourceLocation:
+    description: Identifies the location of a custom souce.
+    properties:
+      stateful:
+        description: Whether this source is stateful.
+        type: boolean
+        required: false
+  DataDiskAssignment:
+    description: Data disk assignment for a given VM instance.
+    properties:
+      dataDisks:
+        description: 'Mounted data disks. The order is important a data disk''s 0-based index in this list defines which persistent directory the disk is mounted to, for example the list of { "myproject-1014-104817-4c2-harness-0-disk-0" }, { "myproject-1014-104817-4c2-harness-0-disk-1" }.'
+        items:
+          type: string
+        type: array
+        required: false
+      vmInstance:
+        description: 'VM instance name the data disks mounted to, for example "myproject-1014-104817-4c2-harness-0".'
+        type: string
+        required: false
+  DerivedSource:
+    description: 'Specification of one of the bundles produced as a result of splitting a Source (e.g. when executing a SourceSplitRequest, or when splitting an active task using WorkItemStatus.dynamic_source_split), relative to the source being split.'
+    properties:
+      derivationMode:
+        description: What source to base the produced source on (if any).
+        enum:
+          - SOURCE_DERIVATION_MODE_UNKNOWN
+          - SOURCE_DERIVATION_MODE_INDEPENDENT
+          - SOURCE_DERIVATION_MODE_CHILD_OF_CURRENT
+          - SOURCE_DERIVATION_MODE_SIBLING_OF_CURRENT
+        type: string
+        required: false
+      source:
+        description: Specification of the source.
+        type: Source
+        required: false
+  Disk:
+    description: Describes the data disk used by a workflow job.
+    properties:
+      diskType:
+        description: |-
+          Disk storage type, as defined by Google Compute Engine. This must be a disk type appropriate to the project and zone in which the workers will run. If unknown or unspecified, the service will attempt to choose a reasonable default. For example, the standard persistent disk type is a resource name typically ending in "pd-standard". If SSD persistent disks are available, the resource name typically ends with "pd-ssd". The actual valid values are defined the Google Compute Engine API, not by the Dataflow API; consult the Google Compute Engine documentation for more information about determining the set of available disk types for a particular project and zone. Google Compute Engine Disk types are local to a particular project in a particular zone, and so the resource name will typically look something like this: compute.googleapis.com/projects/
+          /zones//diskTypes/pd-standard
+        type: string
+        required: false
+      mountPoint:
+        description: Directory in a VM where disk is mounted.
+        type: string
+        required: false
+      sizeGb:
+        description: 'Size of disk in GB. If zero or unspecified, the service will attempt to choose a reasonable default.'
+        format: int32
+        type: integer
+        required: false
+  DynamicSourceSplit:
+    description: 'When a task splits using WorkItemStatus.dynamic_source_split, this message describes the two parts of the split relative to the description of the current task''s input.'
+    properties:
+      primary:
+        description: Primary part (continued to be processed by worker). Specified relative to the previously-current source. Becomes current.
+        type: DerivedSource
+        required: false
+      residual:
+        description: Residual part (returned to the pool of work). Specified relative to the previously-current source.
+        type: DerivedSource
+        required: false
+  Environment:
+    description: Describes the environment in which a Dataflow Job runs.
+    properties:
+      clusterManagerApiService:
+        description: 'The type of cluster manager API to use. If unknown or unspecified, the service will attempt to choose a reasonable default. This should be in the form of the API service name, e.g. "compute.googleapis.com".'
+        type: string
+        required: false
+      dataset:
+        description: 'The dataset for the current project where various workflow related tables are stored. The supported resource type is: Google BigQuery: bigquery.googleapis.com/{dataset}'
+        type: string
+        required: false
+      experiments:
+        description: The list of experiments to enable.
+        items:
+          type: string
+        type: array
+        required: false
+      internalExperiments:
+        additionalProperties:
+          description: Properties of the object. Contains field @type with type URL.
+        description: Experimental settings.
+        type: object
+        required: false
+      sdkPipelineOptions:
+        additionalProperties:
+          description: Properties of the object.
+        description: The Dataflow SDK pipeline options specified by the user. These options are passed through the service and are used to recreate the SDK pipeline options on the worker in a language agnostic and platform independent way.
+        type: object
+        required: false
+      serviceAccountEmail:
+        description: Identity to run virtual machines as. Defaults to the default account.
+        type: string
+        required: false
+      tempStoragePrefix:
+        description: 'The prefix of the resources the system should use for temporary storage. The system will append the suffix "/temp-{JOBNAME} to this resource prefix, where {JOBNAME} is the value of the job_name field. The resulting bucket and object prefix is used as the prefix of the resources used to store temporary data needed during the job execution. NOTE: This will override the value in taskrunner_settings. The supported resource type is: Google Cloud Storage: storage.googleapis.com/{bucket}/{object} bucket.storage.googleapis.com/{object}'
+        type: string
+        required: false
+      userAgent:
+        additionalProperties:
+          description: Properties of the object.
+        description: A description of the process that generated the request.
+        type: object
+        required: false
+      version:
+        additionalProperties:
+          description: Properties of the object.
+        description: A structure describing which components and their versions of the service are required in order to run the job.
+        type: object
+        required: false
+      workerPools:
+        description: Worker pools. At least one "harness" worker pool must be specified in order for the job to have workers.
+        items:
+          type: WorkerPool
+        type: array
+        required: false
+  FailedLocation:
+    description: FailedLocation indicates which location failed to respond to a request for data.
+    properties:
+      name:
+        description: The name of the failed location.
+        type: string
+        required: false
+  FlattenInstruction:
+    description: An instruction that copies its inputs (zero or more) to its (single) output.
+    properties:
+      inputs:
+        description: Describes the inputs to the flatten instruction.
+        items:
+          type: InstructionInput
+        type: array
+        required: false
+  FloatingPointList:
+    description: A metric value representing a list of floating point numbers.
+    properties:
+      elements:
+        description: Elements of the list.
+        items:
+          format: double
+          type: number
+        type: array
+        required: false
+  FloatingPointMean:
+    description: A representation of a floating point mean metric contribution.
+    properties:
+      count:
+        description: The number of values being aggregated.
+        type: SplitInt64
+        required: false
+      sum:
+        description: The sum of all values being aggregated.
+        format: double
+        type: number
+        required: false
+  GetDebugConfigRequest:
+    description: Request to get updated debug configuration for component.
+    properties:
+      componentId:
+        description: The internal component id for which debug configuration is requested.
+        type: string
+        required: false
+      workerId:
+        description: 'The worker id, i.e., VM hostname.'
+        type: string
+        required: false
+  GetDebugConfigResponse:
+    description: Response to a get debug configuration request.
+    properties:
+      config:
+        description: The encoded debug configuration for the requested component.
+        type: string
+        required: false
+  InstructionInput:
+    description: 'An input of an instruction, as a reference to an output of a producer instruction.'
+    properties:
+      outputNum:
+        description: The output index (origin zero) within the producer.
+        format: int32
+        type: integer
+        required: false
+      producerInstructionIndex:
+        description: The index (origin zero) of the parallel instruction that produces the output to be consumed by this input. This index is relative to the list of instructions in this input's instruction's containing MapTask.
+        format: int32
+        type: integer
+        required: false
+  InstructionOutput:
+    description: An output of an instruction.
+    properties:
+      codec:
+        additionalProperties:
+          description: Properties of the object.
+        description: The codec to use to encode data being written via this output.
+        type: object
+        required: false
+      name:
+        description: The user-provided name of this output.
+        type: string
+        required: false
+      onlyCountKeyBytes:
+        description: 'For system-generated byte and mean byte metrics, certain instructions should only report the key size.'
+        type: boolean
+        required: false
+      onlyCountValueBytes:
+        description: 'For system-generated byte and mean byte metrics, certain instructions should only report the value size.'
+        type: boolean
+        required: false
+      originalName:
+        description: System-defined name for this output in the original workflow graph. Outputs that do not contribute to an original instruction do not set this.
+        type: string
+        required: false
+      systemName:
+        description: System-defined name of this output. Unique across the workflow.
+        type: string
+        required: false
+  IntegerList:
+    description: A metric value representing a list of integers.
+    properties:
+      elements:
+        description: Elements of the list.
+        items:
+          type: SplitInt64
+        type: array
+        required: false
+  IntegerMean:
+    description: A representation of an integer mean metric contribution.
+    properties:
+      count:
+        description: The number of values being aggregated.
+        type: SplitInt64
+        required: false
+      sum:
+        description: The sum of all values being aggregated.
+        type: SplitInt64
+        required: false
+  Job:
+    description: Defines a job to be run by the Dataflow service.
+    properties:
+      clientRequestId:
+        description: 'Client''s unique identifier of the job, re-used by SDK across retried attempts. If this field is set, the service will ensure its uniqueness. That is, the request to create a job will fail if the service has knowledge of a previously submitted job with the same client''s id and job name. The caller may, for example, use this field to ensure idempotence of job creation across retried attempts to create a job. By default, the field is empty and, in that case, the service ignores it.'
+        type: string
+        required: false
+      createTime:
+        description: 'Timestamp when job was initially created. Immutable, set by the Dataflow service.'
+        type: string
+        required: false
+      currentState:
+        description: 'The current state of the job. Jobs are created in the JOB_STATE_STOPPED state unless otherwise specified. A job in the JOB_STATE_RUNNING state may asynchronously enter a terminal state. Once a job has reached a terminal state, no further state updates may be made. This field may be mutated by the Dataflow service; callers cannot mutate it.'
+        enum:
+          - JOB_STATE_UNKNOWN
+          - JOB_STATE_STOPPED
+          - JOB_STATE_RUNNING
+          - JOB_STATE_DONE
+          - JOB_STATE_FAILED
+          - JOB_STATE_CANCELLED
+          - JOB_STATE_UPDATED
+          - JOB_STATE_DRAINING
+          - JOB_STATE_DRAINED
+        type: string
+        required: false
+      currentStateTime:
+        description: The timestamp associated with the current state.
+        type: string
+        required: false
+      environment:
+        description: Environment for the job.
+        type: Environment
+        required: false
+      executionInfo:
+        description: Information about how the Dataflow service will actually run the job.
+        type: JobExecutionInfo
+        required: false
+      id:
+        description: 'The unique ID of this job. This field is set by the Dataflow service when the Job is created, and is immutable for the life of the Job.'
+        type: string
+        required: false
+      labels:
+        additionalProperties:
+          type: string
+        description: 'User-defined labels for this job. The labels map can contain no more than 64 entries. Entries of the labels map are UTF8 strings that comply with the following restrictions: * Keys must conform to regexp: \p{Ll}\p{Lo}{0,62} * Values must conform to regexp: [\p{Ll}\p{Lo}\p{N}_-]{0,63} * Both keys and values are additionally constrained to be <= 128 bytes in size.'
+        type: object
+        required: false
+      location:
+        description: The location which contains this job.
+        type: string
+        required: false
+      name:
+        description: 'The user-specified Dataflow job name. Only one Job with a given name may exist in a project at any given time. If a caller attempts to create a Job with the same name as an already-existing Job, the attempt will return the existing Job. The name must match the regular expression [a-z]([-a-z0-9]{0,38}[a-z0-9])?'
+        type: string
+        required: false
+      projectId:
+        description: The project which owns the job.
+        type: string
+        required: false
+      replaceJobId:
+        description: 'If this job is an update of an existing job, this field will be the ID of the job it replaced. When sending a CreateJobRequest, you can update a job by specifying it here. The job named here will be stopped, and its intermediate state transferred to this job.'
+        type: string
+        required: false
+      replacedByJobId:
+        description: 'If another job is an update of this job (and thus, this job is in JOB_STATE_UPDATED), this field will contain the ID of that job.'
+        type: string
+        required: false
+      requestedState:
+        description: 'The job''s requested state. UpdateJob may be used to switch between the JOB_STATE_STOPPED and JOB_STATE_RUNNING states, by setting requested_state. UpdateJob may also be used to directly set a job''s requested state to JOB_STATE_CANCELLED or JOB_STATE_DONE, irrevocably terminating the job if it has not already reached a terminal state.'
+        enum:
+          - JOB_STATE_UNKNOWN
+          - JOB_STATE_STOPPED
+          - JOB_STATE_RUNNING
+          - JOB_STATE_DONE
+          - JOB_STATE_FAILED
+          - JOB_STATE_CANCELLED
+          - JOB_STATE_UPDATED
+          - JOB_STATE_DRAINING
+          - JOB_STATE_DRAINED
+        type: string
+        required: false
+      steps:
+        description: The top-level steps that constitute the entire job.
+        items:
+          type: Step
+        type: array
+        required: false
+      tempFiles:
+        description: 'A set of files the system should be aware of that are used for temporary storage. These temporary files will be removed on job completion. No duplicates are allowed. No file patterns are supported. The supported files are: Google Cloud Storage: storage.googleapis.com/{bucket}/{object} bucket.storage.googleapis.com/{object}'
+        items:
+          type: string
+        type: array
+        required: false
+      transformNameMapping:
+        additionalProperties:
+          type: string
+        description: Map of transform name prefixes of the job to be replaced to the corresponding name prefixes of the new job.
+        type: object
+        required: false
+      type:
+        description: The type of dataflow job.
+        enum:
+          - JOB_TYPE_UNKNOWN
+          - JOB_TYPE_BATCH
+          - JOB_TYPE_STREAMING
+        type: string
+        required: false
+  JobExecutionInfo:
+    description: Additional information about how a Dataflow job will be executed which isn’t contained in the submitted job.
+    properties:
+      stages:
+        additionalProperties:
+          type: JobExecutionStageInfo
+        description: A mapping from each stage to the information about that stage.
+        type: object
+        required: false
+  JobExecutionStageInfo:
+    description: Contains information about how a particular google.dataflow.v1beta3.Step will be executed.
+    properties:
+      stepName:
+        description: 'The steps associated with the execution stage. Note that stages may have several steps, and that a given step might be run by more than one stage.'
+        items:
+          type: string
+        type: array
+        required: false
+  JobMessage:
+    description: A particular message pertaining to a Dataflow job.
+    properties:
+      id:
+        description: Identifies the message. This is automatically generated by the service; the caller should treat it as an opaque string.
+        type: string
+        required: false
+      messageImportance:
+        description: Importance level of the message.
+        enum:
+          - JOB_MESSAGE_IMPORTANCE_UNKNOWN
+          - JOB_MESSAGE_DEBUG
+          - JOB_MESSAGE_DETAILED
+          - JOB_MESSAGE_BASIC
+          - JOB_MESSAGE_WARNING
+          - JOB_MESSAGE_ERROR
+        type: string
+        required: false
+      messageText:
+        description: The text of the message.
+        type: string
+        required: false
+      time:
+        description: The timestamp of the message.
+        type: string
+        required: false
+  JobMetrics:
+    description: JobMetrics contains a collection of metrics descibing the detailed progress of a Dataflow job. Metrics correspond to user-defined and system-defined metrics in the job. This resource captures only the most recent values of each metric; time-series data can be queried for them (under the same metric names) from Cloud Monitoring.
+    properties:
+      metricTime:
+        description: Timestamp as of which metric values are current.
+        type: string
+        required: false
+      metrics:
+        description: All metrics for this job.
+        items:
+          type: MetricUpdate
+        type: array
+        required: false
+  KeyRangeDataDiskAssignment:
+    description: Data disk assignment information for a specific key-range of a sharded computation. Currently we only support UTF-8 character splits to simplify encoding into JSON.
+    properties:
+      dataDisk:
+        description: 'The name of the data disk where data for this range is stored. This name is local to the Google Cloud Platform project and uniquely identifies the disk within that project, for example "myproject-1014-104817-4c2-harness-0-disk-1".'
+        type: string
+        required: false
+      end:
+        description: The end (exclusive) of the key range.
+        type: string
+        required: false
+      start:
+        description: The start (inclusive) of the key range.
+        type: string
+        required: false
+  KeyRangeLocation:
+    description: Location information for a specific key-range of a sharded computation. Currently we only support UTF-8 character splits to simplify encoding into JSON.
+    properties:
+      dataDisk:
+        description: 'The name of the data disk where data for this range is stored. This name is local to the Google Cloud Platform project and uniquely identifies the disk within that project, for example "myproject-1014-104817-4c2-harness-0-disk-1".'
+        type: string
+        required: false
+      deliveryEndpoint:
+        description: The physical location of this range assignment to be used for streaming computation cross-worker message delivery.
+        type: string
+        required: false
+      end:
+        description: The end (exclusive) of the key range.
+        type: string
+        required: false
+      persistentDirectory:
+        description: 'The location of the persistent state for this range, as a persistent directory in the worker local filesystem.'
+        type: string
+        required: false
+      start:
+        description: The start (inclusive) of the key range.
+        type: string
+        required: false
+  LeaseWorkItemRequest:
+    description: Request to lease WorkItems.
+    properties:
+      currentWorkerTime:
+        description: The current timestamp at the worker.
+        type: string
+        required: false
+      location:
+        description: The location which contains the WorkItem's job.
+        type: string
+        required: false
+      requestedLeaseDuration:
+        description: The initial lease period.
+        type: string
+        required: false
+      workItemTypes:
+        description: Filter for WorkItem type.
+        items:
+          type: string
+        type: array
+        required: false
+      workerCapabilities:
+        description: Worker capabilities. WorkItems might be limited to workers with specific capabilities.
+        items:
+          type: string
+        type: array
+        required: false
+      workerId:
+        description: Identifies the worker leasing work -- typically the ID of the virtual machine running the worker.
+        type: string
+        required: false
+  LeaseWorkItemResponse:
+    description: Response to a request to lease WorkItems.
+    properties:
+      workItems:
+        description: A list of the leased WorkItems.
+        items:
+          type: WorkItem
+        type: array
+        required: false
+  ListJobMessagesResponse:
+    description: Response to a request to list job messages.
+    properties:
+      jobMessages:
+        description: Messages in ascending timestamp order.
+        items:
+          type: JobMessage
+        type: array
+        required: false
+      nextPageToken:
+        description: The token to obtain the next page of results if there are more.
+        type: string
+        required: false
+  ListJobsResponse:
+    description: 'Response to a request to list Dataflow jobs. This may be a partial response, depending on the page size in the ListJobsRequest.'
+    properties:
+      failedLocation:
+        description: Zero or more messages describing locations that failed to respond.
+        items:
+          type: FailedLocation
+        type: array
+        required: false
+      jobs:
+        description: A subset of the requested job information.
+        items:
+          type: Job
+        type: array
+        required: false
+      nextPageToken:
+        description: Set if there may be more results than fit in this response.
+        type: string
+        required: false
+  MapTask:
+    description: 'MapTask consists of an ordered set of instructions, each of which describes one particular low-level operation for the worker to perform in order to accomplish the MapTask''s WorkItem. Each instruction must appear in the list before any instructions which depends on its output.'
+    properties:
+      instructions:
+        description: The instructions in the MapTask.
+        items:
+          type: ParallelInstruction
+        type: array
+        required: false
+      stageName:
+        description: System-defined name of the stage containing this MapTask. Unique across the workflow.
+        type: string
+        required: false
+      systemName:
+        description: System-defined name of this MapTask. Unique across the workflow.
+        type: string
+        required: false
+  MetricShortId:
+    description: The metric short id is returned to the user alongside an offset into ReportWorkItemStatusRequest
+    properties:
+      metricIndex:
+        description: The index of the corresponding metric in the ReportWorkItemStatusRequest. Required.
+        format: int32
+        type: integer
+        required: false
+      shortId:
+        description: The service-generated short identifier for the metric.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+  MetricStructuredName:
+    description: 'Identifies a metric, by describing the source which generated the metric.'
+    properties:
+      context:
+        additionalProperties:
+          type: string
+        description: |-
+          Zero or more labeled fields which identify the part of the job this metric is associated with, such as the name of a step or collection. For example, built-in counters associated with steps will have context['step'] = . Counters associated with PCollections in the SDK will have context['pcollection'] =
+          .
+        type: object
+        required: false
+      name:
+        description: Worker-defined metric name.
+        type: string
+        required: false
+      origin:
+        description: Origin (namespace) of metric name. May be blank for user-define metrics; will be "dataflow" for metrics defined by the Dataflow service or SDK.
+        type: string
+        required: false
+  MetricUpdate:
+    description: Describes the state of a metric.
+    properties:
+      cumulative:
+        description: 'True if this metric is reported as the total cumulative aggregate value accumulated since the worker started working on this WorkItem. By default this is false, indicating that this metric is reported as a delta that is not associated with any WorkItem.'
+        type: boolean
+        required: false
+      internal:
+        description: Worker-computed aggregate value for internal use by the Dataflow service.
+        required: false
+      kind:
+        description: 'Metric aggregation kind. The possible metric aggregation kinds are "Sum", "Max", "Min", "Mean", "Set", "And", and "Or". The specified aggregation kind is case-insensitive. If omitted, this is not an aggregated value but instead a single metric sample value.'
+        type: string
+        required: false
+      meanCount:
+        description: Worker-computed aggregate value for the "Mean" aggregation kind. This holds the count of the aggregated values and is used in combination with mean_sum above to obtain the actual mean aggregate value. The only possible value type is Long.
+        required: false
+      meanSum:
+        description: Worker-computed aggregate value for the "Mean" aggregation kind. This holds the sum of the aggregated values and is used in combination with mean_count below to obtain the actual mean aggregate value. The only possible value types are Long and Double.
+        required: false
+      name:
+        description: Name of the metric.
+        type: MetricStructuredName
+        required: false
+      scalar:
+        description: 'Worker-computed aggregate value for aggregation kinds "Sum", "Max", "Min", "And", and "Or". The possible value types are Long, Double, and Boolean.'
+        required: false
+      set:
+        description: 'Worker-computed aggregate value for the "Set" aggregation kind. The only possible value type is a list of Values whose type can be Long, Double, or String, according to the metric''s type. All Values in the list must be of the same type.'
+        required: false
+      updateTime:
+        description: Timestamp associated with the metric value. Optional when workers are reporting work progress; it will be filled in responses from the metrics API.
+        type: string
+        required: false
+  MountedDataDisk:
+    description: Describes mounted data disk.
+    properties:
+      dataDisk:
+        description: 'The name of the data disk. This name is local to the Google Cloud Platform project and uniquely identifies the disk within that project, for example "myproject-1014-104817-4c2-harness-0-disk-1".'
+        type: string
+        required: false
+  MultiOutputInfo:
+    description: Information about an output of a multi-output DoFn.
+    properties:
+      tag:
+        description: The id of the tag the user code will emit to this output by; this should correspond to the tag of some SideInputInfo.
+        type: string
+        required: false
+  NameAndKind:
+    description: Basic metadata about a counter.
+    properties:
+      kind:
+        description: Counter aggregation kind.
+        enum:
+          - INVALID
+          - SUM
+          - MAX
+          - MIN
+          - MEAN
+          - OR
+          - AND
+          - SET
+        type: string
+        required: false
+      name:
+        description: Name of the counter.
+        type: string
+        required: false
+  Package:
+    description: 'Packages that need to be installed in order for a worker to run the steps of the Dataflow job which will be assigned to its worker pool. This is the mechanism by which the SDK causes code to be loaded onto the workers. For example, the Dataflow Java SDK might use this to install jars containing the user''s code and all of the various dependencies (libraries, data files, etc) required in order for that code to run.'
+    properties:
+      location:
+        description: 'The resource to read the package from. The supported resource type is: Google Cloud Storage: storage.googleapis.com/{bucket} bucket.storage.googleapis.com/'
+        type: string
+        required: false
+      name:
+        description: The name of the package.
+        type: string
+        required: false
+  ParDoInstruction:
+    description: 'An instruction that does a ParDo operation. Takes one main input and zero or more side inputs, and produces zero or more outputs. Runs user code.'
+    properties:
+      input:
+        description: The input.
+        type: InstructionInput
+        required: false
+      multiOutputInfos:
+        description: 'Information about each of the outputs, if user_fn is a MultiDoFn.'
+        items:
+          type: MultiOutputInfo
+        type: array
+        required: false
+      numOutputs:
+        description: The number of outputs.
+        format: int32
+        type: integer
+        required: false
+      sideInputs:
+        description: Zero or more side inputs.
+        items:
+          type: SideInputInfo
+        type: array
+        required: false
+      userFn:
+        additionalProperties:
+          description: Properties of the object.
+        description: The user function to invoke.
+        type: object
+        required: false
+  ParallelInstruction:
+    description: Describes a particular operation comprising a MapTask.
+    properties:
+      flatten:
+        description: Additional information for Flatten instructions.
+        type: FlattenInstruction
+        required: false
+      name:
+        description: User-provided name of this operation.
+        type: string
+        required: false
+      originalName:
+        description: System-defined name for the operation in the original workflow graph.
+        type: string
+        required: false
+      outputs:
+        description: Describes the outputs of the instruction.
+        items:
+          type: InstructionOutput
+        type: array
+        required: false
+      parDo:
+        description: Additional information for ParDo instructions.
+        type: ParDoInstruction
+        required: false
+      partialGroupByKey:
+        description: Additional information for PartialGroupByKey instructions.
+        type: PartialGroupByKeyInstruction
+        required: false
+      read:
+        description: Additional information for Read instructions.
+        type: ReadInstruction
+        required: false
+      systemName:
+        description: System-defined name of this operation. Unique across the workflow.
+        type: string
+        required: false
+      write:
+        description: Additional information for Write instructions.
+        type: WriteInstruction
+        required: false
+  PartialGroupByKeyInstruction:
+    description: An instruction that does a partial group-by-key. One input and one output.
+    properties:
+      input:
+        description: Describes the input to the partial group-by-key instruction.
+        type: InstructionInput
+        required: false
+      inputElementCodec:
+        additionalProperties:
+          description: Properties of the object.
+        description: The codec to use for interpreting an element in the input PTable.
+        type: object
+        required: false
+      originalCombineValuesInputStoreName:
+        description: If this instruction includes a combining function this is the name of the intermediate store between the GBK and the CombineValues.
+        type: string
+        required: false
+      originalCombineValuesStepName:
+        description: 'If this instruction includes a combining function, this is the name of the CombineValues instruction lifted into this instruction.'
+        type: string
+        required: false
+      sideInputs:
+        description: Zero or more side inputs.
+        items:
+          type: SideInputInfo
+        type: array
+        required: false
+      valueCombiningFn:
+        additionalProperties:
+          description: Properties of the object.
+        description: The value combining function to invoke.
+        type: object
+        required: false
+  Position:
+    description: 'Position defines a position within a collection of data. The value can be either the end position, a key (used with ordered collections), a byte offset, or a record index.'
+    properties:
+      byteOffset:
+        description: Position is a byte offset.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      concatPosition:
+        description: CloudPosition is a concat position.
+        type: ConcatPosition
+        required: false
+      end:
+        description: Position is past all other positions. Also useful for the end position of an unbounded range.
+        type: boolean
+        required: false
+      key:
+        description: 'Position is a string key, ordered lexicographically.'
+        type: string
+        required: false
+      recordIndex:
+        description: Position is a record index.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      shufflePosition:
+        description: CloudPosition is a base64 encoded BatchShufflePosition (with FIXED sharding).
+        type: string
+        required: false
+  PubsubLocation:
+    description: Identifies a pubsub location to use for transferring data into or out of a streaming Dataflow job.
+    properties:
+      dropLateData:
+        description: Indicates whether the pipeline allows late-arriving data.
+        type: boolean
+        required: false
+      idLabel:
+        description: 'If set, contains a pubsub label from which to extract record ids. If left empty, record deduplication will be strictly best effort.'
+        type: string
+        required: false
+      subscription:
+        description: |-
+          A pubsub subscription, in the form of "pubsub.googleapis.com/subscriptions/
+          /"
+        type: string
+        required: false
+      timestampLabel:
+        description: 'If set, contains a pubsub label from which to extract record timestamps. If left empty, record timestamps will be generated upon arrival.'
+        type: string
+        required: false
+      topic:
+        description: |-
+          A pubsub topic, in the form of "pubsub.googleapis.com/topics/
+          /"
+        type: string
+        required: false
+      trackingSubscription:
+        description: 'If set, specifies the pubsub subscription that will be used for tracking custom time timestamps for watermark estimation.'
+        type: string
+        required: false
+      withAttributes:
+        description: 'If true, then the client has requested to get pubsub attributes.'
+        type: boolean
+        required: false
+  ReadInstruction:
+    description: 'An instruction that reads records. Takes no inputs, produces one output.'
+    properties:
+      source:
+        description: The source to read from.
+        type: Source
+        required: false
+  ReportWorkItemStatusRequest:
+    description: Request to report the status of WorkItems.
+    properties:
+      currentWorkerTime:
+        description: The current timestamp at the worker.
+        type: string
+        required: false
+      location:
+        description: The location which contains the WorkItem's job.
+        type: string
+        required: false
+      workItemStatuses:
+        description: 'The order is unimportant, except that the order of the WorkItemServiceState messages in the ReportWorkItemStatusResponse corresponds to the order of WorkItemStatus messages here.'
+        items:
+          type: WorkItemStatus
+        type: array
+        required: false
+      workerId:
+        description: 'The ID of the worker reporting the WorkItem status. If this does not match the ID of the worker which the Dataflow service believes currently has the lease on the WorkItem, the report will be dropped (with an error response).'
+        type: string
+        required: false
+  ReportWorkItemStatusResponse:
+    description: Response from a request to report the status of WorkItems.
+    properties:
+      workItemServiceStates:
+        description: 'A set of messages indicating the service-side state for each WorkItem whose status was reported, in the same order as the WorkItemStatus messages in the ReportWorkItemStatusRequest which resulting in this response.'
+        items:
+          type: WorkItemServiceState
+        type: array
+        required: false
+  ReportedParallelism:
+    description: 'Represents the level of parallelism in a WorkItem''s input, reported by the worker.'
+    properties:
+      isInfinite:
+        description: 'Specifies whether the parallelism is infinite. If true, "value" is ignored. Infinite parallelism means the service will assume that the work item can always be split into more non-empty work items by dynamic splitting. This is a work-around for lack of support for infinity by the current JSON-based Java RPC stack.'
+        type: boolean
+        required: false
+      value:
+        description: Specifies the level of parallelism in case it is finite.
+        format: double
+        type: number
+        required: false
+  SendDebugCaptureRequest:
+    description: Request to send encoded debug information.
+    properties:
+      componentId:
+        description: The internal component id for which debug information is sent.
+        type: string
+        required: false
+      data:
+        description: The encoded debug information.
+        type: string
+        required: false
+      workerId:
+        description: 'The worker id, i.e., VM hostname.'
+        type: string
+        required: false
+  SendDebugCaptureResponse:
+    description: Response to a send capture request. nothing
+    type: object
+  SendWorkerMessagesRequest:
+    description: A request for sending worker messages to the service.
+    properties:
+      workerMessages:
+        description: The WorkerMessages to send.
+        items:
+          type: WorkerMessage
+        type: array
+        required: false
+  SendWorkerMessagesResponse:
+    description: The response to the worker messages.
+    properties:
+      workerMessageResponses:
+        description: The servers response to the worker messages.
+        items:
+          type: WorkerMessageResponse
+        type: array
+        required: false
+  SeqMapTask:
+    description: Describes a particular function to invoke.
+    properties:
+      inputs:
+        description: Information about each of the inputs.
+        items:
+          type: SideInputInfo
+        type: array
+        required: false
+      name:
+        description: The user-provided name of the SeqDo operation.
+        type: string
+        required: false
+      outputInfos:
+        description: Information about each of the outputs.
+        items:
+          type: SeqMapTaskOutputInfo
+        type: array
+        required: false
+      stageName:
+        description: System-defined name of the stage containing the SeqDo operation. Unique across the workflow.
+        type: string
+        required: false
+      systemName:
+        description: System-defined name of the SeqDo operation. Unique across the workflow.
+        type: string
+        required: false
+      userFn:
+        additionalProperties:
+          description: Properties of the object.
+        description: The user function to invoke.
+        type: object
+        required: false
+  SeqMapTaskOutputInfo:
+    description: Information about an output of a SeqMapTask.
+    properties:
+      sink:
+        description: The sink to write the output value to.
+        type: Sink
+        required: false
+      tag:
+        description: The id of the TupleTag the user code will tag the output value by.
+        type: string
+        required: false
+  ShellTask:
+    description: A task which consists of a shell command for the worker to execute.
+    properties:
+      command:
+        description: The shell command to run.
+        type: string
+        required: false
+      exitCode:
+        description: Exit code for the task.
+        format: int32
+        type: integer
+        required: false
+  SideInputInfo:
+    description: Information about a side input of a DoFn or an input of a SeqDoFn.
+    properties:
+      kind:
+        additionalProperties:
+          description: Properties of the object.
+        description: How to interpret the source element(s) as a side input value.
+        type: object
+        required: false
+      sources:
+        description: 'The source(s) to read element(s) from to get the value of this side input. If more than one source, then the elements are taken from the sources, in the specified order if order matters. At least one source is required.'
+        items:
+          type: Source
+        type: array
+        required: false
+      tag:
+        description: The id of the tag the user code will access this side input by; this should correspond to the tag of some MultiOutputInfo.
+        type: string
+        required: false
+  Sink:
+    description: A sink that records can be encoded and written to.
+    properties:
+      codec:
+        additionalProperties:
+          description: Properties of the object.
+        description: The codec to use to encode data written to the sink.
+        type: object
+        required: false
+      spec:
+        additionalProperties:
+          description: Properties of the object.
+        description: 'The sink to write to, plus its parameters.'
+        type: object
+        required: false
+  Source:
+    description: A source that records can be read and decoded from.
+    properties:
+      baseSpecs:
+        description: 'While splitting, sources may specify the produced bundles as differences against another source, in order to save backend-side memory and allow bigger jobs. For details, see SourceSplitRequest. To support this use case, the full set of parameters of the source is logically obtained by taking the latest explicitly specified value of each parameter in the order: base_specs (later items win), spec (overrides anything in base_specs).'
+        items:
+          additionalProperties:
+            description: Properties of the object.
+          type: object
+        type: array
+        required: false
+      codec:
+        additionalProperties:
+          description: Properties of the object.
+        description: The codec to use to decode data read from the source.
+        type: object
+        required: false
+      doesNotNeedSplitting:
+        description: 'Setting this value to true hints to the framework that the source doesn''t need splitting, and using SourceSplitRequest on it would yield SOURCE_SPLIT_OUTCOME_USE_CURRENT. E.g. a file splitter may set this to true when splitting a single file into a set of byte ranges of appropriate size, and set this to false when splitting a filepattern into individual files. However, for efficiency, a file splitter may decide to produce file subranges directly from the filepattern to avoid a splitting round-trip. See SourceSplitRequest for an overview of the splitting process. This field is meaningful only in the Source objects populated by the user (e.g. when filling in a DerivedSource). Source objects supplied by the framework to the user don''t have this field populated.'
+        type: boolean
+        required: false
+      metadata:
+        description: 'Optionally, metadata for this source can be supplied right away, avoiding a SourceGetMetadataOperation roundtrip (see SourceOperationRequest). This field is meaningful only in the Source objects populated by the user (e.g. when filling in a DerivedSource). Source objects supplied by the framework to the user don''t have this field populated.'
+        type: SourceMetadata
+        required: false
+      spec:
+        additionalProperties:
+          description: Properties of the object.
+        description: 'The source to read from, plus its parameters.'
+        type: object
+        required: false
+  SourceFork:
+    description: DEPRECATED in favor of DynamicSourceSplit.
+    properties:
+      primary:
+        description: DEPRECATED
+        type: SourceSplitShard
+        required: false
+      primarySource:
+        description: DEPRECATED
+        type: DerivedSource
+        required: false
+      residual:
+        description: DEPRECATED
+        type: SourceSplitShard
+        required: false
+      residualSource:
+        description: DEPRECATED
+        type: DerivedSource
+        required: false
+  SourceGetMetadataRequest:
+    description: A request to compute the SourceMetadata of a Source.
+    properties:
+      source:
+        description: Specification of the source whose metadata should be computed.
+        type: Source
+        required: false
+  SourceGetMetadataResponse:
+    description: The result of a SourceGetMetadataOperation.
+    properties:
+      metadata:
+        description: The computed metadata.
+        type: SourceMetadata
+        required: false
+  SourceMetadata:
+    description: 'Metadata about a Source useful for automatically optimizing and tuning the pipeline, etc.'
+    properties:
+      estimatedSizeBytes:
+        description: 'An estimate of the total size (in bytes) of the data that would be read from this source. This estimate is in terms of external storage size, before any decompression or other processing done by the reader.'
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      infinite:
+        description: Specifies that the size of this source is known to be infinite (this is a streaming source).
+        type: boolean
+        required: false
+      producesSortedKeys:
+        description: Whether this source is known to produce key/value pairs with the (encoded) keys in lexicographically sorted order.
+        type: boolean
+        required: false
+  SourceOperationRequest:
+    description: A work item that represents the different operations that can be performed on a user-defined Source specification.
+    properties:
+      getMetadata:
+        description: Information about a request to get metadata about a source.
+        type: SourceGetMetadataRequest
+        required: false
+      split:
+        description: Information about a request to split a source.
+        type: SourceSplitRequest
+        required: false
+  SourceOperationResponse:
+    description: 'The result of a SourceOperationRequest, specified in ReportWorkItemStatusRequest.source_operation when the work item is completed.'
+    properties:
+      getMetadata:
+        description: A response to a request to get metadata about a source.
+        type: SourceGetMetadataResponse
+        required: false
+      split:
+        description: A response to a request to split a source.
+        type: SourceSplitResponse
+        required: false
+  SourceSplitOptions:
+    description: Hints for splitting a Source into bundles (parts for parallel processing) using SourceSplitRequest.
+    properties:
+      desiredBundleSizeBytes:
+        description: The source should be split into a set of bundles where the estimated size of each is approximately this many bytes.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      desiredShardSizeBytes:
+        description: DEPRECATED in favor of desired_bundle_size_bytes.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+  SourceSplitRequest:
+    description: 'Represents the operation to split a high-level Source specification into bundles (parts for parallel processing). At a high level, splitting of a source into bundles happens as follows: SourceSplitRequest is applied to the source. If it returns SOURCE_SPLIT_OUTCOME_USE_CURRENT, no further splitting happens and the source is used "as is". Otherwise, splitting is applied recursively to each produced DerivedSource. As an optimization, for any Source, if its does_not_need_splitting is true, the framework assumes that splitting this source would return SOURCE_SPLIT_OUTCOME_USE_CURRENT, and doesn''t initiate a SourceSplitRequest. This applies both to the initial source being split and to bundles produced from it.'
+    properties:
+      options:
+        description: Hints for tuning the splitting process.
+        type: SourceSplitOptions
+        required: false
+      source:
+        description: Specification of the source to be split.
+        type: Source
+        required: false
+  SourceSplitResponse:
+    description: The response to a SourceSplitRequest.
+    properties:
+      bundles:
+        description: 'If outcome is SPLITTING_HAPPENED, then this is a list of bundles into which the source was split. Otherwise this field is ignored. This list can be empty, which means the source represents an empty input.'
+        items:
+          type: DerivedSource
+        type: array
+        required: false
+      outcome:
+        description: 'Indicates whether splitting happened and produced a list of bundles. If this is USE_CURRENT_SOURCE_AS_IS, the current source should be processed "as is" without splitting. "bundles" is ignored in this case. If this is SPLITTING_HAPPENED, then "bundles" contains a list of bundles into which the source was split.'
+        enum:
+          - SOURCE_SPLIT_OUTCOME_UNKNOWN
+          - SOURCE_SPLIT_OUTCOME_USE_CURRENT
+          - SOURCE_SPLIT_OUTCOME_SPLITTING_HAPPENED
+        type: string
+        required: false
+      shards:
+        description: DEPRECATED in favor of bundles.
+        items:
+          type: SourceSplitShard
+        type: array
+        required: false
+  SourceSplitShard:
+    description: DEPRECATED in favor of DerivedSource.
+    properties:
+      derivationMode:
+        description: DEPRECATED
+        enum:
+          - SOURCE_DERIVATION_MODE_UNKNOWN
+          - SOURCE_DERIVATION_MODE_INDEPENDENT
+          - SOURCE_DERIVATION_MODE_CHILD_OF_CURRENT
+          - SOURCE_DERIVATION_MODE_SIBLING_OF_CURRENT
+        type: string
+        required: false
+      source:
+        description: DEPRECATED
+        type: Source
+        required: false
+  SplitInt64:
+    description: 'A representation of an int64, n, that is immune to precision loss when encoded in JSON.'
+    properties:
+      highBits:
+        description: 'The high order bits, including the sign: n >> 32.'
+        format: int32
+        type: integer
+        required: false
+      lowBits:
+        description: 'The low order bits: n & 0xffffffff.'
+        type: integer
+        required: false
+  StateFamilyConfig:
+    description: State family configuration.
+    properties:
+      isRead:
+        description: 'If true, this family corresponds to a read operation.'
+        type: boolean
+        required: false
+      stateFamily:
+        description: The state family value.
+        type: string
+        required: false
+  Status:
+    description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). The error model is designed to be: - Simple to use and understand for most users - Flexible enough to meet unexpected needs # Overview The `Status` message contains three pieces of data: error code, error message, and error details. The error code should be an enum value of google.rpc.Code, but it may accept additional error codes if needed. The error message should be a developer-facing English message that helps developers *understand* and *resolve* the error. If a localized user-facing error message is needed, put the localized message in the error details or localize it in the client. The optional error details may contain arbitrary information about the error. There is a predefined set of error detail types in the package `google.rpc` which can be used for common error conditions. # Language mapping The `Status` message is the logical representation of the error model, but it is not necessarily the actual wire format. When the `Status` message is exposed in different client libraries and different wire protocols, it can be mapped differently. For example, it will likely be mapped to some exceptions in Java, but more likely mapped to some error codes in C. # Other uses The error model and the `Status` message can be used in a variety of environments, either with or without APIs, to provide a consistent developer experience across different environments. Example uses of this error model include: - Partial errors. If a service needs to return partial errors to the client, it may embed the `Status` in the normal response to indicate the partial errors. - Workflow errors. A typical workflow has multiple steps. Each step may have a `Status` message for error reporting purpose. - Batch operations. If a client uses batch request and batch response, the `Status` message should be used directly inside batch response, one for each error sub-response. - Asynchronous operations. If an API call embeds asynchronous operation results in its response, the status of those operations should be represented directly using the `Status` message. - Logging. If some API errors are stored in logs, the message `Status` could be used directly after any stripping needed for security/privacy reasons.'
+    properties:
+      code:
+        description: 'The status code, which should be an enum value of google.rpc.Code.'
+        format: int32
+        type: integer
+        required: false
+      details:
+        description: A list of messages that carry the error details. There will be a common set of message types for APIs to use.
+        items:
+          additionalProperties:
+            description: Properties of the object. Contains field @type with type URL.
+          type: object
+        type: array
+        required: false
+      message:
+        description: 'A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.'
+        type: string
+        required: false
+  Step:
+    description: 'Defines a particular step within a Dataflow job. A job consists of multiple steps, each of which performs some specific operation as part of the overall job. Data is typically passed from one step to another as part of the job. Here''s an example of a sequence of steps which together implement a Map-Reduce job: * Read a collection of data from some source, parsing the collection''s elements. * Validate the elements. * Apply a user-defined function to map each element to some value and extract an element-specific key value. * Group elements with the same key into a single element with that key, transforming a multiply-keyed collection into a uniquely-keyed collection. * Write the elements out to some data sink. (Note that the Dataflow service may be used to run many different types of jobs, not just Map-Reduce).'
+    properties:
+      kind:
+        description: The kind of step in the dataflow Job.
+        type: string
+        required: false
+      name:
+        description: Name identifying the step. This must be unique for each step with respect to all other steps in the dataflow Job.
+        type: string
+        required: false
+      properties:
+        additionalProperties:
+          description: Properties of the object.
+        description: Named properties associated with the step. Each kind of predefined step has its own required set of properties.
+        type: object
+        required: false
+  StreamLocation:
+    description: 'Describes a stream of data, either as input to be processed or as output of a streaming Dataflow job.'
+    properties:
+      customSourceLocation:
+        description: The stream is a custom source.
+        type: CustomSourceLocation
+        required: false
+      pubsubLocation:
+        description: The stream is a pubsub stream.
+        type: PubsubLocation
+        required: false
+      sideInputLocation:
+        description: The stream is a streaming side input.
+        type: StreamingSideInputLocation
+        required: false
+      streamingStageLocation:
+        description: The stream is part of another computation within the current streaming Dataflow job.
+        type: StreamingStageLocation
+        required: false
+  StreamingComputationConfig:
+    description: Configuration information for a single streaming computation.
+    properties:
+      computationId:
+        description: Unique identifier for this computation.
+        type: string
+        required: false
+      instructions:
+        description: Instructions that comprise the computation.
+        items:
+          type: ParallelInstruction
+        type: array
+        required: false
+      stageName:
+        description: Stage name of this computation.
+        type: string
+        required: false
+      systemName:
+        description: System defined name for this computation.
+        type: string
+        required: false
+  StreamingComputationRanges:
+    description: Describes full or partial data disk assignment information of the computation ranges.
+    properties:
+      computationId:
+        description: The ID of the computation.
+        type: string
+        required: false
+      rangeAssignments:
+        description: Data disk assignments for ranges from this computation.
+        items:
+          type: KeyRangeDataDiskAssignment
+        type: array
+        required: false
+  StreamingComputationTask:
+    description: A task which describes what action should be performed for the specified streaming computation ranges.
+    properties:
+      computationRanges:
+        description: Contains ranges of a streaming computation this task should apply to.
+        items:
+          type: StreamingComputationRanges
+        type: array
+        required: false
+      dataDisks:
+        description: Describes the set of data disks this task should apply to.
+        items:
+          type: MountedDataDisk
+        type: array
+        required: false
+      taskType:
+        description: A type of streaming computation task.
+        enum:
+          - STREAMING_COMPUTATION_TASK_UNKNOWN
+          - STREAMING_COMPUTATION_TASK_STOP
+          - STREAMING_COMPUTATION_TASK_START
+        type: string
+        required: false
+  StreamingConfigTask:
+    description: A task that carries configuration information for streaming computations.
+    properties:
+      streamingComputationConfigs:
+        description: Set of computation configuration information.
+        items:
+          type: StreamingComputationConfig
+        type: array
+        required: false
+      userStepToStateFamilyNameMap:
+        additionalProperties:
+          type: string
+        description: Map from user step names to state families.
+        type: object
+        required: false
+  StreamingSetupTask:
+    description: A task which initializes part of a streaming Dataflow job.
+    properties:
+      drain:
+        description: The user has requested drain.
+        type: boolean
+        required: false
+      receiveWorkPort:
+        description: The TCP port on which the worker should listen for messages from other streaming computation workers.
+        format: int32
+        type: integer
+        required: false
+      streamingComputationTopology:
+        description: The global topology of the streaming Dataflow job.
+        type: TopologyConfig
+        required: false
+      workerHarnessPort:
+        description: The TCP port used by the worker to communicate with the Dataflow worker harness.
+        format: int32
+        type: integer
+        required: false
+  StreamingSideInputLocation:
+    description: Identifies the location of a streaming side input.
+    properties:
+      stateFamily:
+        description: Identifies the state family where this side input is stored.
+        type: string
+        required: false
+      tag:
+        description: Identifies the particular side input within the streaming Dataflow job.
+        type: string
+        required: false
+  StreamingStageLocation:
+    description: 'Identifies the location of a streaming computation stage, for stage-to-stage communication.'
+    properties:
+      streamId:
+        description: Identifies the particular stream within the streaming Dataflow job.
+        type: string
+        required: false
+  StringList:
+    description: A metric value representing a list of strings.
+    properties:
+      elements:
+        description: Elements of the list.
+        items:
+          type: string
+        type: array
+        required: false
+  TaskRunnerSettings:
+    description: Taskrunner configuration settings.
+    properties:
+      alsologtostderr:
+        description: Also send taskrunner log info to stderr?
+        type: boolean
+        required: false
+      baseTaskDir:
+        description: Location on the worker for task-specific subdirectories.
+        type: string
+        required: false
+      baseUrl:
+        description: 'The base URL for the taskrunner to use when accessing Google Cloud APIs. When workers access Google Cloud APIs, they logically do so via relative URLs. If this field is specified, it supplies the base URL to use for resolving these relative URLs. The normative algorithm used is defined by RFC 1808, "Relative Uniform Resource Locators". If not specified, the default value is "http://www.googleapis.com/"'
+        type: string
+        required: false
+      commandlinesFileName:
+        description: Store preprocessing commands in this file.
+        type: string
+        required: false
+      continueOnException:
+        description: Do we continue taskrunner if an exception is hit?
+        type: boolean
+        required: false
+      dataflowApiVersion:
+        description: 'API version of endpoint, e.g. "v1b3"'
+        type: string
+        required: false
+      harnessCommand:
+        description: Command to launch the worker harness.
+        type: string
+        required: false
+      languageHint:
+        description: Suggested backend language.
+        type: string
+        required: false
+      logDir:
+        description: Directory on the VM to store logs.
+        type: string
+        required: false
+      logToSerialconsole:
+        description: Send taskrunner log into to Google Compute Engine VM serial console?
+        type: boolean
+        required: false
+      logUploadLocation:
+        description: 'Indicates where to put logs. If this is not specified, the logs will not be uploaded. The supported resource type is: Google Cloud Storage: storage.googleapis.com/{bucket}/{object} bucket.storage.googleapis.com/{object}'
+        type: string
+        required: false
+      oauthScopes:
+        description: OAuth2 scopes to be requested by the taskrunner in order to access the dataflow API.
+        items:
+          type: string
+        type: array
+        required: false
+      parallelWorkerSettings:
+        description: Settings to pass to the parallel worker harness.
+        type: WorkerSettings
+        required: false
+      streamingWorkerMainClass:
+        description: Streaming worker main class name.
+        type: string
+        required: false
+      taskGroup:
+        description: The UNIX group ID on the worker VM to use for tasks launched by taskrunner; e.g. "wheel".
+        type: string
+        required: false
+      taskUser:
+        description: The UNIX user ID on the worker VM to use for tasks launched by taskrunner; e.g. "root".
+        type: string
+        required: false
+      tempStoragePrefix:
+        description: 'The prefix of the resources the taskrunner should use for temporary storage. The supported resource type is: Google Cloud Storage: storage.googleapis.com/{bucket}/{object} bucket.storage.googleapis.com/{object}'
+        type: string
+        required: false
+      vmId:
+        description: ID string of VM.
+        type: string
+        required: false
+      workflowFileName:
+        description: Store the workflow in this file.
+        type: string
+        required: false
+  TopologyConfig:
+    description: 'Global topology of the streaming Dataflow job, including all computations and their sharded locations.'
+    properties:
+      computations:
+        description: The computations associated with a streaming Dataflow job.
+        items:
+          type: ComputationTopology
+        type: array
+        required: false
+      dataDiskAssignments:
+        description: The disks assigned to a streaming Dataflow job.
+        items:
+          type: DataDiskAssignment
+        type: array
+        required: false
+      forwardingKeyBits:
+        description: The size (in bits) of keys that will be assigned to source messages.
+        format: int32
+        type: integer
+        required: false
+      persistentStateVersion:
+        description: Version number for persistent state.
+        format: int32
+        type: integer
+        required: false
+      userStageToComputationNameMap:
+        additionalProperties:
+          type: string
+        description: Maps user stage names to stable computation names.
+        type: object
+        required: false
+  WorkItem:
+    description: WorkItem represents basic information about a WorkItem to be executed in the cloud.
+    properties:
+      configuration:
+        description: Work item-specific configuration as an opaque blob.
+        type: string
+        required: false
+      id:
+        description: Identifies this WorkItem.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      initialReportIndex:
+        description: The initial index to use when reporting the status of the WorkItem.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      jobId:
+        description: Identifies the workflow job this WorkItem belongs to.
+        type: string
+        required: false
+      leaseExpireTime:
+        description: Time when the lease on this Work will expire.
+        type: string
+        required: false
+      mapTask:
+        description: Additional information for MapTask WorkItems.
+        type: MapTask
+        required: false
+      packages:
+        description: Any required packages that need to be fetched in order to execute this WorkItem.
+        items:
+          type: Package
+        type: array
+        required: false
+      projectId:
+        description: Identifies the cloud project this WorkItem belongs to.
+        type: string
+        required: false
+      reportStatusInterval:
+        description: Recommended reporting interval.
+        type: string
+        required: false
+      seqMapTask:
+        description: Additional information for SeqMapTask WorkItems.
+        type: SeqMapTask
+        required: false
+      shellTask:
+        description: Additional information for ShellTask WorkItems.
+        type: ShellTask
+        required: false
+      sourceOperationTask:
+        description: Additional information for source operation WorkItems.
+        type: SourceOperationRequest
+        required: false
+      streamingComputationTask:
+        description: Additional information for StreamingComputationTask WorkItems.
+        type: StreamingComputationTask
+        required: false
+      streamingConfigTask:
+        description: Additional information for StreamingConfigTask WorkItems.
+        type: StreamingConfigTask
+        required: false
+      streamingSetupTask:
+        description: Additional information for StreamingSetupTask WorkItems.
+        type: StreamingSetupTask
+        required: false
+  WorkItemServiceState:
+    description: The Dataflow service's idea of the current state of a WorkItem being processed by a worker.
+    properties:
+      harnessData:
+        additionalProperties:
+          description: Properties of the object.
+        description: 'Other data returned by the service, specific to the particular worker harness.'
+        type: object
+        required: false
+      leaseExpireTime:
+        description: Time at which the current lease will expire.
+        type: string
+        required: false
+      metricShortId:
+        description: 'The short ids that workers should use in subsequent metric updates. Workers should strive to use short ids whenever possible, but it is ok to request the short_id again if a worker lost track of it (e.g. if the worker is recovering from a crash). NOTE: it is possible that the response may have short ids for a subset of the metrics.'
+        items:
+          type: MetricShortId
+        type: array
+        required: false
+      nextReportIndex:
+        description: 'The index value to use for the next report sent by the worker. Note: If the report call fails for whatever reason, the worker should reuse this index for subsequent report attempts.'
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      reportStatusInterval:
+        description: New recommended reporting interval.
+        type: string
+        required: false
+      splitRequest:
+        description: The progress point in the WorkItem where the Dataflow service suggests that the worker truncate the task.
+        type: ApproximateSplitRequest
+        required: false
+      suggestedStopPoint:
+        description: DEPRECATED in favor of split_request.
+        type: ApproximateProgress
+        required: false
+      suggestedStopPosition:
+        description: 'Obsolete, always empty.'
+        type: Position
+        required: false
+  WorkItemStatus:
+    description: Conveys a worker's progress through the work described by a WorkItem.
+    properties:
+      completed:
+        description: True if the WorkItem was completed (successfully or unsuccessfully).
+        type: boolean
+        required: false
+      counterUpdates:
+        description: Worker output counters for this WorkItem.
+        items:
+          type: CounterUpdate
+        type: array
+        required: false
+      dynamicSourceSplit:
+        description: See documentation of stop_position.
+        type: DynamicSourceSplit
+        required: false
+      errors:
+        description: 'Specifies errors which occurred during processing. If errors are provided, and completed = true, then the WorkItem is considered to have failed.'
+        items:
+          type: Status
+        type: array
+        required: false
+      metricUpdates:
+        description: DEPRECATED in favor of counter_updates.
+        items:
+          type: MetricUpdate
+        type: array
+        required: false
+      progress:
+        description: DEPRECATED in favor of reported_progress.
+        type: ApproximateProgress
+        required: false
+      reportIndex:
+        description: 'The report index. When a WorkItem is leased, the lease will contain an initial report index. When a WorkItem''s status is reported to the system, the report should be sent with that report index, and the response will contain the index the worker should use for the next report. Reports received with unexpected index values will be rejected by the service. In order to preserve idempotency, the worker should not alter the contents of a report, even if the worker must submit the same report multiple times before getting back a response. The worker should not submit a subsequent report until the response for the previous report had been received from the service.'
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      reportedProgress:
+        description: The worker's progress through this WorkItem.
+        type: ApproximateReportedProgress
+        required: false
+      requestedLeaseDuration:
+        description: Amount of time the worker requests for its lease.
+        type: string
+        required: false
+      sourceFork:
+        description: DEPRECATED in favor of dynamic_source_split.
+        type: SourceFork
+        required: false
+      sourceOperationResponse:
+        description: 'If the work item represented a SourceOperationRequest, and the work is completed, contains the result of the operation.'
+        type: SourceOperationResponse
+        required: false
+      stopPosition:
+        description: 'A worker may split an active map task in two parts, "primary" and "residual", continuing to process the primary part and returning the residual part into the pool of available work. This event is called a "dynamic split" and is critical to the dynamic work rebalancing feature. The two obtained sub-tasks are called "parts" of the split. The parts, if concatenated, must represent the same input as would be read by the current task if the split did not happen. The exact way in which the original task is decomposed into the two parts is specified either as a position demarcating them (stop_position), or explicitly as two DerivedSources, if this task consumes a user-defined source type (dynamic_source_split). The "current" task is adjusted as a result of the split: after a task with range [A, B) sends a stop_position update at C, its range is considered to be [A, C), e.g.: * Progress should be interpreted relative to the new range, e.g. "75% completed" means "75% of [A, C) completed" * The worker should interpret proposed_stop_position relative to the new range, e.g. "split at 68%" should be interpreted as "split at 68% of [A, C)". * If the worker chooses to split again using stop_position, only stop_positions in [A, C) will be accepted. * Etc. dynamic_source_split has similar semantics: e.g., if a task with source S splits using dynamic_source_split into {P, R} (where P and R must be together equivalent to S), then subsequent progress and proposed_stop_position should be interpreted relative to P, and in a potential subsequent dynamic_source_split into {P'', R''}, P'' and R'' must be together equivalent to P, etc.'
+        type: Position
+        required: false
+      workItemId:
+        description: Identifies the WorkItem.
+        type: string
+        required: false
+  WorkerHealthReport:
+    description: WorkerHealthReport contains information about the health of a worker. The VM should be identified by the labels attached to the WorkerMessage that this health ping belongs to.
+    properties:
+      pods:
+        description: 'The pods running on the worker. See: http://kubernetes.io/v1.1/docs/api-reference/v1/definitions.html#_v1_pod This field is used by the worker to send the status of the indvidual containers running on each worker.'
+        items:
+          additionalProperties:
+            description: Properties of the object.
+          type: object
+        type: array
+        required: false
+      reportInterval:
+        description: The interval at which the worker is sending health reports. The default value of 0 should be interpreted as the field is not being explicitly set by the worker.
+        type: string
+        required: false
+      vmIsHealthy:
+        description: Whether the VM is healthy.
+        type: boolean
+        required: false
+      vmStartupTime:
+        description: The time the VM was booted.
+        type: string
+        required: false
+  WorkerHealthReportResponse:
+    description: WorkerHealthReportResponse contains information returned to the worker in response to a health ping.
+    properties:
+      reportInterval:
+        description: A positive value indicates the worker should change its reporting interval to the specified value. The default value of zero means no change in report rate is requested by the server.
+        type: string
+        required: false
+  WorkerMessage:
+    description: WorkerMessage provides information to the backend about a worker.
+    properties:
+      labels:
+        additionalProperties:
+          type: string
+        description: 'Labels are used to group WorkerMessages. For example, a worker_message about a particular container might have the labels: { "JOB_ID": "2015-04-22", "WORKER_ID": "wordcount-vm-2015…" "CONTAINER_TYPE": "worker", "CONTAINER_ID": "ac1234def"} Label tags typically correspond to Label enum values. However, for ease of development other strings can be used as tags. LABEL_UNSPECIFIED should not be used here.'
+        type: object
+        required: false
+      time:
+        description: The timestamp of the worker_message.
+        type: string
+        required: false
+      workerHealthReport:
+        description: The health of a worker.
+        type: WorkerHealthReport
+        required: false
+      workerMessageCode:
+        description: A worker message code.
+        type: WorkerMessageCode
+        required: false
+  WorkerMessageCode:
+    description: 'A message code is used to report status and error messages to the service. The message codes are intended to be machine readable. The service will take care of translating these into user understandable messages if necessary. Example use cases: 1. Worker processes reporting successful startup. 2. Worker processes reporting specific errors (e.g. package staging failure).'
+    properties:
+      code:
+        description: 'The code is a string intended for consumption by a machine that identifies the type of message being sent. Examples: 1. "HARNESS_STARTED" might be used to indicate the worker harness has started. 2. "GCS_DOWNLOAD_ERROR" might be used to indicate an error downloading a GCS file as part of the boot process of one of the worker containers. This is a string and not an enum to make it easy to add new codes without waiting for an API change.'
+        type: string
+        required: false
+      parameters:
+        additionalProperties:
+          description: Properties of the object.
+        description: 'Parameters contains specific information about the code. This is a struct to allow parameters of different types. Examples: 1. For a "HARNESS_STARTED" message parameters might provide the name of the worker and additional data like timing information. 2. For a "GCS_DOWNLOAD_ERROR" parameters might contain fields listing the GCS objects being downloaded and fields containing errors. In general complex data structures should be avoided. If a worker needs to send a specific and complicated data structure then please consider defining a new proto and adding it to the data oneof in WorkerMessageResponse. Conventions: Parameters should only be used for information that isn''t typically passed as a label. hostname and other worker identifiers should almost always be passed as labels since they will be included on most messages.'
+        type: object
+        required: false
+  WorkerMessageResponse:
+    description: A worker_message response allows the server to pass information to the sender.
+    properties:
+      workerHealthReportResponse:
+        description: The service's response to a worker's health report.
+        type: WorkerHealthReportResponse
+        required: false
+  WorkerPool:
+    description: 'Describes one particular pool of Dataflow workers to be instantiated by the Dataflow service in order to perform the computations required by a job. Note that a workflow job may use multiple pools, in order to match the various computational requirements of the various stages of the job.'
+    properties:
+      autoscalingSettings:
+        description: Settings for autoscaling of this WorkerPool.
+        type: AutoscalingSettings
+        required: false
+      dataDisks:
+        description: Data disks that are used by a VM in this workflow.
+        items:
+          type: Disk
+        type: array
+        required: false
+      defaultPackageSet:
+        description: The default package set to install. This allows the service to select a default set of packages which are useful to worker harnesses written in a particular language.
+        enum:
+          - DEFAULT_PACKAGE_SET_UNKNOWN
+          - DEFAULT_PACKAGE_SET_NONE
+          - DEFAULT_PACKAGE_SET_JAVA
+          - DEFAULT_PACKAGE_SET_PYTHON
+        type: string
+        required: false
+      diskSizeGb:
+        description: 'Size of root disk for VMs, in GB. If zero or unspecified, the service will attempt to choose a reasonable default.'
+        format: int32
+        type: integer
+        required: false
+      diskSourceImage:
+        description: Fully qualified source image for disks.
+        type: string
+        required: false
+      diskType:
+        description: 'Type of root disk for VMs. If empty or unspecified, the service will attempt to choose a reasonable default.'
+        type: string
+        required: false
+      ipConfiguration:
+        description: Configuration for VM IPs.
+        enum:
+          - WORKER_IP_UNSPECIFIED
+          - WORKER_IP_PUBLIC
+          - WORKER_IP_PRIVATE
+        type: string
+        required: false
+      kind:
+        description: The kind of the worker pool; currently only 'harness' and 'shuffle' are supported.
+        type: string
+        required: false
+      machineType:
+        description: 'Machine type (e.g. "n1-standard-1"). If empty or unspecified, the service will attempt to choose a reasonable default.'
+        type: string
+        required: false
+      metadata:
+        additionalProperties:
+          type: string
+        description: Metadata to set on the Google Compute Engine VMs.
+        type: object
+        required: false
+      network:
+        description: 'Network to which VMs will be assigned. If empty or unspecified, the service will use the network "default".'
+        type: string
+        required: false
+      numThreadsPerWorker:
+        description: 'The number of threads per worker harness. If empty or unspecified, the service will choose a number of threads (according to the number of cores on the selected machine type for batch, or 1 by convention for streaming).'
+        format: int32
+        type: integer
+        required: false
+      numWorkers:
+        description: 'Number of Google Compute Engine workers in this pool needed to execute the job. If zero or unspecified, the service will attempt to choose a reasonable default.'
+        format: int32
+        type: integer
+        required: false
+      onHostMaintenance:
+        description: 'The action to take on host maintenance, as defined by the Google Compute Engine API.'
+        type: string
+        required: false
+      packages:
+        description: Packages to be installed on workers.
+        items:
+          type: Package
+        type: array
+        required: false
+      poolArgs:
+        additionalProperties:
+          description: Properties of the object. Contains field @type with type URL.
+        description: Extra arguments for this worker pool.
+        type: object
+        required: false
+      subnetwork:
+        description: 'Subnetwork to which VMs will be assigned, if desired. Expected to be of the form "regions/REGION/subnetworks/SUBNETWORK".'
+        type: string
+        required: false
+      taskrunnerSettings:
+        description: Settings passed through to Google Compute Engine workers when using the standard Dataflow task runner. Users should ignore this field.
+        type: TaskRunnerSettings
+        required: false
+      teardownPolicy:
+        description: 'Sets the policy for determining when to turndown worker pool. Allowed values are: TEARDOWN_ALWAYS, TEARDOWN_ON_SUCCESS, and TEARDOWN_NEVER. TEARDOWN_ALWAYS means workers are always torn down regardless of whether the job succeeds. TEARDOWN_ON_SUCCESS means workers are torn down if the job succeeds. TEARDOWN_NEVER means the workers are never torn down. If the workers are not torn down by the service, they will continue to run and use Google Compute Engine VM resources in the user''s project until they are explicitly terminated by the user. Because of this, Google recommends using the TEARDOWN_ALWAYS policy except for small, manually supervised test jobs. If unknown or unspecified, the service will attempt to choose a reasonable default.'
+        enum:
+          - TEARDOWN_POLICY_UNKNOWN
+          - TEARDOWN_ALWAYS
+          - TEARDOWN_ON_SUCCESS
+          - TEARDOWN_NEVER
+        type: string
+        required: false
+      workerHarnessContainerImage:
+        description: 'Docker container image that executes Dataflow worker harness, residing in Google Container Registry. Required.'
+        type: string
+        required: false
+      zone:
+        description: 'Zone to run the worker pools in. If empty or unspecified, the service will attempt to choose a reasonable default.'
+        type: string
+        required: false
+  WorkerSettings:
+    description: Provides data to pass through to the worker harness.
+    properties:
+      baseUrl:
+        description: 'The base URL for accessing Google Cloud APIs. When workers access Google Cloud APIs, they logically do so via relative URLs. If this field is specified, it supplies the base URL to use for resolving these relative URLs. The normative algorithm used is defined by RFC 1808, "Relative Uniform Resource Locators". If not specified, the default value is "http://www.googleapis.com/"'
+        type: string
+        required: false
+      reportingEnabled:
+        description: Send work progress updates to service.
+        type: boolean
+        required: false
+      servicePath:
+        description: 'The Dataflow service path relative to the root URL, for example, "dataflow/v1b3/projects".'
+        type: string
+        required: false
+      shuffleServicePath:
+        description: 'The Shuffle service path relative to the root URL, for example, "shuffle/v1beta1".'
+        type: string
+        required: false
+      tempStoragePrefix:
+        description: 'The prefix of the resources the system should use for temporary storage. The supported resource type is: Google Cloud Storage: storage.googleapis.com/{bucket}/{object} bucket.storage.googleapis.com/{object}'
+        type: string
+        required: false
+      workerId:
+        description: ID of the worker running this pipeline.
+        type: string
+        required: false
+  WriteInstruction:
+    description: 'An instruction that writes records. Takes one input, produces no outputs.'
+    properties:
+      input:
+        description: The input.
+        type: InstructionInput
+        required: false
+      sink:
+        description: The sink to write to.
+        type: Sink
+        required: false
+traits:
+  xgafv:
+    queryParameters:
+      $.xgafv:
+        type: string
+        description: V1 error format.
+  accessToken:
+    queryParameters:
+      access_token:
+        type: string
+        description: OAuth access token.
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for response.
+        default: json
+  bearerToken:
+    queryParameters:
+      bearer_token:
+        type: string
+        description: OAuth bearer token.
+  callback:
+    queryParameters:
+      callback:
+        type: string
+        description: JSONP
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  pp:
+    queryParameters:
+      pp:
+        type: boolean
+        description: Pretty-print response.
+        default: true
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.'
+  uploadType:
+    queryParameters:
+      uploadType:
+        type: string
+        description: 'Legacy upload protocol for media (e.g. "media", "multipart").'
+  uploadProtocol:
+    queryParameters:
+      upload_protocol:
+        type: string
+        description: 'Upload protocol for media (e.g. "raw", "multipart").'

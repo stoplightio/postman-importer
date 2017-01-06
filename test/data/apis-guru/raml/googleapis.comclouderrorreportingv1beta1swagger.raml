@@ -1,0 +1,905 @@
+#%RAML 1.0
+title: Stackdriver Error Reporting
+version: v1beta1
+baseUri: 'https://clouderrorreporting.googleapis.com/'
+protocols:
+  - HTTPS
+description: |
+  Stackdriver Error Reporting groups and counts similar errors from cloud services. The Stackdriver Error Reporting API provides a way to report new errors and read access to error groups and their associated errors.
+(oas-tags-definition):
+  - name: projects
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-x-hasEquivalentPaths: any
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://clouderrorreporting.googleapis.com/$discovery/rest?version=v1beta1'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): clouderrorreporting
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://cloud.google.com/error-reporting/'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/cloud-platform'
+    description: Oauth 2.0 authentication
+/v1beta1:
+  displayName: v1beta1
+  '/{projectName}':
+    displayName: '{projectName}'
+    /groupStats:
+      displayName: groupStats
+      get:
+        displayName: clouderrorreporting.projects.groupStats.list
+        description: Lists the specified groups.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: ListGroupStatsResponse
+            description: Successful response
+        queryParameters:
+          alignment:
+            description: |-
+              [Optional] The alignment of the timed counts to be returned.
+              Default is `ALIGNMENT_EQUAL_AT_END`.
+            enum:
+              - ERROR_COUNT_ALIGNMENT_UNSPECIFIED
+              - ALIGNMENT_EQUAL_ROUNDED
+              - ALIGNMENT_EQUAL_AT_END
+            type: string
+            displayName: |-
+              [Optional] The alignment of the timed counts to be returned.
+              Default is `ALIGNMENT_EQUAL_AT_END`.
+          timeRange.period:
+            description: Restricts the query to the specified time range.
+            enum:
+              - PERIOD_UNSPECIFIED
+              - PERIOD_1_HOUR
+              - PERIOD_6_HOURS
+              - PERIOD_1_DAY
+              - PERIOD_1_WEEK
+              - PERIOD_30_DAYS
+            type: string
+            displayName: Restricts the query to the specified time range.
+          order:
+            description: |-
+              [Optional] The sort order in which the results are returned.
+              Default is `COUNT_DESC`.
+            enum:
+              - GROUP_ORDER_UNSPECIFIED
+              - COUNT_DESC
+              - LAST_SEEN_DESC
+              - CREATED_DESC
+              - AFFECTED_USERS_DESC
+            type: string
+            displayName: |-
+              [Optional] The sort order in which the results are returned.
+              Default is `COUNT_DESC`.
+          groupId:
+            collectionFormat: multi
+            description: '[Optional] List all <code>ErrorGroupStats</code> with these IDs.'
+            items:
+              type: string
+            type: array
+            displayName: '[Optional] List all <code>ErrorGroupStats</code> with these IDs.'
+            facets:
+              collectionFormat: string
+          serviceFilter.service:
+            description: |-
+              [Optional] The exact value to match against
+              [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
+            type: string
+            displayName: |-
+              [Optional] The exact value to match against
+              [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
+          alignmentTime:
+            description: |-
+              [Optional] Time where the timed counts shall be aligned if rounded
+              alignment is chosen. Default is 00:00 UTC.
+            type: string
+            displayName: |-
+              [Optional] Time where the timed counts shall be aligned if rounded
+              alignment is chosen. Default is 00:00 UTC.
+          serviceFilter.version:
+            description: |-
+              [Optional] The exact value to match against
+              [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
+            type: string
+            displayName: |-
+              [Optional] The exact value to match against
+              [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
+          pageSize:
+            description: |-
+              [Optional] The maximum number of results to return per response.
+              Default is 20.
+            type: integer
+            displayName: |-
+              [Optional] The maximum number of results to return per response.
+              Default is 20.
+          timedCountDuration:
+            description: |-
+              [Optional] The preferred duration for a single returned `TimedCount`.
+              If not set, no timed counts are returned.
+            type: string
+            displayName: |-
+              [Optional] The preferred duration for a single returned `TimedCount`.
+              If not set, no timed counts are returned.
+          pageToken:
+            description: |-
+              [Optional] A `next_page_token` provided by a previous response. To view
+              additional results, pass this token along with the identical query
+              parameters as the first request.
+            type: string
+            displayName: |-
+              [Optional] A `next_page_token` provided by a previous response. To view
+              additional results, pass this token along with the identical query
+              parameters as the first request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/cloud-platform'
+        (oas-tags):
+          - projects
+      is:
+        - accessToken
+        - prettyPrint
+        - key
+        - quotaUser
+        - pp
+        - fields
+        - alt
+        - xgafv
+        - callback
+        - oauthToken
+        - uploadType
+        - bearerToken
+        - uploadProtocol
+    '/events:report':
+      displayName: 'events:report'
+      post:
+        displayName: clouderrorreporting.projects.events.report
+        description: |-
+          Report an individual error event.
+
+          This endpoint accepts <strong>either</strong> an OAuth token,
+          <strong>or</strong> an
+          <a href="https://support.google.com/cloud/answer/6158862">API key</a>
+          for authentication. To use an API key, append it to the URL as the value of
+          a `key` parameter. For example:
+          <pre>POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456</pre>
+        body:
+          application/json:
+            type: ReportedErrorEvent
+            (oas-body-name): body
+        responses:
+          '200':
+            body:
+              application/json:
+                type: ReportErrorEventResponse
+            description: Successful response
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/cloud-platform'
+        (oas-tags):
+          - projects
+      is:
+        - accessToken
+        - prettyPrint
+        - key
+        - quotaUser
+        - pp
+        - fields
+        - alt
+        - xgafv
+        - callback
+        - oauthToken
+        - uploadType
+        - bearerToken
+        - uploadProtocol
+    /events:
+      displayName: events
+      get:
+        displayName: clouderrorreporting.projects.events.list
+        description: Lists the specified events.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: ListEventsResponse
+            description: Successful response
+        queryParameters:
+          timeRange.period:
+            description: Restricts the query to the specified time range.
+            enum:
+              - PERIOD_UNSPECIFIED
+              - PERIOD_1_HOUR
+              - PERIOD_6_HOURS
+              - PERIOD_1_DAY
+              - PERIOD_1_WEEK
+              - PERIOD_30_DAYS
+            type: string
+            displayName: Restricts the query to the specified time range.
+          serviceFilter.service:
+            description: |-
+              [Optional] The exact value to match against
+              [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
+            type: string
+            displayName: |-
+              [Optional] The exact value to match against
+              [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
+          groupId:
+            description: '[Required] The group for which events shall be returned.'
+            type: string
+            displayName: '[Required] The group for which events shall be returned.'
+          serviceFilter.version:
+            description: |-
+              [Optional] The exact value to match against
+              [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
+            type: string
+            displayName: |-
+              [Optional] The exact value to match against
+              [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
+          pageSize:
+            description: '[Optional] The maximum number of results to return per response.'
+            type: integer
+            displayName: '[Optional] The maximum number of results to return per response.'
+          pageToken:
+            description: '[Optional] A `next_page_token` provided by a previous response.'
+            type: string
+            displayName: '[Optional] A `next_page_token` provided by a previous response.'
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/cloud-platform'
+        (oas-tags):
+          - projects
+      is:
+        - accessToken
+        - prettyPrint
+        - key
+        - quotaUser
+        - pp
+        - fields
+        - alt
+        - xgafv
+        - callback
+        - oauthToken
+        - uploadType
+        - bearerToken
+        - uploadProtocol
+      delete:
+        displayName: clouderrorreporting.projects.deleteEvents
+        description: Deletes all error events of a given project.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: DeleteEventsResponse
+            description: Successful response
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/cloud-platform'
+        (oas-tags):
+          - projects
+  '/{name}':
+    displayName: '{name}'
+    uriParameters:
+      name:
+        description: |-
+          The group resource name.
+          Example: <code>projects/my-project-123/groups/my-groupid</code>
+        required: true
+        type: string
+        displayName: |-
+          The group resource name.
+          Example: <code>projects/my-project-123/groups/my-groupid</code>
+    put:
+      displayName: clouderrorreporting.projects.groups.update
+      description: |-
+        Replace the data for the specified group.
+        Fails if the group does not exist.
+      body:
+        application/json:
+          type: ErrorGroup
+          (oas-body-name): body
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ErrorGroup
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/cloud-platform'
+      (oas-tags):
+        - projects
+    is:
+      - accessToken
+      - prettyPrint
+      - key
+      - quotaUser
+      - pp
+      - fields
+      - alt
+      - xgafv
+      - callback
+      - oauthToken
+      - uploadType
+      - bearerToken
+      - uploadProtocol
+  '/{groupName}':
+    displayName: '{groupName}'
+    uriParameters:
+      groupName:
+        description: |-
+          [Required] The group resource name. Written as
+          <code>projects/<var>projectID</var>/groups/<var>group_name</var></code>.
+          Call
+          <a href="/error-reporting/reference/rest/v1beta1/projects.groupStats/list">
+          <code>groupStats.list</code></a> to return a list of groups belonging to
+          this project.
+
+          Example: <code>projects/my-project-123/groups/my-group</code>
+        required: true
+        type: string
+        displayName: |-
+          [Required] The group resource name. Written as
+          <code>projects/<var>projectID</var>/groups/<var>group_name</var></code>.
+          Call
+          <a href="/error-reporting/reference/rest/v1beta1/projects.groupStats/list">
+          <code>groupStats.list</code></a> to return a list of groups belonging to
+          this project.
+
+          Example: <code>projects/my-project-123/groups/my-group</code>
+    get:
+      displayName: clouderrorreporting.projects.groups.get
+      description: Get the specified group.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ErrorGroup
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/cloud-platform'
+      (oas-tags):
+        - projects
+    is:
+      - accessToken
+      - prettyPrint
+      - key
+      - quotaUser
+      - pp
+      - fields
+      - alt
+      - xgafv
+      - callback
+      - oauthToken
+      - uploadType
+      - bearerToken
+      - uploadProtocol
+types:
+  DeleteEventsResponse:
+    description: Response message for deleting error events.
+    properties: {}
+  ErrorContext:
+    description: |-
+      A description of the context in which an error occurred.
+      This data should be provided by the application when reporting an error,
+      unless the
+      error report has been generated automatically from Google App Engine logs.
+    properties:
+      httpRequest:
+        description: |-
+          The HTTP request which was processed when the error was
+          triggered.
+        type: HttpRequestContext
+        required: false
+      reportLocation:
+        description: |-
+          The location in the source code where the decision was made to
+          report the error, usually the place where it was logged.
+          For a logged exception this would be the source line where the
+          exception is logged, usually close to the place where it was
+          caught. This value is in contrast to `Exception.cause_location`,
+          which describes the source line where the exception was thrown.
+        type: SourceLocation
+        required: false
+      user:
+        description: |-
+          The user who caused or was affected by the crash.
+          This can be a user ID, an email address, or an arbitrary token that
+          uniquely identifies the user.
+          When sending an error report, leave this field empty if the user was not
+          logged in. In this case the
+          Error Reporting system will use other data, such as remote IP address, to
+          distinguish affected users. See `affected_users_count` in
+          `ErrorGroupStats`.
+        type: string
+        required: false
+  ErrorEvent:
+    description: An error event which is returned by the Error Reporting system.
+    properties:
+      context:
+        description: Data about the context in which the error occurred.
+        type: ErrorContext
+        required: false
+      eventTime:
+        description: |-
+          Time when the event occurred as provided in the error report.
+          If the report did not contain a timestamp, the time the error was received
+          by the Error Reporting system is used.
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      message:
+        description: The stack trace that was reported or logged by the service.
+        type: string
+        required: false
+      serviceContext:
+        description: The `ServiceContext` for which this error was reported.
+        type: ServiceContext
+        required: false
+  ErrorGroup:
+    description: Description of a group of similar error events.
+    properties:
+      groupId:
+        description: |-
+          Group IDs are unique for a given project. If the same kind of error
+          occurs in different service contexts, it will receive the same group ID.
+        type: string
+        required: false
+      name:
+        description: |-
+          The group resource name.
+          Example: <code>projects/my-project-123/groups/my-groupid</code>
+        type: string
+        required: false
+      trackingIssues:
+        description: Associated tracking issues.
+        items:
+          type: TrackingIssue
+        type: array
+        required: false
+  ErrorGroupStats:
+    description: |-
+      Data extracted for a specific group based on certain filter criteria,
+      such as a given time period and/or service filter.
+    properties:
+      affectedServices:
+        description: |-
+          Service contexts with a non-zero error count for the given filter
+          criteria. This list can be truncated if multiple services are affected.
+          Refer to `num_affected_services` for the total count.
+        items:
+          type: ServiceContext
+        type: array
+        required: false
+      affectedUsersCount:
+        description: |-
+          Approximate number of affected users in the given group that
+          match the filter criteria.
+          Users are distinguished by data in the `ErrorContext` of the
+          individual error events, such as their login name or their remote
+          IP address in case of HTTP requests.
+          The number of affected users can be zero even if the number of
+          errors is non-zero if no data was provided from which the
+          affected user could be deduced.
+          Users are counted based on data in the request
+          context that was provided in the error report. If more users are
+          implicitly affected, such as due to a crash of the whole service,
+          this is not reflected here.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      count:
+        description: |-
+          Approximate total number of events in the given group that match
+          the filter criteria.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      firstSeenTime:
+        description: |-
+          Approximate first occurrence that was ever seen for this group
+          and which matches the given filter criteria, ignoring the
+          time_range that was specified in the request.
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      group:
+        description: Group data that is independent of the filter criteria.
+        type: ErrorGroup
+        required: false
+      lastSeenTime:
+        description: |-
+          Approximate last occurrence that was ever seen for this group and
+          which matches the given filter criteria, ignoring the time_range
+          that was specified in the request.
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      numAffectedServices:
+        description: |-
+          The total number of services with a non-zero error count for the given
+          filter criteria.
+        format: int32
+        type: integer
+        required: false
+      representative:
+        description: |-
+          An arbitrary event that is chosen as representative for the whole group.
+          The representative event is intended to be used as a quick preview for
+          the whole group. Events in the group are usually sufficiently similar
+          to each other such that showing an arbitrary representative provides
+          insight into the characteristics of the group as a whole.
+        type: ErrorEvent
+        required: false
+      timedCounts:
+        description: |-
+          Approximate number of occurrences over time.
+          Timed counts returned by ListGroups are guaranteed to be:
+
+          - Inside the requested time interval
+          - Non-overlapping, and
+          - Ordered by ascending time.
+        items:
+          type: TimedCount
+        type: array
+        required: false
+  HttpRequestContext:
+    description: |-
+      HTTP request data that is related to a reported error.
+      This data should be provided by the application when reporting an error,
+      unless the
+      error report has been generated automatically from Google App Engine logs.
+    properties:
+      method:
+        description: 'The type of HTTP request, such as `GET`, `POST`, etc.'
+        type: string
+        required: false
+      referrer:
+        description: The referrer information that is provided with the request.
+        type: string
+        required: false
+      remoteIp:
+        description: |-
+          The IP address from which the request originated.
+          This can be IPv4, IPv6, or a token which is derived from the
+          IP address, depending on the data that has been provided
+          in the error report.
+        type: string
+        required: false
+      responseStatusCode:
+        description: The HTTP response status code for the request.
+        format: int32
+        type: integer
+        required: false
+      url:
+        description: The URL of the request.
+        type: string
+        required: false
+      userAgent:
+        description: The user agent information that is provided with the request.
+        type: string
+        required: false
+  ListEventsResponse:
+    description: Contains a set of requested error events.
+    properties:
+      errorEvents:
+        description: The error events which match the given request.
+        items:
+          type: ErrorEvent
+        type: array
+        required: false
+      nextPageToken:
+        description: |-
+          If non-empty, more results are available.
+          Pass this token, along with the same query parameters as the first
+          request, to view the next page of results.
+        type: string
+        required: false
+      timeRangeBegin:
+        description: The timestamp specifies the start time to which the request was restricted.
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+  ListGroupStatsResponse:
+    description: Contains a set of requested error group stats.
+    properties:
+      errorGroupStats:
+        description: The error group stats which match the given request.
+        items:
+          type: ErrorGroupStats
+        type: array
+        required: false
+      nextPageToken:
+        description: |-
+          If non-empty, more results are available.
+          Pass this token, along with the same query parameters as the first
+          request, to view the next page of results.
+        type: string
+        required: false
+      timeRangeBegin:
+        description: |-
+          The timestamp specifies the start time to which the request was restricted.
+          The start time is set based on the requested time range. It may be adjusted
+          to a later time if a project has exceeded the storage quota and older data
+          has been deleted.
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+  ReportErrorEventResponse:
+    description: |-
+      Response for reporting an individual error event.
+      Data may be added to this message in the future.
+    properties: {}
+  ReportedErrorEvent:
+    description: An error event which is reported to the Error Reporting system.
+    properties:
+      context:
+        description: '[Optional] A description of the context in which the error occurred.'
+        type: ErrorContext
+        required: false
+      eventTime:
+        description: |-
+          [Optional] Time when the event occurred.
+          If not provided, the time when the event was received by the
+          Error Reporting system will be used.
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      message:
+        description: |-
+          [Required] A message describing the error. The message can contain an
+          exception stack in one of the supported programming languages and formats.
+          In that case, the message is parsed and detailed exception information
+          is returned when retrieving the error event again.
+        type: string
+        required: false
+      serviceContext:
+        description: '[Required] The service context in which this error has occurred.'
+        type: ServiceContext
+        required: false
+  ServiceContext:
+    description: |-
+      Describes a running service that sends errors.
+      Its version changes over time and multiple versions can run in parallel.
+    properties:
+      service:
+        description: |-
+          An identifier of the service, such as the name of the
+          executable, job, or Google App Engine service name. This field is expected
+          to have a low number of values that are relatively stable over time, as
+          opposed to `version`, which can be changed whenever new code is deployed.
+
+          Contains the service name for error reports extracted from Google
+          App Engine logs or `default` if the App Engine default service is used.
+        type: string
+        required: false
+      version:
+        description: |-
+          Represents the source code version that the developer provided,
+          which could represent a version label or a Git SHA-1 hash, for example.
+        type: string
+        required: false
+  SourceLocation:
+    description: |-
+      Indicates a location in the source code of the service for which
+      errors are reported.
+      This data should be provided by the application when reporting an error,
+      unless the error report has been generated automatically from Google App
+      Engine logs. All fields are optional.
+    properties:
+      filePath:
+        description: |-
+          The source code filename, which can include a truncated relative
+          path, or a full path from a production machine.
+        type: string
+        required: false
+      functionName:
+        description: |-
+          Human-readable name of a function or method.
+          The value can include optional context like the class or package name.
+          For example, `my.package.MyClass.method` in case of Java.
+        type: string
+        required: false
+      lineNumber:
+        description: 1-based. 0 indicates that the line number is unknown.
+        format: int32
+        type: integer
+        required: false
+  TimedCount:
+    description: |-
+      The number of errors in a given time period.
+      All numbers are approximate since the error events are sampled
+      before counting them.
+    properties:
+      count:
+        description: Approximate number of occurrences in the given time period.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      endTime:
+        description: End of the time period to which `count` refers (excluded).
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      startTime:
+        description: Start of the time period to which `count` refers (included).
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+  TrackingIssue:
+    description: Information related to tracking the progress on resolving the error.
+    properties:
+      url:
+        description: |-
+          A URL pointing to a related entry in an issue tracking system.
+          Example: https://github.com/user/project/issues/4
+        type: string
+        required: false
+traits:
+  xgafv:
+    queryParameters:
+      $.xgafv:
+        type: string
+        description: V1 error format.
+        enum:
+          - '1'
+          - '2'
+  accessToken:
+    queryParameters:
+      access_token:
+        type: string
+        description: OAuth access token.
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for response.
+        default: json
+        enum:
+          - json
+          - media
+          - proto
+  bearerToken:
+    queryParameters:
+      bearer_token:
+        type: string
+        description: OAuth bearer token.
+  callback:
+    queryParameters:
+      callback:
+        type: string
+        description: JSONP
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  pp:
+    queryParameters:
+      pp:
+        type: boolean
+        description: Pretty-print response.
+        default: true
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.'
+  uploadType:
+    queryParameters:
+      uploadType:
+        type: string
+        description: 'Legacy upload protocol for media (e.g. "media", "multipart").'
+  uploadProtocol:
+    queryParameters:
+      upload_protocol:
+        type: string
+        description: 'Upload protocol for media (e.g. "raw", "multipart").'
+(oas-x-hasEquivalentPaths): true

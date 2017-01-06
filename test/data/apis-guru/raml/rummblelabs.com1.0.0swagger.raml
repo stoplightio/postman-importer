@@ -1,0 +1,526 @@
+#%RAML 1.0
+title: Seldon
+version: 1.0.0
+baseUri: 'http://recsvm.rummblelabs.com'
+mediaType: application/json
+protocols:
+  - HTTP
+  - HTTPS
+description: Seldon is an Open Predictive Platform that currently allows item recommendations and general predictive models to be deployed based on structured historical data.
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.seldon.io_wp-content_uploads_2014_10_Seldon-Logo-trans.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://recsvm.rummblelabs.com/api-spec/seldon.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): rummblelabs.com
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/js:
+  displayName: js
+  /recommendations:
+    displayName: recommendations
+    get:
+      displayName: getRecommendation
+      (oas-summary): Get recommendations for a user
+      responses:
+        '400':
+          description: Invalid parameters
+      queryParameters:
+        consumer_key:
+          default: uggyecofcz
+          description: consumer key
+          required: true
+          type: string
+          displayName: consumer key
+        user:
+          description: user id
+          required: true
+          type: string
+          displayName: user id
+        item:
+          description: currently viewed item id
+          required: false
+          type: string
+          displayName: currently viewed item id
+        limit:
+          description: max number of recommendations to return
+          required: false
+          type: integer
+          displayName: max number of recommendations to return
+        dimension:
+          description: 'get recommendations for a particular item dimension (e.g., just sports articles)'
+          required: false
+          type: integer
+          displayName: 'get recommendations for a particular item dimension (e.g., just sports articles)'
+        attributes:
+          description: the fields to return
+          format: command separated list
+          required: false
+          type: string
+          facets:
+            format: string
+          displayName: the fields to return
+        algorithms:
+          description: override default algorithms with specified algorithms
+          required: false
+          type: string
+          displayName: override default algorithms with specified algorithms
+        jsonpCallback:
+          description: JSONP callback
+          required: true
+          type: string
+          displayName: JSONP callback
+      (oas-tags):
+        - js recommendations
+  /action:
+    displayName: action
+    /new:
+      displayName: new
+      get:
+        displayName: addAction
+        (oas-summary): Add a user interaction
+        responses:
+          '400':
+            description: Invalid parameters
+        queryParameters:
+          consumer_key:
+            default: uggyecofcz
+            description: consumer key
+            required: true
+            type: string
+            displayName: consumer key
+          user:
+            description: user id
+            required: true
+            type: string
+            displayName: user id
+          item:
+            description: item id
+            required: true
+            type: string
+            displayName: item id
+          type:
+            description: type
+            required: true
+            type: string
+            displayName: type
+          jsonpCallback:
+            description: JSONP callback
+            required: true
+            type: string
+            displayName: JSONP callback
+          timestamp:
+            description: time
+            required: false
+            type: integer
+            displayName: time
+        (oas-tags):
+          - js actions
+/users:
+  displayName: users
+  '/{userId}':
+    displayName: '{userId}'
+    /recommendations:
+      displayName: recommendations
+      get:
+        displayName: getUserRecommendations
+        (oas-summary): get recommendations for a user
+        responses:
+          '400':
+            description: Invalid parameters
+        queryParameters:
+          oauth_token:
+            description: oauth token
+            required: false
+            type: string
+            displayName: oauth token
+          full:
+            description: get all attributes for user
+            required: false
+            type: boolean
+            displayName: get all attributes for user
+          limit:
+            description: limit number of actions returned
+            required: false
+            type: integer
+            displayName: limit number of actions returned
+          dimension:
+            description: 'get recommendations for a particular item dimension (e.g., just sports articles)'
+            required: false
+            type: integer
+            displayName: 'get recommendations for a particular item dimension (e.g., just sports articles)'
+          algorithms:
+            description: override default algorithms with specified algorithms
+            required: false
+            type: string
+            displayName: override default algorithms with specified algorithms
+        (oas-tags):
+          - oauth users
+          - oauth recommendations
+    /actions:
+      displayName: actions
+      get:
+        displayName: getUserActions
+        (oas-summary): get a user's recent actions
+        responses:
+          '400':
+            description: Invalid parameters
+        queryParameters:
+          oauth_token:
+            description: oauth token
+            required: false
+            type: string
+            displayName: oauth token
+          full:
+            description: get all attributes for user
+            required: false
+            type: boolean
+            displayName: get all attributes for user
+          limit:
+            description: limit number of actions returned
+            required: false
+            type: integer
+            displayName: limit number of actions returned
+        (oas-tags):
+          - oauth users
+          - oauth actions
+    uriParameters:
+      userId:
+        description: the user id to get
+        required: true
+        type: string
+        displayName: the user id to get
+    get:
+      displayName: getUser
+      (oas-summary): get a user
+      responses:
+        '400':
+          description: Invalid parameters
+      queryParameters:
+        oauth_token:
+          description: oauth token
+          required: false
+          type: string
+          displayName: oauth token
+        full:
+          description: get all attributes for user
+          required: false
+          type: boolean
+          displayName: get all attributes for user
+      (oas-tags):
+        - oauth users
+  get:
+    displayName: getUsers
+    (oas-summary): get users
+    responses:
+      '400':
+        description: Invalid parameters
+    queryParameters:
+      oauth_token:
+        description: oauth token
+        required: false
+        type: string
+        displayName: oauth token
+      full:
+        description: get all attributes for user
+        required: false
+        type: boolean
+        displayName: get all attributes for user
+      name:
+        description: keywords to match
+        required: false
+        type: string
+        displayName: keywords to match
+      limit:
+        description: limit number of users returned
+        required: false
+        type: integer
+        displayName: limit number of users returned
+    (oas-tags):
+      - oauth users
+  put:
+    displayName: updateUser
+    (oas-summary): update user
+    body:
+      application/json:
+        type: User
+        (oas-body-name): body
+        description: the json details
+    responses:
+      '400':
+        description: Invalid parameters
+    queryParameters:
+      oauth_token:
+        description: oauth token
+        required: false
+        type: string
+        displayName: oauth token
+    (oas-tags):
+      - oauth users
+  post:
+    displayName: postUser
+    (oas-summary): post new user
+    body:
+      application/json:
+        type: User
+        (oas-body-name): body
+        description: the json details
+    responses:
+      '400':
+        description: Invalid parameters
+    queryParameters:
+      oauth_token:
+        description: oauth token
+        required: false
+        type: string
+        displayName: oauth token
+    (oas-tags):
+      - oauth users
+/token:
+  displayName: token
+  get:
+    displayName: getToken
+    (oas-summary): get token
+    responses:
+      '400':
+        description: Invalid parameters
+    queryParameters:
+      consumer_key:
+        description: consumer key
+        required: true
+        type: string
+        displayName: consumer key
+      consumer_secret:
+        description: consumer secret
+        required: true
+        type: string
+        displayName: consumer secret
+    (oas-tags):
+      - token
+/actions:
+  displayName: actions
+  post:
+    displayName: postAction
+    (oas-summary): post new action between a user and an item
+    body:
+      application/json:
+        type: Action
+        (oas-body-name): body
+        description: the json details
+    responses:
+      '400':
+        description: Invalid parameters
+    queryParameters:
+      oauth_token:
+        description: oauth token
+        required: false
+        type: string
+        displayName: oauth token
+    (oas-tags):
+      - oauth actions
+/items:
+  displayName: items
+  post:
+    displayName: postItem
+    (oas-summary): post new item
+    body:
+      application/json:
+        type: Item
+        (oas-body-name): body
+        description: the json details
+    responses:
+      '400':
+        description: Invalid parameters
+    queryParameters:
+      oauth_token:
+        description: oauth token
+        required: false
+        type: string
+        displayName: oauth token
+    (oas-tags):
+      - oauth items
+  /type:
+    displayName: type
+    get:
+      displayName: getItemTypes
+      (oas-summary): get item type
+      responses:
+        '400':
+          description: Invalid parameters
+      queryParameters:
+        oauth_token:
+          description: oauth token
+          required: false
+          type: string
+          displayName: oauth token
+      (oas-tags):
+        - oauth items
+  '/{itemId}':
+    displayName: '{itemId}'
+    uriParameters:
+      itemId:
+        description: the item id to get
+        required: true
+        type: string
+        displayName: the item id to get
+    get:
+      displayName: getItem
+      (oas-summary): get item
+      responses:
+        '400':
+          description: Invalid parameters
+      queryParameters:
+        oauth_token:
+          description: oauth token
+          required: false
+          type: string
+          displayName: oauth token
+        full:
+          description: get all attributes for item
+          required: false
+          type: boolean
+          displayName: get all attributes for item
+      (oas-tags):
+        - oauth items
+  put:
+    displayName: putItem
+    (oas-summary): update item
+    body:
+      application/json:
+        type: Item
+        (oas-body-name): body
+        description: the json details
+    responses:
+      '400':
+        description: Invalid parameters
+    queryParameters:
+      oauth_token:
+        description: oauth token
+        required: false
+        type: string
+        displayName: oauth token
+    (oas-tags):
+      - oauth items
+  get:
+    displayName: getItems
+    (oas-summary): get items
+    responses:
+      '400':
+        description: Invalid parameters
+    queryParameters:
+      oauth_token:
+        description: oauth token
+        required: false
+        type: string
+        displayName: oauth token
+      full:
+        description: get all attributes for item
+        required: false
+        type: boolean
+        displayName: get all attributes for item
+      name:
+        description: keywords to match
+        required: false
+        type: string
+        displayName: keywords to match
+      dimension:
+        description: limit items to a particular dimension
+        required: false
+        type: integer
+        displayName: limit items to a particular dimension
+      type:
+        description: limit items to a particular type
+        required: false
+        type: integer
+        displayName: limit items to a particular type
+      limit:
+        description: limit number of items returned
+        required: false
+        type: integer
+        displayName: limit number of items returned
+    (oas-tags):
+      - oauth items
+types:
+  Action:
+    properties:
+      item:
+        example: item1234
+        type: string
+      type:
+        description: action type
+        type: integer
+      user:
+        example: user1234
+        type: string
+      value:
+        description: action value (e.g. a rating)
+        type: number
+        required: false
+  AttributesName:
+    properties:
+      attrName1:
+        example: attrValue1
+        type: string
+        required: false
+      attrName2:
+        example: attrValue2
+        type: string
+        required: false
+  Item:
+    properties:
+      attributesName:
+        type: AttributesName
+        required: false
+      id:
+        example: myid1234
+        type: string
+      type:
+        description: type of item
+        example: 1
+        type: integer
+        required: false
+  User:
+    properties:
+      active:
+        description: whether user is active
+        type: boolean
+        required: false
+      attributesName:
+        type: AttributesName
+        required: false
+      id:
+        example: myid1234
+        type: string
+      username:
+        description: name of user
+        example: Joe Bloggs
+        type: string
+        required: false

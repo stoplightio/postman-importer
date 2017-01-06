@@ -1,0 +1,310 @@
+#%RAML 1.0
+title: Times Newswire
+version: 3.0.0
+baseUri: 'http://api.nytimes.com/svc/news/v3/content'
+mediaType: application/json
+protocols:
+  - HTTP
+  - HTTPS
+description: 'With the Times Newswire API, you can get links and metadata for Times articles and blog posts as soon as they are published on NYTimes.com. The Times Newswire API provides an up-to-the-minute stream of published items.'
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'http://developer.nytimes.com/signup'
+  (oas-x-apisguru-categories):
+    - media
+    - open_data
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_static01.nyt.com_images_icons_t_logo_291_black.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/NYTimes/public_api_specs/master/timeswire/timeswire_v3.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): nytimes.com
+  (oas-x-serviceName): timeswire
+  termsOfService: 'http://developer.nytimes.com/tou'
+annotationTypes:
+  oas-x-apiClientRegistration: any
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-externalDocs):
+  url: 'http://developer.nytimes.com/'
+securitySchemes:
+  apikey:
+    type: Pass Through
+    describedBy:
+      queryParameters:
+        api-key:
+          type: string
+'/{source}':
+  displayName: '{source}'
+  '/{section}':
+    displayName: '{section}'
+    '/{time-period}.json':
+      displayName: '{time-period}.json'
+      uriParameters:
+        time-period:
+          description: 'Limits the set of items by time published, integer in number of hours'
+          required: true
+          type: integer
+          displayName: 'Limits the set of items by time published, integer in number of hours'
+      get:
+        displayName: GET_source-section-time-period-json
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  copyright:
+                    type: string
+                    required: false
+                  num_results:
+                    type: integer
+                    required: false
+                  results:
+                    items:
+                      type: Article
+                    type: array
+                    required: false
+                  status:
+                    type: string
+                    required: false
+                type: object
+            description: An array of Articles
+        queryParameters:
+          limit:
+            default: 20
+            description: 'Limits the number of results, between 1 and 20'
+            required: false
+            type: integer
+            displayName: 'Limits the number of results, between 1 and 20'
+          offset:
+            default: 0
+            description: Sets the starting point of the result set
+            required: false
+            type: integer
+            displayName: Sets the starting point of the result set
+  '/{section}.json':
+    displayName: '{section}.json'
+    uriParameters:
+      section:
+        description: |
+          Limits the set of items by one or more sections
+          all | One or more section names, separated by semicolons
+
+           To get all sections, specify all. To get a particular section or sections, use the section names returned by this request:
+           http://api.nytimes.com/svc/news/v3/content/section-list.json
+        required: true
+        type: string
+        displayName: |
+          Limits the set of items by one or more sections
+          all | One or more section names, separated by semicolons
+
+           To get all sections, specify all. To get a particular section or sections, use the section names returned by this request:
+           http://api.nytimes.com/svc/news/v3/content/section-list.json
+    get:
+      displayName: GET_source-section-json
+      responses:
+        '200':
+          body:
+            application/json:
+              properties:
+                copyright:
+                  type: string
+                  required: false
+                num_results:
+                  type: integer
+                  required: false
+                results:
+                  items:
+                    type: Article
+                  type: array
+                  required: false
+                status:
+                  type: string
+                  required: false
+              type: object
+          description: An array of Articles
+      queryParameters:
+        limit:
+          default: 20
+          description: 'Limits the number of results, between 1 and 20'
+          required: false
+          type: integer
+          displayName: 'Limits the number of results, between 1 and 20'
+        offset:
+          default: 0
+          description: Sets the starting point of the result set
+          required: false
+          type: integer
+          displayName: Sets the starting point of the result set
+/content.json:
+  displayName: content.json
+  get:
+    displayName: GET_content-json
+    responses:
+      '200':
+        body:
+          application/json:
+            properties:
+              copyright:
+                type: string
+                required: false
+              num_results:
+                type: integer
+                required: false
+              results:
+                items:
+                  type: Article
+                type: array
+                required: false
+              status:
+                type: string
+                required: false
+            type: object
+        description: An array of Articles
+    queryParameters:
+      url:
+        description: 'The complete URL of a specific news item, URL-encoded or backslash-escaped'
+        required: true
+        type: string
+        displayName: 'The complete URL of a specific news item, URL-encoded or backslash-escaped'
+types:
+  Article:
+    properties:
+      abstract:
+        type: string
+        required: false
+      blog_name:
+        type: string
+        required: false
+      byline:
+        type: string
+        required: false
+      created_date:
+        type: string
+        required: false
+      des_facet:
+        items:
+          type: string
+        type: array
+        required: false
+      geo_facet:
+        items:
+          type: string
+        type: array
+        required: false
+      headline:
+        type: string
+        required: false
+      item_type:
+        type: string
+        required: false
+      kicker:
+        type: string
+        required: false
+      material_type_facet:
+        type: string
+        required: false
+      multimedia:
+        items:
+          properties:
+            caption:
+              type: string
+              required: false
+            copyright:
+              type: string
+              required: false
+            format:
+              type: string
+              required: false
+            height:
+              type: integer
+              required: false
+            subtype:
+              type: string
+              required: false
+            type:
+              type: string
+              required: false
+            url:
+              type: string
+              required: false
+            width:
+              type: integer
+              required: false
+          type: object
+        type: array
+        required: false
+      org_facet:
+        type: string
+        required: false
+      per_facet:
+        items:
+          type: string
+        type: array
+        required: false
+      published_date:
+        type: string
+        required: false
+      related_urls:
+        items:
+          properties:
+            suggested_link_text:
+              type: string
+              required: false
+            url:
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+      section:
+        type: string
+        required: false
+      short_url:
+        type: string
+        required: false
+      source:
+        type: string
+        required: false
+      subsection:
+        type: string
+        required: false
+      thumbnail_standard:
+        type: string
+        required: false
+      title:
+        type: string
+        required: false
+      updated_date:
+        type: string
+        required: false
+      url:
+        type: string
+        required: false

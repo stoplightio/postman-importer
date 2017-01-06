@@ -1,0 +1,4270 @@
+#%RAML 1.0
+title: Daisycon
+version: 1.0.0
+baseUri: 'https://services.daisycon.com/'
+protocols:
+  - HTTPS
+description: 'The Daisycon API allows you to retrieve statistics and link materials, update transactions, subscribe to affiliate program, and a whole lot more!'
+(oas-tags-definition):
+  - description: Publisher operations
+    name: publishers
+  - name: account
+  - name: clicks
+  - name: financial
+  - name: material
+  - name: media
+  - name: news
+  - name: productfeeds
+  - name: programs
+  - name: statistics
+  - name: transactions
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#4D4D4D'
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.daisycon.com_shared_daisyconwebsite_img_layout_logo_small_white.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://services.daisycon.com/docs/api/?resources=publishers'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): daisycon.com
+/publishers:
+  displayName: publishers
+  '/{publisher_id}':
+    displayName: '{publisher_id}'
+    /productfeeds:
+      displayName: productfeeds
+      get:
+        displayName: GET_publishers-publisher_id-productfeeds
+        description: Returns a set of productfeeds
+        (oas-summary): Get all productfeeds
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: productfeed
+                type: array
+            description: No response was specified
+          '204':
+            description: No content
+          '404':
+            description: Publisher not found
+        queryParameters:
+          page:
+            default: 1
+            description: Paginator page
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator page
+          per_page:
+            default: 100
+            description: Paginator results per page (max 1000)
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator results per page (max 1000)
+          program_id:
+            description: Program IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Program IDs
+          name:
+            description: Name (wildcards * allowed)
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Name (wildcards * allowed)
+          media_id:
+            description: Returns programs this media is subscribed to
+            format: int64
+            required: false
+            type: integer
+            displayName: Returns programs this media is subscribed to
+          placeholder_media_id:
+            description: 'replace url placeholder #MEDIA_ID# value'
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: 'replace url placeholder #MEDIA_ID# value'
+          placeholder_subid:
+            description: 'replace url placeholder #SUB_ID# value'
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: 'replace url placeholder #SUB_ID# value'
+        (oas-tags):
+          - productfeeds
+      '/{productfeed_id}':
+        displayName: '{productfeed_id}'
+        uriParameters:
+          productfeed_id:
+            description: Productfeed ID
+            format: int64
+            minimum: 1
+            required: true
+            type: integer
+            displayName: Productfeed ID
+        get:
+          displayName: GET_publishers-publisher_id-productfeeds-productfeed_id
+          description: Returns a productfeed
+          (oas-summary): Get productfeed
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: productfeed
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Productfeed not found
+          queryParameters:
+            placeholder_media_id:
+              description: 'replace url placeholder #MEDIA_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #MEDIA_ID# value'
+            placeholder_subid:
+              description: 'replace url placeholder #SUB_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #SUB_ID# value'
+          (oas-tags):
+            - productfeeds
+    /transactions:
+      displayName: transactions
+      '/{affiliatemarketing_id}':
+        displayName: '{affiliatemarketing_id}'
+        uriParameters:
+          affiliatemarketing_id:
+            description: Affiliatemarketing ID
+            required: true
+            type: string
+            displayName: Affiliatemarketing ID
+        get:
+          displayName: GET_publishers-publisher_id-transactions-affiliatemarketing_id
+          description: Returns a transaction
+          (oas-summary): Get transaction
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: transaction
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Transaction not found
+          (oas-tags):
+            - transactions
+      get:
+        displayName: GET_publishers-publisher_id-transactions
+        description: 'Returns a set of transactions<br/>You must provide a start and end date filter OR provide a approval, click or modified (start and/or end) date'
+        (oas-summary): Get all transactions
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: transaction
+                type: array
+            description: No response was specified
+          '204':
+            description: No content
+          '404':
+            description: Publisher not found
+        queryParameters:
+          page:
+            default: 1
+            description: Paginator page
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator page
+          per_page:
+            default: 100
+            description: Paginator results per page (max 1000)
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator results per page (max 1000)
+          start:
+            description: 'Start date (YYYY-MM-DD HH:II:SS)'
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: 'Start date (YYYY-MM-DD HH:II:SS)'
+          end:
+            description: 'End date (YYYY-MM-DD HH:II:SS)'
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: 'End date (YYYY-MM-DD HH:II:SS)'
+          date_click_start:
+            description: 'Click date (YYYY-MM-DD HH:II:SS)'
+            items:
+              format: rfc3339
+              type: datetime
+            required: false
+            type: array
+            displayName: 'Click date (YYYY-MM-DD HH:II:SS)'
+          date_click_end:
+            description: 'Click date end (YYYY-MM-DD HH:II:SS)'
+            items:
+              format: rfc3339
+              type: datetime
+            required: false
+            type: array
+            displayName: 'Click date end (YYYY-MM-DD HH:II:SS)'
+          date_approval_start:
+            description: 'Approval date (YYYY-MM-DD HH:II:SS)'
+            items:
+              format: rfc3339
+              type: datetime
+            required: false
+            type: array
+            displayName: 'Approval date (YYYY-MM-DD HH:II:SS)'
+          date_approval_end:
+            description: 'Approval date end (YYYY-MM-DD HH:II:SS)'
+            items:
+              format: rfc3339
+              type: datetime
+            required: false
+            type: array
+            displayName: 'Approval date end (YYYY-MM-DD HH:II:SS)'
+          date_modified_start:
+            description: 'Last modification date (YYYY-MM-DD HH:II:SS)'
+            items:
+              format: rfc3339
+              type: datetime
+            required: false
+            type: array
+            displayName: 'Last modification date (YYYY-MM-DD HH:II:SS)'
+          date_modified_end:
+            description: 'Last modification date end (YYYY-MM-DD HH:II:SS)'
+            items:
+              format: rfc3339
+              type: datetime
+            required: false
+            type: array
+            displayName: 'Last modification date end (YYYY-MM-DD HH:II:SS)'
+          affiliatemarketing_id:
+            description: Affiliatemarketing IDs
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Affiliatemarketing IDs
+          advertiser_id:
+            description: Advertiser IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Advertiser IDs
+          media_id:
+            description: Media IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Media IDs
+          program_id:
+            description: Program IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Program IDs
+          ad_id:
+            description: Ad IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Ad IDs
+          subid:
+            description: Subids
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Subids
+          description:
+            description: Transaction description
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Transaction description
+          status:
+            description: 'Status (''approved'', ''disapproved'', ''open'')'
+            items:
+              enum:
+                - approved
+                - disapproved
+                - open
+              type: string
+            required: false
+            type: array
+            displayName: 'Status (''approved'', ''disapproved'', ''open'')'
+        (oas-tags):
+          - transactions
+    /programs:
+      displayName: programs
+      get:
+        displayName: GET_publishers-publisher_id-programs
+        description: Returns a set of publishers
+        (oas-summary): Get all programs
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: program
+                type: array
+            description: No response was specified
+          '204':
+            description: No content
+          '404':
+            description: No subscriptions found
+        queryParameters:
+          page:
+            default: 1
+            description: Paginator page
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator page
+          per_page:
+            default: 100
+            description: Paginator results per page (max 1000)
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator results per page (max 1000)
+          advertiser_id:
+            description: Advertiser IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Advertiser IDs
+          program_id:
+            description: Program IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Program IDs
+          name:
+            description: Name (wildcards * allowed)
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Name (wildcards * allowed)
+          category_id:
+            description: Category IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Category IDs
+          locale_id:
+            description: Locale IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Locale IDs
+          supply_locale_id:
+            description: Supply locale IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Supply locale IDs
+          keywordmarketing:
+            description: 'Keyword marketing (''false'', ''partial'', ''true'')'
+            items:
+              enum:
+                - 'false'
+                - partial
+                - 'true'
+              type: string
+            required: false
+            type: array
+            displayName: 'Keyword marketing (''false'', ''partial'', ''true'')'
+          emailmarketing:
+            description: 'Email marketing (''false'', ''partial'', ''true'')'
+            items:
+              enum:
+                - 'false'
+                - partial
+                - 'true'
+              type: string
+            required: false
+            type: array
+            displayName: 'Email marketing (''false'', ''partial'', ''true'')'
+          socialmedia:
+            description: 'Social media (''false'', ''partial'', ''true'')'
+            items:
+              enum:
+                - 'false'
+                - partial
+                - 'true'
+              type: string
+            required: false
+            type: array
+            displayName: 'Social media (''false'', ''partial'', ''true'')'
+          cashback:
+            description: 'Cash back (''false'', ''partial'', ''true'')'
+            items:
+              enum:
+                - 'false'
+                - partial
+                - 'true'
+              type: string
+            required: false
+            type: array
+            displayName: 'Cash back (''false'', ''partial'', ''true'')'
+          productfeed:
+            description: 'Product feed (''false'', ''true'')'
+            items:
+              enum:
+                - 'false'
+                - 'true'
+              type: string
+            required: false
+            type: array
+            displayName: 'Product feed (''false'', ''true'')'
+          deeplink:
+            description: 'Deeplink possible (''false'', ''true'')'
+            items:
+              enum:
+                - 'false'
+                - 'true'
+              type: string
+            required: false
+            type: array
+            displayName: 'Deeplink possible (''false'', ''true'')'
+          publisher_tag:
+            description: 'Publisher tag (''false'', ''true'')'
+            items:
+              enum:
+                - 'false'
+                - 'true'
+              type: string
+            required: false
+            type: array
+            displayName: 'Publisher tag (''false'', ''true'')'
+          media_id:
+            description: Returns programs this media is subscribed to
+            format: int64
+            required: false
+            type: integer
+            displayName: Returns programs this media is subscribed to
+          placeholder_media_id:
+            description: 'replace url placeholder #MEDIA_ID# value'
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: 'replace url placeholder #MEDIA_ID# value'
+          placeholder_subid:
+            description: 'replace url placeholder #SUB_ID# value'
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: 'replace url placeholder #SUB_ID# value'
+        (oas-tags):
+          - programs
+      '/{program_id}':
+        displayName: '{program_id}'
+        uriParameters:
+          program_id:
+            description: Program ID
+            format: int64
+            minimum: 1
+            required: true
+            type: integer
+            displayName: Program ID
+        get:
+          displayName: GET_publishers-publisher_id-programs-program_id
+          description: Returns a program
+          (oas-summary): Get program
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: program
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Program not found
+          queryParameters:
+            placeholder_media_id:
+              description: 'replace url placeholder #MEDIA_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #MEDIA_ID# value'
+            placeholder_subid:
+              description: 'replace url placeholder #SUB_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #SUB_ID# value'
+          (oas-tags):
+            - programs
+        /subscriptions:
+          displayName: subscriptions
+          get:
+            displayName: GET_publishers-publisher_id-programs-program_id-subscriptions
+            description: Returns a set of media subscriptions
+            (oas-summary): Get all subscriptions
+            responses:
+              '200':
+                body:
+                  application/json:
+                    items:
+                      type: subscription
+                    type: array
+                description: No response was specified
+              '204':
+                description: No content
+              '404':
+                description: Program not found
+            queryParameters:
+              page:
+                default: 1
+                description: Paginator page
+                format: int64
+                required: false
+                type: integer
+                displayName: Paginator page
+              per_page:
+                default: 100
+                description: Paginator results per page (max 1000)
+                format: int64
+                required: false
+                type: integer
+                displayName: Paginator results per page (max 1000)
+              media_id:
+                description: Media IDs
+                items:
+                  format: int64
+                  type: integer
+                required: false
+                type: array
+                displayName: Media IDs
+              co_status:
+                description: 'Clickout status (''approved'', ''pending'' and or ''disapproved'')'
+                items:
+                  enum:
+                    - approved
+                    - pending
+                    - disapproved
+                  type: string
+                required: false
+                type: array
+                displayName: 'Clickout status (''approved'', ''pending'' and or ''disapproved'')'
+              cpc_status:
+                description: 'CPC status (''approved'', ''pending'' and or ''disapproved'')'
+                items:
+                  enum:
+                    - approved
+                    - pending
+                    - disapproved
+                  type: string
+                required: false
+                type: array
+                displayName: 'CPC status (''approved'', ''pending'' and or ''disapproved'')'
+              status:
+                description: 'Status (''open'', ''approved'', ''disapproved'' and or ''canceled'')'
+                items:
+                  enum:
+                    - open
+                    - approved
+                    - disapproved
+                    - canceled
+                  type: string
+                required: false
+                type: array
+                displayName: 'Status (''open'', ''approved'', ''disapproved'' and or ''canceled'')'
+            (oas-tags):
+              - programs
+          '/{media_id}':
+            displayName: '{media_id}'
+            uriParameters:
+              media_id:
+                description: Media ID
+                format: int64
+                minimum: 1
+                required: true
+                type: integer
+                displayName: Media ID
+            delete:
+              displayName: DELETE_publishers-publisher_id-programs-program_id-subscriptions-media_id
+              (oas-summary): Unsubscribe from program
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: subscription
+                  description: No response was specified
+                '400':
+                  description: Disapproved media subscriptions cannot be unsubscribed
+                '404':
+                  description: No subscription found
+                '405':
+                  description: Invalid input
+              (oas-tags):
+                - programs
+            post:
+              displayName: POST_publishers-publisher_id-programs-program_id-subscriptions-media_id
+              (oas-summary): Subscribe to program
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: subscription
+                  description: No response was specified
+                '400':
+                  description: 'Agreementterms are not accepted, review/accept agreementterms trough the website'
+                '404':
+                  description: Media not found
+                '405':
+                  description: Invalid input
+              (oas-tags):
+                - programs
+    /account:
+      displayName: account
+      get:
+        displayName: GET_publishers-publisher_id-account
+        description: 'Returns account, contact, business, financial & payment information'
+        (oas-summary): Get publisher account information
+        responses:
+          '200':
+            body:
+              application/json:
+                type: publisher_account
+            description: No response was specified
+          '404':
+            description: Publisher not found
+        (oas-tags):
+          - account
+    /financial:
+      displayName: financial
+      /income:
+        displayName: income
+        get:
+          displayName: GET_publishers-publisher_id-financial-income
+          description: Returns publisher income
+          (oas-summary): Get income
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: income_publisher
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+            '503':
+              description: Service temporary unavailable (calculating balance)
+          (oas-tags):
+            - financial
+    /material:
+      displayName: material
+      /adgroups:
+        displayName: adgroups
+        '/{adgroup_id}':
+          displayName: '{adgroup_id}'
+          uriParameters:
+            adgroup_id:
+              description: AdGroup ID
+              format: int64
+              minimum: 1
+              required: true
+              type: integer
+              displayName: AdGroup ID
+          get:
+            displayName: GET_publishers-publisher_id-material-adgroups-adgroup_id
+            description: Returns a adgroup
+            (oas-summary): Get adgroup
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: adgroup
+                description: No response was specified
+              '204':
+                description: No content
+              '404':
+                description: AdGroup not found
+            (oas-tags):
+              - material
+          /ads:
+            displayName: ads
+            '/{ad_id}':
+              displayName: '{ad_id}'
+              uriParameters:
+                ad_id:
+                  description: Ad ID
+                  format: int64
+                  minimum: 1
+                  required: true
+                  type: integer
+                  displayName: Ad ID
+              get:
+                displayName: GET_publishers-publisher_id-material-adgroups-adgroup_id-ads-ad_id
+                description: Returns a ad
+                (oas-summary): Get ad
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: ad
+                    description: No response was specified
+                  '204':
+                    description: No content
+                  '404':
+                    description: Ad not found
+                queryParameters:
+                  placeholder_media_id:
+                    description: 'replace url placeholder #MEDIA_ID# value'
+                    format: string
+                    required: false
+                    type: string
+                    facets:
+                      format: string
+                    displayName: 'replace url placeholder #MEDIA_ID# value'
+                  placeholder_subid:
+                    description: 'replace url placeholder #SUB_ID# value'
+                    format: string
+                    required: false
+                    type: string
+                    facets:
+                      format: string
+                    displayName: 'replace url placeholder #SUB_ID# value'
+                (oas-tags):
+                  - material
+            get:
+              displayName: GET_publishers-publisher_id-material-adgroups-adgroup_id-ads
+              description: Returns a set of ads for the adgroup
+              (oas-summary): Get all ads of the adgroup
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      items:
+                        type: ad
+                      type: array
+                  description: No response was specified
+                '204':
+                  description: No content
+                '404':
+                  description: AdGroup not found
+              queryParameters:
+                page:
+                  default: 1
+                  description: Paginator page
+                  format: int64
+                  required: false
+                  type: integer
+                  displayName: Paginator page
+                per_page:
+                  default: 100
+                  description: Paginator results per page (max 1000)
+                  format: int64
+                  required: false
+                  type: integer
+                  displayName: Paginator results per page (max 1000)
+                type:
+                  description: 'Mime type (''image/jpeg'', ''image/jpg'', ''image/png'', ''image/gif'', ''text/html'', ''text/plain'', ''application/x-shockwave-flash'')'
+                  items:
+                    enum:
+                      - image/jpeg
+                      - image/jpg
+                      - image/png
+                      - image/gif
+                      - text/html
+                      - text/plain
+                      - application/x-shockwave-flash
+                    type: string
+                  required: false
+                  type: array
+                  displayName: 'Mime type (''image/jpeg'', ''image/jpg'', ''image/png'', ''image/gif'', ''text/html'', ''text/plain'', ''application/x-shockwave-flash'')'
+                dimension:
+                  description: 'Ad dimensions format: ''WIDTHxHEIGHT'' eg 468x60'
+                  items:
+                    type: string
+                  required: false
+                  type: array
+                  displayName: 'Ad dimensions format: ''WIDTHxHEIGHT'' eg 468x60'
+                placeholder_media_id:
+                  description: 'replace url placeholder #MEDIA_ID# value'
+                  format: string
+                  required: false
+                  type: string
+                  facets:
+                    format: string
+                  displayName: 'replace url placeholder #MEDIA_ID# value'
+                placeholder_subid:
+                  description: 'replace url placeholder #SUB_ID# value'
+                  format: string
+                  required: false
+                  type: string
+                  facets:
+                    format: string
+                  displayName: 'replace url placeholder #SUB_ID# value'
+              (oas-tags):
+                - material
+        get:
+          displayName: GET_publishers-publisher_id-material-adgroups
+          description: Returns a set of adgroups
+          (oas-summary): Get all adgroups
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: adgroup
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            name:
+              description: Name (wildcards * allowed)
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Name (wildcards * allowed)
+            locale_id:
+              description: Locale IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Locale IDs
+          (oas-tags):
+            - material
+      /adpools:
+        displayName: adpools
+        '/{adpool_id}':
+          displayName: '{adpool_id}'
+          uriParameters:
+            adpool_id:
+              description: Ad Pool ID
+              format: int64
+              minimum: 1
+              required: true
+              type: integer
+              displayName: Ad Pool ID
+          get:
+            displayName: GET_publishers-publisher_id-material-adpools-adpool_id
+            description: Returns a adpool
+            (oas-summary): Get adpool
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: adpool
+                description: No response was specified
+              '204':
+                description: No content
+              '404':
+                description: Adpool not found
+            queryParameters:
+              placeholder_subid:
+                description: 'replace url placeholder #SUB_ID# value'
+                format: string
+                required: false
+                type: string
+                facets:
+                  format: string
+                displayName: 'replace url placeholder #SUB_ID# value'
+            (oas-tags):
+              - material
+        get:
+          displayName: GET_publishers-publisher_id-material-adpools
+          description: Returns a set of adpools
+          (oas-summary): Get all adpools
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: adpool
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            name:
+              description: Name (wildcards * allowed)
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Name (wildcards * allowed)
+            status:
+              description: 'Status (''active'', ''disabled'', ''deleted'')'
+              items:
+                enum:
+                  - active
+                  - disabled
+                  - deleted
+                type: string
+              required: false
+              type: array
+              displayName: 'Status (''active'', ''disabled'', ''deleted'')'
+            dimension:
+              description: 'Ad dimensions format: ''WIDTHxHEIGHT'' eg 468x60'
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: 'Ad dimensions format: ''WIDTHxHEIGHT'' eg 468x60'
+            placeholder_subid:
+              description: 'replace url placeholder #SUB_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #SUB_ID# value'
+          (oas-tags):
+            - material
+      /promotioncodes:
+        displayName: promotioncodes
+        get:
+          displayName: GET_publishers-publisher_id-material-promotioncodes
+          description: Returns a set of promotioncodes
+          (oas-summary): Get all promotioncodes
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: promotioncode
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            media_id:
+              description: Returns programs this media is subscribed to
+              format: int64
+              required: false
+              type: integer
+              displayName: Returns programs this media is subscribed to
+            name:
+              description: Name (wildcards * allowed)
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Name (wildcards * allowed)
+            description:
+              description: Description (wildcards * allowed)
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Description (wildcards * allowed)
+            promotioncode:
+              description: Promotion code (wildcards * allowed)
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Promotion code (wildcards * allowed)
+            locale_id:
+              description: Locale IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Locale IDs
+            placeholder_media_id:
+              description: 'replace url placeholder #MEDIA_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #MEDIA_ID# value'
+            placeholder_subid:
+              description: 'replace url placeholder #SUB_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #SUB_ID# value'
+          (oas-tags):
+            - material
+        '/{promotioncode_id}':
+          displayName: '{promotioncode_id}'
+          uriParameters:
+            promotioncode_id:
+              description: Promotioncode ID
+              format: int64
+              minimum: 1
+              required: true
+              type: integer
+              displayName: Promotioncode ID
+          get:
+            displayName: GET_publishers-publisher_id-material-promotioncodes-promotioncode_id
+            description: Returns a promotioncode
+            (oas-summary): Get promotioncode
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: promotioncode
+                description: No response was specified
+              '204':
+                description: No content
+              '404':
+                description: Promotiocode not found
+            queryParameters:
+              placeholder_media_id:
+                description: 'replace url placeholder #MEDIA_ID# value'
+                format: string
+                required: false
+                type: string
+                facets:
+                  format: string
+                displayName: 'replace url placeholder #MEDIA_ID# value'
+              placeholder_subid:
+                description: 'replace url placeholder #SUB_ID# value'
+                format: string
+                required: false
+                type: string
+                facets:
+                  format: string
+                displayName: 'replace url placeholder #SUB_ID# value'
+            (oas-tags):
+              - material
+      /ads:
+        displayName: ads
+        get:
+          displayName: GET_publishers-publisher_id-material-ads
+          description: Returns a set of ads
+          (oas-summary): Get all ads
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: ad
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            adgroup_id:
+              description: Adgroup IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Adgroup IDs
+            type:
+              description: 'Mime type (''image/jpeg'', ''image/jpg'', ''image/png'', ''image/gif'', ''text/html'', ''text/plain'', ''application/x-shockwave-flash'')'
+              items:
+                enum:
+                  - image/jpeg
+                  - image/jpg
+                  - image/png
+                  - image/gif
+                  - text/html
+                  - text/plain
+                  - application/x-shockwave-flash
+                type: string
+              required: false
+              type: array
+              displayName: 'Mime type (''image/jpeg'', ''image/jpg'', ''image/png'', ''image/gif'', ''text/html'', ''text/plain'', ''application/x-shockwave-flash'')'
+            dimension:
+              description: 'Ad dimensions format: ''WIDTHxHEIGHT'' eg 468x60'
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: 'Ad dimensions format: ''WIDTHxHEIGHT'' eg 468x60'
+            placeholder_media_id:
+              description: 'replace url placeholder #MEDIA_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #MEDIA_ID# value'
+            placeholder_subid:
+              description: 'replace url placeholder #SUB_ID# value'
+              format: string
+              required: false
+              type: string
+              facets:
+                format: string
+              displayName: 'replace url placeholder #SUB_ID# value'
+          (oas-tags):
+            - material
+    /statistics:
+      displayName: statistics
+      /cpc:
+        displayName: cpc
+        get:
+          displayName: GET_publishers-publisher_id-statistics-cpc
+          description: Returns statistics grouped by cpc
+          (oas-summary): Get statistics grouped by cpc
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_cpc
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /date:
+        displayName: date
+        get:
+          displayName: GET_publishers-publisher_id-statistics-date
+          description: Returns statistics grouped by transaction date
+          (oas-summary): Get statistics grouped by transaction date
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_date
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /day:
+        displayName: day
+        get:
+          displayName: GET_publishers-publisher_id-statistics-day
+          description: Returns statistics grouped by day
+          (oas-summary): Get statistics grouped by day
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_day
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /description:
+        displayName: description
+        get:
+          displayName: GET_publishers-publisher_id-statistics-description
+          description: Returns statistics grouped by description
+          (oas-summary): Get statistics grouped by description
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_description
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /hour:
+        displayName: hour
+        get:
+          displayName: GET_publishers-publisher_id-statistics-hour
+          description: Returns statistics grouped by hour
+          (oas-summary): Get statistics grouped by hour
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_hour
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /media:
+        displayName: media
+        get:
+          displayName: GET_publishers-publisher_id-statistics-media
+          description: Returns statistics grouped by media
+          (oas-summary): Get statistics grouped by media
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_media
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /month:
+        displayName: month
+        get:
+          displayName: GET_publishers-publisher_id-statistics-month
+          description: Returns statistics grouped by month
+          (oas-summary): Get statistics grouped by month
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_month
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /program:
+        displayName: program
+        get:
+          displayName: GET_publishers-publisher_id-statistics-program
+          description: Returns statistics grouped by program
+          (oas-summary): Get statistics grouped by program
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_program
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /year:
+        displayName: year
+        get:
+          displayName: GET_publishers-publisher_id-statistics-year
+          description: Returns statistics grouped by year
+          (oas-summary): Get statistics grouped by year
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_year
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /weekday:
+        displayName: weekday
+        get:
+          displayName: GET_publishers-publisher_id-statistics-weekday
+          description: Returns statistics grouped by weekday
+          (oas-summary): Get statistics grouped by weekday
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_weekday
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+      /subid:
+        displayName: subid
+        get:
+          displayName: GET_publishers-publisher_id-statistics-subid
+          description: Returns statistics grouped by subid
+          (oas-summary): Get statistics grouped by subid
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: statistic_subid
+                  type: array
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Publisher not found
+          queryParameters:
+            page:
+              default: 1
+              description: Paginator page
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator page
+            per_page:
+              default: 100
+              description: Paginator results per page (max 1000)
+              format: int64
+              required: false
+              type: integer
+              displayName: Paginator results per page (max 1000)
+            advertiser_id:
+              description: Advertiser IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Advertiser IDs
+            media_id:
+              description: Media IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Media IDs
+            program_id:
+              description: Program IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Program IDs
+            ad_id:
+              description: Ad IDs
+              items:
+                format: int64
+                type: integer
+              required: false
+              type: array
+              displayName: Ad IDs
+            subid:
+              description: Subids
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Subids
+          (oas-tags):
+            - statistics
+    /media:
+      displayName: media
+      get:
+        displayName: GET_publishers-publisher_id-media
+        description: Returns a set of media
+        (oas-summary): Get all media
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: media
+                type: array
+            description: No response was specified
+          '204':
+            description: No content
+          '404':
+            description: Publisher not found
+        queryParameters:
+          page:
+            default: 1
+            description: Paginator page
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator page
+          per_page:
+            default: 100
+            description: Paginator results per page (max 1000)
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator results per page (max 1000)
+          media_id:
+            description: Media IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Media IDs
+          name:
+            description: Name (wildcards * allowed)
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Name (wildcards * allowed)
+          description:
+            description: Description (wildcards * allowed)
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Description (wildcards * allowed)
+          mobile:
+            description: 'Mobile ready (''true'', ''false'')'
+            items:
+              enum:
+                - 'true'
+                - 'false'
+              type: string
+            required: false
+            type: array
+            displayName: 'Mobile ready (''true'', ''false'')'
+          type:
+            description: 'Type (''website'', ''keyword_marketing'', ''email_marketing'', ''socialmedia'')'
+            items:
+              enum:
+                - website
+                - keyword_marketing
+                - email_marketing
+                - socialmedia
+              type: string
+            required: false
+            type: array
+            displayName: 'Type (''website'', ''keyword_marketing'', ''email_marketing'', ''socialmedia'')'
+          cpc_status:
+            description: 'CPC status (''approved'', ''disapproved'')'
+            items:
+              enum:
+                - approved
+                - disapproved
+              type: string
+            required: false
+            type: array
+            displayName: 'CPC status (''approved'', ''disapproved'')'
+          co_status:
+            description: 'CO status (''approved'', ''disapproved'')'
+            items:
+              enum:
+                - approved
+                - disapproved
+              type: string
+            required: false
+            type: array
+            displayName: 'CO status (''approved'', ''disapproved'')'
+          approval_status:
+            description: 'Approval status (''open'', ''pending'', ''approved'')'
+            items:
+              enum:
+                - open
+                - pending
+                - approved
+              type: string
+            required: false
+            type: array
+            displayName: 'Approval status (''open'', ''pending'', ''approved'')'
+          verification_status:
+            description: 'Verification status (''pending'', ''verified'')'
+            items:
+              enum:
+                - pending
+                - verified
+              type: string
+            required: false
+            type: array
+            displayName: 'Verification status (''pending'', ''verified'')'
+          locale_id:
+            description: Locale IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Locale IDs
+          targetgroup_id:
+            description: Target group IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Target group IDs
+          category_id:
+            description: Category IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Category IDs
+          status:
+            description: 'Status (''active'', ''deleted'', ''offline'')'
+            items:
+              enum:
+                - active
+                - deleted
+                - offline
+              type: string
+            required: false
+            type: array
+            displayName: 'Status (''active'', ''deleted'', ''offline'')'
+        (oas-tags):
+          - media
+      '/{media_id}':
+        displayName: '{media_id}'
+        /commissions:
+          displayName: commissions
+          get:
+            displayName: GET_publishers-publisher_id-media-media_id-commissions
+            description: Returns program commissions
+            (oas-summary): Get program commissions
+            responses:
+              '200':
+                body:
+                  application/json:
+                    items:
+                      type: compensation
+                    type: array
+                description: No response was specified
+              '204':
+                description: No content
+              '400':
+                description: Only active media allowed
+              '404':
+                description: Media not found
+            queryParameters:
+              page:
+                default: 1
+                description: Paginator page
+                format: int64
+                required: false
+                type: integer
+                displayName: Paginator page
+              per_page:
+                default: 100
+                description: Paginator results per page (max 1000)
+                format: int64
+                required: false
+                type: integer
+                displayName: Paginator results per page (max 1000)
+              program_id:
+                description: Program IDs
+                items:
+                  format: int64
+                  type: integer
+                required: false
+                type: array
+                displayName: Program IDs
+            (oas-tags):
+              - media
+        /subscriptions:
+          displayName: subscriptions
+          get:
+            displayName: GET_publishers-publisher_id-media-media_id-subscriptions
+            description: Returns a set of media subscriptions
+            (oas-summary): Get all subscriptions
+            responses:
+              '200':
+                body:
+                  application/json:
+                    items:
+                      type: media_subscription
+                    type: array
+                description: No response was specified
+              '204':
+                description: No content
+              '400':
+                description: Only active media allowed
+              '404':
+                description: Media not found
+            queryParameters:
+              page:
+                default: 1
+                description: Paginator page
+                format: int64
+                required: false
+                type: integer
+                displayName: Paginator page
+              per_page:
+                default: 100
+                description: Paginator results per page (max 1000)
+                format: int64
+                required: false
+                type: integer
+                displayName: Paginator results per page (max 1000)
+              program_id:
+                description: Program IDs
+                items:
+                  format: int64
+                  type: integer
+                required: false
+                type: array
+                displayName: Program IDs
+              co_status:
+                description: 'Clickout status (''approved'', ''pending'' and or ''disapproved'')'
+                items:
+                  enum:
+                    - approved
+                    - pending
+                    - disapproved
+                  type: string
+                required: false
+                type: array
+                displayName: 'Clickout status (''approved'', ''pending'' and or ''disapproved'')'
+              cpc_status:
+                description: 'CPC status (''approved'', ''pending'' and or ''disapproved'')'
+                items:
+                  enum:
+                    - approved
+                    - pending
+                    - disapproved
+                  type: string
+                required: false
+                type: array
+                displayName: 'CPC status (''approved'', ''pending'' and or ''disapproved'')'
+              status:
+                description: 'Status (''open'', ''approved'', ''disapproved'' and or ''canceled'')'
+                items:
+                  enum:
+                    - open
+                    - approved
+                    - disapproved
+                    - canceled
+                  type: string
+                required: false
+                type: array
+                displayName: 'Status (''open'', ''approved'', ''disapproved'' and or ''canceled'')'
+            (oas-tags):
+              - media
+        uriParameters:
+          media_id:
+            description: Media ID
+            format: int64
+            minimum: 1
+            required: true
+            type: integer
+            displayName: Media ID
+        get:
+          displayName: GET_publishers-publisher_id-media-media_id
+          description: Returns a media
+          (oas-summary): Get media
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: media
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: Media not found
+          (oas-tags):
+            - media
+    /news:
+      displayName: news
+      get:
+        displayName: GET_publishers-publisher_id-news
+        description: Returns a set of news items
+        (oas-summary): Get all news items
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: newsitem
+                type: array
+            description: No response was specified
+          '204':
+            description: No content
+          '404':
+            description: Publisher not found
+        queryParameters:
+          page:
+            default: 1
+            description: Paginator page
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator page
+          per_page:
+            default: 100
+            description: Paginator results per page (max 1000)
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator results per page (max 1000)
+          advertiser_id:
+            description: Advertiser IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Advertiser IDs
+          program_id:
+            description: Program IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Program IDs
+          start:
+            description: 'Start date (YYYY-MM-DD HH:II:SS)'
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: 'Start date (YYYY-MM-DD HH:II:SS)'
+          end:
+            description: 'End date (YYYY-MM-DD HH:II:SS)'
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: 'End date (YYYY-MM-DD HH:II:SS)'
+          locale_id:
+            description: Locale IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Locale IDs
+          type:
+            description: Type
+            items:
+              enum:
+                - Daisycon
+                - New
+                - Action
+                - Update
+                - Coupon
+                - Stop
+                - Rectification
+              type: string
+            required: false
+            type: array
+            displayName: Type
+          title:
+            description: Title (wildcards * allowed)
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Title (wildcards * allowed)
+          content_short:
+            description: Content short (wildcards * allowed)
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Content short (wildcards * allowed)
+          content_long:
+            description: Content long (wildcards * allowed)
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Content long (wildcards * allowed)
+        (oas-tags):
+          - news
+      '/{newsitem_id}':
+        displayName: '{newsitem_id}'
+        uriParameters:
+          newsitem_id:
+            description: Newsitem ID
+            format: int64
+            minimum: 1
+            required: true
+            type: integer
+            displayName: Newsitem ID
+        get:
+          displayName: GET_publishers-publisher_id-news-newsitem_id
+          description: Returns a newsitem
+          (oas-summary): Get a newsitem
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: newsitem
+              description: No response was specified
+            '204':
+              description: No content
+            '404':
+              description: News item not found
+          (oas-tags):
+            - news
+    uriParameters:
+      publisher_id:
+        description: Publisher ID
+        format: int64
+        minimum: 1
+        required: true
+        type: integer
+        displayName: Publisher ID
+    get:
+      displayName: GET_publishers-publisher_id
+      description: Returns a publisher by ID
+      (oas-summary): Get publisher
+      responses:
+        '200':
+          body:
+            application/json:
+              type: publisher
+          description: No response was specified
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Publisher not found
+      (oas-tags):
+        - publishers
+    /clicks:
+      displayName: clicks
+      get:
+        displayName: GET_publishers-publisher_id-clicks
+        description: Returns a set of click
+        (oas-summary): Get all raw click data
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: click
+                type: array
+            description: No response was specified
+          '204':
+            description: No content
+          '404':
+            description: Publisher not found
+        queryParameters:
+          page:
+            default: 1
+            description: Paginator page
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator page
+          per_page:
+            default: 100
+            description: Paginator results per page (max 1000)
+            format: int64
+            required: false
+            type: integer
+            displayName: Paginator results per page (max 1000)
+          type:
+            description: 'Click types (''cpc'', ''click'', ''clickout'')'
+            items:
+              enum:
+                - cpc
+                - click
+                - clickout
+              type: string
+            required: false
+            type: array
+            displayName: 'Click types (''cpc'', ''click'', ''clickout'')'
+          media_id:
+            description: Media IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Media IDs
+          advertiser_id:
+            description: Advertiser IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Advertiser IDs
+          program_id:
+            description: Program IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Program IDs
+          ad_id:
+            description: Ad IDs
+            items:
+              format: int64
+              type: integer
+            required: false
+            type: array
+            displayName: Ad IDs
+          subid:
+            description: Subids
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Subids
+        (oas-tags):
+          - clicks
+  get:
+    displayName: GET_publishers
+    description: Returns a set of publishers
+    (oas-summary): Get all publishers
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: publisher
+            type: array
+        description: No response was specified
+      '204':
+        description: No content
+    queryParameters:
+      page:
+        default: 1
+        description: Paginator page
+        format: int64
+        required: false
+        type: integer
+        displayName: Paginator page
+      per_page:
+        default: 100
+        description: Paginator results per page (max 1000)
+        format: int64
+        required: false
+        type: integer
+        displayName: Paginator results per page (max 1000)
+    (oas-tags):
+      - publishers
+types:
+  ad:
+    properties:
+      ad_url:
+        description: Url where this ad is hosted
+        type: string
+        required: false
+      adgroup_id:
+        type: integer
+        required: false
+      click_url:
+        description: Tracking/deeplink url for this ad
+        type: string
+        required: false
+      content:
+        type: string
+        required: false
+      height:
+        type: integer
+        required: false
+      id:
+        type: integer
+        required: false
+      last_modified:
+        format: rfc3339
+        type: datetime
+        required: false
+      type:
+        description: This is the mime type of the ad
+        enum:
+          - image/jpeg
+          - image/jpg
+          - image/png
+          - image/gif
+          - text/html
+          - text/plain
+          - application/x-shockwave-flash
+        type: string
+        required: false
+      width:
+        type: integer
+        required: false
+  address:
+    properties:
+      address:
+        type: string
+        required: false
+      city:
+        type: string
+        required: false
+      country_id:
+        type: integer
+        required: false
+      housenumber:
+        type: integer
+        required: false
+      housenumber_additive:
+        type: string
+        required: false
+      postalcode:
+        type: string
+        required: false
+  adgroup:
+    properties:
+      id:
+        type: integer
+        required: false
+      locale_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      name:
+        type: string
+        required: false
+      program_id:
+        type: integer
+        required: false
+  adpool:
+    properties:
+      adpool_url:
+        description: Url where this adpool is hosted
+        type: string
+        required: false
+      ads:
+        items:
+          type: adpool_ad
+        type: array
+        required: false
+      click_url:
+        description: Tracking/deeplink url for this adpool
+        type: string
+        required: false
+      height:
+        type: integer
+        required: false
+      id:
+        type: integer
+        required: false
+      media_id:
+        type: integer
+        required: false
+      name:
+        type: string
+        required: false
+      status:
+        enum:
+          - disabled
+          - active
+        type: string
+        required: false
+      width:
+        type: integer
+        required: false
+  adpool_ad:
+    properties:
+      ad_id:
+        type: integer
+        required: false
+      weight:
+        enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+        type: integer
+        required: false
+  bank:
+    properties:
+      account:
+        description: Iban/bank account
+        type: string
+        required: false
+      beneficial:
+        description: Account owner
+        type: string
+        required: false
+      bic:
+        type: string
+        required: false
+      city:
+        description: Bank/beneficial city
+        type: string
+        required: false
+      country_id:
+        type: integer
+        required: false
+      name:
+        description: Bank name
+        type: string
+        required: false
+  bitcoin:
+    properties:
+      address:
+        type: string
+        required: false
+  businessinfo:
+    properties:
+      afm_number:
+        description: AFM only for dutch affiliates
+        type: integer
+        required: false
+      coc:
+        type: string
+        required: false
+      company:
+        type: string
+        required: false
+      tax_number:
+        type: string
+        required: false
+  click:
+    properties:
+      ad_id:
+        type: integer
+        required: false
+      commission:
+        format: double
+        type: number
+        required: false
+      date:
+        type: date-only
+        required: false
+      hour:
+        type: integer
+        required: false
+      media_id:
+        type: integer
+        required: false
+      program_id:
+        type: integer
+        required: false
+      raw:
+        type: integer
+        required: false
+      subid:
+        type: string
+        required: false
+      type:
+        enum:
+          - cpc
+          - click
+          - clickout
+        type: string
+        required: false
+      unique:
+        type: integer
+        required: false
+  compensation:
+    properties:
+      compensations:
+        items:
+          type: compensation_rowsetting
+        type: array
+        required: false
+      cpc:
+        format: double
+        type: number
+        required: false
+      program_id:
+        type: integer
+        required: false
+  compensation_rowsetting:
+    properties:
+      amount:
+        description: Commission amount
+        format: double
+        type: number
+        required: false
+      name:
+        type: string
+        required: false
+      percentage:
+        description: Commission percentage
+        format: double
+        type: number
+        required: false
+  contact:
+    properties:
+      birthday:
+        type: date-only
+        required: false
+      firstname:
+        type: string
+        required: false
+      gender:
+        enum:
+          - male
+          - female
+          - unknown
+        type: string
+        required: false
+      initials:
+        type: string
+        required: false
+      phone:
+        type: phone
+        required: false
+      prefix:
+        type: string
+        required: false
+      surname:
+        type: string
+        required: false
+      website:
+        type: string
+        required: false
+  income_publisher:
+    properties:
+      amount:
+        format: double
+        type: number
+        required: false
+      date:
+        description: expected pay date
+        type: date-only
+        required: false
+      status:
+        description: 'released payments are scheduled to be paid, pending payments are still in the approval process'
+        enum:
+          - released
+          - pending
+        type: string
+        required: false
+  media:
+    properties:
+      approval_date:
+        type: date-only
+        required: false
+      approval_status:
+        enum:
+          - approved
+          - pending
+          - disapproved
+        type: string
+        required: false
+      category_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      co_status:
+        enum:
+          - approved
+          - pending
+          - disapproved
+        type: string
+        required: false
+      cpc_status:
+        enum:
+          - approved
+          - pending
+          - disapproved
+        type: string
+        required: false
+      creation_date:
+        type: date-only
+        required: false
+      description:
+        type: string
+        required: false
+      id:
+        type: integer
+        required: false
+      locale_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      location:
+        type: string
+        required: false
+      mailinglist_size:
+        type: integer
+        required: false
+      mobile:
+        type: boolean
+        required: false
+      name:
+        type: string
+        required: false
+      status:
+        enum:
+          - active
+          - deleted
+        type: string
+        required: false
+      targetgroup_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      type:
+        enum:
+          - website
+          - keyword_marketing
+          - email_marketing
+          - socialmedia
+        type: string
+        required: false
+      verification_date:
+        type: date-only
+        required: false
+      verification_status:
+        enum:
+          - verified
+          - pending
+        type: string
+        required: false
+      visitors_amount:
+        type: integer
+        required: false
+  media_subscription:
+    properties:
+      approval_date:
+        type: date-only
+        required: false
+      co_status:
+        enum:
+          - approved
+          - pending
+          - disapproved
+        type: string
+        required: false
+      cpc_status:
+        enum:
+          - approved
+          - pending
+          - disapproved
+        type: string
+        required: false
+      program_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      status:
+        enum:
+          - open
+          - approved
+          - disapproved
+          - canceled
+        type: string
+        required: false
+      subscribe_date:
+        type: date-only
+        required: false
+  newsitem:
+    properties:
+      advertiser_id:
+        type: integer
+        required: false
+      content_long:
+        type: string
+        required: false
+      content_short:
+        type: string
+        required: false
+      date:
+        type: date-only
+        required: false
+      id:
+        type: integer
+        required: false
+      language_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      program_id:
+        type: integer
+        required: false
+      title:
+        type: string
+        required: false
+      type:
+        enum:
+          - Daisycon
+          - New
+          - Action
+          - Update
+          - Coupon
+          - Stop
+          - Rectification
+        type: string
+        required: false
+  paymentinfo:
+    properties:
+      bank:
+        type: bank
+        required: false
+      bitcoin:
+        type: bitcoin
+        required: false
+      interval:
+        description: ''
+        enum:
+          - auto
+          - request
+          - custom
+        type: string
+        required: false
+      invoice_language_id:
+        description: ''
+        type: string
+        required: false
+      invoice_reference_number:
+        description: ''
+        type: string
+        required: false
+      paypal:
+        type: paypal
+        required: false
+      threshold:
+        enum:
+          - 25
+          - 50
+          - 100
+          - 250
+          - 500
+        type: integer
+        required: false
+      type:
+        enum:
+          - bank
+          - paypal
+          - bitcoin
+        type: string
+        required: false
+  paypal:
+    properties:
+      email:
+        type: string
+        required: false
+  phone:
+    properties:
+      fax:
+        type: string
+        required: false
+      home:
+        type: string
+        required: false
+      mobile:
+        type: string
+        required: false
+      work:
+        type: string
+        required: false
+  productfeed:
+    properties:
+      feed_link_csv:
+        type: string
+        required: false
+      feed_link_csv_update:
+        type: string
+        required: false
+      feed_link_xml:
+        type: string
+        required: false
+      feed_link_xml_update:
+        type: string
+        required: false
+      feed_link_xmlatt:
+        type: string
+        required: false
+      feed_link_xmlatt_update:
+        type: string
+        required: false
+      id:
+        type: integer
+        required: false
+      last_update:
+        format: rfc3339
+        type: datetime
+        required: false
+      name:
+        type: string
+        required: false
+      product_count:
+        type: integer
+        required: false
+      program_id:
+        type: integer
+        required: false
+      subscribed:
+        description: subscribed media ids
+        items:
+          type: integer
+        type: array
+        required: false
+  program:
+    properties:
+      advertiser_id:
+        type: integer
+        required: false
+      cashback:
+        enum:
+          - 'true'
+          - 'false'
+          - partial
+        type: string
+        required: false
+      category_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      deeplink:
+        enum:
+          - 'false'
+          - 'true'
+        type: string
+        required: false
+      deeplink_ads:
+        description: Collection of deeplink names and ids
+        items:
+          type: program_deeplinks
+        type: array
+        required: false
+      descriptions:
+        items:
+          type: program_description
+        type: array
+        required: false
+      display_url:
+        type: string
+        required: false
+      emailmarketing:
+        enum:
+          - 'false'
+          - partial
+          - 'true'
+        type: string
+        required: false
+      enddate:
+        type: date-only
+        required: false
+      id:
+        type: integer
+        required: false
+      keywordmarketing:
+        enum:
+          - 'false'
+          - partial
+          - 'true'
+        type: string
+        required: false
+      locale_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      logo:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+      primary_category_id:
+        type: integer
+        required: false
+      productfeed:
+        enum:
+          - 'false'
+          - 'true'
+        type: string
+        required: false
+      provides_data:
+        description: Advertisers provides extra transaction data
+        items:
+          type: program_provide_data
+        type: array
+        required: false
+      publisher_tag:
+        enum:
+          - 'false'
+          - 'true'
+        type: string
+        required: false
+      socialmedia:
+        enum:
+          - 'false'
+          - partial
+          - 'true'
+        type: string
+        required: false
+      startdate:
+        type: date-only
+        required: false
+      status:
+        enum:
+          - active
+          - inactive
+        type: string
+        required: false
+      supply_locale_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      tracking_duration:
+        description: duration in days
+        type: integer
+        required: false
+      tracking_segment:
+        description: tracking domain
+        type: string
+        required: false
+      url:
+        type: string
+        required: false
+  program_deeplinks:
+    properties:
+      id:
+        type: integer
+        required: false
+      name:
+        type: string
+        required: false
+  program_description:
+    properties:
+      cashback_description:
+        type: string
+        required: false
+      compensationgroup_description:
+        type: string
+        required: false
+      description:
+        type: string
+        required: false
+      emailmarketing_description:
+        type: string
+        required: false
+      incentive_description:
+        type: string
+        required: false
+      keywordmarketing_description:
+        type: string
+        required: false
+      language_id:
+        type: integer
+        required: false
+      signup_description:
+        type: string
+        required: false
+      socialmedia_description:
+        type: string
+        required: false
+  program_provide_data:
+    properties:
+      field:
+        enum:
+          - age
+          - revenue
+          - region
+          - gender
+          - country
+          - extra1
+          - extra2
+          - extra3
+          - extra4
+          - extra5
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+  promotioncode:
+    properties:
+      click_url:
+        type: string
+        required: false
+      description:
+        type: string
+        required: false
+      end_date:
+        type: date-only
+        required: false
+      id:
+        type: integer
+        required: false
+      locale_ids:
+        items:
+          type: integer
+        type: array
+        required: false
+      name:
+        type: string
+        required: false
+      program_id:
+        type: integer
+        required: false
+      promotioncode:
+        type: string
+        required: false
+      start_date:
+        type: date-only
+        required: false
+      subscribed:
+        items:
+          type: integer
+        type: array
+        required: false
+  publisher:
+    properties:
+      id:
+        type: integer
+        required: false
+      name:
+        type: string
+        required: false
+  publisher_account:
+    properties:
+      address:
+        type: address
+        required: false
+      business:
+        type: businessinfo
+        required: false
+      communication_language_id:
+        type: integer
+        required: false
+      contact:
+        type: contact
+        required: false
+      financial:
+        type: paymentinfo
+        required: false
+      relation_type:
+        enum:
+          - private
+          - business
+        type: string
+        required: false
+  statistic_cpc:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      commission:
+        description: commission per impression
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      program_id:
+        type: integer
+        required: false
+      program_name:
+        type: string
+        required: false
+  statistic_date:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      date:
+        type: date-only
+        required: false
+      transaction_approved:
+        type: integer
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+  statistic_day:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      day:
+        type: integer
+        required: false
+      transaction_approved:
+        type: integer
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+  statistic_description:
+    properties:
+      description:
+        type: string
+        required: false
+      program_id:
+        type: integer
+        required: false
+      program_name:
+        type: string
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+  statistic_hour:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      hour:
+        type: integer
+        required: false
+      transaction_approved:
+        type: integer
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+  statistic_media:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      media_id:
+        type: integer
+        required: false
+      media_location:
+        type: string
+        required: false
+      media_name:
+        type: string
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+  statistic_month:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      month:
+        type: integer
+        required: false
+      transaction_approved:
+        type: integer
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+  statistic_program:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      program_id:
+        type: integer
+        required: false
+      program_name:
+        type: string
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+  statistic_subid:
+    properties:
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      subid:
+        type: string
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+  statistic_weekday:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      transaction_approved:
+        type: integer
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+      weekday:
+        enum:
+          - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+        type: string
+        required: false
+  statistic_year:
+    properties:
+      click_raw:
+        type: integer
+        required: false
+      click_unique:
+        type: integer
+        required: false
+      clickout_amount:
+        format: double
+        type: number
+        required: false
+      clickout_raw:
+        type: integer
+        required: false
+      clickout_unique:
+        type: integer
+        required: false
+      cpc_amount:
+        format: double
+        type: number
+        required: false
+      cpc_raw:
+        type: integer
+        required: false
+      cpc_unique:
+        type: integer
+        required: false
+      transaction_approved:
+        type: integer
+        required: false
+      transaction_approved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_approved_parts:
+        type: integer
+        required: false
+      transaction_disapproved:
+        type: integer
+        required: false
+      transaction_disapproved_amount:
+        format: double
+        type: number
+        required: false
+      transaction_disapproved_parts:
+        type: integer
+        required: false
+      transaction_open:
+        type: integer
+        required: false
+      transaction_open_amount:
+        format: double
+        type: number
+        required: false
+      transaction_open_parts:
+        type: integer
+        required: false
+      transaction_unique:
+        type: integer
+        required: false
+      year:
+        type: integer
+        required: false
+  subscription:
+    properties:
+      approval_date:
+        type: date-only
+        required: false
+      co_status:
+        enum:
+          - approved
+          - pending
+          - disapproved
+        type: string
+        required: false
+      cpc_status:
+        enum:
+          - approved
+          - pending
+          - disapproved
+        type: string
+        required: false
+      media_id:
+        type: integer
+        required: false
+      status:
+        enum:
+          - open
+          - approved
+          - disapproved
+          - canceled
+        type: string
+        required: false
+      subscribe_date:
+        type: date-only
+        required: false
+  transaction:
+    properties:
+      affiliatemarketing_id:
+        type: string
+        required: false
+      age:
+        type: string
+        required: false
+      anonymous_ip:
+        type: string
+        required: false
+      country_id:
+        type: integer
+        required: false
+      date:
+        format: rfc3339
+        type: datetime
+        required: false
+      device_browser_id:
+        type: integer
+        required: false
+      device_model_id:
+        type: integer
+        required: false
+      device_platform_id:
+        type: integer
+        required: false
+      device_type:
+        enum:
+          - pc
+          - tablet
+          - phone
+        type: string
+        required: false
+      fourhash:
+        type: string
+        required: false
+      gender:
+        enum:
+          - male
+          - female
+          - unknown
+        type: string
+        required: false
+      parts:
+        items:
+          type: transaction_part
+        type: array
+        required: false
+      program_id:
+        type: integer
+        required: false
+      program_name:
+        type: string
+        required: false
+      region_id:
+        type: integer
+        required: false
+  transaction_part:
+    properties:
+      ad_id:
+        type: integer
+        required: false
+      approval_date:
+        type: date-only
+        required: false
+      commission:
+        format: double
+        type: number
+        required: false
+      date:
+        format: rfc3339
+        type: datetime
+        required: false
+      date_click:
+        format: rfc3339
+        type: datetime
+        required: false
+      disapproved_reason:
+        enum:
+          - invalid
+          - duplicate
+          - cancelled
+          - nopayment
+          - refunded
+          - testorder
+        type: string
+        required: false
+      extra_1:
+        type: string
+        required: false
+      extra_2:
+        type: string
+        required: false
+      extra_3:
+        type: string
+        required: false
+      extra_4:
+        type: string
+        required: false
+      extra_5:
+        type: string
+        required: false
+      id:
+        type: string
+        required: false
+      last_modified:
+        format: rfc3339
+        type: datetime
+        required: false
+      media_id:
+        type: integer
+        required: false
+      media_name:
+        type: string
+        required: false
+      publisher_description:
+        type: string
+        required: false
+      referencenumber:
+        type: integer
+        required: false
+      revenue:
+        format: double
+        type: number
+        required: false
+      status:
+        enum:
+          - open
+          - approved
+          - disapproved
+        type: string
+        required: false
+      subid:
+        type: string
+        required: false

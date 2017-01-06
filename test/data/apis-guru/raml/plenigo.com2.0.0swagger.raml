@@ -1,0 +1,1967 @@
+#%RAML 1.0
+title: Plenigo
+version: 2.0.0
+baseUri: 'https://api.plenigo.com/api/v2'
+protocols:
+  - HTTPS
+description: This is the API Documentation for the public plenigo server interfaces
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_static.plenigo.com_assets_logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.plenigo.com/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): plenigo.com
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-externalDocs):
+  url: 'https://developer.plenigo.com/'
+/company:
+  displayName: company
+  /users:
+    displayName: users
+    /select:
+      displayName: select
+      get:
+        displayName: getCompanyUsersFromUserIds
+        description: Returns a list of users of the specified company
+        (oas-summary): Query company users by user ids
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: CompanyUserItem
+                type: array
+            description: Company Users queried
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '500':
+            description: Server error
+        queryParameters:
+          userIds:
+            description: 'List of ids, a comma separated value list expected e.g. 1,2,3,5,10,11'
+            required: true
+            type: string
+            displayName: 'List of ids, a comma separated value list expected e.g. 1,2,3,5,10,11'
+        (oas-tags):
+          - company
+    /failed:
+      displayName: failed
+      /payments:
+        displayName: payments
+        get:
+          displayName: getCompanyFailedPayments
+          description: Returns a list of failed payments of the specified company
+          (oas-summary): Query failed payments
+          headers:
+            plenigoToken:
+              type: string
+              description: Plenigo authentication token
+              enum:
+                - JWT
+              required: true
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: FailedPaymentList
+              description: Failed Payments queried
+            '400':
+              description: If the given parameters were incorrect
+            '401':
+              description: If the provided company secret and/or company Id is incorrect
+            '500':
+              description: Server error
+          queryParameters:
+            failedPaymentStatus:
+              description: Payment status where the failed payment is.
+              enum:
+                - FAILED
+                - FIXED
+                - FIXED_MANUALLY
+              required: false
+              type: string
+              displayName: Payment status where the failed payment is.
+            size:
+              default: 10
+              description: Size of the page - must be between 10 and 100
+              format: int32
+              maximum: 100
+              minimum: 10
+              required: false
+              type: integer
+              displayName: Size of the page - must be between 10 and 100
+            page:
+              default: 0
+              description: Number of the page
+              format: int32
+              minimum: 0
+              required: false
+              type: integer
+              displayName: Number of the page
+          (oas-tags):
+            - company
+    get:
+      displayName: getCompanyUsers
+      description: Returns a list of users of the specified company
+      (oas-summary): Query company users
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: CompanyUserList
+          description: Company Users queried
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+        '500':
+          description: Server error
+      queryParameters:
+        size:
+          default: 10
+          description: Size of the page - must be between 10 and 100
+          format: int32
+          maximum: 100
+          minimum: 10
+          required: false
+          type: integer
+          displayName: Size of the page - must be between 10 and 100
+        page:
+          default: 0
+          description: Number of the page
+          format: int32
+          minimum: 0
+          required: false
+          type: integer
+          displayName: Number of the page
+      (oas-tags):
+        - company
+/user:
+  displayName: user
+  '/{customerId}':
+    displayName: '{customerId}'
+    /products:
+      displayName: products
+      get:
+        displayName: getProductsBought
+        description: Returns the products the user has bought only including active subscriptions
+        (oas-summary): Get products a user has bought
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: CustomerProductsList
+            description: Correct parameters
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '500':
+            description: Server error
+        queryParameters:
+          testMode:
+            description: Flag indicating if products from test mode should be returned
+            required: true
+            type: boolean
+            displayName: Flag indicating if products from test mode should be returned
+        (oas-tags):
+          - user
+  /profile:
+    displayName: profile
+    get:
+      displayName: getUserProfile
+      description: Returns the user profile information that belongs to the token
+      (oas-summary): Get user profile information
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: User
+          description: Correct parameters
+        '400':
+          body:
+            application/json:
+              type: OAuthError
+          description: If the given parameters were incorrect
+        '500':
+          description: Server error
+      queryParameters:
+        token:
+          description: OAuth2 access token
+          required: true
+          type: string
+          displayName: OAuth2 access token
+      (oas-tags):
+        - user
+  /product:
+    displayName: product
+    get:
+      displayName: hasBoughtProduct
+      (oas-summary): Find out if a product is accessible for a specified customer
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          description: Access is allowed
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+        '403':
+          description: Customer is not allowed to access the product
+      queryParameters:
+        customerId:
+          description: Id of the customer to test if product is currently paid
+          required: true
+          type: string
+          displayName: Id of the customer to test if product is currently paid
+        productId:
+          description: Id of the product that wants to be queried
+          required: true
+          type: string
+          displayName: Id of the product that wants to be queried
+        testMode:
+          description: Flag indicating if this product was bought in test mode
+          required: true
+          type: boolean
+          displayName: Flag indicating if this product was bought in test mode
+      (oas-tags):
+        - user
+/externalUser:
+  displayName: externalUser
+  /register:
+    displayName: register
+    post:
+      displayName: registerExternalUser
+      description: Registers a new user bound to the company that registers the user. This functionality is only available for companies with closed user groups.
+      (oas-summary): Registers a new user
+      body:
+        application/json:
+          type: ExternalUserRegistration
+          (oas-body-name): body
+          description: User registration data
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '201':
+          body:
+            application/json:
+              type: CustomerId
+          description: Id of the customer created
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+        '403':
+          description: If company is not qualified for a closed user group
+        '500':
+          description: Server error
+      (oas-tags):
+        - external user management
+  '/{customerId}':
+    displayName: '{customerId}'
+    /changeEmail:
+      displayName: changeEmail
+      put:
+        displayName: changeExternalUserEmail
+        description: Change email address of an existing user. This functionality is only available for companies with closed user groups.
+        (oas-summary): Change email address of a user
+        body:
+          application/json:
+            type: EmailData
+            (oas-body-name): body
+            description: New User email data
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '204':
+            description: Email address changed
+          '400':
+            description: If the given parameters were incorrect or email address already exists
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '403':
+            description: If company is not qualified for a closed user group
+          '404':
+            description: If a user for the provided customer id does not exist
+          '500':
+            description: Server error
+        (oas-tags):
+          - external user management
+    /createLoginToken:
+      displayName: createLoginToken
+      post:
+        displayName: createLoginToken
+        description: Create a login token for an existing user. This functionality is only available for companies with closed user groups.
+        (oas-summary): Create a login token for a user
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: ExternalLoginToken
+            description: Login token successful created
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '403':
+            description: If company is not qualified for a closed user group
+          '404':
+            description: If a user for the provided customer id does not exist
+          '500':
+            description: Server error
+        (oas-tags):
+          - external user management
+/access:
+  displayName: access
+  /app:
+    displayName: app
+    /token:
+      displayName: token
+      '/{customerId}':
+        displayName: '{customerId}'
+        uriParameters:
+          customerId:
+            description: Unique Id of the customer to get products for
+            required: true
+            type: string
+            displayName: Unique Id of the customer to get products for
+        post:
+          displayName: requestAppAccessToken
+          description: Returns the app access token and the customer id necessary for requesting an customer app id
+          (oas-summary): Request an app access token
+          body:
+            application/json:
+              type: AppAccessTokenRequest
+              (oas-body-name): body
+              description: App access token request data
+          headers:
+            plenigoToken:
+              type: string
+              description: Plenigo authentication token
+              enum:
+                - JWT
+              required: true
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: AppAccessToken
+              description: Correct parameters
+            '400':
+              description: If the given parameters were incorrect
+            '401':
+              description: If the provided company secret and/or company Id is incorrect
+            '412':
+              description: If product is not owned by the user
+            '423':
+              description: If the user has reached the limit of parallel app accesses
+            '500':
+              description: Server error
+          (oas-tags):
+            - app management
+    '/{customerId}':
+      displayName: '{customerId}'
+      uriParameters:
+        customerId:
+          description: Unique Id of the customer to get products for
+          required: true
+          type: string
+          displayName: Unique Id of the customer to get products for
+      post:
+        displayName: requestCustomerAppId
+        description: Returns the customer app id
+        (oas-summary): Request a customer app id
+        body:
+          application/json:
+            type: AppAccessRequest
+            (oas-body-name): body
+            description: App access request data
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: AppAccessData
+            description: App access data
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '403':
+            description: If access token is not valid
+          '423':
+            description: If the user has reached the limit of parallel app accesses
+          '500':
+            description: Server error
+        (oas-tags):
+          - app management
+      '/{productId}':
+        displayName: '{productId}'
+        '/{customerAppId}':
+          displayName: '{customerAppId}'
+          uriParameters:
+            customerAppId:
+              description: Customer app id that shall grant access
+              required: true
+              type: string
+              displayName: Customer app id that shall grant access
+          get:
+            displayName: verifyCustomerAppAccess
+            description: Verify if customer app is having access to a specific product
+            (oas-summary): Verify customer app access
+            headers:
+              plenigoToken:
+                type: string
+                description: Plenigo authentication token
+                enum:
+                  - JWT
+                required: true
+            responses:
+              '204':
+                description: Access is granted
+              '400':
+                description: If the given parameters were incorrect
+              '401':
+                description: If the provided company secret and/or company Id is incorrect
+              '403':
+                description: Access is not allowed
+              '500':
+                description: Server error
+            queryParameters:
+              testMode:
+                description: Flag indicating if test mode should be used
+                required: true
+                type: boolean
+                displayName: Flag indicating if test mode should be used
+            (oas-tags):
+              - app management
+      '/{customerAppId}':
+        displayName: '{customerAppId}'
+        uriParameters:
+          customerAppId:
+            description: Customer app id that shall grant access
+            required: true
+            type: string
+            displayName: Customer app id that shall grant access
+        delete:
+          displayName: deleteCustomerApp
+          description: Deletes a customer app id to allow access with another app
+          (oas-summary): Deletes a customer app id
+          headers:
+            plenigoToken:
+              type: string
+              description: Plenigo authentication token
+              enum:
+                - JWT
+              required: true
+          responses:
+            '204':
+              description: App id successfully deleted
+            '400':
+              description: If the given parameters were incorrect
+            '401':
+              description: If the provided company secret and/or company Id is incorrect
+            '500':
+              description: Server error
+          queryParameters:
+            testMode:
+              description: Flag indicating if test mode should be used
+              required: true
+              type: boolean
+              displayName: Flag indicating if test mode should be used
+          (oas-tags):
+            - app management
+      get:
+        displayName: getCustomerApps
+        description: Returns all customer apps
+        (oas-summary): Get all customer apps
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: AppAccessList
+            description: List with all customer apps
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '500':
+            description: Server error
+        queryParameters:
+          testMode:
+            description: Flag indicating if test mode should be used
+            required: true
+            type: boolean
+            displayName: Flag indicating if test mode should be used
+        (oas-tags):
+          - app management
+  /mobileSecret:
+    displayName: mobileSecret
+    '/{customerId}':
+      displayName: '{customerId}'
+      uriParameters:
+        customerId:
+          description: Unique Id of the customer to get mobile secret for
+          required: true
+          type: string
+          displayName: Unique Id of the customer to get mobile secret for
+      delete:
+        displayName: deleteMobileSecret
+        description: Deletes a mobile secret from the customer
+        (oas-summary): Deletes the mobile secret for a customer
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '204':
+            description: Mobile secret successfully deleted
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '500':
+            description: Server error
+        (oas-tags):
+          - mobile secret
+      post:
+        displayName: createMobileSecret
+        description: Returns the mobile secret
+        (oas-summary): Create or recreate mobile secret
+        body:
+          application/json:
+            type: CreateMobileSecretRequest
+            (oas-body-name): body
+            description: App access request data
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: MobileSecretData
+            description: Mobile secret
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '500':
+            description: Server error
+        (oas-tags):
+          - mobile secret
+      get:
+        displayName: getMobileSecret
+        description: Returns customer mobile secret
+        (oas-summary): Get customer mobile secret
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: MobileSecretData
+            description: Mobile secret
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '404':
+            description: No mobile secret created yet
+          '500':
+            description: Server error
+        (oas-tags):
+          - mobile secret
+    /verify:
+      displayName: verify
+      get:
+        displayName: verifyMobileSecret
+        (oas-summary): Test if user mobile secret is correct.
+        headers:
+          plenigoToken:
+            type: string
+            description: Plenigo authentication token
+            enum:
+              - JWT
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: MobileSecretVerificationResult
+            description: Mobile secret is correct
+          '400':
+            description: If the given parameters were incorrect
+          '401':
+            description: If the provided company secret and/or company Id is incorrect
+          '403':
+            description: Mobile secret is not correct
+          '500':
+            description: Server error
+        queryParameters:
+          email:
+            description: Email of the user
+            required: true
+            type: string
+            displayName: Email of the user
+          mobileSecret:
+            description: Mobile secret entered by user
+            required: true
+            type: string
+            displayName: Mobile secret entered by user
+        (oas-tags):
+          - mobile secret
+/import:
+  displayName: import
+  /customerAccess:
+    displayName: customerAccess
+    post:
+      displayName: importExternalCustomerAccess
+      description: Import an external customer access data. With this data your entered web service will be asked if the customer has access to the content
+      (oas-summary): Import external customer access
+      body:
+        application/json:
+          type: ExternalCustomerAccessControlRequest
+          (oas-body-name): body
+          description: Customer identification data
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          description: Customer access data added.
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+        '404':
+          description: If customer does not exist
+        '500':
+          description: Server error
+      (oas-tags):
+        - import customer access
+/paywall:
+  displayName: paywall
+  /state:
+    displayName: state
+    get:
+      displayName: isPaywallEnabled
+      description: Check if the paywall has been enabled
+      (oas-summary): Check Paywall Status
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: PaywallState
+          description: If request could be handled
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+      (oas-tags):
+        - paywall
+/product:
+  displayName: product
+  '/{productId}':
+    displayName: '{productId}'
+    uriParameters:
+      productId:
+        description: Id of product that needs to be fetched
+        required: true
+        type: string
+        displayName: Id of product that needs to be fetched
+    get:
+      displayName: getProduct
+      description: Returns general product information for a plenigo managed product
+      (oas-summary): Find product by Id
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Product
+          description: Product found
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+        '404':
+          description: If product Id is not valid
+      (oas-tags):
+        - product
+/category:
+  displayName: category
+  '/{categoryId}':
+    displayName: '{categoryId}'
+    uriParameters:
+      categoryId:
+        description: Id of category that needs to be fetched
+        required: true
+        type: string
+        displayName: Id of category that needs to be fetched
+    get:
+      displayName: getCategory
+      description: Returns general category information
+      (oas-summary): Find category by Id
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Category
+          description: Category found
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+        '404':
+          description: If category Id is not valid
+      (oas-tags):
+        - category
+/products:
+  displayName: products
+  /search:
+    displayName: search
+    get:
+      displayName: getProducts
+      description: Returns a list of products of the specified company
+      (oas-summary): Query products
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ProductList
+          description: Products queried
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+      queryParameters:
+        size:
+          default: 10
+          description: Size of the page - must be between 10 and 100
+          format: int32
+          maximum: 200
+          minimum: 10
+          required: false
+          type: integer
+          displayName: Size of the page - must be between 10 and 100
+        page:
+          default: 0
+          description: Number of the page
+          format: int32
+          minimum: 0
+          required: false
+          type: integer
+          displayName: Number of the page
+      (oas-tags):
+        - product
+/transactions:
+  displayName: transactions
+  /search:
+    displayName: search
+    get:
+      displayName: getTransactions
+      description: Returns a list of transactions of the specified company
+      (oas-summary): Query transactions
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: TransactionList
+          description: Transactions queried
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+        '500':
+          description: Server error
+      queryParameters:
+        paymentMethod:
+          description: Payment method used to pay the transaction.
+          enum:
+            - BANK_ACCOUNT
+            - CREDIT_CARD
+            - PAYPAL
+            - BILLING
+            - ZERO
+            - SOFORT
+            - POST_FINANCE
+          required: false
+          type: string
+          displayName: Payment method used to pay the transaction.
+        transactionStatus:
+          description: Status of the transaction.
+          enum:
+            - BOOKED
+            - DONE
+            - CANCELED
+            - CHARGEBACK
+          required: false
+          type: string
+          displayName: Status of the transaction.
+        testMode:
+          default: false
+          description: Flag indicating if the transactions to search were in test mode
+          required: false
+          type: boolean
+          displayName: Flag indicating if the transactions to search were in test mode
+        size:
+          default: 10
+          description: Size of the page - must be between 10 and 100
+          format: int32
+          maximum: 100
+          minimum: 10
+          required: false
+          type: integer
+          displayName: Size of the page - must be between 10 and 100
+        page:
+          default: 0
+          description: Number of the page
+          format: int32
+          minimum: 0
+          required: false
+          type: integer
+          displayName: Number of the page
+      (oas-tags):
+        - transaction
+/subscriptions:
+  displayName: subscriptions
+  /search:
+    displayName: search
+    get:
+      displayName: getSubscriptions
+      description: Returns a list of subscriptions of the specified company
+      (oas-summary): Query Subscriptions
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: SubscriptionList
+          description: Subscriptions queried
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+        '500':
+          description: Server error
+      queryParameters:
+        paymentMethod:
+          description: Payment method used to pay the subscription.
+          enum:
+            - BANK_ACCOUNT
+            - CREDIT_CARD
+            - PAYPAL
+            - BILLING
+            - ZERO
+            - SOFORT
+            - POST_FINANCE
+          required: false
+          type: string
+          displayName: Payment method used to pay the subscription.
+        size:
+          default: 10
+          description: Size of the page - must be between 10 and 100
+          format: int32
+          maximum: 100
+          minimum: 10
+          required: false
+          type: integer
+          displayName: Size of the page - must be between 10 and 100
+        page:
+          default: 0
+          description: Number of the page
+          format: int32
+          minimum: 0
+          required: false
+          type: integer
+          displayName: Number of the page
+      (oas-tags):
+        - subscription
+/categories:
+  displayName: categories
+  /search:
+    displayName: search
+    get:
+      displayName: getCategories
+      description: Returns a list of categories of the specified company
+      (oas-summary): Query categories
+      headers:
+        plenigoToken:
+          type: string
+          description: Plenigo authentication token
+          enum:
+            - JWT
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: CategoryList
+          description: Categories queried
+        '400':
+          description: If the given parameters were incorrect
+        '401':
+          description: If the provided company secret and/or company Id is incorrect
+      queryParameters:
+        size:
+          default: 10
+          description: Size of the page - must be between 10 and 100
+          format: int32
+          maximum: 200
+          minimum: 10
+          required: false
+          type: integer
+          displayName: Size of the page - must be between 10 and 100
+        page:
+          default: 0
+          description: Number of the page
+          format: int32
+          minimum: 0
+          required: false
+          type: integer
+          displayName: Number of the page
+      (oas-tags):
+        - category
+types:
+  AppAccessData:
+    properties:
+      customerAppId:
+        description: App id to check if user is allowed to access product
+        type: string
+        required: false
+      customerId:
+        description: Customer Id.
+        type: string
+        required: false
+      description:
+        description: Customer's description for this app
+        type: string
+        required: false
+      productId:
+        description: Id of the product represented by this app id
+        type: string
+        required: false
+  AppAccessList:
+    properties:
+      apps:
+        description: Array of app access data details
+        items:
+          type: AppAccessData
+        type: array
+        required: false
+  AppAccessRequest:
+    properties:
+      accessToken:
+        description: Access token requested before
+        type: string
+        required: false
+      testMode:
+        description: Flag indicating if test mode should be used
+        type: boolean
+        required: false
+  AppAccessToken:
+    properties:
+      customerId:
+        description: Customer Id.
+        type: string
+        required: false
+      token:
+        description: Token needed to request the customer's app id
+        type: string
+        required: false
+  AppAccessTokenRequest:
+    properties:
+      description:
+        description: Description for the user to identify app later
+        type: string
+        required: false
+      productId:
+        description: Product access should be granted to
+        type: string
+        required: false
+      testMode:
+        description: Flag indicating if test mode should be used
+        type: boolean
+        required: false
+  Category:
+    properties:
+      currency:
+        description: 'Currency as ISO 4217, e.g. EUR'
+        type: string
+        required: false
+      id:
+        description: Id of the category
+        type: string
+        required: false
+      price:
+        description: 'Price of the product in format ##.##'
+        format: double
+        type: number
+        required: false
+      title:
+        description: Title of the category
+        type: string
+        required: false
+      type:
+        description: Type of the products represented by this category
+        type: string
+        required: false
+  CategoryItem:
+    properties:
+      categoryId:
+        description: Category Id
+        type: string
+        required: false
+      title:
+        description: Category title
+        type: string
+        required: false
+  CategoryList:
+    properties:
+      elements:
+        description: Array of category items
+        items:
+          type: CategoryItem
+        type: array
+        required: false
+      pageNumber:
+        description: Page number
+        format: int32
+        type: integer
+        required: false
+      size:
+        description: Page size
+        format: int32
+        type: integer
+        required: false
+      totalElements:
+        description: Amount of total elements
+        format: int32
+        type: integer
+        required: false
+  CompanyUserBillingAddressItem:
+    properties:
+      additionalAddressInfo:
+        description: the user's additional address info
+        type: string
+        required: false
+      city:
+        description: the user's city
+        type: string
+        required: false
+      company:
+        description: the company name
+        type: string
+        required: false
+      country:
+        description: the user's country
+        type: string
+        required: false
+      firstName:
+        description: the user's first name
+        type: string
+        required: false
+      gender:
+        description: the user's gender
+        type: string
+        required: false
+      name:
+        description: the user's last name
+        type: string
+        required: false
+      postCode:
+        description: the user's postal code address
+        type: string
+        required: false
+      state:
+        description: the user's state address
+        type: string
+        required: false
+      street:
+        description: the user's street address
+        type: string
+        required: false
+      vatNumber:
+        description: the user's vat number
+        type: string
+        required: false
+  CompanyUserItem:
+    properties:
+      additionalAddressInfo:
+        description: the user's additional address info
+        type: string
+        required: false
+      agreementState:
+        description: the user's newsletter agreement state
+        type: string
+        required: false
+      billingAddress:
+        description: the user's billing address
+        type: CompanyUserBillingAddressItem
+        required: false
+      birthday:
+        description: the user's birth date
+        type: string
+        required: false
+      city:
+        description: the user's city
+        type: string
+        required: false
+      country:
+        description: 'the user''s country in ISO 3166-1 Alpha 2 format (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)'
+        type: string
+        required: false
+      customerId:
+        description: The user id
+        type: string
+        required: false
+      email:
+        description: the email address
+        type: string
+        required: false
+      firstName:
+        description: the user's first name
+        type: string
+        required: false
+      gender:
+        description: the user's gender
+        type: string
+        required: false
+      language:
+        description: the user's language
+        type: string
+        required: false
+      mobileNumber:
+        description: the user's mobile phone number
+        type: string
+        required: false
+      name:
+        description: the user's last name
+        type: string
+        required: false
+      postCode:
+        description: the user's postal code address
+        type: string
+        required: false
+      state:
+        description: the user's state address
+        type: string
+        required: false
+      street:
+        description: the user's street address
+        type: string
+        required: false
+      userState:
+        description: the user's account status
+        type: string
+        required: false
+      username:
+        description: the user login
+        type: string
+        required: false
+  CompanyUserList:
+    properties:
+      elements:
+        description: Array of company user items
+        items:
+          type: CompanyUserItem
+        type: array
+        required: false
+      pageNumber:
+        description: Page number
+        format: int32
+        type: integer
+        required: false
+      size:
+        description: Page size
+        format: int32
+        type: integer
+        required: false
+      totalElements:
+        description: Total amount of elements available
+        format: int64
+        type: integer
+        required: false
+  CreateMobileSecretRequest:
+    properties:
+      size:
+        description: Size of the company secret to generate
+        format: int32
+        type: integer
+        required: false
+  CustomerId:
+    properties:
+      customerId:
+        description: Id of the created customer.
+        type: string
+        required: false
+  CustomerProduct:
+    properties:
+      buyDate:
+        description: Date the product was bought
+        type: string
+        required: false
+      cancellationTransactionId:
+        description: Id of the transaction that cancelled this transaction
+        type: string
+        required: false
+      currency:
+        description: Currency of the amounts
+        type: string
+        required: false
+      paymentMethod:
+        description: The payment method
+        type: string
+        required: false
+      price:
+        description: Price of the transaction
+        format: double
+        type: number
+        required: false
+      productId:
+        description: Id of the product
+        type: string
+        required: false
+      shippingCosts:
+        description: Amount of the shipping costs
+        format: double
+        type: number
+        required: false
+      shippingCostsTaxesAmount:
+        description: Amount of the shipping costs taxes amount
+        format: double
+        type: number
+        required: false
+      shippingCostsTaxesPercentage:
+        description: Amount of the shipping costs taxes percentage
+        format: double
+        type: number
+        required: false
+      status:
+        description: The transaction status
+        type: string
+        required: false
+      taxesAmount:
+        description: Amount of the tax
+        format: double
+        type: number
+        required: false
+      taxesCountry:
+        description: 'The country of the tax in ISO 3166-1 Alpha 2 format (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)'
+        type: string
+        required: false
+      taxesPercentage:
+        description: Tax percentage of the transaction
+        format: double
+        type: number
+        required: false
+      title:
+        description: Title of the product
+        type: string
+        required: false
+      transactionId:
+        description: Transaction Id
+        type: string
+        required: false
+  CustomerProductsList:
+    properties:
+      singleProducts:
+        description: Array of customer products
+        items:
+          type: CustomerProduct
+        type: array
+        required: false
+      subscription:
+        description: Array of customer subscriptions
+        items:
+          type: CustomerSubscription
+        type: array
+        required: false
+  CustomerSubscription:
+    properties:
+      cancellationDate:
+        description: Date the subscription was cancelled
+        type: string
+        required: false
+      currency:
+        description: Currency of the amounts
+        type: string
+        required: false
+      endDate:
+        description: Date the subscription will end
+        type: string
+        required: false
+      paymentMethod:
+        description: The payment method
+        type: string
+        required: false
+      price:
+        description: Price of the transaction
+        format: double
+        type: number
+        required: false
+      productId:
+        description: Product Id
+        type: string
+        required: false
+      productType:
+        description: Type of the product
+        type: string
+        required: false
+      shippingCosts:
+        description: Amount of the shipping costs
+        format: double
+        type: number
+        required: false
+      shippingCostsTaxesPercentage:
+        description: Amount of the shipping costs taxes percentage
+        format: double
+        type: number
+        required: false
+      startDate:
+        description: Date the subscription starts
+        type: string
+        required: false
+      taxesCountry:
+        description: 'The country of the tax in ISO 3166-1 Alpha 2 format (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)'
+        type: string
+        required: false
+      taxesPercentage:
+        description: Tax percentage of the transaction
+        format: double
+        type: number
+        required: false
+      title:
+        description: Title
+        type: string
+        required: false
+  EmailData:
+    properties:
+      email:
+        description: New email address of user
+        type: string
+        required: false
+  ExternalCustomerAccessControlRequest:
+    properties:
+      customerId:
+        description: Customer id to check access for
+        type: string
+        required: false
+      yourFirstIdentifier:
+        description: Your identifier for the customer
+        type: string
+        required: false
+      yourForthIdentifier:
+        description: Your identifier for the customer
+        type: string
+        required: false
+      yourSecondIdentifier:
+        description: Your identifier for the customer
+        type: string
+        required: false
+      yourThirdIdentifier:
+        description: Your identifier for the customer
+        type: string
+        required: false
+  ExternalLoginToken:
+    properties:
+      loginToken:
+        description: One time token used to create a valid user session
+        type: string
+        required: false
+  ExternalUserRegistration:
+    properties:
+      email:
+        description: Email address of the user to register
+        type: string
+        required: false
+      language:
+        description: Language of the user as two digit ISO code
+        type: string
+        required: false
+  FailedPaymentItem:
+    properties:
+      customerId:
+        description: Customer Id
+        type: string
+        required: false
+      date:
+        description: Failed Payment Date
+        type: string
+        required: false
+      productId:
+        description: Product Id
+        type: string
+        required: false
+      status:
+        description: Failed Payment Status
+        type: string
+        required: false
+      title:
+        description: Title
+        type: string
+        required: false
+  FailedPaymentList:
+    properties:
+      elements:
+        description: Array of failed payment items
+        items:
+          type: FailedPaymentItem
+        type: array
+        required: false
+      pageNumber:
+        description: Page number
+        format: int32
+        type: integer
+        required: false
+      size:
+        description: Page size
+        format: int32
+        type: integer
+        required: false
+      totalElements:
+        description: Total amount of elements available
+        format: int64
+        type: integer
+        required: false
+  Image:
+    properties:
+      altText:
+        description: Alternative text for this image to be shown to the user if image is not available
+        type: string
+        required: false
+      description:
+        description: Image description text
+        type: string
+        required: false
+      url:
+        description: Url to get this image
+        type: string
+        required: false
+  MobileSecretData:
+    properties:
+      email:
+        description: Email address of the user
+        type: string
+        required: false
+      mobileAppSecret:
+        description: Mobile app secret for the user
+        type: string
+        required: false
+  MobileSecretVerificationResult:
+    properties:
+      customerId:
+        description: Id of the customer
+        type: string
+        required: false
+  OAuthError: {}
+  PaywallState:
+    properties:
+      enabled:
+        description: Indicates if the paywall is enabled or not
+        type: boolean
+        required: false
+  Product:
+    properties:
+      accountingPeriod:
+        description: Counting period selected for subscription in month
+        type: string
+        required: false
+      actionPeriodName:
+        description: Name of the action period if one is defined
+        type: string
+        required: false
+      actionPeriodPrice:
+        description: Price of the action period if one is defined
+        format: double
+        type: number
+        required: false
+      actionPeriodTerm:
+        description: Term in months of the action period if one is defined
+        type: string
+        required: false
+      autoRenewal:
+        description: Flag indicating if the subscription is auto renewed
+        type: boolean
+        required: false
+      cancellationPeriod:
+        description: Cancellation period for the subscription in days
+        type: string
+        required: false
+      categoryId:
+        description: Category Id product belongs to
+        type: string
+        required: false
+      choosePrice:
+        description: Flag indicating if the product price can be freely selected by the user
+        type: boolean
+        required: false
+      companyId:
+        description: Unique Id of the company can be retrieved from the company dashboard
+        type: string
+        required: false
+      costCenter:
+        description: Cost center
+        type: string
+        required: false
+      currency:
+        description: 'Currency as ISO 4217, e.g. EUR'
+        type: string
+        required: false
+      customInfo:
+        description: Custom information
+        type: string
+        required: false
+      description:
+        description: Description of the product
+        type: string
+        required: false
+      id:
+        description: Id of the product
+        type: string
+        required: false
+      images:
+        description: Image information related to the product
+        items:
+          type: Image
+        type: array
+        required: false
+      maxParallelAppAccess:
+        description: Max parallel app access
+        format: int32
+        type: number
+        required: false
+      price:
+        description: 'Price of the product in format ##.##'
+        format: double
+        type: number
+        required: false
+      revenueAccount:
+        description: Revenue account
+        type: string
+        required: false
+      secret:
+        description: Company secret can be retrieved from the company administration area
+        type: string
+        required: false
+      shippingCosts:
+        description: Shipping costs of the product
+        format: double
+        type: number
+        required: false
+      subscription:
+        description: Flag indicating if product represents a subscription
+        type: boolean
+        required: false
+      term:
+        description: Subscription term in month
+        type: string
+        required: false
+      title:
+        description: Title of the product
+        type: string
+        required: false
+      type:
+        description: Type of the products represented by this category
+        type: string
+        required: false
+      url:
+        description: Product url
+        type: string
+        required: false
+      videoPrequelTime:
+        description: Video prequel time if one is defined
+        format: int32
+        type: number
+        required: false
+  ProductItem:
+    properties:
+      description:
+        description: Product description
+        type: string
+        required: false
+      productId:
+        description: Product Id
+        type: string
+        required: false
+      title:
+        description: Product title
+        type: string
+        required: false
+  ProductList:
+    properties:
+      elements:
+        description: Array of product items
+        items:
+          type: ProductItem
+        type: array
+        required: false
+      pageNumber:
+        description: Page number
+        format: int32
+        type: integer
+        required: false
+      size:
+        description: Page size
+        format: int32
+        type: integer
+        required: false
+      totalElements:
+        description: Amount of total elements
+        format: int32
+        type: integer
+        required: false
+  SubscriptionItem:
+    properties:
+      currency:
+        description: Currency of the amounts
+        type: string
+        required: false
+      customerId:
+        description: Customer Id
+        type: string
+        required: false
+      paymentMethod:
+        description: The payment method
+        type: string
+        required: false
+      price:
+        description: Price of the subscription
+        format: double
+        type: number
+        required: false
+      productId:
+        description: Product Id
+        type: string
+        required: false
+      startDate:
+        description: The subscription start date
+        type: string
+        required: false
+      term:
+        description: The subscription term
+        format: int32
+        type: number
+        required: false
+      title:
+        description: Title
+        type: string
+        required: false
+  SubscriptionList:
+    properties:
+      elements:
+        description: Array of subscription items
+        items:
+          type: SubscriptionItem
+        type: array
+        required: false
+      pageNumber:
+        description: Page number
+        format: int32
+        type: integer
+        required: false
+      size:
+        description: Page size
+        format: int32
+        type: integer
+        required: false
+      totalElements:
+        description: Total amount of elements available
+        format: int64
+        type: integer
+        required: false
+  TransactionItem:
+    properties:
+      billingId:
+        description: The billing id of this transaction
+        format: double
+        type: number
+        required: false
+      cancellationTransactionId:
+        description: Id of the transaction that cancelled this transaction
+        type: string
+        required: false
+      cancelledTransactionId:
+        description: Id of the transaction that is cancelled by transaction
+        type: string
+        required: false
+      currency:
+        description: Currency of the amounts
+        type: string
+        required: false
+      customerId:
+        description: Customer Id
+        type: string
+        required: false
+      paymentMethod:
+        description: The payment method
+        type: string
+        required: false
+      price:
+        description: Price of the transaction
+        format: double
+        type: number
+        required: false
+      productId:
+        description: Product Id
+        type: string
+        required: false
+      status:
+        description: The transaction status
+        type: string
+        required: false
+      taxesAmount:
+        description: Amount of the tax
+        format: double
+        type: number
+        required: false
+      taxesCountry:
+        description: 'The country of the tax in ISO 3166-1 Alpha 2 format (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)'
+        type: string
+        required: false
+      taxesPercentage:
+        description: Tax percentage of the transaction
+        format: double
+        type: number
+        required: false
+      title:
+        description: Title
+        type: string
+        required: false
+      transactionDate:
+        description: The transaction date
+        type: string
+        required: false
+      transactionId:
+        description: Transaction Id
+        type: string
+        required: false
+  TransactionList:
+    properties:
+      elements:
+        description: Array of transaction items
+        items:
+          type: TransactionItem
+        type: array
+        required: false
+      pageNumber:
+        description: Page number
+        format: int32
+        type: integer
+        required: false
+      size:
+        description: Page size
+        format: int32
+        type: integer
+        required: false
+      totalElements:
+        description: Total amount of elements available
+        format: int64
+        type: integer
+        required: false
+  User:
+    properties:
+      additionalAddressInfo:
+        description: Additional address information of the user
+        type: string
+        required: false
+      city:
+        description: City of the user
+        type: string
+        required: false
+      country:
+        description: 'Country of the user in ISO 3166-1 Alpha 2 format (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)'
+        type: string
+        required: false
+      email:
+        description: Email of the user
+        type: string
+        required: false
+      firstName:
+        description: First name of the user
+        type: string
+        required: false
+      gender:
+        description: Gender of the user
+        type: string
+        required: false
+      name:
+        description: Surname of the user
+        type: string
+        required: false
+      postCode:
+        description: Postcode of the user
+        type: string
+        required: false
+      street:
+        description: Street of the user
+        type: string
+        required: false
+      userId:
+        description: Id of the user
+        type: string
+        required: false
+      username:
+        description: Username/nickname of the user
+        type: string
+        required: false

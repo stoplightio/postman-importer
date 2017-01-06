@@ -1,0 +1,227 @@
+#%RAML 1.0
+title: RecoveryServicesClient
+version: '2016-06-01'
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-recoveryservices/2016-06-01/swagger/recoveryservices.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-recoveryservices
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-enum: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.RecoveryServices:
+            displayName: Microsoft.RecoveryServices
+            /vaults:
+              displayName: vaults
+              '/{vaultName}':
+                displayName: '{vaultName}'
+                uriParameters:
+                  vaultName:
+                    description: The name of the recovery services vault.
+                    required: true
+                    type: string
+                    displayName: The name of the recovery services vault.
+                put:
+                  displayName: Vaults_CreateOrUpdate
+                  description: Creates or updates a Recovery Services vault.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: Vault
+                      (oas-body-name): vault
+                      description: Recovery Services Vault to be created.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Vault
+                      description: OK
+                    '201':
+                      body:
+                        application/json:
+                          type: Vault
+                      description: Created
+                  (oas-tags):
+                    - Vaults
+                get:
+                  displayName: Vaults_Get
+                  description: Get the Vault details.
+                  is:
+                    - apiVersion
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Vault
+                      description: OK
+                  (oas-tags):
+                    - Vaults
+                delete:
+                  displayName: Vaults_Delete
+                  description: Deletes a vault.
+                  is:
+                    - apiVersion
+                  responses:
+                    '200':
+                      description: OK
+                  (oas-tags):
+                    - Vaults
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: 'null'
+                displayName: Vaults_ListByResourceGroup
+                (oas-summary): Retrieve a list of Vaults.
+                is:
+                  - apiVersion
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: VaultList
+                    description: OK
+                (oas-tags):
+                  - Vaults
+types:
+  Object:
+    description: Base of all objects.
+    properties: {}
+  Resource:
+    properties:
+      id:
+        description: Resource Id
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Resource Location
+        type: string
+        required: false
+      name:
+        description: Resource Name
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      sku:
+        type: Sku
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Resource Tags
+        type: object
+        required: false
+      type:
+        description: Resource Type
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  Sku:
+    description: Identifies the unique system identifier for each Azure resource.
+    properties:
+      name:
+        description: The Sku name.
+        enum:
+          - Standard
+          - RS0
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: SkuName
+  Vault:
+    type: Resource
+  VaultList:
+    description: The response model for Vault.
+    properties:
+      value:
+        items:
+          type: Vault
+        type: array
+        required: false
+  VaultProperties:
+    description: Properties of the vault.
+    properties:
+      provisioningState:
+        description: Provisioning State.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+traits:
+  apiVersion:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client Api Version.
+        required: true

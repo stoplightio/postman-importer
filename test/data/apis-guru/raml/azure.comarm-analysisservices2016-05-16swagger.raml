@@ -1,0 +1,341 @@
+#%RAML 1.0
+title: AzureAnalysisServices
+version: '2016-05-16'
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: 'The Azure Analysis Services Web API provides a RESTful set of web services that enables users to create, retrieve, update, and delete Analysis Services servers'
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-ms-code-generation-settings):
+    name: AnalysisServicesManagementClient
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-analysisservices/2016-05-16/swagger/analysisservices.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-analysisservices
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-ms-code-generation-settings: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-long-running-operation: any
+  oas-x-ms-pageable: any
+  oas-x-ms-client-flatten: any
+  oas-x-ms-enum: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.AnalysisServices:
+            displayName: Microsoft.AnalysisServices
+            /servers:
+              displayName: servers
+              '/{serverName}':
+                displayName: '{serverName}'
+                /suspend:
+                  displayName: suspend
+                  post:
+                    (oas-x-ms-long-running-operation): true
+                    displayName: Servers_Suspend
+                    description: Supends operation of the specified Analysis Services server instance.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        description: OK.
+                      '202':
+                        description: Accepted.
+                    (oas-tags):
+                      - Servers
+                /resume:
+                  displayName: resume
+                  post:
+                    (oas-x-ms-long-running-operation): true
+                    displayName: Servers_Resume
+                    description: Resumes operation of the specified Analysis Services server instance.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        description: OK
+                      '202':
+                        description: Accepted
+                    (oas-tags):
+                      - Servers
+                uriParameters:
+                  serverName:
+                    description: 'The name of the Analysis Services server. It must be at least 3 characters in length, and no more than 63.'
+                    maxLength: 63
+                    minLength: 3
+                    pattern: '^[a-z][a-z0-9]*$'
+                    required: true
+                    type: string
+                    displayName: 'The name of the Analysis Services server. It must be at least 3 characters in length, and no more than 63.'
+                put:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: Servers_Create
+                  description: Provisions the specified Analysis Services server based on the configuration specified in the request.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: AnalysisServicesServer
+                      (oas-body-name): serverParameters
+                      description: Contains the information used to provision the Analysis Services server.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: AnalysisServicesServer
+                      description: OK. The operation completed successfully.
+                    '201':
+                      body:
+                        application/json:
+                          type: AnalysisServicesServer
+                      description: InProgress. The operation is still completing.
+                  (oas-tags):
+                    - Servers
+                patch:
+                  displayName: Servers_Update
+                  description: Updates the current state of the specified Analysis Services server.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: AnalysisServicesServerUpdateParameters
+                      (oas-body-name): serverUpdateParameters
+                      description: Request object that contains the updated information for the server.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: AnalysisServicesServer
+                      description: OK
+                  (oas-tags):
+                    - Servers
+                get:
+                  displayName: Servers_GetDetails
+                  description: Gets details about the specified Analysis Services server.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: AnalysisServicesServer
+                      description: OK. The operation was successful.
+                  (oas-tags):
+                    - Servers
+                delete:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: Servers_Delete
+                  description: Deletes the specified Analysis Services server.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      description: OK.
+                    '202':
+                      description: Accepted.
+                    '204':
+                      description: No Content.
+                  (oas-tags):
+                    - Servers
+              get:
+                (oas-x-ms-pageable): {}
+                displayName: Servers_ListByResourceGroup
+                description: Gets all the Analysis Services servers for the given resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: AnalysisServicesServers
+                    description: OK
+                (oas-tags):
+                  - Servers
+    /providers:
+      displayName: providers
+      /Microsoft.AnalysisServices:
+        displayName: Microsoft.AnalysisServices
+        /servers:
+          displayName: servers
+          get:
+            (oas-x-ms-pageable): {}
+            displayName: Servers_List
+            description: Lists all the Analysis Services servers for the given subscription.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AnalysisServicesServers
+                description: OK
+            (oas-tags):
+              - Servers
+types:
+  AnalysisServicesServer:
+    type: Resource
+  AnalysisServicesServerMutableProperties:
+    description: An object that represents a set of mutable Analysis Services resource properties.
+    properties:
+      asAdministrators:
+        type: ServerAdministrators
+        required: false
+  AnalysisServicesServerProperties:
+    type: AnalysisServicesServerMutableProperties
+  AnalysisServicesServerUpdateParameters:
+    description: Provision request specification
+    properties:
+      properties:
+        description: Properties of the provision operation request.
+        type: AnalysisServicesServerMutableProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      sku:
+        description: The SKU of the Analysis Services resource.
+        type: ResourceSku
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Key-value pairs of additional provisioning properties.
+        type: object
+        required: false
+  AnalysisServicesServers:
+    description: An array of Analysis Services resources.
+    properties:
+      value:
+        description: An array of Analysis Services resources.
+        items:
+          type: AnalysisServicesServer
+        type: array
+  Resource:
+    description: Represents an instance of an Analysis Services resource.
+    properties:
+      id:
+        description: An identifier that represents the Analysis Services resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Location of the Analysis Services resource.
+        type: string
+      name:
+        description: The name of the Analysis Services resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      sku:
+        description: The SKU of the Analysis Services resource.
+        type: ResourceSku
+      tags:
+        additionalProperties:
+          type: string
+        description: Key-value pairs of additional resource provisioning properties.
+        type: object
+        required: false
+      type:
+        description: The type of the Analysis Services resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  ResourceSku:
+    description: Represents the SKU name and Azure pricing tier for Analysis Services resource.
+    properties:
+      name:
+        description: 'Name of the SKU level for the server being provisioned. Possible values are: ''S1'', ''S2'', ''S4'', and ''D1''.'
+        enum:
+          - S1
+          - S2
+          - S4
+          - D1
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: SkuName
+      tier:
+        description: 'The name of the Azure pricing tier to which the SKU applies. Possible values are: ''Development'' and ''Standard''.'
+        enum:
+          - Development
+          - Standard
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: SkuTier
+  ServerAdministrators:
+    description: An array of administrator user identities
+    properties:
+      members:
+        description: An array of administrator user identities.
+        items:
+          description: 'The UPN of the user. For example: johnsmith@contoso.com.'
+          type: string
+        type: array
+        required: false
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: The client API version.
+        required: true

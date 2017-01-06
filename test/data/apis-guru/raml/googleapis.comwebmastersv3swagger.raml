@@ -1,0 +1,817 @@
+#%RAML 1.0
+title: Search Console
+version: v3
+baseUri: 'https://www.googleapis.com/webmasters/v3'
+protocols:
+  - HTTPS
+description: View Google Search Console data for your verified sites.
+(oas-tags-definition):
+  - name: searchanalytics
+  - name: sitemaps
+  - name: sites
+  - name: urlcrawlerrorscounts
+  - name: urlcrawlerrorssamples
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/webmasters/v3/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): webmasters
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/webmaster-tools/'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/webmasters'
+        - 'https://www.googleapis.com/auth/webmasters.readonly'
+    description: Oauth 2.0 authentication
+/sites:
+  displayName: sites
+  '/{siteUrl}':
+    displayName: '{siteUrl}'
+    /sitemaps:
+      displayName: sitemaps
+      '/{feedpath}':
+        displayName: '{feedpath}'
+        uriParameters:
+          feedpath:
+            description: 'The URL of the sitemap to add. For example: http://www.example.com/sitemap.xml'
+            required: true
+            type: string
+            displayName: 'The URL of the sitemap to add. For example: http://www.example.com/sitemap.xml'
+        delete:
+          displayName: webmasters.sitemaps.delete
+          description: Deletes a sitemap from this site.
+          responses:
+            '200':
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/webmasters'
+          (oas-tags):
+            - sitemaps
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+        get:
+          displayName: webmasters.sitemaps.get
+          description: Retrieves information about a specific sitemap.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: WmxSitemap
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/webmasters.readonly'
+          (oas-tags):
+            - sitemaps
+        put:
+          displayName: webmasters.sitemaps.submit
+          description: Submits a sitemap for a site.
+          responses:
+            '200':
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/webmasters'
+          (oas-tags):
+            - sitemaps
+      get:
+        displayName: webmasters.sitemaps.list
+        description: 'Lists the sitemaps-entries submitted for this site, or included in the sitemap index file (if sitemapIndex is specified in the request).'
+        responses:
+          '200':
+            body:
+              application/json:
+                type: SitemapsListResponse
+            description: Successful response
+        queryParameters:
+          sitemapIndex:
+            description: 'A URL of a site''s sitemap index. For example: http://www.example.com/sitemapindex.xml'
+            type: string
+            displayName: 'A URL of a site''s sitemap index. For example: http://www.example.com/sitemapindex.xml'
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/webmasters.readonly'
+        (oas-tags):
+          - sitemaps
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    /urlCrawlErrorsSamples:
+      displayName: urlCrawlErrorsSamples
+      '/{url}':
+        displayName: '{url}'
+        uriParameters:
+          url:
+            description: "The relative path (without the site) of the sample URL. It must be one of the URLs returned by list(). For example, for the URL https://www.example.com/pagename\_on the site https://www.example.com/, the url value is\_pagename"
+            required: true
+            type: string
+            displayName: "The relative path (without the site) of the sample URL. It must be one of the URLs returned by list(). For example, for the URL https://www.example.com/pagename\_on the site https://www.example.com/, the url value is\_pagename"
+        get:
+          displayName: webmasters.urlcrawlerrorssamples.get
+          description: Retrieves details about crawl errors for a site's sample URL.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: UrlCrawlErrorsSample
+              description: Successful response
+          queryParameters:
+            category:
+              description: 'The crawl error category. For example: authPermissions'
+              enum:
+                - authPermissions
+                - flashContent
+                - manyToOneRedirect
+                - notFollowed
+                - notFound
+                - other
+                - roboted
+                - serverError
+                - soft404
+              required: true
+              type: string
+              displayName: 'The crawl error category. For example: authPermissions'
+            platform:
+              description: 'The user agent type (platform) that made the request. For example: web'
+              enum:
+                - mobile
+                - smartphoneOnly
+                - web
+              required: true
+              type: string
+              displayName: 'The user agent type (platform) that made the request. For example: web'
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/webmasters.readonly'
+          (oas-tags):
+            - urlcrawlerrorssamples
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+        delete:
+          displayName: webmasters.urlcrawlerrorssamples.markAsFixed
+          description: 'Marks the provided site''s sample URL as fixed, and removes it from the samples list.'
+          responses:
+            '200':
+              description: Successful response
+          queryParameters:
+            category:
+              description: 'The crawl error category. For example: authPermissions'
+              enum:
+                - authPermissions
+                - flashContent
+                - manyToOneRedirect
+                - notFollowed
+                - notFound
+                - other
+                - roboted
+                - serverError
+                - soft404
+              required: true
+              type: string
+              displayName: 'The crawl error category. For example: authPermissions'
+            platform:
+              description: 'The user agent type (platform) that made the request. For example: web'
+              enum:
+                - mobile
+                - smartphoneOnly
+                - web
+              required: true
+              type: string
+              displayName: 'The user agent type (platform) that made the request. For example: web'
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/webmasters'
+          (oas-tags):
+            - urlcrawlerrorssamples
+      get:
+        displayName: webmasters.urlcrawlerrorssamples.list
+        description: Lists a site's sample URLs for the specified crawl error category and platform.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: UrlCrawlErrorsSamplesListResponse
+            description: Successful response
+        queryParameters:
+          category:
+            description: 'The crawl error category. For example: authPermissions'
+            enum:
+              - authPermissions
+              - flashContent
+              - manyToOneRedirect
+              - notFollowed
+              - notFound
+              - other
+              - roboted
+              - serverError
+              - soft404
+            required: true
+            type: string
+            displayName: 'The crawl error category. For example: authPermissions'
+          platform:
+            description: 'The user agent type (platform) that made the request. For example: web'
+            enum:
+              - mobile
+              - smartphoneOnly
+              - web
+            required: true
+            type: string
+            displayName: 'The user agent type (platform) that made the request. For example: web'
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/webmasters.readonly'
+        (oas-tags):
+          - urlcrawlerrorssamples
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    uriParameters:
+      siteUrl:
+        description: 'The URI of the property as defined in Search Console. Examples: http://www.example.com/ or android-app://com.example/'
+        required: true
+        type: string
+        displayName: 'The URI of the property as defined in Search Console. Examples: http://www.example.com/ or android-app://com.example/'
+    get:
+      displayName: webmasters.sites.get
+      description: Retrieves information about specific site.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: WmxSite
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/webmasters.readonly'
+      (oas-tags):
+        - sites
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+    /urlCrawlErrorsCounts:
+      displayName: urlCrawlErrorsCounts
+      /query:
+        displayName: query
+        get:
+          displayName: webmasters.urlcrawlerrorscounts.query
+          description: Retrieves a time series of the number of URL crawl errors per error category and platform.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: UrlCrawlErrorsCountsQueryResponse
+              description: Successful response
+          queryParameters:
+            category:
+              description: 'The crawl error category. For example: serverError. If not specified, returns results for all categories.'
+              enum:
+                - authPermissions
+                - flashContent
+                - manyToOneRedirect
+                - notFollowed
+                - notFound
+                - other
+                - roboted
+                - serverError
+                - soft404
+              type: string
+              displayName: 'The crawl error category. For example: serverError. If not specified, returns results for all categories.'
+            latestCountsOnly:
+              default: true
+              description: 'If true, returns only the latest crawl error counts.'
+              type: boolean
+              displayName: 'If true, returns only the latest crawl error counts.'
+            platform:
+              description: 'The user agent type (platform) that made the request. For example: web. If not specified, returns results for all platforms.'
+              enum:
+                - mobile
+                - smartphoneOnly
+                - web
+              type: string
+              displayName: 'The user agent type (platform) that made the request. For example: web. If not specified, returns results for all platforms.'
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/webmasters.readonly'
+          (oas-tags):
+            - urlcrawlerrorscounts
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+    put:
+      displayName: webmasters.sites.add
+      description: Adds a site to the set of the user's sites in Search Console.
+      responses:
+        '200':
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/webmasters'
+      (oas-tags):
+        - sites
+    delete:
+      displayName: webmasters.sites.delete
+      description: Removes a site from the set of the user's Search Console sites.
+      responses:
+        '200':
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/webmasters'
+      (oas-tags):
+        - sites
+    /searchAnalytics:
+      displayName: searchAnalytics
+      /query:
+        displayName: query
+        post:
+          displayName: webmasters.searchanalytics.query
+          description: |-
+            Query your data with filters and parameters that you define. Returns zero or more rows grouped by the row keys that you define. You must define a date range of one or more days.
+
+            When date is one of the group by values, any days without data are omitted from the result list. If you need to know which days have data, issue a broad date range query grouped by date for any metric, and see which day rows are returned.
+          body:
+            application/json:
+              type: SearchAnalyticsQueryRequest
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: SearchAnalyticsQueryResponse
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/webmasters.readonly'
+          (oas-tags):
+            - searchanalytics
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+  get:
+    displayName: webmasters.sites.list
+    description: Lists the user's Search Console sites.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: SitesListResponse
+        description: Successful response
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/webmasters.readonly'
+    (oas-tags):
+      - sites
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+types:
+  ApiDataRow:
+    properties:
+      clicks:
+        format: double
+        type: number
+        required: false
+      ctr:
+        format: double
+        type: number
+        required: false
+      impressions:
+        format: double
+        type: number
+        required: false
+      keys:
+        items:
+          type: string
+        type: array
+        required: false
+      position:
+        format: double
+        type: number
+        required: false
+  ApiDimensionFilter:
+    properties:
+      dimension:
+        type: string
+        required: false
+      expression:
+        type: string
+        required: false
+      operator:
+        type: string
+        required: false
+  ApiDimensionFilterGroup:
+    properties:
+      filters:
+        items:
+          type: ApiDimensionFilter
+        type: array
+        required: false
+      groupType:
+        type: string
+        required: false
+  SearchAnalyticsQueryRequest:
+    properties:
+      aggregationType:
+        description: |-
+          [Optional; Default is "auto"] How data is aggregated. If aggregated by property, all data for the same property is aggregated; if aggregated by page, all data is aggregated by canonical URI. If you filter or group by page, choose AUTO; otherwise you can aggregate either by property or by page, depending on how you want your data calculated; see  the help documentation to learn how data is calculated differently by site versus by page.
+
+          Note: If you group or filter by page, you cannot aggregate by property.
+
+          If you specify any value other than AUTO, the aggregation type in the result will match the requested type, or if you request an invalid type, you will get an error. The API will never change your aggregation type if the requested type is invalid.
+        type: string
+        required: false
+      dimensionFilterGroups:
+        description: '[Optional] Zero or more filters to apply to the dimension grouping values; for example, ''query contains "buy"'' to see only data where the query string contains the substring "buy" (not case-sensitive). You can filter by a dimension without grouping by it.'
+        items:
+          type: ApiDimensionFilterGroup
+        type: array
+        required: false
+      dimensions:
+        description: '[Optional] Zero or more dimensions to group results by. Dimensions are the group-by values in the Search Analytics page. Dimensions are combined to create a unique row key for each row. Results are grouped in the order that you supply these dimensions.'
+        items:
+          type: string
+        type: array
+        required: false
+      endDate:
+        description: '[Required] End date of the requested date range, in YYYY-MM-DD format, in PST (UTC - 8:00). Must be greater than or equal to the start date. This value is included in the range.'
+        type: string
+        required: false
+      rowLimit:
+        description: '[Optional; Default is 1000] The maximum number of rows to return. Must be a number from 1 to 5,000 (inclusive).'
+        format: int32
+        type: integer
+        required: false
+      searchType:
+        description: '[Optional; Default is "web"] The search type to filter for.'
+        type: string
+        required: false
+      startDate:
+        description: '[Required] Start date of the requested date range, in YYYY-MM-DD format, in PST time (UTC - 8:00). Must be less than or equal to the end date. This value is included in the range.'
+        type: string
+        required: false
+      startRow:
+        description: '[Optional; Default is 0] Zero-based index of the first row in the response. Must be a non-negative number.'
+        format: int32
+        type: integer
+        required: false
+  SearchAnalyticsQueryResponse:
+    description: 'A list of rows, one per result, grouped by key. Metrics in each row are aggregated for all data grouped by that key either by page or property, as specified by the aggregation type parameter.'
+    properties:
+      responseAggregationType:
+        description: How the results were aggregated.
+        type: string
+        required: false
+      rows:
+        description: A list of rows grouped by the key values in the order given in the query.
+        items:
+          type: ApiDataRow
+        type: array
+        required: false
+  SitemapsListResponse:
+    description: List of sitemaps.
+    properties:
+      sitemap:
+        description: Contains detailed information about a specific URL submitted as a sitemap.
+        items:
+          type: WmxSitemap
+        type: array
+        required: false
+  SitesListResponse:
+    description: List of sites with access level information.
+    properties:
+      siteEntry:
+        description: 'Contains permission level information about a Search Console site. For more information, see Permissions in Search Console.'
+        items:
+          type: WmxSite
+        type: array
+        required: false
+  UrlCrawlErrorCount:
+    description: An entry in a URL crawl errors time series.
+    properties:
+      count:
+        description: The error count at the given timestamp.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      timestamp:
+        description: 'The date and time when the crawl attempt took place, in RFC 3339 format.'
+        format: rfc3339
+        type: datetime
+        required: false
+  UrlCrawlErrorCountsPerType:
+    description: Number of errors per day for a specific error type (defined by platform and category).
+    properties:
+      category:
+        description: The crawl error type.
+        type: string
+        required: false
+      entries:
+        description: The error count entries time series.
+        items:
+          type: UrlCrawlErrorCount
+        type: array
+        required: false
+      platform:
+        description: The general type of Googlebot that made the request (see list of Googlebot user-agents for the user-agents used).
+        type: string
+        required: false
+  UrlCrawlErrorsCountsQueryResponse:
+    description: A time series of the number of URL crawl errors per error category and platform.
+    properties:
+      countPerTypes:
+        description: The time series of the number of URL crawl errors per error category and platform.
+        items:
+          type: UrlCrawlErrorCountsPerType
+        type: array
+        required: false
+  UrlCrawlErrorsSample:
+    description: Contains information about specific crawl errors.
+    properties:
+      first_detected:
+        description: 'The time the error was first detected, in RFC 3339 format.'
+        format: rfc3339
+        type: datetime
+        required: false
+      last_crawled:
+        description: 'The time when the URL was last crawled, in RFC 3339 format.'
+        format: rfc3339
+        type: datetime
+        required: false
+      pageUrl:
+        description: 'The URL of an error, relative to the site.'
+        type: string
+        required: false
+      responseCode:
+        description: 'The HTTP response code, if any.'
+        format: int32
+        type: integer
+        required: false
+      urlDetails:
+        description: 'Additional details about the URL, set only when calling get().'
+        type: UrlSampleDetails
+        required: false
+  UrlCrawlErrorsSamplesListResponse:
+    description: List of crawl error samples.
+    properties:
+      urlCrawlErrorSample:
+        description: Information about the sample URL and its crawl error.
+        items:
+          type: UrlCrawlErrorsSample
+        type: array
+        required: false
+  UrlSampleDetails:
+    description: 'Additional details about the URL, set only when calling get().'
+    properties:
+      containingSitemaps:
+        description: List of sitemaps pointing at this URL.
+        items:
+          type: string
+        type: array
+        required: false
+      linkedFromUrls:
+        description: A sample set of URLs linking to this URL.
+        items:
+          type: string
+        type: array
+        required: false
+  WmxSite:
+    description: 'Contains permission level information about a Search Console site. For more information, see  Permissions in Search Console.'
+    properties:
+      permissionLevel:
+        description: The user's permission level for the site.
+        type: string
+        required: false
+      siteUrl:
+        description: The URL of the site.
+        type: string
+        required: false
+  WmxSitemap:
+    description: Contains detailed information about a specific URL submitted as a sitemap.
+    properties:
+      contents:
+        description: The various content types in the sitemap.
+        items:
+          type: WmxSitemapContent
+        type: array
+        required: false
+      errors:
+        description: Number of errors in the sitemap. These are issues with the sitemap itself that need to be fixed before it can be processed correctly.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      isPending:
+        description: 'If true, the sitemap has not been processed.'
+        type: boolean
+        required: false
+      isSitemapsIndex:
+        description: 'If true, the sitemap is a collection of sitemaps.'
+        type: boolean
+        required: false
+      lastDownloaded:
+        description: Date & time in which this sitemap was last downloaded. Date format is in RFC 3339 format (yyyy-mm-dd).
+        format: rfc3339
+        type: datetime
+        required: false
+      lastSubmitted:
+        description: Date & time in which this sitemap was submitted. Date format is in RFC 3339 format (yyyy-mm-dd).
+        format: rfc3339
+        type: datetime
+        required: false
+      path:
+        description: The url of the sitemap.
+        type: string
+        required: false
+      type:
+        description: 'The type of the sitemap. For example: rssFeed.'
+        type: string
+        required: false
+      warnings:
+        description: Number of warnings for the sitemap. These are generally non-critical issues with URLs in the sitemaps.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+  WmxSitemapContent:
+    description: Information about the various content types in the sitemap.
+    properties:
+      indexed:
+        description: The number of URLs from the sitemap that were indexed (of the content type).
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      submitted:
+        description: The number of URLs in the sitemap (of the content type).
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      type:
+        description: 'The specific type of content in this sitemap. For example: web.'
+        type: string
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

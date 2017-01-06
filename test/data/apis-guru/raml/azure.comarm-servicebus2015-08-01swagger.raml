@@ -1,0 +1,1397 @@
+#%RAML 1.0
+title: ServiceBusManagementClient
+version: '2015-08-01'
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: Azure Service Bus client
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-servicebus/2015-08-01/swagger/servicebus.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-servicebus
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-long-running-operation: any
+  oas-x-ms-client-flatten: any
+  oas-x-ms-enum: any
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.ServiceBus:
+            displayName: Microsoft.ServiceBus
+            /namespaces:
+              displayName: namespaces
+              '/{namespaceName}':
+                displayName: '{namespaceName}'
+                /queues:
+                  displayName: queues
+                  '/{queueName}':
+                    displayName: '{queueName}'
+                    /authorizationRules:
+                      displayName: authorizationRules
+                      '/{authorizationRuleName}':
+                        displayName: '{authorizationRuleName}'
+                        uriParameters:
+                          authorizationRuleName:
+                            description: Authorization rule name.
+                            required: true
+                            type: string
+                            displayName: Authorization rule name.
+                        get:
+                          displayName: Queues_GetAuthorizationRule
+                          description: Gets an authorization rule for a queue by rule name.
+                          is:
+                            - apiVersionParameter
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: SharedAccessAuthorizationRuleResource
+                              description: Authorization rule successfully returned.
+                          (oas-tags):
+                            - Queues
+                          (oas-externalDocs):
+                            url: 'https://msdn.microsoft.com/en-us/library/azure/mt705611.aspx'
+                        put:
+                          displayName: Queues_CreateOrUpdateAuthorizationRule
+                          description: Creates an authorization rule for a queue.
+                          is:
+                            - apiVersionParameter
+                          body:
+                            application/json:
+                              type: SharedAccessAuthorizationRuleCreateOrUpdateParameters
+                              (oas-body-name): parameters
+                              description: The shared access authorization rule.
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: SharedAccessAuthorizationRuleResource
+                              description: Authorization rule successfully created.
+                          (oas-tags):
+                            - Queues
+                        /ListKeys:
+                          displayName: ListKeys
+                          post:
+                            displayName: Queues_ListKeys
+                            description: Primary and secondary connection strings to the queue.
+                            is:
+                              - apiVersionParameter
+                            responses:
+                              '200':
+                                body:
+                                  application/json:
+                                    type: ResourceListKeys
+                                description: Connection strings successfully returned.
+                            (oas-tags):
+                              - Queues
+                            (oas-externalDocs):
+                              url: 'https://msdn.microsoft.com/en-us/library/azure/mt705608.aspx'
+                        /regenerateKeys:
+                          displayName: regenerateKeys
+                          post:
+                            displayName: Queues_RegenerateKeys
+                            description: Regenerates the primary or secondary connection strings to the queue.
+                            is:
+                              - apiVersionParameter
+                            body:
+                              application/json:
+                                type: RegenerateKeysParameters
+                                (oas-body-name): parameters
+                                description: Parameters supplied to regenerate the authorization rule.
+                            responses:
+                              '200':
+                                body:
+                                  application/json:
+                                    type: ResourceListKeys
+                                description: Connection strings successfully regenerated.
+                            (oas-tags):
+                              - Queues
+                            (oas-externalDocs):
+                              url: 'https://msdn.microsoft.com/en-us/library/azure/mt705606.aspx'
+                        delete:
+                          displayName: Queues_DeleteAuthorizationRule
+                          description: Deletes a queue authorization rule.
+                          is:
+                            - apiVersionParameter
+                          responses:
+                            '200':
+                              description: Authorization rule successfully deleted.
+                            '204':
+                              description: No content.
+                          (oas-tags):
+                            - Queues
+                          (oas-externalDocs):
+                            url: 'https://msdn.microsoft.com/en-us/library/azure/mt705609.aspx'
+                      get:
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: Queues_ListAuthorizationRules
+                        description: Gets all authorization rules for a queue.
+                        is:
+                          - apiVersionParameter
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: SharedAccessAuthorizationRuleListResult
+                            description: Authorization rules successfully returned.
+                        (oas-tags):
+                          - Queues
+                        (oas-externalDocs):
+                          url: 'https://msdn.microsoft.com/en-us/library/azure/mt705607.aspx'
+                    uriParameters:
+                      queueName:
+                        description: The queue name.
+                        required: true
+                        type: string
+                        displayName: The queue name.
+                    delete:
+                      displayName: Queues_Delete
+                      description: Deletes a queue from the specified namespace in a resource group.
+                      is:
+                        - apiVersionParameter
+                      responses:
+                        '200':
+                          description: Queue successfully deleted.
+                        '204':
+                          description: No content.
+                      (oas-tags):
+                        - Queues
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639411.aspx'
+                    put:
+                      displayName: Queues_CreateOrUpdate
+                      description: Creates or updates a Service Bus queue. This operation is idempotent.
+                      is:
+                        - apiVersionParameter
+                      body:
+                        application/json:
+                          type: QueueCreateOrUpdateParameters
+                          (oas-body-name): parameters
+                          description: Parameters supplied to create or update a queue resource.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: QueueResource
+                          description: Queue successfully created.
+                      (oas-tags):
+                        - Queues
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639395.aspx'
+                    get:
+                      displayName: Queues_Get
+                      description: Returns a description for the specified queue.
+                      is:
+                        - apiVersionParameter
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: QueueResource
+                          description: Queue description successfully returned.
+                      (oas-tags):
+                        - Queues
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639380.aspx'
+                  get:
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: Queues_ListAll
+                    description: Gets the queues within a namespace.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: QueueListResult
+                        description: Queues successfully returned.
+                    (oas-tags):
+                      - Queues
+                    (oas-externalDocs):
+                      url: 'https://msdn.microsoft.com/en-us/library/azure/mt639415.aspx'
+                /topics:
+                  displayName: topics
+                  '/{topicName}':
+                    displayName: '{topicName}'
+                    /subscriptions:
+                      displayName: subscriptions
+                      '/{subscriptionName}':
+                        displayName: '{subscriptionName}'
+                        uriParameters:
+                          subscriptionName:
+                            description: The subscription name.
+                            required: true
+                            type: string
+                            displayName: The subscription name.
+                        put:
+                          displayName: Subscriptions_CreateOrUpdate
+                          description: Creates a topic subscription.
+                          is:
+                            - apiVersionParameter
+                          body:
+                            application/json:
+                              type: SubscriptionCreateOrUpdateParameters
+                              (oas-body-name): parameters
+                              description: Parameters supplied to create a subscription resource.
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: SubscriptionResource
+                              description: Subscription create request accepted.
+                          (oas-tags):
+                            - Subscriptions
+                          (oas-externalDocs):
+                            url: 'https://msdn.microsoft.com/en-us/library/azure/mt639385.aspx'
+                        get:
+                          displayName: Subscriptions_Get
+                          description: Returns a subscription description for the specified topic.
+                          is:
+                            - apiVersionParameter
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: SubscriptionResource
+                              description: Successfully retrieved subscription description.
+                          (oas-tags):
+                            - Subscriptions
+                          (oas-externalDocs):
+                            url: 'https://msdn.microsoft.com/en-us/library/azure/mt639402.aspx'
+                        delete:
+                          displayName: Subscriptions_Delete
+                          description: Deletes a subscription from the specified topic.
+                          is:
+                            - apiVersionParameter
+                          responses:
+                            '200':
+                              description: Subscription successfully deleted.
+                            '204':
+                              description: No content.
+                          (oas-tags):
+                            - Subscriptions
+                          (oas-externalDocs):
+                            url: 'https://msdn.microsoft.com/en-us/library/azure/mt639381.aspx'
+                      get:
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: Subscriptions_ListAll
+                        description: Lsit all the subscriptions under a specified topic.
+                        is:
+                          - apiVersionParameter
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: SubscriptionListResult
+                            description: Successfully retrieved list of subscriptions.
+                        (oas-tags):
+                          - Subscriptions
+                        (oas-externalDocs):
+                          url: 'https://msdn.microsoft.com/en-us/library/azure/mt639400.aspx'
+                    uriParameters:
+                      topicName:
+                        description: The topic name.
+                        required: true
+                        type: string
+                        displayName: The topic name.
+                    delete:
+                      displayName: Topics_Delete
+                      description: Deletes a topic from the specified namespace and resource group.
+                      is:
+                        - apiVersionParameter
+                      responses:
+                        '200':
+                          description: Topic successfully deleted.
+                        '204':
+                          description: No Content
+                      (oas-tags):
+                        - Topics
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639404.aspx'
+                    get:
+                      displayName: Topics_Get
+                      description: Returns a description for the specified topic.
+                      is:
+                        - apiVersionParameter
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: TopicResource
+                          description: Topic description successfully retrieved.
+                      (oas-tags):
+                        - Topics
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639399.aspx'
+                    put:
+                      displayName: Topics_CreateOrUpdate
+                      description: Creates a topic in the specified namespace.
+                      is:
+                        - apiVersionParameter
+                      body:
+                        application/json:
+                          type: TopicCreateOrUpdateParameters
+                          (oas-body-name): parameters
+                          description: Parameters supplied to create a topic resource.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: TopicResource
+                          description: Topic successfully created.
+                      (oas-tags):
+                        - Topics
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639409.aspx'
+                    /authorizationRules:
+                      displayName: authorizationRules
+                      get:
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: Topics_ListAuthorizationRules
+                        description: Gets authorization rules for a topic.
+                        is:
+                          - apiVersionParameter
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: SharedAccessAuthorizationRuleListResult
+                            description: Authorization rules successfully returned.
+                        (oas-tags):
+                          - Topics
+                        (oas-externalDocs):
+                          url: 'https://msdn.microsoft.com/en-us/library/azure/mt720681.aspx'
+                      '/{authorizationRuleName}':
+                        displayName: '{authorizationRuleName}'
+                        uriParameters:
+                          authorizationRuleName:
+                            description: Authorization rule name.
+                            required: true
+                            type: string
+                            displayName: Authorization rule name.
+                        delete:
+                          displayName: Topics_DeleteAuthorizationRule
+                          description: Deletes a topic authorization rule.
+                          is:
+                            - apiVersionParameter
+                          responses:
+                            '200':
+                              description: Topic authorization rule successfully deleted.
+                            '204':
+                              description: No content.
+                          (oas-tags):
+                            - Topics
+                          (oas-externalDocs):
+                            url: 'https://msdn.microsoft.com/en-us/library/azure/mt720681.aspx'
+                        get:
+                          displayName: Topics_GetAuthorizationRule
+                          description: Returns the specified authorization rule.
+                          is:
+                            - apiVersionParameter
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: SharedAccessAuthorizationRuleResource
+                              description: Topic authorization rule returned successfully.
+                          (oas-tags):
+                            - Topics
+                          (oas-externalDocs):
+                            url: 'https://msdn.microsoft.com/en-us/library/azure/mt720676.aspx'
+                        put:
+                          displayName: Topics_CreateOrUpdateAuthorizationRule
+                          description: Creates an authorizatio rule for the specified topic.
+                          is:
+                            - apiVersionParameter
+                          body:
+                            application/json:
+                              type: SharedAccessAuthorizationRuleCreateOrUpdateParameters
+                              (oas-body-name): parameters
+                              description: The shared access authorization rule.
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: SharedAccessAuthorizationRuleResource
+                              description: Topic authorization rule successfully created.
+                          (oas-tags):
+                            - Topics
+                          (oas-externalDocs):
+                            url: 'https://msdn.microsoft.com/en-us/library/azure/mt720678.aspx'
+                        /ListKeys:
+                          displayName: ListKeys
+                          post:
+                            displayName: Topics_ListKeys
+                            description: Gets the primary and secondary connection strings for the topic.
+                            is:
+                              - apiVersionParameter
+                            responses:
+                              '200':
+                                body:
+                                  application/json:
+                                    type: ResourceListKeys
+                                description: Connection strings successfully retrieved.
+                            (oas-tags):
+                              - Topics
+                            (oas-externalDocs):
+                              url: 'https://msdn.microsoft.com/en-us/library/azure/mt720677.aspx'
+                        /regenerateKeys:
+                          displayName: regenerateKeys
+                          post:
+                            displayName: Topics_RegenerateKeys
+                            description: Regenerates primary or secondary connection strings for the topic.
+                            is:
+                              - apiVersionParameter
+                            body:
+                              application/json:
+                                type: RegenerateKeysParameters
+                                (oas-body-name): parameters
+                                description: Parameters supplied to regenerate the authorization rule.
+                            responses:
+                              '200':
+                                body:
+                                  application/json:
+                                    type: ResourceListKeys
+                                description: Connection strings successfully regenerated.
+                            (oas-tags):
+                              - Topics
+                            (oas-externalDocs):
+                              url: 'https://msdn.microsoft.com/en-us/library/azure/mt720679.aspx'
+                  get:
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: Topics_ListAll
+                    description: Gets all the topics in a namespace.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: TopicListResult
+                        description: Successfully retrieved list of topics.
+                    (oas-tags):
+                      - Topics
+                    (oas-externalDocs):
+                      url: 'https://msdn.microsoft.com/en-us/library/azure/mt639388.aspx'
+                uriParameters:
+                  namespaceName:
+                    description: The namespace name.
+                    required: true
+                    type: string
+                    displayName: The namespace name.
+                delete:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: Namespaces_Delete
+                  description: Deletes an existing namespace. This operation also removes all associated resources under the namespace.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      description: Namespace successfully deleted.
+                    '202':
+                      description: Namespace delete request accepted.
+                    '204':
+                      description: No content.
+                  (oas-tags):
+                    - Namespaces
+                  (oas-externalDocs):
+                    url: 'https://msdn.microsoft.com/en-us/library/azure/mt639389.aspx'
+                put:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: Namespaces_CreateOrUpdate
+                  description: 'Creates or updates a service namespace. Once created, this namespace''s resource manifest is immutable. This operation is idempotent.'
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: NamespaceCreateOrUpdateParameters
+                      (oas-body-name): parameters
+                      description: Parameters supplied to create a namespace resource.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: NamespaceResource
+                      description: Namespace created successfully.
+                    '201':
+                      body:
+                        application/json:
+                          type: NamespaceResource
+                      description: Namespace create request accepted.
+                  (oas-tags):
+                    - Namespaces
+                  (oas-externalDocs):
+                    url: 'https://msdn.microsoft.com/en-us/library/azure/mt639408.aspx'
+                /AuthorizationRules:
+                  displayName: AuthorizationRules
+                  '/{authorizationRuleName}':
+                    displayName: '{authorizationRuleName}'
+                    uriParameters:
+                      authorizationRuleName:
+                        description: Authorization rule name.
+                        required: true
+                        type: string
+                        displayName: Authorization rule name.
+                    delete:
+                      displayName: Namespaces_DeleteAuthorizationRule
+                      description: Deletes a namespace authorization rule.
+                      is:
+                        - apiVersionParameter
+                      responses:
+                        '200':
+                          description: Namespace authorization rule successfully deleted.
+                        '204':
+                          description: No content.
+                      (oas-tags):
+                        - Namespaces
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639417.aspx'
+                    put:
+                      displayName: Namespaces_CreateOrUpdateAuthorizationRule
+                      description: Creates or updates an authorization rule for a namespace.
+                      is:
+                        - apiVersionParameter
+                      body:
+                        application/json:
+                          type: SharedAccessAuthorizationRuleCreateOrUpdateParameters
+                          (oas-body-name): parameters
+                          description: The shared access authorization rule.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: SharedAccessAuthorizationRuleResource
+                          description: Namespace authorization rule created.
+                      (oas-tags):
+                        - Namespaces
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639410.aspx'
+                    /regenerateKeys:
+                      displayName: regenerateKeys
+                      post:
+                        displayName: Namespaces_RegenerateKeys
+                        description: Regenerates the primary or secondary connection strings for the namespace.
+                        is:
+                          - apiVersionParameter
+                        body:
+                          application/json:
+                            type: RegenerateKeysParameters
+                            (oas-body-name): parameters
+                            description: Parameters supplied to regenerate the authorization rule.
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: ResourceListKeys
+                            description: Authorization rule successfully regenerated.
+                        (oas-tags):
+                          - Namespaces
+                        (oas-externalDocs):
+                          url: 'https://msdn.microsoft.com/en-us/library/azure/mt718977.aspx'
+                    get:
+                      displayName: Namespaces_GetAuthorizationRule
+                      description: Gets an authorization rule for a namespace by rule name.
+                      is:
+                        - apiVersionParameter
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: SharedAccessAuthorizationRuleResource
+                          description: Namespace authorization rule returned successfully.
+                      (oas-tags):
+                        - Namespaces
+                      (oas-externalDocs):
+                        url: 'https://msdn.microsoft.com/en-us/library/azure/mt639392.aspx'
+                    /listKeys:
+                      displayName: listKeys
+                      post:
+                        displayName: Namespaces_ListKeys
+                        description: Gets the primary and secondary connection strings for the namespace.
+                        is:
+                          - apiVersionParameter
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: ResourceListKeys
+                            description: Connection strings successfully returned.
+                        (oas-tags):
+                          - Namespaces
+                        (oas-externalDocs):
+                          url: 'https://msdn.microsoft.com/en-us/library/azure/mt639398.aspx'
+                  get:
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: Namespaces_ListAuthorizationRules
+                    description: Gets the authorization rules for a namespace.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: SharedAccessAuthorizationRuleListResult
+                        description: Namespace authorization rules returned successfully.
+                    (oas-tags):
+                      - Namespaces
+                    (oas-externalDocs):
+                      url: 'https://msdn.microsoft.com/en-us/library/azure/mt639376.aspx'
+                get:
+                  displayName: Namespaces_Get
+                  description: Gets a description for the specified namespace.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: NamespaceResource
+                      description: Namespace successfully returned.
+                  (oas-tags):
+                    - Namespaces
+                  (oas-externalDocs):
+                    url: 'https://msdn.microsoft.com/en-us/library/azure/mt639379.aspx'
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: Namespaces_ListByResourceGroup
+                description: Gets the available namespaces within a resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: NamespaceListResult
+                    description: Namespaces successfully returned.
+                (oas-tags):
+                  - Namespaces
+                (oas-externalDocs):
+                  url: 'https://msdn.microsoft.com/en-us/library/azure/mt639412.aspx'
+    /providers:
+      displayName: providers
+      /Microsoft.ServiceBus:
+        displayName: Microsoft.ServiceBus
+        /namespaces:
+          displayName: namespaces
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: Namespaces_ListBySubscription
+            description: 'Gets all the available namespaces within the subscription, irrespective of the resource groups.'
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: NamespaceListResult
+                description: Namespaces successfully returned.
+            (oas-tags):
+              - Namespaces
+            (oas-externalDocs):
+              url: 'https://msdn.microsoft.com/en-us/library/azure/mt639412.aspx'
+types:
+  EntityAvailabilityStatus:
+    description: Entity availability status.
+    enum:
+      - Available
+      - Limited
+      - Renaming
+      - Restoring
+      - Unknown
+    type: string
+  EntityStatus:
+    description: Entity status.
+    enum:
+      - Active
+      - Creating
+      - Deleting
+      - Disabled
+      - ReceiveDisabled
+      - Renaming
+      - Restoring
+      - SendDisabled
+      - Unknown
+    type: string
+  MessageCountDetails:
+    description: Message Count Details.
+    properties:
+      activeMessageCount:
+        description: 'Number of active messages in the queue, topic, or subscription.'
+        format: int64
+        type: integer
+        required: false
+      deadLetterMessageCount:
+        description: Number of messages that are dead lettered.
+        format: int64
+        type: integer
+        required: false
+      scheduledMessageCount:
+        description: Number of scheduled messages.
+        format: int64
+        type: integer
+        required: false
+      transferDeadLetterMessageCount:
+        description: Number of messages transferred into dead letters.
+        format: int64
+        type: integer
+        required: false
+      transferMessageCount:
+        description: 'Number of messages transferred to another queue, topic, or subscription.'
+        format: int64
+        type: integer
+        required: false
+  NamespaceCreateOrUpdateParameters:
+    description: Parameters supplied to the Create Or Update Namespace operation.
+    properties:
+      location:
+        description: Namespace location.
+        type: string
+      properties:
+        type: NamespaceProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      sku:
+        type: Sku
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Namespace tags.
+        type: object
+        required: false
+  NamespaceListResult:
+    description: The response of the List Namespace operation.
+    properties:
+      nextLink:
+        description: Link to the next set of results. Not empty if Value contains incomplete list of Namespaces.
+        type: string
+        required: false
+      value:
+        description: Result of the List Namespace operation.
+        items:
+          type: NamespaceResource
+        type: array
+        required: false
+  NamespaceProperties:
+    description: Properties of the namespace.
+    properties:
+      createACSNamespace:
+        description: Indicates whether to create an ACS namespace.
+        type: boolean
+        required: false
+      createdAt:
+        description: The time the namespace was created.
+        format: rfc3339
+        type: datetime
+        required: false
+      enabled:
+        description: Specifies whether this instance is enabled.
+        type: boolean
+        required: false
+      provisioningState:
+        description: Provisioning state of the namespace.
+        type: string
+        required: false
+      serviceBusEndpoint:
+        description: Endpoint you can use to perform Service Bus operations.
+        type: string
+        required: false
+        (oas-externalDocs):
+          url: 'http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx'
+      status:
+        description: State of the namespace.
+        enum:
+          - Unknown
+          - Creating
+          - Created
+          - Activating
+          - Enabling
+          - Active
+          - Disabling
+          - Disabled
+          - SoftDeleting
+          - SoftDeleted
+          - Removing
+          - Removed
+          - Failed
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: NamespaceState
+      updatedAt:
+        description: The time the namespace was updated.
+        format: rfc3339
+        type: datetime
+        required: false
+  NamespaceResource:
+    type: Resource
+  QueueCreateOrUpdateParameters:
+    description: Parameters supplied to the Create Or Update Queue operation.
+    properties:
+      location:
+        description: location of the resource.
+        type: string
+      name:
+        description: Queue name.
+        type: string
+        required: false
+      properties:
+        type: QueueProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+  QueueListResult:
+    description: The response to the List Queues operation.
+    properties:
+      nextLink:
+        description: Link to the next set of results. Not empty if Value contains incomplete list of queues.
+        type: string
+        required: false
+      value:
+        description: Result of the List Queues operation.
+        items:
+          type: QueueResource
+        type: array
+        required: false
+  QueueProperties:
+    properties:
+      accessedAt:
+        description: 'Last time a message was sent, or the last time there was a receive request to this queue.'
+        format: rfc3339
+        type: datetime
+        required: false
+      autoDeleteOnIdle:
+        description: the TimeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes.
+        type: string
+        required: false
+      countDetails:
+        type: MessageCountDetails
+        required: false
+      createdAt:
+        description: The exact time the message was created.
+        format: rfc3339
+        type: datetime
+        required: false
+      deadLetteringOnMessageExpiration:
+        description: A value that indicates whether this queue has dead letter support when a message expires.
+        type: boolean
+        required: false
+      defaultMessageTimeToLive:
+        description: 'The default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.'
+        type: string
+        required: false
+      'duplicateDetectionHistoryTimeWindow ':
+        description: TimeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+        type: string
+        required: false
+      enableBatchedOperations:
+        description: A value that indicates whether server-side batched operations are enabled.
+        type: boolean
+        required: false
+      enableExpress:
+        description: A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage.
+        type: boolean
+        required: false
+      enablePartitioning:
+        description: A value that indicates whether the queue is to be partitioned across multiple message brokers.
+        type: boolean
+        required: false
+      'entityAvailabilityStatus ':
+        description: Entity availability status for the queue.
+        type: EntityAvailabilityStatus
+        required: false
+      isAnonymousAccessible:
+        description: A value that indicates whether the message is accessible anonymously.
+        type: boolean
+        required: false
+      'lockDuration ':
+        description: 'The duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.'
+        type: string
+        required: false
+      'maxDeliveryCount ':
+        description: The maximum delivery count. A message is automatically deadlettered after this number of deliveries.
+        format: int32
+        type: integer
+        required: false
+      maxSizeInMegabytes:
+        description: 'The maximum size of the queue in megabytes, which is the size of memory allocated for the queue.'
+        format: int64
+        type: integer
+        required: false
+      'messageCount ':
+        description: The number of messages in the queue.
+        format: int64
+        type: integer
+        required: false
+      requiresDuplicateDetection:
+        description: A value indicating if this queue requires duplicate detection.
+        type: boolean
+        required: false
+      requiresSession:
+        description: A value that indicates whether the queue supports the concept of sessions.
+        type: boolean
+        required: false
+      'sizeInBytes ':
+        description: 'The size of the queue, in bytes.'
+        format: int64
+        type: integer
+        required: false
+      status:
+        description: Enumerates the possible values for the status of a messaging entity.
+        type: EntityStatus
+        required: false
+      supportOrdering:
+        description: A value that indicates whether the queue supports ordering.
+        type: boolean
+        required: false
+      updatedAt:
+        description: The exact time the message was updated.
+        format: rfc3339
+        type: datetime
+        required: false
+  QueueResource:
+    type: Resource
+  RegenerateKeysParameters:
+    description: Parameters supplied to the Regenerate Authorization Rule operation.
+    properties:
+      Policykey:
+        description: Key that needs to be regenerated.
+        enum:
+          - PrimaryKey
+          - SecondaryKey
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: Policykey
+  Resource:
+    properties:
+      id:
+        description: Resource Id
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Resource location
+        type: string
+      name:
+        description: Resource name
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Resource tags
+        type: object
+        required: false
+      type:
+        description: Resource type
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  ResourceListKeys:
+    description: Namespace/ServiceBus Connection String
+    properties:
+      keyName:
+        description: A string that describes the authorization rule.
+        type: string
+        required: false
+      primaryConnectionString:
+        description: Primary connection string of the created namespace authorization rule.
+        type: string
+        required: false
+      primaryKey:
+        description: A base64-encoded 256-bit primary key for signing and validating the SAS token.
+        type: string
+        required: false
+      secondaryConnectionString:
+        description: Secondary connection string of the created namespace authorization rule.
+        type: string
+        required: false
+      secondaryKey:
+        description: A base64-encoded 256-bit primary key for signing and validating the SAS token.
+        type: string
+        required: false
+  SharedAccessAuthorizationRuleCreateOrUpdateParameters:
+    description: Parameters supplied to the Create Or Update Authorization Rules operation.
+    properties:
+      location:
+        description: data center location.
+        type: string
+        required: false
+      name:
+        description: Name of the authorization rule.
+        type: string
+        required: false
+      properties:
+        type: SharedAccessAuthorizationRuleProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+  SharedAccessAuthorizationRuleListResult:
+    description: The response to the List Namespace operation.
+    properties:
+      nextLink:
+        description: Link to the next set of results. Not empty if Value contains incomplete list of Authorization Rules.
+        type: string
+        required: false
+      value:
+        description: Result of the List Authorization Rules operation.
+        items:
+          type: SharedAccessAuthorizationRuleResource
+        type: array
+        required: false
+  SharedAccessAuthorizationRuleProperties:
+    description: SharedAccessAuthorizationRule properties.
+    properties:
+      rights:
+        description: The rights associated with the rule.
+        items:
+          enum:
+            - Manage
+            - Send
+            - Listen
+          type: string
+          (oas-x-ms-enum):
+            modelAsString: false
+            name: AccessRights
+        type: array
+  SharedAccessAuthorizationRuleResource:
+    type: Resource
+  Sku:
+    description: SKU of the namespace.
+    properties:
+      capacity:
+        description: The specified messaging units for the tier.
+        format: int32
+        type: integer
+        required: false
+      name:
+        description: Name of this SKU.
+        enum:
+          - Basic
+          - Standard
+          - Premium
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: SkuName
+      tier:
+        description: The billing tier of this particular SKU.
+        enum:
+          - Basic
+          - Standard
+          - Premium
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: SkuTier
+  SubscriptionCreateOrUpdateParameters:
+    description: Parameters supplied to the Create Or Update Subscription operation.
+    properties:
+      location:
+        description: Subscription data center location.
+        type: string
+      properties:
+        type: SubscriptionProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+      type:
+        description: Resource manager type of the resource.
+        type: string
+        required: false
+  SubscriptionListResult:
+    description: The response to the List Subscriptions operation.
+    properties:
+      nextLink:
+        description: Link to the next set of results. Not empty if Value contains incomplete list of subscriptions.
+        type: string
+        required: false
+      value:
+        description: Result of the List Subscriptions operation.
+        items:
+          type: SubscriptionResource
+        type: array
+        required: false
+  SubscriptionProperties:
+    description: Description of Subscription Resource.
+    properties:
+      accessedAt:
+        description: Last time there was a receive request to this subscription.
+        format: rfc3339
+        type: datetime
+        required: false
+      autoDeleteOnIdle:
+        description: TimeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
+        type: string
+        required: false
+      countDetails:
+        type: MessageCountDetails
+        required: false
+      createdAt:
+        description: Exact time the message was created.
+        format: rfc3339
+        type: datetime
+        required: false
+      deadLetteringOnFilterEvaluationExceptions:
+        description: Value that indicates whether a subscription has dead letter support on filter evaluation exceptions.
+        type: boolean
+        required: false
+      deadLetteringOnMessageExpiration:
+        description: Value that indicates whether a subscription has dead letter support when a message expires.
+        type: boolean
+        required: false
+      defaultMessageTimeToLive:
+        description: 'Default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.'
+        type: string
+        required: false
+      enableBatchedOperations:
+        description: Value that indicates whether server-side batched operations are enabled.
+        type: boolean
+        required: false
+      entityAvailabilityStatus:
+        description: Entity availability status for the topic.
+        type: EntityAvailabilityStatus
+        required: false
+      isReadOnly:
+        description: Value that indicates whether the entity description is read-only.
+        type: boolean
+        required: false
+      lockDuration:
+        description: The lock duration time span for the subscription.
+        type: string
+        required: false
+      maxDeliveryCount:
+        description: Number of maximum deliveries.
+        format: int32
+        type: integer
+        required: false
+      messageCount:
+        description: Number of messages.
+        format: int64
+        type: integer
+        required: false
+      requiresSession:
+        description: Value indicating if a subscription supports the concept of sessions.
+        type: boolean
+        required: false
+      status:
+        description: Enumerates the possible values for the status of a messaging entity.
+        type: EntityStatus
+        required: false
+      updatedAt:
+        description: The exact time the message was updated.
+        format: rfc3339
+        type: datetime
+        required: false
+  SubscriptionResource:
+    type: Resource
+  TopicCreateOrUpdateParameters:
+    description: Parameters supplied to the Create Or Update Topic operation.
+    properties:
+      location:
+        description: Location of the resource.
+        type: string
+      name:
+        description: Topic name.
+        type: string
+        required: false
+      properties:
+        type: TopicProperties
+        required: false
+        (oas-x-ms-client-flatten): true
+  TopicListResult:
+    description: The response to the List Topics operation.
+    properties:
+      nextLink:
+        description: Link to the next set of results. Not empty if Value contains incomplete list of topics.
+        type: string
+        required: false
+      value:
+        description: Result of the List Topics operation.
+        items:
+          type: TopicResource
+        type: array
+        required: false
+  TopicProperties:
+    properties:
+      accessedAt:
+        description: 'Last time the message was sent, or a request was received, for this topic.'
+        format: rfc3339
+        type: datetime
+        required: false
+      autoDeleteOnIdle:
+        description: TimeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
+        type: string
+        required: false
+      countDetails:
+        type: MessageCountDetails
+        required: false
+      createdAt:
+        description: Exact time the message was created.
+        format: rfc3339
+        type: datetime
+        required: false
+      defaultMessageTimeToLive:
+        description: 'Default message time to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.'
+        type: string
+        required: false
+      'duplicateDetectionHistoryTimeWindow ':
+        description: TimeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+        type: string
+        required: false
+      enableBatchedOperations:
+        description: Value that indicates whether server-side batched operations are enabled.
+        type: boolean
+        required: false
+      enableExpress:
+        description: Value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage.
+        type: boolean
+        required: false
+      enablePartitioning:
+        description: Value that indicates whether the topic to be partitioned across multiple message brokers is enabled.
+        type: boolean
+        required: false
+      enableSubscriptionPartitioning:
+        description: Value that indicates whether partitioning is enabled or disabled.
+        type: boolean
+        required: false
+      'entityAvailabilityStatus ':
+        description: Entity availability status for the topic.
+        type: EntityAvailabilityStatus
+        required: false
+      filteringMessagesBeforePublishing:
+        description: Whether messages should be filtered before publishing.
+        type: boolean
+        required: false
+      isAnonymousAccessible:
+        description: Value that indicates whether the message is accessible anonymously.
+        type: boolean
+        required: false
+      isExpress:
+        description: ''
+        type: boolean
+        required: false
+      maxSizeInMegabytes:
+        description: 'Maximum size of the topic in megabytes, which is the size of the memory allocated for the topic.'
+        format: int64
+        type: integer
+        required: false
+      requiresDuplicateDetection:
+        description: Value indicating if this topic requires duplicate detection.
+        type: boolean
+        required: false
+      sizeInBytes:
+        description: 'Size of the topic, in bytes.'
+        format: int64
+        type: integer
+        required: false
+      status:
+        description: Enumerates the possible values for the status of a messaging entity.
+        type: EntityStatus
+        required: false
+      subscriptionCount:
+        description: Number of subscriptions.
+        format: int32
+        type: integer
+        required: false
+      supportOrdering:
+        description: Value that indicates whether the topic supports ordering.
+        type: boolean
+        required: false
+      updatedAt:
+        description: The exact time the message was updated.
+        format: rfc3339
+        type: datetime
+        required: false
+  TopicResource:
+    type: Resource
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client API version.
+        required: true

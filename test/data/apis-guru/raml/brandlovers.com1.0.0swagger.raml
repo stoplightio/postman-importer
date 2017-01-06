@@ -1,0 +1,2260 @@
+#%RAML 1.0
+title: BrandLovers Marketplace API V1
+version: 1.0.0
+baseUri: 'https://api.brandlovers.com/marketplace/v1'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: 'Allows sellers to: 1) Load products definitions to the BrandLovers marktplace. 2) Receive and update orders status. 3) Receive and update shipping information. 4) Receive and update customer tickets. All requests consume and return application/json content. All request must be authenticated and use HTTPS.'
+(oas-tags-definition):
+  - description: Bulk create or query seller products.
+    name: products
+  - description: 'Create, Modify or Read details of a single product'
+    name: product
+  - description: Bulk create or query orders
+    name: orders
+  - description: Modify or read details of a single order
+    name: order
+  - description: Bulk create or query customer tickets
+    name: tickets
+  - description: Modify or read details of a single ticket
+    name: ticket
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#E34056'
+    url: 'https://api.apis.guru/v2/cache/logo/https_brandlovers.com_static_img_logo_BL_white_balao_35px.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/brandlovers/marketplace-api-documentation/master/brandlovers-marketplace-api-v1.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): brandlovers.com
+securitySchemes:
+  authorization:
+    type: Pass Through
+    describedBy:
+      headers:
+        authorization:
+          type: string
+    description: Authorization token. The Authorization token can be found in your Admin console.
+/product:
+  displayName: product
+  post:
+    displayName: POST_product
+    description: 'Use this enpoint to create a single new product to the Marketplace. This enpoint expects a json document with one product. If you whant to upload multiple products in a single API call use POST /products method. The server will load each product as an individual item that can be manipulated using your own `skuSellerId`. This system is idenpontent, this means that once a `skuSellerId` is created it cannot be re-created using this tool. In order to update, edit a product use the PUT method with the correct reference to your `skuSellerId`'
+    (oas-summary): Create a new product to the marketplace
+    body:
+      application/json:
+        type: Product
+        (oas-body-name): product
+        description: New Produt that will be create
+    headers:
+      authorization:
+        type: string
+        description: Authorization token. The Authorization token can be found in your Admin console.
+        required: true
+    responses:
+      '200':
+        description: Sucess! Server received your request and will start background processing.
+      '400':
+        description: Bad Request.
+      '401':
+        description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+    (oas-tags):
+      - product
+  '/{skuSellerId}':
+    displayName: '{skuSellerId}'
+    uriParameters:
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system that will be updated.
+        required: true
+        type: string
+        displayName: Unique Product Id (SKU) in the seller system that will be updated.
+    get:
+      displayName: GET_product-skuSellerId
+      description: 'Returns detailed information of a single product with the seller `skuSellerId`. This service will return a json document with product detail, status, price, invetory among other infomarion availble in the Brand Lovers marketplace'
+      (oas-summary): Returns details of a single product using the seller `skuSellerId`
+      headers:
+        authorization:
+          type: string
+          description: Authorization token. The Authorization token can be found in your Admin console.
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: GetProduct
+          description: Success!
+        '401':
+          description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+        '403':
+          description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        '404':
+          description: Object not found. In general this means a invalid skuSellerId.
+      securedBy:
+        - authorization
+      (oas-tags):
+        - product
+    put:
+      displayName: PUT_product-skuSellerId
+      description: 'Update a single product information such as name, brand, attribute, dimension, etc. Please note that data from your request will be merged with existing data. This allows you to easliy update only certain fields without the need to re-inform the other unchanged fields. For example in order to update just the field `title` simply send just this field with new information, remaining fields will not be changed. In order to erase an item the field must be informed as its default value, for example in order to erase the `videos` field must be sent as videos:[]. The `skuSellerId` field is always mandatory in the path and in the product json Object.'
+      (oas-summary): Update product details
+      body:
+        application/json:
+          type: ProductUpdate
+          (oas-body-name): body
+          description: New product information.
+      headers:
+        authorization:
+          type: string
+          description: Authorization token. The Authorization token can be found in your Admin console.
+          required: true
+      responses:
+        '200':
+          description: Success!
+        '400':
+          description: Bad request.
+        '401':
+          description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+        '403':
+          description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        '404':
+          description: Object not found.
+      securedBy:
+        - authorization
+      (oas-tags):
+        - products
+    /prices:
+      displayName: prices
+      put:
+        displayName: PUT_product-skuSellerId-prices
+        description: 'Allows seller to set the SKU prices (MSRP and/or offer price). All prices must be informed in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. Same as $1,2345.67 must be informed solely as 1234567'
+        (oas-summary): Allows seller to update prices of a single SKU
+        body:
+          application/json:
+            type: ProductPrice
+            (oas-body-name): body
+            description: JSON document with the SKU price
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+        (oas-tags):
+          - product
+    /status:
+      displayName: status
+      put:
+        displayName: PUT_product-skuSellerId-status
+        description: 'Update product status in the Marketplace. Set to `true` to enable, `false` to disable sale.'
+        (oas-summary): Enable/disable a single product in the Marketplace
+        body:
+          application/json:
+            type: SellerItemStatus
+            (oas-body-name): body
+            description: Seller SKU that will be enabled or disabled
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+        (oas-tags):
+          - product
+    /stock:
+      displayName: stock
+      put:
+        displayName: PUT_product-skuSellerId-stock
+        description: Update a single product inventory information. Products with zero stock will not be eligible for sale.
+        (oas-summary): Update a single product stock
+        body:
+          application/json:
+            type: Stock
+            (oas-body-name): body
+            description: New product inventory information
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+        (oas-tags):
+          - product
+/tickets:
+  displayName: tickets
+  get:
+    displayName: GET_tickets
+    description: 'Allows seller to receive and status, queries, requests and complaints from customers. As well related messages'
+    (oas-summary): Get customers trouble tickets
+    headers:
+      authorization:
+        type: string
+        description: Authorization token. The Authorization token can be found in your Admin console.
+        required: true
+    responses:
+      '200':
+        body:
+          application/json:
+            type: GetTickets
+        description: Success!
+      '400':
+        description: Bad request.
+    queryParameters:
+      status:
+        description: Query by trouble ticket status
+        enum:
+          - OPEN
+          - REOPENED
+          - CLOSED
+        required: false
+        type: string
+        displayName: Query by trouble ticket status
+      offset:
+        description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+        required: false
+        type: integer
+        displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+      limit:
+        description: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+        required: false
+        type: integer
+        displayName: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+    (oas-tags):
+      - tickets
+/order:
+  displayName: order
+  '/{orderId}':
+    displayName: '{orderId}'
+    uriParameters:
+      orderId:
+        description: Unique Id of this order.
+        required: true
+        type: string
+        displayName: Unique Id of this order.
+    get:
+      displayName: GET_order-orderId
+      description: 'Returns all details of a single order, including last status, items shipped or not.'
+      (oas-summary): Returns all details of a order
+      headers:
+        authorization:
+          type: string
+          description: Authorization token. The Authorization token can be found in your Admin console.
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Order
+          description: Success!
+        '400':
+          description: Bad request.
+        '401':
+          description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+        '403':
+          description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        '404':
+          description: Object not found. Was not able to find orderId
+      (oas-tags):
+        - order
+    /shipment:
+      displayName: shipment
+      /delivered:
+        displayName: delivered
+        post:
+          displayName: POST_order-orderId-shipment-delivered
+          description: Confirms that a shipment was delivered. Must inform quantity of successfully deliverd items even if items deliverd was less than the original order
+          (oas-summary): Confirms that a shipment was delivered
+          body:
+            application/json:
+              type: Newshipmentstatus
+              (oas-body-name): body
+          headers:
+            authorization:
+              type: string
+              description: Authorization token. The Authorization token can be found in your Admin console.
+              required: true
+          responses:
+            '200':
+              description: Sucess!
+            '400':
+              description: Bad request.
+            '401':
+              description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+            '404':
+              description: Object not found. Was not able to find orderId
+          (oas-tags):
+            - order
+      /return:
+        displayName: return
+        post:
+          displayName: POST_order-orderId-shipment-return
+          description: Use this endpoint to return and refund items froma a order. In order to fully return an order list all items and applicate quantity.
+          (oas-summary): Confirm order item return and refund
+          body:
+            application/json:
+              type: NewTrackingRefund
+              (oas-body-name): body
+          headers:
+            authorization:
+              type: string
+              description: Authorization token. The Authorization token can be found in your Admin console.
+              required: true
+          responses:
+            '200':
+              description: Sucess!
+            '400':
+              description: Bad request.
+            '401':
+              description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+            '404':
+              description: Object not found. Was not able to find orderId
+          (oas-tags):
+            - order
+      /cancel:
+        displayName: cancel
+        post:
+          displayName: POST_order-orderId-shipment-cancel
+          description: Confirm shipment canceletion (when requested by the customer) or failure to deliver one shipment
+          (oas-summary): Confirm shipment canceletion (when requested by the customer) or failure to deliver
+          body:
+            application/json:
+              type: NewTrackingRefund
+              (oas-body-name): body
+          headers:
+            authorization:
+              type: string
+              description: Authorization token. The Authorization token can be found in your Admin console.
+              required: true
+          responses:
+            '200':
+              description: success.
+            '400':
+              description: Bad request.
+            '401':
+              description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+            '404':
+              description: Object not found. Was not able to find orderId
+          (oas-tags):
+            - order
+      /sent:
+        displayName: sent
+        post:
+          displayName: POST_order-orderId-shipment-sent
+          description: 'Updates order to include shipment shiped information. This endpoint can be used to include a single or multiple shipments for any give order. In order to inform that all items of a order where shipped list all of them, including applicable quantities in the payload.'
+          (oas-summary): Update new order to include shipment information
+          body:
+            application/json:
+              type: Newshipmentstatus
+              (oas-body-name): body
+          headers:
+            authorization:
+              type: string
+              description: Authorization token. The Authorization token can be found in your Admin console.
+              required: true
+          responses:
+            '200':
+              description: Sucess!
+            '400':
+              description: Bad request.
+            '401':
+              description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+            '404':
+              description: Object not found. Was not able to find orderId
+          (oas-tags):
+            - order
+      /exchange:
+        displayName: exchange
+        post:
+          displayName: POST_order-orderId-shipment-exchange
+          description: This enpoint to confirm item exchange when failure to deliver or requested by the customer. All customer requests are tracket via trouble tickets
+          (oas-summary): Confirm item exchange
+          body:
+            application/json:
+              type: NewTrackingRefund
+              (oas-body-name): body
+          headers:
+            authorization:
+              type: string
+              description: Authorization token. The Authorization token can be found in your Admin console.
+              required: true
+          responses:
+            '200':
+              description: Sucess!
+            '400':
+              description: Bad request.
+            '401':
+              description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+            '404':
+              description: Object not found. Was not able to find orderId
+          (oas-tags):
+            - order
+/orders:
+  displayName: orders
+  get:
+    displayName: GET_orders
+    description: Retuns a list of orders associated with this seller. The list is ordered by dateCreated.
+    (oas-summary): Returns orders details
+    headers:
+      authorization:
+        type: string
+        description: Authorization token. The Authorization token can be found in your Admin console.
+        required: true
+    responses:
+      '200':
+        body:
+          application/json:
+            type: GetOrders
+        description: Success!
+      '400':
+        description: Bad request.
+      '401':
+        description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+      '403':
+        description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+    queryParameters:
+      offset:
+        description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+        required: false
+        type: integer
+        displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+      limit:
+        description: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+        required: false
+        type: integer
+        displayName: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+    (oas-tags):
+      - orders
+  /shipments:
+    displayName: shipments
+    /delivered:
+      displayName: delivered
+      post:
+        displayName: POST_orders-shipments-delivered
+        description: Bulk update of order shipments status. This alows to inform multiple shipments status
+        (oas-summary): Bulk update of order shipments
+        body:
+          application/json:
+            type: OrdersShipments
+            (oas-body-name): ordersshipments
+            description: JSON body with list of shipments to be updated.
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        (oas-tags):
+          - orders
+      get:
+        displayName: GET_orders-shipments-delivered
+        description: 'Returns list of shipments. By default this will return list of the last shipments ordered by dateCreated, folowed by last update date.'
+        (oas-summary): Returns list of shipments
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrdersShipments
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          status:
+            description: Query by shippment status.
+            required: false
+            type: string
+            displayName: Query by shippment status.
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            description: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - orders
+    /shipped:
+      displayName: shipped
+      post:
+        displayName: POST_orders-shipments-shipped
+        description: Allows bulk updates of orders shippments.
+        (oas-summary): Bulk update of order shipments
+        body:
+          application/json:
+            type: OrdersShipments
+            (oas-body-name): ordersshipments
+            description: JSON payload with list of shippments of orders.
+        responses:
+          '200':
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        (oas-tags):
+          - orders
+      get:
+        displayName: GET_orders-shipments-shipped
+        description: Returns a list of shipments shipped. By Default returns items ordered by dateCreated folowed by last update
+        (oas-summary): Returns a list of shipments shipped
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrdersShipments
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          status:
+            description: Product status.
+            enum:
+              - NEW
+              - APPROVED
+              - DECLINED
+              - PENDING
+            required: false
+            type: string
+            displayName: Product status.
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            description: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - orders
+  /status:
+    displayName: status
+    /canceled:
+      displayName: canceled
+      get:
+        displayName: GET_orders-status-canceled
+        description: Returns a list with canceled orders. Canceled orders should not be fullfiled.
+        (oas-summary): Returns lists of canceled orders
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrders
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            default: 100
+            description: 'Number or items to return when executing query. Default 100, max 250. Use this conjuction with `offset` to paginate across the results.'
+            required: false
+            type: integer
+            displayName: 'Number or items to return when executing query. Default 100, max 250. Use this conjuction with `offset` to paginate across the results.'
+        (oas-tags):
+          - orders
+    /new:
+      displayName: new
+      get:
+        displayName: GET_orders-status-new
+        description: Returns a list of orders flagged as new. New orders should not be fullfiled until marketplace flags them as approved.
+        (oas-summary): Returns a list of orders flagged as new.
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrders
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            default: 100
+            description: Number or items to return when executing query. Defaults to 100. Max 250. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 100. Max 250. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - orders
+    /partiallySent:
+      displayName: partiallySent
+      get:
+        displayName: GET_orders-status-partiallySent
+        description: Returns a list of orders that contain one (or more) items that where not shipped. This will list the entire order as well the items with peding shipment. Use this service to track orders that need to be fullfiled.
+        (oas-summary): Returns a list of orders partially fullfiled
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrders
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            description: Number or items to return when executing query. Defaults to 100. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 100. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - orders
+    /delivered:
+      displayName: delivered
+      get:
+        displayName: GET_orders-status-delivered
+        description: Returns a list of orders successfully delivered associated with this seller.
+        (oas-summary): Returns a list of orders successfully delivered associated with this seller.
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrders
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            description: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - orders
+    /partiallyDelivered:
+      displayName: partiallyDelivered
+      get:
+        displayName: GET_orders-status-partiallyDelivered
+        description: Returns a list of partially deliverd orders. This is a list of orders with items shipped but with not all items ackwlodged as deliverd
+        (oas-summary): Returns a list of partially deliverd orders
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrders
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            default: 100
+            description: Number or items to return when executing query. Defaults to 100. Max 250. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 100. Max 250. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - orders
+    /approved:
+      displayName: approved
+      get:
+        displayName: GET_orders-status-approved
+        description: Returns a list of approved orders. Orders in the `approved` state must be fullfiled imediadetelly.
+        (oas-summary): Return list of approved orders
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrders
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            description: 'Number or items to return when executing query. Defaults to 100, max 200. Use this in conjuction with `offset` to paginate across the results.'
+            required: false
+            type: integer
+            displayName: 'Number or items to return when executing query. Defaults to 100, max 200. Use this in conjuction with `offset` to paginate across the results.'
+        (oas-tags):
+          - orders
+    /sent:
+      displayName: sent
+      get:
+        displayName: GET_orders-status-sent
+        description: 'Returns a list with orders completely fullfiled, this means orders with all items sent. Orders will ordered by dateCreated fowllowed by last update'
+        (oas-summary): Returns a list with orders fully sent
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetOrders
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            description: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - orders
+/products:
+  displayName: products
+  get:
+    displayName: GET_products
+    description: 'Get a list of my products loaded into the Marketplace. This dosen''t means that products are eligible for sale, just that they are loaded in the database.'
+    (oas-summary): Returns a list of products loaded into BrandLovers Marketplace
+    headers:
+      authorization:
+        type: string
+        description: Authorization token. The Authorization token can be found in your Admin console.
+        required: true
+    responses:
+      '200':
+        body:
+          application/json:
+            type: GetProductsResponse
+        description: Success!
+      '400':
+        description: Bad request.
+      '401':
+        description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+      '403':
+        description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+    queryParameters:
+      offset:
+        description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+        required: false
+        type: integer
+        displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+      limit:
+        description: Number of items to retun. Defaults to 100. Max alowed is 200. Use this conjuction with `offset` to paginate across the results.
+        required: false
+        type: integer
+        displayName: Number of items to retun. Defaults to 100. Max alowed is 200. Use this conjuction with `offset` to paginate across the results.
+    securedBy:
+      - authorization
+    (oas-tags):
+      - products
+  post:
+    displayName: POST_products
+    description: 'This enpoint to creates new products in the Marketplace using `skuSellerId` as a primary key. This enpoint expects a json document with array of products. The server will load each product as an individual item that can be manipulated using your own `skuSellerId`. All requests to This endpoint are idenpontent with respect of the `skuSellerId`, this means that once a `skuSellerId` is created it cannot be re-created using this tool. In order to update use the PUT method with the correct `skuSellerId`. You can also use the POST /product to create a single product per request'
+    (oas-summary): Allows new products from the seller to be loaded into the marketplace
+    body:
+      application/json:
+        items:
+          type: Product
+        type: array
+        (oas-body-name): products
+        description: JSON with a list of new products to be updloaded to the platform
+    headers:
+      authorization:
+        type: string
+        description: Authorization token. The Authorization token can be found in your Admin console.
+        required: true
+    responses:
+      '200':
+        description: Sucess! Server received your request and will start background processing.
+      '400':
+        description: Bad Request.
+      '401':
+        description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+    (oas-tags):
+      - products
+  /prices:
+    displayName: prices
+    put:
+      displayName: PUT_products-prices
+      description: 'Allows bulk update of product prices. This endpoint expects a json document with an array of products with the `skuSellerId` and the new price. Server will process each new product update individually and will ackwlodge as much updates as possible, even if a single product update fails. After this request you can query product final status with GET /product/status'
+      (oas-summary): Allows bulk update of product prices.
+      body:
+        application/json:
+          items:
+            type: SellerItemPrices
+          type: array
+          (oas-body-name): body
+          description: Data for bulk product price update
+      headers:
+        authorization:
+          type: string
+          description: Authorization token. The Authorization token can be found in your Admin console.
+          required: true
+      responses:
+        '200':
+          description: Success!
+        '400':
+          description: Bad request.
+        '401':
+          description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+      (oas-tags):
+        - products
+  /status:
+    displayName: status
+    get:
+      displayName: GET_products-status
+      description: 'Returns a list with seller products status. Please note that this endpoint will not return all details of each product, just the skuSellerId and status. Also please note that this endpoint will return 250 products per call. For full details of a given procuct use GET /product/{skuSellerId}'
+      (oas-summary): Returns seller products status in the marketplace
+      headers:
+        authorization:
+          type: string
+          description: Authorization token. The Authorization token can be found in your Admin console.
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: GetSellerProductsStatus
+          description: Success fetching results.
+        '403':
+          description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+      queryParameters:
+        offset:
+          description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          required: false
+          type: integer
+          displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+        limit:
+          description: Number of items to return in this query. Defaults to 250. Maximum 1000. Use this conjuction with `offset` to paginate across the results.
+          required: false
+          type: integer
+          displayName: Number of items to return in this query. Defaults to 250. Maximum 1000. Use this conjuction with `offset` to paginate across the results.
+      (oas-tags):
+        - products
+    put:
+      displayName: PUT_products-status
+      description: Bulk enable/disable products in the marketplace. This endpoint requires an array of objects with the seller SKU `skuSellerId` and boolean value that defines if the product is enabled or not for sale. This endpoint can be used to set a single product or many products.
+      (oas-summary): Bulk enable/disable products in the marketplace
+      body:
+        application/json:
+          items:
+            type: ProductStatusUpdate
+          type: array
+          (oas-body-name): body
+          description: List of seller products with new status information
+      headers:
+        authorization:
+          type: string
+          description: Authorization token. The Authorization token can be found in your Admin console.
+          required: true
+      responses:
+        '200':
+          description: Success!
+        '400':
+          description: Bad request.
+        '401':
+          description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+      (oas-tags):
+        - products
+    /selling:
+      displayName: selling
+      get:
+        displayName: GET_products-status-selling
+        description: Returns products that are successfully listed for sale.
+        (oas-summary): Returns products that are successfully listed for sale.
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetProductsStatusSelling
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            description: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - products
+  /stocks:
+    displayName: stocks
+    put:
+      displayName: PUT_products-stocks
+      description: Bulk product stock update. This endpoint expect a array of products `skuSellerId` with new inventory data
+      (oas-summary): Bulk product stock update
+      body:
+        application/json:
+          items:
+            type: ProductStock
+          type: array
+          (oas-body-name): body
+          description: Array of product SKUs.
+      headers:
+        authorization:
+          type: string
+          description: Authorization token. The Authorization token can be found in your Admin console.
+          required: true
+      responses:
+        '200':
+          description: Success!
+        '400':
+          description: Bad request.
+        '401':
+          description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+      (oas-tags):
+        - products
+/ticket:
+  displayName: ticket
+  '/{ticketId}':
+    displayName: '{ticketId}'
+    /status:
+      displayName: status
+      put:
+        displayName: PUT_ticket-ticketId-status
+        description: Alows the seller to update the status of a trouble ticket
+        (oas-summary): Update trouble ticket status
+        body:
+          application/json:
+            type: TicketStatus
+            (oas-body-name): body
+            description: New trouble ticket status
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            description: successfully received transaction
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Server refused to process your request. Please check the API SLA and reduce number of requests per second.
+          '404':
+            description: Object not found.
+        (oas-tags):
+          - tickets
+    /messages:
+      displayName: messages
+      get:
+        displayName: GET_ticket-ticketId-messages
+        description: Returns trouble ticket history with all messages exchanged. Only tickets related to your seller will be returned. Attempt to read other tickets will return 403 (acess denied).
+        (oas-summary): Get trouble ticket messages
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: GetTicketMessages
+            description: Success!
+          '400':
+            description: Bad request.
+          '401':
+            description: Access denied. You're not authenticated or token expired. Check your request header the `authorization` field is required.
+          '403':
+            description: Access denied. You can only access your trouble tickets
+        queryParameters:
+          offset:
+            description: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to skip when executing query. List starts at zero. If omitted will default to zero. Use this conjuction with `limit` to paginate across the results.
+          limit:
+            description: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+            required: false
+            type: integer
+            displayName: Number or items to return when executing query. Defaults to 10. Use this conjuction with `offset` to paginate across the results.
+        (oas-tags):
+          - tickets
+    /message:
+      displayName: message
+      post:
+        displayName: POST_ticket-ticketId-message
+        description: Add a new message to this trouble ticket. Messages can be `CUSTOMER` (customer will be able to see it) or `INTERNAL`.
+        (oas-summary): Add new message to trouble ticket
+        body:
+          application/json:
+            type: NewTicketMessage
+            (oas-body-name): message
+            description: New message object to append to trouble ticket.
+        headers:
+          authorization:
+            type: string
+            description: Authorization token. The Authorization token can be found in your Admin console.
+            required: true
+        responses:
+          '200':
+            description: Success!
+          '400':
+            description: Bad request.
+          '404':
+            description: Object not found.
+        (oas-tags):
+          - tickets
+  post:
+    displayName: POST_ticket
+    description: 'Use this service to create a new trouble ticket. Use this to include relevant information about the order, comunicate with the customer or marketplace team. Whenever possible message will be pushed to Mobile first. This is the primary mean of comunicaiton with the customer regarding orders, shippments, shippments status. New tickets will be automatically be set to ''OPEN''. Trouble tickets need to be associated with a orderId or customer. New tickets can optionally include a new message.'
+    (oas-summary): Creates a new trouble ticket
+    body:
+      application/json:
+        type: NewTicket
+        (oas-body-name): newTicket
+        description: JSON object with new trouble ticket
+    headers:
+      authorization:
+        type: string
+        description: Authorization token. The Authorization token can be found in your Admin console.
+        required: true
+    responses:
+      '200':
+        description: Success!
+      '400':
+        description: Bad request.
+    (oas-tags):
+      - tickets
+types:
+  Address:
+    properties:
+      address:
+        description: 'Address first line (ave, street name, etc..)'
+        type: string
+      city:
+        description: City
+        type: string
+      complement:
+        description: 'Complementary info (aptartament number, building name, suite)'
+        type: string
+      countryId:
+        description: 'Contry code using aplpha ISO-3166, Example: BR, US, AR, GB, CN'
+        type: string
+      neighbourhood:
+        description: Address neighbourhood
+        type: string
+      number:
+        description: Address number
+        type: string
+      recipientName:
+        description: Recipient Name
+        type: string
+        required: false
+      reference:
+        description: Pontos de referência
+        type: string
+        required: false
+      state:
+        description: State
+        type: string
+      zipCode:
+        description: Zip Code
+        type: string
+  ControlledStock:
+    properties:
+      crossDockingTime:
+        default: 0
+        description: 'Time it will take to manufacture, prepare or setup this product. Time must be provided in seconds. For example 1 day should be informed as 86400. This time will be included in the ETA informed to the customer'
+        type: integer
+        required: false
+      quantity:
+        description: Quantity of product available for sale
+        type: integer
+      reserved:
+        description: Locked product invetory for orders that are not approved and are not ready to fullfil.
+        type: integer
+        required: false
+  Courier:
+    properties:
+      name:
+        description: Courier name
+        type: string
+      taxID:
+        description: Courier taxId information. For example CNPJ
+        type: string
+        required: false
+  Customer:
+    properties:
+      documentNumber:
+        description: Customer tax information
+        type: string
+      email:
+        description: 'Customer Email (when available). Please note: Email is not a mandatory field'
+        type: string
+        required: false
+      id:
+        description: Customer unqiue Id
+        type: string
+      name:
+        description: Customer Name
+        type: string
+      phones:
+        description: Customer phone number
+        items:
+          type: Phone
+        type: array
+      type:
+        description: 'Customer type: Enterprise or Consumer'
+        type: string
+  CustomerReference:
+    properties:
+      name:
+        description: Customer name
+        type: string
+        required: false
+      phoneNumber:
+        description: Customer phone mumber
+        type: string
+        required: false
+  Dimensions:
+    properties:
+      height:
+        description: Product height in millimeters. No commas or periods are accepeted. For example one meter produc must be informed as 1000. Another example 1 meter and 23 centimeters should be informed solely as 1230
+        type: integer
+      length:
+        description: Product length in millimeters. No commas or periods are accepeted. For example one meter produc must be informed as 1000. Another example 1 meter and 23 centimeters should be informed solely as 1230
+        type: integer
+      weight:
+        description: Product weight in Grams. No commas or periods are accepeted. For example one killo must be informed as 1000. Another example 1 Kilo and 234 grams should be informed solely as 1234
+        type: integer
+      width:
+        description: Product width in millimeters. No commas or periods are accepeted. For example one meter produc must be informed as 1000. Another example 1 meter and 23 centimeters should be informed solely as 1230
+        type: integer
+  Error:
+    properties:
+      message:
+        description: Friendly message describing the error
+        type: string
+      skuSellerId:
+        description: When applicabe will include `skuSellerId` related to this error
+        type: string
+        required: false
+      type:
+        description: Error type
+        type: string
+  Freight:
+    properties:
+      ETA:
+        description: Estimated time of arrival
+        format: rfc3339
+        type: datetime
+        required: false
+      additionalInfo:
+        description: Aditional information for the courier
+        type: string
+      chargedAmount:
+        description: 'Shipment cost. Must be informed in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. Same as $1,2345.67 must be informed solely as 1234567'
+        type: integer
+      crossDockingTime:
+        default: 0
+        description: 'Time it will take to manufacture, prepare or setup this product. Time must be provided in seconds. For example 1 day should be informed as 86400. This time will be included in the product ETA informed to the customer'
+        type: integer
+      defaultAmount:
+        description: Default value of this shippment.
+        type: integer
+      scheduledPeriod:
+        description: Scheduled period
+        type: string
+        required: false
+      transitTime:
+        description: Deliver time in seconds. Time must be provided in seconds. For example 1 day should be informed as 86400. This time will be included in the product ETA informed to the customer
+        type: integer
+      type:
+        description: Freight type
+        type: string
+        required: false
+  GetOrders:
+    properties:
+      metadata:
+        items:
+          type: Metadata
+        type: array
+      orders:
+        items:
+          type: Order
+        type: array
+  GetOrdersShipments:
+    properties:
+      metadata:
+        description: Response payload
+        items:
+          type: Metadata
+        type: array
+        required: false
+      shipments:
+        description: Order Shippment Status
+        items:
+          type: OrderShippmentStatus
+        type: array
+        required: false
+  GetProduct:
+    properties:
+      attributes:
+        items:
+          type: ProductAttribute
+        type: array
+      brand:
+        description: Brand name
+        type: string
+      categories:
+        description: Array of categories associated with this product
+        items:
+          type: string
+        type: array
+      description:
+        description: Product text description.
+        type: string
+      dimensions:
+        type: Dimensions
+        required: false
+      errors:
+        items:
+          type: Error
+        type: array
+        required: false
+      giftWrap:
+        type: GiftWrap
+        required: false
+      gtin:
+        description: Array of product EAN and/or ISBN and/or ASIN codes
+        items:
+          type: string
+        type: array
+        required: false
+      images:
+        description: List of valid Product image URLs. HTTP or HTTPS are valid. HTTPS is prefered.
+        items:
+          type: string
+        type: array
+      price:
+        type: ProductPrice
+      productGroupId:
+        description: 'Unique Product Group ID. Products with the same `productGroupId` will be grouped and displayed as a unique entry. Use `productGroupId` to group diferent SKUs that represent diferent colors, sizes, capacities, etc..'
+        type: string
+        required: false
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system
+        type: string
+      status:
+        description: Product status
+        type: string
+      stock:
+        description: Number of products availble for sale from the seller. Each new successfull order will automatically reduce the number of products available.
+        type: integer
+      title:
+        description: Product name as advertised by manufacturer. This how the product will be displayed in the Marketplace
+        type: string
+      videos:
+        description: List of videos de URLs associated with this product. HTTP or HTTPS are valid. HTTPS is prefered.
+        items:
+          type: string
+        type: array
+        required: false
+  GetProductsResponse:
+    properties:
+      metadata:
+        description: Payload with response
+        items:
+          type: Metadata
+        type: array
+        required: false
+      skus:
+        items:
+          type: GetProduct
+        type: array
+        required: false
+  GetProductsStatusSelling:
+    properties:
+      metadata:
+        items:
+          type: Metadata
+        type: array
+      sellerItems:
+        items:
+          type: SellerItem
+        type: array
+  GetSellerProductStatus:
+    properties:
+      errors:
+        items:
+          type: Error
+        type: array
+        required: false
+      price:
+        type: ProductPrice
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system.
+        type: string
+      status:
+        description: Product status in the marketplace
+        type: string
+      stock:
+        description: Number of products availble for sale from the seller. Each new successfull order will automatically reduce the number of products available.
+        type: integer
+  GetSellerProductsStatus:
+    properties:
+      metadata:
+        description: Response payload
+        items:
+          type: Metadata
+        type: array
+        required: false
+      skus:
+        description: Status of the products from the seller
+        items:
+          type: GetSellerProductStatus
+        type: array
+        required: false
+  GetTicketMessages:
+    properties:
+      messages:
+        items:
+          type: TicketMessage
+        type: array
+        required: false
+      metadata:
+        items:
+          type: Metadata
+        type: array
+  GetTickets:
+    properties:
+      metadata:
+        items:
+          type: Metadata
+        type: array
+        required: false
+      tickets:
+        items:
+          type: Ticket
+        type: array
+        required: false
+  GiftCard:
+    properties:
+      from:
+        description: Giftcard `from` field
+        type: string
+      message:
+        description: Giftcard `body` message
+        type: string
+      to:
+        description: Giftcard `to` field
+        type: string
+  GiftWrap:
+    properties:
+      available:
+        description: Flag that defines if this product is eligible for giftwrapping
+        type: boolean
+      messageSupport:
+        description: Flag that defines if seller supports giftwrapp with a message
+        type: boolean
+        required: false
+      value:
+        description: 'Amount charged for gift wrap. All prices must be provided in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+  Image:
+    properties:
+      main:
+        description: Sets as main image
+        type: boolean
+      type:
+        description: Image format
+        type: string
+      url:
+        description: Image URL
+        type: string
+  Invoice:
+    properties:
+      accessKey:
+        description: Número da chave de acesso à nota fiscal. A chave possui 44 dígitos e contém todas as informações da DANFE
+        type: string
+      cnpj:
+        description: CNPJ responsável pelo envio dos produtos. Pode ser diferente caso a empresa possua diversos Centros de Distribuição (CDs)
+        type: string
+        required: false
+      issuedAt:
+        description: Data de emissão da Nota Fiscal
+        format: rfc3339
+        type: datetime
+        required: false
+      linkDanfe:
+        description: Url para consulta da DANFE
+        type: string
+        required: false
+      linkXml:
+        description: Url para consulta da NFE
+        type: string
+        required: false
+      number:
+        description: Número da Nota Fiscal
+        type: string
+      serie:
+        description: Número de serie da Nota Fiscal
+        type: string
+  Metadata:
+    properties:
+      key:
+        description: JSON attribute key
+        type: string
+      value:
+        description: JSON object value
+        type: string
+  NewTicket:
+    properties:
+      body:
+        description: Message to the customer
+        type: string
+      customer:
+        type: CustomerReference
+        required: false
+      description:
+        description: Trouble ticked brief description
+        type: string
+        required: false
+      from:
+        description: 'Friendly name of the person sending this message, if not provided the seller `name` will be used'
+        type: string
+      message:
+        type: NewTicketMessage
+        required: false
+      orderId:
+        description: Unique order Id that this trouble ticket belongs to
+        type: string
+      type:
+        description: Trouble ticket type.
+        type: string
+  NewTicketMessage:
+    properties:
+      body:
+        description: Message text
+        type: string
+      visibility:
+        description: Defines if this message is `CUSTOMER` (customer will receive a copy) or `INTERNAL`
+        type: string
+  NewTrackingRefund:
+    properties:
+      courier:
+        type: Courier
+        required: false
+      cte:
+        description: Conhecimento do Transporte Eletrônico
+        type: string
+        required: false
+      info:
+        description: Aditional information about this shippment
+        type: string
+      items:
+        items:
+          type: OrderItemReference
+        type: array
+      number:
+        description: Tracking Id in the courier
+        type: string
+        required: false
+      occurredAt:
+        description: Date time that this was created
+        format: rfc3339
+        type: datetime
+        required: false
+      sellerShipmentId:
+        description: Unique Seller shipment Id. This must be unique across all orders and shipments
+        type: string
+        required: false
+      tranckingUrl:
+        description: Courier tracking URL
+        type: string
+        required: false
+  Newshipmentstatus:
+    properties:
+      courier:
+        type: Courier
+      cte:
+        description: Conhecimento do Transporte Eletrônico
+        type: string
+        required: false
+      invoice:
+        type: Invoice
+      items:
+        description: List of Order IDs of this items from this order that will be updated in this shipment
+        items:
+          type: string
+        type: array
+      number:
+        description: Unique id shipment Id in the courier system
+        type: string
+        required: false
+      occurredAt:
+        description: Data da ocorrência
+        format: rfc3339
+        type: datetime
+      sellerShipmentId:
+        description: Unique Seller shipment Id. This must be unique across all orders and shipmnents
+        type: string
+      trackingUrl:
+        description: Courier tracking URL
+        type: string
+        required: false
+  Order:
+    properties:
+      approvedAt:
+        description: Date that this order was approved for fullfilment
+        format: rfc3339
+        type: datetime
+        required: false
+      billingAddress:
+        type: Address
+      createdAt:
+        description: Date that this order was created
+        format: rfc3339
+        type: datetime
+      customer:
+        type: Customer
+      freight:
+        type: Freight
+      items:
+        items:
+          type: OrderItem
+        type: array
+      orderId:
+        description: Unique order Id (related to this seller)
+        type: string
+      orderMarketplaceId:
+        description: Unique Order Id that will be displayed to the customer. This Id is not the same as `orderId`
+        type: string
+      seller:
+        type: Seller
+        required: false
+      shipments:
+        items:
+          type: Shippment
+        type: array
+      shippingAddress:
+        type: Address
+      status:
+        description: Order status
+        type: string
+      totalAmount:
+        description: 'Order total in cents, this is what the customer will be charged for. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+      totalDiscountAmount:
+        description: 'Total order discounts in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+      totalItemsAmount:
+        description: 'Order items total amount in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+      totalShippingAmount:
+        description: 'Total shipments amount items. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+      updatedAt:
+        description: Last update data of this order
+        format: rfc3339
+        type: datetime
+  OrderGiftWrap:
+    properties:
+      available:
+        description: Defines if giftwrpping is available for this product.
+        type: boolean
+      giftCard:
+        type: GiftCard
+        required: false
+      messageSupport:
+        description: Defines if giftwrpping is available for this product.
+        type: boolean
+        required: false
+      value:
+        description: 'Amount charged for gift wrap. All prices must be provided in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+  OrderItem:
+    properties:
+      freight:
+        type: Freight
+      giftWrap:
+        type: OrderGiftWrap
+        required: false
+      id:
+        description: Unique Id representing this item
+        type: string
+      name:
+        description: Product name
+        type: string
+      promotions:
+        description: Promotions array
+        items:
+          type: Promotion
+        type: array
+        required: false
+      salePrice:
+        description: Product unit price
+        type: integer
+      sent:
+        description: Flag if product was already shipped
+        type: boolean
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system
+        type: string
+  OrderItemReference:
+    properties:
+      quantity:
+        description: Quantity of items
+        type: integer
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system. This is the key that defines witch product will be updated
+        type: string
+  OrderShippment:
+    properties:
+      courier:
+        type: Courier
+        required: false
+      cte:
+        description: Conhecimento de Transporte Eletôniconico
+        type: string
+        required: false
+      invoice:
+        type: Invoice
+        required: false
+      items:
+        items:
+          type: OrderItemReference
+        type: array
+        required: false
+      number:
+        description: Courier unique trackign Id associated with this shipment
+        type: string
+        required: false
+      occurredAt:
+        description: Date that this shippment was shiped
+        format: rfc3339
+        type: datetime
+        required: false
+      order:
+        description: Order unique Id
+        type: string
+        required: false
+      sellerShipmentId:
+        description: Unique Seller shipment Id. This must be unique across all orders and shipments
+        type: string
+        required: false
+      status:
+        description: Shipment status.
+        type: string
+        required: false
+      trackingUrl:
+        description: Courier tracking URL
+        type: string
+        required: false
+  OrderShippmentStatus:
+    properties:
+      errors:
+        items:
+          type: Error
+        type: array
+        required: false
+      items:
+        items:
+          type: OrderItemReference
+        type: array
+        required: false
+      shipmentId:
+        description: Shippment unique Id
+        type: string
+        required: false
+      status:
+        description: Shipment status
+        type: string
+        required: false
+      trackingUrl:
+        description: Courier tracking URL
+        type: string
+        required: false
+  OrdersShipments:
+    properties:
+      shipments:
+        items:
+          type: OrderShippment
+        type: array
+        required: false
+  Phone:
+    properties:
+      number:
+        description: Phone number
+        type: string
+      type:
+        description: 'Phone number type, home, office, mobile, etc'
+        type: string
+  Product:
+    properties:
+      attributes:
+        description: List of `key` `value` attributes of this product. This is very important for search and SEO optmization. Include all relevant information
+        items:
+          type: ProductAttribute
+        type: array
+      brand:
+        description: Brand name
+        type: string
+      categories:
+        description: Array of categories associated with this product
+        items:
+          type: string
+        type: array
+      description:
+        description: Product description.
+        type: string
+      dimensions:
+        type: Dimensions
+        required: false
+      giftWrap:
+        type: GiftWrap
+        required: false
+      gtin:
+        description: Array of product EAN and/or ISBN and/or ASIN codes
+        items:
+          type: string
+        type: array
+        required: false
+      images:
+        description: List of valid Product image URLs. HTTP or HTTPS are valid. HTTPS is prefered.
+        items:
+          type: string
+        type: array
+      price:
+        type: ProductPrice
+      productGroupId:
+        description: 'Unique Product Group ID. Products with the same `productGroupId` will be grouped and displayed as a unique entry. Use `productGroupId` to group diferent SKUs that represent diferent colors, sizes, capacities, etc..'
+        type: string
+        required: false
+      productId:
+        description: Brand Lovers Product ID. Use this to suggest a product association. This field is optional.
+        type: string
+        required: false
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system
+        type: string
+      stock:
+        description: Number of products availble for sale from the seller. Each new successfull order will automatically reduce the number of products available.
+        type: integer
+      title:
+        description: Product name as advertised by manufacturer. This how the product will be displayed in the Marketplace
+        type: string
+      videos:
+        description: List of videos de URLs associated with this product. HTTP or HTTPS are valid. HTTPS is prefered.
+        items:
+          type: string
+        type: array
+        required: false
+  ProductAttribute:
+    properties:
+      name:
+        description: Attribute name
+        type: string
+      value:
+        description: Attribute value
+        type: string
+  ProductPrice:
+    properties:
+      default:
+        description: 'List price, also known as MSRP (Manufacturer Suggest Retail Price) or the recommended retail price (RRP). All prices must be provided in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+      offer:
+        description: 'Product price. This is what will be offered to the customer. All prices must be provided in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+  ProductReference:
+    properties:
+      href:
+        description: Link para acesso ao recurso
+        type: string
+      id:
+        description: ID do recurso
+        type: string
+  ProductSiteReference:
+    properties:
+      skuSellerId:
+        description: Seller unique product Id
+        type: string
+      url:
+        description: Link do produto no site
+        type: string
+  ProductStatusUpdate:
+    properties:
+      active:
+        description: 'Defines if this product is ready for sale. Active `true`, disabled `false`'
+        type: boolean
+      skuSellerId:
+        description: Seller product unique Id that will be updated
+        type: string
+  ProductStock:
+    properties:
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system
+        type: string
+      stocks:
+        description: Invetory information
+        items:
+          type: Stock
+        type: array
+  ProductUpdate:
+    properties:
+      attributes:
+        description: List of `key` `value` attributes of this product. This is very important for search and SEO optmization. Include all relevant information
+        items:
+          type: ProductAttribute
+        type: array
+        required: false
+      brand:
+        description: Brand name
+        type: string
+        required: false
+      categories:
+        description: Array of categories associated with this product
+        items:
+          type: string
+        type: array
+        required: false
+      description:
+        description: Product text description.
+        type: string
+        required: false
+      dimensions:
+        type: Dimensions
+        required: false
+      giftWrap:
+        type: GiftWrap
+        required: false
+      gtin:
+        description: Array of product EAN and/or ISBN and/or ASIN codes
+        items:
+          type: string
+        type: array
+        required: false
+      images:
+        description: List of valid Product image URLs. HTTP or HTTPS are valid. HTTPS is prefered.
+        items:
+          type: string
+        type: array
+        required: false
+      price:
+        type: ProductPrice
+        required: false
+      productGroupId:
+        description: 'Unique Product Group ID. Products with the same `productGroupId` will be grouped and displayed as a unique entry. Use `productGroupId` to group diferent SKUs that represent diferent colors, sizes, capacities, etc..'
+        type: string
+        required: false
+      productId:
+        description: Brand Lovers Product Id. Use this to recommend a product association
+        type: string
+        required: false
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system
+        type: string
+      stock:
+        description: Number of products availble for sale from the seller. Each new successfull order will automatically reduce the number of products available.
+        type: integer
+        required: false
+      title:
+        description: Product name as advertised by manufacturer. This how the product will be displayed in the Marketplace
+        type: string
+        required: false
+      videos:
+        description: List of videos de URLs associated with this product. HTTP or HTTPS are valid. HTTPS is prefered.
+        items:
+          type: string
+        type: array
+        required: false
+  Promotion:
+    properties:
+      amount:
+        description: 'Total discount in cents. No commas or periods are accepeted. For example one dollar should be informed as 100. $1,2345.67 should be informed solely as 1234567'
+        type: integer
+        required: false
+      id:
+        description: Promotion unique idenfitcation number
+        type: string
+      name:
+        description: Promotion name
+        type: string
+        required: false
+      type:
+        description: Promotion type
+        type: string
+        required: false
+  Seller:
+    properties:
+      id:
+        description: Seller unique Id in the Brand Lovers Marketplace
+        type: string
+        required: false
+      name:
+        description: Seller name in the Brand Lovers Marketplace
+        type: string
+        required: false
+  SellerItem:
+    properties:
+      attributes:
+        items:
+          type: ProductAttribute
+        type: array
+      brand:
+        description: Brand name
+        type: string
+      dimensions:
+        type: Dimensions
+      giftWrap:
+        type: GiftWrap
+        required: false
+      gtin:
+        description: Array of product EAN and/or ISBN and/or ASIN codes
+        items:
+          type: string
+        type: array
+        required: false
+      images:
+        description: List of valid Product image URLs.
+        items:
+          type: Image
+        type: array
+      prices:
+        description: Price information for each marketplace that this product is listed
+        items:
+          type: ProductPrice
+        type: array
+      product:
+        type: ProductReference
+      skuSellerId:
+        description: Unique Product Id (SKU) in the seller system
+        type: string
+      status:
+        description: Product status for each marketplace that this product is listed
+        items:
+          type: SellerItemStatus
+        type: array
+      stocks:
+        description: Invetory information for each marketplace that this product is listed
+        items:
+          type: ControlledStock
+        type: array
+      title:
+        description: Product name as advertised by manufacturer. This how the product will be displayed in the Marketplace
+        type: string
+      urls:
+        description: List of URLs where the product is listed for sale
+        items:
+          type: ProductSiteReference
+        type: array
+        required: false
+  SellerItemPrices:
+    properties:
+      price:
+        type: ProductPrice
+      skuSellerId:
+        description: Unique product Id from seller that will be updated
+        type: string
+  SellerItemStatus:
+    properties:
+      active:
+        description: 'Defines if this product is ready for sale. Active `true`, disabled `false` '
+        type: boolean
+  Shippment:
+    properties:
+      courier:
+        type: Courier
+      cte:
+        description: Conhecimento de Transporte Eletrônico
+        type: string
+        required: false
+      description:
+        description: Additinal shipment tracking information
+        type: string
+        required: false
+      id:
+        description: Shipment Id associated with this shippment used to group diferent item or items from a single order
+        type: string
+        required: false
+      invoice:
+        type: Invoice
+      items:
+        description: List of items of this shippment
+        items:
+          type: OrderItemReference
+        type: array
+      number:
+        description: Courier unique trackign Id associated with this shipment
+        type: string
+        required: false
+      occurredAt:
+        description: Date time when this shippment happened
+        format: rfc3339
+        type: datetime
+      sellerShipmentId:
+        description: Unique Seller shipment Id. This must be unique across all orders and shipments
+        type: string
+      status:
+        description: Shipment status
+        type: string
+      trackingUrl:
+        description: Courier tracking URL
+        type: string
+        required: false
+  Stock:
+    properties:
+      crossDockingTime:
+        default: 0
+        description: 'Time it will take to manufacture, prepare or setup this product. Time must be provided in seconds. For example 1 day should be informed as 86400. This time will be included in the product ETA informed to the customer'
+        type: integer
+        required: false
+      quantity:
+        description: Stock available
+        type: integer
+  Ticket:
+    properties:
+      closedAt:
+        description: Date-time when ticket was closed
+        format: rfc3339
+        type: datetime
+        required: false
+      createdAt:
+        description: Date time that ticket was created
+        format: rfc3339
+        type: datetime
+        required: false
+      customer:
+        type: CustomerReference
+        required: false
+      description:
+        description: Trouble ticked brief description
+        type: string
+        required: false
+      metadata:
+        items:
+          type: Metadata
+        type: array
+        required: false
+      priority:
+        description: Trouble ticket priority
+        type: string
+        required: false
+      sla:
+        description: Date-time with a promisse for the customer when this ticket will be resolved
+        format: rfc3339
+        type: datetime
+        required: false
+      status:
+        description: 'Trouble Ticket status. ''OPEN'',''CLOSED'',''REOPENED'''
+        type: string
+        required: false
+      subject:
+        description: Short one line title describing ticket.
+        type: string
+        required: false
+      ticketId:
+        description: Trouble Ticket unique identification Id
+        type: string
+        required: false
+      type:
+        description: Trouble ticket type.
+        type: string
+        required: false
+      updatedAt:
+        description: Date-time with last update of this ticket
+        format: rfc3339
+        type: datetime
+        required: false
+  TicketMessage:
+    properties:
+      body:
+        description: Message text
+        type: string
+      createdAt:
+        description: Date created
+        format: rfc3339
+        type: datetime
+      id:
+        description: Trouble Ticket Id.
+        type: string
+      visibility:
+        description: Defines if this message is `CUSTOMER` (customer will receive a copy) or `INTERNAL`
+        type: string
+  TicketStatus:
+    properties:
+      ticketStatus:
+        description: 'New trouble ticket status. Valid options are `REOPENED`, `CLOSED`'
+        type: string

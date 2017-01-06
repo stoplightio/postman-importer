@@ -1,0 +1,754 @@
+#%RAML 1.0
+title: Yunbi
+version: v2
+baseUri: 'https://yunbi.com/api'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: Professional Cloud Trading Platform for Digital Assets
+(oas-tags-definition):
+  - name: addresses
+  - name: deposit
+  - name: deposit_address
+  - name: deposits
+  - name: depth
+  - name: k
+  - name: k_with_pending_trades
+  - name: markets
+  - name: members
+  - name: order
+  - name: order_book
+  - name: orders
+  - name: tickers
+  - name: timestamp
+  - name: trades
+  - name: withdraw
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-tags: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-apisguru-categories):
+    - financial
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_yunbi.com_assets_site-logo-blue-en-64531f4d9dfe3078eef759113a91f428.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://yunbi.com/api/v2/doc/swagger'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): yunbi.com
+  (oas-x-tags):
+    - bitcoin
+    - digital currency
+/v2:
+  displayName: v2
+  /order_book.json:
+    displayName: order_book.json
+    get:
+      displayName: GET--version-order_book---format-
+      (oas-summary): Get the order book of specified market.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        market:
+          description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+          required: true
+          type: string
+          displayName: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+        asks_limit:
+          description: Limit the number of returned sell orders. Default to 20.
+          required: false
+          type: integer
+          displayName: Limit the number of returned sell orders. Default to 20.
+        bids_limit:
+          description: Limit the number of returned buy orders. Default to 20.
+          required: false
+          type: integer
+          displayName: Limit the number of returned buy orders. Default to 20.
+      (oas-tags):
+        - order_book
+  /withdraw.json:
+    displayName: withdraw.json
+    post:
+      displayName: POST--version-withdraw---format-
+      (oas-summary): Generate withdrawal application
+      body:
+        multipart/form-data:
+          properties:
+            access_key:
+              description: Access key.
+              required: true
+              type: string
+            tonce:
+              description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+              required: true
+              type: integer
+            signature:
+              description: 'The signature of your request payload, generated using your secret key.'
+              required: true
+              type: string
+            amount:
+              description: Withdraw amount
+              required: true
+              type: string
+            id:
+              description: Withdrawal address ID
+              required: true
+              type: integer
+            memo:
+              description: Withdraw Memo
+              required: false
+              type: string
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - withdraw
+  /orders.json:
+    displayName: orders.json
+    get:
+      displayName: GET--version-orders---format-
+      (oas-summary): 'Get your orders, results is paginated.'
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        access_key:
+          description: Access key.
+          required: true
+          type: string
+          displayName: Access key.
+        tonce:
+          description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+          required: true
+          type: integer
+          displayName: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+        signature:
+          description: 'The signature of your request payload, generated using your secret key.'
+          required: true
+          type: string
+          displayName: 'The signature of your request payload, generated using your secret key.'
+        market:
+          description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+          required: true
+          type: string
+          displayName: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+        state:
+          description: 'Filter order by state, default to ''wait'' (active orders).'
+          required: false
+          type: string
+          displayName: 'Filter order by state, default to ''wait'' (active orders).'
+        limit:
+          description: 'Limit the number of returned orders, default to 100.'
+          required: false
+          type: integer
+          displayName: 'Limit the number of returned orders, default to 100.'
+        page:
+          description: Specify the page of paginated results.
+          required: false
+          type: integer
+          displayName: Specify the page of paginated results.
+        order_by:
+          description: 'If set, returned orders will be sorted in specific order, default to ''asc''.'
+          required: false
+          type: string
+          displayName: 'If set, returned orders will be sorted in specific order, default to ''asc''.'
+      (oas-tags):
+        - orders
+    post:
+      displayName: POST--version-orders---format-
+      (oas-summary): Create a Sell/Buy order.
+      body:
+        multipart/form-data:
+          properties:
+            access_key:
+              description: Access key.
+              required: true
+              type: string
+            tonce:
+              description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+              required: true
+              type: integer
+            signature:
+              description: 'The signature of your request payload, generated using your secret key.'
+              required: true
+              type: string
+            market:
+              description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+              required: true
+              type: string
+            side:
+              description: Either 'sell' or 'buy'.
+              required: true
+              type: string
+            volume:
+              description: 'The amount user want to sell/buy. An order could be partially executed, e.g. an order sell 5 btc can be matched with a buy 3 btc order, left 2 btc to be sold; in this case the order''s volume would be ''5.0'', its remaining_volume would be ''2.0'', its executed volume is ''3.0''.'
+              required: true
+              type: string
+            price:
+              description: 'Price for each unit. e.g. If you want to sell/buy 1 btc at 3000 CNY, the price is ''3000.0'''
+              required: false
+              type: string
+            ord_type:
+              required: false
+              type: string
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - orders
+  /addresses:
+    displayName: addresses
+    '/{address}.json':
+      displayName: '{address}.json'
+      uriParameters:
+        address:
+          required: true
+          type: string
+      get:
+        displayName: GET--version-addresses--address---format-
+        (oas-summary): Check Deposit Address
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - addresses
+  /deposit_address.json:
+    displayName: deposit_address.json
+    get:
+      displayName: GET--version-deposit_address---format-
+      (oas-summary): 'Where to deposit. The address field could be empty when a new address is generating (e.g. for bitcoin), you should try again later in that '
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        access_key:
+          description: Access key.
+          required: true
+          type: string
+          displayName: Access key.
+        tonce:
+          description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+          required: true
+          type: integer
+          displayName: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+        signature:
+          description: 'The signature of your request payload, generated using your secret key.'
+          required: true
+          type: string
+          displayName: 'The signature of your request payload, generated using your secret key.'
+        currency:
+          description: 'The account to which you want to deposit. Available values: cny, btc, eth, pls, note, bts, bitcny, bitusd, bitbtc, yun, nxt, ltc, doge, sc, dgd, dcs, dao, etc, amp, 1st, rep, ans, zec, zmc, gnt'
+          required: true
+          type: string
+          displayName: 'The account to which you want to deposit. Available values: cny, btc, eth, pls, note, bts, bitcny, bitusd, bitbtc, yun, nxt, ltc, doge, sc, dgd, dcs, dao, etc, amp, 1st, rep, ans, zec, zmc, gnt'
+      (oas-tags):
+        - deposit_address
+  /orders:
+    displayName: orders
+    /clear.json:
+      displayName: clear.json
+      post:
+        displayName: POST--version-orders-clear---format-
+        (oas-summary): Cancel all my orders.
+        body:
+          multipart/form-data:
+            properties:
+              access_key:
+                description: Access key.
+                required: true
+                type: string
+              tonce:
+                description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+                required: true
+                type: integer
+              signature:
+                description: 'The signature of your request payload, generated using your secret key.'
+                required: true
+                type: string
+              side:
+                description: 'If present, only sell orders (asks) or buy orders (bids) will be canncelled.'
+                required: false
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - orders
+    /multi.json:
+      displayName: multi.json
+      post:
+        displayName: POST--version-orders-multi---format-
+        (oas-summary): Create multiple sell/buy orders.
+        body:
+          multipart/form-data:
+            properties:
+              access_key:
+                description: Access key.
+                required: true
+                type: string
+              tonce:
+                description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+                required: true
+                type: integer
+              signature:
+                description: 'The signature of your request payload, generated using your secret key.'
+                required: true
+                type: string
+              market:
+                description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+                required: true
+                type: string
+              orders:
+                items:
+                  type: string
+                required: true
+                type: array
+              'orders[side]':
+                description: Either 'sell' or 'buy'.
+                required: true
+                type: string
+              'orders[volume]':
+                description: 'The amount user want to sell/buy. An order could be partially executed, e.g. an order sell 5 btc can be matched with a buy 3 btc order, left 2 btc to be sold; in this case the order''s volume would be ''5.0'', its remaining_volume would be ''2.0'', its executed volume is ''3.0''.'
+                required: true
+                type: string
+              'orders[price]':
+                description: 'Price for each unit. e.g. If you want to sell/buy 1 btc at 3000 CNY, the price is ''3000.0'''
+                required: false
+                type: string
+              'orders[ord_type]':
+                required: false
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - orders
+  /depth.json:
+    displayName: depth.json
+    get:
+      displayName: GET--version-depth---format-
+      (oas-summary): Get depth or specified market. Both asks and bids are sorted from highest price to lowest.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        market:
+          description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+          required: true
+          type: string
+          displayName: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+        limit:
+          description: Limit the number of returned price levels. Default to 300.
+          required: false
+          type: integer
+          displayName: Limit the number of returned price levels. Default to 300.
+      (oas-tags):
+        - depth
+  /k_with_pending_trades.json:
+    displayName: k_with_pending_trades.json
+    get:
+      displayName: GET--version-k_with_pending_trades---format-
+      (oas-summary): 'Get K data with pending trades, which are the trades not included in K data yet, because there''s delay between trade generated and processe'
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        market:
+          description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+          required: true
+          type: string
+          displayName: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+        trade_id:
+          description: The trade id of the first trade you received.
+          required: true
+          type: integer
+          displayName: The trade id of the first trade you received.
+        limit:
+          description: 'Limit the number of returned data points, default to 30.'
+          required: false
+          type: integer
+          displayName: 'Limit the number of returned data points, default to 30.'
+        period:
+          description: 'Time period of K line, default to 1. You can choose between 1, 5, 15, 30, 60, 120, 240, 360, 720, 1440, 4320, 10080'
+          required: false
+          type: integer
+          displayName: 'Time period of K line, default to 1. You can choose between 1, 5, 15, 30, 60, 120, 240, 360, 720, 1440, 4320, 10080'
+        timestamp:
+          description: 'An integer represents the seconds elapsed since Unix epoch. If set, only k-line data after that time will be returned.'
+          required: false
+          type: integer
+          displayName: 'An integer represents the seconds elapsed since Unix epoch. If set, only k-line data after that time will be returned.'
+      (oas-tags):
+        - k_with_pending_trades
+  /tickers.json:
+    displayName: tickers.json
+    get:
+      displayName: GET--version-tickers---format-
+      (oas-summary): Get ticker of all markets.
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - tickers
+  /members:
+    displayName: members
+    /me.json:
+      displayName: me.json
+      get:
+        displayName: GET--version-members-me---format-
+        (oas-summary): Get your profile and accounts info.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          access_key:
+            description: Access key.
+            required: true
+            type: string
+            displayName: Access key.
+          tonce:
+            description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+            required: true
+            type: integer
+            displayName: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+          signature:
+            description: 'The signature of your request payload, generated using your secret key.'
+            required: true
+            type: string
+            displayName: 'The signature of your request payload, generated using your secret key.'
+        (oas-tags):
+          - members
+  /order:
+    displayName: order
+    /delete.json:
+      displayName: delete.json
+      post:
+        displayName: POST--version-order-delete---format-
+        (oas-summary): Cancel an order.
+        body:
+          multipart/form-data:
+            properties:
+              access_key:
+                description: Access key.
+                required: true
+                type: string
+              tonce:
+                description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+                required: true
+                type: integer
+              signature:
+                description: 'The signature of your request payload, generated using your secret key.'
+                required: true
+                type: string
+              id:
+                description: Unique order id.
+                required: true
+                type: integer
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - order
+  /trades:
+    displayName: trades
+    /my.json:
+      displayName: my.json
+      get:
+        displayName: GET--version-trades-my---format-
+        (oas-summary): Get your executed trades. Trades are sorted in reverse creation order.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          access_key:
+            description: Access key.
+            required: true
+            type: string
+            displayName: Access key.
+          tonce:
+            description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+            required: true
+            type: integer
+            displayName: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+          signature:
+            description: 'The signature of your request payload, generated using your secret key.'
+            required: true
+            type: string
+            displayName: 'The signature of your request payload, generated using your secret key.'
+          market:
+            description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+            required: true
+            type: string
+            displayName: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+          limit:
+            description: Limit the number of returned trades. Default to 50.
+            required: false
+            type: integer
+            displayName: Limit the number of returned trades. Default to 50.
+          timestamp:
+            description: 'An integer represents the seconds elapsed since Unix epoch. If set, only trades executed before the time will be returned.'
+            required: false
+            type: integer
+            displayName: 'An integer represents the seconds elapsed since Unix epoch. If set, only trades executed before the time will be returned.'
+          from:
+            description: 'Trade id. If set, only trades created after the trade will be returned.'
+            required: false
+            type: integer
+            displayName: 'Trade id. If set, only trades created after the trade will be returned.'
+          to:
+            description: 'Trade id. If set, only trades created before the trade will be returned.'
+            required: false
+            type: integer
+            displayName: 'Trade id. If set, only trades created before the trade will be returned.'
+          order_by:
+            description: 'If set, returned trades will be sorted in specific order, default to ''desc''.'
+            required: false
+            type: string
+            displayName: 'If set, returned trades will be sorted in specific order, default to ''desc''.'
+        (oas-tags):
+          - trades
+  /trades.json:
+    displayName: trades.json
+    get:
+      displayName: GET--version-trades---format-
+      (oas-summary): 'Get recent trades on market, each trade is included only once. Trades are sorted in reverse creation order.'
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        market:
+          description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+          required: true
+          type: string
+          displayName: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+        limit:
+          description: Limit the number of returned trades. Default to 50.
+          required: false
+          type: integer
+          displayName: Limit the number of returned trades. Default to 50.
+        timestamp:
+          description: 'An integer represents the seconds elapsed since Unix epoch. If set, only trades executed before the time will be returned.'
+          required: false
+          type: integer
+          displayName: 'An integer represents the seconds elapsed since Unix epoch. If set, only trades executed before the time will be returned.'
+        from:
+          description: 'Trade id. If set, only trades created after the trade will be returned.'
+          required: false
+          type: integer
+          displayName: 'Trade id. If set, only trades created after the trade will be returned.'
+        to:
+          description: 'Trade id. If set, only trades created before the trade will be returned.'
+          required: false
+          type: integer
+          displayName: 'Trade id. If set, only trades created before the trade will be returned.'
+        order_by:
+          description: 'If set, returned trades will be sorted in specific order, default to ''desc''.'
+          required: false
+          type: string
+          displayName: 'If set, returned trades will be sorted in specific order, default to ''desc''.'
+      (oas-tags):
+        - trades
+  /timestamp.json:
+    displayName: timestamp.json
+    get:
+      displayName: GET--version-timestamp---format-
+      (oas-summary): 'Get server current time, in seconds since Unix epoch.'
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - timestamp
+  /tickers:
+    displayName: tickers
+    '/{market}.json':
+      displayName: '{market}.json'
+      uriParameters:
+        market:
+          description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+          required: true
+          type: string
+          displayName: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+      get:
+        displayName: GET--version-tickers--market---format-
+        (oas-summary): Get ticker of specific market.
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - tickers
+  /deposit.json:
+    displayName: deposit.json
+    get:
+      displayName: GET--version-deposit---format-
+      (oas-summary): Get details of specific deposit.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        access_key:
+          description: Access key.
+          required: true
+          type: string
+          displayName: Access key.
+        tonce:
+          description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+          required: true
+          type: integer
+          displayName: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+        signature:
+          description: 'The signature of your request payload, generated using your secret key.'
+          required: true
+          type: string
+          displayName: 'The signature of your request payload, generated using your secret key.'
+        txid:
+          required: true
+          type: string
+      (oas-tags):
+        - deposit
+  /order.json:
+    displayName: order.json
+    get:
+      displayName: GET--version-order---format-
+      (oas-summary): Get information of specified order.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        access_key:
+          description: Access key.
+          required: true
+          type: string
+          displayName: Access key.
+        tonce:
+          description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+          required: true
+          type: integer
+          displayName: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+        signature:
+          description: 'The signature of your request payload, generated using your secret key.'
+          required: true
+          type: string
+          displayName: 'The signature of your request payload, generated using your secret key.'
+        id:
+          description: Unique order id.
+          required: true
+          type: integer
+          displayName: Unique order id.
+      (oas-tags):
+        - order
+  /markets.json:
+    displayName: markets.json
+    get:
+      displayName: GET--version-markets---format-
+      (oas-summary): Get all available markets.
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - markets
+  /k.json:
+    displayName: k.json
+    get:
+      displayName: GET--version-k---format-
+      (oas-summary): Get OHLC(k line) of specific market.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        market:
+          description: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+          required: true
+          type: string
+          displayName: 'Unique market id. It''s always in the form of xxxyyy, where xxx is the base currency code, yyy is the quote currency code, e.g. ''btccny''. All available markets can be found at /api/v2/markets.'
+        limit:
+          description: 'Limit the number of returned data points, default to 30.'
+          required: false
+          type: integer
+          displayName: 'Limit the number of returned data points, default to 30.'
+        period:
+          description: 'Time period of K line, default to 1. You can choose between 1, 5, 15, 30, 60, 120, 240, 360, 720, 1440, 4320, 10080'
+          required: false
+          type: integer
+          displayName: 'Time period of K line, default to 1. You can choose between 1, 5, 15, 30, 60, 120, 240, 360, 720, 1440, 4320, 10080'
+        timestamp:
+          description: 'An integer represents the seconds elapsed since Unix epoch. If set, only k-line data after that time will be returned.'
+          required: false
+          type: integer
+          displayName: 'An integer represents the seconds elapsed since Unix epoch. If set, only k-line data after that time will be returned.'
+      (oas-tags):
+        - k
+  /deposits.json:
+    displayName: deposits.json
+    get:
+      displayName: GET--version-deposits---format-
+      (oas-summary): Get your deposits history.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        access_key:
+          description: Access key.
+          required: true
+          type: string
+          displayName: Access key.
+        tonce:
+          description: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+          required: true
+          type: integer
+          displayName: Tonce is an integer represents the milliseconds elapsed since Unix epoch.
+        signature:
+          description: 'The signature of your request payload, generated using your secret key.'
+          required: true
+          type: string
+          displayName: 'The signature of your request payload, generated using your secret key.'
+        currency:
+          description: 'Currency value contains  cny,btc,eth,pls,note,bts,bitcny,bitusd,bitbtc,yun,nxt,ltc,doge,sc,dgd,dcs,dao,etc,amp,1st,rep,ans,zec,zmc,gnt'
+          required: false
+          type: string
+          displayName: 'Currency value contains  cny,btc,eth,pls,note,bts,bitcny,bitusd,bitbtc,yun,nxt,ltc,doge,sc,dgd,dcs,dao,etc,amp,1st,rep,ans,zec,zmc,gnt'
+        limit:
+          description: Set result limit.
+          required: false
+          type: integer
+          displayName: Set result limit.
+        state:
+          required: false
+          type: string
+      (oas-tags):
+        - deposits

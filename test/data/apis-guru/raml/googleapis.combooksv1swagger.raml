@@ -1,0 +1,4354 @@
+#%RAML 1.0
+title: Books
+version: v1
+baseUri: 'https://www.googleapis.com/books/v1'
+protocols:
+  - HTTPS
+description: Searches for books and manages your Google Books library.
+(oas-tags-definition):
+  - name: bookshelves
+  - name: cloudloading
+  - name: dictionary
+  - name: layers
+  - name: myconfig
+  - name: mylibrary
+  - name: notification
+  - name: onboarding
+  - name: personalizedstream
+  - name: promooffer
+  - name: series
+  - name: volumes
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_intl_en_images_logos_books_logo_lg.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/books/v1/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): books
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/books/docs/v1/getting_started'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/books'
+    description: Oauth 2.0 authentication
+/onboarding:
+  displayName: onboarding
+  /listCategories:
+    displayName: listCategories
+    get:
+      displayName: books.onboarding.listCategories
+      description: List categories for onboarding experience.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Category
+          description: Successful response
+      queryParameters:
+        locale:
+          description: ISO-639-1 language and ISO-3166-1 country code. Default is en-US if unset.
+          type: string
+          displayName: ISO-639-1 language and ISO-3166-1 country code. Default is en-US if unset.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - onboarding
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /listCategoryVolumes:
+    displayName: listCategoryVolumes
+    get:
+      displayName: books.onboarding.listCategoryVolumes
+      description: List available volumes under categories for onboarding experience.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Volume2
+          description: Successful response
+      queryParameters:
+        categoryId:
+          collectionFormat: multi
+          description: List of category ids requested.
+          items:
+            type: string
+          type: array
+          displayName: List of category ids requested.
+          facets:
+            collectionFormat: string
+        locale:
+          description: ISO-639-1 language and ISO-3166-1 country code. Default is en-US if unset.
+          type: string
+          displayName: ISO-639-1 language and ISO-3166-1 country code. Default is en-US if unset.
+        maxAllowedMaturityRating:
+          description: The maximum allowed maturity rating of returned volumes. Books with a higher maturity rating are filtered out.
+          enum:
+            - mature
+            - not-mature
+          type: string
+          displayName: The maximum allowed maturity rating of returned volumes. Books with a higher maturity rating are filtered out.
+        pageSize:
+          description: Number of maximum results per page to be included in the response.
+          type: integer
+          displayName: Number of maximum results per page to be included in the response.
+        pageToken:
+          description: The value of the nextToken from the previous page.
+          type: string
+          displayName: The value of the nextToken from the previous page.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - onboarding
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+/volumes:
+  displayName: volumes
+  '/{volumeId}':
+    displayName: '{volumeId}'
+    /layersummary:
+      displayName: layersummary
+      '/{summaryId}':
+        displayName: '{summaryId}'
+        uriParameters:
+          summaryId:
+            description: The ID for the layer to get the summary for.
+            required: true
+            type: string
+            displayName: The ID for the layer to get the summary for.
+        get:
+          displayName: books.layers.get
+          description: Gets the layer summary for a volume.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Layersummary
+              description: Successful response
+          queryParameters:
+            contentVersion:
+              description: The content version for the requested volume.
+              type: string
+              displayName: The content version for the requested volume.
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - layers
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      get:
+        displayName: books.layers.list
+        description: List the layer summaries for a volume.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Layersummaries
+            description: Successful response
+        queryParameters:
+          contentVersion:
+            description: The content version for the requested volume.
+            type: string
+            displayName: The content version for the requested volume.
+          maxResults:
+            description: Maximum number of results to return
+            maximum: 200
+            minimum: 0
+            type: integer
+            displayName: Maximum number of results to return
+          pageToken:
+            description: The value of the nextToken from the previous page.
+            type: string
+            displayName: The value of the nextToken from the previous page.
+          source:
+            description: String to identify the originator of this request.
+            type: string
+            displayName: String to identify the originator of this request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - layers
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    uriParameters:
+      volumeId:
+        description: ID of volume to retrieve.
+        required: true
+        type: string
+        displayName: ID of volume to retrieve.
+    get:
+      displayName: books.volumes.get
+      description: Gets volume information for a single volume.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Volume
+          description: Successful response
+      queryParameters:
+        country:
+          description: ISO-3166-1 code to override the IP-based location.
+          type: string
+          displayName: ISO-3166-1 code to override the IP-based location.
+        includeNonComicsSeries:
+          description: Set to true to include non-comics series. Defaults to false.
+          type: boolean
+          displayName: Set to true to include non-comics series. Defaults to false.
+        partner:
+          description: Brand results for partner ID.
+          type: string
+          displayName: Brand results for partner ID.
+        projection:
+          description: Restrict information returned to a set of selected fields.
+          enum:
+            - full
+            - lite
+          type: string
+          displayName: Restrict information returned to a set of selected fields.
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+        user_library_consistent_read:
+          type: boolean
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - volumes
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+    /associated:
+      displayName: associated
+      get:
+        displayName: books.volumes.associated.list
+        description: Return a list of associated books.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Volumes
+            description: Successful response
+        queryParameters:
+          association:
+            description: Association type.
+            enum:
+              - end-of-sample
+              - end-of-volume
+              - related-for-play
+            type: string
+            displayName: Association type.
+          locale:
+            description: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+            type: string
+            displayName: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+          maxAllowedMaturityRating:
+            description: The maximum allowed maturity rating of returned recommendations. Books with a higher maturity rating are filtered out.
+            enum:
+              - mature
+              - not-mature
+            type: string
+            displayName: The maximum allowed maturity rating of returned recommendations. Books with a higher maturity rating are filtered out.
+          source:
+            description: String to identify the originator of this request.
+            type: string
+            displayName: String to identify the originator of this request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - volumes
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    /layers:
+      displayName: layers
+      '/{layerId}':
+        displayName: '{layerId}'
+        uriParameters:
+          layerId:
+            description: The ID for the layer to get the annotations.
+            required: true
+            type: string
+            displayName: The ID for the layer to get the annotations.
+        get:
+          displayName: books.layers.volumeAnnotations.list
+          description: Gets the volume annotations for a volume and layer.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Volumeannotations
+              description: Successful response
+          queryParameters:
+            contentVersion:
+              description: The content version for the requested volume.
+              required: true
+              type: string
+              displayName: The content version for the requested volume.
+            endOffset:
+              description: The end offset to end retrieving data from.
+              type: string
+              displayName: The end offset to end retrieving data from.
+            endPosition:
+              description: The end position to end retrieving data from.
+              type: string
+              displayName: The end position to end retrieving data from.
+            locale:
+              description: 'The locale information for the data. ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''.'
+              type: string
+              displayName: 'The locale information for the data. ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''.'
+            maxResults:
+              description: Maximum number of results to return
+              maximum: 200
+              minimum: 0
+              type: integer
+              displayName: Maximum number of results to return
+            pageToken:
+              description: The value of the nextToken from the previous page.
+              type: string
+              displayName: The value of the nextToken from the previous page.
+            showDeleted:
+              description: Set to true to return deleted annotations. updatedMin must be in the request to use this. Defaults to false.
+              type: boolean
+              displayName: Set to true to return deleted annotations. updatedMin must be in the request to use this. Defaults to false.
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+            startOffset:
+              description: The start offset to start retrieving data from.
+              type: string
+              displayName: The start offset to start retrieving data from.
+            startPosition:
+              description: The start position to start retrieving data from.
+              type: string
+              displayName: The start position to start retrieving data from.
+            updatedMax:
+              description: RFC 3339 timestamp to restrict to items updated prior to this timestamp (exclusive).
+              type: string
+              displayName: RFC 3339 timestamp to restrict to items updated prior to this timestamp (exclusive).
+            updatedMin:
+              description: RFC 3339 timestamp to restrict to items updated since this timestamp (inclusive).
+              type: string
+              displayName: RFC 3339 timestamp to restrict to items updated since this timestamp (inclusive).
+            volumeAnnotationsVersion:
+              description: The version of the volume annotations that you are requesting.
+              type: string
+              displayName: The version of the volume annotations that you are requesting.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - layers
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+        /data:
+          displayName: data
+          '/{annotationDataId}':
+            displayName: '{annotationDataId}'
+            uriParameters:
+              annotationDataId:
+                description: The ID of the annotation data to retrieve.
+                required: true
+                type: string
+                displayName: The ID of the annotation data to retrieve.
+            get:
+              displayName: books.layers.annotationData.get
+              description: Gets the annotation data.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Annotationdata
+                  description: Successful response
+              queryParameters:
+                contentVersion:
+                  description: The content version for the volume you are trying to retrieve.
+                  required: true
+                  type: string
+                  displayName: The content version for the volume you are trying to retrieve.
+                allowWebDefinitions:
+                  description: For the dictionary layer. Whether or not to allow web definitions.
+                  type: boolean
+                  displayName: For the dictionary layer. Whether or not to allow web definitions.
+                h:
+                  description: The requested pixel height for any images. If height is provided width must also be provided.
+                  type: integer
+                  displayName: The requested pixel height for any images. If height is provided width must also be provided.
+                locale:
+                  description: 'The locale information for the data. ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''.'
+                  type: string
+                  displayName: 'The locale information for the data. ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''.'
+                scale:
+                  description: The requested scale for the image.
+                  minimum: 0
+                  type: integer
+                  displayName: The requested scale for the image.
+                source:
+                  description: String to identify the originator of this request.
+                  type: string
+                  displayName: String to identify the originator of this request.
+                w:
+                  description: The requested pixel width for any images. If width is provided height must also be provided.
+                  type: integer
+                  displayName: The requested pixel width for any images. If width is provided height must also be provided.
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/books'
+              (oas-tags):
+                - layers
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+          get:
+            displayName: books.layers.annotationData.list
+            description: Gets the annotation data for a volume and layer.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Annotationsdata
+                description: Successful response
+            queryParameters:
+              contentVersion:
+                description: The content version for the requested volume.
+                required: true
+                type: string
+                displayName: The content version for the requested volume.
+              annotationDataId:
+                collectionFormat: multi
+                description: The list of Annotation Data Ids to retrieve. Pagination is ignored if this is set.
+                items:
+                  type: string
+                type: array
+                displayName: The list of Annotation Data Ids to retrieve. Pagination is ignored if this is set.
+                facets:
+                  collectionFormat: string
+              h:
+                description: The requested pixel height for any images. If height is provided width must also be provided.
+                type: integer
+                displayName: The requested pixel height for any images. If height is provided width must also be provided.
+              locale:
+                description: 'The locale information for the data. ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''.'
+                type: string
+                displayName: 'The locale information for the data. ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''.'
+              maxResults:
+                description: Maximum number of results to return
+                maximum: 200
+                minimum: 0
+                type: integer
+                displayName: Maximum number of results to return
+              pageToken:
+                description: The value of the nextToken from the previous page.
+                type: string
+                displayName: The value of the nextToken from the previous page.
+              scale:
+                description: The requested scale for the image.
+                minimum: 0
+                type: integer
+                displayName: The requested scale for the image.
+              source:
+                description: String to identify the originator of this request.
+                type: string
+                displayName: String to identify the originator of this request.
+              updatedMax:
+                description: RFC 3339 timestamp to restrict to items updated prior to this timestamp (exclusive).
+                type: string
+                displayName: RFC 3339 timestamp to restrict to items updated prior to this timestamp (exclusive).
+              updatedMin:
+                description: RFC 3339 timestamp to restrict to items updated since this timestamp (inclusive).
+                type: string
+                displayName: RFC 3339 timestamp to restrict to items updated since this timestamp (inclusive).
+              w:
+                description: The requested pixel width for any images. If width is provided height must also be provided.
+                type: integer
+                displayName: The requested pixel width for any images. If width is provided height must also be provided.
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/books'
+            (oas-tags):
+              - layers
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+        /annotations:
+          displayName: annotations
+          '/{annotationId}':
+            displayName: '{annotationId}'
+            uriParameters:
+              annotationId:
+                description: The ID of the volume annotation to retrieve.
+                required: true
+                type: string
+                displayName: The ID of the volume annotation to retrieve.
+            get:
+              displayName: books.layers.volumeAnnotations.get
+              description: Gets the volume annotation.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Volumeannotation
+                  description: Successful response
+              queryParameters:
+                locale:
+                  description: 'The locale information for the data. ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''.'
+                  type: string
+                  displayName: 'The locale information for the data. ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''.'
+                source:
+                  description: String to identify the originator of this request.
+                  type: string
+                  displayName: String to identify the originator of this request.
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/books'
+              (oas-tags):
+                - layers
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+  get:
+    displayName: books.volumes.list
+    description: Performs a book search.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Volumes
+        description: Successful response
+    queryParameters:
+      q:
+        description: Full-text search query string.
+        required: true
+        type: string
+        displayName: Full-text search query string.
+      download:
+        description: Restrict to volumes by download availability.
+        enum:
+          - epub
+        type: string
+        displayName: Restrict to volumes by download availability.
+      filter:
+        description: Filter search results.
+        enum:
+          - ebooks
+          - free-ebooks
+          - full
+          - paid-ebooks
+          - partial
+        type: string
+        displayName: Filter search results.
+      langRestrict:
+        description: Restrict results to books with this language code.
+        type: string
+        displayName: Restrict results to books with this language code.
+      libraryRestrict:
+        description: Restrict search to this user's library.
+        enum:
+          - my-library
+          - no-restrict
+        type: string
+        displayName: Restrict search to this user's library.
+      maxAllowedMaturityRating:
+        description: The maximum allowed maturity rating of returned recommendations. Books with a higher maturity rating are filtered out.
+        enum:
+          - mature
+          - not-mature
+        type: string
+        displayName: The maximum allowed maturity rating of returned recommendations. Books with a higher maturity rating are filtered out.
+      maxResults:
+        description: Maximum number of results to return.
+        maximum: 40
+        minimum: 0
+        type: integer
+        displayName: Maximum number of results to return.
+      orderBy:
+        description: Sort search results.
+        enum:
+          - newest
+          - relevance
+        type: string
+        displayName: Sort search results.
+      partner:
+        description: Restrict and brand results for partner ID.
+        type: string
+        displayName: Restrict and brand results for partner ID.
+      printType:
+        description: Restrict to books or magazines.
+        enum:
+          - all
+          - books
+          - magazines
+        type: string
+        displayName: Restrict to books or magazines.
+      projection:
+        description: Restrict information returned to a set of selected fields.
+        enum:
+          - full
+          - lite
+        type: string
+        displayName: Restrict information returned to a set of selected fields.
+      showPreorders:
+        description: Set to true to show books available for preorder. Defaults to false.
+        type: boolean
+        displayName: Set to true to show books available for preorder. Defaults to false.
+      source:
+        description: String to identify the originator of this request.
+        type: string
+        displayName: String to identify the originator of this request.
+      startIndex:
+        description: Index of the first result to return (starts at 0)
+        minimum: 0
+        type: integer
+        displayName: Index of the first result to return (starts at 0)
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/books'
+    (oas-tags):
+      - volumes
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+  /mybooks:
+    displayName: mybooks
+    get:
+      displayName: books.volumes.mybooks.list
+      description: Return a list of books in My Library.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Volumes
+          description: Successful response
+      queryParameters:
+        acquireMethod:
+          collectionFormat: multi
+          description: How the book was acquired
+          items:
+            enum:
+              - FAMILY_SHARED
+              - PREORDERED
+              - PREVIOUSLY_RENTED
+              - PUBLIC_DOMAIN
+              - PURCHASED
+              - RENTED
+              - SAMPLE
+              - UPLOADED
+            type: string
+          type: array
+          displayName: How the book was acquired
+          facets:
+            collectionFormat: string
+        country:
+          description: ISO-3166-1 code to override the IP-based location.
+          type: string
+          displayName: ISO-3166-1 code to override the IP-based location.
+        locale:
+          description: 'ISO-639-1 language and ISO-3166-1 country code. Ex:''en_US''. Used for generating recommendations.'
+          type: string
+          displayName: 'ISO-639-1 language and ISO-3166-1 country code. Ex:''en_US''. Used for generating recommendations.'
+        maxResults:
+          description: Maximum number of results to return.
+          maximum: 100
+          minimum: 0
+          type: integer
+          displayName: Maximum number of results to return.
+        processingState:
+          collectionFormat: multi
+          description: The processing state of the user uploaded volumes to be returned. Applicable only if the UPLOADED is specified in the acquireMethod.
+          items:
+            enum:
+              - COMPLETED_FAILED
+              - COMPLETED_SUCCESS
+              - RUNNING
+            type: string
+          type: array
+          displayName: The processing state of the user uploaded volumes to be returned. Applicable only if the UPLOADED is specified in the acquireMethod.
+          facets:
+            collectionFormat: string
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+        startIndex:
+          description: Index of the first result to return (starts at 0)
+          minimum: 0
+          type: integer
+          displayName: Index of the first result to return (starts at 0)
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - volumes
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /recommended:
+    displayName: recommended
+    get:
+      displayName: books.volumes.recommended.list
+      description: Return a list of recommended books for the current user.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Volumes
+          description: Successful response
+      queryParameters:
+        locale:
+          description: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+          type: string
+          displayName: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+        maxAllowedMaturityRating:
+          description: The maximum allowed maturity rating of returned recommendations. Books with a higher maturity rating are filtered out.
+          enum:
+            - mature
+            - not-mature
+          type: string
+          displayName: The maximum allowed maturity rating of returned recommendations. Books with a higher maturity rating are filtered out.
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - volumes
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+    /rate:
+      displayName: rate
+      post:
+        displayName: books.volumes.recommended.rate
+        description: Rate a recommended book for the current user.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: BooksVolumesRecommendedRateResponse
+            description: Successful response
+        queryParameters:
+          rating:
+            description: Rating to be given to the volume.
+            enum:
+              - HAVE_IT
+              - NOT_INTERESTED
+            required: true
+            type: string
+            displayName: Rating to be given to the volume.
+          volumeId:
+            description: ID of the source volume.
+            required: true
+            type: string
+            displayName: ID of the source volume.
+          locale:
+            description: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+            type: string
+            displayName: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+          source:
+            description: String to identify the originator of this request.
+            type: string
+            displayName: String to identify the originator of this request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - volumes
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+  /useruploaded:
+    displayName: useruploaded
+    get:
+      displayName: books.volumes.useruploaded.list
+      description: Return a list of books uploaded by the current user.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Volumes
+          description: Successful response
+      queryParameters:
+        locale:
+          description: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+          type: string
+          displayName: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+        maxResults:
+          description: Maximum number of results to return.
+          maximum: 40
+          minimum: 0
+          type: integer
+          displayName: Maximum number of results to return.
+        processingState:
+          collectionFormat: multi
+          description: The processing state of the user uploaded volumes to be returned.
+          items:
+            enum:
+              - COMPLETED_FAILED
+              - COMPLETED_SUCCESS
+              - RUNNING
+            type: string
+          type: array
+          displayName: The processing state of the user uploaded volumes to be returned.
+          facets:
+            collectionFormat: string
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+        startIndex:
+          description: Index of the first result to return (starts at 0)
+          minimum: 0
+          type: integer
+          displayName: Index of the first result to return (starts at 0)
+        volumeId:
+          collectionFormat: multi
+          description: The ids of the volumes to be returned. If not specified all that match the processingState are returned.
+          items:
+            type: string
+          type: array
+          displayName: The ids of the volumes to be returned. If not specified all that match the processingState are returned.
+          facets:
+            collectionFormat: string
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - volumes
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+/cloudloading:
+  displayName: cloudloading
+  /addBook:
+    displayName: addBook
+    post:
+      displayName: books.cloudloading.addBook
+      responses:
+        '200':
+          body:
+            application/json:
+              type: BooksCloudloadingResource
+          description: Successful response
+      queryParameters:
+        drive_document_id:
+          description: A drive document id. The upload_client_token must not be set.
+          type: string
+          displayName: A drive document id. The upload_client_token must not be set.
+        mime_type:
+          description: The document MIME type. It can be set only if the drive_document_id is set.
+          type: string
+          displayName: The document MIME type. It can be set only if the drive_document_id is set.
+        name:
+          description: The document name. It can be set only if the drive_document_id is set.
+          type: string
+          displayName: The document name. It can be set only if the drive_document_id is set.
+        upload_client_token:
+          type: string
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - cloudloading
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /updateBook:
+    displayName: updateBook
+    post:
+      displayName: books.cloudloading.updateBook
+      body:
+        application/json:
+          type: BooksCloudloadingResource
+          (oas-body-name): body
+      responses:
+        '200':
+          body:
+            application/json:
+              type: BooksCloudloadingResource
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - cloudloading
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /deleteBook:
+    displayName: deleteBook
+    post:
+      displayName: books.cloudloading.deleteBook
+      description: Remove the book and its contents
+      responses:
+        '200':
+          description: Successful response
+      queryParameters:
+        volumeId:
+          description: The id of the book to be removed.
+          required: true
+          type: string
+          displayName: The id of the book to be removed.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - cloudloading
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+/personalizedstream:
+  displayName: personalizedstream
+  /get:
+    displayName: get
+    get:
+      displayName: books.personalizedstream.get
+      description: Returns a stream of personalized book clusters
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Discoveryclusters
+          description: Successful response
+      queryParameters:
+        locale:
+          description: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+          type: string
+          displayName: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating recommendations.'
+        maxAllowedMaturityRating:
+          description: The maximum allowed maturity rating of returned recommendations. Books with a higher maturity rating are filtered out.
+          enum:
+            - mature
+            - not-mature
+          type: string
+          displayName: The maximum allowed maturity rating of returned recommendations. Books with a higher maturity rating are filtered out.
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - personalizedstream
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+/promooffer:
+  displayName: promooffer
+  /accept:
+    displayName: accept
+    post:
+      displayName: books.promooffer.accept
+      responses:
+        '200':
+          description: Successful response
+      queryParameters:
+        androidId:
+          description: device android_id
+          type: string
+          displayName: device android_id
+        device:
+          description: device device
+          type: string
+          displayName: device device
+        manufacturer:
+          description: device manufacturer
+          type: string
+          displayName: device manufacturer
+        model:
+          description: device model
+          type: string
+          displayName: device model
+        offerId:
+          type: string
+        product:
+          description: device product
+          type: string
+          displayName: device product
+        serial:
+          description: device serial
+          type: string
+          displayName: device serial
+        volumeId:
+          description: Volume id to exercise the offer
+          type: string
+          displayName: Volume id to exercise the offer
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - promooffer
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /dismiss:
+    displayName: dismiss
+    post:
+      displayName: books.promooffer.dismiss
+      responses:
+        '200':
+          description: Successful response
+      queryParameters:
+        androidId:
+          description: device android_id
+          type: string
+          displayName: device android_id
+        device:
+          description: device device
+          type: string
+          displayName: device device
+        manufacturer:
+          description: device manufacturer
+          type: string
+          displayName: device manufacturer
+        model:
+          description: device model
+          type: string
+          displayName: device model
+        offerId:
+          description: Offer to dimiss
+          type: string
+          displayName: Offer to dimiss
+        product:
+          description: device product
+          type: string
+          displayName: device product
+        serial:
+          description: device serial
+          type: string
+          displayName: device serial
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - promooffer
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /get:
+    displayName: get
+    get:
+      displayName: books.promooffer.get
+      description: Returns a list of promo offers available to the user
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Offers
+          description: Successful response
+      queryParameters:
+        androidId:
+          description: device android_id
+          type: string
+          displayName: device android_id
+        device:
+          description: device device
+          type: string
+          displayName: device device
+        manufacturer:
+          description: device manufacturer
+          type: string
+          displayName: device manufacturer
+        model:
+          description: device model
+          type: string
+          displayName: device model
+        product:
+          description: device product
+          type: string
+          displayName: device product
+        serial:
+          description: device serial
+          type: string
+          displayName: device serial
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - promooffer
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+/myconfig:
+  displayName: myconfig
+  /getUserSettings:
+    displayName: getUserSettings
+    get:
+      displayName: books.myconfig.getUserSettings
+      description: Gets the current settings for the user.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Usersettings
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - myconfig
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /requestAccess:
+    displayName: requestAccess
+    post:
+      displayName: books.myconfig.requestAccess
+      description: Request concurrent and download access restrictions.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: RequestAccess
+          description: Successful response
+      queryParameters:
+        source:
+          description: String to identify the originator of this request.
+          required: true
+          type: string
+          displayName: String to identify the originator of this request.
+        volumeId:
+          description: The volume to request concurrent/download restrictions for.
+          required: true
+          type: string
+          displayName: The volume to request concurrent/download restrictions for.
+        nonce:
+          description: The client nonce value.
+          required: true
+          type: string
+          displayName: The client nonce value.
+        cpksver:
+          description: The device/version ID from which to request the restrictions.
+          required: true
+          type: string
+          displayName: The device/version ID from which to request the restrictions.
+        licenseTypes:
+          description: 'The type of access license to request. If not specified, the default is BOTH.'
+          enum:
+            - BOTH
+            - CONCURRENT
+            - DOWNLOAD
+          type: string
+          displayName: 'The type of access license to request. If not specified, the default is BOTH.'
+        locale:
+          description: 'ISO-639-1, ISO-3166-1 codes for message localization, i.e. en_US.'
+          type: string
+          displayName: 'ISO-639-1, ISO-3166-1 codes for message localization, i.e. en_US.'
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - myconfig
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /updateUserSettings:
+    displayName: updateUserSettings
+    post:
+      displayName: books.myconfig.updateUserSettings
+      description: 'Sets the settings for the user. If a sub-object is specified, it will overwrite the existing sub-object stored in the server. Unspecified sub-objects will retain the existing value.'
+      body:
+        application/json:
+          type: Usersettings
+          (oas-body-name): body
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Usersettings
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - myconfig
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /releaseDownloadAccess:
+    displayName: releaseDownloadAccess
+    post:
+      displayName: books.myconfig.releaseDownloadAccess
+      description: Release downloaded content access restriction.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: DownloadAccesses
+          description: Successful response
+      queryParameters:
+        volumeIds:
+          collectionFormat: multi
+          description: The volume(s) to release restrictions for.
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: The volume(s) to release restrictions for.
+          facets:
+            collectionFormat: string
+        cpksver:
+          description: The device/version ID from which to release the restriction.
+          required: true
+          type: string
+          displayName: The device/version ID from which to release the restriction.
+        locale:
+          description: 'ISO-639-1, ISO-3166-1 codes for message localization, i.e. en_US.'
+          type: string
+          displayName: 'ISO-639-1, ISO-3166-1 codes for message localization, i.e. en_US.'
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - myconfig
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /syncVolumeLicenses:
+    displayName: syncVolumeLicenses
+    post:
+      displayName: books.myconfig.syncVolumeLicenses
+      description: Request downloaded content access for specified volumes on the My eBooks shelf.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Volumes
+          description: Successful response
+      queryParameters:
+        source:
+          description: String to identify the originator of this request.
+          required: true
+          type: string
+          displayName: String to identify the originator of this request.
+        nonce:
+          description: The client nonce value.
+          required: true
+          type: string
+          displayName: The client nonce value.
+        cpksver:
+          description: The device/version ID from which to release the restriction.
+          required: true
+          type: string
+          displayName: The device/version ID from which to release the restriction.
+        features:
+          collectionFormat: multi
+          description: 'List of features supported by the client, i.e., ''RENTALS'''
+          items:
+            enum:
+              - RENTALS
+            type: string
+          type: array
+          displayName: 'List of features supported by the client, i.e., ''RENTALS'''
+          facets:
+            collectionFormat: string
+        includeNonComicsSeries:
+          description: Set to true to include non-comics series. Defaults to false.
+          type: boolean
+          displayName: Set to true to include non-comics series. Defaults to false.
+        locale:
+          description: 'ISO-639-1, ISO-3166-1 codes for message localization, i.e. en_US.'
+          type: string
+          displayName: 'ISO-639-1, ISO-3166-1 codes for message localization, i.e. en_US.'
+        showPreorders:
+          description: Set to true to show pre-ordered books. Defaults to false.
+          type: boolean
+          displayName: Set to true to show pre-ordered books. Defaults to false.
+        volumeIds:
+          collectionFormat: multi
+          description: The volume(s) to request download restrictions for.
+          items:
+            type: string
+          type: array
+          displayName: The volume(s) to request download restrictions for.
+          facets:
+            collectionFormat: string
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - myconfig
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+/series:
+  displayName: series
+  /get:
+    displayName: get
+    get:
+      displayName: books.series.get
+      description: Returns Series metadata for the given series ids.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Series
+          description: Successful response
+      queryParameters:
+        series_id:
+          collectionFormat: multi
+          description: String that identifies the series
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: String that identifies the series
+          facets:
+            collectionFormat: string
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - series
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /membership:
+    displayName: membership
+    /get:
+      displayName: get
+      get:
+        displayName: books.series.membership.get
+        description: Returns Series membership data given the series id.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Seriesmembership
+            description: Successful response
+        queryParameters:
+          series_id:
+            description: String that identifies the series
+            required: true
+            type: string
+            displayName: String that identifies the series
+          page_size:
+            description: Number of maximum results per page to be included in the response.
+            type: integer
+            displayName: Number of maximum results per page to be included in the response.
+          page_token:
+            description: The value of the nextToken from the previous page.
+            type: string
+            displayName: The value of the nextToken from the previous page.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - series
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+/mylibrary:
+  displayName: mylibrary
+  /annotations:
+    displayName: annotations
+    post:
+      displayName: books.mylibrary.annotations.insert
+      description: Inserts a new annotation.
+      body:
+        application/json:
+          type: Annotation
+          (oas-body-name): body
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Annotation
+          description: Successful response
+      queryParameters:
+        country:
+          description: ISO-3166-1 code to override the IP-based location.
+          type: string
+          displayName: ISO-3166-1 code to override the IP-based location.
+        showOnlySummaryInResponse:
+          description: Requests that only the summary of the specified layer be provided in the response.
+          type: boolean
+          displayName: Requests that only the summary of the specified layer be provided in the response.
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - mylibrary
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+    '/{annotationId}':
+      displayName: '{annotationId}'
+      uriParameters:
+        annotationId:
+          description: The ID for the annotation to update.
+          required: true
+          type: string
+          displayName: The ID for the annotation to update.
+      delete:
+        displayName: books.mylibrary.annotations.delete
+        description: Deletes an annotation.
+        responses:
+          '200':
+            description: Successful response
+        queryParameters:
+          source:
+            description: String to identify the originator of this request.
+            type: string
+            displayName: String to identify the originator of this request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - mylibrary
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+      put:
+        displayName: books.mylibrary.annotations.update
+        description: Updates an existing annotation.
+        body:
+          application/json:
+            type: Annotation
+            (oas-body-name): body
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Annotation
+            description: Successful response
+        queryParameters:
+          source:
+            description: String to identify the originator of this request.
+            type: string
+            displayName: String to identify the originator of this request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - mylibrary
+    get:
+      displayName: books.mylibrary.annotations.list
+      description: 'Retrieves a list of annotations, possibly filtered.'
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Annotations
+          description: Successful response
+      queryParameters:
+        contentVersion:
+          description: The content version for the requested volume.
+          type: string
+          displayName: The content version for the requested volume.
+        layerId:
+          description: The layer ID to limit annotation by.
+          type: string
+          displayName: The layer ID to limit annotation by.
+        layerIds:
+          collectionFormat: multi
+          description: The layer ID(s) to limit annotation by.
+          items:
+            type: string
+          type: array
+          displayName: The layer ID(s) to limit annotation by.
+          facets:
+            collectionFormat: string
+        maxResults:
+          description: Maximum number of results to return
+          maximum: 40
+          minimum: 0
+          type: integer
+          displayName: Maximum number of results to return
+        pageToken:
+          description: The value of the nextToken from the previous page.
+          type: string
+          displayName: The value of the nextToken from the previous page.
+        showDeleted:
+          description: Set to true to return deleted annotations. updatedMin must be in the request to use this. Defaults to false.
+          type: boolean
+          displayName: Set to true to return deleted annotations. updatedMin must be in the request to use this. Defaults to false.
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+        updatedMax:
+          description: RFC 3339 timestamp to restrict to items updated prior to this timestamp (exclusive).
+          type: string
+          displayName: RFC 3339 timestamp to restrict to items updated prior to this timestamp (exclusive).
+        updatedMin:
+          description: RFC 3339 timestamp to restrict to items updated since this timestamp (inclusive).
+          type: string
+          displayName: RFC 3339 timestamp to restrict to items updated since this timestamp (inclusive).
+        volumeId:
+          description: The volume to restrict annotations to.
+          type: string
+          displayName: The volume to restrict annotations to.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - mylibrary
+    /summary:
+      displayName: summary
+      post:
+        displayName: books.mylibrary.annotations.summary
+        description: Gets the summary of specified layers.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: AnnotationsSummary
+            description: Successful response
+        queryParameters:
+          layerIds:
+            collectionFormat: multi
+            description: Array of layer IDs to get the summary for.
+            items:
+              type: string
+            required: true
+            type: array
+            displayName: Array of layer IDs to get the summary for.
+            facets:
+              collectionFormat: string
+          volumeId:
+            description: Volume id to get the summary for.
+            required: true
+            type: string
+            displayName: Volume id to get the summary for.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - mylibrary
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+  /bookshelves:
+    displayName: bookshelves
+    get:
+      displayName: books.mylibrary.bookshelves.list
+      description: Retrieves a list of bookshelves belonging to the authenticated user.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Bookshelves
+          description: Successful response
+      queryParameters:
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - mylibrary
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+    '/{shelf}':
+      displayName: '{shelf}'
+      /addVolume:
+        displayName: addVolume
+        post:
+          displayName: books.mylibrary.bookshelves.addVolume
+          description: Adds a volume to a bookshelf.
+          responses:
+            '200':
+              description: Successful response
+          queryParameters:
+            volumeId:
+              description: ID of volume to add.
+              required: true
+              type: string
+              displayName: ID of volume to add.
+            reason:
+              description: The reason for which the book is added to the library.
+              enum:
+                - IOS_PREX
+                - IOS_SEARCH
+                - ONBOARDING
+              type: string
+              displayName: The reason for which the book is added to the library.
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - mylibrary
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      /moveVolume:
+        displayName: moveVolume
+        post:
+          displayName: books.mylibrary.bookshelves.moveVolume
+          description: Moves a volume within a bookshelf.
+          responses:
+            '200':
+              description: Successful response
+          queryParameters:
+            volumeId:
+              description: ID of volume to move.
+              required: true
+              type: string
+              displayName: ID of volume to move.
+            volumePosition:
+              description: 'Position on shelf to move the item (0 puts the item before the current first item, 1 puts it between the first and the second and so on.)'
+              required: true
+              type: integer
+              displayName: 'Position on shelf to move the item (0 puts the item before the current first item, 1 puts it between the first and the second and so on.)'
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - mylibrary
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      /volumes:
+        displayName: volumes
+        get:
+          displayName: books.mylibrary.bookshelves.volumes.list
+          description: Gets volume information for volumes on a bookshelf.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Volumes
+              description: Successful response
+          queryParameters:
+            country:
+              description: ISO-3166-1 code to override the IP-based location.
+              type: string
+              displayName: ISO-3166-1 code to override the IP-based location.
+            maxResults:
+              description: Maximum number of results to return
+              minimum: 0
+              type: integer
+              displayName: Maximum number of results to return
+            projection:
+              description: Restrict information returned to a set of selected fields.
+              enum:
+                - full
+                - lite
+              type: string
+              displayName: Restrict information returned to a set of selected fields.
+            q:
+              description: Full-text search query string in this bookshelf.
+              type: string
+              displayName: Full-text search query string in this bookshelf.
+            showPreorders:
+              description: Set to true to show pre-ordered books. Defaults to false.
+              type: boolean
+              displayName: Set to true to show pre-ordered books. Defaults to false.
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+            startIndex:
+              description: Index of the first element to return (starts at 0)
+              minimum: 0
+              type: integer
+              displayName: Index of the first element to return (starts at 0)
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - mylibrary
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      /clearVolumes:
+        displayName: clearVolumes
+        post:
+          displayName: books.mylibrary.bookshelves.clearVolumes
+          description: Clears all volumes from a bookshelf.
+          responses:
+            '200':
+              description: Successful response
+          queryParameters:
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - mylibrary
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      /removeVolume:
+        displayName: removeVolume
+        post:
+          displayName: books.mylibrary.bookshelves.removeVolume
+          description: Removes a volume from a bookshelf.
+          responses:
+            '200':
+              description: Successful response
+          queryParameters:
+            volumeId:
+              description: ID of volume to remove.
+              required: true
+              type: string
+              displayName: ID of volume to remove.
+            reason:
+              description: The reason for which the book is removed from the library.
+              enum:
+                - ONBOARDING
+              type: string
+              displayName: The reason for which the book is removed from the library.
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - mylibrary
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      uriParameters:
+        shelf:
+          description: ID of bookshelf to retrieve.
+          required: true
+          type: string
+          displayName: ID of bookshelf to retrieve.
+      get:
+        displayName: books.mylibrary.bookshelves.get
+        description: Retrieves metadata for a specific bookshelf belonging to the authenticated user.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Bookshelf
+            description: Successful response
+        queryParameters:
+          source:
+            description: String to identify the originator of this request.
+            type: string
+            displayName: String to identify the originator of this request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - mylibrary
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+  /readingpositions:
+    displayName: readingpositions
+    '/{volumeId}':
+      displayName: '{volumeId}'
+      /setPosition:
+        displayName: setPosition
+        post:
+          displayName: books.mylibrary.readingpositions.setPosition
+          description: Sets my reading position information for a volume.
+          responses:
+            '200':
+              description: Successful response
+          queryParameters:
+            timestamp:
+              description: RFC 3339 UTC format timestamp associated with this reading position.
+              required: true
+              type: string
+              displayName: RFC 3339 UTC format timestamp associated with this reading position.
+            position:
+              description: Position string for the new volume reading position.
+              required: true
+              type: string
+              displayName: Position string for the new volume reading position.
+            action:
+              description: Action that caused this reading position to be set.
+              enum:
+                - bookmark
+                - chapter
+                - next-page
+                - prev-page
+                - scroll
+                - search
+              type: string
+              displayName: Action that caused this reading position to be set.
+            contentVersion:
+              description: Volume content version for which this reading position applies.
+              type: string
+              displayName: Volume content version for which this reading position applies.
+            deviceCookie:
+              description: Random persistent device cookie optional on set position.
+              type: string
+              displayName: Random persistent device cookie optional on set position.
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - mylibrary
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      uriParameters:
+        volumeId:
+          description: ID of volume for which to retrieve a reading position.
+          required: true
+          type: string
+          displayName: ID of volume for which to retrieve a reading position.
+      get:
+        displayName: books.mylibrary.readingpositions.get
+        description: Retrieves my reading position information for a volume.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: ReadingPosition
+            description: Successful response
+        queryParameters:
+          contentVersion:
+            description: Volume content version for which this reading position is requested.
+            type: string
+            displayName: Volume content version for which this reading position is requested.
+          source:
+            description: String to identify the originator of this request.
+            type: string
+            displayName: String to identify the originator of this request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - mylibrary
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+/users:
+  displayName: users
+  '/{userId}':
+    displayName: '{userId}'
+    /bookshelves:
+      displayName: bookshelves
+      get:
+        displayName: books.bookshelves.list
+        description: Retrieves a list of public bookshelves for the specified user.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Bookshelves
+            description: Successful response
+        queryParameters:
+          source:
+            description: String to identify the originator of this request.
+            type: string
+            displayName: String to identify the originator of this request.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/books'
+        (oas-tags):
+          - bookshelves
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+      '/{shelf}':
+        displayName: '{shelf}'
+        uriParameters:
+          shelf:
+            description: ID of bookshelf to retrieve.
+            required: true
+            type: string
+            displayName: ID of bookshelf to retrieve.
+        get:
+          displayName: books.bookshelves.get
+          description: Retrieves metadata for a specific bookshelf for the specified user.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Bookshelf
+              description: Successful response
+          queryParameters:
+            source:
+              description: String to identify the originator of this request.
+              type: string
+              displayName: String to identify the originator of this request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/books'
+          (oas-tags):
+            - bookshelves
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+        /volumes:
+          displayName: volumes
+          get:
+            displayName: books.bookshelves.volumes.list
+            description: Retrieves volumes in a specific bookshelf for the specified user.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Volumes
+                description: Successful response
+            queryParameters:
+              maxResults:
+                description: Maximum number of results to return
+                minimum: 0
+                type: integer
+                displayName: Maximum number of results to return
+              showPreorders:
+                description: Set to true to show pre-ordered books. Defaults to false.
+                type: boolean
+                displayName: Set to true to show pre-ordered books. Defaults to false.
+              source:
+                description: String to identify the originator of this request.
+                type: string
+                displayName: String to identify the originator of this request.
+              startIndex:
+                description: Index of the first element to return (starts at 0)
+                minimum: 0
+                type: integer
+                displayName: Index of the first element to return (starts at 0)
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/books'
+            (oas-tags):
+              - bookshelves
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+/dictionary:
+  displayName: dictionary
+  /listOfflineMetadata:
+    displayName: listOfflineMetadata
+    get:
+      displayName: books.dictionary.listOfflineMetadata
+      description: Returns a list of offline dictionary metadata available
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Metadata
+          description: Successful response
+      queryParameters:
+        cpksver:
+          description: The device/version ID from which to request the data.
+          required: true
+          type: string
+          displayName: The device/version ID from which to request the data.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - dictionary
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+/notification:
+  displayName: notification
+  /get:
+    displayName: get
+    get:
+      displayName: books.notification.get
+      description: Returns notification details for a given notification id.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Notification
+          description: Successful response
+      queryParameters:
+        notification_id:
+          description: String to identify the notification.
+          required: true
+          type: string
+          displayName: String to identify the notification.
+        locale:
+          description: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating notification title and body.'
+          type: string
+          displayName: 'ISO-639-1 language and ISO-3166-1 country code. Ex: ''en_US''. Used for generating notification title and body.'
+        source:
+          description: String to identify the originator of this request.
+          type: string
+          displayName: String to identify the originator of this request.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/books'
+      (oas-tags):
+        - notification
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+types:
+  Annotation:
+    properties:
+      afterSelectedText:
+        description: 'Anchor text after excerpt. For requests, if the user bookmarked a screen that has no flowing text on it, then this field should be empty.'
+        type: string
+        required: false
+      beforeSelectedText:
+        description: 'Anchor text before excerpt. For requests, if the user bookmarked a screen that has no flowing text on it, then this field should be empty.'
+        type: string
+        required: false
+      clientVersionRanges:
+        description: Selection ranges sent from the client.
+        properties:
+          cfiRange:
+            description: Range in CFI format for this annotation sent by client.
+            type: BooksAnnotationsRange
+            required: false
+          contentVersion:
+            description: Content version the client sent in.
+            type: string
+            required: false
+          gbImageRange:
+            description: Range in GB image format for this annotation sent by client.
+            type: BooksAnnotationsRange
+            required: false
+          gbTextRange:
+            description: Range in GB text format for this annotation sent by client.
+            type: BooksAnnotationsRange
+            required: false
+          imageCfiRange:
+            description: Range in image CFI format for this annotation sent by client.
+            type: BooksAnnotationsRange
+            required: false
+        type: object
+        required: false
+      created:
+        description: Timestamp for the created time of this annotation.
+        format: rfc3339
+        type: datetime
+        required: false
+      currentVersionRanges:
+        description: Selection ranges for the most recent content version.
+        properties:
+          cfiRange:
+            description: Range in CFI format for this annotation for version above.
+            type: BooksAnnotationsRange
+            required: false
+          contentVersion:
+            description: Content version applicable to ranges below.
+            type: string
+            required: false
+          gbImageRange:
+            description: Range in GB image format for this annotation for version above.
+            type: BooksAnnotationsRange
+            required: false
+          gbTextRange:
+            description: Range in GB text format for this annotation for version above.
+            type: BooksAnnotationsRange
+            required: false
+          imageCfiRange:
+            description: Range in image CFI format for this annotation for version above.
+            type: BooksAnnotationsRange
+            required: false
+        type: object
+        required: false
+      data:
+        description: User-created data for this annotation.
+        type: string
+        required: false
+      deleted:
+        description: Indicates that this annotation is deleted.
+        type: boolean
+        required: false
+      highlightStyle:
+        description: The highlight style for this annotation.
+        type: string
+        required: false
+      id:
+        description: 'Id of this annotation, in the form of a GUID.'
+        type: string
+        required: false
+      kind:
+        default: 'books#annotation'
+        description: Resource type.
+        type: string
+        required: false
+      layerId:
+        description: The layer this annotation is for.
+        type: string
+        required: false
+      layerSummary:
+        properties:
+          allowedCharacterCount:
+            description: 'Maximum allowed characters on this layer, especially for the "copy" layer.'
+            format: int32
+            type: integer
+            required: false
+          limitType:
+            description: Type of limitation on this layer. "limited" or "unlimited" for the "copy" layer.
+            type: string
+            required: false
+          remainingCharacterCount:
+            description: 'Remaining allowed characters on this layer, especially for the "copy" layer.'
+            format: int32
+            type: integer
+            required: false
+        type: object
+        required: false
+      pageIds:
+        description: Pages that this annotation spans.
+        items:
+          type: string
+        type: array
+        required: false
+      selectedText:
+        description: Excerpt from the volume.
+        type: string
+        required: false
+      selfLink:
+        description: URL to this resource.
+        type: string
+        required: false
+      updated:
+        description: Timestamp for the last time this annotation was modified.
+        format: rfc3339
+        type: datetime
+        required: false
+      volumeId:
+        description: The volume that this annotation belongs to.
+        type: string
+        required: false
+  Annotationdata:
+    properties:
+      annotationType:
+        description: The type of annotation this data is for.
+        type: string
+        required: false
+      data:
+        required: false
+      encoded_data:
+        description: Base64 encoded data for this annotation data.
+        format: byte
+        type: string
+        facets:
+          format: string
+        required: false
+      id:
+        description: Unique id for this annotation data.
+        type: string
+        required: false
+      kind:
+        default: 'books#annotationdata'
+        description: Resource Type
+        type: string
+        required: false
+      layerId:
+        description: The Layer id for this data. *
+        type: string
+        required: false
+      selfLink:
+        description: URL for this resource. *
+        type: string
+        required: false
+      updated:
+        description: Timestamp for the last time this data was updated. (RFC 3339 UTC date-time format).
+        format: rfc3339
+        type: datetime
+        required: false
+      volumeId:
+        description: The volume id for this data. *
+        type: string
+        required: false
+  Annotations:
+    properties:
+      items:
+        description: A list of annotations.
+        items:
+          type: Annotation
+        type: array
+        required: false
+      kind:
+        default: 'books#annotations'
+        description: Resource type.
+        type: string
+        required: false
+      nextPageToken:
+        description: Token to pass in for pagination for the next page. This will not be present if this request does not have more results.
+        type: string
+        required: false
+      totalItems:
+        description: Total number of annotations found. This may be greater than the number of notes returned in this response if results have been paginated.
+        format: int32
+        type: integer
+        required: false
+  AnnotationsSummary:
+    properties:
+      kind:
+        default: 'books#annotationsSummary'
+        type: string
+        required: false
+      layers:
+        items:
+          properties:
+            allowedCharacterCount:
+              format: int32
+              type: integer
+              required: false
+            layerId:
+              type: string
+              required: false
+            limitType:
+              type: string
+              required: false
+            remainingCharacterCount:
+              format: int32
+              type: integer
+              required: false
+            updated:
+              format: rfc3339
+              type: datetime
+              required: false
+          type: object
+        type: array
+        required: false
+  Annotationsdata:
+    properties:
+      items:
+        description: A list of Annotation Data.
+        items:
+          type: Annotationdata
+        type: array
+        required: false
+      kind:
+        default: 'books#annotationsdata'
+        description: Resource type
+        type: string
+        required: false
+      nextPageToken:
+        description: Token to pass in for pagination for the next page. This will not be present if this request does not have more results.
+        type: string
+        required: false
+      totalItems:
+        description: The total number of volume annotations found.
+        format: int32
+        type: integer
+        required: false
+  BooksAnnotationsRange:
+    properties:
+      endOffset:
+        description: The offset from the ending position.
+        type: string
+        required: false
+      endPosition:
+        description: The ending position for the range.
+        type: string
+        required: false
+      startOffset:
+        description: The offset from the starting position.
+        type: string
+        required: false
+      startPosition:
+        description: The starting position for the range.
+        type: string
+        required: false
+  BooksCloudloadingResource:
+    properties:
+      author:
+        type: string
+        required: false
+      processingState:
+        type: string
+        required: false
+      title:
+        type: string
+        required: false
+      volumeId:
+        type: string
+        required: false
+  BooksVolumesRecommendedRateResponse:
+    properties:
+      consistency_token:
+        type: string
+        required: false
+  Bookshelf:
+    properties:
+      access:
+        description: Whether this bookshelf is PUBLIC or PRIVATE.
+        type: string
+        required: false
+      created:
+        description: Created time for this bookshelf (formatted UTC timestamp with millisecond resolution).
+        format: rfc3339
+        type: datetime
+        required: false
+      description:
+        description: Description of this bookshelf.
+        type: string
+        required: false
+      id:
+        description: 'Id of this bookshelf, only unique by user.'
+        format: int32
+        type: integer
+        required: false
+      kind:
+        default: 'books#bookshelf'
+        description: Resource type for bookshelf metadata.
+        type: string
+        required: false
+      selfLink:
+        description: URL to this resource.
+        type: string
+        required: false
+      title:
+        description: Title of this bookshelf.
+        type: string
+        required: false
+      updated:
+        description: Last modified time of this bookshelf (formatted UTC timestamp with millisecond resolution).
+        format: rfc3339
+        type: datetime
+        required: false
+      volumeCount:
+        description: Number of volumes in this bookshelf.
+        format: int32
+        type: integer
+        required: false
+      volumesLastUpdated:
+        description: Last time a volume was added or removed from this bookshelf (formatted UTC timestamp with millisecond resolution).
+        format: rfc3339
+        type: datetime
+        required: false
+  Bookshelves:
+    properties:
+      items:
+        description: A list of bookshelves.
+        items:
+          type: Bookshelf
+        type: array
+        required: false
+      kind:
+        default: 'books#bookshelves'
+        description: Resource type.
+        type: string
+        required: false
+  Category:
+    properties:
+      items:
+        description: A list of onboarding categories.
+        items:
+          properties:
+            badgeUrl:
+              type: string
+              required: false
+            categoryId:
+              type: string
+              required: false
+            name:
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+      kind:
+        default: 'onboarding#category'
+        description: Resource type.
+        type: string
+        required: false
+  ConcurrentAccessRestriction:
+    properties:
+      deviceAllowed:
+        description: 'Whether access is granted for this (user, device, volume).'
+        type: boolean
+        required: false
+      kind:
+        default: 'books#concurrentAccessRestriction'
+        description: Resource type.
+        type: string
+        required: false
+      maxConcurrentDevices:
+        description: The maximum number of concurrent access licenses for this volume.
+        format: int32
+        type: integer
+        required: false
+      message:
+        description: Error/warning message.
+        type: string
+        required: false
+      nonce:
+        description: Client nonce for verification. Download access and client-validation only.
+        type: string
+        required: false
+      reasonCode:
+        description: Error/warning reason code.
+        type: string
+        required: false
+      restricted:
+        description: Whether this volume has any concurrent access restrictions.
+        type: boolean
+        required: false
+      signature:
+        description: Response signature.
+        type: string
+        required: false
+      source:
+        description: Client app identifier for verification. Download access and client-validation only.
+        type: string
+        required: false
+      timeWindowSeconds:
+        description: Time in seconds for license auto-expiration.
+        format: int32
+        type: integer
+        required: false
+      volumeId:
+        description: Identifies the volume for which this entry applies.
+        type: string
+        required: false
+  Dictlayerdata:
+    properties:
+      common:
+        properties:
+          title:
+            description: The display title and localized canonical name to use when searching for this entity on Google search.
+            type: string
+            required: false
+        type: object
+        required: false
+      dict:
+        properties:
+          source:
+            description: 'The source, url and attribution for this dictionary data.'
+            properties:
+              attribution:
+                type: string
+                required: false
+              url:
+                type: string
+                required: false
+            type: object
+            required: false
+          words:
+            items:
+              properties:
+                derivatives:
+                  items:
+                    properties:
+                      source:
+                        properties:
+                          attribution:
+                            type: string
+                            required: false
+                          url:
+                            type: string
+                            required: false
+                        type: object
+                        required: false
+                      text:
+                        type: string
+                        required: false
+                    type: object
+                  type: array
+                  required: false
+                examples:
+                  items:
+                    properties:
+                      source:
+                        properties:
+                          attribution:
+                            type: string
+                            required: false
+                          url:
+                            type: string
+                            required: false
+                        type: object
+                        required: false
+                      text:
+                        type: string
+                        required: false
+                    type: object
+                  type: array
+                  required: false
+                senses:
+                  items:
+                    properties:
+                      conjugations:
+                        items:
+                          properties:
+                            type:
+                              type: string
+                              required: false
+                            value:
+                              type: string
+                              required: false
+                          type: object
+                        type: array
+                        required: false
+                      definitions:
+                        items:
+                          properties:
+                            definition:
+                              type: string
+                              required: false
+                            examples:
+                              items:
+                                properties:
+                                  source:
+                                    properties:
+                                      attribution:
+                                        type: string
+                                        required: false
+                                      url:
+                                        type: string
+                                        required: false
+                                    type: object
+                                    required: false
+                                  text:
+                                    type: string
+                                    required: false
+                                type: object
+                              type: array
+                              required: false
+                          type: object
+                        type: array
+                        required: false
+                      partOfSpeech:
+                        type: string
+                        required: false
+                      pronunciation:
+                        type: string
+                        required: false
+                      pronunciationUrl:
+                        type: string
+                        required: false
+                      source:
+                        properties:
+                          attribution:
+                            type: string
+                            required: false
+                          url:
+                            type: string
+                            required: false
+                        type: object
+                        required: false
+                      syllabification:
+                        type: string
+                        required: false
+                      synonyms:
+                        items:
+                          properties:
+                            source:
+                              properties:
+                                attribution:
+                                  type: string
+                                  required: false
+                                url:
+                                  type: string
+                                  required: false
+                              type: object
+                              required: false
+                            text:
+                              type: string
+                              required: false
+                          type: object
+                        type: array
+                        required: false
+                    type: object
+                  type: array
+                  required: false
+                source:
+                  description: 'The words with different meanings but not related words, e.g. "go" (game) and "go" (verb).'
+                  properties:
+                    attribution:
+                      type: string
+                      required: false
+                    url:
+                      type: string
+                      required: false
+                  type: object
+                  required: false
+              type: object
+            type: array
+            required: false
+        type: object
+        required: false
+      kind:
+        default: 'books#dictlayerdata'
+        type: string
+        required: false
+  Discoveryclusters:
+    properties:
+      clusters:
+        items:
+          properties:
+            banner_with_content_container:
+              properties:
+                fillColorArgb:
+                  type: string
+                  required: false
+                imageUrl:
+                  type: string
+                  required: false
+                maskColorArgb:
+                  type: string
+                  required: false
+                moreButtonText:
+                  type: string
+                  required: false
+                moreButtonUrl:
+                  type: string
+                  required: false
+                textColorArgb:
+                  type: string
+                  required: false
+              type: object
+              required: false
+            subTitle:
+              type: string
+              required: false
+            title:
+              type: string
+              required: false
+            totalVolumes:
+              format: int32
+              type: integer
+              required: false
+            uid:
+              type: string
+              required: false
+            volumes:
+              items:
+                type: Volume
+              type: array
+              required: false
+          type: object
+        type: array
+        required: false
+      kind:
+        default: 'books#discovery#clusters'
+        description: Resorce type.
+        type: string
+        required: false
+      totalClusters:
+        format: int32
+        type: integer
+        required: false
+  DownloadAccessRestriction:
+    properties:
+      deviceAllowed:
+        description: 'If restricted, whether access is granted for this (user, device, volume).'
+        type: boolean
+        required: false
+      downloadsAcquired:
+        description: 'If restricted, the number of content download licenses already acquired (including the requesting client, if licensed).'
+        format: int32
+        type: integer
+        required: false
+      justAcquired:
+        description: 'If deviceAllowed, whether access was just acquired with this request.'
+        type: boolean
+        required: false
+      kind:
+        default: 'books#downloadAccessRestriction'
+        description: Resource type.
+        type: string
+        required: false
+      maxDownloadDevices:
+        description: 'If restricted, the maximum number of content download licenses for this volume.'
+        format: int32
+        type: integer
+        required: false
+      message:
+        description: Error/warning message.
+        type: string
+        required: false
+      nonce:
+        description: Client nonce for verification. Download access and client-validation only.
+        type: string
+        required: false
+      reasonCode:
+        description: Error/warning reason code. Additional codes may be added in the future. 0 OK 100 ACCESS_DENIED_PUBLISHER_LIMIT 101 ACCESS_DENIED_LIMIT 200 WARNING_USED_LAST_ACCESS
+        type: string
+        required: false
+      restricted:
+        description: Whether this volume has any download access restrictions.
+        type: boolean
+        required: false
+      signature:
+        description: Response signature.
+        type: string
+        required: false
+      source:
+        description: Client app identifier for verification. Download access and client-validation only.
+        type: string
+        required: false
+      volumeId:
+        description: Identifies the volume for which this entry applies.
+        type: string
+        required: false
+  DownloadAccesses:
+    properties:
+      downloadAccessList:
+        description: A list of download access responses.
+        items:
+          type: DownloadAccessRestriction
+        type: array
+        required: false
+      kind:
+        default: 'books#downloadAccesses'
+        description: Resource type.
+        type: string
+        required: false
+  Geolayerdata:
+    properties:
+      common:
+        properties:
+          lang:
+            description: The language of the information url and description.
+            type: string
+            required: false
+          previewImageUrl:
+            description: The URL for the preview image information.
+            type: string
+            required: false
+          snippet:
+            description: The description for this location.
+            type: string
+            required: false
+          snippetUrl:
+            description: 'The URL for information for this location. Ex: wikipedia link.'
+            type: string
+            required: false
+          title:
+            description: The display title and localized canonical name to use when searching for this entity on Google search.
+            type: string
+            required: false
+        type: object
+        required: false
+      geo:
+        properties:
+          boundary:
+            description: 'The boundary of the location as a set of loops containing pairs of latitude, longitude coordinates.'
+            items:
+              items:
+                properties:
+                  latitude:
+                    type: integer
+                    required: false
+                  longitude:
+                    type: integer
+                    required: false
+                type: object
+              type: array
+            type: array
+            required: false
+          cachePolicy:
+            description: 'The cache policy active for this data. EX: UNRESTRICTED, RESTRICTED, NEVER'
+            type: string
+            required: false
+          countryCode:
+            description: The country code of the location.
+            type: string
+            required: false
+          latitude:
+            description: The latitude of the location.
+            format: double
+            type: number
+            required: false
+          longitude:
+            description: The longitude of the location.
+            format: double
+            type: number
+            required: false
+          mapType:
+            description: 'The type of map that should be used for this location. EX: HYBRID, ROADMAP, SATELLITE, TERRAIN'
+            type: string
+            required: false
+          viewport:
+            description: 'The viewport for showing this location. This is a latitude, longitude rectangle.'
+            properties:
+              hi:
+                properties:
+                  latitude:
+                    format: double
+                    type: number
+                    required: false
+                  longitude:
+                    format: double
+                    type: number
+                    required: false
+                type: object
+                required: false
+              lo:
+                properties:
+                  latitude:
+                    format: double
+                    type: number
+                    required: false
+                  longitude:
+                    format: double
+                    type: number
+                    required: false
+                type: object
+                required: false
+            type: object
+            required: false
+          zoom:
+            description: 'The Zoom level to use for the map. Zoom levels between 0 (the lowest zoom level, in which the entire world can be seen on one map) to 21+ (down to individual buildings). See: https://developers.google.com/maps/documentation/staticmaps/#Zoomlevels'
+            format: int32
+            type: integer
+            required: false
+        type: object
+        required: false
+      kind:
+        default: 'books#geolayerdata'
+        type: string
+        required: false
+  Layersummaries:
+    properties:
+      items:
+        description: A list of layer summary items.
+        items:
+          type: Layersummary
+        type: array
+        required: false
+      kind:
+        default: 'books#layersummaries'
+        description: Resource type.
+        type: string
+        required: false
+      totalItems:
+        description: The total number of layer summaries found.
+        format: int32
+        type: integer
+        required: false
+  Layersummary:
+    properties:
+      annotationCount:
+        description: The number of annotations for this layer.
+        format: int32
+        type: integer
+        required: false
+      annotationTypes:
+        description: The list of annotation types contained for this layer.
+        items:
+          type: string
+        type: array
+        required: false
+      annotationsDataLink:
+        description: Link to get data for this annotation.
+        type: string
+        required: false
+      annotationsLink:
+        description: The link to get the annotations for this layer.
+        type: string
+        required: false
+      contentVersion:
+        description: The content version this resource is for.
+        type: string
+        required: false
+      dataCount:
+        description: The number of data items for this layer.
+        format: int32
+        type: integer
+        required: false
+      id:
+        description: Unique id of this layer summary.
+        type: string
+        required: false
+      kind:
+        default: 'books#layersummary'
+        description: Resource Type
+        type: string
+        required: false
+      layerId:
+        description: The layer id for this summary.
+        type: string
+        required: false
+      selfLink:
+        description: URL to this resource.
+        type: string
+        required: false
+      updated:
+        description: Timestamp for the last time an item in this layer was updated. (RFC 3339 UTC date-time format).
+        format: rfc3339
+        type: datetime
+        required: false
+      volumeAnnotationsVersion:
+        description: The current version of this layer's volume annotations. Note that this version applies only to the data in the books.layers.volumeAnnotations.* responses. The actual annotation data is versioned separately.
+        type: string
+        required: false
+      volumeId:
+        description: The volume id this resource is for.
+        type: string
+        required: false
+  Metadata:
+    properties:
+      items:
+        description: A list of offline dictionary metadata.
+        items:
+          properties:
+            download_url:
+              type: string
+              required: false
+            encrypted_key:
+              type: string
+              required: false
+            language:
+              type: string
+              required: false
+            size:
+              format: int64
+              type: string
+              facets:
+                format: string
+              required: false
+            version:
+              format: int64
+              type: string
+              facets:
+                format: string
+              required: false
+          type: object
+        type: array
+        required: false
+      kind:
+        default: 'dictionary#metadata'
+        description: Resource type.
+        type: string
+        required: false
+  Notification:
+    properties:
+      body:
+        type: string
+        required: false
+      crmExperimentIds:
+        description: The list of crm experiment ids.
+        items:
+          format: int64
+          type: string
+          facets:
+            format: string
+        type: array
+        required: false
+      doc_id:
+        type: string
+        required: false
+      doc_type:
+        type: string
+        required: false
+      dont_show_notification:
+        type: boolean
+        required: false
+      iconUrl:
+        type: string
+        required: false
+      kind:
+        default: 'books#notification'
+        description: Resource type.
+        type: string
+        required: false
+      notification_type:
+        type: string
+        required: false
+      pcampaign_id:
+        type: string
+        required: false
+      reason:
+        type: string
+        required: false
+      show_notification_settings_action:
+        type: boolean
+        required: false
+      targetUrl:
+        type: string
+        required: false
+      title:
+        type: string
+        required: false
+  Offers:
+    properties:
+      items:
+        description: A list of offers.
+        items:
+          properties:
+            artUrl:
+              type: string
+              required: false
+            gservicesKey:
+              type: string
+              required: false
+            id:
+              type: string
+              required: false
+            items:
+              items:
+                properties:
+                  author:
+                    type: string
+                    required: false
+                  canonicalVolumeLink:
+                    type: string
+                    required: false
+                  coverUrl:
+                    type: string
+                    required: false
+                  description:
+                    type: string
+                    required: false
+                  title:
+                    type: string
+                    required: false
+                  volumeId:
+                    type: string
+                    required: false
+                type: object
+              type: array
+              required: false
+          type: object
+        type: array
+        required: false
+      kind:
+        default: 'promooffer#offers'
+        description: Resource type.
+        type: string
+        required: false
+  ReadingPosition:
+    properties:
+      epubCfiPosition:
+        description: Position in an EPUB as a CFI.
+        type: string
+        required: false
+      gbImagePosition:
+        description: Position in a volume for image-based content.
+        type: string
+        required: false
+      gbTextPosition:
+        description: Position in a volume for text-based content.
+        type: string
+        required: false
+      kind:
+        default: 'books#readingPosition'
+        description: Resource type for a reading position.
+        type: string
+        required: false
+      pdfPosition:
+        description: Position in a PDF file.
+        type: string
+        required: false
+      updated:
+        description: Timestamp when this reading position was last updated (formatted UTC timestamp with millisecond resolution).
+        format: rfc3339
+        type: datetime
+        required: false
+      volumeId:
+        description: Volume id associated with this reading position.
+        type: string
+        required: false
+  RequestAccess:
+    properties:
+      concurrentAccess:
+        description: A concurrent access response.
+        type: ConcurrentAccessRestriction
+        required: false
+      downloadAccess:
+        description: A download access response.
+        type: DownloadAccessRestriction
+        required: false
+      kind:
+        default: 'books#requestAccess'
+        description: Resource type.
+        type: string
+        required: false
+  Review:
+    properties:
+      author:
+        description: Author of this review.
+        properties:
+          displayName:
+            description: Name of this person.
+            type: string
+            required: false
+        type: object
+        required: false
+      content:
+        description: Review text.
+        type: string
+        required: false
+      date:
+        description: Date of this review.
+        type: string
+        required: false
+      fullTextUrl:
+        description: 'URL for the full review text, for reviews gathered from the web.'
+        type: string
+        required: false
+      kind:
+        default: 'books#review'
+        description: Resource type for a review.
+        type: string
+        required: false
+      rating:
+        description: 'Star rating for this review. Possible values are ONE, TWO, THREE, FOUR, FIVE or NOT_RATED.'
+        type: string
+        required: false
+      source:
+        description: 'Information regarding the source of this review, when the review is not from a Google Books user.'
+        properties:
+          description:
+            description: Name of the source.
+            type: string
+            required: false
+          extraDescription:
+            description: Extra text about the source of the review.
+            type: string
+            required: false
+          url:
+            description: URL of the source of the review.
+            type: string
+            required: false
+        type: object
+        required: false
+      title:
+        description: Title for this review.
+        type: string
+        required: false
+      type:
+        description: 'Source type for this review. Possible values are EDITORIAL, WEB_USER or GOOGLE_USER.'
+        type: string
+        required: false
+      volumeId:
+        description: Volume that this review is for.
+        type: string
+        required: false
+  Series:
+    properties:
+      kind:
+        default: 'books#series'
+        description: Resource type.
+        type: string
+        required: false
+      series:
+        description: 'Series info list. The client always expects this element in the JSON output, hence declared here as OutputAlways.'
+        items:
+          properties:
+            bannerImageUrl:
+              type: string
+              required: false
+            imageUrl:
+              type: string
+              required: false
+            seriesId:
+              type: string
+              required: false
+            seriesType:
+              type: string
+              required: false
+            title:
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+  Seriesmembership:
+    properties:
+      kind:
+        default: 'books#series#membership'
+        description: Resorce type.
+        type: string
+        required: false
+      member:
+        items:
+          type: Volume
+        type: array
+        required: false
+      nextPageToken:
+        type: string
+        required: false
+  Usersettings:
+    properties:
+      kind:
+        default: 'books#usersettings'
+        description: Resource type.
+        type: string
+        required: false
+      notesExport:
+        description: 'User settings in sub-objects, each for different purposes.'
+        properties:
+          folderName:
+            type: string
+            required: false
+          isEnabled:
+            type: boolean
+            required: false
+        type: object
+        required: false
+      notification:
+        properties:
+          moreFromAuthors:
+            properties:
+              opted_state:
+                type: string
+                required: false
+            type: object
+            required: false
+          moreFromSeries:
+            properties:
+              opted_state:
+                type: string
+                required: false
+            type: object
+            required: false
+        type: object
+        required: false
+  Volume:
+    properties:
+      accessInfo:
+        description: 'Any information about a volume related to reading or obtaining that volume text. This information can depend on country (books may be public domain in one country but not in another, e.g.).'
+        properties:
+          accessViewStatus:
+            description: 'Combines the access and viewability of this volume into a single status field for this user. Values can be FULL_PURCHASED, FULL_PUBLIC_DOMAIN, SAMPLE or NONE. (In LITE projection.)'
+            type: string
+            required: false
+          country:
+            description: The two-letter ISO_3166-1 country code for which this access information is valid. (In LITE projection.)
+            type: string
+            required: false
+          downloadAccess:
+            description: Information about a volume's download license access restrictions.
+            type: DownloadAccessRestriction
+            required: false
+          driveImportedContentLink:
+            description: URL to the Google Drive viewer if this volume is uploaded by the user by selecting the file from Google Drive.
+            type: string
+            required: false
+          embeddable:
+            description: Whether this volume can be embedded in a viewport using the Embedded Viewer API.
+            type: boolean
+            required: false
+          epub:
+            description: Information about epub content. (In LITE projection.)
+            properties:
+              acsTokenLink:
+                description: URL to retrieve ACS token for epub download. (In LITE projection.)
+                type: string
+                required: false
+              downloadLink:
+                description: URL to download epub. (In LITE projection.)
+                type: string
+                required: false
+              isAvailable:
+                description: Is a flowing text epub available either as public domain or for purchase. (In LITE projection.)
+                type: boolean
+                required: false
+            type: object
+            required: false
+          explicitOfflineLicenseManagement:
+            description: 'Whether this volume requires that the client explicitly request offline download license rather than have it done automatically when loading the content, if the client supports it.'
+            type: boolean
+            required: false
+          pdf:
+            description: Information about pdf content. (In LITE projection.)
+            properties:
+              acsTokenLink:
+                description: URL to retrieve ACS token for pdf download. (In LITE projection.)
+                type: string
+                required: false
+              downloadLink:
+                description: URL to download pdf. (In LITE projection.)
+                type: string
+                required: false
+              isAvailable:
+                description: Is a scanned image pdf available either as public domain or for purchase. (In LITE projection.)
+                type: boolean
+                required: false
+            type: object
+            required: false
+          publicDomain:
+            description: Whether or not this book is public domain in the country listed above.
+            type: boolean
+            required: false
+          quoteSharingAllowed:
+            description: Whether quote sharing is allowed for this volume.
+            type: boolean
+            required: false
+          textToSpeechPermission:
+            description: 'Whether text-to-speech is permitted for this volume. Values can be ALLOWED, ALLOWED_FOR_ACCESSIBILITY, or NOT_ALLOWED.'
+            type: string
+            required: false
+          viewOrderUrl:
+            description: 'For ordered but not yet processed orders, we give a URL that can be used to go to the appropriate Google Wallet page.'
+            type: string
+            required: false
+          viewability:
+            description: 'The read access of a volume. Possible values are PARTIAL, ALL_PAGES, NO_PAGES or UNKNOWN. This value depends on the country listed above. A value of PARTIAL means that the publisher has allowed some portion of the volume to be viewed publicly, without purchase. This can apply to eBooks as well as non-eBooks. Public domain books will always have a value of ALL_PAGES.'
+            type: string
+            required: false
+          webReaderLink:
+            description: URL to read this volume on the Google Books site. Link will not allow users to read non-viewable volumes.
+            type: string
+            required: false
+        type: object
+        required: false
+      etag:
+        description: Opaque identifier for a specific version of a volume resource. (In LITE projection)
+        type: string
+        required: false
+      id:
+        description: Unique identifier for a volume. (In LITE projection.)
+        type: string
+        required: false
+      kind:
+        default: 'books#volume'
+        description: Resource type for a volume. (In LITE projection.)
+        type: string
+        required: false
+      layerInfo:
+        description: What layers exist in this volume and high level information about them.
+        properties:
+          layers:
+            description: A layer should appear here if and only if the layer exists for this book.
+            items:
+              properties:
+                layerId:
+                  description: The layer id of this layer (e.g. "geo").
+                  type: string
+                  required: false
+                volumeAnnotationsVersion:
+                  description: The current version of this layer's volume annotations. Note that this version applies only to the data in the books.layers.volumeAnnotations.* responses. The actual annotation data is versioned separately.
+                  type: string
+                  required: false
+              type: object
+            type: array
+            required: false
+        type: object
+        required: false
+      recommendedInfo:
+        description: Recommendation related information for this volume.
+        properties:
+          explanation:
+            description: A text explaining why this volume is recommended.
+            type: string
+            required: false
+        type: object
+        required: false
+      saleInfo:
+        description: Any information about a volume related to the eBookstore and/or purchaseability. This information can depend on the country where the request originates from (i.e. books may not be for sale in certain countries).
+        properties:
+          buyLink:
+            description: URL to purchase this volume on the Google Books site. (In LITE projection)
+            type: string
+            required: false
+          country:
+            description: The two-letter ISO_3166-1 country code for which this sale information is valid. (In LITE projection.)
+            type: string
+            required: false
+          isEbook:
+            description: Whether or not this volume is an eBook (can be added to the My eBooks shelf).
+            type: boolean
+            required: false
+          listPrice:
+            description: Suggested retail price. (In LITE projection.)
+            properties:
+              amount:
+                description: Amount in the currency listed below. (In LITE projection.)
+                format: double
+                type: number
+                required: false
+              currencyCode:
+                description: 'An ISO 4217, three-letter currency code. (In LITE projection.)'
+                type: string
+                required: false
+            type: object
+            required: false
+          offers:
+            description: Offers available for this volume (sales and rentals).
+            items:
+              properties:
+                finskyOfferType:
+                  description: 'The finsky offer type (e.g., PURCHASE=0 RENTAL=3)'
+                  format: int32
+                  type: integer
+                  required: false
+                giftable:
+                  description: Indicates whether the offer is giftable.
+                  type: boolean
+                  required: false
+                listPrice:
+                  description: Offer list (=undiscounted) price in Micros.
+                  properties:
+                    amountInMicros:
+                      format: double
+                      type: number
+                      required: false
+                    currencyCode:
+                      type: string
+                      required: false
+                  type: object
+                  required: false
+                rentalDuration:
+                  description: The rental duration (for rental offers only).
+                  properties:
+                    count:
+                      format: double
+                      type: number
+                      required: false
+                    unit:
+                      type: string
+                      required: false
+                  type: object
+                  required: false
+                retailPrice:
+                  description: Offer retail (=discounted) price in Micros
+                  properties:
+                    amountInMicros:
+                      format: double
+                      type: number
+                      required: false
+                    currencyCode:
+                      type: string
+                      required: false
+                  type: object
+                  required: false
+              type: object
+            type: array
+            required: false
+          onSaleDate:
+            description: The date on which this book is available for sale.
+            format: rfc3339
+            type: datetime
+            required: false
+          retailPrice:
+            description: The actual selling price of the book. This is the same as the suggested retail or list price unless there are offers or discounts on this volume. (In LITE projection.)
+            properties:
+              amount:
+                description: Amount in the currency listed below. (In LITE projection.)
+                format: double
+                type: number
+                required: false
+              currencyCode:
+                description: 'An ISO 4217, three-letter currency code. (In LITE projection.)'
+                type: string
+                required: false
+            type: object
+            required: false
+          saleability:
+            description: 'Whether or not this book is available for sale or offered for free in the Google eBookstore for the country listed above. Possible values are FOR_SALE, FOR_RENTAL_ONLY, FOR_SALE_AND_RENTAL, FREE, NOT_FOR_SALE, or FOR_PREORDER.'
+            type: string
+            required: false
+        type: object
+        required: false
+      searchInfo:
+        description: Search result information related to this volume.
+        properties:
+          textSnippet:
+            description: A text snippet containing the search query.
+            type: string
+            required: false
+        type: object
+        required: false
+      selfLink:
+        description: URL to this resource. (In LITE projection.)
+        type: string
+        required: false
+      userInfo:
+        description: User specific information related to this volume. (e.g. page this user last read or whether they purchased this book)
+        properties:
+          acquiredTime:
+            description: 'Timestamp when this volume was acquired by the user. (RFC 3339 UTC date-time format) Acquiring includes purchase, user upload, receiving family sharing, etc.'
+            format: rfc3339
+            type: datetime
+            required: false
+          acquisitionType:
+            description: How this volume was acquired.
+            format: int32
+            type: integer
+            required: false
+          copy:
+            description: Copy/Paste accounting information.
+            properties:
+              allowedCharacterCount:
+                format: int32
+                type: integer
+                required: false
+              limitType:
+                type: string
+                required: false
+              remainingCharacterCount:
+                format: int32
+                type: integer
+                required: false
+              updated:
+                format: rfc3339
+                type: datetime
+                required: false
+            type: object
+            required: false
+          entitlementType:
+            description: 'Whether this volume is purchased, sample, pd download etc.'
+            format: int32
+            type: integer
+            required: false
+          familySharing:
+            description: Information on the ability to share with the family.
+            properties:
+              familyRole:
+                description: The role of the user in the family.
+                type: string
+                required: false
+              isSharingAllowed:
+                description: 'Whether or not this volume can be shared with the family by the user. This includes sharing eligibility of both the volume and the user. If the value is true, the user can initiate a family sharing action.'
+                type: boolean
+                required: false
+              isSharingDisabledByFop:
+                description: Whether or not sharing this volume is temporarily disabled due to issues with the Family Wallet.
+                type: boolean
+                required: false
+            type: object
+            required: false
+          isFamilySharedFromUser:
+            description: Whether or not the user shared this volume with the family.
+            type: boolean
+            required: false
+          isFamilySharedToUser:
+            description: Whether or not the user received this volume through family sharing.
+            type: boolean
+            required: false
+          isFamilySharingAllowed:
+            description: 'Deprecated: Replaced by familySharing.'
+            type: boolean
+            required: false
+          isFamilySharingDisabledByFop:
+            description: 'Deprecated: Replaced by familySharing.'
+            type: boolean
+            required: false
+          isInMyBooks:
+            description: Whether or not this volume is currently in "my books."
+            type: boolean
+            required: false
+          isPreordered:
+            description: Whether or not this volume was pre-ordered by the authenticated user making the request. (In LITE projection.)
+            type: boolean
+            required: false
+          isPurchased:
+            description: Whether or not this volume was purchased by the authenticated user making the request. (In LITE projection.)
+            type: boolean
+            required: false
+          isUploaded:
+            description: Whether or not this volume was user uploaded.
+            type: boolean
+            required: false
+          readingPosition:
+            description: 'The user''s current reading position in the volume, if one is available. (In LITE projection.)'
+            type: ReadingPosition
+            required: false
+          rentalPeriod:
+            description: Period during this book is/was a valid rental.
+            properties:
+              endUtcSec:
+                format: int64
+                type: string
+                facets:
+                  format: string
+                required: false
+              startUtcSec:
+                format: int64
+                type: string
+                facets:
+                  format: string
+                required: false
+            type: object
+            required: false
+          rentalState:
+            description: Whether this book is an active or an expired rental.
+            type: string
+            required: false
+          review:
+            description: 'This user''s review of this volume, if one exists.'
+            type: Review
+            required: false
+          updated:
+            description: 'Timestamp when this volume was last modified by a user action, such as a reading position update, volume purchase or writing a review. (RFC 3339 UTC date-time format).'
+            format: rfc3339
+            type: datetime
+            required: false
+          userUploadedVolumeInfo:
+            properties:
+              processingState:
+                type: string
+                required: false
+            type: object
+            required: false
+        type: object
+        required: false
+      volumeInfo:
+        description: General volume information.
+        properties:
+          allowAnonLogging:
+            description: Whether anonymous logging should be allowed.
+            type: boolean
+            required: false
+          authors:
+            description: The names of the authors and/or editors for this volume. (In LITE projection)
+            items:
+              type: string
+            type: array
+            required: false
+          averageRating:
+            description: 'The mean review rating for this volume. (min = 1.0, max = 5.0)'
+            format: double
+            type: number
+            required: false
+          canonicalVolumeLink:
+            description: Canonical URL for a volume. (In LITE projection.)
+            type: string
+            required: false
+          categories:
+            description: 'A list of subject categories, such as "Fiction", "Suspense", etc.'
+            items:
+              type: string
+            type: array
+            required: false
+          contentVersion:
+            description: An identifier for the version of the volume content (text & images). (In LITE projection)
+            type: string
+            required: false
+          description:
+            description: 'A synopsis of the volume. The text of the description is formatted in HTML and includes simple formatting elements, such as b, i, and br tags. (In LITE projection.)'
+            type: string
+            required: false
+          dimensions:
+            description: Physical dimensions of this volume.
+            properties:
+              height:
+                description: Height or length of this volume (in cm).
+                type: string
+                required: false
+              thickness:
+                description: Thickness of this volume (in cm).
+                type: string
+                required: false
+              width:
+                description: Width of this volume (in cm).
+                type: string
+                required: false
+            type: object
+            required: false
+          imageLinks:
+            description: A list of image links for all the sizes that are available. (In LITE projection.)
+            properties:
+              extraLarge:
+                description: Image link for extra large size (width of ~1280 pixels). (In LITE projection)
+                type: string
+                required: false
+              large:
+                description: Image link for large size (width of ~800 pixels). (In LITE projection)
+                type: string
+                required: false
+              medium:
+                description: Image link for medium size (width of ~575 pixels). (In LITE projection)
+                type: string
+                required: false
+              small:
+                description: Image link for small size (width of ~300 pixels). (In LITE projection)
+                type: string
+                required: false
+              smallThumbnail:
+                description: Image link for small thumbnail size (width of ~80 pixels). (In LITE projection)
+                type: string
+                required: false
+              thumbnail:
+                description: Image link for thumbnail size (width of ~128 pixels). (In LITE projection)
+                type: string
+                required: false
+            type: object
+            required: false
+          industryIdentifiers:
+            description: Industry standard identifiers for this volume.
+            items:
+              properties:
+                identifier:
+                  description: Industry specific volume identifier.
+                  type: string
+                  required: false
+                type:
+                  description: 'Identifier type. Possible values are ISBN_10, ISBN_13, ISSN and OTHER.'
+                  type: string
+                  required: false
+              type: object
+            type: array
+            required: false
+          infoLink:
+            description: URL to view information about this volume on the Google Books site. (In LITE projection)
+            type: string
+            required: false
+          language:
+            description: 'Best language for this volume (based on content). It is the two-letter ISO 639-1 code such as ''fr'', ''en'', etc.'
+            type: string
+            required: false
+          mainCategory:
+            description: The main category to which this volume belongs. It will be the category from the categories list returned below that has the highest weight.
+            type: string
+            required: false
+          maturityRating:
+            type: string
+            required: false
+          pageCount:
+            description: Total number of pages as per publisher metadata.
+            format: int32
+            type: integer
+            required: false
+          panelizationSummary:
+            description: A top-level summary of the panelization info in this volume.
+            properties:
+              containsEpubBubbles:
+                type: boolean
+                required: false
+              containsImageBubbles:
+                type: boolean
+                required: false
+              epubBubbleVersion:
+                type: string
+                required: false
+              imageBubbleVersion:
+                type: string
+                required: false
+            type: object
+            required: false
+          previewLink:
+            description: URL to preview this volume on the Google Books site.
+            type: string
+            required: false
+          printType:
+            description: Type of publication of this volume. Possible values are BOOK or MAGAZINE.
+            type: string
+            required: false
+          printedPageCount:
+            description: Total number of printed pages in generated pdf representation.
+            format: int32
+            type: integer
+            required: false
+          publishedDate:
+            description: Date of publication. (In LITE projection.)
+            type: string
+            required: false
+          publisher:
+            description: Publisher of this volume. (In LITE projection.)
+            type: string
+            required: false
+          ratingsCount:
+            description: The number of review ratings for this volume.
+            format: int32
+            type: integer
+            required: false
+          readingModes:
+            description: The reading modes available for this volume.
+            required: false
+          samplePageCount:
+            description: Total number of sample pages as per publisher metadata.
+            format: int32
+            type: integer
+            required: false
+          seriesInfo:
+            type: Volumeseriesinfo
+            required: false
+          subtitle:
+            description: Volume subtitle. (In LITE projection.)
+            type: string
+            required: false
+          title:
+            description: Volume title. (In LITE projection.)
+            type: string
+            required: false
+        type: object
+        required: false
+  Volume2:
+    properties:
+      items:
+        description: A list of volumes.
+        items:
+          type: Volume
+        type: array
+        required: false
+      kind:
+        default: 'onboarding#volume'
+        description: Resource type.
+        type: string
+        required: false
+      nextPageToken:
+        type: string
+        required: false
+  Volumeannotation:
+    properties:
+      annotationDataId:
+        description: The annotation data id for this volume annotation.
+        type: string
+        required: false
+      annotationDataLink:
+        description: Link to get data for this annotation.
+        type: string
+        required: false
+      annotationType:
+        description: The type of annotation this is.
+        type: string
+        required: false
+      contentRanges:
+        description: The content ranges to identify the selected text.
+        properties:
+          cfiRange:
+            description: Range in CFI format for this annotation for version above.
+            type: BooksAnnotationsRange
+            required: false
+          contentVersion:
+            description: Content version applicable to ranges below.
+            type: string
+            required: false
+          gbImageRange:
+            description: Range in GB image format for this annotation for version above.
+            type: BooksAnnotationsRange
+            required: false
+          gbTextRange:
+            description: Range in GB text format for this annotation for version above.
+            type: BooksAnnotationsRange
+            required: false
+        type: object
+        required: false
+      data:
+        description: Data for this annotation.
+        type: string
+        required: false
+      deleted:
+        description: Indicates that this annotation is deleted.
+        type: boolean
+        required: false
+      id:
+        description: Unique id of this volume annotation.
+        type: string
+        required: false
+      kind:
+        default: 'books#volumeannotation'
+        description: Resource Type
+        type: string
+        required: false
+      layerId:
+        description: The Layer this annotation is for.
+        type: string
+        required: false
+      pageIds:
+        description: Pages the annotation spans.
+        items:
+          type: string
+        type: array
+        required: false
+      selectedText:
+        description: Excerpt from the volume.
+        type: string
+        required: false
+      selfLink:
+        description: URL to this resource.
+        type: string
+        required: false
+      updated:
+        description: Timestamp for the last time this anntoation was updated. (RFC 3339 UTC date-time format).
+        format: rfc3339
+        type: datetime
+        required: false
+      volumeId:
+        description: The Volume this annotation is for.
+        type: string
+        required: false
+  Volumeannotations:
+    properties:
+      items:
+        description: A list of volume annotations.
+        items:
+          type: Volumeannotation
+        type: array
+        required: false
+      kind:
+        default: 'books#volumeannotations'
+        description: Resource type
+        type: string
+        required: false
+      nextPageToken:
+        description: Token to pass in for pagination for the next page. This will not be present if this request does not have more results.
+        type: string
+        required: false
+      totalItems:
+        description: The total number of volume annotations found.
+        format: int32
+        type: integer
+        required: false
+      version:
+        description: 'The version string for all of the volume annotations in this layer (not just the ones in this response). Note: the version string doesn''t apply to the annotation data, just the information in this response (e.g. the location of annotations in the book).'
+        type: string
+        required: false
+  Volumes:
+    properties:
+      items:
+        description: A list of volumes.
+        items:
+          type: Volume
+        type: array
+        required: false
+      kind:
+        default: 'books#volumes'
+        description: Resource type.
+        type: string
+        required: false
+      totalItems:
+        description: Total number of volumes found. This might be greater than the number of volumes returned in this response if results have been paginated.
+        format: int32
+        type: integer
+        required: false
+  Volumeseriesinfo:
+    properties:
+      bookDisplayNumber:
+        description: The display number string. This should be used only for display purposes and the actual sequence should be inferred from the below orderNumber.
+        type: string
+        required: false
+      kind:
+        default: 'books#volume_series_info'
+        description: Resource type.
+        type: string
+        required: false
+      shortSeriesBookTitle:
+        description: Short book title in the context of the series.
+        type: string
+        required: false
+      volumeSeries:
+        items:
+          properties:
+            issue:
+              description: List of issues. Applicable only for Collection Edition and Omnibus.
+              items:
+                properties:
+                  issueDisplayNumber:
+                    type: string
+                    required: false
+                  issueOrderNumber:
+                    format: int32
+                    type: integer
+                    required: false
+                type: object
+              type: array
+              required: false
+            orderNumber:
+              description: The book order number in the series.
+              format: int32
+              type: integer
+              required: false
+            seriesBookType:
+              description: 'The book type in the context of series. Examples - Single Issue, Collection Edition, etc.'
+              type: string
+              required: false
+            seriesId:
+              description: The series id.
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

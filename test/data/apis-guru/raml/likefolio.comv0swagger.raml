@@ -1,0 +1,853 @@
+#%RAML 1.0
+title: Likefolio Api Endpoints
+version: v0
+baseUri: 'http://likefolio.com/api'
+protocols:
+  - HTTP
+description: Create a session to start to use it
+(oas-tags-definition):
+  - name: brands
+  - name: companies
+  - name: companydivisions
+  - name: sessions
+  - name: swagger_doc
+  - name: tags
+  - name: users
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_d9hhrg4mnvzow.cloudfront.net_try.likefolio.com_home_065bd30c-likefolio_07b04u07b04u000000.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://likefolio.com/api/v0/swagger_doc.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): likefolio.com
+/v0:
+  displayName: v0
+  /companies:
+    displayName: companies
+    /topCompanies.json:
+      displayName: topCompanies.json
+      get:
+        displayName: GET--version-companies-topCompanies---format-
+        (oas-summary): Return a list of companies ordered by mentions count.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          limit:
+            required: false
+            type: integer
+        (oas-tags):
+          - companies
+    /topLinks.json:
+      displayName: topLinks.json
+      get:
+        displayName: GET--version-companies-topLinks---format-
+        (oas-summary): Returns list of links from mentions ordered by number of appearences.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          company_id:
+            description: ID of the company.
+            required: false
+            type: integer
+            displayName: ID of the company.
+          endDate:
+            description: End of period. Must be in ISO8601 format
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: End of period. Must be in ISO8601 format
+          startDate:
+            description: Start of the period. Must be in ISO8601 format.
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: Start of the period. Must be in ISO8601 format.
+          qty:
+            description: Quantity of records to return
+            required: false
+            type: integer
+            displayName: Quantity of records to return
+        (oas-tags):
+          - companies
+    /topTweets.json:
+      displayName: topTweets.json
+      post:
+        displayName: POST--version-companies-topTweets---format-
+        (oas-summary): Returns list of tweets ordered by score. Use JSON to do the POST.
+        body:
+          multipart/form-data:
+            properties:
+              apiKey:
+                description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+                required: true
+                type: string
+              ids:
+                items:
+                  type: string
+                required: true
+                type: array
+              'ids[id]':
+                description: ID number of a company
+                required: true
+                type: integer
+              'ids[startDate]':
+                description: Start of the period. Must be in ISO8601 format.
+                format: rfc3339
+                required: false
+                type: datetime
+              'ids[page]':
+                description: Page to request on a big response
+                required: false
+                type: integer
+              'ids[qty]':
+                description: Quantity of records to return
+                required: false
+                type: integer
+              'ids[sentiment]':
+                description: Filter for sentiment values. Only "all" includes 0.
+                required: false
+                type: string
+              'ids[sort]':
+                description: Order of the results
+                required: false
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - companies
+    /topTweets:
+      displayName: topTweets
+      /mostRecent.json:
+        displayName: mostRecent.json
+        get:
+          displayName: GET--version-companies-topTweets-mostRecent---format-
+          (oas-summary): Returns last 150 tweets from now to the past
+          responses:
+            '200':
+              description: No response was specified
+          queryParameters:
+            apiKey:
+              description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+              required: true
+              type: string
+              displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            id:
+              description: ID number of a company
+              required: true
+              type: integer
+              displayName: ID number of a company
+            startDate:
+              description: Start of the period. Must be in ISO8601 format
+              format: rfc3339
+              required: false
+              type: datetime
+              displayName: Start of the period. Must be in ISO8601 format
+          (oas-tags):
+            - companies
+    /topUsers.json:
+      displayName: topUsers.json
+      get:
+        displayName: GET--version-companies-topUsers---format-
+        (oas-summary): Returns the list of Twitter IDs that have posted more mentions for the company.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            description: ID number of a company
+            required: true
+            type: integer
+            displayName: ID number of a company
+          startDate:
+            description: Start of the period. Must be in ISO8601 format
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: Start of the period. Must be in ISO8601 format
+          endDate:
+            description: End of period. Must be in ISO8601 format
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: End of period. Must be in ISO8601 format
+          qty:
+            description: Quantity of records to return
+            required: false
+            type: integer
+            displayName: Quantity of records to return
+        (oas-tags):
+          - companies
+    /csi.json:
+      displayName: csi.json
+      get:
+        displayName: GET--version-companies-csi---format-
+        (oas-summary): Returns a list of CSI values for a single company on a given period.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            description: ID number of a company
+            required: true
+            type: integer
+            displayName: ID number of a company
+          startDate:
+            description: Start of the period. Must be in ISO8601 format
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: Start of the period. Must be in ISO8601 format
+          endDate:
+            description: End of period. Must be in ISO8601 format
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: End of period. Must be in ISO8601 format
+        (oas-tags):
+          - companies
+    /mentionQty.json:
+      displayName: mentionQty.json
+      get:
+        displayName: GET--version-companies-mentionQty---format-
+        (oas-summary): Returns amount of mentions per day for a given period
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            description: ID number of a company
+            required: true
+            type: integer
+            displayName: ID number of a company
+          startDate:
+            description: Start of the period. Must be in ISO8601 format
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: Start of the period. Must be in ISO8601 format
+          endDate:
+            description: End of period. Must be in ISO8601 format
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: End of period. Must be in ISO8601 format
+        (oas-tags):
+          - companies
+    /statistics.json:
+      displayName: statistics.json
+      get:
+        displayName: GET--version-companies-statistics---format-
+        (oas-summary): Returns statistics for a single company on a single date
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            description: ID number of a company
+            required: true
+            type: integer
+            displayName: ID number of a company
+          period:
+            description: 'Number of days/hours to get daya from. Period is calculated backwards from now. For example, 1day means today. 7days means past 7 days and so on. The YTD value is the period from the beginning of the current year to now, different from 1year, which means the past 365 days. Posible values: ["1hour", "6hours", "12hours", "24hours", "72hours", "120hours", "168hours", "240hours", "336hours", "1day", "3days", "5days", "7days", "10days", "14days", "1month", "3months", "6months", "9months", "YTD", "1year", "2years", "3years"]'
+            required: false
+            type: string
+            displayName: 'Number of days/hours to get daya from. Period is calculated backwards from now. For example, 1day means today. 7days means past 7 days and so on. The YTD value is the period from the beginning of the current year to now, different from 1year, which means the past 365 days. Posible values: ["1hour", "6hours", "12hours", "24hours", "72hours", "120hours", "168hours", "240hours", "336hours", "1day", "3days", "5days", "7days", "10days", "14days", "1month", "3months", "6months", "9months", "YTD", "1year", "2years", "3years"]'
+        (oas-tags):
+          - companies
+    /tickers:
+      displayName: tickers
+      /forCharting.json:
+        displayName: forCharting.json
+        get:
+          displayName: GET--version-companies-tickers-forCharting---format-
+          (oas-summary): Lists available tickers to query company/statistics
+          responses:
+            '200':
+              description: No response was specified
+          queryParameters:
+            apiKey:
+              description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+              required: true
+              type: string
+              displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          (oas-tags):
+            - companies
+      /show.json:
+        displayName: show.json
+        get:
+          displayName: GET--version-companies-tickers-show---format-
+          (oas-summary): Company basic information by ticker.
+          responses:
+            '200':
+              description: No response was specified
+          queryParameters:
+            apiKey:
+              description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+              required: true
+              type: string
+              displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            ticker:
+              description: Ticker of a company.
+              required: true
+              type: string
+              displayName: Ticker of a company.
+          (oas-tags):
+            - companies
+    /topBrands.json:
+      displayName: topBrands.json
+      get:
+        displayName: GET--version-companies-topBrands---format-
+        (oas-summary): Returns list of brands ordered by number of mentions.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            description: ID number of a company
+            required: true
+            type: integer
+            displayName: ID number of a company
+          startDate:
+            description: Start of the period. Must be in ISO8601 format
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: Start of the period. Must be in ISO8601 format
+          endDate:
+            description: End of period. Must be in ISO8601 format
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: End of period. Must be in ISO8601 format
+        (oas-tags):
+          - companies
+    /detail.json:
+      displayName: detail.json
+      get:
+        displayName: GET--version-companies-detail---format-
+        (oas-summary): Returns details for the last week for the given company
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          company_id:
+            required: true
+            type: integer
+        (oas-tags):
+          - companies
+    /show.json:
+      displayName: show.json
+      get:
+        displayName: GET--version-companies-show---format-
+        (oas-summary): Company basic information.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            description: ID number of a company
+            required: true
+            type: integer
+            displayName: ID number of a company
+        (oas-tags):
+          - companies
+    /cei.json:
+      displayName: cei.json
+      get:
+        displayName: GET--version-companies-cei---format-
+        (oas-summary): Returns a list of CEI values for a single company on a given period.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            description: ID number of a company
+            required: true
+            type: integer
+            displayName: ID number of a company
+          startDate:
+            description: Start of the period. Must be in ISO8601 format
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: Start of the period. Must be in ISO8601 format
+          endDate:
+            description: End of period. Must be in ISO8601 format
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: End of period. Must be in ISO8601 format
+        (oas-tags):
+          - companies
+    /tickerList.json:
+      displayName: tickerList.json
+      get:
+        displayName: GET--version-companies-tickerList---format-
+        (oas-summary): Returns list of available tickers.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+        (oas-tags):
+          - companies
+  /users:
+    displayName: users
+    /trendingCompanies.json:
+      displayName: trendingCompanies.json
+      get:
+        displayName: GET--version-users-trendingCompanies---format-
+        (oas-summary): Returns the trending companies for a user
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          twitterId:
+            required: true
+            type: integer
+          periodFilter:
+            required: true
+            type: string
+          cashtagFilter:
+            required: true
+            type: string
+        (oas-tags):
+          - users
+    /topCompanies.json:
+      displayName: topCompanies.json
+      get:
+        displayName: GET--version-users-topCompanies---format-
+        (oas-summary): Returns the scored companies for a user
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          twitterId:
+            required: true
+            type: integer
+          periodFilter:
+            required: true
+            type: string
+          cashtagFilter:
+            required: true
+            type: string
+        (oas-tags):
+          - users
+  /brands:
+    displayName: brands
+    /mentionQty.json:
+      displayName: mentionQty.json
+      get:
+        displayName: GET--version-brands-mentionQty---format-
+        (oas-summary): Returns ordered mentions count for the given brand
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            required: true
+            type: integer
+          startDate:
+            description: Start of the period. Must be in ISO8601 format
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: Start of the period. Must be in ISO8601 format
+          endDate:
+            description: End of period. Must be in ISO8601 format
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: End of period. Must be in ISO8601 format
+        (oas-tags):
+          - brands
+    /statistics.json:
+      displayName: statistics.json
+      get:
+        displayName: GET--version-brands-statistics---format-
+        (oas-summary): Returns statistics about the brand
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            required: true
+            type: integer
+          period:
+            description: 'Number of days/hours to get daya from. Period is calculated backwards from now. For example, 1day means today. 7days means past 7 days and so on. The YTD value is the period from the beginning of the current year to now, different from 1year, which means the past 365 days. Posible values: ["1hour", "6hours", "12hours", "24hours", "72hours", "120hours", "168hours", "240hours", "336hours", "1day", "3days", "5days", "7days", "10days", "14days", "1month", "3months", "6months", "9months", "YTD", "1year", "2years", "3years"]'
+            required: false
+            type: string
+            displayName: 'Number of days/hours to get daya from. Period is calculated backwards from now. For example, 1day means today. 7days means past 7 days and so on. The YTD value is the period from the beginning of the current year to now, different from 1year, which means the past 365 days. Posible values: ["1hour", "6hours", "12hours", "24hours", "72hours", "120hours", "168hours", "240hours", "336hours", "1day", "3days", "5days", "7days", "10days", "14days", "1month", "3months", "6months", "9months", "YTD", "1year", "2years", "3years"]'
+        (oas-tags):
+          - brands
+    /topUsers.json:
+      displayName: topUsers.json
+      get:
+        displayName: GET--version-brands-topUsers---format-
+        (oas-summary): Returns the list of Twitter IDs that have posted more mentions for the company
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            required: true
+            type: integer
+          startDate:
+            description: Start of the period. Must be in ISO8601 format
+            format: rfc3339
+            required: true
+            type: datetime
+            displayName: Start of the period. Must be in ISO8601 format
+          endDate:
+            description: End of period. Must be in ISO8601 format
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: End of period. Must be in ISO8601 format
+          qty:
+            description: Quantity of records to return
+            required: false
+            type: integer
+            displayName: Quantity of records to return
+        (oas-tags):
+          - brands
+    /topTweets.json:
+      displayName: topTweets.json
+      post:
+        displayName: POST--version-brands-topTweets---format-
+        (oas-summary): Returns list of tweets ordered by date
+        body:
+          multipart/form-data:
+            properties:
+              apiKey:
+                description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+                required: true
+                type: string
+              ids:
+                items:
+                  type: string
+                required: true
+                type: array
+              'ids[id]':
+                required: true
+                type: integer
+              'ids[startDate]':
+                description: Start of the period. Must be in ISO8601 format.
+                format: rfc3339
+                required: false
+                type: datetime
+              sentiment:
+                required: false
+                type: string
+              qty:
+                description: Quantity of records to return
+                required: false
+                type: integer
+              sort:
+                description: Order of the results
+                required: false
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - brands
+    /show.json:
+      displayName: show.json
+      get:
+        displayName: GET--version-brands-show---format-
+        (oas-summary): Returns brands basic information (up tp 50)
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            required: true
+            type: integer
+        (oas-tags):
+          - brands
+  /companyDivisions:
+    displayName: companyDivisions
+    /show.json:
+      displayName: show.json
+      get:
+        displayName: GET--version-companyDivisions-show---format-
+        (oas-summary): Returns division basic information
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            required: true
+            type: integer
+        (oas-tags):
+          - companydivisions
+    /statistics.json:
+      displayName: statistics.json
+      get:
+        displayName: GET--version-companyDivisions-statistics---format-
+        (oas-summary): Returns statistics about the division
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          id:
+            required: true
+            type: integer
+          period:
+            description: 'Number of days/hours to get daya from. Period is calculated backwards from now. For example, 1day means today. 7days means past 7 days and so on. The YTD value is the period from the beginning of the current year to now, different from 1year, which means the past 365 days. Posible values: ["1hour", "6hours", "12hours", "24hours", "72hours", "120hours", "168hours", "240hours", "336hours", "1day", "3days", "5days", "7days", "10days", "14days", "1month", "3months", "6months", "9months", "YTD", "1year", "2years", "3years"]'
+            required: false
+            type: string
+            displayName: 'Number of days/hours to get daya from. Period is calculated backwards from now. For example, 1day means today. 7days means past 7 days and so on. The YTD value is the period from the beginning of the current year to now, different from 1year, which means the past 365 days. Posible values: ["1hour", "6hours", "12hours", "24hours", "72hours", "120hours", "168hours", "240hours", "336hours", "1day", "3days", "5days", "7days", "10days", "14days", "1month", "3months", "6months", "9months", "YTD", "1year", "2years", "3years"]'
+        (oas-tags):
+          - companydivisions
+  /sessions:
+    displayName: sessions
+    /create.json:
+      displayName: create.json
+      post:
+        displayName: POST--version-sessions-create---format-
+        (oas-summary): 'If credentials are valid, a token usable for 15 minutes will be returned'
+        body:
+          multipart/form-data:
+            properties:
+              email:
+                required: true
+                type: string
+              password:
+                required: true
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - sessions
+  /swagger_doc.json:
+    displayName: swagger_doc.json
+    get:
+      displayName: GET--version-swagger_doc---format-
+      (oas-summary): Swagger compatible API description
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - swagger_doc
+  /swagger_doc:
+    displayName: swagger_doc
+    '/{name}.json':
+      displayName: '{name}.json'
+      uriParameters:
+        name:
+          description: Resource name of mounted API
+          required: true
+          type: string
+          displayName: Resource name of mounted API
+      get:
+        displayName: GET--version-swagger_doc--name---format-
+        (oas-summary): Swagger compatible API description for specific API
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - swagger_doc
+  /tags:
+    displayName: tags
+    /match.json:
+      displayName: match.json
+      post:
+        displayName: POST--version-tags-match---format-
+        (oas-summary): Matches text passed and returns list of company tickers that matched.
+        body:
+          multipart/form-data:
+            properties:
+              apiKey:
+                description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+                required: true
+                type: string
+              text:
+                description: Text to match agains tags.
+                required: true
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - tags
+      get:
+        displayName: GET--version-tags-match---format-
+        (oas-summary): Matches text passed and returns list of company tickers that matched. Text parameter is limited to valid URL encoded values.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          apiKey:
+            description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            required: true
+            type: string
+            displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+          text:
+            description: Text to match agains tags.
+            required: true
+            type: string
+            displayName: Text to match agains tags.
+        (oas-tags):
+          - tags
+    /cashtags:
+      displayName: cashtags
+      /mentionQty.json:
+        displayName: mentionQty.json
+        get:
+          displayName: GET--version-tags-cashtags-mentionQty---format-
+          (oas-summary): Returns amount of mentions per day for a given period
+          responses:
+            '200':
+              description: No response was specified
+          queryParameters:
+            apiKey:
+              description: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+              required: true
+              type: string
+              displayName: 'Api token granted to call the rest of the endpoints. You must call sessions/create to obtain a token and it will be valid for 15 minutes. After that, you must create another session.'
+            text:
+              description: Text of the cashtag.
+              required: true
+              type: string
+              displayName: Text of the cashtag.
+            startDate:
+              description: Start of the period. Must be in ISO8601 format
+              format: rfc3339
+              required: true
+              type: datetime
+              displayName: Start of the period. Must be in ISO8601 format
+            endDate:
+              description: End of period. Must be in ISO8601 format
+              format: rfc3339
+              required: false
+              type: datetime
+              displayName: End of period. Must be in ISO8601 format
+          (oas-tags):
+            - tags

@@ -1,0 +1,322 @@
+#%RAML 1.0
+title: Google App State
+version: v1
+baseUri: 'https://www.googleapis.com/appstate/v1'
+protocols:
+  - HTTPS
+description: The Google App State API.
+(oas-tags-definition):
+  - name: states
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/appstate/v1/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): appstate
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/games/services/web/api/states'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/appstate'
+    description: Oauth 2.0 authentication
+/states:
+  displayName: states
+  '/{stateKey}':
+    displayName: '{stateKey}'
+    /clear:
+      displayName: clear
+      post:
+        displayName: appstate.states.clear
+        description: Clears (sets to empty) the data for the passed key if and only if the passed version matches the currently stored version. This method results in a conflict error on version mismatch.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: WriteResult
+            description: Successful response
+        queryParameters:
+          currentDataVersion:
+            description: The version of the data to be cleared. Version strings are returned by the server.
+            type: string
+            displayName: The version of the data to be cleared. Version strings are returned by the server.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/appstate'
+        (oas-tags):
+          - states
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    uriParameters:
+      stateKey:
+        description: The key for the data to be retrieved.
+        maximum: 3
+        minimum: 0
+        required: true
+        type: integer
+        displayName: The key for the data to be retrieved.
+    put:
+      displayName: appstate.states.update
+      description: Update the data associated with the input key if and only if the passed version matches the currently stored version. This method is safe in the face of concurrent writes. Maximum per-key size is 128KB.
+      body:
+        application/json:
+          type: UpdateRequest
+          (oas-body-name): body
+      responses:
+        '200':
+          body:
+            application/json:
+              type: WriteResult
+          description: Successful response
+      queryParameters:
+        currentStateVersion:
+          description: 'The version of the app state your application is attempting to update. If this does not match the current version, this method will return a conflict error. If there is no data stored on the server for this key, the update will succeed irrespective of the value of this parameter.'
+          type: string
+          displayName: 'The version of the app state your application is attempting to update. If this does not match the current version, this method will return a conflict error. If there is no data stored on the server for this key, the update will succeed irrespective of the value of this parameter.'
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/appstate'
+      (oas-tags):
+        - states
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+    get:
+      displayName: appstate.states.get
+      description: 'Retrieves the data corresponding to the passed key. If the key does not exist on the server, an HTTP 404 will be returned.'
+      responses:
+        '200':
+          body:
+            application/json:
+              type: GetResponse
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/appstate'
+      (oas-tags):
+        - states
+    delete:
+      displayName: appstate.states.delete
+      description: 'Deletes a key and the data associated with it. The key is removed and no longer counts against the key quota. Note that since this method is not safe in the face of concurrent modifications, it should only be used for development and testing purposes. Invoking this method in shipping code can result in data loss and data corruption.'
+      responses:
+        '200':
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/appstate'
+      (oas-tags):
+        - states
+  get:
+    displayName: appstate.states.list
+    description: 'Lists all the states keys, and optionally the state data.'
+    responses:
+      '200':
+        body:
+          application/json:
+            type: ListResponse
+        description: Successful response
+    queryParameters:
+      includeData:
+        default: false
+        description: Whether to include the full data in addition to the version number
+        type: boolean
+        displayName: Whether to include the full data in addition to the version number
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/appstate'
+    (oas-tags):
+      - states
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+types:
+  GetResponse:
+    description: This is a JSON template for an app state resource.
+    properties:
+      currentStateVersion:
+        description: The current app state version.
+        type: string
+        required: false
+      data:
+        description: The requested data.
+        type: string
+        required: false
+      kind:
+        default: 'appstate#getResponse'
+        description: 'Uniquely identifies the type of this resource. Value is always the fixed string appstate#getResponse.'
+        type: string
+        required: false
+      stateKey:
+        description: The key for the data.
+        format: int32
+        type: integer
+        required: false
+  ListResponse:
+    description: This is a JSON template to convert a list-response for app state.
+    properties:
+      items:
+        description: The app state data.
+        items:
+          type: GetResponse
+        type: array
+        required: false
+      kind:
+        default: 'appstate#listResponse'
+        description: 'Uniquely identifies the type of this resource. Value is always the fixed string appstate#listResponse.'
+        type: string
+        required: false
+      maximumKeyCount:
+        description: The maximum number of keys allowed for this user.
+        format: int32
+        type: integer
+        required: false
+  UpdateRequest:
+    description: This is a JSON template for a requests which update app state
+    properties:
+      data:
+        description: The new app state data that your application is trying to update with.
+        type: string
+        required: false
+      kind:
+        default: 'appstate#updateRequest'
+        description: 'Uniquely identifies the type of this resource. Value is always the fixed string appstate#updateRequest.'
+        type: string
+        required: false
+  WriteResult:
+    description: This is a JSON template for an app state write result.
+    properties:
+      currentStateVersion:
+        description: The version of the data for this key on the server.
+        type: string
+        required: false
+      kind:
+        default: 'appstate#writeResult'
+        description: 'Uniquely identifies the type of this resource. Value is always the fixed string appstate#writeResult.'
+        type: string
+        required: false
+      stateKey:
+        description: The written key.
+        format: int32
+        type: integer
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

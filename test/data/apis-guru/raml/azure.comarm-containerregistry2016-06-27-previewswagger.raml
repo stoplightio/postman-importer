@@ -1,0 +1,375 @@
+#%RAML 1.0
+title: ContainerRegistryManagementClient
+version: 2016-06-27-preview
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-containerregistry/2016-06-27-preview/swagger/containerregistry.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-containerregistry
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-client-flatten: any
+  oas-x-ms-enum: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.ContainerRegistry:
+            displayName: Microsoft.ContainerRegistry
+            /registries:
+              displayName: registries
+              '/{registryName}':
+                displayName: '{registryName}'
+                /regenerateCredentials:
+                  displayName: regenerateCredentials
+                  post:
+                    displayName: Registries_RegenerateCredentials
+                    description: Regenerates the administrator login credentials for the specified container registry.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: RegistryCredentials
+                        description: The request was successful; the request was well-formed and received properly.
+                    (oas-tags):
+                      - Registries
+                /getCredentials:
+                  displayName: getCredentials
+                  post:
+                    displayName: Registries_GetCredentials
+                    description: Gets the administrator login credentials for the specified container registry.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: RegistryCredentials
+                        description: The request was successful; the request was well-formed and received properly.
+                    (oas-tags):
+                      - Registries
+                uriParameters:
+                  registryName:
+                    description: The name of the container registry.
+                    required: true
+                    type: string
+                    displayName: The name of the container registry.
+                put:
+                  displayName: Registries_CreateOrUpdate
+                  description: Creates or updates a container registry with the specified parameters.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: Registry
+                      (oas-body-name): registry
+                      description: The parameters for creating or updating a container registry.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Registry
+                      description: The request was successful; the request was well-formed and received properly.
+                  (oas-tags):
+                    - Registries
+                patch:
+                  displayName: Registries_Update
+                  description: Updates a container registry with the specified parameters.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: RegistryUpdateParameters
+                      (oas-body-name): registryUpdateParameters
+                      description: The parameters for updating a container registry.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Registry
+                      description: The request was successful; the request was well-formed and received properly.
+                  (oas-tags):
+                    - Registries
+                get:
+                  displayName: Registries_GetProperties
+                  description: Gets the properties of the specified container registry.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Registry
+                      description: The request was successful; the request was well-formed and received properly.
+                  (oas-tags):
+                    - Registries
+                delete:
+                  displayName: Registries_Delete
+                  description: Deletes a container registry.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      description: The request was successful; the request was well-formed and received properly.
+                  (oas-tags):
+                    - Registries
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: Registries_ListByResourceGroup
+                description: Lists all the available container registries under the specified resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: RegistryListResult
+                    description: The request was successful; the request was well-formed and received properly.
+                (oas-tags):
+                  - Registries
+    /providers:
+      displayName: providers
+      /Microsoft.ContainerRegistry:
+        displayName: Microsoft.ContainerRegistry
+        /registries:
+          displayName: registries
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: Registries_List
+            description: Lists all the available container registries under the specified subscription.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: RegistryListResult
+                description: The request was successful; the request was well-formed and received properly.
+            (oas-tags):
+              - Registries
+        /checkNameAvailability:
+          displayName: checkNameAvailability
+          post:
+            displayName: Registries_CheckNameAvailability
+            description: 'Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 60 characters in length.'
+            is:
+              - apiVersionParameter
+            body:
+              application/json:
+                type: RegistryNameCheckRequest
+                (oas-body-name): registryNameCheckRequest
+                description: The object containing information for the availability request.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: RegistryNameStatus
+                description: The request was successful; the request was well-formed and received properly.
+            (oas-tags):
+              - Operation
+types:
+  Registry:
+    type: Resource
+  RegistryCredentials:
+    description: The result of a request to get the administrator login credentials for a container registry.
+    properties:
+      password:
+        description: The administrator password.
+        type: string
+        required: false
+      username:
+        description: The administrator username.
+        type: string
+        required: false
+  RegistryListResult:
+    description: The result of a request to list container registries.
+    properties:
+      nextLink:
+        description: The URI that can be used to request the next list of container registries.
+        type: string
+        required: false
+      value:
+        description: 'The list of container registries. Since this list may be incomplete, the nextLink field should be used to request the next list of container registries.'
+        items:
+          type: Registry
+        type: array
+        required: false
+  RegistryNameCheckRequest:
+    description: A request to check whether the container registry name is available.
+    properties:
+      name:
+        description: The name of the container registry.
+        type: string
+      type:
+        description: The resource type of the container registry. This field must be set to "Microsoft.ContainerRegistry/registries".
+        enum:
+          - Microsoft.ContainerRegistry/registries
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: ContainerRegistryResourceType
+  RegistryNameStatus:
+    description: The result of a request to check the availability of a container registry name.
+    properties:
+      message:
+        description: 'If any, the error message that provides more detail for the reason that the name is not available.'
+        type: string
+        required: false
+      nameAvailable:
+        description: The value that indicates whether the name is available.
+        type: boolean
+        required: false
+      reason:
+        description: 'If any, the reason that the name is not available.'
+        type: string
+        required: false
+  RegistryProperties:
+    description: The properties of a container registry.
+    properties:
+      adminUserEnabled:
+        default: false
+        description: The value that indicates whether the admin user is enabled. This value is false by default.
+        type: boolean
+        required: false
+      creationDate:
+        description: The creation date of the container registry in ISO8601 format.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      loginServer:
+        description: The URL that can be used to log into the container registry.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      storageAccount:
+        description: 'The properties of the storage account for the container registry. If specified, the storage account must be in the same physical location as the container registry.'
+        type: StorageAccountProperties
+  RegistryPropertiesUpdateParameters:
+    description: The parameters for updating the properties of a container registry.
+    properties:
+      adminUserEnabled:
+        description: The value that indicates whether the admin user is enabled. This value is false by default.
+        type: boolean
+        required: false
+      storageAccount:
+        description: 'The properties of a storage account for the container registry. If specified, the storage account must be in the same physical location as the container registry.'
+        type: StorageAccountProperties
+        required: false
+  RegistryUpdateParameters:
+    description: The parameters for updating a container registry.
+    properties:
+      properties:
+        description: The properties that the container registry will be updated with.
+        type: RegistryPropertiesUpdateParameters
+        required: false
+        (oas-x-ms-client-flatten): true
+      tags:
+        additionalProperties:
+          type: string
+        description: The resource tags for the container registry.
+        type: object
+        required: false
+  Resource:
+    description: An Azure resource.
+    properties:
+      id:
+        description: The resource ID.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: The location of the resource. This cannot be changed after the resource is created.
+        type: string
+      name:
+        description: The name of the resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: The tags of the resource.
+        type: object
+        required: false
+      type:
+        description: The type of the resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  StorageAccountProperties:
+    description: The properties of a storage account for a container registry.
+    properties:
+      accessKey:
+        description: The access key to the storage account.
+        type: string
+      name:
+        description: The name of the storage account.
+        type: string
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: The client API version.
+        required: true

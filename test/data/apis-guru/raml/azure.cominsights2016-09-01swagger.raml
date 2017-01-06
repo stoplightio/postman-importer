@@ -1,0 +1,177 @@
+#%RAML 1.0
+title: InsightsClient
+version: '2016-09-01'
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/insights/2016-09-01/swagger/insightsClient_Metrics.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): insights
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-odata: any
+  oas-x-ms-pageable: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+'/{resourceUri}':
+  displayName: '{resourceUri}'
+  /providers:
+    displayName: providers
+    /microsoft.insights:
+      displayName: microsoft.insights
+      /metrics:
+        displayName: metrics
+        get:
+          (oas-x-ms-odata): '#/definitions/Metric'
+          (oas-x-ms-pageable): {}
+          displayName: Metrics_List
+          description: 'Lists the metric values for a resource. The $filter is used to reduce the set of metric data returned. Some common properties for this expression will be: name.value, aggregationType, startTime, endTime, timeGrain. The filter expression uses these properties with comparison operators (eg. eq, gt, lt) and multiple expressions can be combined with parentheses and ''and/or'' operators. Some example filter expressions are: - $filter=(name.value eq ''RunsSucceeded'') and aggregationType eq ''Total'' and startTime eq 2016-02-20 and endTime eq 2016-02-21 and timeGrain eq duration''PT1M'', - $filter=(name.value eq ''RunsSucceeded'') and (aggregationType eq ''Total'' or aggregationType eq ''Average'') and startTime eq 2016-02-20 and endTime eq 2016-02-21 and timeGrain eq duration''PT1H'', - $filter=(name.value eq ''ActionsCompleted'' or name.value eq ''RunsSucceeded'') and (aggregationType eq ''Total'' or aggregationType eq ''Average'') and startTime eq 2016-02-20 and endTime eq 2016-02-21 and timeGrain eq duration''PT1M''.'
+          is:
+            - filterParameter
+            - apiVersionParameter
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: MetricCollection
+                  example:
+                    value:
+                      value:
+                        - data:
+                            - timeStamp: '2016-09-21T19:59:00Z'
+                              total: 4
+                            - average: 3.8
+                              timeStamp: '2016-09-21T20:00:00Z'
+                            - minimum: 0
+                              timeStamp: '2016-09-21T20:01:00Z'
+                            - maximum: 5
+                              timeStamp: '2016-09-21T20:02:00Z'
+                          name:
+                            localizedValue: Runs Started
+                            value: RunsStarted
+                          unit: Count
+              description: Successful request to get the list of metric values
+          (oas-tags):
+            - Metrics
+types:
+  LocalizableString:
+    description: The localizable string class.
+    properties:
+      localizedValue:
+        description: the locale specific value.
+        type: string
+        required: false
+      value:
+        description: the invariant value.
+        type: string
+  Metric:
+    description: A set of metric values in a time range.
+    properties:
+      data:
+        description: Array of data points representing the metric values.
+        items:
+          type: MetricValue
+        type: array
+      name:
+        description: 'the name and the display name of the metric, i.e. it is localizable string.'
+        type: LocalizableString
+      unit:
+        description: the unit of the metric.
+        type: Unit
+  MetricCollection:
+    description: The collection of metric value sets.
+    properties:
+      value:
+        description: the value of the collection.
+        items:
+          type: Metric
+        type: array
+  MetricValue:
+    description: Represents a metric value.
+    properties:
+      average:
+        description: the average value in the time range.
+        format: double
+        type: number
+        required: false
+      count:
+        description: the number of samples in the time range. Can be used to determine the number of values that contributed to the average value.
+        format: int64
+        type: integer
+        required: false
+      maximum:
+        description: the greatest value in the time range.
+        format: double
+        type: number
+        required: false
+      minimum:
+        description: the least value in the time range.
+        format: double
+        type: number
+        required: false
+      timeStamp:
+        description: the timestamp for the metric value in ISO 8601 format.
+        format: rfc3339
+        type: datetime
+      total:
+        description: the sum of all of the values in the time range.
+        format: double
+        type: number
+        required: false
+  Unit:
+    description: the unit of the metric.
+    enum:
+      - Count
+      - Bytes
+      - Seconds
+      - CountPerSecond
+      - BytesPerSecond
+      - Percent
+      - MilliSeconds
+    type: string
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client Api Version.
+        required: true
+  filterParameter:
+    queryParameters:
+      $filter:
+        type: string
+        description: Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
+        required: false

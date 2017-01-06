@@ -1,0 +1,392 @@
+#%RAML 1.0
+title: KeyVaultManagementClient
+version: '2015-06-01'
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: The Azure management API provides a RESTful set of web services that interact with Azure Key Vault.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - developer_tools
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-keyvault/2015-06-01/swagger/keyvault.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-keyvault
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - cryptography
+    - security
+    - data protection
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-enum: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resources:
+      displayName: resources
+      get:
+        (oas-x-ms-pageable):
+          nextLinkName: nextLink
+        displayName: Vaults_List
+        description: The List operation gets information about the vaults associated with the subscription.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: VaultListResult
+            description: Get information about all key vaults in the subscription.
+        queryParameters:
+          $filter:
+            description: The filter to apply on the operation.
+            enum:
+              - resourceType eq 'Microsoft.KeyVault/vaults'
+            required: true
+            type: string
+            displayName: The filter to apply on the operation.
+          $top:
+            description: Maximum number of results to return.
+            format: int32
+            type: integer
+            displayName: Maximum number of results to return.
+          api-version:
+            description: Azure Resource Manager Api Version.
+            enum:
+              - '2015-11-01'
+            required: true
+            type: string
+            displayName: Azure Resource Manager Api Version.
+        (oas-tags):
+          - Vaults
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.KeyVault:
+            displayName: Microsoft.KeyVault
+            /vaults:
+              displayName: vaults
+              '/{vaultName}':
+                displayName: '{vaultName}'
+                uriParameters:
+                  vaultName:
+                    description: The name of the vault to delete
+                    required: true
+                    type: string
+                    displayName: The name of the vault to delete
+                put:
+                  displayName: Vaults_CreateOrUpdate
+                  description: Create or update a key vault in the specified subscription.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: VaultCreateOrUpdateParameters
+                      (oas-body-name): parameters
+                      description: Parameters to create or update the vault
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Vault
+                      description: Created or updated vault
+                    '201':
+                      body:
+                        application/json:
+                          type: Vault
+                      description: Created or updated vault
+                  (oas-tags):
+                    - Vaults
+                get:
+                  displayName: Vaults_Get
+                  description: Gets the specified Azure key vault.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Vault
+                      description: Retrieved vault
+                  (oas-tags):
+                    - Vaults
+                delete:
+                  displayName: Vaults_Delete
+                  description: Deletes the specified Azure key vault.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      description: OK Response.
+                  (oas-tags):
+                    - Vaults
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: Vaults_ListByResourceGroup
+                description: The List operation gets information about the vaults associated with the subscription and within the specified resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: VaultListResult
+                    description: Get information about all key vaults in the specified resource group.
+                queryParameters:
+                  $top:
+                    description: Maximum number of results to return.
+                    format: int32
+                    type: integer
+                    displayName: Maximum number of results to return.
+                (oas-tags):
+                  - Vaults
+types:
+  AccessPolicyEntry:
+    description: An identity that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+    properties:
+      applicationId:
+        description: ' Application ID of the client making request on behalf of a principal'
+        format: uuid
+        type: string
+        facets:
+          format: string
+        required: false
+      objectId:
+        description: 'The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.'
+        format: uuid
+        type: string
+        facets:
+          format: string
+      permissions:
+        description: 'Permissions the identity has for keys, secrets and certificates.'
+        type: Permissions
+      tenantId:
+        description: The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+        format: uuid
+        type: string
+        facets:
+          format: string
+  Permissions:
+    description: 'Permissions the identity has for keys, secrets and certificates.'
+    properties:
+      certificates:
+        description: Permissions to certificates
+        items:
+          enum:
+            - all
+            - get
+            - list
+            - delete
+            - create
+            - import
+            - update
+            - managecontacts
+            - getissuers
+            - listissuers
+            - setissuers
+            - deleteissuers
+            - manageissuers
+          type: string
+          (oas-x-ms-enum):
+            modelAsString: true
+            name: CertificatePermissions
+        type: array
+        required: false
+      keys:
+        description: Permissions to keys
+        items:
+          enum:
+            - all
+            - encrypt
+            - decrypt
+            - wrapKey
+            - unwrapKey
+            - sign
+            - verify
+            - get
+            - list
+            - create
+            - update
+            - import
+            - delete
+            - backup
+            - restore
+          type: string
+          (oas-x-ms-enum):
+            modelAsString: true
+            name: KeyPermissions
+        type: array
+        required: false
+      secrets:
+        description: Permissions to secrets
+        items:
+          enum:
+            - all
+            - get
+            - list
+            - set
+            - delete
+          type: string
+          (oas-x-ms-enum):
+            modelAsString: true
+            name: SecretPermissions
+        type: array
+        required: false
+  Resource:
+    description: Key Vault resource
+    properties:
+      id:
+        description: The Azure Resource Manager resource ID for the key vault.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: The supported Azure location where the key vault should be created.
+        type: string
+      name:
+        description: The name of the key vault.
+        type: string
+      tags:
+        additionalProperties:
+          type: string
+        description: 'The tags that will be assigned to the key vault. '
+        type: object
+        required: false
+      type:
+        description: The resource type of the key vault.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  Sku:
+    description: SKU details
+    properties:
+      family:
+        description: SKU family name
+        enum:
+          - A
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: SkuFamily
+      name:
+        description: SKU name to specify whether the key vault is a standard vault or a premium vault.
+        enum:
+          - standard
+          - premium
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: SkuName
+  Vault:
+    type: Resource
+  VaultCreateOrUpdateParameters:
+    description: Parameters for creating or updating a vault
+    properties:
+      location:
+        description: The supported Azure location where the key vault should be created.
+        type: string
+      properties:
+        description: Properties of the vault
+        type: VaultProperties
+      tags:
+        additionalProperties:
+          type: string
+        description: 'The tags that will be assigned to the key vault. '
+        type: object
+        required: false
+  VaultListResult:
+    description: List of vaults
+    properties:
+      nextLink:
+        description: Gets or sets the URL to get the next set of vaults.
+        type: string
+        required: false
+      value:
+        description: Gets or sets the list of vaults.
+        items:
+          type: Vault
+        type: array
+        required: false
+  VaultProperties:
+    description: Properties of the vault
+    properties:
+      accessPolicies:
+        description: An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+        items:
+          type: AccessPolicyEntry
+        maxItems: 16
+        type: array
+      enabledForDeployment:
+        description: Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
+        type: boolean
+        required: false
+      enabledForDiskEncryption:
+        description: Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+        type: boolean
+        required: false
+      enabledForTemplateDeployment:
+        description: Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+        type: boolean
+        required: false
+      sku:
+        description: SKU details
+        type: Sku
+      tenantId:
+        description: The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+        format: uuid
+        type: string
+        facets:
+          format: string
+      vaultUri:
+        description: The URI of the vault for performing operations on keys and secrets.
+        type: string
+        required: false
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client Api Version.
+        required: true

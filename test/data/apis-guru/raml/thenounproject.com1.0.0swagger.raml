@@ -1,0 +1,392 @@
+#%RAML 1.0
+title: The Noun Project
+version: 1.0.0
+baseUri: 'http://api.thenounproject.com/api.thenounproject.com'
+mediaType: application/json
+protocols:
+  - HTTP
+description: Icons for Everything
+(oas-tags-definition):
+  - description: Operations on collection endpoints
+    name: collection
+  - description: Operations on collections endpoints
+    name: collections
+  - description: Operations on icon endpoints
+    name: icon
+  - description: Operations on icons endpoints
+    name: icons
+  - description: Operations on oauth endpoints
+    name: oauth
+  - description: Operations on user endpoints
+    name: user
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-x-hasEquivalentPaths: any
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.dropbox.com_sh_vmxgpx8r3q3gurn_AAA6sBpgm_ZWiq62ZuMM-CVoa_Noun Project Logo_Brandmark_03_White_SVG_NounProject_brandmark_stacked_white.svg'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://api.thenounproject.com/config/api-doc'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): thenounproject.com
+(oas-externalDocs):
+  url: 'https://thenounproject.com/developers/'
+/icon:
+  displayName: icon
+  '/{term}':
+    displayName: '{term}'
+    uriParameters:
+      term:
+        description: Icon term
+        required: true
+        type: string
+        displayName: Icon term
+    get:
+      displayName: getIconByTerm
+      description: Returns a single icon
+      (oas-summary): Get icon by term
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - icon
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Icon id
+        format: int32
+        required: true
+        type: integer
+        displayName: Icon id
+    get:
+      displayName: getIconById
+      description: Returns a single icon
+      (oas-summary): Get icon by id
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - icon
+/user:
+  displayName: user
+  '/{username}':
+    displayName: '{username}'
+    /uploads:
+      displayName: uploads
+      get:
+        displayName: getUserUploadsWithUser
+        description: Returns a list of uploads associated with a user
+        (oas-summary): Get user uploads with user
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          limit:
+            description: Maximum number of results
+            format: int32
+            required: false
+            type: integer
+            displayName: Maximum number of results
+          offset:
+            description: Number of results to displace or skip over
+            format: int32
+            required: false
+            type: integer
+            displayName: Number of results to displace or skip over
+          page:
+            description: Number of results of limit length to displace or skip over
+            format: int32
+            required: false
+            type: integer
+            displayName: Number of results of limit length to displace or skip over
+        (oas-tags):
+          - user
+  '/{user_id}':
+    displayName: '{user_id}'
+    /collections:
+      displayName: collections
+      '/{slug}':
+        displayName: '{slug}'
+        uriParameters:
+          slug:
+            description: Collection slug
+            required: true
+            type: string
+            displayName: Collection slug
+        get:
+          displayName: getUserCollection
+          description: Returns a single collection associated with a user
+          (oas-summary): Get user collection
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - user
+      get:
+        displayName: getUserCollections
+        description: Returns a list of collections associated with a user
+        (oas-summary): Get user collections
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - user
+/icons:
+  displayName: icons
+  /recent_uploads:
+    displayName: recent_uploads
+    get:
+      displayName: getRecentIcons
+      description: Returns list of most recently uploaded icons
+      (oas-summary): Get recent icons
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        limit:
+          description: Maximum number of results
+          format: int32
+          required: false
+          type: integer
+          displayName: Maximum number of results
+        offset:
+          description: Number of results to displace or skip over
+          format: int32
+          required: false
+          type: integer
+          displayName: Number of results to displace or skip over
+        page:
+          description: Number of results of limit length to displace or skip over
+          format: int32
+          required: false
+          type: integer
+          displayName: Number of results of limit length to displace or skip over
+      (oas-tags):
+        - icons
+  '/{term}':
+    displayName: '{term}'
+    uriParameters:
+      term:
+        description: Icon term
+        required: true
+        type: string
+        displayName: Icon term
+    get:
+      displayName: getIconsByTerm
+      description: Returns a list of icons
+      (oas-summary): Get icons by term
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        limit_to_public_domain:
+          description: Limit results to public domain icons only
+          format: int32
+          required: false
+          type: integer
+          displayName: Limit results to public domain icons only
+        limit:
+          description: Maximum number of results
+          format: int32
+          required: false
+          type: integer
+          displayName: Maximum number of results
+        offset:
+          description: Number of results to displace or skip over
+          format: int32
+          required: false
+          type: integer
+          displayName: Number of results to displace or skip over
+        page:
+          description: Number of results of limit length to displace or skip over
+          format: int32
+          required: false
+          type: integer
+          displayName: Number of results of limit length to displace or skip over
+      (oas-tags):
+        - icons
+/collection:
+  displayName: collection
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Collection id
+        format: int32
+        required: true
+        type: integer
+        displayName: Collection id
+    get:
+      displayName: getCollectionById
+      description: Returns a single collection
+      (oas-summary): Get collection by id
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - collection
+    /icons:
+      displayName: icons
+      get:
+        displayName: getCollectionIconsById
+        description: Returns a list of icons associated with a collection
+        (oas-summary): Get collection icons by id
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          limit:
+            description: Maximum number of results
+            format: int32
+            required: false
+            type: integer
+            displayName: Maximum number of results
+          offset:
+            description: Number of results to displace or skip over
+            format: int32
+            required: false
+            type: integer
+            displayName: Number of results to displace or skip over
+          page:
+            description: Number of results of limit length to displace or skip over
+            format: int32
+            required: false
+            type: integer
+            displayName: Number of results of limit length to displace or skip over
+        (oas-tags):
+          - collection
+  '/{slug}':
+    displayName: '{slug}'
+    uriParameters:
+      slug:
+        description: Collection slug
+        required: true
+        type: string
+        displayName: Collection slug
+    get:
+      displayName: getCollectionBySlug
+      description: Returns a single collection
+      (oas-summary): Get collection by slug
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - collection
+    /icons:
+      displayName: icons
+      get:
+        displayName: getCollectionIconsBySlug
+        description: Returns a list of icons associated with a collection
+        (oas-summary): Get collection icons by slug
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          limit:
+            description: Maximum number of results
+            format: int32
+            required: false
+            type: integer
+            displayName: Maximum number of results
+          offset:
+            description: Number of results to displace or skip over
+            format: int32
+            required: false
+            type: integer
+            displayName: Number of results to displace or skip over
+          page:
+            description: Number of results of limit length to displace or skip over
+            format: int32
+            required: false
+            type: integer
+            displayName: Number of results of limit length to displace or skip over
+        (oas-tags):
+          - collection
+/oauth:
+  displayName: oauth
+  /usage:
+    displayName: usage
+    get:
+      displayName: getApiQuotaStatus
+      description: Returns current oauth usage and limits
+      (oas-summary): Get api quota status
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - oauth
+/collections:
+  displayName: collections
+  get:
+    displayName: getAllCollections
+    description: Return's a list of all collections
+    (oas-summary): Get all collections
+    responses:
+      '200':
+        description: No response was specified
+    queryParameters:
+      limit:
+        description: Maximum number of results
+        format: int32
+        required: false
+        type: integer
+        displayName: Maximum number of results
+      offset:
+        description: Number of results to displace or skip over
+        format: int32
+        required: false
+        type: integer
+        displayName: Number of results to displace or skip over
+      page:
+        description: Number of results of limit length to displace or skip over
+        format: int32
+        required: false
+        type: integer
+        displayName: Number of results of limit length to displace or skip over
+    (oas-tags):
+      - collections
+(oas-x-hasEquivalentPaths): true

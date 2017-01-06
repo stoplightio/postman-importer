@@ -1,0 +1,748 @@
+#%RAML 1.0
+title: YouTube Analytics
+version: v1
+baseUri: 'https://www.googleapis.com/youtube/analytics/v1'
+protocols:
+  - HTTPS
+description: Retrieves your YouTube Analytics data.
+(oas-tags-definition):
+  - name: batchReportDefinitions
+  - name: batchReports
+  - name: groupItems
+  - name: groups
+  - name: reports
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.youtube.com_yt_brand_media_image_YouTube-logo-full_color.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/youtubeAnalytics/v1/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): youtubeAnalytics
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'http://developers.google.com/youtube/analytics/'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/youtube'
+        - 'https://www.googleapis.com/auth/youtube.readonly'
+        - 'https://www.googleapis.com/auth/youtubepartner'
+        - 'https://www.googleapis.com/auth/yt-analytics-monetary.readonly'
+        - 'https://www.googleapis.com/auth/yt-analytics.readonly'
+    description: Oauth 2.0 authentication
+/reports:
+  displayName: reports
+  get:
+    displayName: youtubeAnalytics.reports.query
+    description: Retrieve your YouTube Analytics reports.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: ResultTable
+        description: Successful response
+    queryParameters:
+      ids:
+        description: |-
+          Identifies the YouTube channel or content owner for which you are retrieving YouTube Analytics data.
+          - To request data for a YouTube user, set the ids parameter value to channel==CHANNEL_ID, where CHANNEL_ID specifies the unique YouTube channel ID.
+          - To request data for a YouTube CMS content owner, set the ids parameter value to contentOwner==OWNER_NAME, where OWNER_NAME is the CMS name of the content owner.
+        required: true
+        type: string
+        displayName: |-
+          Identifies the YouTube channel or content owner for which you are retrieving YouTube Analytics data.
+          - To request data for a YouTube user, set the ids parameter value to channel==CHANNEL_ID, where CHANNEL_ID specifies the unique YouTube channel ID.
+          - To request data for a YouTube CMS content owner, set the ids parameter value to contentOwner==OWNER_NAME, where OWNER_NAME is the CMS name of the content owner.
+      start-date:
+        description: The start date for fetching YouTube Analytics data. The value should be in YYYY-MM-DD format.
+        required: true
+        type: string
+        displayName: The start date for fetching YouTube Analytics data. The value should be in YYYY-MM-DD format.
+      end-date:
+        description: The end date for fetching YouTube Analytics data. The value should be in YYYY-MM-DD format.
+        required: true
+        type: string
+        displayName: The end date for fetching YouTube Analytics data. The value should be in YYYY-MM-DD format.
+      metrics:
+        description: 'A comma-separated list of YouTube Analytics metrics, such as views or likes,dislikes. See the Available Reports document for a list of the reports that you can retrieve and the metrics available in each report, and see the Metrics document for definitions of those metrics.'
+        required: true
+        type: string
+        displayName: 'A comma-separated list of YouTube Analytics metrics, such as views or likes,dislikes. See the Available Reports document for a list of the reports that you can retrieve and the metrics available in each report, and see the Metrics document for definitions of those metrics.'
+      currency:
+        description: 'The currency to which financial metrics should be converted. The default is US Dollar (USD). If the result contains no financial metrics, this flag will be ignored. Responds with an error if the specified currency is not recognized.'
+        type: string
+        displayName: 'The currency to which financial metrics should be converted. The default is US Dollar (USD). If the result contains no financial metrics, this flag will be ignored. Responds with an error if the specified currency is not recognized.'
+      dimensions:
+        description: 'A comma-separated list of YouTube Analytics dimensions, such as views or ageGroup,gender. See the Available Reports document for a list of the reports that you can retrieve and the dimensions used for those reports. Also see the Dimensions document for definitions of those dimensions.'
+        type: string
+        displayName: 'A comma-separated list of YouTube Analytics dimensions, such as views or ageGroup,gender. See the Available Reports document for a list of the reports that you can retrieve and the dimensions used for those reports. Also see the Dimensions document for definitions of those dimensions.'
+      filters:
+        description: 'A list of filters that should be applied when retrieving YouTube Analytics data. The Available Reports document identifies the dimensions that can be used to filter each report, and the Dimensions document defines those dimensions. If a request uses multiple filters, join them together with a semicolon (;), and the returned result table will satisfy both filters. For example, a filters parameter value of video==dMH0bHeiRNg;country==IT restricts the result set to include data for the given video in Italy.'
+        type: string
+        displayName: 'A list of filters that should be applied when retrieving YouTube Analytics data. The Available Reports document identifies the dimensions that can be used to filter each report, and the Dimensions document defines those dimensions. If a request uses multiple filters, join them together with a semicolon (;), and the returned result table will satisfy both filters. For example, a filters parameter value of video==dMH0bHeiRNg;country==IT restricts the result set to include data for the given video in Italy.'
+      max-results:
+        description: The maximum number of rows to include in the response.
+        minimum: 1
+        type: integer
+        displayName: The maximum number of rows to include in the response.
+      sort:
+        description: A comma-separated list of dimensions or metrics that determine the sort order for YouTube Analytics data. By default the sort order is ascending. The '-' prefix causes descending sort order.
+        type: string
+        displayName: A comma-separated list of dimensions or metrics that determine the sort order for YouTube Analytics data. By default the sort order is ascending. The '-' prefix causes descending sort order.
+      start-index:
+        description: 'An index of the first entity to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter (one-based, inclusive).'
+        minimum: 1
+        type: integer
+        displayName: 'An index of the first entity to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter (one-based, inclusive).'
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/yt-analytics.readonly'
+    (oas-tags):
+      - reports
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+/groups:
+  displayName: groups
+  put:
+    displayName: youtubeAnalytics.groups.update
+    description: 'Modifies a group. For example, you could change a group''s title.'
+    body:
+      application/json:
+        type: Group
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Group
+        description: Successful response
+    queryParameters:
+      onBehalfOfContentOwner:
+        description: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+        type: string
+        displayName: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/youtubepartner'
+    (oas-tags):
+      - groups
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+  post:
+    displayName: youtubeAnalytics.groups.insert
+    description: Creates a group.
+    body:
+      application/json:
+        type: Group
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Group
+        description: Successful response
+    queryParameters:
+      onBehalfOfContentOwner:
+        description: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+        type: string
+        displayName: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/youtubepartner'
+    (oas-tags):
+      - groups
+  get:
+    displayName: youtubeAnalytics.groups.list
+    description: 'Returns a collection of groups that match the API request parameters. For example, you can retrieve all groups that the authenticated user owns, or you can retrieve one or more groups by their unique IDs.'
+    responses:
+      '200':
+        body:
+          application/json:
+            type: GroupListResponse
+        description: Successful response
+    queryParameters:
+      id:
+        description: 'The id parameter specifies a comma-separated list of the YouTube group ID(s) for the resource(s) that are being retrieved. In a group resource, the id property specifies the group''s YouTube group ID.'
+        type: string
+        displayName: 'The id parameter specifies a comma-separated list of the YouTube group ID(s) for the resource(s) that are being retrieved. In a group resource, the id property specifies the group''s YouTube group ID.'
+      mine:
+        description: Set this parameter's value to true to instruct the API to only return groups owned by the authenticated user.
+        type: boolean
+        displayName: Set this parameter's value to true to instruct the API to only return groups owned by the authenticated user.
+      onBehalfOfContentOwner:
+        description: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+        type: string
+        displayName: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+      pageToken:
+        description: 'The pageToken parameter identifies a specific page in the result set that should be returned. In an API response, the nextPageToken property identifies the next page that can be retrieved.'
+        type: string
+        displayName: 'The pageToken parameter identifies a specific page in the result set that should be returned. In an API response, the nextPageToken property identifies the next page that can be retrieved.'
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/yt-analytics.readonly'
+    (oas-tags):
+      - groups
+  delete:
+    displayName: youtubeAnalytics.groups.delete
+    description: Deletes a group.
+    responses:
+      '200':
+        description: Successful response
+    queryParameters:
+      id:
+        description: The id parameter specifies the YouTube group ID for the group that is being deleted.
+        required: true
+        type: string
+        displayName: The id parameter specifies the YouTube group ID for the group that is being deleted.
+      onBehalfOfContentOwner:
+        description: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+        type: string
+        displayName: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/youtubepartner'
+    (oas-tags):
+      - groups
+/groupItems:
+  displayName: groupItems
+  post:
+    displayName: youtubeAnalytics.groupItems.insert
+    description: Creates a group item.
+    body:
+      application/json:
+        type: GroupItem
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: GroupItem
+        description: Successful response
+    queryParameters:
+      onBehalfOfContentOwner:
+        description: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+        type: string
+        displayName: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/youtubepartner'
+    (oas-tags):
+      - groupItems
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+  get:
+    displayName: youtubeAnalytics.groupItems.list
+    description: Returns a collection of group items that match the API request parameters.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: GroupItemListResponse
+        description: Successful response
+    queryParameters:
+      groupId:
+        description: The id parameter specifies the unique ID of the group for which you want to retrieve group items.
+        required: true
+        type: string
+        displayName: The id parameter specifies the unique ID of the group for which you want to retrieve group items.
+      onBehalfOfContentOwner:
+        description: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+        type: string
+        displayName: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/yt-analytics.readonly'
+    (oas-tags):
+      - groupItems
+  delete:
+    displayName: youtubeAnalytics.groupItems.delete
+    description: Removes an item from a group.
+    responses:
+      '200':
+        description: Successful response
+    queryParameters:
+      id:
+        description: The id parameter specifies the YouTube group item ID for the group that is being deleted.
+        required: true
+        type: string
+        displayName: The id parameter specifies the YouTube group item ID for the group that is being deleted.
+      onBehalfOfContentOwner:
+        description: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+        type: string
+        displayName: |-
+          Note: This parameter is intended exclusively for YouTube content partners.
+
+          The onBehalfOfContentOwner parameter indicates that the request's authorization credentials identify a YouTube CMS user who is acting on behalf of the content owner specified in the parameter value. This parameter is intended for YouTube content partners that own and manage many different YouTube channels. It allows content owners to authenticate once and get access to all their video and channel data, without having to provide authentication credentials for each individual channel. The CMS account that the user authenticates with must be linked to the specified YouTube content owner.
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/youtubepartner'
+    (oas-tags):
+      - groupItems
+/batchReports:
+  displayName: batchReports
+  get:
+    displayName: youtubeAnalytics.batchReports.list
+    description: Retrieves a list of processed batch reports.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: BatchReportList
+        description: Successful response
+    queryParameters:
+      batchReportDefinitionId:
+        description: The batchReportDefinitionId parameter specifies the ID of the batch reportort definition for which you are retrieving reports.
+        required: true
+        type: string
+        displayName: The batchReportDefinitionId parameter specifies the ID of the batch reportort definition for which you are retrieving reports.
+      onBehalfOfContentOwner:
+        description: The onBehalfOfContentOwner parameter identifies the content owner that the user is acting on behalf of.
+        required: true
+        type: string
+        displayName: The onBehalfOfContentOwner parameter identifies the content owner that the user is acting on behalf of.
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/yt-analytics.readonly'
+    (oas-tags):
+      - batchReports
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+/batchReportDefinitions:
+  displayName: batchReportDefinitions
+  get:
+    displayName: youtubeAnalytics.batchReportDefinitions.list
+    description: Retrieves a list of available batch report definitions.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: BatchReportDefinitionList
+        description: Successful response
+    queryParameters:
+      onBehalfOfContentOwner:
+        description: The onBehalfOfContentOwner parameter identifies the content owner that the user is acting on behalf of.
+        required: true
+        type: string
+        displayName: The onBehalfOfContentOwner parameter identifies the content owner that the user is acting on behalf of.
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/yt-analytics.readonly'
+    (oas-tags):
+      - batchReportDefinitions
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+types:
+  BatchReport:
+    description: Contains single batchReport resource.
+    properties:
+      id:
+        description: The ID that YouTube assigns and uses to uniquely identify the report.
+        type: string
+        required: false
+      kind:
+        default: 'youtubeAnalytics#batchReport'
+        description: 'This value specifies the type of data of this item. For batch report the kind property value is youtubeAnalytics#batchReport.'
+        type: string
+        required: false
+      outputs:
+        description: Report outputs.
+        items:
+          properties:
+            downloadUrl:
+              description: Cloud storage URL to download this report. This URL is valid for 30 minutes.
+              type: string
+              required: false
+            format:
+              description: Format of the output.
+              type: string
+              required: false
+            type:
+              default: cloudStorageOutput
+              description: Type of the output.
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+      reportId:
+        description: The ID of the the report definition.
+        type: string
+        required: false
+      timeSpan:
+        description: Period included in the report. For reports containing all entities endTime is not set. Both startTime and endTime are inclusive.
+        properties:
+          endTime:
+            description: End of the period included in the report. Inclusive. For reports containing all entities endTime is not set.
+            format: rfc3339
+            type: datetime
+            required: false
+          startTime:
+            description: Start of the period included in the report. Inclusive.
+            format: rfc3339
+            type: datetime
+            required: false
+        type: object
+        required: false
+      timeUpdated:
+        description: The time when the report was updated.
+        format: rfc3339
+        type: datetime
+        required: false
+  BatchReportDefinition:
+    description: Contains single batchReportDefinition resource.
+    properties:
+      id:
+        description: The ID that YouTube assigns and uses to uniquely identify the report definition.
+        type: string
+        required: false
+      kind:
+        default: 'youtubeAnalytics#batchReportDefinition'
+        description: 'This value specifies the type of data of this item. For batch report definition the kind property value is youtubeAnalytics#batchReportDefinition.'
+        type: string
+        required: false
+      name:
+        description: Name of the report definition.
+        type: string
+        required: false
+      status:
+        description: Status of the report definition.
+        type: string
+        required: false
+      type:
+        description: Type of the report definition.
+        type: string
+        required: false
+  BatchReportDefinitionList:
+    description: A paginated list of batchReportDefinition resources returned in response to a youtubeAnalytics.batchReportDefinitions.list request.
+    properties:
+      items:
+        description: A list of batchReportDefinition resources that match the request criteria.
+        items:
+          type: BatchReportDefinition
+        type: array
+        required: false
+      kind:
+        default: 'youtubeAnalytics#batchReportDefinitionList'
+        description: 'This value specifies the type of data included in the API response. For the list method, the kind property value is youtubeAnalytics#batchReportDefinitionList.'
+        type: string
+        required: false
+  BatchReportList:
+    description: A paginated list of batchReport resources returned in response to a youtubeAnalytics.batchReport.list request.
+    properties:
+      items:
+        description: A list of batchReport resources that match the request criteria.
+        items:
+          type: BatchReport
+        type: array
+        required: false
+      kind:
+        default: 'youtubeAnalytics#batchReportList'
+        description: 'This value specifies the type of data included in the API response. For the list method, the kind property value is youtubeAnalytics#batchReportList.'
+        type: string
+        required: false
+  Group:
+    properties:
+      contentDetails:
+        properties:
+          itemCount:
+            format: uint64
+            type: string
+            facets:
+              format: string
+            required: false
+          itemType:
+            type: string
+            required: false
+        type: object
+        required: false
+      etag:
+        type: string
+        required: false
+      id:
+        type: string
+        required: false
+      kind:
+        default: 'youtube#group'
+        type: string
+        required: false
+      snippet:
+        properties:
+          publishedAt:
+            format: rfc3339
+            type: datetime
+            required: false
+          title:
+            type: string
+            required: false
+        type: object
+        required: false
+  GroupItem:
+    properties:
+      etag:
+        type: string
+        required: false
+      groupId:
+        type: string
+        required: false
+      id:
+        type: string
+        required: false
+      kind:
+        default: 'youtube#groupItem'
+        type: string
+        required: false
+      resource:
+        properties:
+          id:
+            type: string
+            required: false
+          kind:
+            type: string
+            required: false
+        type: object
+        required: false
+  GroupItemListResponse:
+    description: A paginated list of grouList resources returned in response to a youtubeAnalytics.groupApi.list request.
+    properties:
+      etag:
+        type: string
+        required: false
+      items:
+        items:
+          type: GroupItem
+        type: array
+        required: false
+      kind:
+        default: 'youtube#groupItemListResponse'
+        type: string
+        required: false
+  GroupListResponse:
+    description: A paginated list of grouList resources returned in response to a youtubeAnalytics.groupApi.list request.
+    properties:
+      etag:
+        type: string
+        required: false
+      items:
+        items:
+          type: Group
+        type: array
+        required: false
+      kind:
+        default: 'youtube#groupListResponse'
+        type: string
+        required: false
+      nextPageToken:
+        type: string
+        required: false
+  ResultTable:
+    description: 'Contains a single result table. The table is returned as an array of rows that contain the values for the cells of the table. Depending on the metric or dimension, the cell can contain a string (video ID, country code) or a number (number of views or number of likes).'
+    properties:
+      columnHeaders:
+        description: 'This value specifies information about the data returned in the rows fields. Each item in the columnHeaders list identifies a field returned in the rows value, which contains a list of comma-delimited data. The columnHeaders list will begin with the dimensions specified in the API request, which will be followed by the metrics specified in the API request. The order of both dimensions and metrics will match the ordering in the API request. For example, if the API request contains the parameters dimensions=ageGroup,gender&metrics=viewerPercentage, the API response will return columns in this order: ageGroup,gender,viewerPercentage.'
+        items:
+          properties:
+            columnType:
+              description: The type of the column (DIMENSION or METRIC).
+              type: string
+              required: false
+            dataType:
+              description: 'The type of the data in the column (STRING, INTEGER, FLOAT, etc.).'
+              type: string
+              required: false
+            name:
+              description: The name of the dimension or metric.
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+      kind:
+        default: 'youtubeAnalytics#resultTable'
+        description: 'This value specifies the type of data included in the API response. For the query method, the kind property value will be youtubeAnalytics#resultTable.'
+        type: string
+        required: false
+      rows:
+        description: 'The list contains all rows of the result table. Each item in the list is an array that contains comma-delimited data corresponding to a single row of data. The order of the comma-delimited data fields will match the order of the columns listed in the columnHeaders field. If no data is available for the given query, the rows element will be omitted from the response. The response for a query with the day dimension will not contain rows for the most recent days.'
+        items:
+          items: {}
+          type: array
+        type: array
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - csv
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

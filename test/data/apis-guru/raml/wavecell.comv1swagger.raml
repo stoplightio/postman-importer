@@ -1,0 +1,323 @@
+#%RAML 1.0
+title: Wavecell.Sms.Api
+version: v1
+baseUri: 'http://api.wavecell.com/'
+protocols:
+  - HTTP
+  - HTTPS
+description: This API allows Wavecell customers to originate request to send SMS messages anywhere in the World. The messages can be send individually or as a bulk request.
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#050917'
+    url: 'https://api.apis.guru/v2/cache/logo/https_wavecell.com_images_logo_wavecell.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.wavecell.com/swagger/v1/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): wavecell.com
+  contact:
+    name: Wavecell Dev team
+    url: 'https://wavecell.com/'
+    email: support@wavecell.com
+  termsOfService: 'https://wavecell.com/terms.html'
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+securitySchemes:
+  basicAuth:
+    type: Basic Authentication
+    description: HTTP/HTTPS Basic Authentication. The authentication uses the Wavecell AccountId as username
+/sms:
+  displayName: sms
+  /v1:
+    displayName: v1
+    '/{subAccountId}':
+      displayName: '{subAccountId}'
+      /single:
+        displayName: single
+        post:
+          displayName: SendSingleMessage
+          body:
+            application/json:
+              type: SmsRequest
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: SmsResponse
+              description: OK
+            '204':
+              description: No Content
+            '400':
+              body:
+                application/json:
+                  type: ErrorResponse
+              description: BadRequest
+            '401':
+              body:
+                application/json:
+                  type: ErrorResponse
+              description: Unauthorized
+            '500':
+              body:
+                application/json:
+                  type: ErrorResponse
+              description: InternalServerError
+          (oas-tags):
+            - SmsApi
+      /many:
+        displayName: many
+        /compact:
+          displayName: compact
+          post:
+            displayName: SendManyMessagesInCompactForm
+            body:
+              application/json:
+                type: BulkSmsRequestCompact
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: BulkSmsResponse
+                description: OK
+              '204':
+                description: No Content
+              '400':
+                body:
+                  application/json:
+                    type: ErrorResponse
+                description: BadRequest
+              '401':
+                body:
+                  application/json:
+                    type: ErrorResponse
+                description: Unauthorized
+              '500':
+                body:
+                  application/json:
+                    type: ErrorResponse
+                description: InternalServerError
+            (oas-tags):
+              - SmsApi
+        post:
+          displayName: SendManyMessages
+          body:
+            application/json:
+              type: BulkSmsRequest
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: BulkSmsResponse
+              description: OK
+            '204':
+              description: No Content
+            '400':
+              body:
+                application/json:
+                  type: ErrorResponse
+              description: BadRequest
+            '401':
+              body:
+                application/json:
+                  type: ErrorResponse
+              description: Unauthorized
+            '500':
+              body:
+                application/json:
+                  type: ErrorResponse
+              description: InternalServerError
+          (oas-tags):
+            - SmsApi
+    /status:
+      displayName: status
+      get:
+        displayName: SmsV1StatusGet
+        responses:
+          '204':
+            description: No Content
+        (oas-tags):
+          - StatusPage
+types:
+  BulkSmsRequest:
+    properties:
+      clientBatchId:
+        maxLength: 20
+        type: string
+        required: false
+      includeMessagesInResponse:
+        type: boolean
+        required: false
+      messages:
+        items:
+          type: SmsRequest
+        type: array
+      template:
+        type: SmsTemplate
+        required: false
+  BulkSmsRequestCompact:
+    properties:
+      clientBatchId:
+        maxLength: 20
+        type: string
+        required: false
+      destinations:
+        items:
+          type: string
+        type: array
+      includeMessagesInResponse:
+        type: boolean
+        required: false
+      template:
+        type: SmsTemplate
+        required: false
+  BulkSmsResponse:
+    properties:
+      acceptedCount:
+        format: int32
+        type: integer
+        required: false
+      batchId:
+        type: string
+        required: false
+      clientBatchId:
+        type: string
+        required: false
+      messages:
+        items:
+          type: SmsResponse
+        type: array
+        required: false
+      rejectedCount:
+        format: int32
+        type: integer
+        required: false
+  ErrorResponse:
+    properties:
+      code:
+        format: int32
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      errorId:
+        format: uuid
+        readOnly: true
+        type: string
+        facets:
+          format: string
+          readOnly?: boolean
+        required: false
+      message:
+        type: string
+        required: false
+      timestamp:
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+  SmsRequest:
+    properties:
+      clientMessageId:
+        maxLength: 20
+        type: string
+        required: false
+      destination:
+        pattern: '^\+{0,1}[1-9]{1}[0-9]{6,14}$'
+        type: string
+      encoding:
+        enum:
+          - AUTO
+          - GSM7bit
+          - UNICODE
+        type: string
+        required: false
+      expiry:
+        format: rfc3339
+        type: datetime
+        required: false
+      scheduled:
+        format: rfc3339
+        type: datetime
+        required: false
+      source:
+        maxLength: 16
+        type: string
+        required: false
+      text:
+        type: string
+        required: false
+  SmsResponse:
+    properties:
+      clientMessageId:
+        type: string
+        required: false
+      destination:
+        type: string
+        required: false
+      status:
+        type: SmsStatus
+        required: false
+      umid:
+        type: string
+        required: false
+  SmsStatus:
+    properties:
+      code:
+        type: string
+        required: false
+      description:
+        type: string
+        required: false
+  SmsTemplate:
+    properties:
+      encoding:
+        enum:
+          - AUTO
+          - GSM7bit
+          - UNICODE
+        type: string
+        required: false
+      expiry:
+        format: rfc3339
+        type: datetime
+        required: false
+      scheduled:
+        format: rfc3339
+        type: datetime
+        required: false
+      source:
+        maxLength: 16
+        type: string
+        required: false
+      text:
+        type: string
+        required: false

@@ -1,0 +1,963 @@
+#%RAML 1.0
+title: GoToTraining
+version: 1.0.0
+baseUri: 'https://api.citrixonline.com/G2T/rest'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: 'The Citrix GoToTraining API enables developers to use the stable and robust GoToTraining functionality as the basis for online trainings in a proprietary learning management system. The GoToTraining APIs provide the ability to access the scheduling, registration, management, and reporting functions of GoToTraining from external applications. With the ability to tightly integrate GoToTraining into your learning infrastructure, you can offer your learners a seamless user experience and provide them with a market leading virtual classroom environment.'
+(oas-tags-definition):
+  - description: Operations available for training organizers.
+    name: Organizers
+  - description: Operations available for trainings.
+    name: Trainings
+  - description: Operations available for registrants of a given training.
+    name: Registrations
+  - description: Operations available for training reports.
+    name: Reports
+  - description: Operations available for online recordings.
+    name: Recordings
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#5F6166'
+    url: 'https://api.apis.guru/v2/cache/logo/https_developer.citrixonline.com_sites_all_themes_citrix_responsive_logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://developer.citrixonline.com/sites/default/files/citrix/citrix-apis/gototraining.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): citrixonline.com
+  (oas-x-serviceName): gototraining
+  contact:
+    name: Developer Support
+    url: 'https://developer.citrixonline.com'
+    email: developer-support@citrixonline.com
+  termsOfService: 'https://developer.citrixonline.com/terms-use'
+(oas-externalDocs):
+  url: 'https://developer.citrixonline.com/'
+/organizers:
+  displayName: organizers
+  '/{organizerKey}':
+    displayName: '{organizerKey}'
+    /trainings:
+      displayName: trainings
+      '/{trainingKey}':
+        displayName: '{trainingKey}'
+        /registrants:
+          displayName: registrants
+          '/{registrantKey}':
+            displayName: '{registrantKey}'
+            uriParameters:
+              registrantKey:
+                description: The key of the registrant
+                format: int64
+                required: true
+                type: integer
+                displayName: The key of the registrant
+            delete:
+              displayName: cancelRegistration
+              description: 'This call cancels a registration in a scheduled training for a specific registrant. If the registrant has paid for the training, a cancellation cannot be completed with this method; it must be completed on the Citrix external admin site. No notification is sent to the registrant or the organizer by default. The registrant can re-register if needed.'
+              (oas-summary): Cancel Registration
+              is:
+                - authorization
+              responses:
+                '204':
+                  description: No Content
+                '400':
+                  description: Bad Request
+                '403':
+                  description: Forbidden
+                '404':
+                  description: Not Found
+              (oas-tags):
+                - Registrations
+            get:
+              displayName: getRegistrant
+              description: 'Retrieves details for specific registrant in a specific training. Registrants can be:<br>WAITING - registrant registered and is awaiting approval (where organizer has required approval)<br>APPROVED - registrant registered and is approved<br>DENIED - registrant registered and was not approved.<br><br>IMPORTANT: The registrant data caches are typically updated immediately and the data will be returned in the response. However, the update can take as long as two hours.'
+              (oas-summary): Get Registrant
+              is:
+                - authorization
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Registrant
+                  description: OK
+                '400':
+                  description: Bad Request
+                '403':
+                  description: Forbidden
+                '404':
+                  description: Not Found
+              (oas-tags):
+                - Registrations
+          post:
+            displayName: registerForTraining
+            description: 'Registers one person, identified by a unique email address, for a training. Approval is automatic unless payment or approval is required. The response contains the Confirmation page URL and Join URL for the registrant. NOTE: If some registrants do not receive a confirmation email, the emails could be getting blocked by their email server due to spam filtering or a grey-listing setting.'
+            (oas-summary): Register for Training
+            is:
+              - authorization
+            body:
+              application/json:
+                type: RegistrantReqCreate
+                (oas-body-name): body
+                description: The details of the registrant to create
+            responses:
+              '201':
+                body:
+                  application/json:
+                    type: RegistrantCreated
+                description: Created
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+              '409':
+                description: Conflict
+            (oas-tags):
+              - Registrations
+          get:
+            displayName: getRegistrants
+            description: 'Retrieves details on all registrants for a specific training. Registrants can be:<br>WAITING - registrant registered and is awaiting approval (where organizer has required approval)<br>APPROVED - registrant registered and is approved<br>DENIED - registrant registered and was not approved.<br><br>IMPORTANT: The registrant data caches are typically updated immediately and the data will be returned in the response. However, the update can take as long as two hours.'
+            (oas-summary): Get Training Registrants
+            is:
+              - authorization
+            responses:
+              '200':
+                body:
+                  application/json:
+                    items:
+                      type: Registrant
+                    type: array
+                description: OK
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Registrations
+        /registrationSettings:
+          displayName: registrationSettings
+          put:
+            displayName: updateRegistrationSettingsForTraining
+            description: An API request to automatically enable or disable web registrations and confirmation emails to registrants.
+            (oas-summary): Update Training Registration Settings
+            is:
+              - authorization
+            body:
+              application/json:
+                type: RegistrationSettings
+                (oas-body-name): body
+                description: The new registration settings for the training
+            responses:
+              '204':
+                description: No Content
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Trainings
+        /startUrl:
+          displayName: startUrl
+          get:
+            displayName: getStartUrl
+            description: 'Returns a URL that can be used to start a training. When this URL is opened in a web browser, the GoToTraining client will be downloaded and launched and the training will start after the organizer logs in with its credentials.'
+            (oas-summary): Get Start Url
+            is:
+              - authorization
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: string
+                description: OK
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Trainings
+        uriParameters:
+          trainingKey:
+            description: The key of the training
+            format: int64
+            required: true
+            type: integer
+            displayName: The key of the training
+        get:
+          displayName: getTraining
+          description: Uses the organizer key and training key to retrieve information on a scheduled training.
+          (oas-summary): Get Training
+          is:
+            - authorization
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Training
+              description: OK
+            '400':
+              description: Bad Request
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          (oas-tags):
+            - Trainings
+        /times:
+          displayName: times
+          put:
+            displayName: updateTrainingTimes
+            description: ' A request to update a scheduled training''s start and end times. If the request contains ''notifyTrainers = true'' and ''notifyRegistrants = true'', both organizers and registrants are notified. The response provides the number of notified trainers and registrants.'
+            (oas-summary): Update Training Times
+            is:
+              - authorization
+            body:
+              application/json:
+                type: TrainingTimes
+                (oas-body-name): body
+                description: The new start and end times for the scheduled training
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: NotifiedParties
+                description: OK
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Trainings
+        /nameDescription:
+          displayName: nameDescription
+          put:
+            displayName: updateTrainingNameDescription
+            description: Request to update a scheduled training name and description.
+            (oas-summary): Update Training Name and Description
+            is:
+              - authorization
+            body:
+              application/json:
+                type: TrainingNameDescription
+                (oas-body-name): body
+                description: The new name and description for the training
+            responses:
+              '204':
+                description: No Content
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Trainings
+        /organizers:
+          displayName: organizers
+          put:
+            displayName: updateOrganisersForTraining
+            description: Replaces the co-organizers for a specific training. The scheduling organizer cannot be unassigned. Organizers will be notified via email if the notifyOrganizers parameter is set to true. Replaced organizers are not notified. This method is only applicable to multi-user accounts with sharing enabled (co-organizers).
+            (oas-summary): Update Training Organizers
+            is:
+              - authorization
+            body:
+              application/json:
+                type: TrainingOrganizers
+                (oas-body-name): body
+                description: The details of the training to create
+            responses:
+              '204':
+                description: No Content
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Trainings
+          get:
+            displayName: getOrganisersForTraining
+            description: Retrieves organizer details for a specific training. This is only applicable to multi-user accounts with sharing enabled (co-organizers).
+            (oas-summary): Get Training Organizers
+            is:
+              - authorization
+            responses:
+              '200':
+                body:
+                  application/json:
+                    items:
+                      type: Organizer
+                    type: array
+                description: OK
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Trainings
+        /manageUrl:
+          displayName: manageUrl
+          get:
+            displayName: getManageTrainingURL
+            description: 'A request for a direct URL to the admin portal for a specific training. The request identifies the organizer and the training; the response provides a link the organizer can use to manage or launch the training in the admin portal. The training organizer will be required to log in. You can schedule and manage the training (e.g., add tests, polls and training materials) from the URL provided in the response.'
+            (oas-summary): Get Management URL for Training
+            is:
+              - authorization
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: string
+                description: OK
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Trainings
+        delete:
+          displayName: cancelTraining
+          description: 'Deletes a scheduled or completed training. For scheduled trainings, it deletes all scheduled sessions of the training. For completed trainings, the sessions remain in the database. No email is sent to organizers or registrants, but when participants attempt to start or join the training, they are directed to a page that states: Training Not Found: The training you are trying to join is no longer available.'
+          (oas-summary): Delete Training
+          is:
+            - authorization
+          responses:
+            '204':
+              description: No Content
+            '400':
+              description: Bad Request
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          (oas-tags):
+            - Trainings
+      post:
+        displayName: scheduleTraining
+        description: 'Schedules a training of one or more sessions. The call requires a training''s name, at least one start and end time, and optionally may include additional sessions, a description, additional organizers (presenters), and registration settings. You can only add organizers to a training if you have a multi-user account. Once a training has been created with this method, you can accept registrations to the training. Registration is for the entire training - all sessions. (The GoToTraining admin site enables you to create trainings that allow participants to register for individual sessions as well as automatically create weekly or monthly events.) Registration settings controls whether you allow web registration for this training, and whether a confirmation email is sent to the registrant following registration. Disabling the confirmation email is an API-only setting. If the user registers through the GoToTraining website, a confirmation email is sent. If the user is manually approved by the training administrator through the GoToTraining web site, the confirmation email is sent. It is recommended that you disable web registration if you disable confirmation emails. The response contains a trainingKey for the scheduled training.'
+        (oas-summary): Create Training
+        is:
+          - authorization
+        body:
+          application/json:
+            type: TrainingReqCreate
+            (oas-body-name): body
+            description: The details of the training to create
+        responses:
+          '201':
+            body:
+              application/json:
+                type: string
+            description: Created
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+        (oas-tags):
+          - Trainings
+      get:
+        displayName: getAllTrainings
+        description: 'This call retrieves information on all scheduled trainings for a given organizer. The trainings are returned in the order in which they were created. Completed trainings are not included; ongoing trainings with past sessions are included along with the past sessions. If the organizer does not have any scheduled trainings, the response will be empty.'
+        (oas-summary): Get Trainings
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: Training
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+        (oas-tags):
+          - Trainings
+/trainings:
+  displayName: trainings
+  '/{trainingKey}':
+    displayName: '{trainingKey}'
+    /start:
+      displayName: start
+      get:
+        displayName: startTraining
+        description: 'Returns a URL that can be used to start a training. When this URL is opened in a web browser, the GoToTraining client will be downloaded and launched and the training will start. A login of the organizer is not required.'
+        (oas-summary): Start Training
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                type: HostUrl
+            description: OK
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+          '404':
+            description: Not Found
+        (oas-tags):
+          - Trainings
+    /recordings:
+      displayName: recordings
+      '/{recordingId}':
+        displayName: '{recordingId}'
+        uriParameters:
+          recordingId:
+            description: the unique id of the recording
+            format: int64
+            required: true
+            type: integer
+            displayName: the unique id of the recording
+        get:
+          displayName: getRecordingDownloadById
+          description: This call provides the download for the given recording by returning a 302 redirect to the original file.
+          (oas-summary): Get Download for Online Recordings
+          is:
+            - authorization
+          responses:
+            '302':
+              description: Redirected to download
+            '400':
+              description: Bad Request
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          (oas-tags):
+            - Recordings
+      get:
+        displayName: getRecordingsForTraining
+        description: 'This call retrieves information on all online recordings for a given training. If there are none, it returns an empty list.'
+        (oas-summary): Get Online Recordings for Training
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                type: RecordingsListForTraining
+            description: OK
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+          '404':
+            description: Not Found
+        (oas-tags):
+          - Recordings
+/accounts:
+  displayName: accounts
+  '/{accountKey}':
+    displayName: '{accountKey}'
+    /organizers:
+      displayName: organizers
+      get:
+        displayName: getAllOrganisers
+        description: 'DEPRECATED: Please use the Admin API call ''Get all users'' instead. For details see https://developer.citrixonline.com/get-all-users.'
+        (oas-summary): 'DEPRECATED: Get Organizers'
+        is:
+          - authorization
+        responses:
+          '200':
+            body:
+              application/json:
+                items:
+                  type: Organizer
+                type: array
+            description: OK
+          '400':
+            description: Bad Request
+          '403':
+            description: Forbidden
+        (oas-tags):
+          - Organizers
+        (oas-deprecated): true
+/reports:
+  displayName: reports
+  /organizers:
+    displayName: organizers
+    '/{organizerKey}':
+      displayName: '{organizerKey}'
+      /sessions:
+        displayName: sessions
+        post:
+          displayName: getSessionDetailsForDateRange
+          description: This call returns all session details over a given date range for a given organizer. A session is a completed training event.
+          (oas-summary): Get Sessions by Date Range
+          is:
+            - authorization
+          body:
+            application/json:
+              type: DateTimeRange
+              (oas-body-name): body
+              description: The start and end times for the time range over which to retrieve training sessions
+          responses:
+            '200':
+              body:
+                application/json:
+                  items:
+                    type: Session
+                  type: array
+              description: OK
+            '400':
+              description: Bad Request
+            '403':
+              description: Forbidden
+          (oas-tags):
+            - Reports
+        '/{sessionKey}':
+          displayName: '{sessionKey}'
+          /attendees:
+            displayName: attendees
+            get:
+              displayName: getAttendanceDetails
+              description: 'This call retrieves a list of registrants from a specific completed training session. The response includes the registrants'' email addresses, and if they attended, it includes the duration of each period of their attendance in minutes, and the times at which they joined and left. If a registrant does not attend, they appear at the bottom of the listing with timeInSession = 0.'
+              (oas-summary): Get Attendance Details
+              is:
+                - authorization
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      items:
+                        type: Attendee
+                      type: array
+                  description: OK
+                '400':
+                  description: Bad Request
+                '403':
+                  description: Forbidden
+                '404':
+                  description: Not Found
+              (oas-tags):
+                - Reports
+      /trainings:
+        displayName: trainings
+        '/{trainingKey}':
+          displayName: '{trainingKey}'
+          uriParameters:
+            trainingKey:
+              description: The key of the training
+              format: int64
+              required: true
+              type: integer
+              displayName: The key of the training
+          get:
+            displayName: getSessionDetailsForTraining
+            description: This call returns session details for a given training. A session is a completed training event. Each training may contain one or more sessions.
+            (oas-summary): Get Sessions By Training
+            is:
+              - authorization
+            responses:
+              '200':
+                body:
+                  application/json:
+                    items:
+                      type: Session
+                    type: array
+                description: OK
+              '400':
+                description: Bad Request
+              '403':
+                description: Forbidden
+              '404':
+                description: Not Found
+            (oas-tags):
+              - Reports
+types:
+  Attendance:
+    description: Describes the times the attendee joined and left a part of a training session.
+    properties:
+      joinTime:
+        description: The time the attendee joined a part of a training session
+        format: rfc3339
+        type: datetime
+      leaveTime:
+        description: The time the attendee left a part of a training session
+        format: rfc3339
+        type: datetime
+      timeInPartOfSession:
+        description: The time in minutes the attendee spent at a part of a training session
+        format: int32
+        type: integer
+  Attendee:
+    description: Describes the attendee of a training session.
+    properties:
+      email:
+        description: The attendee's email address
+        type: string
+      givenName:
+        description: The attendee's first name
+        type: string
+      inSessionTimes:
+        description: List of the parts of the training session the attendee joined
+        items:
+          type: Attendance
+        type: array
+      surname:
+        description: The attendee's surname
+        type: string
+      timeInSession:
+        description: The total time in minutes spent at all the parts of the training session the attendee joined
+        format: int32
+        type: integer
+  DateTimeRange:
+    description: 'A pair of DateTime values, the first of which serves as a start time and the second as an end time of an interval'
+    properties:
+      endDate:
+        description: The ending time of an interval
+        format: rfc3339
+        type: datetime
+      startDate:
+        description: The starting time of an interval
+        format: rfc3339
+        type: datetime
+  HostUrl:
+    description: Host URL that can be used to start a training
+    properties:
+      hostURL:
+        description: The host URL that can be used to start a training
+        type: string
+  NotifiedParties:
+    description: Number of parties notified of a change to a training session times
+    properties:
+      notifiedRegistrants:
+        description: Number of registrants notified of changes to a training
+        format: int32
+        type: integer
+      notifiedTrainers:
+        description: Number of trainers notified of changes to a training
+        format: int32
+        type: integer
+  Organizer:
+    description: Describes a training organizer.
+    properties:
+      email:
+        description: The email address of the training (co-)organizer
+        type: string
+      givenName:
+        description: The (co-)organizer's first name
+        type: string
+      organizerKey:
+        description: The key of the training (co-)organizer
+        type: string
+      surname:
+        description: The (co-)organizer's surname
+        type: string
+  Recording:
+    description: Describes an online recording of a training
+    properties:
+      description:
+        description: The description of the recording
+        type: string
+        required: false
+      downloadUrl:
+        description: The url used to download the recording to the local device
+        type: string
+        required: false
+      endDate:
+        description: The time the recording was ended
+        format: rfc3339
+        type: datetime
+      name:
+        description: The title of the recording
+        type: string
+      recordingId:
+        description: The unique id of the recording
+        format: int64
+        type: integer
+      registrationUrl:
+        description: The url where attendees can register to view the recording
+        type: string
+        required: false
+      startDate:
+        description: The time the recording was started
+        format: rfc3339
+        type: datetime
+  RecordingsListForTraining:
+    description: Contains a list of recordings for the training.
+    properties:
+      recordingList:
+        description: The list of online recordings for the training
+        items:
+          type: Recording
+        type: array
+      trainingKey:
+        description: The training's unique key
+        format: int64
+        type: integer
+  Registrant:
+    description: Describes a training registrant.
+    properties:
+      confirmationUrl:
+        description: The URL where the confirmation for the registration can be found
+        type: string
+      email:
+        description: The registrant's email address
+        type: string
+      givenName:
+        description: The registrant's first name
+        type: string
+      joinUrl:
+        description: The URL the registrant will use to join the training
+        type: string
+      registrantKey:
+        description: The registrant's key
+        type: string
+      registrationDate:
+        description: The date and time the registration took place
+        format: rfc3339
+        type: datetime
+      status:
+        description: The registrant's status
+        enum:
+          - WAITING
+          - APPROVED
+          - DENIED
+        type: string
+      surname:
+        description: The registrant's surname
+        type: string
+  RegistrantCreated:
+    description: Describes a newly created training registrant
+    properties:
+      confirmationUrl:
+        description: The URL where confirmation for the registration can be found
+        type: string
+      joinUrl:
+        description: The URL the registrant will use to join the training
+        type: string
+      registrantKey:
+        description: The registrant's key
+        type: string
+  RegistrantReqCreate:
+    description: Details required to make a new training registration.
+    properties:
+      email:
+        description: The registrant's email address
+        type: string
+      givenName:
+        description: The registrant's first name
+        type: string
+      surname:
+        description: The registrant's surname
+        type: string
+  RegistrationSettings:
+    description: 'Training settings, namely availability of web registration and confirmation emails to the training registrants'
+    properties:
+      disableConfirmationEmail:
+        description: Indicates whether confirmation emails to the training registrants are disabled
+        type: boolean
+      disableWebRegistration:
+        description: Indicates whether the web registration for the training is disabled
+        type: boolean
+  Session:
+    description: Describes a completed training session.
+    properties:
+      attendanceCount:
+        description: The number of attendees at the training session
+        format: int32
+        type: integer
+      duration:
+        description: The duration of the training session in minutes
+        format: int32
+        type: integer
+      organizers:
+        description: The organizers of the training session.
+        items:
+          type: Organizer
+        type: array
+      sessionEndTime:
+        description: The time the training session finished
+        format: rfc3339
+        type: datetime
+      sessionKey:
+        description: The key of the training session
+        type: string
+      sessionStartTime:
+        description: The time the training session started
+        format: rfc3339
+        type: datetime
+      trainingName:
+        description: The subject of the training
+        type: string
+  Training:
+    description: Describes a scheduled training.
+    properties:
+      description:
+        description: The training's description
+        type: string
+      name:
+        description: The training's subject
+        type: string
+      organizers:
+        description: The list of (co-)organizers for the training
+        items:
+          type: Organizer
+        type: array
+      registrationSettings:
+        description: 'Training settings, namely web registration and confirmation emails to the training registrants'
+        type: RegistrationSettings
+      timeZone:
+        description: The time zone where the training takes place
+        type: string
+      times:
+        description: Array with startDate and endDate for the training sessions
+        items:
+          type: DateTimeRange
+        type: array
+      trainingId:
+        description: The 9-digit training's ID
+        type: string
+      trainingKey:
+        description: The training's unique key
+        type: string
+  TrainingNameDescription:
+    description: Details required to update a training's name and description.
+    properties:
+      description:
+        description: The training's description
+        type: string
+        required: false
+      name:
+        description: The training's name
+        type: string
+  TrainingOrganizers:
+    description: Details required to update the list of organizers for a training.
+    properties:
+      notifyOrganizers:
+        description: Specifies whether an email should be sent notifying of the change to the training's organizers.
+        type: boolean
+        required: false
+      organizers:
+        description: List of keys of the organizers for the training.
+        items:
+          format: int64
+          type: integer
+        type: array
+  TrainingReqCreate:
+    description: Describes the details used to create a new training.
+    properties:
+      description:
+        description: Description of the training
+        type: string
+        required: false
+      name:
+        description: Name of the training
+        type: string
+      organizers:
+        description: List of keys of the co-organizers for this training
+        items:
+          format: int64
+          type: integer
+        type: array
+        required: false
+      registrationSettings:
+        description: 'Training settings, namely web registration and confirmation emails to the training registrants'
+        type: RegistrationSettings
+        required: false
+      timeZone:
+        description: 'Time zone of the training. (Must be a valid time zone ID, see https://developer.citrixonline.com/citrix-rest-api-date-formats-and-time-zones)'
+        type: string
+      times:
+        description: Array with startDate and endDate for the training sessions
+        items:
+          type: DateTimeRange
+        type: array
+  TrainingTimes:
+    description: Details required to update the session times of a training.
+    properties:
+      notifyRegistrants:
+        description: Notify registrants via email of change to training. Default is true
+        type: boolean
+        required: false
+      notifyTrainers:
+        description: Notify trainers via email of change to training. Default is true
+        type: boolean
+        required: false
+      timeZone:
+        description: 'Time zone of the training. Must be a valid time zone ID, see https://developer.citrixonline.com/citrix-rest-api-date-formats-and-time-zones'
+        type: string
+      times:
+        description: Start and end times for the training sessions
+        items:
+          type: DateTimeRange
+        type: array
+traits:
+  authorization:
+    headers:
+      Authorization:
+        type: string
+        description: Access token
+        required: true

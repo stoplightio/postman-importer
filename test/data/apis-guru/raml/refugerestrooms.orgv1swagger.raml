@@ -1,0 +1,244 @@
+#%RAML 1.0
+title: Refuge Restrooms
+version: v1
+baseUri: 'http://www.refugerestrooms.org/api'
+mediaType:
+  - application/xml
+  - application/json
+  - application/vnd.api+json
+  - text/plain
+protocols:
+  - HTTP
+description: 'REFUGE is a web application that seeks to provide safe restroom access for transgender, intersex, and gender nonconforming individuals.'
+(oas-tags-definition):
+  - name: restrooms
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#4C4C4C'
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.refugerestrooms.org_assets_logo-100x100-b51b21506bb80bbcece1dd7b4c141c35.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://www.refugerestrooms.org/api/swagger_doc.json'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): refugerestrooms.org
+/v1:
+  displayName: v1
+  /restrooms:
+    displayName: restrooms
+    /search.json:
+      displayName: search.json
+      get:
+        displayName: GET--version-restrooms-search---format-
+        (oas-summary): Perform full-text search of restroom records.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          page:
+            description: Page offset to fetch.
+            required: false
+            type: integer
+            displayName: Page offset to fetch.
+          per_page:
+            description: Number of results to return per page.
+            required: false
+            type: integer
+            displayName: Number of results to return per page.
+          offset:
+            description: Pad a number of results.
+            required: false
+            type: integer
+            displayName: Pad a number of results.
+          ada:
+            description: Only return restrooms that are ADA accessible.
+            required: false
+            type: boolean
+            displayName: Only return restrooms that are ADA accessible.
+          unisex:
+            description: Only return restrooms that are unisex.
+            required: false
+            type: boolean
+            displayName: Only return restrooms that are unisex.
+          query:
+            description: Your search query.
+            required: true
+            type: string
+            displayName: Your search query.
+        (oas-tags):
+          - restrooms
+    /by_location.json:
+      displayName: by_location.json
+      get:
+        displayName: GET--version-restrooms-by_location---format-
+        (oas-summary): Search by location.
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          page:
+            description: Page offset to fetch.
+            required: false
+            type: integer
+            displayName: Page offset to fetch.
+          per_page:
+            description: Number of results to return per page.
+            required: false
+            type: integer
+            displayName: Number of results to return per page.
+          offset:
+            description: Pad a number of results.
+            required: false
+            type: integer
+            displayName: Pad a number of results.
+          ada:
+            description: Only return restrooms that are ADA accessible.
+            required: false
+            type: boolean
+            displayName: Only return restrooms that are ADA accessible.
+          unisex:
+            description: Only return restrooms that are unisex.
+            required: false
+            type: boolean
+            displayName: Only return restrooms that are unisex.
+          lat:
+            description: latitude
+            format: float
+            required: true
+            type: number
+            displayName: latitude
+          lng:
+            description: longitude
+            format: float
+            required: true
+            type: number
+            displayName: longitude
+        (oas-tags):
+          - restrooms
+    /by_date.json:
+      displayName: by_date.json
+      get:
+        displayName: GET--version-restrooms-by_date---format-
+        (oas-summary): Search for restroom records updated or created on or after a given date
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          page:
+            description: Page offset to fetch.
+            required: false
+            type: integer
+            displayName: Page offset to fetch.
+          per_page:
+            description: Number of results to return per page.
+            required: false
+            type: integer
+            displayName: Number of results to return per page.
+          offset:
+            description: Pad a number of results.
+            required: false
+            type: integer
+            displayName: Pad a number of results.
+          ada:
+            description: Only return restrooms that are ADA accessible.
+            required: false
+            type: boolean
+            displayName: Only return restrooms that are ADA accessible.
+          unisex:
+            description: Only return restrooms that are unisex.
+            required: false
+            type: boolean
+            displayName: Only return restrooms that are unisex.
+          updated:
+            description: Return restroom records updated (rather than created) since given date
+            required: false
+            type: boolean
+            displayName: Return restroom records updated (rather than created) since given date
+          day:
+            description: Day
+            required: true
+            type: integer
+            displayName: Day
+          month:
+            description: Month
+            required: true
+            type: integer
+            displayName: Month
+          year:
+            description: Year
+            required: true
+            type: integer
+            displayName: Year
+        (oas-tags):
+          - restrooms
+  /restrooms.json:
+    displayName: restrooms.json
+    get:
+      displayName: GET--version-restrooms---format-
+      (oas-summary): Get all restroom records ordered by date descending.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        page:
+          description: Page offset to fetch.
+          required: false
+          type: integer
+          displayName: Page offset to fetch.
+        per_page:
+          description: Number of results to return per page.
+          required: false
+          type: integer
+          displayName: Number of results to return per page.
+        offset:
+          description: Pad a number of results.
+          required: false
+          type: integer
+          displayName: Pad a number of results.
+        ada:
+          description: Only return restrooms that are ADA accessible.
+          required: false
+          type: boolean
+          displayName: Only return restrooms that are ADA accessible.
+        unisex:
+          description: Only return restrooms that are unisex.
+          required: false
+          type: boolean
+          displayName: Only return restrooms that are unisex.
+      (oas-tags):
+        - restrooms

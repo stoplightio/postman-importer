@@ -1,0 +1,216 @@
+#%RAML 1.0
+title: Discovery Market Research
+version: '0.1'
+baseUri: 'http://discovery-staging.18f.gov/'
+protocols:
+  - HTTP
+description: |-
+  <p>This API drives the <a href="https://discovery.gsa.gov">Discovery Market Research Tool</a>.
+  It contains information on the vendors that are part of the OASIS and OASIS Small Business contracting vehicles, such as their contracting history, their elligibility for contract awards, and their small business designations.
+  To learn more about the tool, please visit <a href="https://discovery.gsa.gov">Discovery</a> or see the README on our <a href="https://github.com/18F/mirage">GitHub repository</a>.</p>
+  <p><strong>Please note that the base path for this API is <code>https://api.data.gov/gsa/discovery/</code></strong></p>
+  <p>It requires an API key, obtainable at <a href="http://api.data.gov/">api.data.gov</a>.
+  It must be passed in the <code>api_key</code> parameter with each request.</p>
+(oas-tags-definition):
+  - name: contracts
+  - name: metadata
+  - name: naics
+  - name: vendor
+  - name: vendors
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.gsa.gov_resources_images_GSAlogo.gif'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://discovery.gsa.gov/docs/api-docs/'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): 18f.gov
+  contact:
+    email: discovery-18f@gsa.gov
+/api:
+  displayName: api
+  /vendors:
+    displayName: vendors
+    /:
+      get:
+        displayName: List_Vendors
+        description: |-
+          <p>This endpoint returns a list of vendors filtered by a NAICS code. The NAICS code maps to an OASIS pool and is used to retrieve vendors in that pool only.</p>
+          <p>OASIS pools are groupings of NAICS codes that have the same small business size standard. Because contracts solicited to OASIS vendors can only be issued to one pool, much of the data is presented as part of a pool grouping. Using the NAICS code is a shortcut, so that you don't have to explicitly map the NAICS code to a pool in OASIS yourself.</p>
+          <p>Vendors can also be filtered by a particular setaside. Valid values for the setasides are two-character codes which include:</p>
+          <ul>
+          <li>A6 (8(a))</li>
+          <li>XX (Hubzone)</li>
+          <li>QF (service disabled veteran owned)</li>
+          <li>A2 (women owned)</li>
+          <li>A5 (veteran owned)</li>
+          <li>27 (small disadvantaged business).  </li>
+          </ul>
+        (oas-summary): This endpoint returns a list of vendors filtered by a NAICS code
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          naics:
+            description: a six digit NAICS code (required)
+            format: string
+            required: true
+            type: string
+            facets:
+              format: string
+            displayName: a six digit NAICS code (required)
+          setasides:
+            description: 'a comma delimited list of two character setaside codes to filter by.  Ex. setasides=A6,A5  will filter by 8a and veteran owned business.'
+            items:
+              format: string
+              type: string
+              facets:
+                format: string
+            required: false
+            type: array
+            displayName: 'a comma delimited list of two character setaside codes to filter by.  Ex. setasides=A6,A5  will filter by 8a and veteran owned business.'
+          vehicle:
+            description: Choices are either oasis or oasissb. Will filter vendors by their presence in either the OASIS unrestricted vehicle or the OASIS Small Business vehicle.
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: Choices are either oasis or oasissb. Will filter vendors by their presence in either the OASIS unrestricted vehicle or the OASIS Small Business vehicle.
+        (oas-tags):
+          - vendors
+  /vendor:
+    displayName: vendor
+    '/{duns}':
+      displayName: '{duns}'
+      uriParameters:
+        duns:
+          description: a nine digit DUNS number that uniquely identifies the vendor (required)
+          format: string
+          required: true
+          type: string
+          facets:
+            format: string
+          displayName: a nine digit DUNS number that uniquely identifies the vendor (required)
+      get:
+        displayName: Get_Vendor
+        description: '<p>This endpoint returns a single vendor by their 9 digit DUNS number. DUNS numbers can be looked up in the <a href="https://www.sam.gov">System for Award Management</a> by vendor name.  </p>'
+        (oas-summary): This endpoint returns a single vendor by their 9 digit DUNS number
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - vendor
+  /naics:
+    displayName: naics
+    /:
+      get:
+        displayName: List_Naics
+        description: <p>This endpoint lists all of the NAICS codes that are relevant to the OASIS family of vehicles. It takes no parameters.  </p>
+        (oas-summary): This endpoint lists all of the NAICS codes that are relevant to the OASIS family of vehicles
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - naics
+  /metadata:
+    displayName: metadata
+    /:
+      get:
+        displayName: Metadata
+        description: <p>This endpoint returns metadata for the most recent data loads of SAM and FPDS data. It takes no parameters.  </p>
+        (oas-summary): This endpoint returns metadata for the most recent data loads of SAM and FPDS data
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - metadata
+  /contracts:
+    displayName: contracts
+    /:
+      get:
+        displayName: List_Contracts
+        description: <p>This endpoint returns contract history from FPDS for a specific vendor. The vendor's DUNS number is a required parameter. You can also filter contracts by their NAICS code to find contracts relevant to a particular category.  </p>
+        (oas-summary): This endpoint returns contract history from FPDS for a specific vendor
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          duns:
+            description: A 9-digit DUNS number that uniquely identifies a vendor (required).
+            format: string
+            required: true
+            type: string
+            facets:
+              format: string
+            displayName: A 9-digit DUNS number that uniquely identifies a vendor (required).
+          naics:
+            description: a six digit NAICS code used to filter by contracts with a certain NAICS
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: a six digit NAICS code used to filter by contracts with a certain NAICS
+          sort:
+            description: 'a field to sort on. Choices are date, status, agency, and amount'
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: 'a field to sort on. Choices are date, status, agency, and amount'
+          direction:
+            description: The sort direction of the results. Choices are asc or desc.
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: The sort direction of the results. Choices are asc or desc.
+          page:
+            description: the page to start on. Results are paginated in increments of 100. Begins at page=1.
+            format: string
+            required: false
+            type: string
+            facets:
+              format: string
+            displayName: the page to start on. Results are paginated in increments of 100. Begins at page=1.
+        (oas-tags):
+          - contracts

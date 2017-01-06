@@ -1,0 +1,763 @@
+#%RAML 1.0
+title: Azure ML Web Services Management Client
+version: 2016-05-01-preview
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: 'These APIs allow end users to operate on Azure Machine Learning Web Services resources. They support the following operations:<ul><li>Create or update a web service</li><li>Get a web service</li><li>Patch a web service</li><li>Delete a web service</li><li>Get All Web Services in a Resource Group </li><li>Get All Web Services in a Subscription</li><li>Get Web Services Keys</li></ul>'
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-machinelearning/2016-05-01-preview/swagger/webservices.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-machinelearning-webservices
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-long-running-operation: any
+  oas-x-ms-enum: any
+  oas-x-ms-isnullable: any
+  oas-x-ms-isordered: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.MachineLearning:
+            displayName: Microsoft.MachineLearning
+            /webServices:
+              displayName: webServices
+              '/{webServiceName}':
+                displayName: '{webServiceName}'
+                /listKeys:
+                  displayName: listKeys
+                  get:
+                    displayName: WebServices_ListKeys
+                    description: Gets the access keys for the specified web service.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: WebServiceKeys
+                        description: Success.
+                    (oas-tags):
+                      - WebServices
+                uriParameters:
+                  webServiceName:
+                    description: The name of the web service.
+                    required: true
+                    type: string
+                    displayName: The name of the web service.
+                put:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: WebServices_CreateOrUpdate
+                  description: 'Create or update a web service. This call will overwrite an existing web service. Note that there is no warning or confirmation. This is a nonrecoverable operation. If your intent is to create a new web service, call the Get operation first to verify that it does not exist.'
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: WebService
+                      (oas-body-name): createOrUpdatePayload
+                      description: The payload that is used to create or update the web service.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: WebService
+                      description: 'Success. This response is returned for an update web service operation. The response payload is identical to the response payload that is returned by the GET operation. The response includes the Provisioning State and the Azure-AsyncOperation header. To get the progress of the operation, call GET operation on the URL in Azure-AsyncOperation header field. For more information about Asynchronous Operations, see https://msdn.microsoft.com/en-us/library/mt742920.aspx.'
+                    '201':
+                      body:
+                        application/json:
+                          type: WebService
+                      description: 'Created. This response is returned for a create web service operation. The response includes the Provisioning State and the Azure-AsyncOperation header. To get the progress of the operation, call GET operation on the URL in Azure-AsyncOperation header field. For more information about Asynchronous Operations, see https://msdn.microsoft.com/en-us/library/mt742920.aspx.'
+                  (oas-tags):
+                    - WebServices
+                patch:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: WebServices_Patch
+                  description: 'Modifies an existing web service resource. The PATCH API call is an asynchronous operation. To determine whether it has completed successfully, you must perform a Get operation.'
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: WebService
+                      (oas-body-name): patchPayload
+                      description: The payload to use to patch the web service.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: WebService
+                      description: 'Success. The response payload is identical to the response payload that is returned by the GET operation. The response includes the Provisioning State and the Azure-AsyncOperation header. To get the progress of the operation, call GET operation on the URL in Azure-AsyncOperation header field. For more information about Asynchronous Operations, see https://msdn.microsoft.com/en-us/library/mt742920.aspx.'
+                  (oas-tags):
+                    - WebServices
+                get:
+                  displayName: WebServices_Get
+                  description: 'Gets the Web Service Definiton as specified by a subscription, resource group, and name. Note that the storage credentials and web service keys are not returned by this call. To get the web service access keys, call List Keys.'
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: WebService
+                      description: 'Success.  The response includes the Provisioning State and the Azure-AsyncOperation header. To get the progress of the operation, call GET operation on the URL in Azure-AsyncOperation header field. For more informationFor more information about Asynchronous Operations, see https://msdn.microsoft.com/en-us/library/mt742920.aspx.'
+                  (oas-tags):
+                    - WebServices
+                delete:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: WebServices_Remove
+                  description: Deletes the specified web service.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '202':
+                      description: Accepted. Note that a 202 status is returned even if the service did not exist.
+                  (oas-tags):
+                    - WebServices
+              get:
+                displayName: WebServices_ListInResourceGroup
+                description: Gets the web services in the specified resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: PaginatedWebServicesList
+                    description: 'Success. The response includes a paginated array of web service objects and a URI to the next set of results, if any. For the more information the limits of the number of items in a resource group, see https://azure.microsoft.com/en-us/documentation/articles/azure-subscription-service-limits/. Note that the web service objects are sparsely populated to conserve space in the response content. To get the full web service object, call the GET operation on the web service.'
+                queryParameters:
+                  $skiptoken:
+                    description: Continuation token for pagination.
+                    required: false
+                    type: string
+                    displayName: Continuation token for pagination.
+                (oas-tags):
+                  - WebServices
+    /providers:
+      displayName: providers
+      /Microsoft.MachineLearning:
+        displayName: Microsoft.MachineLearning
+        /webServices:
+          displayName: webServices
+          get:
+            displayName: WebServices_List
+            description: Gets the web services in the specified subscription.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: PaginatedWebServicesList
+                description: 'Success. The response includes a paginated array of web service objects and a URI to the next set of results, if any. Note that the web service objects are sparsely populated to conserve space in the response content. To get the full web service object, call the GET operation on the web service.'
+            queryParameters:
+              $skiptoken:
+                description: Continuation token for pagination.
+                required: false
+                type: string
+                displayName: Continuation token for pagination.
+            (oas-tags):
+              - WebServices
+types:
+  AssetItem:
+    description: Information about an asset associated with the web service.
+    properties:
+      id:
+        description: Asset's Id.
+        type: string
+        required: false
+      inputPorts:
+        additionalProperties:
+          type: InputPort
+        description: Information about the asset's input ports.
+        type: object
+        required: false
+      locationInfo:
+        description: Access information for the asset.
+        type: AssetLocation
+      metadata:
+        additionalProperties:
+          type: string
+        description: 'If the asset is a custom module, this holds the module''s metadata.'
+        type: object
+        required: false
+      name:
+        description: Asset's friendly name.
+        type: string
+      outputPorts:
+        additionalProperties:
+          type: OutputPort
+        description: Information about the asset's output ports.
+        type: object
+        required: false
+      parameters:
+        description: 'If the asset is a custom module, this holds the module''s parameters.'
+        items:
+          type: ModuleAssetParameter
+        type: array
+        required: false
+      type:
+        description: Asset's type.
+        enum:
+          - Module
+          - Resource
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: AssetType
+  AssetLocation:
+    description: Describes the access location for a web service asset.
+    properties:
+      credentials:
+        description: 'Access credentials for the asset, if applicable (e.g. asset specified by storage account connection string + blob URI)'
+        type: string
+        required: false
+      uri:
+        description: 'The URI where the asset is accessible from, (e.g. aml://abc for system assets or https://xyz for user asets'
+        format: url
+        type: string
+        facets:
+          format: string
+  ColumnSpecification:
+    description: 'Swagger 2.0 schema for a column within the data table representing a web service input or output. See Swagger specification: http://swagger.io/specification/'
+    properties:
+      enum:
+        description: 'If the data type is categorical, this provides the list of accepted categories.'
+        items:
+          type: object
+        type: array
+        required: false
+      format:
+        description: Additional format information for the data type.
+        enum:
+          - Byte
+          - Char
+          - Complex64
+          - Complex128
+          - Date-time
+          - Date-timeOffset
+          - Double
+          - Duration
+          - Float
+          - Int8
+          - Int16
+          - Int32
+          - Int64
+          - Uint8
+          - Uint16
+          - Uint32
+          - Uint64
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: ColumnFormat
+      type:
+        description: Data type of the column.
+        enum:
+          - Boolean
+          - Integer
+          - Number
+          - String
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: ColumnType
+      (oas-x-ms-isnullable):
+        description: Flag indicating if the type supports null values or not.
+        type: boolean
+        required: false
+      (oas-x-ms-isordered):
+        description: 'Flag indicating whether the categories are treated as an ordered set or not, if this is a categorical column.'
+        type: boolean
+        required: false
+  CommitmentPlan:
+    description: Information about the machine learning commitment plan associated with the web service.
+    properties:
+      id:
+        description: Specifies the Azure Resource Manager ID of the commitment plan associated with the web service.
+        type: string
+  DiagnosticsConfiguration:
+    description: Diagnostics settings for an Azure ML web service.
+    properties:
+      expiry:
+        description: 'Specifies the date and time when the logging will cease. If null, diagnostic collection is not time limited.'
+        format: rfc3339
+        type: datetime
+        required: false
+      level:
+        description: 'Specifies the verbosity of the diagnostic output. Valid values are: None - disables tracing; Error - collects only error (stderr) traces; All - collects all traces (stdout and stderr).'
+        enum:
+          - None
+          - Error
+          - All
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: DiagnosticsLevel
+  ExampleRequest:
+    description: Sample input data for the service's input(s).
+    properties:
+      globalParameters:
+        additionalProperties:
+          type: object
+        description: Sample input data for the web service's global parameters
+        type: object
+        required: false
+      inputs:
+        additionalProperties:
+          items:
+            items:
+              type: object
+            type: array
+          type: array
+        description: Sample input data for the web service's input(s) given as an input name to sample input values matrix map.
+        type: object
+        required: false
+  GraphEdge:
+    description: Defines an edge within the web service's graph.
+    properties:
+      sourceNodeId:
+        description: The source graph node's identifier.
+        type: string
+        required: false
+      sourcePortId:
+        description: The identifier of the source node's port that the edge connects from.
+        type: string
+        required: false
+      targetNodeId:
+        description: The destination graph node's identifier.
+        type: string
+        required: false
+      targetPortId:
+        description: The identifier of the destination node's port that the edge connects into.
+        type: string
+        required: false
+  GraphNode:
+    description: 'Specifies a node in the web service graph. The node can either be an input, output or asset node, so only one of the corresponding id properties is populated at any given time.'
+    properties:
+      assetId:
+        description: The id of the asset represented by this node.
+        type: string
+        required: false
+      inputId:
+        description: The id of the input element represented by this node.
+        type: string
+        required: false
+      outputId:
+        description: The id of the output element represented by this node.
+        type: string
+        required: false
+      parameters:
+        additionalProperties:
+          type: string
+        description: 'If applicable, parameters of the node. Global graph parameters map into these, with values set at runtime.'
+        type: object
+        required: false
+  GraphPackage:
+    description: Defines the graph of modules making up the machine learning solution.
+    properties:
+      edges:
+        description: The list of edges making up the graph.
+        items:
+          type: GraphEdge
+        type: array
+        required: false
+      graphParameters:
+        additionalProperties:
+          type: GraphParameter
+        description: 'The collection of global parameters for the graph, given as a global parameter name to GraphParameter map. Each parameter here has a 1:1 match with the global parameters values map declared at the WebServiceProperties level.'
+        type: object
+        required: false
+      nodes:
+        additionalProperties:
+          type: GraphNode
+        description: 'The set of nodes making up the graph, provided as a nodeId to GraphNode map'
+        type: object
+        required: false
+  GraphParameter:
+    description: Defines a global parameter in the graph.
+    properties:
+      description:
+        description: Description of this graph parameter.
+        type: string
+        required: false
+      links:
+        description: Association links for this parameter to nodes in the graph.
+        items:
+          type: GraphParameterLink
+        type: array
+      type:
+        description: Graph parameter's type.
+        enum:
+          - String
+          - Int
+          - Float
+          - Enumerated
+          - Script
+          - Mode
+          - Credential
+          - Boolean
+          - Double
+          - ColumnPicker
+          - ParameterRange
+          - DataGatewayName
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: ParameterType
+  GraphParameterLink:
+    description: Association link for a graph global parameter to a node in the graph.
+    properties:
+      nodeId:
+        description: The graph node's identifier
+        type: string
+      parameterKey:
+        description: The identifier of the node parameter that the global parameter maps to.
+        type: string
+  InputPort:
+    description: Asset input port
+    properties:
+      type:
+        default: Dataset
+        description: Port data type.
+        enum:
+          - Dataset
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: InputPortType
+  MachineLearningWorkspace:
+    description: Information about the machine learning workspace containing the experiment that is source for the web service.
+    properties:
+      id:
+        description: Specifies the workspace ID of the machine learning workspace associated with the web service
+        type: string
+  ModeValueInfo:
+    description: Nested parameter definition.
+    properties:
+      interfaceString:
+        description: The interface string name for the nested parameter.
+        type: string
+        required: false
+      parameters:
+        description: The definition of the parameter.
+        items:
+          type: ModuleAssetParameter
+        type: array
+        required: false
+  ModuleAssetParameter:
+    description: Parameter definition for a module asset.
+    properties:
+      modeValuesInfo:
+        additionalProperties:
+          type: ModeValueInfo
+        description: Definitions for nested interface parameters if this is a complex module parameter.
+        type: object
+        required: false
+      name:
+        description: Parameter name.
+        type: string
+        required: false
+      parameterType:
+        description: Parameter type.
+        type: string
+        required: false
+  OutputPort:
+    description: Asset output port
+    properties:
+      type:
+        default: Dataset
+        description: Port data type.
+        enum:
+          - Dataset
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: OutputPortType
+  PaginatedWebServicesList:
+    description: Paginated list of web services.
+    properties:
+      nextLink:
+        description: A continuation link (absolute URI) to the next page of results in the list.
+        type: string
+        required: false
+      value:
+        description: An array of web service objects.
+        items:
+          type: WebService
+        type: array
+        required: false
+  RealtimeConfiguration:
+    description: Holds the available configuration options for an Azure ML web service endpoint.
+    properties:
+      maxConcurrentCalls:
+        description: 'Specifies the maximum concurrent calls that can be made to the web service. Minimum value: 4, Maximum value: 200.'
+        maximum: 200
+        minimum: 4
+        type: integer
+        required: false
+  Resource:
+    properties:
+      id:
+        description: Specifies the resource ID.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Specifies the location of the resource.
+        type: string
+      name:
+        description: Specifies the name of the resource.
+        type: string
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Contains resource tags defined as key/value pairs.
+        type: object
+        required: false
+      type:
+        description: Specifies the type of the resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  ServiceInputOutputSpecification:
+    description: 'The swagger 2.0 schema describing the service''s inputs or outputs. See Swagger specification: http://swagger.io/specification/'
+    properties:
+      description:
+        description: The description of the Swagger schema.
+        type: string
+        required: false
+      properties:
+        additionalProperties:
+          type: TableSpecification
+        description: 'Specifies a collection that contains the column schema for each input or output of the web service. For more information, see the Swagger specification.'
+        type: object
+      title:
+        description: The title of your Swagger schema.
+        type: string
+        required: false
+      type:
+        default: object
+        description: The type of the entity described in swagger. Always 'object'.
+        type: string
+  StorageAccount:
+    description: Access information for a storage account.
+    properties:
+      key:
+        description: Specifies the key used to access the storage account.
+        type: string
+        required: false
+      name:
+        description: Specifies the name of the storage account.
+        type: string
+        required: false
+  TableSpecification:
+    description: 'The swagger 2.0 schema describing a single service input or output. See Swagger specification: http://swagger.io/specification/'
+    properties:
+      description:
+        description: Swagger schema description.
+        type: string
+        required: false
+      format:
+        description: 'The format, if ''type'' is not ''object'''
+        type: string
+        required: false
+      properties:
+        additionalProperties:
+          type: ColumnSpecification
+        description: The set of columns within the data table.
+        type: object
+        required: false
+      title:
+        description: Swagger schema title.
+        type: string
+        required: false
+      type:
+        default: object
+        description: The type of the entity described in swagger.
+        type: string
+  WebService:
+    type: Resource
+  WebServiceKeys:
+    description: Access keys for the web service calls.
+    properties:
+      primary:
+        description: The primary access key.
+        type: string
+        required: false
+      secondary:
+        description: The secondary access key.
+        type: string
+        required: false
+  WebServiceProperties:
+    description: The set of properties specific to the Azure ML web service resource.
+    discriminator: packageType
+    properties:
+      assets:
+        additionalProperties:
+          type: AssetItem
+        description: Contains user defined properties describing web service assets. Properties are expressed as Key/Value pairs.
+        type: object
+        required: false
+      commitmentPlan:
+        description: 'Contains the commitment plan associated with this web service. Set at creation time. Once set, this value cannot be changed. Note: The commitment plan is not returned from calls to GET operations.'
+        type: CommitmentPlan
+        required: false
+      createdOn:
+        description: 'Read Only: The date and time when the web service was created.'
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      description:
+        description: The description of the web service.
+        type: string
+        required: false
+      diagnostics:
+        description: Settings controlling the diagnostics traces collection for the web service.
+        type: DiagnosticsConfiguration
+        required: false
+      exampleRequest:
+        description: Defines sample input data for one or more of the service's inputs.
+        type: ExampleRequest
+        required: false
+      exposeSampleData:
+        description: 'When set to true, sample data is included in the web service''s swagger definition. The default value is true.'
+        type: boolean
+        required: false
+      input:
+        description: 'Contains the Swagger 2.0 schema describing one or more of the web service''s inputs. For more information, see the Swagger specification.'
+        type: ServiceInputOutputSpecification
+        required: false
+      keys:
+        description: 'Contains the web service provisioning keys. If you do not specify provisioning keys, the Azure Machine Learning system generates them for you. Note: The keys are not returned from calls to GET operations.'
+        type: WebServiceKeys
+        required: false
+      machineLearningWorkspace:
+        description: Specifies the Machine Learning workspace containing the experiment that is source for the web service.
+        type: MachineLearningWorkspace
+        required: false
+      modifiedOn:
+        description: 'Read Only: The date and time when the web service was last modified.'
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      output:
+        description: 'Contains the Swagger 2.0 schema describing one or more of the web service''s outputs. For more information, see the Swagger specification.'
+        type: ServiceInputOutputSpecification
+        required: false
+      packageType:
+        description: 'Specifies the package type. Valid values are Graph (Specifies a web service published through the Machine Learning Studio) and Code (Specifies a web service published using code such as Python). Note: Code is not supported at this time.'
+        enum:
+          - Graph
+        type: string
+      parameters:
+        additionalProperties:
+          type: string
+        description: 'The set of global parameters values defined for the web service, given as a global parameter name to default value map. If no default value is specified, the parameter is considered to be required.'
+        type: object
+        required: false
+      provisioningState:
+        description: 'Read Only: The provision state of the web service. Valid values are Unknown, Provisioning, Succeeded, and Failed.'
+        enum:
+          - Unknown
+          - Provisioning
+          - Succeeded
+          - Failed
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: ProvisioningState
+      readOnly:
+        description: 'When set to true, indicates that the web service is read-only and can no longer be updated or patched, only removed. Default, is false. Note: Once set to true, you cannot change its value.'
+        type: boolean
+        required: false
+      realtimeConfiguration:
+        description: Contains the configuration settings for the web service endpoint.
+        type: RealtimeConfiguration
+        required: false
+      storageAccount:
+        description: 'Specifies the storage account that Azure Machine Learning uses to store information about the web service. Only the name of the storage account is returned from calls to GET operations. When updating the storage account information, you must ensure that all necessary assets are available in the new storage account or calls to your web service will fail.'
+        type: StorageAccount
+        required: false
+      swaggerLocation:
+        description: 'Read Only: Contains the URI of the swagger spec associated with this web service.'
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      title:
+        description: The title of the web service.
+        type: string
+        required: false
+  WebServicePropertiesForGraph:
+    type: WebServiceProperties
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: The version of the Microsoft.MachineLearning resource provider API to use.
+        required: true

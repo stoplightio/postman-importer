@@ -1,0 +1,456 @@
+#%RAML 1.0
+title: Infermedica
+version: v1
+baseUri: 'https://api.infermedica.com/v1'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: Empower your healthcare services with intelligent diagnostic insights of Infermedica API.
+(oas-tags-definition):
+  - name: lookup
+  - name: conditions
+  - name: info
+  - name: diagnosis
+  - name: risk_factors
+  - name: observations
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#1576D1'
+    url: 'https://api.apis.guru/v2/cache/logo/https_developer.infermedica.com_images_sprites_infermedica-logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.infermedica.com/v1/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): infermedica.com
+/risk_factors:
+  displayName: risk_factors
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: risk factor id
+        required: true
+        type: string
+        displayName: risk factor id
+    get:
+      displayName: getRiskFactor
+      description: Returns details of a single risk factor specified by id parameter.
+      (oas-summary): Get risk factor by id
+      responses:
+        '200':
+          body:
+            application/json:
+              type: RiskFactor
+          description: successful operation
+        '400':
+          description: Invalid id specified
+        '404':
+          description: Risk factor not found
+      (oas-tags):
+        - risk_factors
+  get:
+    displayName: getAllRiskFactors
+    description: Returns a list of all available risk factors.
+    (oas-summary): List all risk factors
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: RiskFactor
+            type: array
+        description: successful operation
+    (oas-tags):
+      - risk_factors
+/observations:
+  displayName: observations
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: observation id
+        required: true
+        type: string
+        displayName: observation id
+    get:
+      displayName: getObservation
+      description: Returns details of a single observation specified by id parameter.
+      (oas-summary): Get observation by id
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Observation
+          description: successful operation
+        '400':
+          description: Invalid id specified
+        '404':
+          description: Observation not found
+      (oas-tags):
+        - observations
+  get:
+    displayName: getAllObservations
+    description: Returns a list of all available observations.
+    (oas-summary): List all observations
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: Observation
+            type: array
+        description: successful operation
+    (oas-tags):
+      - observations
+/lookup:
+  displayName: lookup
+  get:
+    displayName: getMatchingObservation
+    description: Returns details of a single observation if matched by the given phrase.
+    (oas-summary): Find observation matching given phrase
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Observation
+        description: successful operation
+      '400':
+        description: Phrase missing or invalid sex specified
+      '404':
+        description: No observation matches given phrase
+    queryParameters:
+      phrase:
+        description: phrase to match
+        required: true
+        type: string
+        displayName: phrase to match
+      sex:
+        description: sex filter
+        enum:
+          - female
+          - male
+        required: false
+        type: string
+        displayName: sex filter
+    (oas-tags):
+      - lookup
+/info:
+  displayName: info
+  get:
+    displayName: getDatabaseInfo
+    description: Returns information about data used by diagnostic engine.
+    (oas-summary): Get database information
+    responses:
+      '200':
+        body:
+          application/json:
+            type: DatabaseInfo
+        description: successful operation
+    (oas-tags):
+      - info
+/diagnosis:
+  displayName: diagnosis
+  post:
+    displayName: computeDiagnosis
+    description: Computes possible diagnoses and relevant observations based on provided patient information.
+    (oas-summary): Query diagnostic engine
+    body:
+      application/json:
+        type: DiagnosisRequest
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: DiagnosisResponse
+        description: successful operation
+    (oas-tags):
+      - diagnosis
+/conditions:
+  displayName: conditions
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: condition id
+        required: true
+        type: string
+        displayName: condition id
+    get:
+      displayName: getCondition
+      description: Returns details of a single condition specified by id parameter.
+      (oas-summary): Get condition by id
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Condition
+          description: successful operation
+        '400':
+          description: Invalid id specified
+        '404':
+          description: Condition not found
+      (oas-tags):
+        - conditions
+  get:
+    displayName: getAllConditions
+    description: Returns a list of all available conditions.
+    (oas-summary): List all conditions
+    responses:
+      '200':
+        body:
+          application/json:
+            items:
+              type: Condition
+            type: array
+        description: successful operation
+    (oas-tags):
+      - conditions
+types:
+  Choice:
+    properties:
+      id:
+        enum:
+          - present
+          - absent
+          - unknown
+        type: string
+      label:
+        type: string
+  Condition:
+    properties:
+      acuteness:
+        enum:
+          - chronic
+          - chronic_with_exacerbations
+          - acute_potentially_chronic
+          - acute
+        type: string
+        required: false
+      categories:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      name:
+        type: string
+      prevalence:
+        enum:
+          - very_rare
+          - rare
+          - moderate
+          - common
+        type: string
+        required: false
+      severity:
+        enum:
+          - mild
+          - moderate
+          - severe
+        type: string
+        required: false
+      sex_filter:
+        enum:
+          - female
+          - male
+          - both
+        type: string
+  ConditionProbability:
+    properties:
+      id:
+        description: condition id
+        type: string
+      name:
+        description: condition name
+        type: string
+      probability:
+        format: double
+        type: number
+  DatabaseInfo:
+    properties:
+      conditions_count:
+        format: int32
+        type: integer
+      observations_count:
+        format: int32
+        type: integer
+      updated_at:
+        description: time of last database update in ISO 8601 format
+        type: string
+  DiagnosisRequest:
+    properties:
+      age:
+        format: int32
+        type: integer
+      evaluated_at:
+        description: time when diagnosis was evaluated in ISO 8601 format
+        type: string
+        required: false
+      evidence:
+        items:
+          type: Evidence
+        type: array
+        required: false
+      extras:
+        additionalProperties:
+          type: object
+        type: object
+        required: false
+      pursued:
+        description: list of ids of pursued conditions
+        items:
+          type: string
+        type: array
+        required: false
+      sex:
+        enum:
+          - female
+          - male
+        type: string
+  DiagnosisResponse:
+    properties:
+      conditions:
+        items:
+          type: ConditionProbability
+        type: array
+        required: false
+      extras:
+        additionalProperties:
+          type: object
+        type: object
+        required: false
+      question:
+        type: Question
+        required: false
+  Evidence:
+    properties:
+      choice_id:
+        enum:
+          - present
+          - absent
+          - unknown
+        type: string
+      id:
+        description: 'id of observation, risk factor or condition'
+        type: string
+      observed_at:
+        description: time when evidence was observed in ISO 8601 format
+        type: string
+        required: false
+  Observation:
+    properties:
+      category:
+        type: string
+        required: false
+      children:
+        description: ids of child observations grouped by their relation with this observation
+        type: object
+        required: false
+      id:
+        type: string
+      name:
+        type: string
+      parent_id:
+        description: id of parent observation
+        type: string
+        required: false
+      parent_relation_type:
+        description: type of relation with parent observation
+        enum:
+          - base
+          - duration
+          - severity
+          - character
+          - exacerbating_factor
+          - diminishing_factor
+          - location
+          - radiation
+        type: string
+        required: false
+      sex_filter:
+        enum:
+          - female
+          - male
+          - both
+        type: string
+      valid_for:
+        description: number of days that this observation remains valid
+        format: int32
+        type: integer
+        required: false
+  Question:
+    properties:
+      items:
+        description: one or more observations to evaluate
+        items:
+          type: QuestionItem
+        type: array
+      text:
+        description: question text
+        type: string
+      type:
+        enum:
+          - single
+          - group_single
+          - group_multiple
+        type: string
+        required: false
+  QuestionItem:
+    properties:
+      choices:
+        description: list of available answer choices
+        items:
+          type: Choice
+        type: array
+      id:
+        description: observation id
+        type: string
+      name:
+        description: name or alias of observation
+        type: string
+  RiskFactor:
+    properties:
+      id:
+        type: string
+      name:
+        type: string

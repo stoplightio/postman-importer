@@ -1,0 +1,364 @@
+#%RAML 1.0
+title: BikeWise API v2
+version: v2
+baseUri: 'https://bikewise.org/api'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: |
+  <p>This is an API for accessing information about bicycling related incidents. You can find the source code on <a href="https://github.com/bikeindex/bikewise">GitHub</a>.</p>
+(oas-tags-definition):
+  - description: Incidents matching parameters
+    name: incidents
+  - description: GeoJSON response for matching incidents
+    name: locations
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.bikewise.org_fav.ico'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://bikewise.org/api/v2/swagger_doc'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): bikewise.org
+  contact:
+    email: support@bikeindex.org
+(oas-externalDocs):
+  url: 'https://www.bikewise.org/documentation/api_v2'
+/v2:
+  displayName: v2
+  /locations:
+    displayName: locations
+    /markers:
+      displayName: markers
+      get:
+        displayName: GET--version-locations-markers---format-
+        description: |
+          <p>This behaves exactly like the root <code>locations</code> endpoint, but returns <a href="https://github.com/mapbox/simplestyle-spec">simplestyled markers</a> (<a href="https://www.mapbox.com/guides/markers/#simple-style">mapbox styled markers</a>)</p>
+
+          <p><strong>Go forth and make maps!</strong></p>
+        (oas-summary): Unpaginated geojson response with simplestyled markers
+        responses:
+          '200':
+            description: No response was specified
+        queryParameters:
+          occurred_before:
+            description: |
+              <p>End of period</p>
+            format: int32
+            required: false
+            type: integer
+            displayName: |
+              <p>End of period</p>
+          occurred_after:
+            description: |
+              <p>Start of period</p>
+            format: int32
+            required: false
+            type: integer
+            displayName: |
+              <p>Start of period</p>
+          incident_type:
+            description: |
+              <p>Only incidents of specific type</p>
+            enum:
+              - crash
+              - hazard
+              - theft
+              - unconfirmed
+              - infrastructure_issue
+              - chop_shop
+            required: false
+            type: string
+            displayName: |
+              <p>Only incidents of specific type</p>
+          proximity:
+            description: |
+              <p>Center of location for proximity search</p>
+            required: false
+            type: string
+            displayName: |
+              <p>Center of location for proximity search</p>
+          proximity_square:
+            default: 100
+            description: |
+              <p>Size of the proximity search</p>
+            format: int32
+            required: false
+            type: integer
+            displayName: |
+              <p>Size of the proximity search</p>
+          query:
+            description: |
+              <p>Full text search of incidents</p>
+            required: false
+            type: string
+            displayName: |
+              <p>Full text search of incidents</p>
+          limit:
+            description: |
+              <p>Max number of results to return. Defaults to 100</p>
+            format: int32
+            required: false
+            type: integer
+            displayName: |
+              <p>Max number of results to return. Defaults to 100</p>
+          all:
+            description: |
+              <p>Give ‘em all to me. Will ignore limit</p>
+            required: false
+            type: boolean
+            displayName: |
+              <p>Give ‘em all to me. Will ignore limit</p>
+        (oas-tags):
+          - locations
+    get:
+      displayName: GET--version-locations---format-
+      description: |
+        <p><strong>This endpoint behaves exactly like</strong> <code>incidents</code>, but returns a valid geojson <code>FeatureCollection</code> that looks like this:</p>
+
+        <pre><code>{
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              properties: {
+              id: 4474199,
+              type: "Theft",
+              occurred_at: 1428536937
+            },
+              geometry: {
+              type: "Point",
+              coordinates: [ -122.6244177, 45.5164386 ]
+            }
+          }
+        }
+        </code></pre>
+
+        <p>It doesn’t paginate. If you pass the <code>all</code> parameter it returns all matches (which can be big, &gt; 4mb), otherwise it returns the 100 most recent.</p>
+
+        <p><strong>Go forth and make maps!</strong></p>
+      (oas-summary): Unpaginated geojson response
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        occurred_before:
+          description: |
+            <p>End of period</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>End of period</p>
+        occurred_after:
+          description: |
+            <p>Start of period</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>Start of period</p>
+        incident_type:
+          description: |
+            <p>Only incidents of specific type</p>
+          enum:
+            - crash
+            - hazard
+            - theft
+            - unconfirmed
+            - infrastructure_issue
+            - chop_shop
+          required: false
+          type: string
+          displayName: |
+            <p>Only incidents of specific type</p>
+        proximity:
+          description: |
+            <p>Center of location for proximity search</p>
+          required: false
+          type: string
+          displayName: |
+            <p>Center of location for proximity search</p>
+        proximity_square:
+          default: 100
+          description: |
+            <p>Size of the proximity search</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>Size of the proximity search</p>
+        query:
+          description: |
+            <p>Full text search of incidents</p>
+          required: false
+          type: string
+          displayName: |
+            <p>Full text search of incidents</p>
+        limit:
+          description: |
+            <p>Max number of results to return. Defaults to 100</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>Max number of results to return. Defaults to 100</p>
+        all:
+          description: |
+            <p>Give ‘em all to me. Will ignore limit</p>
+          required: false
+          type: boolean
+          displayName: |
+            <p>Give ‘em all to me. Will ignore limit</p>
+      (oas-tags):
+        - locations
+  /incidents:
+    displayName: incidents
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          description: |
+            <p>Incident ID</p>
+          format: int32
+          required: true
+          type: integer
+          displayName: |
+            <p>Incident ID</p>
+      get:
+        displayName: GET--version-incidents--id---format-
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - incidents
+    get:
+      displayName: GET--version-incidents---format-
+      description: |
+
+        <p>If you’d like more detailed information about bike incidents, use this endpoint. For mapping, <code>locations</code> is probably a better bet.</p>
+
+        <p><strong>Notes on location searching</strong>: <br />
+        - <code>proximity</code> accepts an ip address, an address, zipcode, city, or latitude,longitude - i.e. <code>70.210.133.87</code>, <code>210 NW 11th Ave, Portland, OR</code>, <code>60647</code>, <code>Chicago, IL</code>, and <code>45.521728,-122.67326</code> are all acceptable<br />
+        - <code>proximity_square</code> sets the length of the sides of the square to find matches inside of. The square is centered on the location specified by <code>proximity</code>. It defaults to 100.</p>
+      (oas-summary): Paginated incidents matching parameters
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        page:
+          default: 1
+          description: |
+            <p>Page of results to fetch.</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>Page of results to fetch.</p>
+        per_page:
+          description: |
+            <p>Number of results to return per page.</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>Number of results to return per page.</p>
+        occurred_before:
+          description: |
+            <p>End of period</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>End of period</p>
+        occurred_after:
+          description: |
+            <p>Start of period</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>Start of period</p>
+        incident_type:
+          description: |
+            <p>Only incidents of specific type</p>
+          enum:
+            - crash
+            - hazard
+            - theft
+            - unconfirmed
+            - infrastructure_issue
+            - chop_shop
+          required: false
+          type: string
+          displayName: |
+            <p>Only incidents of specific type</p>
+        proximity:
+          description: |
+            <p>Center of location for proximity search</p>
+          required: false
+          type: string
+          displayName: |
+            <p>Center of location for proximity search</p>
+        proximity_square:
+          default: 100
+          description: |
+            <p>Size of the proximity search</p>
+          format: int32
+          required: false
+          type: integer
+          displayName: |
+            <p>Size of the proximity search</p>
+        query:
+          description: |
+            <p>Full text search of incidents</p>
+          required: false
+          type: string
+          displayName: |
+            <p>Full text search of incidents</p>
+      (oas-tags):
+        - incidents

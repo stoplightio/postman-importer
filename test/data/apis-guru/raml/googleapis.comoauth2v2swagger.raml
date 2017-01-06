@@ -1,0 +1,337 @@
+#%RAML 1.0
+title: Google OAuth2
+version: v2
+baseUri: 'https://www.googleapis.com/'
+protocols:
+  - HTTPS
+description: Obtains end-user authorization grants for use with other Google APIs.
+(oas-tags-definition):
+  - name: userinfo
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/oauth2/v2/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): oauth2
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/accounts/docs/OAuth2'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/plus.login'
+        - 'https://www.googleapis.com/auth/plus.me'
+        - 'https://www.googleapis.com/auth/userinfo.email'
+        - 'https://www.googleapis.com/auth/userinfo.profile'
+    description: Oauth 2.0 authentication
+/userinfo:
+  displayName: userinfo
+  /v2:
+    displayName: v2
+    /me:
+      displayName: me
+      get:
+        displayName: oauth2.userinfo.v2.me.get
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Userinfoplus
+            description: Successful response
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/userinfo.profile'
+        (oas-tags):
+          - userinfo
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+/oauth2:
+  displayName: oauth2
+  /v2:
+    displayName: v2
+    /userinfo:
+      displayName: userinfo
+      get:
+        displayName: oauth2.userinfo.get
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Userinfoplus
+            description: Successful response
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/userinfo.profile'
+        (oas-tags):
+          - userinfo
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    /tokeninfo:
+      displayName: tokeninfo
+      post:
+        displayName: oauth2.tokeninfo
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Tokeninfo
+            description: Successful response
+        queryParameters:
+          access_token:
+            type: string
+          id_token:
+            type: string
+          token_handle:
+            type: string
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    /certs:
+      displayName: certs
+      get:
+        displayName: oauth2.getCertForOpenIdConnect
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Jwk
+            description: Successful response
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+types:
+  Jwk:
+    properties:
+      keys:
+        items:
+          properties:
+            alg:
+              default: RS256
+              type: string
+              required: false
+            e:
+              type: string
+              required: false
+            kid:
+              type: string
+              required: false
+            kty:
+              default: RSA
+              type: string
+              required: false
+            'n':
+              type: string
+              required: false
+            use:
+              default: sig
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+  Tokeninfo:
+    properties:
+      access_type:
+        description: The access type granted with this token. It can be offline or online.
+        type: string
+        required: false
+      audience:
+        description: Who is the intended audience for this token. In general the same as issued_to.
+        type: string
+        required: false
+      email:
+        description: The email address of the user. Present only if the email scope is present in the request.
+        type: string
+        required: false
+      expires_in:
+        description: 'The expiry time of the token, as number of seconds left until expiry.'
+        format: int32
+        type: integer
+        required: false
+      issued_to:
+        description: To whom was the token issued to. In general the same as audience.
+        type: string
+        required: false
+      scope:
+        description: The space separated list of scopes granted to this token.
+        type: string
+        required: false
+      token_handle:
+        description: The token handle associated with this token.
+        type: string
+        required: false
+      user_id:
+        description: The obfuscated user id.
+        type: string
+        required: false
+      verified_email:
+        description: Boolean flag which is true if the email address is verified. Present only if the email scope is present in the request.
+        type: boolean
+        required: false
+  Userinfoplus:
+    properties:
+      email:
+        description: The user's email address.
+        type: string
+        required: false
+      family_name:
+        description: The user's last name.
+        type: string
+        required: false
+      gender:
+        description: The user's gender.
+        type: string
+        required: false
+      given_name:
+        description: The user's first name.
+        type: string
+        required: false
+      hd:
+        description: The hosted domain e.g. example.com if the user is Google apps user.
+        type: string
+        required: false
+      id:
+        description: The obfuscated ID of the user.
+        type: string
+        required: false
+      link:
+        description: URL of the profile page.
+        type: string
+        required: false
+      locale:
+        description: The user's preferred locale.
+        type: string
+        required: false
+      name:
+        description: The user's full name.
+        type: string
+        required: false
+      picture:
+        description: URL of the user's picture image.
+        type: string
+        required: false
+      verified_email:
+        default: true
+        description: Boolean flag which is true if the email address is verified. Always verified because we only return the user's primary email address.
+        type: boolean
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

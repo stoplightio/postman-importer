@@ -475,14 +475,6 @@ describe.skip('from swagger to raml using apiguru', function () {
 		}
 	};
 	
-	xit('Test one url', done => {
-		testWithUrl('https://api.apis.guru/v2/specs/azure.com/arm-mobileengagement/2014-12-01/swagger.json'). //#36
-		// testWithUrl('https://api.apis.guru/v2/specs/azure.com/arm-search/2015-08-19/swagger.json'). //#53
-		// testWithUrl('https://api.apis.guru/v2/specs/azure.com/arm-web/2015-08-01/swagger.json'). //#62
-		// testWithUrl('https://api.apis.guru/v2/specs/azure.com/insights/2015-04-01/swagger.json'). //#65
-		then(()=> done()).catch((err)=> done(err) )
-	})
-	
 	xit('Test all urls', done => {
 		urlHelper.get('https://api.apis.guru/v2/list.json').then((body) => {
 			const apis = JSON.parse(body);
@@ -501,4 +493,73 @@ describe.skip('from swagger to raml using apiguru', function () {
 			done(error)
 		})
 	})
+});
+
+describe.skip('from swagger to raml: apis-guru', function () {
+	let baseDir = __dirname + '/../data/apis-guru/swagger';
+	let testFiles = fs.readdirSync(baseDir);
+	
+	const excluded = [
+		'azure.com/arm-insights/2015-04-01/swagger.json',
+		'azure.com/arm-insights/2015-07-01/swagger.json',
+		'azure.com/arm-insights/2016-03-01/swagger.json'
+	]
+	
+	let testWithData = function (sourceFile, targetFile, stringCompare, validate) {
+		
+		return function (done) {
+			let converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
+			let validateOptions = {
+				validate: validate,
+				fsResolver: myFsResolver
+			};
+			converter.convertFile(sourceFile, validateOptions).then((covertedRAML) => {
+				let notExistsTarget = !fs.existsSync(targetFile);
+				
+				if (notExistsTarget) {
+					fs.writeFileSync(targetFile, covertedRAML);
+					// console.log('Content for non existing target file ' + targetFile + '\n.');
+					// console.log('********** Begin file **********\n');
+					// console.log(covertedRAML);
+					// console.log('********** Finish file **********\n');
+					// done('Error');
+				}
+				
+				try {
+					if (stringCompare == true) {
+						expect(covertedRAML).to.deep.equal(fs.readFileSync(targetFile, 'utf8'));
+					} else {
+						expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+					}
+					done();
+				} catch (e) {
+					done(e);
+				}
+			}).catch((err) => {
+				console.log(`Invalid export for file ${sourceFile}`);
+				console.log('********** Begin file **********\n');
+				console.log(err.exportedData);
+				console.log('********** Finish file **********\n');
+				done(err);
+			});
+		};
+	};
+	
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.') && !excluded.includes(testFile)) {
+			let sourceFile = baseDir + '/' + testFile;
+			let targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'raml');
+			let stringCompare = _.includes(testFile, 'stringcompare');
+			let validate = !_.includes(testFile, 'novalidate');
+			
+			if (process.env.fileToTest) {
+				if (_.endsWith(sourceFile, process.env.fileToTest)) {
+					xit('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate));
+				}
+			}
+			else {
+				xit('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate));
+			}
+		}
+	});
 });

@@ -1,0 +1,724 @@
+#%RAML 1.0
+title: Consumer Surveys
+version: v2
+baseUri: 'https://www.googleapis.com/consumersurveys/v2'
+protocols:
+  - HTTPS
+description: 'Creates and conducts surveys, lists the surveys that an authenticated user owns, and retrieves survey results and information about specified surveys.'
+(oas-tags-definition):
+  - name: mobileapppanels
+  - name: results
+  - name: surveys
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/consumersurveys/v2/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): consumersurveys
+  contact:
+    name: Google
+    url: 'https://google.com'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/consumersurveys'
+        - 'https://www.googleapis.com/auth/consumersurveys.readonly'
+        - 'https://www.googleapis.com/auth/userinfo.email'
+    description: Oauth 2.0 authentication
+/surveys:
+  displayName: surveys
+  '/{resourceId}':
+    displayName: '{resourceId}'
+    /start:
+      displayName: start
+      post:
+        displayName: consumersurveys.surveys.start
+        description: Begins running a survey.
+        body:
+          application/json:
+            type: SurveysStartRequest
+            (oas-body-name): body
+        responses:
+          '200':
+            body:
+              application/json:
+                type: SurveysStartResponse
+            description: Successful response
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/userinfo.email'
+        (oas-tags):
+          - surveys
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    /stop:
+      displayName: stop
+      post:
+        displayName: consumersurveys.surveys.stop
+        description: Stops a running survey.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: SurveysStopResponse
+            description: Successful response
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/userinfo.email'
+        (oas-tags):
+          - surveys
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+  '/{surveyUrlId}':
+    displayName: '{surveyUrlId}'
+    /results:
+      displayName: results
+      get:
+        displayName: consumersurveys.results.get
+        description: Retrieves any survey results that have been produced so far. Results are formatted as an Excel file. You must add "?alt=media" to the URL as an argument to get results.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: SurveyResults
+            description: Successful response
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/userinfo.email'
+        (oas-tags):
+          - results
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    uriParameters:
+      surveyUrlId:
+        description: External URL ID for the survey.
+        required: true
+        type: string
+        displayName: External URL ID for the survey.
+    put:
+      displayName: consumersurveys.surveys.update
+      description: Updates a survey. Currently the only property that can be updated is the owners property.
+      body:
+        application/json:
+          type: Survey
+          (oas-body-name): body
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Survey
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/userinfo.email'
+      (oas-tags):
+        - surveys
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+    get:
+      displayName: consumersurveys.surveys.get
+      description: Retrieves information about the specified survey.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Survey
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/userinfo.email'
+      (oas-tags):
+        - surveys
+    delete:
+      displayName: consumersurveys.surveys.delete
+      description: Removes a survey from view in all user GET requests.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: SurveysDeleteResponse
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/userinfo.email'
+      (oas-tags):
+        - surveys
+  post:
+    displayName: consumersurveys.surveys.insert
+    description: Creates a survey.
+    body:
+      application/json:
+        type: Survey
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Survey
+        description: Successful response
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/userinfo.email'
+    (oas-tags):
+      - surveys
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+  get:
+    displayName: consumersurveys.surveys.list
+    description: Lists the surveys owned by the authenticated user.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: SurveysListResponse
+        description: Successful response
+    queryParameters:
+      maxResults:
+        type: integer
+      startIndex:
+        type: integer
+      token:
+        type: string
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/userinfo.email'
+    (oas-tags):
+      - surveys
+/mobileAppPanels:
+  displayName: mobileAppPanels
+  get:
+    displayName: consumersurveys.mobileapppanels.list
+    description: Lists the MobileAppPanels available to the authenticated user.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: MobileAppPanelsListResponse
+        description: Successful response
+    queryParameters:
+      maxResults:
+        type: integer
+      startIndex:
+        type: integer
+      token:
+        type: string
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/userinfo.email'
+    (oas-tags):
+      - mobileapppanels
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+  '/{panelId}':
+    displayName: '{panelId}'
+    uriParameters:
+      panelId:
+        description: External URL ID for the panel.
+        required: true
+        type: string
+        displayName: External URL ID for the panel.
+    get:
+      displayName: consumersurveys.mobileapppanels.get
+      description: Retrieves a MobileAppPanel that is available to the authenticated user.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: MobileAppPanel
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/userinfo.email'
+      (oas-tags):
+        - mobileapppanels
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+    put:
+      displayName: consumersurveys.mobileapppanels.update
+      description: Updates a MobileAppPanel. Currently the only property that can be updated is the owners property.
+      body:
+        application/json:
+          type: MobileAppPanel
+          (oas-body-name): body
+      responses:
+        '200':
+          body:
+            application/json:
+              type: MobileAppPanel
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/userinfo.email'
+      (oas-tags):
+        - mobileapppanels
+types:
+  FieldMask:
+    properties:
+      fields:
+        items:
+          type: FieldMask
+        type: array
+        required: false
+      id:
+        format: int32
+        type: integer
+        required: false
+  MobileAppPanel:
+    properties:
+      country:
+        type: string
+        required: false
+      isPublicPanel:
+        type: boolean
+        required: false
+      language:
+        type: string
+        required: false
+      mobileAppPanelId:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+      owners:
+        items:
+          type: string
+        type: array
+        required: false
+  MobileAppPanelsListResponse:
+    properties:
+      pageInfo:
+        type: PageInfo
+        required: false
+      requestId:
+        description: Unique request ID used for logging and debugging. Please include in any error reporting or troubleshooting requests.
+        type: string
+        required: false
+      resources:
+        description: An individual predefined panel of Opinion Rewards mobile users.
+        items:
+          type: MobileAppPanel
+        type: array
+        required: false
+      tokenPagination:
+        type: TokenPagination
+        required: false
+  PageInfo:
+    properties:
+      resultPerPage:
+        format: int32
+        type: integer
+        required: false
+      startIndex:
+        format: int32
+        type: integer
+        required: false
+      totalResults:
+        format: int32
+        type: integer
+        required: false
+  ResultsGetRequest:
+    properties:
+      resultMask:
+        type: ResultsMask
+        required: false
+  ResultsMask:
+    properties:
+      fields:
+        items:
+          type: FieldMask
+        type: array
+        required: false
+      projection:
+        type: string
+        required: false
+  Survey:
+    properties:
+      audience:
+        type: SurveyAudience
+        required: false
+      cost:
+        type: SurveyCost
+        required: false
+      customerData:
+        format: byte
+        type: string
+        facets:
+          format: string
+        required: false
+      description:
+        type: string
+        required: false
+      owners:
+        items:
+          type: string
+        type: array
+        required: false
+      questions:
+        items:
+          type: SurveyQuestion
+        type: array
+        required: false
+      rejectionReason:
+        type: SurveyRejection
+        required: false
+      state:
+        type: string
+        required: false
+      surveyUrlId:
+        type: string
+        required: false
+      title:
+        type: string
+        required: false
+      wantedResponseCount:
+        format: int32
+        type: integer
+        required: false
+  SurveyAudience:
+    properties:
+      ages:
+        items:
+          type: string
+        type: array
+        required: false
+      country:
+        type: string
+        required: false
+      countrySubdivision:
+        type: string
+        required: false
+      gender:
+        type: string
+        required: false
+      languages:
+        items:
+          type: string
+        type: array
+        required: false
+      mobileAppPanelId:
+        type: string
+        required: false
+      populationSource:
+        type: string
+        required: false
+  SurveyCost:
+    properties:
+      costPerResponseNanos:
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      currencyCode:
+        type: string
+        required: false
+      maxCostPerResponseNanos:
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      nanos:
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+  SurveyQuestion:
+    properties:
+      answerOrder:
+        type: string
+        required: false
+      answers:
+        items:
+          type: string
+        type: array
+        required: false
+      hasOther:
+        type: boolean
+        required: false
+      highValueLabel:
+        type: string
+        required: false
+      images:
+        items:
+          type: SurveyQuestionImage
+        type: array
+        required: false
+      lastAnswerPositionPinned:
+        type: boolean
+        required: false
+      lowValueLabel:
+        type: string
+        required: false
+      mustPickSuggestion:
+        type: boolean
+        required: false
+      numStars:
+        type: string
+        required: false
+      openTextPlaceholder:
+        type: string
+        required: false
+      openTextSuggestions:
+        items:
+          type: string
+        type: array
+        required: false
+      question:
+        type: string
+        required: false
+      sentimentText:
+        type: string
+        required: false
+      singleLineResponse:
+        type: boolean
+        required: false
+      thresholdAnswers:
+        items:
+          type: string
+        type: array
+        required: false
+      type:
+        type: string
+        required: false
+      unitOfMeasurementLabel:
+        type: string
+        required: false
+      videoId:
+        type: string
+        required: false
+  SurveyQuestionImage:
+    properties:
+      altText:
+        type: string
+        required: false
+      data:
+        format: byte
+        type: string
+        facets:
+          format: string
+        required: false
+      url:
+        type: string
+        required: false
+  SurveyRejection:
+    properties:
+      explanation:
+        type: string
+        required: false
+      type:
+        type: string
+        required: false
+  SurveyResults:
+    properties:
+      status:
+        type: string
+        required: false
+      surveyUrlId:
+        type: string
+        required: false
+  SurveysDeleteResponse:
+    properties:
+      requestId:
+        description: Unique request ID used for logging and debugging. Please include in any error reporting or troubleshooting requests.
+        type: string
+        required: false
+  SurveysListResponse:
+    properties:
+      pageInfo:
+        type: PageInfo
+        required: false
+      requestId:
+        description: Unique request ID used for logging and debugging. Please include in any error reporting or troubleshooting requests.
+        type: string
+        required: false
+      resources:
+        description: An individual survey resource.
+        items:
+          type: Survey
+        type: array
+        required: false
+      tokenPagination:
+        type: TokenPagination
+        required: false
+  SurveysStartRequest:
+    properties:
+      maxCostPerResponseNanos:
+        description: Threshold to start a survey automically if the quoted prices is less than or equal to this value. See Survey.Cost for more details.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+  SurveysStartResponse:
+    properties:
+      requestId:
+        description: Unique request ID used for logging and debugging. Please include in any error reporting or troubleshooting requests.
+        type: string
+        required: false
+      resource:
+        description: Survey object containing the specification of the started Survey.
+        type: Survey
+        required: false
+  SurveysStopResponse:
+    properties:
+      requestId:
+        description: Unique request ID used for logging and debugging. Please include in any error reporting or troubleshooting requests.
+        type: string
+        required: false
+      resource:
+        description: Survey object containing the specification of the stopped Survey.
+        type: Survey
+        required: false
+  TokenPagination:
+    properties:
+      nextPageToken:
+        type: string
+        required: false
+      previousPageToken:
+        type: string
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

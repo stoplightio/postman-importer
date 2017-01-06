@@ -1,0 +1,470 @@
+#%RAML 1.0
+title: MediaServicesManagementClient
+version: '2015-10-01'
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: Media Services resource management APIs.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - media
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-mediaservices/2015-10-01/swagger/media.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-mediaservices
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - video
+    - streaming
+    - video on demand
+    - broadcasting
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-enum: any
+  oas-x-ms-client-flatten: any
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.Media:
+            displayName: Microsoft.Media
+            /mediaservices:
+              displayName: mediaservices
+              '/{mediaServiceName}':
+                displayName: '{mediaServiceName}'
+                /syncStorageKeys:
+                  displayName: syncStorageKeys
+                  post:
+                    displayName: MediaService_SyncStorageKeys
+                    (oas-summary): Synchronize the keys for a storage account to the Media Service.
+                    is:
+                      - apiVersionParameter
+                    body:
+                      application/json:
+                        type: SyncStorageKeysInput
+                        (oas-body-name): SyncStorageKeysInput
+                        description: Properties needed to sycnronize the keys for a storage account to the Media Service.
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: ApiError
+                      description: Detailed error information.
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: MediaService
+                        description: OK
+                      '202':
+                        description: Accepted
+                /regenerateKey:
+                  displayName: regenerateKey
+                  post:
+                    displayName: MediaService_RegenerateKey
+                    (oas-summary): Regenerate the key for a Media Service.
+                    is:
+                      - apiVersionParameter
+                    body:
+                      application/json:
+                        type: RegenerateKeyInput
+                        (oas-body-name): RegenerateKeyInput
+                        description: Properties needed to regenerate the Media Service key.
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: ApiError
+                      description: Detailed error information.
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: RegenerateKeyOutput
+                        description: OK
+                      '202':
+                        description: Accepted
+                /listKeys:
+                  displayName: listKeys
+                  post:
+                    displayName: MediaService_ListKeys
+                    (oas-summary): List the keys for a Media Service.
+                    is:
+                      - apiVersionParameter
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: ApiError
+                      description: Detailed error information.
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ServiceKeys
+                        description: OK
+                      '202':
+                        description: Accepted
+                uriParameters:
+                  mediaServiceName:
+                    description: Name of the Media Service.
+                    maxLength: 24
+                    minLength: 3
+                    pattern: '^[a-z0-9]'
+                    required: true
+                    type: string
+                    displayName: Name of the Media Service.
+                put:
+                  displayName: MediaService_Create
+                  (oas-summary): Create a Media Service.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: MediaService
+                      (oas-body-name): MediaService
+                      description: Media Service properties needed for creation.
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: ApiError
+                    description: Detailed error information.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: MediaService
+                      description: OK
+                    '201':
+                      body:
+                        application/json:
+                          type: MediaService
+                      description: Created
+                patch:
+                  displayName: MediaService_Update
+                  (oas-summary): Update a Media Service.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: MediaService
+                      (oas-body-name): MediaService
+                      description: Media Service properties needed for update.
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: ApiError
+                    description: Detailed error information.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: MediaService
+                      description: OK
+                get:
+                  displayName: MediaService_Get
+                  (oas-summary): Get a Media Service.
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: ApiError
+                    description: Detailed error information.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: MediaService
+                      description: OK
+                delete:
+                  displayName: MediaService_Delete
+                  (oas-summary): Delete a Media Service.
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: ApiError
+                    description: Detailed error information.
+                  responses:
+                    '200':
+                      description: OK
+              get:
+                (oas-x-ms-pageable): {}
+                displayName: MediaService_ListByResourceGroup
+                (oas-summary): List all of the Media Services in a resource group.
+                is:
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: ApiError
+                  description: Detailed error information.
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: MediaServiceCollection
+                    description: OK
+    /providers:
+      displayName: providers
+      /Microsoft.Media:
+        displayName: Microsoft.Media
+        /CheckNameAvailability:
+          displayName: CheckNameAvailability
+          post:
+            displayName: MediaService_CheckNameAvailability
+            (oas-summary): Check whether the Media Service resource name is available. The name must be globally unique.
+            is:
+              - apiVersionParameter
+            body:
+              application/json:
+                type: CheckNameAvailabilityInput
+                (oas-body-name): CheckNameAvailabilityInput
+                description: Properties needed to check the availability of a name.
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: ApiError
+              description: Detailed error information.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: CheckNameAvailabilityOutput
+                description: OK
+types:
+  ApiEndpoint:
+    description: The properties for a Media Services REST API endpoint.
+    properties:
+      endpoint:
+        description: The Media Services REST endpoint.
+        type: string
+        required: false
+      majorVersion:
+        description: The version of Media Services REST API.
+        type: string
+        required: false
+  ApiError:
+    description: The error returned from a failed Media Services REST API call.
+    properties:
+      code:
+        description: Error code.
+        type: string
+        required: false
+      message:
+        description: Error message.
+        type: string
+        required: false
+  CheckNameAvailabilityInput:
+    description: The request body for CheckNameAvailability API.
+    properties:
+      name:
+        description: The name of the resource. A name must be globally unique.
+        maxLength: 24
+        minLength: 3
+        pattern: '^[a-z0-9]'
+        type: string
+      type:
+        description: Specifies the type of the resource.
+        type: ResourceType
+  CheckNameAvailabilityOutput:
+    description: The response body for CheckNameAvailability API.
+    properties:
+      Message:
+        description: Specifies the detailed reason if the name is not available.
+        type: string
+        required: false
+      NameAvailable:
+        description: Specifies if the name is available.
+        type: boolean
+        required: false
+      Reason:
+        description: Specifies the reason if the name is not available.
+        enum:
+          - None
+          - Invalid
+          - AlreadyExists
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: EntityNameUnavailabilityReason
+  MediaService:
+    type: TrackedResource
+  MediaServiceCollection:
+    description: The collection of Media Service resources.
+    properties:
+      value:
+        items:
+          type: MediaService
+        type: array
+        required: false
+  MediaServiceProperties:
+    description: The additional properties of a Media Service resource.
+    properties:
+      apiEndpoints:
+        description: The Media Services REST API endpoints for this resource.
+        items:
+          type: ApiEndpoint
+        type: array
+        required: false
+      storageAccounts:
+        description: The storage accounts for this resource.
+        items:
+          type: StorageAccount
+        type: array
+        required: false
+  RegenerateKeyInput:
+    description: The request body for a RegenerateKey API.
+    properties:
+      keyType:
+        description: 'The keyType indicating which key you want to regenerate, Primary or Secondary.'
+        enum:
+          - Primary
+          - Secondary
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: KeyType
+  RegenerateKeyOutput:
+    description: The response body for a RegenerateKey API.
+    properties:
+      key:
+        description: The new value of either the primary or secondary key.
+        type: string
+        required: false
+  Resource:
+    properties:
+      id:
+        description: The id of the resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: The name of the resource.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      type:
+        description: The type of the resource
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  ResourceType:
+    description: Type of MediaService resource used in CheckNameAvailability.
+    enum:
+      - mediaservices
+    readOnly: true
+    type: string
+    facets:
+      readOnly?: boolean
+  ServiceKeys:
+    description: The response body for a ListKeys API.
+    properties:
+      primaryAuthEndpoint:
+        description: The primary Authorization endpoint.
+        type: string
+        required: false
+      primaryKey:
+        description: The primary resource.
+        type: string
+        required: false
+      scope:
+        description: The authorization scope.
+        type: string
+        required: false
+      secondaryAuthEndpoint:
+        description: The secondary Authorization endpoint.
+        type: string
+        required: false
+      secondaryKey:
+        description: The secondary resource.
+        type: string
+        required: false
+  StorageAccount:
+    description: The properties of a storage account associated with this resource.
+    properties:
+      id:
+        description: The id of the storage account resource.
+        type: string
+        required: false
+      isPrimary:
+        description: Is this storage account resource the primary storage account for the Media Service resource.
+        type: boolean
+        required: false
+  SyncStorageKeysInput:
+    description: The request  body for a SyncStorageKeys API.
+    properties:
+      id:
+        description: The id of the storage account resource.
+        type: string
+        required: false
+  TrackedResource:
+    type: Resource
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Version of the API to be used with the client request. Current version is 2015-10-01
+        required: true

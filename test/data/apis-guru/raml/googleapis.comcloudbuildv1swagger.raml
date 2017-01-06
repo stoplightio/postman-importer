@@ -1,0 +1,1145 @@
+#%RAML 1.0
+title: Google Cloud Container Builder
+version: v1
+baseUri: 'https://cloudbuild.googleapis.com/'
+protocols:
+  - HTTPS
+description: Builds container images in the cloud.
+(oas-tags-definition):
+  - name: projects
+  - name: operations
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://cloudbuild.googleapis.com/$discovery/rest?version=v1'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): cloudbuild
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://cloud.google.com/container-builder/docs/'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/cloud-platform'
+    description: Oauth 2.0 authentication
+/v1:
+  displayName: v1
+  '/{name}':
+    displayName: '{name}'
+    uriParameters:
+      name:
+        description: The name of the operation collection.
+        required: true
+        type: string
+        displayName: The name of the operation collection.
+    get:
+      displayName: cloudbuild.operations.list
+      description: |-
+        Lists operations that match the specified filter in the request. If the
+        server doesn't support this method, it returns `UNIMPLEMENTED`.
+
+        NOTE: the `name` binding below allows API services to override the binding
+        to use different resource name schemes, such as `users/*/operations`.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ListOperationsResponse
+          description: Successful response
+      queryParameters:
+        pageSize:
+          description: The standard list page size.
+          type: integer
+          displayName: The standard list page size.
+        filter:
+          description: The standard list filter.
+          type: string
+          displayName: The standard list filter.
+        pageToken:
+          description: The standard list page token.
+          type: string
+          displayName: The standard list page token.
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/cloud-platform'
+      (oas-tags):
+        - operations
+    is:
+      - accessToken
+      - prettyPrint
+      - key
+      - quotaUser
+      - pp
+      - fields
+      - alt
+      - xgafv
+      - callback
+      - oauthToken
+      - uploadType
+      - bearerToken
+      - uploadProtocol
+  /projects:
+    displayName: projects
+    '/{projectId}':
+      displayName: '{projectId}'
+      /triggers:
+        displayName: triggers
+        '/{triggerId}':
+          displayName: '{triggerId}'
+          uriParameters:
+            triggerId:
+              description: ID of the BuildTrigger to delete.
+              required: true
+              type: string
+              displayName: ID of the BuildTrigger to delete.
+          patch:
+            displayName: cloudbuild.projects.triggers.patch
+            description: |-
+              Updates an BuildTrigger by its project ID and trigger ID.
+
+              This API is experimental.
+            body:
+              application/json:
+                type: BuildTrigger
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: BuildTrigger
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/cloud-platform'
+            (oas-tags):
+              - projects
+          is:
+            - accessToken
+            - prettyPrint
+            - key
+            - quotaUser
+            - pp
+            - fields
+            - alt
+            - xgafv
+            - callback
+            - oauthToken
+            - uploadType
+            - bearerToken
+            - uploadProtocol
+          get:
+            displayName: cloudbuild.projects.triggers.get
+            description: |-
+              Gets information about a BuildTrigger.
+
+              This API is experimental.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: BuildTrigger
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/cloud-platform'
+            (oas-tags):
+              - projects
+          delete:
+            displayName: cloudbuild.projects.triggers.delete
+            description: |-
+              Deletes an BuildTrigger by its project ID and trigger ID.
+
+              This API is experimental.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Empty
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/cloud-platform'
+            (oas-tags):
+              - projects
+        post:
+          displayName: cloudbuild.projects.triggers.create
+          description: |-
+            Creates a new BuildTrigger.
+
+            This API is experimental.
+          body:
+            application/json:
+              type: BuildTrigger
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: BuildTrigger
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/cloud-platform'
+          (oas-tags):
+            - projects
+        is:
+          - accessToken
+          - prettyPrint
+          - key
+          - quotaUser
+          - pp
+          - fields
+          - alt
+          - xgafv
+          - callback
+          - oauthToken
+          - uploadType
+          - bearerToken
+          - uploadProtocol
+        get:
+          displayName: cloudbuild.projects.triggers.list
+          description: |-
+            Lists existing BuildTrigger.
+
+            This API is experimental.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ListBuildTriggersResponse
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/cloud-platform'
+          (oas-tags):
+            - projects
+      /builds:
+        displayName: builds
+        '/{id}:cancel':
+          displayName: '{id}:cancel'
+          uriParameters:
+            id:
+              description: ID of the build.
+              required: true
+              type: string
+              displayName: ID of the build.
+          post:
+            displayName: cloudbuild.projects.builds.cancel
+            description: Cancels a requested build in progress.
+            body:
+              application/json:
+                type: CancelBuildRequest
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Build
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/cloud-platform'
+            (oas-tags):
+              - projects
+          is:
+            - accessToken
+            - prettyPrint
+            - key
+            - quotaUser
+            - pp
+            - fields
+            - alt
+            - xgafv
+            - callback
+            - oauthToken
+            - uploadType
+            - bearerToken
+            - uploadProtocol
+        '/{id}':
+          displayName: '{id}'
+          uriParameters:
+            id:
+              description: ID of the build.
+              required: true
+              type: string
+              displayName: ID of the build.
+          get:
+            displayName: cloudbuild.projects.builds.get
+            description: |-
+              Returns information about a previously requested build.
+
+              The Build that is returned includes its status (e.g., success or failure,
+              or in-progress), and timing information.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Build
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/cloud-platform'
+            (oas-tags):
+              - projects
+          is:
+            - accessToken
+            - prettyPrint
+            - key
+            - quotaUser
+            - pp
+            - fields
+            - alt
+            - xgafv
+            - callback
+            - oauthToken
+            - uploadType
+            - bearerToken
+            - uploadProtocol
+        post:
+          displayName: cloudbuild.projects.builds.create
+          description: |-
+            Starts a build with the specified configuration.
+
+            The long-running Operation returned by this method will include the ID of
+            the build, which can be passed to GetBuild to determine its status (e.g.,
+            success or failure).
+          body:
+            application/json:
+              type: Build
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Operation
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/cloud-platform'
+          (oas-tags):
+            - projects
+        is:
+          - accessToken
+          - prettyPrint
+          - key
+          - quotaUser
+          - pp
+          - fields
+          - alt
+          - xgafv
+          - callback
+          - oauthToken
+          - uploadType
+          - bearerToken
+          - uploadProtocol
+        get:
+          displayName: cloudbuild.projects.builds.list
+          description: |-
+            Lists previously requested builds.
+
+            Previously requested builds may still be in-progress, or may have finished
+            successfully or unsuccessfully.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ListBuildsResponse
+              description: Successful response
+          queryParameters:
+            pageSize:
+              description: Number of results to return in the list.
+              type: integer
+              displayName: Number of results to return in the list.
+            filter:
+              description: The raw filter text to constrain the results.
+              type: string
+              displayName: The raw filter text to constrain the results.
+            pageToken:
+              description: Token to provide to skip to a particular spot in the list.
+              type: string
+              displayName: Token to provide to skip to a particular spot in the list.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/cloud-platform'
+          (oas-tags):
+            - projects
+types:
+  Build:
+    description: |-
+      A build resource in the Container Builder API.
+
+      At a high level, a Build describes where to find source code, how to build
+      it (for example, the builder image to run on the source), and what tag to
+      apply to the built image when it is pushed to Google Container Registry.
+
+      Fields can include the following variables which will be expanded when the
+      build is created:
+
+      - $PROJECT_ID: the project ID of the build.
+      - $BUILD_ID: the autogenerated ID of the build.
+      - $REPO_NAME: the source repository name specified by RepoSource.
+      - $BRANCH_NAME: the branch name specified by RepoSource.
+      - $TAG_NAME: the tag name specified by RepoSource.
+      - $REVISION_ID or $COMMIT_SHA: the commit SHA specified by RepoSource or
+        resolved from the specified branch or tag.
+    properties:
+      buildTriggerId:
+        description: |-
+          The ID of the BuildTrigger that triggered this build, if it was
+          triggered automatically.
+          @OutputOnly
+        type: string
+        required: false
+      createTime:
+        description: |-
+          Time at which the request to create the build was received.
+          @OutputOnly
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      finishTime:
+        description: |-
+          Time at which execution of the build was finished.
+
+          The difference between finish_time and start_time is the duration of the
+          build's execution.
+          @OutputOnly
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      id:
+        description: |-
+          Unique identifier of the build.
+          @OutputOnly
+        type: string
+        required: false
+      images:
+        description: |-
+          A list of images to be pushed upon the successful completion of all build
+          steps.
+
+          The images will be pushed using the builder
+          service account's credentials.
+
+          The digests of the pushed images will be stored in the Build resource's
+          results field.
+
+          If any of the images fail to be pushed, the build is marked FAILURE.
+        items:
+          type: string
+        type: array
+        required: false
+      logUrl:
+        description: |-
+          URL to logs for this build in Google Cloud Logging.
+          @OutputOnly
+        type: string
+        required: false
+      logsBucket:
+        description: |-
+          Google Cloud Storage bucket where logs should be written (see
+          [Bucket Name
+          Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+          Logs file names will be of the format `${logs_bucket}/log-${build_id}.txt`.
+        type: string
+        required: false
+      options:
+        description: Special options for this build.
+        type: BuildOptions
+        required: false
+      projectId:
+        description: |-
+          ID of the project.
+          @OutputOnly.
+        type: string
+        required: false
+      results:
+        description: |-
+          Results of the build.
+          @OutputOnly
+        type: Results
+        required: false
+      source:
+        description: Describes where to find the source files to build.
+        type: Source
+        required: false
+      sourceProvenance:
+        description: |-
+          A permanent fixed identifier for source.
+          @OutputOnly
+        type: SourceProvenance
+        required: false
+      startTime:
+        description: Time at which execution of the build was started.
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      status:
+        description: |-
+          Status of the build.
+          @OutputOnly
+        enum:
+          - STATUS_UNKNOWN
+          - QUEUING
+          - QUEUED
+          - WORKING
+          - SUCCESS
+          - FAILURE
+          - INTERNAL_ERROR
+          - TIMEOUT
+          - CANCELLED
+        type: string
+        required: false
+      statusDetail:
+        description: |-
+          Customer-readable message about the current status.
+          @OutputOnly
+        type: string
+        required: false
+      steps:
+        description: Describes the operations to be performed on the workspace.
+        items:
+          type: BuildStep
+        type: array
+        required: false
+      timeout:
+        description: |-
+          Amount of time that this build should be allowed to run, to second
+          granularity. If this amount of time elapses, work on the build will cease
+          and the build status will be TIMEOUT.
+
+          Default time is ten minutes.
+        format: google-duration
+        type: string
+        facets:
+          format: string
+        required: false
+  BuildOperationMetadata:
+    description: Metadata for build operations.
+    properties:
+      build:
+        description: The build that the operation is tracking.
+        type: Build
+        required: false
+  BuildOptions:
+    description: Optional arguments to enable specific features of builds.
+    properties:
+      requestedVerifyOption:
+        description: Requested verifiability options.
+        enum:
+          - NOT_VERIFIED
+          - VERIFIED
+        type: string
+        required: false
+      sourceProvenanceHash:
+        description: Requested hash for SourceProvenance.
+        items:
+          enum:
+            - NONE
+            - SHA256
+          type: string
+        type: array
+        required: false
+  BuildStep:
+    description: BuildStep describes a step to perform in the build pipeline.
+    properties:
+      args:
+        description: |-
+          A list of arguments that will be presented to the step when it is started.
+
+          If the image used to run the step's container has an entrypoint, these args
+          will be used as arguments to that entrypoint. If the image does not define
+          an entrypoint, the first element in args will be used as the entrypoint,
+          and the remainder will be used as arguments.
+        items:
+          type: string
+        type: array
+        required: false
+      dir:
+        description: |-
+          Working directory (relative to project source root) to use when running
+          this operation's container.
+        type: string
+        required: false
+      env:
+        description: |-
+          A list of environment variable definitions to be used when running a step.
+
+          The elements are of the form "KEY=VALUE" for the environment variable "KEY"
+          being given the value "VALUE".
+        items:
+          type: string
+        type: array
+        required: false
+      id:
+        description: |-
+          Optional unique identifier for this build step, used in wait_for to
+          reference this build step as a dependency.
+        type: string
+        required: false
+      name:
+        description: |-
+          The name of the container image that will run this particular build step.
+
+          If the image is already available in the host's
+          Docker daemon's cache, it will be run directly. If not, the host will
+          attempt to pull the image first, using the builder service account's
+          credentials if necessary.
+
+          The Docker daemon's cache will already have the latest versions of all of
+          the officially supported build steps
+          (https://github.com/GoogleCloudPlatform/cloud-builders). The Docker daemon
+          will also have cached many of the layers for some popular images, like
+          "ubuntu", "debian", but they will be refreshed at the time you attempt to
+          use them.
+
+          If you built an image in a previous build step, it will be stored in the
+          host's Docker daemon's cache and is available to use as the name for a
+          later build step.
+        type: string
+        required: false
+      waitFor:
+        description: |-
+          The ID(s) of the step(s) that this build step depends on.
+          This build step will not start until all the build steps in wait_for
+          have completed successfully. If wait_for is empty, this build step will
+          start when all previous build steps in the Build.Steps list have completed
+          successfully.
+        items:
+          type: string
+        type: array
+        required: false
+  BuildTrigger:
+    description: |-
+      Configuration for an automated build in response to source repository
+      changes.
+    properties:
+      build:
+        description: Contents of the build template.
+        type: Build
+        required: false
+      createTime:
+        description: |-
+          Time when the trigger was created.
+
+          @OutputOnly
+        format: google-datetime
+        type: string
+        facets:
+          format: string
+        required: false
+      description:
+        description: Human-readable description of this trigger.
+        type: string
+        required: false
+      disabled:
+        description: 'If true, the trigger will never result in a build.'
+        type: boolean
+        required: false
+      filename:
+        description: |-
+          Path, from the source root, to a file whose contents is used for the
+          template.
+        type: string
+        required: false
+      id:
+        description: |-
+          Unique identifier of the trigger.
+
+          @OutputOnly
+        type: string
+        required: false
+      triggerTemplate:
+        description: |-
+          Template describing the types of source changes to trigger a build.
+
+          Branch and tag names in trigger templates are interpreted as regular
+          expressions. Any branch or tag change that matches that regular expression
+          will trigger a build.
+        type: RepoSource
+        required: false
+  BuiltImage:
+    description: BuiltImage describes an image built by the pipeline.
+    properties:
+      digest:
+        description: Docker Registry 2.0 digest.
+        type: string
+        required: false
+      name:
+        description: |-
+          Name used to push the container image to Google Container Registry, as
+          presented to `docker push`.
+        type: string
+        required: false
+  CancelBuildRequest:
+    description: Request to cancel an ongoing build.
+    properties: {}
+  Empty:
+    description: |-
+      A generic empty message that you can re-use to avoid defining duplicated
+      empty messages in your APIs. A typical example is to use it as the request
+      or the response type of an API method. For instance:
+
+          service Foo {
+            rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
+          }
+
+      The JSON representation for `Empty` is empty JSON object `{}`.
+    properties: {}
+  FileHashes:
+    description: |-
+      Container message for hashes of byte content of files, used in
+      SourceProvenance messages to verify integrity of source input to the build.
+    properties:
+      fileHash:
+        description: Collection of file hashes.
+        items:
+          type: Hash
+        type: array
+        required: false
+  Hash:
+    description: Container message for hash values.
+    properties:
+      type:
+        description: The type of hash that was performed.
+        enum:
+          - NONE
+          - SHA256
+        type: string
+        required: false
+      value:
+        description: The hash value.
+        format: byte
+        type: string
+        facets:
+          format: string
+        required: false
+  ListBuildTriggersResponse:
+    description: Response containing existing BuildTriggers.
+    properties:
+      triggers:
+        description: 'BuildTriggers for the project, sorted by create_time descending.'
+        items:
+          type: BuildTrigger
+        type: array
+        required: false
+  ListBuildsResponse:
+    description: Response including listed builds.
+    properties:
+      builds:
+        description: 'Builds will be sorted by create_time, descending.'
+        items:
+          type: Build
+        type: array
+        required: false
+      nextPageToken:
+        description: Token to receive the next page of results.
+        type: string
+        required: false
+  ListOperationsResponse:
+    description: The response message for Operations.ListOperations.
+    properties:
+      nextPageToken:
+        description: The standard List next-page token.
+        type: string
+        required: false
+      operations:
+        description: A list of operations that matches the specified filter in the request.
+        items:
+          type: Operation
+        type: array
+        required: false
+  Operation:
+    description: |-
+      This resource represents a long-running operation that is the result of a
+      network API call.
+    properties:
+      done:
+        description: |-
+          If the value is `false`, it means the operation is still in progress.
+          If true, the operation is completed, and either `error` or `response` is
+          available.
+        type: boolean
+        required: false
+      error:
+        description: The error result of the operation in case of failure or cancellation.
+        type: Status
+        required: false
+      metadata:
+        additionalProperties:
+          description: Properties of the object. Contains field @type with type URL.
+        description: |-
+          Service-specific metadata associated with the operation.  It typically
+          contains progress information and common metadata such as create time.
+          Some services might not provide such metadata.  Any method that returns a
+          long-running operation should document the metadata type, if any.
+        type: object
+        required: false
+      name:
+        description: |-
+          The server-assigned name, which is only unique within the same service that
+          originally returns it. If you use the default HTTP mapping, the
+          `name` should have the format of `operations/some/unique/name`.
+        type: string
+        required: false
+      response:
+        additionalProperties:
+          description: Properties of the object. Contains field @type with type URL.
+        description: |-
+          The normal response of the operation in case of success.  If the original
+          method returns no data on success, such as `Delete`, the response is
+          `google.protobuf.Empty`.  If the original method is standard
+          `Get`/`Create`/`Update`, the response should be the resource.  For other
+          methods, the response should have the type `XxxResponse`, where `Xxx`
+          is the original method name.  For example, if the original method name
+          is `TakeSnapshot()`, the inferred response type is
+          `TakeSnapshotResponse`.
+        type: object
+        required: false
+  RepoSource:
+    description: |-
+      RepoSource describes the location of the source in a Google Cloud Source
+      Repository.
+    properties:
+      branchName:
+        description: Name of the branch to build.
+        type: string
+        required: false
+      commitSha:
+        description: Explicit commit SHA to build.
+        type: string
+        required: false
+      projectId:
+        description: |-
+          ID of the project that owns the repo. If omitted, the project ID requesting
+          the build is assumed.
+        type: string
+        required: false
+      repoName:
+        description: 'Name of the repo. If omitted, the name "default" is assumed.'
+        type: string
+        required: false
+      tagName:
+        description: Name of the tag to build.
+        type: string
+        required: false
+  Results:
+    description: Results describes the artifacts created by the build pipeline.
+    properties:
+      buildStepImages:
+        description: 'List of build step digests, in order corresponding to build step indices.'
+        items:
+          type: string
+        type: array
+        required: false
+      images:
+        description: Images that were built as a part of the build.
+        items:
+          type: BuiltImage
+        type: array
+        required: false
+  Source:
+    description: |-
+      Source describes the location of the source in a supported storage
+      service.
+    properties:
+      repoSource:
+        description: 'If provided, get source from this location in a Cloud Repo.'
+        type: RepoSource
+        required: false
+      storageSource:
+        description: |-
+          If provided, get the source from this location in in Google Cloud
+          Storage.
+        type: StorageSource
+        required: false
+  SourceProvenance:
+    description: |-
+      Provenance of the source. Ways to find the original source, or verify that
+      some source was used for this build.
+    properties:
+      fileHashes:
+        additionalProperties:
+          type: FileHashes
+        description: |-
+          Hash(es) of the build source, which can be used to verify that the original
+          source integrity was maintained in the build. Note that FileHashes will
+          only be populated if BuildOptions has requested a SourceProvenanceHash.
+
+          The keys to this map are file paths used as build source and the values
+          contain the hash values for those files.
+
+          If the build source came in a single package such as a gzipped tarfile
+          (.tar.gz), the FileHash will be for the single path to that file.
+          @OutputOnly
+        type: object
+        required: false
+      resolvedRepoSource:
+        description: |-
+          A copy of the build's source.repo_source, if exists, with any
+          revisions resolved.
+        type: RepoSource
+        required: false
+      resolvedStorageSource:
+        description: |-
+          A copy of the build's source.storage_source, if exists, with any
+          generations resolved.
+        type: StorageSource
+        required: false
+  Status:
+    description: |-
+      The `Status` type defines a logical error model that is suitable for different
+      programming environments, including REST APIs and RPC APIs. It is used by
+      [gRPC](https://github.com/grpc). The error model is designed to be:
+
+      - Simple to use and understand for most users
+      - Flexible enough to meet unexpected needs
+
+      # Overview
+
+      The `Status` message contains three pieces of data: error code, error message,
+      and error details. The error code should be an enum value of
+      google.rpc.Code, but it may accept additional error codes if needed.  The
+      error message should be a developer-facing English message that helps
+      developers *understand* and *resolve* the error. If a localized user-facing
+      error message is needed, put the localized message in the error details or
+      localize it in the client. The optional error details may contain arbitrary
+      information about the error. There is a predefined set of error detail types
+      in the package `google.rpc` which can be used for common error conditions.
+
+      # Language mapping
+
+      The `Status` message is the logical representation of the error model, but it
+      is not necessarily the actual wire format. When the `Status` message is
+      exposed in different client libraries and different wire protocols, it can be
+      mapped differently. For example, it will likely be mapped to some exceptions
+      in Java, but more likely mapped to some error codes in C.
+
+      # Other uses
+
+      The error model and the `Status` message can be used in a variety of
+      environments, either with or without APIs, to provide a
+      consistent developer experience across different environments.
+
+      Example uses of this error model include:
+
+      - Partial errors. If a service needs to return partial errors to the client,
+          it may embed the `Status` in the normal response to indicate the partial
+          errors.
+
+      - Workflow errors. A typical workflow has multiple steps. Each step may
+          have a `Status` message for error reporting purpose.
+
+      - Batch operations. If a client uses batch request and batch response, the
+          `Status` message should be used directly inside batch response, one for
+          each error sub-response.
+
+      - Asynchronous operations. If an API call embeds asynchronous operation
+          results in its response, the status of those operations should be
+          represented directly using the `Status` message.
+
+      - Logging. If some API errors are stored in logs, the message `Status` could
+          be used directly after any stripping needed for security/privacy reasons.
+    properties:
+      code:
+        description: 'The status code, which should be an enum value of google.rpc.Code.'
+        format: int32
+        type: integer
+        required: false
+      details:
+        description: |-
+          A list of messages that carry the error details.  There will be a
+          common set of message types for APIs to use.
+        items:
+          additionalProperties:
+            description: Properties of the object. Contains field @type with type URL.
+          type: object
+        type: array
+        required: false
+      message:
+        description: |-
+          A developer-facing error message, which should be in English. Any
+          user-facing error message should be localized and sent in the
+          google.rpc.Status.details field, or localized by the client.
+        type: string
+        required: false
+  StorageSource:
+    description: |-
+      StorageSource describes the location of the source in an archive file in
+      Google Cloud Storage.
+    properties:
+      bucket:
+        description: |-
+          Google Cloud Storage bucket containing source (see
+          [Bucket Name
+          Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+        type: string
+        required: false
+      generation:
+        description: |-
+          Google Cloud Storage generation for the object. If the generation is
+          omitted, the latest generation will be used.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      object:
+        description: |-
+          Google Cloud Storage object containing source.
+
+          This object must be a gzipped archive file (.tar.gz) containing source to
+          build.
+        type: string
+        required: false
+traits:
+  xgafv:
+    queryParameters:
+      $.xgafv:
+        type: string
+        description: V1 error format.
+        enum:
+          - '1'
+          - '2'
+  accessToken:
+    queryParameters:
+      access_token:
+        type: string
+        description: OAuth access token.
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for response.
+        default: json
+        enum:
+          - json
+          - media
+          - proto
+  bearerToken:
+    queryParameters:
+      bearer_token:
+        type: string
+        description: OAuth bearer token.
+  callback:
+    queryParameters:
+      callback:
+        type: string
+        description: JSONP
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  pp:
+    queryParameters:
+      pp:
+        type: boolean
+        description: Pretty-print response.
+        default: true
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.'
+  uploadType:
+    queryParameters:
+      uploadType:
+        type: string
+        description: 'Legacy upload protocol for media (e.g. "media", "multipart").'
+  uploadProtocol:
+    queryParameters:
+      upload_protocol:
+        type: string
+        description: 'Upload protocol for media (e.g. "raw", "multipart").'

@@ -1,0 +1,404 @@
+#%RAML 1.0
+title: ContainerServiceClient
+version: 2015-11-01-preview
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: The Container Service Client.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-compute/2015-11-01-preview/swagger/containerService.json'
+    version: '2.0'
+  (oas-x-preferred): false
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-compute-containerService
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - virtual machines
+    - docker
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-long-running-operation: any
+  oas-x-ms-pageable: any
+  oas-x-ms-client-flatten: any
+  oas-x-ms-enum: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.ContainerService:
+            displayName: Microsoft.ContainerService
+            /containerServices:
+              displayName: containerServices
+              '/{containerServiceName}':
+                displayName: '{containerServiceName}'
+                uriParameters:
+                  containerServiceName:
+                    description: The name of the container service within the given subscription and resource group.
+                    required: true
+                    type: string
+                    displayName: The name of the container service within the given subscription and resource group.
+                put:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: ContainerService_CreateOrUpdate
+                  description: The operation to create or update a container service.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: ContainerService
+                      (oas-body-name): parameters
+                      description: Parameters supplied to the Create Container Service operation.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: ContainerService
+                    '201':
+                      body:
+                        application/json:
+                          type: ContainerService
+                    '202':
+                      body:
+                        application/json:
+                          type: ContainerService
+                  (oas-tags):
+                    - ContainerService
+                get:
+                  displayName: ContainerService_Get
+                  description: The operation to get a container service.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: ContainerService
+                  (oas-tags):
+                    - ContainerService
+                delete:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: ContainerService_Delete
+                  description: The operation to delete a container service.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '202': {}
+                    '204': {}
+                  (oas-tags):
+                    - ContainerService
+              get:
+                (oas-x-ms-pageable): {}
+                displayName: ContainerService_ListByResourceGroup
+                description: The operation to list container services.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: ContainerServiceListResult
+                (oas-tags):
+                  - ContainerService
+types:
+  ContainerService:
+    type: Resource
+  ContainerServiceAgentPoolProfile:
+    description: Profile for container service agent pool
+    properties:
+      count:
+        description: No. of agents (VMs) that will host docker containers
+        format: int32
+        maximum: 100
+        minimum: 1
+        type: integer
+        required: false
+      dnsPrefix:
+        description: DNS prefix to be used to create FQDN for this agent pool
+        type: string
+      fqdn:
+        description: FDQN for the agent pool
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: Unique name of the agent pool profile within the context of the subscription and resource group
+        type: string
+      vmSize:
+        description: Size of agent VMs
+        enum:
+          - Standard_A0
+          - Standard_A1
+          - Standard_A2
+          - Standard_A3
+          - Standard_A4
+          - Standard_A5
+          - Standard_A6
+          - Standard_A7
+          - Standard_A8
+          - Standard_A9
+          - Standard_A10
+          - Standard_A11
+          - Standard_D1
+          - Standard_D2
+          - Standard_D3
+          - Standard_D4
+          - Standard_D11
+          - Standard_D12
+          - Standard_D13
+          - Standard_D14
+          - Standard_D1_v2
+          - Standard_D2_v2
+          - Standard_D3_v2
+          - Standard_D4_v2
+          - Standard_D5_v2
+          - Standard_D11_v2
+          - Standard_D12_v2
+          - Standard_D13_v2
+          - Standard_D14_v2
+          - Standard_G1
+          - Standard_G2
+          - Standard_G3
+          - Standard_G4
+          - Standard_G5
+          - Standard_DS1
+          - Standard_DS2
+          - Standard_DS3
+          - Standard_DS4
+          - Standard_DS11
+          - Standard_DS12
+          - Standard_DS13
+          - Standard_DS14
+          - Standard_GS1
+          - Standard_GS2
+          - Standard_GS3
+          - Standard_GS4
+          - Standard_GS5
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: ContainerServiceVMSizeTypes
+  ContainerServiceDiagnosticsProfile:
+    properties:
+      vmDiagnostics:
+        description: Profile for container service VM diagnostic agent
+        type: ContainerServiceVMDiagnostics
+        required: false
+  ContainerServiceLinuxProfile:
+    description: Profile for Linux VM
+    properties:
+      adminUsername:
+        description: The administrator username to use for all Linux VMs
+        type: string
+      ssh:
+        description: Specifies the ssh key configuration for Linux VMs
+        type: ContainerServiceSshConfiguration
+  ContainerServiceListResult:
+    description: The List Container Service operation response
+    properties:
+      value:
+        description: Gets or sets the list of container services.
+        items:
+          type: ContainerService
+        type: array
+        required: false
+  ContainerServiceMasterProfile:
+    description: Profile for container service master
+    properties:
+      count:
+        description: Number of masters (VMs) in the container cluster
+        enum:
+          - 1
+          - 3
+          - 5
+        format: int32
+        type: integer
+        required: false
+      dnsPrefix:
+        description: DNS prefix to be used to create FQDN for master
+        type: string
+      fqdn:
+        description: FDQN for the master
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  ContainerServiceOrchestratorProfile:
+    description: Profile for Orchestrator
+    properties:
+      orchestratorType:
+        description: Specifies what orchestrator will be used to manage container cluster resources.
+        enum:
+          - Mesos
+          - SwarmPreview
+          - DCOS
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: ContainerServiceOchestratorTypes
+  ContainerServiceProperties:
+    description: Properties of container service
+    properties:
+      agentPoolProfiles:
+        description: Properties of agent pools
+        items:
+          type: ContainerServiceAgentPoolProfile
+        type: array
+      diagnosticsProfile:
+        description: Properties for Diagnostic Agent
+        type: ContainerServiceDiagnosticsProfile
+        required: false
+      linuxProfile:
+        description: Properties for Linux VMs
+        type: ContainerServiceLinuxProfile
+      masterProfile:
+        description: Properties of master agents
+        type: ContainerServiceMasterProfile
+      orchestratorProfile:
+        description: Properties of orchestrator
+        type: ContainerServiceOrchestratorProfile
+        required: false
+      provisioningState:
+        description: 'Gets the provisioning state, which only appears in the response.'
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      windowsProfile:
+        description: Properties of Windows VMs
+        type: ContainerServiceWindowsProfile
+        required: false
+  ContainerServiceSshConfiguration:
+    description: SSH configuration for Linux based VMs running on Azure
+    properties:
+      publicKeys:
+        description: Gets or sets the list of SSH public keys used to authenticate with Linux based VMs
+        items:
+          type: ContainerServiceSshPublicKey
+        type: array
+        required: false
+  ContainerServiceSshPublicKey:
+    description: Contains information about SSH certificate public key data.
+    properties:
+      keyData:
+        description: Gets or sets Certificate public key used to authenticate with VM through SSH. The certificate must be in Pem format with or without headers.
+        type: string
+  ContainerServiceVMDiagnostics:
+    description: Describes VM Diagnostics.
+    properties:
+      enabled:
+        description: Gets or sets whether VM Diagnostic Agent should be provisioned on the Virtual Machine.
+        type: boolean
+        required: false
+      storageUri:
+        description: Gets or sets whether VM Diagnostic Agent should be provisioned on the Virtual Machine.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  ContainerServiceWindowsProfile:
+    description: Profile for Windows jumpbox
+    properties:
+      adminPassword:
+        description: The administrator password to use for Windows jumpbox
+        type: string
+      adminUsername:
+        description: The administrator username to use for Windows jumpbox
+        type: string
+  Resource:
+    properties:
+      id:
+        description: Resource Id
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Resource location
+        type: string
+      name:
+        description: Resource name
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Resource tags
+        type: object
+        required: false
+      type:
+        description: Resource type
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client Api Version.
+        required: true

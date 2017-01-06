@@ -1,0 +1,1215 @@
+#%RAML 1.0
+title: Cambase.io
+version: '1.0'
+baseUri: 'http://api.cambase.io/'
+protocols:
+  - HTTP
+description: 'Cambase.io is a project by Evercam.io in order to make it easier for software developers to have a reliable, up to date source of model hardware information available via a public API.'
+(oas-tags-definition):
+  - description: Models
+    name: models
+  - description: Recorders
+    name: recorders
+  - description: Vendors
+    name: vendors
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_cdn.cambase.io_assets_logo-f1bffbb8eea6139bc4acfec3b9f2f91b.jpg'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://api.cambase.io/api-docs/api-docs.json'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): cambase.io
+/api:
+  displayName: api
+  /v1:
+    displayName: v1
+    /recorders:
+      displayName: recorders
+      /search.json:
+        displayName: search.json
+        get:
+          displayName: GET_api-v1-recorders-search-json
+          (oas-summary): Searches all Recorders
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '406':
+              description: The request you made is not acceptable
+            '416':
+              description: Requested Range Not Satisfiable
+          queryParameters:
+            page:
+              description: Page number
+              required: false
+              type: integer
+              displayName: Page number
+            'q[model_cont]':
+              description: Model
+              required: false
+              type: string
+              displayName: Model
+            'q[vendor_name_cont]':
+              description: Vendor
+              required: false
+              type: string
+              displayName: Vendor
+            'q[sdhc_eq]':
+              description: SD Card (GB)
+              required: false
+              type: string
+              displayName: SD Card (GB)
+            'q[type_eq]':
+              description: Type
+              required: false
+              type: string
+              displayName: Type
+            'q[resolution_eq]':
+              description: Resolution
+              required: false
+              type: string
+              displayName: Resolution
+            'q[input_channels_eq]':
+              description: Input Channels
+              required: false
+              type: string
+              displayName: Input Channels
+            'q[playback_channels_eq]':
+              description: Playback Channels
+              required: false
+              type: string
+              displayName: Playback Channels
+            'q[onvif_true]':
+              description: ONVIF
+              required: false
+              type: string
+              displayName: ONVIF
+            'q[psia_true]':
+              description: PSIA
+              required: false
+              type: string
+              displayName: PSIA
+            'q[ptz_true]':
+              description: PTZ
+              required: false
+              type: string
+              displayName: PTZ
+            'q[sd_card_true]':
+              description: SD Card
+              required: false
+              type: string
+              displayName: SD Card
+            'q[upnp_true]':
+              description: UPnP
+              required: false
+              type: string
+              displayName: UPnP
+            'q[audio_in_true]':
+              description: Audio In
+              required: false
+              type: string
+              displayName: Audio In
+            'q[audio_out_true]':
+              description: Audio Out
+              required: false
+              type: string
+              displayName: Audio Out
+            'q[hdmi_true]':
+              description: HDMI Support
+              required: false
+              type: string
+              displayName: HDMI Support
+            'q[hot_swap_true]':
+              description: Hot Swap
+              required: false
+              type: string
+              displayName: Hot Swap
+            'q[support_3rdparty_true]':
+              description: 3rd pparty Camera Support
+              required: false
+              type: string
+              displayName: 3rd pparty Camera Support
+            'q[digital_io_true]':
+              description: Digital I/O
+              required: false
+              type: string
+              displayName: Digital I/O
+          (oas-tags):
+            - recorders
+      '/{id}.json':
+        displayName: '{id}.json'
+        uriParameters:
+          id:
+            description: Recorder ID
+            required: true
+            type: string
+            displayName: Recorder ID
+        get:
+          displayName: GET_api-v1-recorders-id-json
+          (oas-summary): Fetches a single Recorder
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          (oas-tags):
+            - recorders
+        patch:
+          displayName: PATCH_api-v1-recorders-id-json
+          (oas-summary): Updates an existing Recorder
+          body:
+            multipart/form-data:
+              properties:
+                vendor_id:
+                  description: Vendor ID
+                  required: true
+                  type: string
+                'recorder[model]':
+                  description: Model
+                  required: true
+                  type: string
+                'recorder[name]':
+                  description: Name
+                  required: true
+                  type: string
+                'recorder[recorder_type]':
+                  description: Type
+                  required: true
+                  type: string
+                'recorder[resolution]':
+                  description: Resolution
+                  required: false
+                  type: string
+                'recorder[onvif]':
+                  description: ONVIF
+                  required: false
+                  type: string
+                'recorder[psia]':
+                  description: PSIA
+                  required: false
+                  type: string
+                'recorder[ptz]':
+                  description: PTZ
+                  required: false
+                  type: string
+                'recorder[discontinued]':
+                  description: Discontinued
+                  required: false
+                  type: string
+                'recorder[support_3rdparty]':
+                  description: 3rd pparty Camera Support
+                  required: false
+                  type: string
+                'recorder[sd_card]':
+                  description: SD Card
+                  required: false
+                  type: string
+                'recorder[upnp]':
+                  description: UPnP
+                  required: false
+                  type: string
+                'recorder[hot_swap]':
+                  description: Hot Swap
+                  required: false
+                  type: string
+                'recorder[hdmi]':
+                  description: HDMI Support
+                  required: false
+                  type: string
+                'recorder[digital_io]':
+                  description: Digital I/O
+                  required: false
+                  type: string
+                'recorder[audio_in]':
+                  description: Audio In
+                  required: false
+                  type: string
+                'recorder[audio_out]':
+                  description: Audio Out
+                  required: false
+                  type: string
+                'recorder[input_channels]':
+                  description: Input Channels
+                  required: false
+                  type: string
+                'recorder[playback_channels]':
+                  description: Playback Channels
+                  required: false
+                  type: string
+                'recorder[usb]':
+                  description: USB Ports
+                  required: false
+                  type: string
+                'recorder[sdhc]':
+                  description: SD Card (GB)
+                  required: false
+                  type: string
+                'recorder[mobile_access]':
+                  description: Mobile Access
+                  required: false
+                  type: string
+                'recorder[alarms]':
+                  description: Alarms
+                  required: false
+                  type: string
+                'recorder[raid_support]':
+                  description: Raid Support
+                  required: false
+                  type: string
+                'recorder[storage]':
+                  description: Internal Storage
+                  required: false
+                  type: string
+                'recorder[additional_information]':
+                  description: Additional Information
+                  required: false
+                  type: string
+                'recorder[default_username]':
+                  description: Default Username
+                  required: false
+                  type: string
+                'recorder[default_password]':
+                  description: Default Password
+                  required: false
+                  type: string
+                'recorder[jpeg_url]':
+                  description: JPEG URL
+                  required: false
+                  type: string
+                'recorder[h264_url]':
+                  description: H264 URL
+                  required: false
+                  type: string
+                'recorder[mjpeg_url]':
+                  description: MJPEG URL
+                  required: false
+                  type: string
+                'recorder[official_url]':
+                  description: Official URL
+                  required: false
+                  type: string
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          (oas-tags):
+            - recorders
+        put:
+          displayName: PUT_api-v1-recorders-id-json
+          (oas-summary): Updates an existing Recorder
+          body:
+            multipart/form-data:
+              properties:
+                vendor_id:
+                  description: Vendor ID
+                  required: true
+                  type: string
+                'recorder[model]':
+                  description: Model
+                  required: true
+                  type: string
+                'recorder[name]':
+                  description: Name
+                  required: true
+                  type: string
+                'recorder[recorder_type]':
+                  description: Type
+                  required: true
+                  type: string
+                'recorder[resolution]':
+                  description: Resolution
+                  required: false
+                  type: string
+                'recorder[onvif]':
+                  description: ONVIF
+                  required: false
+                  type: string
+                'recorder[psia]':
+                  description: PSIA
+                  required: false
+                  type: string
+                'recorder[ptz]':
+                  description: PTZ
+                  required: false
+                  type: string
+                'recorder[discontinued]':
+                  description: Discontinued
+                  required: false
+                  type: string
+                'recorder[support_3rdparty]':
+                  description: 3rd pparty Camera Support
+                  required: false
+                  type: string
+                'recorder[sd_card]':
+                  description: SD Card
+                  required: false
+                  type: string
+                'recorder[upnp]':
+                  description: UPnP
+                  required: false
+                  type: string
+                'recorder[hot_swap]':
+                  description: Hot Swap
+                  required: false
+                  type: string
+                'recorder[hdmi]':
+                  description: HDMI Support
+                  required: false
+                  type: string
+                'recorder[digital_io]':
+                  description: Digital I/O
+                  required: false
+                  type: string
+                'recorder[audio_in]':
+                  description: Audio In
+                  required: false
+                  type: string
+                'recorder[audio_out]':
+                  description: Audio Out
+                  required: false
+                  type: string
+                'recorder[input_channels]':
+                  description: Input Channels
+                  required: false
+                  type: string
+                'recorder[playback_channels]':
+                  description: Playback Channels
+                  required: false
+                  type: string
+                'recorder[usb]':
+                  description: USB Ports
+                  required: false
+                  type: string
+                'recorder[sdhc]':
+                  description: SD Card (GB)
+                  required: false
+                  type: string
+                'recorder[mobile_access]':
+                  description: Mobile Access
+                  required: false
+                  type: string
+                'recorder[alarms]':
+                  description: Alarms
+                  required: false
+                  type: string
+                'recorder[raid_support]':
+                  description: Raid Support
+                  required: false
+                  type: string
+                'recorder[storage]':
+                  description: Internal Storage
+                  required: false
+                  type: string
+                'recorder[additional_information]':
+                  description: Additional Information
+                  required: false
+                  type: string
+                'recorder[default_username]':
+                  description: Default Username
+                  required: false
+                  type: string
+                'recorder[default_password]':
+                  description: Default Password
+                  required: false
+                  type: string
+                'recorder[jpeg_url]':
+                  description: JPEG URL
+                  required: false
+                  type: string
+                'recorder[h264_url]':
+                  description: H264 URL
+                  required: false
+                  type: string
+                'recorder[mjpeg_url]':
+                  description: MJPEG URL
+                  required: false
+                  type: string
+                'recorder[official_url]':
+                  description: Official URL
+                  required: false
+                  type: string
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          (oas-tags):
+            - recorders
+    /vendors:
+      displayName: vendors
+      '/{id}.json':
+        displayName: '{id}.json'
+        uriParameters:
+          id:
+            description: Vendor ID
+            required: true
+            type: string
+            displayName: Vendor ID
+        put:
+          displayName: PUT_api-v1-vendors-id-json
+          (oas-summary): Updates an existing Vendor
+          body:
+            multipart/form-data:
+              properties:
+                'vendor[name]':
+                  description: Name
+                  required: false
+                  type: string
+                'vendor[info]':
+                  description: Info.
+                  required: false
+                  type: string
+                'vendor[url]':
+                  description: Website
+                  required: false
+                  type: string
+                'vendor[mac]':
+                  description: MAC
+                  required: false
+                  type: string
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          (oas-tags):
+            - vendors
+        patch:
+          displayName: PATCH_api-v1-vendors-id-json
+          (oas-summary): Updates an existing Vendor
+          body:
+            multipart/form-data:
+              properties:
+                'vendor[name]':
+                  description: Name
+                  required: false
+                  type: string
+                'vendor[info]':
+                  description: Info.
+                  required: false
+                  type: string
+                'vendor[url]':
+                  description: Website
+                  required: false
+                  type: string
+                'vendor[mac]':
+                  description: MAC
+                  required: false
+                  type: string
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          (oas-tags):
+            - vendors
+        get:
+          displayName: GET_api-v1-vendors-id-json
+          (oas-summary): Fetches a single Vendor
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          queryParameters:
+            order:
+              description: Sort order
+              required: false
+              type: string
+              displayName: Sort order
+          (oas-tags):
+            - vendors
+    /models.json:
+      displayName: models.json
+      get:
+        displayName: GET_api-v1-models-json
+        (oas-summary): Fetches all Models
+        responses:
+          '200':
+            description: No response was specified
+          '401':
+            description: Unauthorized
+          '406':
+            description: The request you made is not acceptable
+          '416':
+            description: Requested Range Not Satisfiable
+        queryParameters:
+          page:
+            description: Page number
+            required: false
+            type: integer
+            displayName: Page number
+          order:
+            description: Sort order
+            required: false
+            type: string
+            displayName: Sort order
+        (oas-tags):
+          - models
+      post:
+        displayName: POST_api-v1-models-json
+        (oas-summary): Creates a new Model
+        body:
+          multipart/form-data:
+            properties:
+              vendor_id:
+                description: Vendor ID
+                required: true
+                type: string
+              'model[model]':
+                description: Model
+                required: true
+                type: string
+              'model[shape]':
+                description: Shape
+                required: false
+                type: string
+              'model[resolution]':
+                description: Resolution
+                required: false
+                type: string
+              'model[onvif]':
+                description: ONVIF
+                required: false
+                type: string
+              'model[psia]':
+                description: PSIA
+                required: false
+                type: string
+              'model[ptz]':
+                description: PTZ
+                required: false
+                type: string
+              'model[infrared]':
+                description: Infrared
+                required: false
+                type: string
+              'model[varifocal]':
+                description: Varifocal
+                required: false
+                type: string
+              'model[sd_card]':
+                description: SD Card
+                required: false
+                type: string
+              'model[upnp]':
+                description: UPnP
+                required: false
+                type: string
+              'model[audio_in]':
+                description: UPnP
+                required: false
+                type: string
+              'model[audio_out]':
+                description: UPnP
+                required: false
+                type: string
+              'model[default_username]':
+                description: Default Username
+                required: false
+                type: string
+              'model[default_password]':
+                description: Default Password
+                required: false
+                type: string
+              'model[jpeg_url]':
+                description: JPEG URL
+                required: false
+                type: string
+              'model[h264_url]':
+                description: H264 URL
+                required: false
+                type: string
+              'model[mjpeg_url]':
+                description: MJPEG URL
+                required: false
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+          '401':
+            description: Unauthorized
+          '406':
+            description: Not Acceptable
+        (oas-tags):
+          - models
+    /models:
+      displayName: models
+      /search.json:
+        displayName: search.json
+        get:
+          displayName: GET_api-v1-models-search-json
+          (oas-summary): Searches all Models
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '406':
+              description: The request you made is not acceptable
+            '416':
+              description: Requested Range Not Satisfiable
+          queryParameters:
+            page:
+              description: Page number
+              required: false
+              type: integer
+              displayName: Page number
+            'q[model_cont]':
+              description: Model
+              required: false
+              type: string
+              displayName: Model
+            'q[manufacturer_name_cont]':
+              description: Vendor
+              required: false
+              type: string
+              displayName: Vendor
+            'q[shape_eq]':
+              description: Shape
+              required: false
+              type: string
+              displayName: Shape
+            'q[resolution_eq]':
+              description: Resolution
+              required: false
+              type: string
+              displayName: Resolution
+            'q[onvif_true]':
+              description: ONVIF
+              required: false
+              type: string
+              displayName: ONVIF
+            'q[psia_true]':
+              description: PSIA
+              required: false
+              type: string
+              displayName: PSIA
+            'q[ptz_true]':
+              description: PTZ
+              required: false
+              type: string
+              displayName: PTZ
+            'q[infrared_true]':
+              description: Infrared
+              required: false
+              type: string
+              displayName: Infrared
+            'q[varifocal_true]':
+              description: Varifocal
+              required: false
+              type: string
+              displayName: Varifocal
+            'q[sd_card_true]':
+              description: SD Card
+              required: false
+              type: string
+              displayName: SD Card
+            'q[upnp_true]':
+              description: UPnP
+              required: false
+              type: string
+              displayName: UPnP
+            'q[audio_in_true]':
+              description: Audio In
+              required: false
+              type: string
+              displayName: Audio In
+            'q[audio_out_true]':
+              description: Audio Out
+              required: false
+              type: string
+              displayName: Audio Out
+          (oas-tags):
+            - models
+      '/{id}.json':
+        displayName: '{id}.json'
+        uriParameters:
+          id:
+            description: Model ID
+            required: true
+            type: integer
+            displayName: Model ID
+        patch:
+          displayName: PATCH_api-v1-models-id-json
+          (oas-summary): Updates an existing Model
+          body:
+            multipart/form-data:
+              properties:
+                vendor_id:
+                  description: Vendor ID
+                  required: true
+                  type: string
+                'model[model]':
+                  description: Model
+                  required: false
+                  type: string
+                'model[shape]':
+                  description: Shape
+                  required: false
+                  type: string
+                'model[resolution]':
+                  description: Resolution
+                  required: false
+                  type: string
+                'model[onvif]':
+                  description: ONVIF
+                  required: false
+                  type: string
+                'model[psia]':
+                  description: PSIA
+                  required: false
+                  type: string
+                'model[ptz]':
+                  description: PTZ
+                  required: false
+                  type: string
+                'model[infrared]':
+                  description: Infrared
+                  required: false
+                  type: string
+                'model[varifocal]':
+                  description: Varifocal
+                  required: false
+                  type: string
+                'model[sd_card]':
+                  description: SD Card
+                  required: false
+                  type: string
+                'model[upnp]':
+                  description: UPnP
+                  required: false
+                  type: string
+                'model[audio_in]':
+                  description: Audio In
+                  required: false
+                  type: string
+                'model[audio_out]':
+                  description: Audio Out
+                  required: false
+                  type: string
+                'model[default_username]':
+                  description: Default Username
+                  required: false
+                  type: string
+                'model[default_password]':
+                  description: Default Password
+                  required: false
+                  type: string
+                'model[jpeg_url]':
+                  description: JPEG URL
+                  required: false
+                  type: string
+                'model[h264_url]':
+                  description: H264 URL
+                  required: false
+                  type: string
+                'model[mjpeg_url]':
+                  description: MJPEG URL
+                  required: false
+                  type: string
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          (oas-tags):
+            - models
+        put:
+          displayName: PUT_api-v1-models-id-json
+          (oas-summary): Updates an existing Model
+          body:
+            multipart/form-data:
+              properties:
+                vendor_id:
+                  description: Vendor ID
+                  required: true
+                  type: string
+                'model[model]':
+                  description: Model
+                  required: false
+                  type: string
+                'model[shape]':
+                  description: Shape
+                  required: false
+                  type: string
+                'model[resolution]':
+                  description: Resolution
+                  required: false
+                  type: string
+                'model[onvif]':
+                  description: ONVIF
+                  required: false
+                  type: string
+                'model[psia]':
+                  description: PSIA
+                  required: false
+                  type: string
+                'model[ptz]':
+                  description: PTZ
+                  required: false
+                  type: string
+                'model[infrared]':
+                  description: Infrared
+                  required: false
+                  type: string
+                'model[varifocal]':
+                  description: Varifocal
+                  required: false
+                  type: string
+                'model[sd_card]':
+                  description: SD Card
+                  required: false
+                  type: string
+                'model[upnp]':
+                  description: UPnP
+                  required: false
+                  type: string
+                'model[audio_in]':
+                  description: Audio In
+                  required: false
+                  type: string
+                'model[audio_out]':
+                  description: Audio Out
+                  required: false
+                  type: string
+                'model[default_username]':
+                  description: Default Username
+                  required: false
+                  type: string
+                'model[default_password]':
+                  description: Default Password
+                  required: false
+                  type: string
+                'model[jpeg_url]':
+                  description: JPEG URL
+                  required: false
+                  type: string
+                'model[h264_url]':
+                  description: H264 URL
+                  required: false
+                  type: string
+                'model[mjpeg_url]':
+                  description: MJPEG URL
+                  required: false
+                  type: string
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          (oas-tags):
+            - models
+        get:
+          displayName: GET_api-v1-models-id-json
+          (oas-summary): Fetches a single Model
+          responses:
+            '200':
+              description: No response was specified
+            '401':
+              description: Unauthorized
+            '404':
+              description: Not Found
+            '406':
+              description: Not Acceptable
+          (oas-tags):
+            - models
+    /recorders.json:
+      displayName: recorders.json
+      get:
+        displayName: GET_api-v1-recorders-json
+        (oas-summary): Fetches all Recorders
+        responses:
+          '200':
+            description: No response was specified
+          '401':
+            description: Unauthorized
+          '406':
+            description: The request you made is not acceptable
+          '416':
+            description: Requested Range Not Satisfiable
+        queryParameters:
+          page:
+            description: Page number
+            required: false
+            type: integer
+            displayName: Page number
+          order:
+            description: Sort order
+            required: false
+            type: string
+            displayName: Sort order
+        (oas-tags):
+          - recorders
+      post:
+        displayName: POST_api-v1-recorders-json
+        (oas-summary): Creates a new Recorder
+        body:
+          multipart/form-data:
+            properties:
+              vendor_id:
+                description: Vendor ID
+                required: true
+                type: string
+              'recorder[model]':
+                description: Model
+                required: true
+                type: string
+              'recorder[name]':
+                description: Name
+                required: true
+                type: string
+              'recorder[recorder_type]':
+                description: Type
+                required: true
+                type: string
+              'recorder[resolution]':
+                description: Resolution
+                required: false
+                type: string
+              'recorder[onvif]':
+                description: ONVIF
+                required: false
+                type: string
+              'recorder[psia]':
+                description: PSIA
+                required: false
+                type: string
+              'recorder[ptz]':
+                description: PTZ
+                required: false
+                type: string
+              'recorder[discontinued]':
+                description: Discontinued
+                required: false
+                type: string
+              'recorder[support_3rdparty]':
+                description: 3rd pparty Camera Support
+                required: false
+                type: string
+              'recorder[sd_card]':
+                description: SD Card
+                required: false
+                type: string
+              'recorder[upnp]':
+                description: UPnP
+                required: false
+                type: string
+              'recorder[hot_swap]':
+                description: Hot Swap
+                required: false
+                type: string
+              'recorder[hdmi]':
+                description: HDMI Support
+                required: false
+                type: string
+              'recorder[digital_io]':
+                description: Digital I/O
+                required: false
+                type: string
+              'recorder[audio_in]':
+                description: Audio In
+                required: false
+                type: string
+              'recorder[audio_out]':
+                description: Audio Out
+                required: false
+                type: string
+              'recorder[input_channels]':
+                description: Input Channels
+                required: false
+                type: string
+              'recorder[playback_channels]':
+                description: Playback Channels
+                required: false
+                type: string
+              'recorder[usb]':
+                description: USB Ports
+                required: false
+                type: string
+              'recorder[sdhc]':
+                description: SD Card (GB)
+                required: false
+                type: string
+              'recorder[mobile_access]':
+                description: Mobile Access
+                required: false
+                type: string
+              'recorder[alarms]':
+                description: Alarms
+                required: false
+                type: string
+              'recorder[raid_support]':
+                description: Raid Support
+                required: false
+                type: string
+              'recorder[storage]':
+                description: Internal Storage
+                required: false
+                type: string
+              'recorder[additional_information]':
+                description: Additional Information
+                required: false
+                type: string
+              'recorder[default_username]':
+                description: Default Username
+                required: false
+                type: string
+              'recorder[default_password]':
+                description: Default Password
+                required: false
+                type: string
+              'recorder[jpeg_url]':
+                description: JPEG URL
+                required: false
+                type: string
+              'recorder[h264_url]':
+                description: H264 URL
+                required: false
+                type: string
+              'recorder[mjpeg_url]':
+                description: MJPEG URL
+                required: false
+                type: string
+              'recorder[official_url]':
+                description: Official URL
+                required: false
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+          '401':
+            description: Unauthorized
+          '406':
+            description: Not Acceptable
+        (oas-tags):
+          - recorders
+    /vendors.json:
+      displayName: vendors.json
+      post:
+        displayName: POST_api-v1-vendors-json
+        (oas-summary): Creates a new Vendor
+        body:
+          multipart/form-data:
+            properties:
+              'vendor[name]':
+                description: Name
+                required: true
+                type: string
+              'vendor[info]':
+                description: Info.
+                required: false
+                type: string
+              'vendor[url]':
+                description: Website
+                required: false
+                type: string
+              'vendor[mac]':
+                description: MAC
+                required: false
+                type: string
+        responses:
+          '200':
+            description: No response was specified
+          '401':
+            description: Unauthorized
+          '406':
+            description: Not Acceptable
+        (oas-tags):
+          - vendors
+      get:
+        displayName: GET_api-v1-vendors-json
+        (oas-summary): Fetches all Vendors
+        responses:
+          '200':
+            description: No response was specified
+          '401':
+            description: Unauthorized
+          '406':
+            description: The request you made is not acceptable
+          '416':
+            description: Requested Range Not Satisfiable
+        queryParameters:
+          page:
+            description: Page number
+            required: false
+            type: integer
+            displayName: Page number
+          order:
+            description: Sort order
+            required: false
+            type: string
+            displayName: Sort order
+        (oas-tags):
+          - vendors

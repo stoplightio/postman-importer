@@ -1,0 +1,215 @@
+#%RAML 1.0
+title: EPS APIs
+version: 1.0.0
+baseUri: 'http://epscass.prd-prsn.com'
+protocols:
+  - HTTP
+description: Access to the Pearson OpenClass API
+(oas-tags-definition):
+  - name: institution
+  - name: resources
+  - name: Health check
+  - name: Version
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.pearson.com_etc_themes_platform_pearson-dot-com-v2-CodeBase-3_assets_pearson_logo_white_bg.svg'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://epscass.prd-prsn.com/api/resources'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): prd-prsn.com
+/health:
+  displayName: health
+  get:
+    displayName: health
+    (oas-summary): Get health
+    headers:
+      correlation-id:
+        type: string
+        required: false
+    (oas-responses-default):
+      description: successful operation
+    (oas-tags):
+      - Health check
+/api:
+  displayName: api
+  /version:
+    displayName: version
+    get:
+      displayName: version
+      (oas-summary): Get the server version
+      headers:
+        correlation-id:
+          type: string
+          required: false
+      (oas-responses-default):
+        description: successful operation
+      (oas-tags):
+        - Version
+  /institution:
+    displayName: institution
+    '/{uniqueId}':
+      displayName: '{uniqueId}'
+      uriParameters:
+        uniqueId:
+          description: The intitution unique id
+          format: int64
+          required: true
+          type: integer
+          displayName: The intitution unique id
+      get:
+        displayName: getInstitution
+        (oas-summary): Get an institution
+        headers:
+          correlation-id:
+            type: string
+            required: false
+        responses:
+          '200':
+            body:
+              application/json;charset=UTF-8:
+                type: InstitutionBean
+            description: successful operation
+        (oas-tags):
+          - institution
+    get:
+      displayName: getInstitutions
+      (oas-summary): List institution
+      headers:
+        correlation-id:
+          type: string
+          required: false
+      responses:
+        '200':
+          body:
+            application/json;charset=UTF-8:
+              type: SearchBeanInstitutionBean
+          description: successful operation
+      (oas-tags):
+        - institution
+types:
+  DeliveryBean:
+    properties:
+      responseHeaders:
+        additionalProperties:
+          type: string
+        type: object
+        required: false
+      uri:
+        format: uri
+        type: string
+        facets:
+          format: string
+        required: false
+      uris:
+        additionalProperties:
+          items:
+            format: uri
+            type: string
+            facets:
+              format: string
+          type: array
+        type: object
+        required: false
+  InstitutionBean:
+    properties:
+      config:
+        additionalProperties:
+          type: string
+        type: object
+        required: false
+      delivery:
+        type: DeliveryBean
+        required: false
+      enabled:
+        default: false
+        type: boolean
+        required: false
+      filestoreId:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+      password:
+        type: string
+        required: false
+      secondaryUrls:
+        items:
+          type: string
+        type: array
+        uniqueItems: true
+        required: false
+      timeZone:
+        type: string
+        required: false
+      uniqueId:
+        format: int64
+        type: integer
+        required: false
+      url:
+        type: string
+        required: false
+  SearchBeanInstitutionBean:
+    properties:
+      available:
+        format: int64
+        type: integer
+        required: false
+      length:
+        format: int32
+        type: integer
+        required: false
+      results:
+        items:
+          type: InstitutionBean
+        type: array
+        required: false
+      start:
+        format: int64
+        type: integer
+        required: false
+      warnings:
+        items:
+          type: string
+        type: array
+        required: false

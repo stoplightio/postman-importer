@@ -1,0 +1,1548 @@
+#%RAML 1.0
+title: LogicManagementClient
+version: '2016-06-01'
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: REST API for Azure Logic Apps.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - developer_tools
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-logic/2016-06-01/swagger/logic.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-logic
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - applications
+    - automation
+    - integrations
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-odata: any
+  oas-x-ms-pageable: any
+  oas-x-ms-enum: any
+  oas-x-ms-client-flatten: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow.
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.Logic:
+            displayName: Microsoft.Logic
+            /workflows:
+              displayName: workflows
+              '/{workflowName}':
+                displayName: '{workflowName}'
+                /runs:
+                  displayName: runs
+                  '/{runName}':
+                    displayName: '{runName}'
+                    uriParameters:
+                      runName:
+                        description: The workflow run name.
+                        required: true
+                        type: string
+                        displayName: The workflow run name.
+                    get:
+                      displayName: WorkflowRuns_Get
+                      description: Gets a workflow run.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: WorkflowRun
+                          description: OK
+                      (oas-tags):
+                        - WorkflowRuns
+                    /actions:
+                      displayName: actions
+                      get:
+                        (oas-x-ms-odata): '#/definitions/WorkflowRunActionFilter'
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: WorkflowRunActions_List
+                        description: Gets a list of workflow run actions.
+                        is:
+                          - apiVersion
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: WorkflowRunActionListResult
+                            description: OK
+                        queryParameters:
+                          $top:
+                            description: The number of items to be included in the result.
+                            format: int32
+                            required: false
+                            type: integer
+                            displayName: The number of items to be included in the result.
+                          $filter:
+                            description: The filter to apply on the operation.
+                            required: false
+                            type: string
+                            displayName: The filter to apply on the operation.
+                        (oas-tags):
+                          - WorkflowRunActions
+                      '/{actionName}':
+                        displayName: '{actionName}'
+                        uriParameters:
+                          actionName:
+                            description: The workflow action name.
+                            required: true
+                            type: string
+                            displayName: The workflow action name.
+                        get:
+                          displayName: WorkflowRunActions_Get
+                          description: Gets a workflow run action.
+                          is:
+                            - apiVersion
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: WorkflowRunAction
+                              description: OK
+                          (oas-tags):
+                            - WorkflowRunActions
+                    /cancel:
+                      displayName: cancel
+                      post:
+                        displayName: WorkflowRuns_Cancel
+                        description: Cancels a workflow run.
+                        is:
+                          - apiVersion
+                        responses:
+                          '200':
+                            description: OK
+                        (oas-tags):
+                          - WorkflowRuns
+                  get:
+                    (oas-x-ms-odata): '#/definitions/WorkflowRunFilter'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: WorkflowRuns_List
+                    description: Gets a list of workflow runs.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: WorkflowRunListResult
+                        description: OK
+                    queryParameters:
+                      $top:
+                        description: The number of items to be included in the result.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The number of items to be included in the result.
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                    (oas-tags):
+                      - WorkflowRuns
+                /versions:
+                  displayName: versions
+                  '/{versionId}':
+                    displayName: '{versionId}'
+                    uriParameters:
+                      versionId:
+                        description: The workflow versionId.
+                        required: true
+                        type: string
+                        displayName: The workflow versionId.
+                    get:
+                      displayName: WorkflowVersions_Get
+                      description: Gets a workflow version.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: WorkflowVersion
+                          description: OK
+                      (oas-tags):
+                        - WorkflowVersions
+                  get:
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: WorkflowVersions_List
+                    description: Gets a list of workflow versions.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: WorkflowVersionListResult
+                        description: OK
+                    queryParameters:
+                      $top:
+                        description: The number of items to be included in the result.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The number of items to be included in the result.
+                    (oas-tags):
+                      - WorkflowVersions
+                uriParameters:
+                  workflowName:
+                    description: The workflow name.
+                    required: true
+                    type: string
+                    displayName: The workflow name.
+                get:
+                  displayName: Workflows_Get
+                  description: Gets a workflow.
+                  is:
+                    - apiVersion
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Workflow
+                      description: OK
+                  (oas-tags):
+                    - Workflows
+                /triggers:
+                  displayName: triggers
+                  /:
+                    get:
+                      (oas-x-ms-odata): '#/definitions/WorkflowTriggerFilter'
+                      (oas-x-ms-pageable):
+                        nextLinkName: nextLink
+                      displayName: WorkflowTriggers_List
+                      description: Gets a list of workflow triggers.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: WorkflowTriggerListResult
+                          description: OK
+                      queryParameters:
+                        $top:
+                          description: The number of items to be included in the result.
+                          format: int32
+                          required: false
+                          type: integer
+                          displayName: The number of items to be included in the result.
+                        $filter:
+                          description: The filter to apply on the operation.
+                          required: false
+                          type: string
+                          displayName: The filter to apply on the operation.
+                      (oas-tags):
+                        - WorkflowTriggers
+                  '/{triggerName}':
+                    displayName: '{triggerName}'
+                    uriParameters:
+                      triggerName:
+                        description: The workflow trigger name.
+                        required: true
+                        type: string
+                        displayName: The workflow trigger name.
+                    get:
+                      displayName: WorkflowTriggers_Get
+                      description: Gets a workflow trigger.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: WorkflowTrigger
+                          description: OK
+                      (oas-tags):
+                        - WorkflowTriggers
+                    /histories:
+                      displayName: histories
+                      get:
+                        (oas-x-ms-odata): '#/definitions/WorkflowTriggerHistoryFilter'
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: WorkflowTriggerHistories_List
+                        description: Gets a list of workflow trigger histories.
+                        is:
+                          - apiVersion
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: WorkflowTriggerHistoryListResult
+                            description: OK
+                        queryParameters:
+                          $top:
+                            description: The number of items to be included in the result.
+                            format: int32
+                            required: false
+                            type: integer
+                            displayName: The number of items to be included in the result.
+                          $filter:
+                            description: The filter to apply on the operation.
+                            required: false
+                            type: string
+                            displayName: The filter to apply on the operation.
+                        (oas-tags):
+                          - WorkflowTriggerHistories
+                      '/{historyName}':
+                        displayName: '{historyName}'
+                        uriParameters:
+                          historyName:
+                            description: The workflow trigger history name.
+                            required: true
+                            type: string
+                            displayName: The workflow trigger history name.
+                        get:
+                          displayName: WorkflowTriggerHistories_Get
+                          description: Gets a workflow trigger history.
+                          is:
+                            - apiVersion
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: WorkflowTriggerHistory
+                              description: OK
+                          (oas-tags):
+                            - WorkflowTriggerHistories
+                    /run:
+                      displayName: run
+                      post:
+                        displayName: WorkflowTriggers_Run
+                        description: Runs a workflow trigger.
+                        is:
+                          - apiVersion
+                        (oas-responses-default):
+                          body:
+                            application/json:
+                              type: Object
+                          description: All status codes are acceptable.
+                        (oas-tags):
+                          - WorkflowTriggers
+                    /listCallbackUrl:
+                      displayName: listCallbackUrl
+                      post:
+                        displayName: WorkflowTriggers_ListCallbackUrl
+                        description: Gets the callback URL for a workflow trigger.
+                        is:
+                          - apiVersion
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: WorkflowTriggerCallbackUrl
+                            description: OK
+                        (oas-tags):
+                          - WorkflowTriggers
+                put:
+                  displayName: Workflows_CreateOrUpdate
+                  description: Creates or updates a workflow.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: Workflow
+                      (oas-body-name): workflow
+                      description: The workflow.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Workflow
+                      description: OK
+                    '201':
+                      body:
+                        application/json:
+                          type: Workflow
+                      description: Created
+                  (oas-tags):
+                    - Workflows
+                /enable:
+                  displayName: enable
+                  post:
+                    displayName: Workflows_Enable
+                    description: Enables a workflow.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        description: OK
+                    (oas-tags):
+                      - Workflows
+                delete:
+                  displayName: Workflows_Delete
+                  description: Deletes a workflow.
+                  is:
+                    - apiVersion
+                  responses:
+                    '200':
+                      description: OK
+                    '204':
+                      description: No Content
+                  (oas-tags):
+                    - Workflows
+                patch:
+                  displayName: Workflows_Update
+                  description: Updates a workflow.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: Workflow
+                      (oas-body-name): workflow
+                      description: The workflow.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Workflow
+                      description: OK
+                  (oas-tags):
+                    - Workflows
+                /generateUpgradedDefinition:
+                  displayName: generateUpgradedDefinition
+                  post:
+                    displayName: Workflows_GenerateUpgradedDefinition
+                    description: Generates the upgraded definition for a workflow.
+                    is:
+                      - apiVersion
+                    body:
+                      application/json:
+                        type: GenerateUpgradedDefinitionParameters
+                        (oas-body-name): parameters
+                        description: Parameters for generating an upgraded definition.
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: Object
+                        description: OK
+                    (oas-tags):
+                      - Workflows
+                /disable:
+                  displayName: disable
+                  post:
+                    displayName: Workflows_Disable
+                    description: Disables a workflow.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        description: OK
+                    (oas-tags):
+                      - Workflows
+              get:
+                (oas-x-ms-odata): '#/definitions/WorkflowFilter'
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: Workflows_ListByResourceGroup
+                description: Gets a list of workflows by resource group.
+                is:
+                  - apiVersion
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: WorkflowListResult
+                    description: OK
+                queryParameters:
+                  $top:
+                    description: The number of items to be included in the result.
+                    format: int32
+                    required: false
+                    type: integer
+                    displayName: The number of items to be included in the result.
+                  $filter:
+                    description: The filter to apply on the operation.
+                    required: false
+                    type: string
+                    displayName: The filter to apply on the operation.
+                (oas-tags):
+                  - Workflows
+            /locations:
+              displayName: locations
+              '/{location}':
+                displayName: '{location}'
+                /workflows:
+                  displayName: workflows
+                  '/{workflowName}':
+                    displayName: '{workflowName}'
+                    /validate:
+                      displayName: validate
+                      post:
+                        displayName: Workflows_Validate
+                        description: Validates the workflow definition.
+                        is:
+                          - apiVersion
+                        body:
+                          application/json:
+                            type: Workflow
+                            (oas-body-name): workflow
+                            description: The workflow definition.
+                        responses:
+                          '200':
+                            description: OK
+                        (oas-tags):
+                          - Workflows
+    /providers:
+      displayName: providers
+      /Microsoft.Logic:
+        displayName: Microsoft.Logic
+        /workflows:
+          displayName: workflows
+          get:
+            (oas-x-ms-odata): '#/definitions/WorkflowFilter'
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: Workflows_ListBySubscription
+            description: Gets a list of workflows by subscription.
+            is:
+              - apiVersion
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: WorkflowListResult
+                description: OK
+            queryParameters:
+              $top:
+                description: The number of items to be included in the result.
+                format: int32
+                required: false
+                type: integer
+                displayName: The number of items to be included in the result.
+              $filter:
+                description: The filter to apply on the operation.
+                required: false
+                type: string
+                displayName: The filter to apply on the operation.
+            (oas-tags):
+              - Workflows
+types:
+  ContentHash:
+    properties:
+      algorithm:
+        description: The algorithm.
+        type: string
+        required: false
+      value:
+        description: The value.
+        type: string
+        required: false
+  ContentLink:
+    properties:
+      contentHash:
+        description: The content hash.
+        type: ContentHash
+        required: false
+      contentSize:
+        description: The content size.
+        format: int64
+        type: integer
+        required: false
+      contentVersion:
+        description: The content version.
+        type: string
+        required: false
+      metadata:
+        description: The metadata.
+        type: Object
+        required: false
+      uri:
+        description: The content link URI.
+        type: string
+        required: false
+  Correlation:
+    properties:
+      clientTrackingId:
+        description: The client tracking id.
+        type: string
+        required: false
+  DayOfWeek:
+    enum:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    type: string
+  GenerateUpgradedDefinitionParameters:
+    properties:
+      targetSchemaVersion:
+        description: The target schema version.
+        type: string
+        required: false
+  KeyType:
+    enum:
+      - NotSpecified
+      - Primary
+      - Secondary
+    type: string
+  Object:
+    properties: {}
+  ParameterType:
+    enum:
+      - NotSpecified
+      - String
+      - SecureString
+      - Int
+      - Float
+      - Bool
+      - Array
+      - Object
+      - SecureObject
+    type: string
+  RecurrenceFrequency:
+    enum:
+      - NotSpecified
+      - Second
+      - Minute
+      - Hour
+      - Day
+      - Week
+      - Month
+      - Year
+    type: string
+  RecurrenceSchedule:
+    properties:
+      hours:
+        description: The hours.
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      minutes:
+        description: The minutes.
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      monthDays:
+        description: The month days.
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      monthlyOccurrences:
+        description: The monthly occurrences.
+        items:
+          type: RecurrenceScheduleOccurrence
+        type: array
+        required: false
+      weekDays:
+        description: The days of the week.
+        items:
+          enum:
+            - Sunday
+            - Monday
+            - Tuesday
+            - Wednesday
+            - Thursday
+            - Friday
+            - Saturday
+          type: string
+          (oas-x-ms-enum):
+            modelAsString: false
+            name: DaysOfWeek
+        type: array
+        required: false
+  RecurrenceScheduleOccurrence:
+    properties:
+      day:
+        description: The day of the week.
+        type: DayOfWeek
+        required: false
+      occurrence:
+        description: The occurrence.
+        format: int32
+        type: integer
+        required: false
+  Resource:
+    properties:
+      id:
+        description: The resource id.
+        type: string
+        required: false
+      location:
+        description: The resource location.
+        type: string
+        required: false
+      name:
+        description: Gets the resource name.
+        type: string
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: The resource tags.
+        type: object
+        required: false
+      type:
+        description: Gets the resource type.
+        type: string
+        required: false
+  ResourceReference:
+    properties:
+      id:
+        description: The resource id.
+        type: string
+        required: false
+      name:
+        description: Gets the resource name.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      type:
+        description: Gets the resource type.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  Sku:
+    properties:
+      name:
+        description: The name.
+        type: SkuName
+        required: false
+      plan:
+        description: The reference to plan.
+        type: ResourceReference
+        required: false
+  SkuName:
+    enum:
+      - NotSpecified
+      - Free
+      - Shared
+      - Basic
+      - Standard
+      - Premium
+    type: string
+  SubResource:
+    properties:
+      id:
+        description: The resource id.
+        type: string
+        required: false
+  Workflow:
+    type: Resource
+  WorkflowFilter:
+    properties:
+      state:
+        description: The state of workflows.
+        type: WorkflowState
+        required: false
+  WorkflowListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: The list of workflows.
+        items:
+          type: Workflow
+        type: array
+        required: false
+  WorkflowOutputParameter:
+    type: WorkflowParameter
+  WorkflowParameter:
+    properties:
+      description:
+        description: The description.
+        type: string
+        required: false
+      metadata:
+        description: The metadata.
+        type: Object
+        required: false
+      type:
+        description: The type.
+        type: ParameterType
+        required: false
+      value:
+        description: The value.
+        type: Object
+        required: false
+  WorkflowProperties:
+    properties:
+      accessEndpoint:
+        description: Gets the access endpoint.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      changedTime:
+        description: Gets the changed time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      createdTime:
+        description: Gets the created time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      definition:
+        description: The definition.
+        type: Object
+        required: false
+      integrationAccount:
+        description: The integration account.
+        type: ResourceReference
+        required: false
+      parameters:
+        additionalProperties:
+          type: WorkflowParameter
+        description: The parameters.
+        type: object
+        required: false
+      provisioningState:
+        description: Gets the provisioning state.
+        readOnly: true
+        type: WorkflowProvisioningState
+        facets:
+          readOnly?: boolean
+        required: false
+      sku:
+        description: The sku.
+        type: Sku
+        required: false
+      state:
+        description: The state.
+        type: WorkflowState
+        required: false
+      version:
+        description: Gets the version.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  WorkflowProvisioningState:
+    enum:
+      - NotSpecified
+      - Accepted
+      - Running
+      - Ready
+      - Creating
+      - Created
+      - Deleting
+      - Deleted
+      - Canceled
+      - Failed
+      - Succeeded
+      - Moving
+      - Updating
+      - Registering
+      - Registered
+      - Unregistering
+      - Unregistered
+      - Completed
+    type: string
+  WorkflowRun:
+    type: SubResource
+  WorkflowRunAction:
+    type: SubResource
+  WorkflowRunActionFilter:
+    properties:
+      status:
+        description: The status of workflow run action.
+        type: WorkflowStatus
+        required: false
+  WorkflowRunActionListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: A list of workflow run actions.
+        items:
+          type: WorkflowRunAction
+        type: array
+        required: false
+  WorkflowRunActionProperties:
+    properties:
+      code:
+        description: Gets the code.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      correlation:
+        description: The correlation properties.
+        type: Correlation
+        required: false
+      endTime:
+        description: Gets the end time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      error:
+        description: Gets the error.
+        readOnly: true
+        type: Object
+        facets:
+          readOnly?: boolean
+        required: false
+      inputsLink:
+        description: Gets the link to inputs.
+        readOnly: true
+        type: ContentLink
+        facets:
+          readOnly?: boolean
+        required: false
+      outputsLink:
+        description: Gets the link to outputs.
+        readOnly: true
+        type: ContentLink
+        facets:
+          readOnly?: boolean
+        required: false
+      startTime:
+        description: Gets the start time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        description: Gets the status.
+        readOnly: true
+        type: WorkflowStatus
+        facets:
+          readOnly?: boolean
+        required: false
+      trackedProperties:
+        description: Gets the tracked properties.
+        readOnly: true
+        type: Object
+        facets:
+          readOnly?: boolean
+        required: false
+      trackingId:
+        description: Gets the tracking id.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  WorkflowRunFilter:
+    properties:
+      status:
+        description: The status of workflow run.
+        type: WorkflowStatus
+        required: false
+  WorkflowRunListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: A list of workflow runs.
+        items:
+          type: WorkflowRun
+        type: array
+        required: false
+  WorkflowRunProperties:
+    properties:
+      code:
+        description: Gets the code.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      correlation:
+        description: The run correlation.
+        type: Correlation
+        required: false
+      correlationId:
+        description: Gets the correlation id.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      endTime:
+        description: Gets the end time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      error:
+        description: Gets the error.
+        readOnly: true
+        type: Object
+        facets:
+          readOnly?: boolean
+        required: false
+      outputs:
+        additionalProperties:
+          type: WorkflowOutputParameter
+        description: Gets the outputs.
+        readOnly: true
+        type: object
+        facets:
+          readOnly?: boolean
+        required: false
+      response:
+        description: Gets the response of the flow run.
+        readOnly: true
+        type: WorkflowRunTrigger
+        facets:
+          readOnly?: boolean
+        required: false
+      startTime:
+        description: Gets the start time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        description: Gets the status.
+        readOnly: true
+        type: WorkflowStatus
+        facets:
+          readOnly?: boolean
+        required: false
+      trigger:
+        description: Gets the fired trigger.
+        readOnly: true
+        type: WorkflowRunTrigger
+        facets:
+          readOnly?: boolean
+        required: false
+      workflow:
+        description: Gets the reference to workflow version.
+        readOnly: true
+        type: ResourceReference
+        facets:
+          readOnly?: boolean
+        required: false
+  WorkflowRunTrigger:
+    properties:
+      code:
+        description: Gets the code.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      correlation:
+        description: The run correlation.
+        type: Correlation
+        required: false
+      endTime:
+        description: Gets the end time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      error:
+        description: Gets the error.
+        readOnly: true
+        type: Object
+        facets:
+          readOnly?: boolean
+        required: false
+      inputs:
+        description: Gets the inputs.
+        readOnly: true
+        type: Object
+        facets:
+          readOnly?: boolean
+        required: false
+      inputsLink:
+        description: Gets the link to inputs.
+        readOnly: true
+        type: ContentLink
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: Gets the name.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      outputs:
+        description: Gets the outputs.
+        readOnly: true
+        type: Object
+        facets:
+          readOnly?: boolean
+        required: false
+      outputsLink:
+        description: Gets the link to outputs.
+        readOnly: true
+        type: ContentLink
+        facets:
+          readOnly?: boolean
+        required: false
+      startTime:
+        description: Gets the start time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        description: Gets the status.
+        readOnly: true
+        type: WorkflowStatus
+        facets:
+          readOnly?: boolean
+        required: false
+      trackedProperties:
+        description: Gets the tracked properties.
+        readOnly: true
+        type: Object
+        facets:
+          readOnly?: boolean
+        required: false
+      trackingId:
+        description: Gets the tracking id.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  WorkflowState:
+    enum:
+      - NotSpecified
+      - Completed
+      - Enabled
+      - Disabled
+      - Deleted
+      - Suspended
+    type: string
+  WorkflowStatus:
+    enum:
+      - NotSpecified
+      - Paused
+      - Running
+      - Waiting
+      - Succeeded
+      - Skipped
+      - Suspended
+      - Cancelled
+      - Failed
+      - Faulted
+      - TimedOut
+      - Aborted
+      - Ignored
+    type: string
+  WorkflowTrigger:
+    type: SubResource
+  WorkflowTriggerCallbackUrl:
+    properties:
+      value:
+        description: Gets the workflow trigger callback URL.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  WorkflowTriggerFilter:
+    properties:
+      state:
+        description: The state of workflow trigger.
+        type: WorkflowState
+        required: false
+  WorkflowTriggerHistory:
+    type: SubResource
+  WorkflowTriggerHistoryFilter:
+    properties:
+      status:
+        description: The status of workflow trigger history.
+        type: WorkflowStatus
+        required: false
+  WorkflowTriggerHistoryListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: A list of workflow trigger histories.
+        items:
+          type: WorkflowTriggerHistory
+        type: array
+        required: false
+  WorkflowTriggerHistoryProperties:
+    properties:
+      code:
+        description: Gets the code.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      correlation:
+        description: The run correlation.
+        type: Correlation
+        required: false
+      endTime:
+        description: Gets the end time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      error:
+        description: Gets the error.
+        readOnly: true
+        type: Object
+        facets:
+          readOnly?: boolean
+        required: false
+      fired:
+        description: Gets a value indicating whether trigger was fired.
+        readOnly: true
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+      inputsLink:
+        description: Gets the link to input parameters.
+        readOnly: true
+        type: ContentLink
+        facets:
+          readOnly?: boolean
+        required: false
+      outputsLink:
+        description: Gets the link to output parameters.
+        readOnly: true
+        type: ContentLink
+        facets:
+          readOnly?: boolean
+        required: false
+      run:
+        description: Gets the reference to workflow run.
+        readOnly: true
+        type: ResourceReference
+        facets:
+          readOnly?: boolean
+        required: false
+      startTime:
+        description: Gets the start time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        description: Gets the status.
+        readOnly: true
+        type: WorkflowStatus
+        facets:
+          readOnly?: boolean
+        required: false
+      trackingId:
+        description: Gets the tracking id.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  WorkflowTriggerListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: A list of workflow triggers.
+        items:
+          type: WorkflowTrigger
+        type: array
+        required: false
+  WorkflowTriggerProperties:
+    properties:
+      changedTime:
+        description: Gets the changed time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      createdTime:
+        description: Gets the created time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      lastExecutionTime:
+        description: Gets the last execution time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      nextExecutionTime:
+        description: Gets the next execution time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      provisioningState:
+        description: Gets the provisioning state.
+        readOnly: true
+        type: WorkflowTriggerProvisioningState
+        facets:
+          readOnly?: boolean
+        required: false
+      recurrence:
+        description: Gets the workflow trigger recurrence.
+        readOnly: true
+        type: WorkflowTriggerRecurrence
+        facets:
+          readOnly?: boolean
+        required: false
+      state:
+        description: Gets the state.
+        readOnly: true
+        type: WorkflowState
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        description: Gets the status.
+        readOnly: true
+        type: WorkflowStatus
+        facets:
+          readOnly?: boolean
+        required: false
+      workflow:
+        description: Gets the reference to workflow.
+        readOnly: true
+        type: ResourceReference
+        facets:
+          readOnly?: boolean
+        required: false
+  WorkflowTriggerProvisioningState:
+    enum:
+      - NotSpecified
+      - Accepted
+      - Running
+      - Ready
+      - Creating
+      - Created
+      - Deleting
+      - Deleted
+      - Canceled
+      - Failed
+      - Succeeded
+      - Moving
+      - Updating
+      - Registering
+      - Registered
+      - Unregistering
+      - Unregistered
+      - Completed
+    type: string
+  WorkflowTriggerRecurrence:
+    properties:
+      endTime:
+        description: The end time.
+        format: rfc3339
+        type: datetime
+        required: false
+      frequency:
+        description: The frequency.
+        type: RecurrenceFrequency
+        required: false
+      interval:
+        description: The interval.
+        format: int32
+        type: integer
+        required: false
+      schedule:
+        description: The recurrence schedule.
+        type: RecurrenceSchedule
+        required: false
+      startTime:
+        description: The start time.
+        format: rfc3339
+        type: datetime
+        required: false
+      timeZone:
+        description: The time zone.
+        type: string
+        required: false
+  WorkflowVersion:
+    type: Resource
+  WorkflowVersionListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: A list of workflow versions.
+        items:
+          type: WorkflowVersion
+        type: array
+        required: false
+  WorkflowVersionProperties:
+    properties:
+      accessEndpoint:
+        description: Gets the access endpoint.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      changedTime:
+        description: Gets the changed time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      createdTime:
+        description: Gets the created time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      definition:
+        description: The definition.
+        type: Object
+        required: false
+      integrationAccount:
+        description: The integration account.
+        type: ResourceReference
+        required: false
+      parameters:
+        additionalProperties:
+          type: WorkflowParameter
+        description: The parameters.
+        type: object
+        required: false
+      sku:
+        description: The sku.
+        type: Sku
+        required: false
+      state:
+        description: The state.
+        type: WorkflowState
+        required: false
+      version:
+        description: Gets the version.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+traits:
+  apiVersion:
+    queryParameters:
+      api-version:
+        type: string
+        description: The API version.
+        required: true

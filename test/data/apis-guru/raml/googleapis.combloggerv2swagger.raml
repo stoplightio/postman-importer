@@ -1,0 +1,905 @@
+#%RAML 1.0
+title: Blogger
+version: v2
+baseUri: 'https://www.googleapis.com/blogger/v2'
+protocols:
+  - HTTPS
+description: API for access to the data within Blogger.
+(oas-tags-definition):
+  - name: blogs
+  - name: comments
+  - name: pages
+  - name: posts
+  - name: users
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.gstatic.com_images_icons_material_product_2x_blogger_64dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/blogger/v2/rest'
+    version: v1
+  (oas-x-preferred): false
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): blogger
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/blogger/docs/2.0/json/getting_started'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/blogger'
+    description: Oauth 2.0 authentication
+/users:
+  displayName: users
+  '/{userId}':
+    displayName: '{userId}'
+    /blogs:
+      displayName: blogs
+      get:
+        displayName: blogger.users.blogs.list
+        description: 'Retrieves a list of blogs, possibly filtered.'
+        responses:
+          '200':
+            body:
+              application/json:
+                type: BlogList
+            description: Successful response
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/blogger'
+        (oas-tags):
+          - users
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    uriParameters:
+      userId:
+        description: The ID of the user to get.
+        required: true
+        type: string
+        displayName: The ID of the user to get.
+    get:
+      displayName: blogger.users.get
+      description: Gets one user by id.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: User
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/blogger'
+      (oas-tags):
+        - users
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+/blogs:
+  displayName: blogs
+  '/{blogId}':
+    displayName: '{blogId}'
+    /posts:
+      displayName: posts
+      '/{postId}':
+        displayName: '{postId}'
+        /comments:
+          displayName: comments
+          '/{commentId}':
+            displayName: '{commentId}'
+            uriParameters:
+              commentId:
+                description: The ID of the comment to get.
+                required: true
+                type: string
+                displayName: The ID of the comment to get.
+            get:
+              displayName: blogger.comments.get
+              description: Gets one comment by id.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Comment
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/blogger'
+              (oas-tags):
+                - comments
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+          get:
+            displayName: blogger.comments.list
+            description: 'Retrieves the comments for a blog, possibly filtered.'
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: CommentList
+                description: Successful response
+            queryParameters:
+              fetchBodies:
+                description: Whether the body content of the comments is included.
+                type: boolean
+                displayName: Whether the body content of the comments is included.
+              maxResults:
+                description: Maximum number of comments to include in the result.
+                type: integer
+                displayName: Maximum number of comments to include in the result.
+              pageToken:
+                description: Continuation token if request is paged.
+                type: string
+                displayName: Continuation token if request is paged.
+              startDate:
+                description: 'Earliest date of comment to fetch, a date-time with RFC 3339 formatting.'
+                type: string
+                displayName: 'Earliest date of comment to fetch, a date-time with RFC 3339 formatting.'
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/blogger'
+            (oas-tags):
+              - comments
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+        uriParameters:
+          postId:
+            description: The ID of the post
+            required: true
+            type: string
+            displayName: The ID of the post
+        get:
+          displayName: blogger.posts.get
+          description: Get a post by id.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Post
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/blogger'
+          (oas-tags):
+            - posts
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      get:
+        displayName: blogger.posts.list
+        description: 'Retrieves a list of posts, possibly filtered.'
+        responses:
+          '200':
+            body:
+              application/json:
+                type: PostList
+            description: Successful response
+        queryParameters:
+          fetchBodies:
+            description: Whether the body content of posts is included.
+            type: boolean
+            displayName: Whether the body content of posts is included.
+          maxResults:
+            description: Maximum number of posts to fetch.
+            type: integer
+            displayName: Maximum number of posts to fetch.
+          pageToken:
+            description: Continuation token if the request is paged.
+            type: string
+            displayName: Continuation token if the request is paged.
+          startDate:
+            description: 'Earliest post date to fetch, a date-time with RFC 3339 formatting.'
+            type: string
+            displayName: 'Earliest post date to fetch, a date-time with RFC 3339 formatting.'
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/blogger'
+        (oas-tags):
+          - posts
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    /pages:
+      displayName: pages
+      '/{pageId}':
+        displayName: '{pageId}'
+        uriParameters:
+          pageId:
+            description: The ID of the page to get.
+            required: true
+            type: string
+            displayName: The ID of the page to get.
+        get:
+          displayName: blogger.pages.get
+          description: Gets one blog page by id.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Page
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/blogger'
+          (oas-tags):
+            - pages
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      get:
+        displayName: blogger.pages.list
+        description: 'Retrieves pages for a blog, possibly filtered.'
+        responses:
+          '200':
+            body:
+              application/json:
+                type: PageList
+            description: Successful response
+        queryParameters:
+          fetchBodies:
+            description: Whether to retrieve the Page bodies.
+            type: boolean
+            displayName: Whether to retrieve the Page bodies.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/blogger'
+        (oas-tags):
+          - pages
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    uriParameters:
+      blogId:
+        description: The ID of the blog to get.
+        required: true
+        type: string
+        displayName: The ID of the blog to get.
+    get:
+      displayName: blogger.blogs.get
+      description: Gets one blog by id.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Blog
+          description: Successful response
+      securedBy:
+        - Oauth2:
+            scopes:
+              - 'https://www.googleapis.com/auth/blogger'
+      (oas-tags):
+        - blogs
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+types:
+  Blog:
+    properties:
+      description:
+        description: The description of this blog. This is displayed underneath the title.
+        type: string
+        required: false
+      id:
+        description: The identifier for this resource.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      kind:
+        default: 'blogger#blog'
+        description: 'The kind of this entry. Always blogger#blog'
+        type: string
+        required: false
+      locale:
+        description: The locale this Blog is set to.
+        properties:
+          country:
+            description: The country this blog's locale is set to.
+            type: string
+            required: false
+          language:
+            description: The language this blog is authored in.
+            type: string
+            required: false
+          variant:
+            description: The language variant this blog is authored in.
+            type: string
+            required: false
+        type: object
+        required: false
+      name:
+        description: The name of this blog. This is displayed as the title.
+        type: string
+        required: false
+      pages:
+        description: The container of pages in this blog.
+        properties:
+          selfLink:
+            description: The URL of the container for pages in this blog.
+            type: string
+            required: false
+          totalItems:
+            description: The count of pages in this blog.
+            format: int32
+            type: integer
+            required: false
+        type: object
+        required: false
+      posts:
+        description: The container of posts in this blog.
+        properties:
+          selfLink:
+            description: The URL of the container for posts in this blog.
+            type: string
+            required: false
+          totalItems:
+            description: The count of posts in this blog.
+            format: int32
+            type: integer
+            required: false
+        type: object
+        required: false
+      published:
+        description: RFC 3339 date-time when this blog was published.
+        format: rfc3339
+        type: datetime
+        required: false
+      selfLink:
+        description: The API REST URL to fetch this resource from.
+        type: string
+        required: false
+      updated:
+        description: RFC 3339 date-time when this blog was last updated.
+        format: rfc3339
+        type: datetime
+        required: false
+      url:
+        description: The URL where this blog is published.
+        type: string
+        required: false
+  BlogList:
+    properties:
+      items:
+        description: The list of Blogs this user has Authorship or Admin rights over.
+        items:
+          type: Blog
+        type: array
+        required: false
+      kind:
+        default: 'blogger#blogList'
+        description: 'The kind of this entity. Always blogger#blogList'
+        type: string
+        required: false
+  Comment:
+    properties:
+      author:
+        description: The author of this Comment.
+        properties:
+          displayName:
+            description: The display name.
+            type: string
+            required: false
+          id:
+            description: The identifier of the Comment creator.
+            type: string
+            required: false
+          image:
+            description: The comment creator's avatar.
+            properties:
+              url:
+                description: The comment creator's avatar URL.
+                type: string
+                required: false
+            type: object
+            required: false
+          url:
+            description: The URL of the Comment creator's Profile page.
+            type: string
+            required: false
+        type: object
+        required: false
+      blog:
+        description: Data about the blog containing this comment.
+        properties:
+          id:
+            description: The identifier of the blog containing this comment.
+            format: int64
+            type: string
+            facets:
+              format: string
+            required: false
+        type: object
+        required: false
+      content:
+        description: The actual content of the comment. May include HTML markup.
+        type: string
+        required: false
+      id:
+        description: The identifier for this resource.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      inReplyTo:
+        description: Data about the comment this is in reply to.
+        properties:
+          id:
+            description: The identified of the parent of this comment.
+            format: int64
+            type: string
+            facets:
+              format: string
+            required: false
+        type: object
+        required: false
+      kind:
+        default: 'blogger#comment'
+        description: 'The kind of this entry. Always blogger#comment'
+        type: string
+        required: false
+      post:
+        description: Data about the post containing this comment.
+        properties:
+          id:
+            description: The identifier of the post containing this comment.
+            format: int64
+            type: string
+            facets:
+              format: string
+            required: false
+        type: object
+        required: false
+      published:
+        description: RFC 3339 date-time when this comment was published.
+        format: rfc3339
+        type: datetime
+        required: false
+      selfLink:
+        description: The API REST URL to fetch this resource from.
+        type: string
+        required: false
+      updated:
+        description: RFC 3339 date-time when this comment was last updated.
+        format: rfc3339
+        type: datetime
+        required: false
+  CommentList:
+    properties:
+      items:
+        description: The List of Comments for a Post.
+        items:
+          type: Comment
+        type: array
+        required: false
+      kind:
+        default: 'blogger#commentList'
+        description: 'The kind of this entry. Always blogger#commentList'
+        type: string
+        required: false
+      nextPageToken:
+        description: 'Pagination token to fetch the next page, if one exists.'
+        type: string
+        required: false
+      prevPageToken:
+        description: 'Pagination token to fetch the previous page, if one exists.'
+        type: string
+        required: false
+  Page:
+    properties:
+      author:
+        description: The author of this Page.
+        properties:
+          displayName:
+            description: The display name.
+            type: string
+            required: false
+          id:
+            description: The identifier of the Page creator.
+            type: string
+            required: false
+          image:
+            description: The page author's avatar.
+            properties:
+              url:
+                description: The page author's avatar URL.
+                type: string
+                required: false
+            type: object
+            required: false
+          url:
+            description: The URL of the Page creator's Profile page.
+            type: string
+            required: false
+        type: object
+        required: false
+      blog:
+        description: Data about the blog containing this Page.
+        properties:
+          id:
+            description: The identifier of the blog containing this page.
+            format: int64
+            type: string
+            facets:
+              format: string
+            required: false
+        type: object
+        required: false
+      content:
+        description: 'The body content of this Page, in HTML.'
+        type: string
+        required: false
+      id:
+        description: The identifier for this resource.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      kind:
+        default: 'blogger#page'
+        description: 'The kind of this entity. Always blogger#page'
+        type: string
+        required: false
+      published:
+        description: RFC 3339 date-time when this Page was published.
+        format: rfc3339
+        type: datetime
+        required: false
+      selfLink:
+        description: The API REST URL to fetch this resource from.
+        type: string
+        required: false
+      title:
+        description: The title of this entity. This is the name displayed in the Admin user interface.
+        type: string
+        required: false
+      updated:
+        description: RFC 3339 date-time when this Page was last updated.
+        format: rfc3339
+        type: datetime
+        required: false
+      url:
+        description: The URL that this Page is displayed at.
+        type: string
+        required: false
+  PageList:
+    properties:
+      items:
+        description: The list of Pages for a Blog.
+        items:
+          type: Page
+        type: array
+        required: false
+      kind:
+        default: 'blogger#pageList'
+        description: 'The kind of this entity. Always blogger#pageList'
+        type: string
+        required: false
+  Post:
+    properties:
+      author:
+        description: The author of this Post.
+        properties:
+          displayName:
+            description: The display name.
+            type: string
+            required: false
+          id:
+            description: The identifier of the Post creator.
+            type: string
+            required: false
+          image:
+            description: The Post author's avatar.
+            properties:
+              url:
+                description: The Post author's avatar URL.
+                type: string
+                required: false
+            type: object
+            required: false
+          url:
+            description: The URL of the Post creator's Profile page.
+            type: string
+            required: false
+        type: object
+        required: false
+      blog:
+        description: Data about the blog containing this Post.
+        properties:
+          id:
+            description: The identifier of the Blog that contains this Post.
+            format: int64
+            type: string
+            facets:
+              format: string
+            required: false
+        type: object
+        required: false
+      content:
+        description: The content of the Post. May contain HTML markup.
+        type: string
+        required: false
+      id:
+        description: The identifier of this Post.
+        format: int64
+        type: string
+        facets:
+          format: string
+        required: false
+      kind:
+        default: 'blogger#post'
+        description: 'The kind of this entity. Always blogger#post'
+        type: string
+        required: false
+      labels:
+        description: The list of labels this Post was tagged with.
+        items:
+          type: string
+        type: array
+        required: false
+      published:
+        description: RFC 3339 date-time when this Post was published.
+        format: rfc3339
+        type: datetime
+        required: false
+      replies:
+        description: The container of comments on this Post.
+        properties:
+          selfLink:
+            description: The URL of the comments on this post.
+            type: string
+            required: false
+          totalItems:
+            description: The count of comments on this post.
+            format: int64
+            type: string
+            facets:
+              format: string
+            required: false
+        type: object
+        required: false
+      selfLink:
+        description: The API REST URL to fetch this resource from.
+        type: string
+        required: false
+      title:
+        description: The title of the Post.
+        type: string
+        required: false
+      updated:
+        description: RFC 3339 date-time when this Post was last updated.
+        format: rfc3339
+        type: datetime
+        required: false
+      url:
+        description: The URL where this Post is displayed.
+        type: string
+        required: false
+  PostList:
+    properties:
+      items:
+        description: The list of Posts for this Blog.
+        items:
+          type: Post
+        type: array
+        required: false
+      kind:
+        default: 'blogger#postList'
+        description: 'The kind of this entity. Always blogger#postList'
+        type: string
+        required: false
+      nextPageToken:
+        description: 'Pagination token to fetch the next page, if one exists.'
+        type: string
+        required: false
+      prevPageToken:
+        description: 'Pagination token to fetch the previous page, if one exists.'
+        type: string
+        required: false
+  User:
+    properties:
+      about:
+        description: Profile summary information.
+        type: string
+        required: false
+      blogs:
+        description: The container of blogs for this user.
+        properties:
+          selfLink:
+            description: The URL of the Blogs for this user.
+            type: string
+            required: false
+        type: object
+        required: false
+      created:
+        description: 'The timestamp of when this profile was created, in seconds since epoch.'
+        format: rfc3339
+        type: datetime
+        required: false
+      displayName:
+        description: The display name.
+        type: string
+        required: false
+      id:
+        description: The identifier for this User.
+        type: string
+        required: false
+      kind:
+        default: 'blogger#user'
+        description: 'The kind of this entity. Always blogger#user'
+        type: string
+        required: false
+      locale:
+        description: This user's locale
+        properties:
+          country:
+            description: The user's country setting.
+            type: string
+            required: false
+          language:
+            description: The user's language setting.
+            type: string
+            required: false
+          variant:
+            description: The user's language variant setting.
+            type: string
+            required: false
+        type: object
+        required: false
+      selfLink:
+        description: The API REST URL to fetch this resource from.
+        type: string
+        required: false
+      url:
+        description: The user's profile page.
+        type: string
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

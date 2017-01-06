@@ -1,0 +1,350 @@
+#%RAML 1.0
+title: posty_API
+version: v1
+baseUri: 'http://posty-api.herokuapp.com/'
+mediaType: application/json
+protocols:
+  - HTTP
+description: 'The posty_API is the core element of the posty softwarestack. It is developed to administrate a mailserver based on Postfix and Dovecot. It offers an easy REST interface which can be used in own applications or with the posty client applications, posty_CLI and posty_webUI.'
+(oas-tags-definition):
+  - name: domains
+  - name: summary
+  - name: transports
+  - name: v1
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-origin):
+    format: swagger
+    url: 'http://posty-api.herokuapp.com/api/v1/swagger_doc.json'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): posty-api.herokuapp.com
+/api:
+  displayName: api
+  /v1:
+    displayName: v1
+    /domains:
+      displayName: domains
+      '/{domain_name}':
+        displayName: '{domain_name}'
+        /users:
+          displayName: users
+          '/{user_name}.json':
+            displayName: '{user_name}.json'
+            uriParameters:
+              user_name:
+                required: true
+                type: string
+            put:
+              displayName: PUT-api--version-domains--domain_name-users--user_name---format-
+              (oas-summary): Update the specified user
+              responses:
+                '200':
+                  description: No response was specified
+              (oas-tags):
+                - domains
+            delete:
+              displayName: DELETE-api--version-domains--domain_name-users--user_name---format-
+              (oas-summary): Delete the specified user
+              responses:
+                '200':
+                  description: No response was specified
+              (oas-tags):
+                - domains
+            get:
+              displayName: GET-api--version-domains--domain_name-users--user_name---format-
+              (oas-summary): Returns the information to the specified user
+              responses:
+                '200':
+                  description: No response was specified
+              (oas-tags):
+                - domains
+          '/{user_name}':
+            displayName: '{user_name}'
+            /aliases.json:
+              displayName: aliases.json
+              get:
+                displayName: GET-api--version-domains--domain_name-users--user_name-aliases---format-
+                (oas-summary): Returns all aliases for the specified user
+                responses:
+                  '200':
+                    description: No response was specified
+                (oas-tags):
+                  - domains
+              post:
+                displayName: POST-api--version-domains--domain_name-users--user_name-aliases---format-
+                (oas-summary): Create new user alias
+                responses:
+                  '200':
+                    description: No response was specified
+                (oas-tags):
+                  - domains
+            /aliases:
+              displayName: aliases
+              '/{alias_name}.json':
+                displayName: '{alias_name}.json'
+                uriParameters:
+                  alias_name:
+                    required: true
+                    type: string
+                delete:
+                  displayName: DELETE-api--version-domains--domain_name-users--user_name-aliases--alias_name---format-
+                  (oas-summary): Delete the specified user alias
+                  responses:
+                    '200':
+                      description: No response was specified
+                  (oas-tags):
+                    - domains
+                get:
+                  displayName: GET-api--version-domains--domain_name-users--user_name-aliases--alias_name---format-
+                  (oas-summary): Returns the information to the specified user alias
+                  responses:
+                    '200':
+                      description: No response was specified
+                  (oas-tags):
+                    - domains
+                put:
+                  displayName: PUT-api--version-domains--domain_name-users--user_name-aliases--alias_name---format-
+                  (oas-summary): Update the specified user alias
+                  responses:
+                    '200':
+                      description: No response was specified
+                  (oas-tags):
+                    - domains
+        /aliases.json:
+          displayName: aliases.json
+          post:
+            displayName: POST-api--version-domains--domain_name-aliases---format-
+            (oas-summary): Create new domain alias
+            responses:
+              '200':
+                description: No response was specified
+            (oas-tags):
+              - domains
+          get:
+            displayName: GET-api--version-domains--domain_name-aliases---format-
+            (oas-summary): Returns all aliases for the specified domain
+            responses:
+              '200':
+                description: No response was specified
+            (oas-tags):
+              - domains
+        /aliases:
+          displayName: aliases
+          '/{alias_name}.json':
+            displayName: '{alias_name}.json'
+            uriParameters:
+              alias_name:
+                required: true
+                type: string
+            get:
+              displayName: GET-api--version-domains--domain_name-aliases--alias_name---format-
+              (oas-summary): Returns the information to the specified domain alias
+              responses:
+                '200':
+                  description: No response was specified
+              (oas-tags):
+                - domains
+            delete:
+              displayName: DELETE-api--version-domains--domain_name-aliases--alias_name---format-
+              (oas-summary): Delete the specified domain alias
+              responses:
+                '200':
+                  description: No response was specified
+              (oas-tags):
+                - domains
+            put:
+              displayName: PUT-api--version-domains--domain_name-aliases--alias_name---format-
+              (oas-summary): Update the specified domain alias
+              responses:
+                '200':
+                  description: No response was specified
+              (oas-tags):
+                - domains
+        /users.json:
+          displayName: users.json
+          get:
+            displayName: GET-api--version-domains--domain_name-users---format-
+            (oas-summary): Returns all users for the specified domain
+            responses:
+              '200':
+                description: No response was specified
+            (oas-tags):
+              - domains
+          post:
+            displayName: POST-api--version-domains--domain_name-users---format-
+            (oas-summary): Create new user
+            responses:
+              '200':
+                description: No response was specified
+            (oas-tags):
+              - domains
+      '/{domain_name}.json':
+        displayName: '{domain_name}.json'
+        uriParameters:
+          domain_name:
+            required: true
+            type: string
+        delete:
+          displayName: DELETE-api--version-domains--domain_name---format-
+          (oas-summary): Delete the specified domain
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - domains
+        put:
+          displayName: PUT-api--version-domains--domain_name---format-
+          (oas-summary): Update the specified domain
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - domains
+        get:
+          displayName: GET-api--version-domains--domain_name---format-
+          (oas-summary): Returns the information to the specified domain
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - domains
+    /transports:
+      displayName: transports
+      '/{transport_name}.json':
+        displayName: '{transport_name}.json'
+        uriParameters:
+          transport_name:
+            required: true
+            type: string
+        put:
+          displayName: PUT-api--version-transports--transport_name---format-
+          (oas-summary): Update the specified transport
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - transports
+        get:
+          displayName: GET-api--version-transports--transport_name---format-
+          (oas-summary): Returns the information to the specified transport
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - transports
+        delete:
+          displayName: DELETE-api--version-transports--transport_name---format-
+          (oas-summary): Delete the specified transport
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - transports
+    /domains.json:
+      displayName: domains.json
+      get:
+        displayName: GET-api--version-domains---format-
+        (oas-summary): Returns all available domains
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - domains
+      post:
+        displayName: POST-api--version-domains---format-
+        (oas-summary): Create new domain
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - domains
+    /summary.json:
+      displayName: summary.json
+      get:
+        displayName: GET-api--version-summary---format-
+        (oas-summary): Returns a summary of all Resources
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - summary
+    /swagger_doc.json:
+      displayName: swagger_doc.json
+      get:
+        displayName: GET-api-v1-swagger_doc---format-
+        (oas-summary): Swagger compatible API description
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - v1
+    /swagger_doc:
+      displayName: swagger_doc
+      '/{name}.json':
+        displayName: '{name}.json'
+        uriParameters:
+          name:
+            description: Resource name of mounted API
+            required: true
+            type: string
+            displayName: Resource name of mounted API
+        get:
+          displayName: GET-api-v1-swagger_doc--name---format-
+          (oas-summary): Swagger compatible API description for specific API
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - v1
+    /transports.json:
+      displayName: transports.json
+      post:
+        displayName: POST-api--version-transports---format-
+        (oas-summary): Create new transport
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - transports
+      get:
+        displayName: GET-api--version-transports---format-
+        (oas-summary): Returns all available transports
+        responses:
+          '200':
+            description: No response was specified
+        (oas-tags):
+          - transports

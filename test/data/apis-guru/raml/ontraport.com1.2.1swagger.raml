@@ -1,0 +1,1762 @@
+#%RAML 1.0
+title: ONTRAPORT
+version: 1.2.1
+baseUri: 'https://api.ontraport.com/1'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: '<p>Enter your App ID and API Key above. If you do not have an App ID or API Key login to your ONTRAPORT account and navigate <a href="https://app.ontraport.com/#!/api_settings/listAll">here</a>. Authentication parameters must be sent in the request header as <strong>Api-Appid</strong> and <strong>Api-Key</strong>. Each ONTRAPORT account is allowed up to 180 requests per minute.</p>'
+(oas-tags-definition):
+  - description: 'Create, update, fetch, and delete Contacts or other Objects'
+    name: object
+  - description: Fetch Form content
+    name: form
+  - description: 'Create, update, or fetch Email, SMS, or other Message content'
+    name: message
+  - description: Cancel and complete Tasks
+    name: task
+  - description: Everything to do with payment Transactions
+    name: transaction
+  - description: Fetch Landing Page content
+    name: landingPage
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-responses: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_ontraport.com_assets_images_ONTRAPORT_logo_150px.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.ontraport.com/1/api-docs/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): ontraport.com
+  contact:
+    name: The ONTRAPORT Engineering Team
+    url: 'http://support.ontraport.com/'
+    email: support@ontraport.com
+  termsOfService: 'https://ontraport.com/terms-of-service'
+(oas-externalDocs):
+  url: 'https://ontraport.com/ontraport-api'
+/objects:
+  displayName: objects
+  /tag:
+    displayName: tag
+    put:
+      displayName: addTag
+      description: 'This will add a Tag to an Object. when adding or removing Tags, either <b>ids</b> or <b>group_ids</b> must be given.'
+      (oas-summary): This will add an Object Tag
+      is:
+        - objectIdParamFormData
+        - addListParamFormData
+        - idsParamFormData
+        - startParamFormData
+        - rangeParamFormData
+        - sortParamFormData
+        - sortDirParamFormData
+        - conditionParamFormData
+        - searchParamFormData
+        - searchNotesParamFormData
+        - dateRangeParamFormData
+        - groupIdsParamFormData
+        - externsParamFormData
+        - listFieldsParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully added Tag(s)
+      (oas-tags):
+        - objects
+    delete:
+      displayName: removeTag
+      description: 'This will remove a Tag from an Object using a Tag ID. When adding or removing Tags, either <b>ids</b> or <b>group_ids</b> must be given.'
+      (oas-summary): This will remove an Object Tag
+      is:
+        - objectIdParamFormData
+        - removeListParamFormData
+        - idsParamFormData
+        - startParamFormData
+        - rangeParamFormData
+        - sortParamFormData
+        - sortDirParamFormData
+        - conditionParamFormData
+        - searchParamFormData
+        - searchNotesParamFormData
+        - dateRangeParamFormData
+        - groupIdsParamFormData
+        - externsParamFormData
+        - listFieldsParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully removed Tag(s)
+      (oas-tags):
+        - objects
+  /unpause:
+    displayName: unpause
+    post:
+      displayName: unpause
+      description: This will upause a Sequence. Either <b>ids</b> or <b>group_ids</b> must be given.
+      (oas-summary): This will unpause a Sequence
+      is:
+        - objectIdParamFormData
+        - idsParamFormData
+        - startParamFormData
+        - rangeParamFormData
+        - sortParamFormData
+        - sortDirParamFormData
+        - conditionParamFormData
+        - searchParamFormData
+        - dateRangeParamFormData
+        - groupIdsParamFormData
+        - externsParamFormData
+        - listFieldsParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully unpaused Sequence(s)
+      (oas-tags):
+        - objects
+  get:
+    displayName: getObjects
+    (oas-summary): This will get a list of Objects
+    is:
+      - objectIdParam
+      - idsParam
+      - startParam
+      - rangeParam
+      - sortParam
+      - sortDirParam
+      - conditionParam
+      - searchParam
+      - searchNotesParam
+      - dateRangeParam
+      - groupIdsParam
+      - externsParam
+      - listFieldsParam
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Successful object query
+      '400':
+        description: Invalid objectID
+    (oas-tags):
+      - objects
+  put:
+    displayName: updateObjects
+    description: 'This will update an Object''s data. The Object type and ID and required parameters, but other parameters are dependent upon the object type. We have provided optional parameters as examples for updating a Contact. When using this in your application, all invalid parameters will be ignored.'
+    (oas-summary): This will update an Object's data
+    is:
+      - objectIdParamFormData
+      - idParamFormData
+    body:
+      multipart/form-data:
+        properties:
+          firstname:
+            description: New first name for the Object.
+            type: string
+            required: false
+          lastname:
+            description: New last name for the Object.
+            type: string
+            required: false
+          email:
+            description: New email address for the Object.
+            type: string
+            required: false
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Successfully updated object
+      '404':
+        description: Object not found
+    (oas-tags):
+      - objects
+  /meta:
+    displayName: meta
+    get:
+      displayName: getMeta
+      description: This will get a list of existing Object types and their corresponding field names. Use the <b>objectID</b> parameter to This will get a single Object type.
+      (oas-summary): This will get a list of existing Object types
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successful object query
+      queryParameters:
+        format:
+          default: byId
+          description: Choose to get the list indexed by Object class name or integer ID.
+          enum:
+            - byId
+            - byName
+          type: string
+          displayName: Choose to get the list indexed by Object class name or integer ID.
+        objectID:
+          default: 0
+          description: Object Type ID.
+          format: int32
+          type: integer
+          displayName: Object Type ID.
+      (oas-tags):
+        - objects
+  /saveorupdate:
+    displayName: saveorupdate
+    post:
+      displayName: saveorupdateObject
+      description: 'This will create an Object with the given data or will merge with an Object in the database if the unique field matches another Object’s. Object type is a required parameter, but other parameters are optional and depend on the Object type. We have provided optional parameters as examples for updating a Contact. When using this in your application, all invalid parameters will be ignored.'
+      (oas-summary): Create or Merge an Object
+      is:
+        - objectIdParamFormData
+      body:
+        multipart/form-data:
+          properties:
+            firstname:
+              description: First name for the Object.
+              type: string
+              required: false
+            lastname:
+              description: Last name for the Object.
+              type: string
+              required: false
+            email:
+              description: Email address for the Object.
+              type: string
+              required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successful object query
+        '400':
+          description: Invalid objectID
+      (oas-tags):
+        - objects
+  post:
+    displayName: createObject
+    description: 'This will create an Object with the given data. Object type is a required parameters, but other parameters are optional and dependent upon the object type. We have provided optional parameters as examples for updating a Contact. When using this in your application, all invalid parameters will be ignored.'
+    (oas-summary): This will create an Object
+    is:
+      - objectIdParamFormData
+    body:
+      multipart/form-data:
+        properties:
+          firstname:
+            description: New first name for the Object.
+            type: string
+            required: false
+          lastname:
+            description: New last name for the Object.
+            type: string
+            required: false
+          email:
+            description: New email address for the Object.
+            type: string
+            required: false
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Successful object query
+      '400':
+        description: Invalid objectID
+    (oas-tags):
+      - objects
+  /pause:
+    displayName: pause
+    post:
+      displayName: pause
+      description: This will pause a Sequence. Either <b>ids</b> or <b>group_ids</b> must be given.
+      (oas-summary): This will pause a Sequence
+      is:
+        - objectIdParamFormData
+        - idsParamFormData
+        - startParamFormData
+        - rangeParamFormData
+        - sortParamFormData
+        - sortDirParamFormData
+        - conditionParamFormData
+        - searchParamFormData
+        - dateRangeParamFormData
+        - groupIdsParamFormData
+        - externsParamFormData
+        - listFieldsParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully pause Sequence(s)
+      (oas-tags):
+        - objects
+  /getInfo:
+    displayName: getInfo
+    get:
+      displayName: getObjectsInfo
+      description: 'Get information about an Objects Collection, such as the number of Objects that match the given criteria.'
+      (oas-summary): Get information about an Objects Collection
+      is:
+        - objectIdParam
+        - conditionParam
+        - searchParam
+        - searchNotesParam
+        - dateRangeParam
+        - groupIdsParam
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successful object query
+        '400':
+          description: Invalid objectID
+      (oas-tags):
+        - objects
+  delete:
+    displayName: deleteObjects
+    (oas-summary): This will delete a list of Objects
+    is:
+      - objectIdParam
+      - idsParam
+      - startParam
+      - rangeParam
+      - sortParam
+      - sortDirParam
+      - conditionParam
+      - searchParam
+      - searchNotesParam
+      - dateRangeParam
+      - groupIdsParam
+      - externsParam
+      - listFieldsParam
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Successful object query
+      '400':
+        description: Invalid objectID
+    (oas-tags):
+      - objects
+/transaction:
+  displayName: transaction
+  /writeOff:
+    displayName: writeOff
+    put:
+      displayName: writeOff
+      (oas-summary): Write-off a Transaction
+      is:
+        - idParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully wrote off transaction
+        '400':
+          description: Error writing off transaction
+        '404':
+          description: Object not found
+      (oas-tags):
+        - transactions
+  /convertToCollections:
+    displayName: convertToCollections
+    put:
+      displayName: convertToCollections
+      (oas-summary): Convert the status of one or more Transactions to Collections
+      is:
+        - idParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully converted transaction
+        '400':
+          description: Error converting transaction
+        '404':
+          description: Object not found
+      (oas-tags):
+        - transactions
+  /convertToDecline:
+    displayName: convertToDecline
+    put:
+      displayName: convertToDecline
+      (oas-summary): Convert the status of one or more Transactions to Declined
+      is:
+        - idParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully converted transaction
+        '400':
+          description: Error converting transaction
+        '404':
+          description: Object not found
+      (oas-tags):
+        - transactions
+  /markPaid:
+    displayName: markPaid
+    put:
+      displayName: markPaid
+      (oas-summary): Mark a Transaction as Paid
+      is:
+        - idParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully marked as paid
+        '400':
+          description: Error marking Transaction as paid
+        '404':
+          description: Object not found
+      (oas-tags):
+        - transactions
+  /order:
+    displayName: order
+    get:
+      displayName: getOrder
+      (oas-summary): Get full information about an order
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Success fetching Order
+        '400':
+          description: Error fetching Order
+      queryParameters:
+        id:
+          description: Order ID.
+          required: true
+          type: integer
+          displayName: Order ID.
+      (oas-tags):
+        - transactions
+    put:
+      displayName: setOrder
+      description: 'Update information about an Order. Please note that if offer data is omitted, this Order will be deleted.'
+      (oas-summary): Update information about an Order
+      body:
+        application/json:
+          type: Order
+          (oas-body-name): order
+          description: Order Object.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully updated Order information
+        '400':
+          description: Error updating Order information
+      (oas-tags):
+        - transactions
+  /processManual:
+    displayName: processManual
+    post:
+      displayName: processManual
+      description: 'This will create a Transaction for a Contact. Please note that this request requires valid parameters for all associated members of the Transaction or the request will fail. If you have doubled-checked all parameters and the request is still failing, check that the payload JSON format is correct by using <a href="http://jsonlint.com/">JSONLint</a>. If credit card and billing information already exist for this contact, you may omit <b>billing_address</b> and <b>payer</b> from the request. Note that <b>trans_date</b> is given in milliseconds elapsed since midnight on 1/1/1970.'
+      (oas-summary): This will create a new Transaction
+      body:
+        application/json:
+          type: Transaction
+          (oas-body-name): transaction
+          description: Definition of the Transaction.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully created transaction
+        '400':
+          description: Error processing transaction
+      (oas-tags):
+        - transactions
+  /refund:
+    displayName: refund
+    put:
+      displayName: refund
+      (oas-summary): Refund one or more Transactions
+      body:
+        application/json:
+          type: Criteria
+          (oas-body-name): criteria
+          description: Criteria of Transactions to refund.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully refunded transaction
+        '400':
+          description: Error refunding transaction
+      (oas-tags):
+        - transactions
+  /rerun:
+    displayName: rerun
+    post:
+      displayName: rerun
+      description: Re-run a single Transaction or a Group of Transactions that are currently in Collections.
+      (oas-summary): Re-run a Transaction
+      body:
+        application/json:
+          type: Criteria
+          (oas-body-name): criteria
+          description: Criteria of Transactions to rerun.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully reran transaction
+        '400':
+          description: Error rerunning transaction
+      (oas-tags):
+        - transactions
+  /voidPurchase:
+    displayName: voidPurchase
+    put:
+      displayName: voidPurchase
+      (oas-summary): Void a purchase
+      is:
+        - idParamFormData
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully voided purchase
+        '400':
+          description: Error voiding purchase
+        '404':
+          description: Object not found
+      (oas-tags):
+        - transactions
+  /void:
+    displayName: void
+    put:
+      displayName: voidTransaction
+      (oas-summary): Void a Transaction
+      body:
+        application/json:
+          type: Criteria
+          (oas-body-name): criteria
+          description: Criteria of Transactions to void.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully voided transaction
+        '400':
+          description: Error voiding transaction
+      (oas-tags):
+        - transactions
+  /resendInvoice:
+    displayName: resendInvoice
+    post:
+      displayName: resendInvoice
+      (oas-summary): Re-send a Transaction invoice
+      body:
+        application/json:
+          type: Criteria
+          (oas-body-name): criteria
+          description: Criteria of Transactions to resend invoices.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully created transaction
+        '400':
+          description: Error processing transaction
+      (oas-tags):
+        - transactions
+  /rerunCommission:
+    displayName: rerunCommission
+    put:
+      displayName: rerunCommission
+      (oas-summary): Re-run a Partner commission
+      body:
+        application/json:
+          type: Criteria
+          (oas-body-name): criteria
+          description: Criteria of Transactions to rerun commissions.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully reran commission
+        '400':
+          description: Error rerunning commission
+      (oas-tags):
+        - transactions
+/form:
+  displayName: form
+  get:
+    displayName: getForm
+    description: 'This will fetch a Form''s HTML for a given ID.<br/><b>Note</b>: HTML is returned in the <code>data</code> member of the JSON response. As a result, the HTML is escaped and you will have to unescape the HTML before using it.'
+    (oas-summary): This will get an existing Form
+    is:
+      - idParam
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Successful object query
+      '404':
+        description: Form not found
+    (oas-tags):
+      - forms
+/task:
+  displayName: task
+  /cancel:
+    displayName: cancel
+    post:
+      displayName: taskCancel
+      description: 'To affect a single Task or list of specific Tasks, use the <strong>ids</strong> array in the <strong>criteria</strong> parameter. Otherwise, you should use <strong>performAll</strong> and other criteria to select a Group of Tasks to cancel.'
+      (oas-summary): Cancel a set of Tasks
+      body:
+        application/json:
+          type: Criteria
+          (oas-body-name): criteria
+          description: Criteria of the Tasks to cancel.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully canceled tasks
+      (oas-tags):
+        - tasks
+  /complete:
+    displayName: complete
+    post:
+      displayName: taskComplete
+      description: 'This will mark one or many Tasks as complete. As an option, you can assign a new Task for further follow-up. To affect a single Task or list of specific Tasks, use the <strong>ids</strong> array in the <strong>criteria</strong> parameter. Otherwise, you should use <strong>performAll</strong> and other criteria to select a Group of Tasks to complete.'
+      (oas-summary): Complete a set of Tasks
+      body:
+        application/json:
+          type: TaskCompleteParams
+          (oas-body-name): body
+          description: Criteria and data of the Tasks to complete.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully canceled tasks
+      (oas-tags):
+        - tasks
+/message:
+  displayName: message
+  get:
+    displayName: getMessage
+    description: This will fetch data from an existing Message.
+    (oas-summary): This will get an existing Message
+    is:
+      - idParam
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Successful object query
+      '404':
+        description: Message not found
+    (oas-tags):
+      - messages
+  put:
+    displayName: updateMessage
+    (oas-summary): This will update an existing Message
+    body:
+      multipart/form-data:
+        properties:
+          id:
+            description: ID of the Message to be updated.
+            format: int32
+            required: true
+            type: integer
+          objectID:
+            description: Object Type ID.
+            enum:
+              - 7
+            format: int32
+            type: integer
+            required: false
+          alias:
+            description: Message alias.
+            type: string
+            required: false
+          name:
+            description: Name of your Message.
+            type: string
+            required: false
+          subject:
+            description: Subject to be sent with the Message.
+            type: string
+            required: false
+          from:
+            description: 'Who will this Message come from? If not <b>owner</b> or <b>custom</b>, this field can contain the Staff user ID to send the Message from.'
+            enum:
+              - owner
+              - custom
+              - <staff user ID>
+            type: string
+            required: false
+          send_out_name:
+            default: owner
+            description: Name to be used in the 'Message From' field when the <b>from</b> field is set to <b>custom</b>.
+            type: string
+            required: false
+          reply_to_email:
+            default: Contact owner email
+            description: The email address to use as the reply-to in the Message.
+            type: string
+            required: false
+          plaintext:
+            description: 'The plain text version of your Message (for Email messages). For SMS Messages, this is the content that will be sent.'
+            type: string
+            required: false
+          send_from:
+            description: 'Custom Send-from email address. Leave this empty to use your default email address. Otherwise, this must be a validated send-from email address.'
+            type: string
+            required: false
+          send_to:
+            default: email
+            description: Only used with SMS Messages or Custom Objects. Select the field to use when there may be a parent or child relationship to the Object type given in <b>object_type_id</b>. The default for SMS Message is <b>sms_number.</b>
+            type: string
+            required: false
+          message_body:
+            description: Use this for Legacy Email Messages only. This is the HTML content of the Message.
+            type: string
+            required: false
+          resource:
+            description: 'For ONTRAmail Messages only; this is the content of the message. Note that this can be extremely complex, so you should start by inspecting the resource that is sent when saving a Message from inside the App. For SMS Messages, use the plaintext field for content.'
+            type: string
+            required: false
+          email_title:
+            description: Short title that will appear as the first line in email clients.
+            type: string
+            required: false
+          task_data:
+            description: Use this only for Task Messages. This is the content of the Message.
+            type: string
+            required: false
+          due_date:
+            description: Use this only for Task Messages. This is the number of days after assignment this Task is due.
+            format: int32
+            type: integer
+            required: false
+          task_owner:
+            description: Use this only for Task Messages. This is the Staff user ID of the Task owner.
+            format: int32
+            type: integer
+            required: false
+          task_form:
+            description: Use this only for Task Messages. This is the optional Form ID to be filled when the Task is completed. This form must already exist.
+            format: int32
+            type: integer
+            required: false
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Message successfully updated
+    (oas-tags):
+      - messages
+  post:
+    displayName: saveMessage
+    (oas-summary): This will create a new Message
+    body:
+      multipart/form-data:
+        properties:
+          objectID:
+            description: Object Type ID.
+            enum:
+              - 7
+            format: int32
+            type: integer
+            required: false
+          alias:
+            description: Message alias.
+            type: string
+            required: false
+          name:
+            description: Name of your Message.
+            type: string
+            required: false
+          subject:
+            description: Subject to be sent with the Message.
+            type: string
+            required: false
+          type:
+            description: 'Message type: use <b>template</b> for ONTRAmail, <b>e-mail</b> for Legacy Email, <b>sms</b> for SMS Messages, <b>task</b> for Task Messages.'
+            enum:
+              - template
+              - e-mail
+              - sms
+              - task
+            type: string
+            required: false
+          object_type_id:
+            description: Object type to associate with this Message. This will be zero (0) for Contacts. You should only change this if you are using Custom Objects.
+            format: int32
+            type: integer
+            required: false
+          from:
+            description: 'Who will this Message come from? If not <b>owner</b> or <b>custom</b>, this field can contain the Staff user ID to send the Message from.'
+            enum:
+              - owner
+              - custom
+              - <staff user ID>
+            type: string
+            required: false
+          send_out_name:
+            default: owner
+            description: Name to be used in the 'Message From' field when the <b>from</b> field is set to <b>custom</b>.
+            type: string
+            required: false
+          reply_to_email:
+            default: Contact owner email
+            description: The email address to use as the reply-to in the Message.
+            type: string
+            required: false
+          plaintext:
+            description: 'The plain text version of your Message (for Email messages). For SMS Messages, this is the content that will be sent.'
+            type: string
+            required: false
+          send_from:
+            description: 'Custom Send-from email address. Leave this empty to use your default email address. Otherwise, this must be a validated send-from email address.'
+            type: string
+            required: false
+          send_to:
+            default: email
+            description: Only used with SMS Messages or Custom Objects. Select the field to use when there may be a parent or child relationship to the Object type given in <b>object_type_id</b>. The default for SMS Message is <b>sms_number.</b>
+            type: string
+            required: false
+          message_body:
+            description: Use this for Legacy Email Messages only. This is the HTML content of the Message.
+            type: string
+            required: false
+          resource:
+            description: 'For ONTRAmail Messages only; this is the content of the message. Note that this can be extremely complex, so you should start by inspecting the resource that is sent when saving a Message from inside the App. For SMS Messages, use the plaintext field for content.'
+            type: string
+            required: false
+          email_title:
+            description: Short title that will appear as the first line in email clients.
+            type: string
+            required: false
+          task_data:
+            description: Use this only for Task Messages. This is the content of the Message.
+            type: string
+            required: false
+          due_date:
+            description: Use this only for Task Messages. This is the number of days after assignment this Task is due.
+            format: int32
+            type: integer
+            required: false
+          task_owner:
+            description: Use this only for Task Messages. This is the Staff user ID of the Task owner.
+            format: int32
+            type: integer
+            required: false
+          task_form:
+            description: Use this only for Task Messages. This is the optional Form ID to be filled when the Task is completed. This form must already exist.
+            format: int32
+            type: integer
+            required: false
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Message successfully created
+    (oas-tags):
+      - messages
+/object:
+  displayName: object
+  get:
+    displayName: getObject
+    description: This will fetch data for a given Object type and ID.
+    (oas-summary): This will get an Object's data
+    is:
+      - objectIdParam
+      - idParam
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Successful object query
+      '400':
+        description: Invalid objectID
+      '404':
+        description: Object not found
+    (oas-tags):
+      - objects
+  delete:
+    displayName: deleteObject
+    description: This will delete an Object with the given Object type and ID.
+    (oas-summary): This will delete an Object
+    is:
+      - objectIdParam
+      - idParam
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Response
+        description: Successful object query
+      '400':
+        description: Invalid objectID
+      '404':
+        description: Object not found
+    (oas-tags):
+      - objects
+/landingPage:
+  displayName: landingPage
+  /getHostedURL:
+    displayName: getHostedURL
+    get:
+      displayName: getHostedURL
+      description: This will grab the permanent URL for a given Landing Page.
+      (oas-summary): Grab the hosted URL
+      is:
+        - idParam
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: Successfully got URL
+        '400':
+          description: Error processing transaction
+      (oas-tags):
+        - landingPage
+types:
+  Address:
+    properties:
+      address:
+        type: string
+      address2:
+        default: ''
+        type: string
+        required: false
+      city:
+        type: string
+      country:
+        type: string
+      state:
+        type: string
+      zip:
+        type: string
+  Criteria:
+    properties:
+      condition:
+        description: 'Apply this condition to the collection query. This is essentially like a SQL WHERE clause, e.g. firstname=''Ben'''
+        type: string
+        required: false
+      date_range:
+        description: 'Start and End dates to search, in seconds since Jan 1, 1970, as a comma-separated list. Start (index 0 in the array) is inclusive, End (index 1) is exclusive. Either or both can be empty.'
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      externs:
+        description: External fields to include in results
+        type: string
+        required: false
+      group_ids:
+        description: Array of Group ID for Object type as comma-delimited list
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      ids:
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      listFields:
+        description: Return only these fields in the response
+        items:
+          type: string
+        type: array
+        required: false
+      objectID:
+        description: ''
+        format: int32
+        type: integer
+      range:
+        description: Number of results to return (maximum=50)
+        format: int32
+        maximum: 50
+        type: integer
+        required: false
+      search:
+        description: Search Objects for this string
+        type: string
+        required: false
+      searchNotes:
+        description: Boolean flag to additionally search Object Notes for the Search term given in Search parameter
+        type: string
+        required: false
+      sort:
+        description: Field used to sort results
+        type: string
+        required: false
+      sortDir:
+        description: 'Sort direction, must be used in conjunction with <b>sort</b> parameter.'
+        enum:
+          - asc
+          - desc
+        type: string
+        required: false
+      start:
+        description: Return results starting at this offset
+        format: int32
+        type: integer
+        required: false
+  Notification:
+    properties:
+      data:
+        type: string
+      id:
+        format: int32
+        type: integer
+      notification_type:
+        enum:
+          - notification
+        type: string
+      type:
+        enum:
+          - plaintext
+        type: string
+  Offer:
+    properties:
+      ccExpirationDate:
+        default: ''
+        description: Credit card expiration date.
+        type: string
+        required: false
+      delay:
+        description: Days to delay start of offer.
+        format: int32
+        type: integer
+        required: false
+      grandTotal:
+        description: Total amount of sale.
+        type: number
+        required: false
+      hasShipping:
+        default: false
+        description: Are there shipping charges?
+        type: boolean
+        required: false
+      hasTaxes:
+        default: false
+        description: Are there applicable taxes?
+        type: boolean
+        required: false
+      offer_id:
+        description: This must be a valid Offer ID.
+        format: int32
+        type: integer
+      order_id:
+        description: This must be a valid Order ID.
+        format: int32
+        type: integer
+      products:
+        items:
+          type: Product
+        type: array
+      shipping:
+        description: Shipping amount.
+        type: number
+        required: false
+      shipping_charge_reoccurring_orders:
+        default: false
+        description: Add shipping charge to reoccurring orders?
+        type: boolean
+        required: false
+      subTotal:
+        description: Subtotal.
+        type: number
+        required: false
+      taxes:
+        items:
+          type: Tax
+        type: array
+        required: false
+  Order:
+    properties:
+      affiliate_id:
+        description: Affiliate ID.
+        format: int32
+        type: integer
+        required: false
+      billing_address:
+        type: Address
+        required: false
+      chargeNow:
+        enum:
+          - chargeNow
+        type: string
+        required: false
+      contact_id:
+        format: int32
+        type: integer
+      gateway_id:
+        description: Gateway ID.
+        format: int32
+        type: integer
+        required: false
+      invoice_template:
+        description: Invoice template ID.
+        format: int32
+        type: integer
+        required: false
+      objectID:
+        format: int32
+        type: integer
+      offer:
+        type: Offer
+        required: false
+      payer:
+        type: Payer
+        required: false
+  Payer:
+    properties:
+      ccnumber:
+        default: ''
+        type: string
+      code:
+        default: ''
+        description: CVV code.
+        type: string
+      expire_month:
+        description: Expiration month (1-12).
+        type: integer
+        required: false
+      expire_year:
+        description: 'Expiration year (four-digit year, e.g. 2018).'
+        type: integer
+        required: false
+  Price:
+    properties:
+      id:
+        type: integer
+      payment_count:
+        format: int32
+        type: integer
+      price:
+        type: number
+      unit:
+        enum:
+          - day
+          - week
+          - month
+          - quarter
+          - year
+        type: string
+  Product:
+    properties:
+      delay_start:
+        description: Days to delay start.
+        format: int32
+        type: integer
+        required: false
+      id:
+        description: This must be an existing Product ID.
+        format: int32
+        type: integer
+        required: false
+      level1:
+        description: Partner Level 1 commission percentage.
+        type: number
+        required: false
+      level2:
+        description: Partner Level 2 commission percentage.
+        type: number
+        required: false
+      offer_to_affiliates:
+        default: false
+        description: Is this offered to Partners (affiliates)?
+        type: boolean
+        required: false
+      owner:
+        description: Product owner (Staff ID).
+        format: int32
+        type: integer
+        required: false
+      price:
+        items:
+          type: Price
+        type: array
+      quantity:
+        description: How many of this product are being purchased?
+        format: int32
+        type: integer
+      setup_fee:
+        description: One-time setup fee.
+        type: number
+        required: false
+      setup_fee_date:
+        description: Date to charge setup fee (when setup_fee_when is "on_date").
+        type: string
+        required: false
+      setup_fee_when:
+        description: When should setup fee be applied?
+        enum:
+          - immediately
+          - after_trial
+          - on_date
+        type: string
+        required: false
+      shipping:
+        default: false
+        description: Does this product have an associated shipping cost?
+        type: boolean
+        required: false
+      subscription_count:
+        format: int32
+        type: integer
+        required: false
+      subscription_fee:
+        type: number
+        required: false
+      subscription_unit:
+        enum:
+          - day
+          - week
+          - month
+          - quarter
+          - year
+        type: string
+        required: false
+      tax:
+        default: false
+        description: Is this product taxable?
+        type: boolean
+        required: false
+      taxable:
+        description: Is this item taxable?
+        type: boolean
+        required: false
+      total:
+        description: What is the total amount of this sale?
+        type: number
+      trial_period_count:
+        description: Length of trial period (also set trial_period_units).
+        format: int32
+        type: integer
+        required: false
+      trial_period_unit:
+        description: Units describing length of trial period.
+        enum:
+          - day
+          - week
+          - month
+          - quarter
+          - year
+        type: string
+        required: false
+      trial_price:
+        description: Price during trial period.
+        type: number
+        required: false
+      type:
+        enum:
+          - single
+          - subscription
+          - one_time
+          - payment_plan
+        type: string
+        required: false
+  Response:
+    properties:
+      account_id:
+        format: int32
+        type: integer
+      code:
+        type: integer
+      data:
+        type: object
+      notifications:
+        type: Notification
+      updates:
+        type: Update
+  Shipping:
+    properties:
+      id:
+        description: ID of the Shipping Method to apply. This must be an existing Shipping Method.
+        format: int32
+        type: integer
+  TaskCompleteParams:
+    properties:
+      criteria:
+        type: Criteria
+      data:
+        type: TaskData
+  TaskData:
+    properties:
+      followup:
+        type: TaskFollowup
+        required: false
+      outcome:
+        description: 'Task outcome name. This must start with ":=" For example, <strong>":=signed"</strong>.'
+        type: string
+        required: false
+      task_form_data:
+        description: 'These fields can be used to update associated Object data when completing a task. For example, set <strong>task_form_title</strong> to "New title" to change the Contact''s title.'
+        type: string
+        required: false
+  TaskFollowup:
+    properties:
+      due_date:
+        description: 'Due date of new Task, given as number of days from current date.'
+        format: int32
+        type: integer
+      message_id:
+        description: 'Message ID of new Task to be created for further followup. This Task must currently exist. New tasks can be created using the <a href="http://api.ontraport.com/doc/#!/objects/createObject">Objects Create endpoint</a> with objectID=1.'
+        format: int32
+        type: integer
+      task_owner:
+        description: New Task assignee.
+        format: int32
+        type: integer
+  Tax:
+    properties:
+      id:
+        description: ID of the Tax to apply. This must be an existing Tax type.
+        format: int32
+        type: integer
+  Transaction:
+    properties:
+      billing_address:
+        type: Address
+        required: false
+      chargeNow:
+        description: Charge Transaction now or or just log a Transaction.
+        enum:
+          - chargeNow
+          - chargeLog
+        type: string
+      contact_id:
+        description: Create new Transaction for this Object instance (Contact ID).
+        type: integer
+      gateway_id:
+        description: Gateway ID to use for this Transaction.
+        type: integer
+      invoice_template:
+        description: Invoice ID to use for this Transaction.
+        example: 1
+        type: integer
+      offer:
+        type: Offer
+      payer:
+        type: Payer
+        required: false
+      trans_date:
+        description: Timestamp (in milliseconds since midnight 1/1/1970) of the Transaction.
+        type: integer
+        required: false
+  Update:
+    properties:
+      id:
+        format: int32
+        type: integer
+        required: false
+traits:
+  bmasksParam:
+    queryParameters:
+      bmasks:
+        type: integer
+        description: '???'
+        format: int32
+  conditionParam:
+    queryParameters:
+      condition:
+        type: string
+        description: 'Apply this condition to the collection query. This is essentially like a SQL WHERE clause, e.g. firstname=''Ben'''
+  dateRangeParam:
+    queryParameters:
+      date_range:
+        type: array
+        description: 'Start and End dates to search, in seconds since Jan 1, 1970, as a comma-separated list. Start (index 0 in the array) is inclusive, End (index 1) is exclusive. Either or both can be empty.'
+        items:
+          format: int32
+          type: integer
+  dupeParam:
+    queryParameters:
+      dupe:
+        type: string
+        description: '???'
+  externsParam:
+    queryParameters:
+      externs:
+        type: string
+        description: External fields to include in results
+  groupIdsParam:
+    queryParameters:
+      group_ids:
+        type: array
+        description: Array of Group ID for Object type as comma-delimited list
+        items:
+          format: int32
+          type: integer
+  idParam:
+    queryParameters:
+      id:
+        type: integer
+        description: ID of Object.
+        format: int32
+        required: true
+  idsParam:
+    queryParameters:
+      ids:
+        type: array
+        description: Array of Object IDs as comma-delimited list.
+        items:
+          format: int32
+          type: integer
+  listFieldsParam:
+    queryParameters:
+      listFields:
+        type: array
+        description: Array of fields to return in response as comma-delimited list.
+        items:
+          type: string
+  objectIdParam:
+    queryParameters:
+      objectID:
+        type: integer
+        description: Object Type ID.
+        format: int32
+        required: true
+  objectTypeIdParam:
+    queryParameters:
+      object_type_id:
+        type: integer
+        description: Return results pertaining only to this Object type ID
+        format: int32
+  rangeParam:
+    queryParameters:
+      range:
+        type: integer
+        description: Number of results to return (maximum=50)
+        format: int32
+        maximum: 50
+  searchNotesParam:
+    queryParameters:
+      searchNotes:
+        type: boolean
+        description: Boolean flag to additionally search Object Notes for the Search term given in Search parameter
+  searchParam:
+    queryParameters:
+      search:
+        type: string
+        description: Search Objects for this string
+  searchFieldsParam:
+    queryParameters:
+      search_fields:
+        type: boolean
+        description: '???'
+        default: false
+  sortDirParam:
+    queryParameters:
+      sortDir:
+        type: string
+        description: 'Sort direction, must be used in conjunction with <b>sort</b> parameter.'
+        enum:
+          - asc
+          - desc
+  sortDispParam:
+    queryParameters:
+      sortDisp:
+        type: string
+        description: '???'
+  sortParam:
+    queryParameters:
+      sort:
+        type: string
+        description: Field used to sort results
+  startParam:
+    queryParameters:
+      start:
+        type: integer
+        description: Return results starting at this offset
+        format: int32
+  addListParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          add_list:
+            description: Array of Tag IDs as comma-delimited list.
+            items:
+              format: int32
+              type: integer
+            required: true
+            type: array
+  bmasksParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          bmasks:
+            description: '???'
+            format: int32
+            type: integer
+            required: false
+  conditionParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          condition:
+            description: 'Apply this condition to the collection query. This is essentially like a SQL WHERE clause, e.g. firstname=''Ben'''
+            type: string
+            required: false
+  dateRangeParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          date_range:
+            description: 'Start and End dates to search, in seconds since Jan 1, 1970, as a comma-separated list. Start (index 0 in the array) is inclusive, End (index 1) is exclusive. Either or both can be empty.'
+            items:
+              format: int32
+              type: integer
+            type: array
+            required: false
+  dupeParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          dupe:
+            description: '???'
+            type: string
+            required: false
+  externsParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          externs:
+            description: External fields to include in results
+            type: string
+            required: false
+  groupIdsParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          group_ids:
+            description: Array of Group ID for Object type as comma-delimited list
+            items:
+              format: int32
+              type: integer
+            type: array
+            required: false
+  idParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          id:
+            description: ID of Object.
+            format: int32
+            required: true
+            type: integer
+  idsParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          ids:
+            description: Array of Object IDs as comma-delimited list.
+            items:
+              format: int32
+              type: integer
+            type: array
+            required: false
+  listFieldsParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          listFields:
+            description: Array of fields to return in response as comma-delimited list.
+            items:
+              type: string
+            type: array
+            required: false
+  objectIdParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          objectID:
+            description: Object Type ID.
+            format: int32
+            required: true
+            type: integer
+  objectTypeIdParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          object_type_id:
+            description: Return results pertaining only to this Object type ID
+            format: int32
+            type: integer
+            required: false
+  rangeParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          range:
+            description: Number of results to return (maximum=50)
+            format: int32
+            maximum: 50
+            type: integer
+            required: false
+  removeListParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          remove_list:
+            description: Array of Tag IDs as comma-delimited list.
+            items:
+              format: int32
+              type: integer
+            required: true
+            type: array
+  searchNotesParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          searchNotes:
+            description: Boolean flag to additionally search Object Notes for the Search term given in Search parameter
+            type: boolean
+            required: false
+  searchParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          search:
+            description: Search objects for this string
+            type: string
+            required: false
+  searchFieldsParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          search_fields:
+            default: false
+            description: '???'
+            type: boolean
+            required: false
+  sortDirParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          sortDir:
+            description: 'Sort direction, must be used in conjunction with <b>sort</b> parameter.'
+            enum:
+              - asc
+              - desc
+            type: string
+            required: false
+  sortDispParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          sortDisp:
+            description: '???'
+            type: string
+            required: false
+  sortParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          sort:
+            description: Field used to sort results
+            type: string
+            required: false
+  startParamFormData:
+    body:
+      multipart/form-data:
+        properties:
+          start:
+            description: Return results starting at this offset
+            format: int32
+            type: integer
+            required: false
+(oas-responses):
+  default:
+    body:
+      items:
+        type: Response
+      type: array
+    description: Standard response object

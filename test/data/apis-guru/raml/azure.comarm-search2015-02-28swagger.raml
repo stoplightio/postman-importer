@@ -1,0 +1,413 @@
+#%RAML 1.0
+title: SearchManagementClient
+version: '2015-02-28'
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: Client that can be used to manage Azure Search services and API keys.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-search/2015-02-28/swagger/search.json'
+    version: '2.0'
+  (oas-x-preferred): false
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-search
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-enum: any
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.Search:
+            displayName: Microsoft.Search
+            /searchServices:
+              displayName: searchServices
+              '/{serviceName}':
+                displayName: '{serviceName}'
+                /listQueryKeys:
+                  displayName: listQueryKeys
+                  get:
+                    displayName: QueryKeys_List
+                    description: Returns the list of query API keys for the given Azure Search service.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: ListQueryKeysResult
+                    (oas-tags):
+                      - QueryKeys
+                    (oas-externalDocs):
+                      url: 'https://msdn.microsoft.com/library/azure/dn832701.aspx'
+                /listAdminKeys:
+                  displayName: listAdminKeys
+                  post:
+                    displayName: AdminKeys_List
+                    description: Returns the primary and secondary API keys for the given Azure Search service.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: AdminKeyResult
+                    (oas-tags):
+                      - AdminKeys
+                    (oas-externalDocs):
+                      url: 'https://msdn.microsoft.com/library/azure/dn832685.aspx'
+                uriParameters:
+                  serviceName:
+                    description: The name of the Search service to delete.
+                    required: true
+                    type: string
+                    displayName: The name of the Search service to delete.
+                put:
+                  displayName: Services_CreateOrUpdate
+                  description: 'Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.'
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: SearchServiceCreateOrUpdateParameters
+                      (oas-body-name): parameters
+                      description: The properties to set or update on the Search service.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: SearchServiceResource
+                    '201':
+                      body:
+                        application/json:
+                          type: SearchServiceResource
+                  (oas-tags):
+                    - Services
+                  (oas-externalDocs):
+                    url: 'https://msdn.microsoft.com/library/azure/dn832687.aspx'
+                delete:
+                  displayName: Services_Delete
+                  description: 'Deletes a Search service in the given resource group, along with its associated resources.'
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200': {}
+                    '204': {}
+                    '404': {}
+                  (oas-tags):
+                    - Services
+                  (oas-externalDocs):
+                    url: 'https://msdn.microsoft.com/library/azure/dn832692.aspx'
+              get:
+                displayName: Services_List
+                description: Returns a list of all Search services in the given resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: SearchServiceListResult
+                (oas-tags):
+                  - Services
+                (oas-externalDocs):
+                  url: 'https://msdn.microsoft.com/library/azure/dn832688.aspx'
+types:
+  AdminKeyResult:
+    description: Response containing the primary and secondary API keys for a given Azure Search service.
+    properties:
+      primaryKey:
+        description: The primary API key of the Search service.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      secondaryKey:
+        description: The secondary API key of the Search service.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  ListQueryKeysResult:
+    description: Response containing the query API keys for a given Azure Search service.
+    properties:
+      value:
+        description: The query keys for the Azure Search service.
+        items:
+          type: QueryKey
+        readOnly: true
+        type: array
+        facets:
+          readOnly?: boolean
+        required: false
+  QueryKey:
+    description: Describes an API key for a given Azure Search service that has permissions for query operations only.
+    properties:
+      key:
+        description: The value of the query API key.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: The name of the query API key; may be empty.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  Resource:
+    properties:
+      id:
+        description: Resource Id
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Resource location
+        type: string
+      name:
+        description: Resource name
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Resource tags
+        type: object
+        required: false
+      type:
+        description: Resource type
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  SearchServiceCreateOrUpdateParameters:
+    description: Properties that describe an Azure Search service.
+    properties:
+      location:
+        description: The geographic location of the Search service.
+        type: string
+        required: false
+      properties:
+        description: Properties of the Search service.
+        type: SearchServiceProperties
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Tags to help categorize the Search service in the Azure Portal.
+        type: object
+        required: false
+  SearchServiceListResult:
+    description: Response containing a list of Azure Search services for a given resource group.
+    properties:
+      value:
+        description: The Search services in the resource group.
+        items:
+          type: SearchServiceResource
+        readOnly: true
+        type: array
+        facets:
+          readOnly?: boolean
+        required: false
+  SearchServiceProperties:
+    description: Defines properties of an Azure Search service that can be modified.
+    properties:
+      partitionCount:
+        description: 'The number of partitions in the Search service; if specified, it can be 1, 2, 3, 4, 6, or 12.'
+        format: int32
+        type: integer
+        required: false
+      replicaCount:
+        description: 'The number of replicas in the Search service. If specified, it must be a value between 1 and 6 inclusive.'
+        format: int32
+        type: integer
+        required: false
+      sku:
+        description: 'The SKU of the Search Service, which determines price tier and capacity limits.'
+        type: Sku
+        required: false
+  SearchServiceReadableProperties:
+    description: Defines all the properties of an Azure Search service.
+    properties:
+      partitionCount:
+        description: 'The number of partitions in the Search service; if specified, it can be 1, 2, 3, 4, 6, or 12.'
+        format: int32
+        type: integer
+        required: false
+      provisioningState:
+        description: The state of the last provisioning operation performed on the Search service.
+        enum:
+          - succeeded
+          - provisioning
+          - failed
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-x-ms-enum):
+          name: ProvisioningState
+      replicaCount:
+        description: 'The number of replicas in the Search service. If specified, it must be a value between 1 and 6 inclusive.'
+        format: int32
+        type: integer
+        required: false
+      sku:
+        description: 'The SKU of the Search Service, which determines price tier and capacity limits.'
+        type: Sku
+        required: false
+      status:
+        description: The status of the Search service.
+        enum:
+          - running
+          - provisioning
+          - deleting
+          - degraded
+          - disabled
+          - error
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-x-ms-enum):
+          name: SearchServiceStatus
+      statusDetails:
+        description: The details of the Search service status.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  SearchServiceResource:
+    description: Describes an Azure Search service and its current state.
+    properties:
+      id:
+        description: The resource Id of the Azure Search service.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: The geographic location of the Search service.
+        type: string
+        required: false
+      name:
+        description: The name of the Search service.
+        type: string
+        required: false
+        (oas-externalDocs):
+          url: 'https://msdn.microsoft.com/library/azure/dn857353.aspx'
+      properties:
+        description: Properties of the Search service.
+        readOnly: true
+        type: SearchServiceReadableProperties
+        facets:
+          readOnly?: boolean
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Tags to help categorize the Search service in the Azure Portal.
+        type: object
+        required: false
+  Sku:
+    description: 'Defines the SKU of an Azure Search Service, which determines price tier and capacity limits.'
+    properties:
+      name:
+        description: The SKU of the Search service.
+        enum:
+          - free
+          - standard
+          - standard2
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          name: SkuType
+  SubResource:
+    properties:
+      id:
+        description: Resource Id
+        type: string
+        required: false
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client Api Version.
+        required: true

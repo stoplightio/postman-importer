@@ -1,0 +1,676 @@
+#%RAML 1.0
+title: Resource Views
+version: v1beta1
+baseUri: 'https://www.googleapis.com/resourceviews/v1beta1/projects'
+protocols:
+  - HTTPS
+description: The Resource View API allows users to create and manage logical sets of Google Compute Engine instances.
+(oas-tags-definition):
+  - name: regionViews
+  - name: zoneViews
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/resourceviews/v1beta1/rest'
+    version: v1
+  (oas-x-preferred): false
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): resourceviews
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/compute/'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/cloud-platform'
+        - 'https://www.googleapis.com/auth/cloud-platform.read-only'
+        - 'https://www.googleapis.com/auth/compute'
+        - 'https://www.googleapis.com/auth/compute.readonly'
+        - 'https://www.googleapis.com/auth/ndev.cloudman'
+        - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+    description: Oauth 2.0 authentication
+'/{projectName}':
+  displayName: '{projectName}'
+  /zones:
+    displayName: zones
+    '/{zone}':
+      displayName: '{zone}'
+      /resourceViews:
+        displayName: resourceViews
+        get:
+          displayName: resourceviews.zoneViews.list
+          description: List resource views.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ZoneViewsListResponse
+              description: Successful response
+          queryParameters:
+            maxResults:
+              default: 5000
+              description: 'Maximum count of results to be returned. Acceptable values are 0 to 5000, inclusive. (Default: 5000)'
+              maximum: 5000
+              minimum: 0
+              type: integer
+              displayName: 'Maximum count of results to be returned. Acceptable values are 0 to 5000, inclusive. (Default: 5000)'
+            pageToken:
+              description: Specifies a nextPageToken returned by a previous list request. This token can be used to request the next page of results from a previous list request.
+              type: string
+              displayName: Specifies a nextPageToken returned by a previous list request. This token can be used to request the next page of results from a previous list request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+          (oas-tags):
+            - zoneViews
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+        '/{resourceViewName}':
+          displayName: '{resourceViewName}'
+          /resources:
+            displayName: resources
+            post:
+              displayName: resourceviews.zoneViews.listresources
+              description: List the resources of the resource view.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: ZoneViewsListResourcesResponse
+                  description: Successful response
+              queryParameters:
+                maxResults:
+                  default: 5000
+                  description: 'Maximum count of results to be returned. Acceptable values are 0 to 5000, inclusive. (Default: 5000)'
+                  maximum: 5000
+                  minimum: 0
+                  type: integer
+                  displayName: 'Maximum count of results to be returned. Acceptable values are 0 to 5000, inclusive. (Default: 5000)'
+                pageToken:
+                  description: Specifies a nextPageToken returned by a previous list request. This token can be used to request the next page of results from a previous list request.
+                  type: string
+                  displayName: Specifies a nextPageToken returned by a previous list request. This token can be used to request the next page of results from a previous list request.
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+              (oas-tags):
+                - zoneViews
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+          /removeResources:
+            displayName: removeResources
+            post:
+              displayName: resourceviews.zoneViews.removeresources
+              description: Remove resources from the view.
+              body:
+                application/json:
+                  type: ZoneViewsRemoveResourcesRequest
+                  (oas-body-name): body
+              responses:
+                '200':
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/ndev.cloudman'
+              (oas-tags):
+                - zoneViews
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+          /addResources:
+            displayName: addResources
+            post:
+              displayName: resourceviews.zoneViews.addresources
+              description: Add resources to the view.
+              body:
+                application/json:
+                  type: ZoneViewsAddResourcesRequest
+                  (oas-body-name): body
+              responses:
+                '200':
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/ndev.cloudman'
+              (oas-tags):
+                - zoneViews
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+          uriParameters:
+            resourceViewName:
+              description: The name of the resource view.
+              required: true
+              type: string
+              displayName: The name of the resource view.
+          get:
+            displayName: resourceviews.zoneViews.get
+            description: Get the information of a zonal resource view.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ResourceView
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+            (oas-tags):
+              - zoneViews
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+          delete:
+            displayName: resourceviews.zoneViews.delete
+            description: Delete a resource view.
+            responses:
+              '200':
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman'
+            (oas-tags):
+              - zoneViews
+        post:
+          displayName: resourceviews.zoneViews.insert
+          description: Create a resource view.
+          body:
+            application/json:
+              type: ResourceView
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ZoneViewsInsertResponse
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman'
+          (oas-tags):
+            - zoneViews
+  /regions:
+    displayName: regions
+    '/{region}':
+      displayName: '{region}'
+      /resourceViews:
+        displayName: resourceViews
+        get:
+          displayName: resourceviews.regionViews.list
+          description: List resource views.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RegionViewsListResponse
+              description: Successful response
+          queryParameters:
+            maxResults:
+              default: 5000
+              description: 'Maximum count of results to be returned. Acceptable values are 0 to 5000, inclusive. (Default: 5000)'
+              maximum: 5000
+              minimum: 0
+              type: integer
+              displayName: 'Maximum count of results to be returned. Acceptable values are 0 to 5000, inclusive. (Default: 5000)'
+            pageToken:
+              description: Specifies a nextPageToken returned by a previous list request. This token can be used to request the next page of results from a previous list request.
+              type: string
+              displayName: Specifies a nextPageToken returned by a previous list request. This token can be used to request the next page of results from a previous list request.
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+          (oas-tags):
+            - regionViews
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+        '/{resourceViewName}':
+          displayName: '{resourceViewName}'
+          uriParameters:
+            resourceViewName:
+              description: The name of the resource view.
+              required: true
+              type: string
+              displayName: The name of the resource view.
+          delete:
+            displayName: resourceviews.regionViews.delete
+            description: Delete a resource view.
+            responses:
+              '200':
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman'
+            (oas-tags):
+              - regionViews
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+          get:
+            displayName: resourceviews.regionViews.get
+            description: Get the information of a resource view.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ResourceView
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+            (oas-tags):
+              - regionViews
+          /resources:
+            displayName: resources
+            post:
+              displayName: resourceviews.regionViews.listresources
+              description: List the resources in the view.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: RegionViewsListResourcesResponse
+                  description: Successful response
+              queryParameters:
+                maxResults:
+                  default: 5000
+                  description: 'Maximum count of results to be returned. Acceptable values are 0 to 5000, inclusive. (Default: 5000)'
+                  maximum: 5000
+                  minimum: 0
+                  type: integer
+                  displayName: 'Maximum count of results to be returned. Acceptable values are 0 to 5000, inclusive. (Default: 5000)'
+                pageToken:
+                  description: Specifies a nextPageToken returned by a previous list request. This token can be used to request the next page of results from a previous list request.
+                  type: string
+                  displayName: Specifies a nextPageToken returned by a previous list request. This token can be used to request the next page of results from a previous list request.
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+              (oas-tags):
+                - regionViews
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+          /removeResources:
+            displayName: removeResources
+            post:
+              displayName: resourceviews.regionViews.removeresources
+              description: Remove resources from the view.
+              body:
+                application/json:
+                  type: RegionViewsRemoveResourcesRequest
+                  (oas-body-name): body
+              responses:
+                '200':
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/ndev.cloudman'
+              (oas-tags):
+                - regionViews
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+          /addResources:
+            displayName: addResources
+            post:
+              displayName: resourceviews.regionViews.addresources
+              description: Add resources to the view.
+              body:
+                application/json:
+                  type: RegionViewsAddResourcesRequest
+                  (oas-body-name): body
+              responses:
+                '200':
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/ndev.cloudman'
+              (oas-tags):
+                - regionViews
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+        post:
+          displayName: resourceviews.regionViews.insert
+          description: Create a resource view.
+          body:
+            application/json:
+              type: ResourceView
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RegionViewsInsertResponse
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman'
+          (oas-tags):
+            - regionViews
+types:
+  Label:
+    description: The Label to be applied to the resource views.
+    properties:
+      key:
+        description: Key of the label.
+        type: string
+        required: false
+      value:
+        description: Value of the label.
+        type: string
+        required: false
+  RegionViewsAddResourcesRequest:
+    description: The request to add resources to the resource view.
+    properties:
+      resources:
+        description: The list of resources to be added.
+        items:
+          type: string
+        type: array
+        required: false
+  RegionViewsInsertResponse:
+    description: The response to a resource view insert request.
+    properties:
+      resource:
+        description: The resource view object inserted.
+        type: ResourceView
+        required: false
+  RegionViewsListResourcesResponse:
+    description: The response to the list resource request.
+    properties:
+      members:
+        description: The resources in the view.
+        items:
+          type: string
+        type: array
+        required: false
+      nextPageToken:
+        description: A token used for pagination.
+        type: string
+        required: false
+  RegionViewsListResponse:
+    description: The response to the list resource view request.
+    properties:
+      nextPageToken:
+        description: A token used for pagination.
+        type: string
+        required: false
+      resourceViews:
+        description: The list of resource views that meet the criteria.
+        items:
+          type: ResourceView
+        type: array
+        required: false
+  RegionViewsRemoveResourcesRequest:
+    description: The request to remove resources from the resource view.
+    properties:
+      resources:
+        description: The list of resources to be removed.
+        items:
+          type: string
+        type: array
+        required: false
+  ResourceView:
+    description: The resource view object.
+    properties:
+      creationTime:
+        description: The creation time of the resource view.
+        type: string
+        required: false
+      description:
+        description: The detailed description of the resource view.
+        type: string
+        required: false
+      id:
+        description: '[Output Only] The ID of the resource view.'
+        type: string
+        required: false
+      kind:
+        default: 'resourceviews#resourceView'
+        description: Type of the resource.
+        type: string
+        required: false
+      labels:
+        description: The labels for events.
+        items:
+          type: Label
+        type: array
+        required: false
+      lastModified:
+        description: The last modified time of the view. Not supported yet.
+        type: string
+        required: false
+      members:
+        description: A list of all resources in the resource view.
+        items:
+          type: string
+        type: array
+        required: false
+      name:
+        description: The name of the resource view.
+        type: string
+        required: false
+      numMembers:
+        description: The total number of resources in the resource view.
+        type: integer
+        required: false
+      selfLink:
+        description: '[Output Only] A self-link to the resource view.'
+        type: string
+        required: false
+  ZoneViewsAddResourcesRequest:
+    description: The request to add resources to the resource view.
+    properties:
+      resources:
+        description: The list of resources to be added.
+        items:
+          type: string
+        type: array
+        required: false
+  ZoneViewsInsertResponse:
+    description: The response to an insert request.
+    properties:
+      resource:
+        description: The resource view object that has been inserted.
+        type: ResourceView
+        required: false
+  ZoneViewsListResourcesResponse:
+    description: The response to a list resource request.
+    properties:
+      members:
+        description: The full URL of resources in the view.
+        items:
+          type: string
+        type: array
+        required: false
+      nextPageToken:
+        description: A token used for pagination.
+        type: string
+        required: false
+  ZoneViewsListResponse:
+    description: The response to a list request.
+    properties:
+      nextPageToken:
+        description: A token used for pagination.
+        type: string
+        required: false
+      resourceViews:
+        description: The result that contains all resource views that meet the criteria.
+        items:
+          type: ResourceView
+        type: array
+        required: false
+  ZoneViewsRemoveResourcesRequest:
+    description: The request to remove resources from the resource view.
+    properties:
+      resources:
+        description: The list of resources to be removed.
+        items:
+          type: string
+        type: array
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

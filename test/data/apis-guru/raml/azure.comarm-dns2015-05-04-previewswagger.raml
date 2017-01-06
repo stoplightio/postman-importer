@@ -1,0 +1,588 @@
+#%RAML 1.0
+title: DnsManagementClient
+version: 2015-05-04-preview
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: Client for managing DNS zones and record.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - hosting
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-dns/2015-05-04-preview/swagger/dns.json'
+    version: '2.0'
+  (oas-x-preferred): false
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-dns
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - DNS
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-odata: any
+  oas-x-ms-pageable: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.Network:
+            displayName: Microsoft.Network
+            /dnszones:
+              displayName: dnszones
+              '/{zoneName}':
+                displayName: '{zoneName}'
+                '/{recordType}':
+                  displayName: '{recordType}'
+                  '/{relativeRecordSetName}':
+                    displayName: '{relativeRecordSetName}'
+                    uriParameters:
+                      relativeRecordSetName:
+                        description: 'The name of the RecordSet, relative to the name of the zone.'
+                        required: true
+                        type: string
+                        displayName: 'The name of the RecordSet, relative to the name of the zone.'
+                    put:
+                      displayName: RecordSets_CreateOrUpdate
+                      description: Creates a RecordSet within a DNS zone.
+                      is:
+                        - apiVersionParameter
+                      body:
+                        application/json:
+                          type: RecordSet
+                          (oas-body-name): parameters
+                          description: Parameters supplied to the CreateOrUpdate operation.
+                      headers:
+                        If-Match:
+                          type: string
+                          description: The etag of RecordSet.
+                        If-None-Match:
+                          type: string
+                          description: Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: RecordSet
+                        '202': {}
+                      (oas-tags):
+                        - RecordSets
+                    get:
+                      displayName: RecordSets_Get
+                      description: Gets a RecordSet.
+                      is:
+                        - apiVersionParameter
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: RecordSet
+                      (oas-tags):
+                        - RecordSets
+                    delete:
+                      displayName: RecordSets_Delete
+                      description: Removes a RecordSet from a DNS zone.
+                      is:
+                        - apiVersionParameter
+                      headers:
+                        If-Match:
+                          type: string
+                          description: Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
+                      responses:
+                        '200': {}
+                      (oas-tags):
+                        - RecordSets
+                  uriParameters:
+                    recordType:
+                      description: The type of record sets to enumerate.
+                      enum:
+                        - A
+                        - AAAA
+                        - CNAME
+                        - MX
+                        - NS
+                        - PTR
+                        - SOA
+                        - SRV
+                        - TXT
+                      required: true
+                      type: string
+                      displayName: The type of record sets to enumerate.
+                  get:
+                    (oas-x-ms-odata): '#/definitions/RecordSet'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: RecordSets_List
+                    description: Lists the RecordSets of a specified type in a DNS zone.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: RecordSetListResult
+                    queryParameters:
+                      $top:
+                        description: Query parameters. If null is passed returns the default number of zones.
+                        required: false
+                        type: string
+                        displayName: Query parameters. If null is passed returns the default number of zones.
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                    (oas-tags):
+                      - RecordSets
+                /recordsets:
+                  displayName: recordsets
+                  get:
+                    (oas-x-ms-odata): '#/definitions/RecordSet'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: RecordSets_ListAll
+                    description: Lists all RecordSets in a DNS zone.
+                    is:
+                      - apiVersionParameter
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: RecordSetListResult
+                    queryParameters:
+                      $top:
+                        description: Query parameters. If null is passed returns the default number of zones.
+                        required: false
+                        type: string
+                        displayName: Query parameters. If null is passed returns the default number of zones.
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                    (oas-tags):
+                      - RecordSets
+                uriParameters:
+                  zoneName:
+                    description: The name of the zone without a terminating dot.
+                    required: true
+                    type: string
+                    displayName: The name of the zone without a terminating dot.
+                put:
+                  displayName: Zones_CreateOrUpdate
+                  description: Creates a DNS zone within a resource group.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: Zone
+                      (oas-body-name): parameters
+                      description: Parameters supplied to the CreateOrUpdate operation.
+                  headers:
+                    If-Match:
+                      type: string
+                      description: The etag of Zone.
+                    If-None-Match:
+                      type: string
+                      description: Defines the If-None-Match condition. Set to '*' to force Create-If-Not-Exist. Other values will be ignored.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Zone
+                    '202': {}
+                  (oas-tags):
+                    - Zones
+                get:
+                  displayName: Zones_Get
+                  description: Gets a DNS zone.
+                  is:
+                    - apiVersionParameter
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: Zone
+                  (oas-tags):
+                    - Zones
+                delete:
+                  displayName: Zones_Delete
+                  description: Removes a DNS zone from a resource group.
+                  is:
+                    - apiVersionParameter
+                  headers:
+                    If-Match:
+                      type: string
+                      description: Defines the If-Match condition. The delete operation will be performed only if the ETag of the zone on the server matches this value.
+                  responses:
+                    '200': {}
+                  (oas-tags):
+                    - Zones
+              get:
+                (oas-x-ms-odata): '#/definitions/Zone'
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: Zones_ListZonesInResourceGroup
+                description: Lists the DNS zones within a resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: ZoneListResult
+                queryParameters:
+                  $top:
+                    description: Query parameters. If null is passed returns the default number of zones.
+                    required: false
+                    type: string
+                    displayName: Query parameters. If null is passed returns the default number of zones.
+                  $filter:
+                    description: The filter to apply on the operation.
+                    required: false
+                    type: string
+                    displayName: The filter to apply on the operation.
+                (oas-tags):
+                  - Zones
+    /providers:
+      displayName: providers
+      /Microsoft.Network:
+        displayName: Microsoft.Network
+        /dnszones:
+          displayName: dnszones
+          get:
+            (oas-x-ms-odata): '#/definitions/Zone'
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: Zones_ListZonesInSubscription
+            description: Lists the DNS zones within a resource group.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ZoneListResult
+            queryParameters:
+              $top:
+                description: Query parameters. If null is passed returns the default number of zones.
+                required: false
+                type: string
+                displayName: Query parameters. If null is passed returns the default number of zones.
+              $filter:
+                description: The filter to apply on the operation.
+                required: false
+                type: string
+                displayName: The filter to apply on the operation.
+            (oas-tags):
+              - Zones
+types:
+  ARecord:
+    description: An A record.
+    properties:
+      ipv4Address:
+        description: Gets or sets the IPv4 address of this A record in string notation.
+        type: string
+        required: false
+  AaaaRecord:
+    description: An AAAA record.
+    properties:
+      ipv6Address:
+        description: Gets or sets the IPv6 address of this AAAA record in string notation.
+        type: string
+        required: false
+  CnameRecord:
+    description: A CNAME record.
+    properties:
+      cname:
+        description: Gets or sets the canonical name for this record without a terminating dot.
+        type: string
+        required: false
+  MxRecord:
+    description: An MX record.
+    properties:
+      exchange:
+        description: 'Gets or sets the domain name of the mail host, without a terminating dot.'
+        type: string
+        required: false
+      preference:
+        description: Gets or sets the preference metric for this record.
+        format: int32
+        type: integer
+        required: false
+  NsRecord:
+    description: An NS record.
+    properties:
+      nsdname:
+        description: 'Gets or sets the name server name for this record, without a terminating dot.'
+        type: string
+        required: false
+  PtrRecord:
+    description: A PTR record.
+    properties:
+      ptrdname:
+        description: Gets or sets the PTR target domain name for this record without a terminating dot.
+        type: string
+        required: false
+  RecordSet:
+    type: Resource
+  RecordSetListResult:
+    description: The response to a RecordSet List operation.
+    properties:
+      nextLink:
+        description: Gets or sets the continuation token for the next page.
+        type: string
+        required: false
+      value:
+        description: Gets or sets information about the RecordSets in the response.
+        items:
+          type: RecordSet
+        type: array
+        required: false
+  RecordSetProperties:
+    description: Represents the properties of the records in the RecordSet.
+    properties:
+      AAAARecords:
+        description: Gets or sets the list of AAAA records in the RecordSet.
+        items:
+          type: AaaaRecord
+        type: array
+        required: false
+      ARecords:
+        description: Gets or sets the list of A records in the RecordSet.
+        items:
+          type: ARecord
+        type: array
+        required: false
+      CNAMERecord:
+        description: Gets or sets the CNAME record in the RecordSet.
+        type: CnameRecord
+        required: false
+      MXRecords:
+        description: Gets or sets the list of MX records in the RecordSet.
+        items:
+          type: MxRecord
+        type: array
+        required: false
+      NSRecords:
+        description: Gets or sets the list of NS records in the RecordSet.
+        items:
+          type: NsRecord
+        type: array
+        required: false
+      PTRRecords:
+        description: Gets or sets the list of PTR records in the RecordSet.
+        items:
+          type: PtrRecord
+        type: array
+        required: false
+      SOARecord:
+        description: Gets or sets the SOA record in the RecordSet.
+        type: SoaRecord
+        required: false
+      SRVRecords:
+        description: Gets or sets the list of SRV records in the RecordSet.
+        items:
+          type: SrvRecord
+        type: array
+        required: false
+      TTL:
+        description: Gets or sets the TTL of the records in the RecordSet.
+        format: int64
+        type: integer
+        required: false
+      TXTRecords:
+        description: Gets or sets the list of TXT records in the RecordSet.
+        items:
+          type: TxtRecord
+        type: array
+        required: false
+  Resource:
+    properties:
+      id:
+        description: Resource Id
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Resource location
+        type: string
+      name:
+        description: Resource name
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Resource tags
+        type: object
+        required: false
+      type:
+        description: Resource type
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  SoaRecord:
+    description: An SOA record.
+    properties:
+      email:
+        description: Gets or sets the email for this record.
+        type: string
+        required: false
+      expireTime:
+        description: Gets or sets the expire time for this record.
+        format: int64
+        type: integer
+        required: false
+      host:
+        description: 'Gets or sets the domain name of the authoritative name server, without a temrinating dot.'
+        type: string
+        required: false
+      minimumTTL:
+        description: Gets or sets the minimum TTL value for this record.
+        format: int64
+        type: integer
+        required: false
+      refreshTime:
+        description: Gets or sets the refresh value for this record.
+        format: int64
+        type: integer
+        required: false
+      retryTime:
+        description: Gets or sets the retry time for this record.
+        format: int64
+        type: integer
+        required: false
+      serialNumber:
+        description: Gets or sets the serial number for this record.
+        format: int64
+        type: integer
+        required: false
+  SrvRecord:
+    description: An SRV record.
+    properties:
+      port:
+        description: Gets or sets the port of the service for this record.
+        format: int32
+        type: integer
+        required: false
+      priority:
+        description: Gets or sets the priority metric for this record.
+        format: int32
+        type: integer
+        required: false
+      target:
+        description: 'Gets or sets the domain name of the target for this record, without a terminating dot.'
+        type: string
+        required: false
+      weight:
+        description: Gets or sets the weight metric for this this record.
+        format: int32
+        type: integer
+        required: false
+  SubResource:
+    properties:
+      id:
+        description: Resource Id
+        type: string
+        required: false
+  TxtRecord:
+    description: A TXT record.
+    properties:
+      value:
+        description: Gets or sets the text value of this record.
+        items:
+          type: string
+        type: array
+        required: false
+  Zone:
+    type: Resource
+  ZoneListResult:
+    description: The response to a Zone List or ListAll operation.
+    properties:
+      nextLink:
+        description: Gets or sets the continuation token for the next page.
+        type: string
+        required: false
+      value:
+        description: Gets or sets information about the zones in the response.
+        items:
+          type: Zone
+        type: array
+        required: false
+  ZoneProperties:
+    description: Represents the properties of the zone.
+    properties:
+      maxNumberOfRecordSets:
+        description: Gets or sets the maximum number of record sets that can be created in this zone.
+        format: int64
+        type: integer
+        required: false
+      numberOfRecordSets:
+        description: Gets or sets the current number of record sets in this zone.
+        format: int64
+        type: integer
+        required: false
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client Api Version.
+        required: true

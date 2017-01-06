@@ -1,0 +1,261 @@
+#%RAML 1.0
+title: Accelerated Mobile Pages (AMP) URL
+version: v1
+baseUri: 'https://acceleratedmobilepageurl.googleapis.com/'
+protocols:
+  - HTTPS
+description: |
+  This API contains a single method, batchGet. Call this method to retrieve the AMP URL (and equivalent AMP Cache URL) for given public URL(s).
+(oas-tags-definition):
+  - name: ampUrls
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://acceleratedmobilepageurl.googleapis.com/$discovery/rest?version=v1'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): acceleratedmobilepageurl
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/amp/cache/'
+/v1:
+  displayName: v1
+  '/ampUrls:batchGet':
+    displayName: 'ampUrls:batchGet'
+    post:
+      displayName: acceleratedmobilepageurl.ampUrls.batchGet
+      description: |-
+        Returns AMP URL(s) and equivalent
+        [AMP Cache URL(s)](/amp/cache/overview#amp-cache-url-format).
+      body:
+        application/json:
+          type: BatchGetAmpUrlsRequest
+          (oas-body-name): body
+      responses:
+        '200':
+          body:
+            application/json:
+              type: BatchGetAmpUrlsResponse
+          description: Successful response
+      (oas-tags):
+        - ampUrls
+    is:
+      - accessToken
+      - prettyPrint
+      - key
+      - quotaUser
+      - pp
+      - fields
+      - alt
+      - xgafv
+      - callback
+      - oauthToken
+      - uploadType
+      - bearerToken
+      - uploadProtocol
+types:
+  AmpUrl:
+    description: AMP URL response for a requested URL.
+    properties:
+      ampUrl:
+        description: The AMP URL pointing to the publisher's web server.
+        type: string
+        required: false
+      cdnAmpUrl:
+        description: |-
+          The [AMP Cache URL](/amp/cache/overview#amp-cache-url-format) pointing to
+          the cached document in the Google AMP Cache.
+        type: string
+        required: false
+      originalUrl:
+        description: The original non-AMP URL.
+        type: string
+        required: false
+  AmpUrlError:
+    description: AMP URL Error resource for a requested URL that couldn't be found.
+    properties:
+      errorCode:
+        description: The error code of an API call.
+        enum:
+          - ERROR_CODE_UNSPECIFIED
+          - INPUT_URL_NOT_FOUND
+          - NO_AMP_URL
+          - APPLICATION_ERROR
+          - URL_IS_VALID_AMP
+          - URL_IS_INVALID_AMP
+        type: string
+        required: false
+      errorMessage:
+        description: An optional descriptive error message.
+        type: string
+        required: false
+      originalUrl:
+        description: The original non-AMP URL.
+        type: string
+        required: false
+  BatchGetAmpUrlsRequest:
+    description: AMP URL request for a batch of URLs.
+    properties:
+      lookupStrategy:
+        description: The lookup_strategy being requested.
+        enum:
+          - FETCH_LIVE_DOC
+          - IN_INDEX_DOC
+        type: string
+        required: false
+      urls:
+        description: |-
+          List of URLs to look up for the paired AMP URLs.
+          The URLs are case-sensitive. Up to 50 URLs per lookup
+          (see [Usage Limits](/amp/cache/reference/limits)).
+        items:
+          type: string
+        type: array
+        required: false
+  BatchGetAmpUrlsResponse:
+    description: Batch AMP URL response.
+    properties:
+      ampUrls:
+        description: |-
+          For each URL in BatchAmpUrlsRequest, the URL response. The response might
+          not be in the same order as URLs in the batch request.
+          If BatchAmpUrlsRequest contains duplicate URLs, AmpUrl is generated
+          only once.
+        items:
+          type: AmpUrl
+        type: array
+        required: false
+      urlErrors:
+        description: The errors for requested URLs that have no AMP URL.
+        items:
+          type: AmpUrlError
+        type: array
+        required: false
+traits:
+  xgafv:
+    queryParameters:
+      $.xgafv:
+        type: string
+        description: V1 error format.
+        enum:
+          - '1'
+          - '2'
+  accessToken:
+    queryParameters:
+      access_token:
+        type: string
+        description: OAuth access token.
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for response.
+        default: json
+        enum:
+          - json
+          - media
+          - proto
+  bearerToken:
+    queryParameters:
+      bearer_token:
+        type: string
+        description: OAuth bearer token.
+  callback:
+    queryParameters:
+      callback:
+        type: string
+        description: JSONP
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  pp:
+    queryParameters:
+      pp:
+        type: boolean
+        description: Pretty-print response.
+        default: true
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.'
+  uploadType:
+    queryParameters:
+      uploadType:
+        type: string
+        description: 'Legacy upload protocol for media (e.g. "media", "multipart").'
+  uploadProtocol:
+    queryParameters:
+      upload_protocol:
+        type: string
+        description: 'Upload protocol for media (e.g. "raw", "multipart").'

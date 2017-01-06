@@ -1,0 +1,396 @@
+#%RAML 1.0
+title: UsageManagementClient
+version: 2015-06-01-preview
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+(oas-info):
+  (oas-x-apisguru-categories):
+    - ecommerce
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-commerce/2015-06-01-preview/swagger/commerce.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-commerce
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - commerce usage aggregates
+    - eCommerce
+    - statistics
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-odata: any
+  oas-x-ms-client-flatten: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /providers:
+      displayName: providers
+      /Microsoft.Commerce:
+        displayName: Microsoft.Commerce
+        /UsageAggregates:
+          displayName: UsageAggregates
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: UsageAggregates_List
+            description: Query aggregated Azure subscription consumption data for a date range.
+            is:
+              - apiVersionParameter
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: ErrorResponse
+              description: CDN error response describing why the operation failed.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: UsageAggregationListResult
+                description: Normal response for a successful query. The response body will contain the data that matches the filters specified in the query parameters.
+            queryParameters:
+              reportedstartTime:
+                description: The start of the time range to retrieve data for.
+                format: rfc3339
+                required: true
+                type: datetime
+                displayName: The start of the time range to retrieve data for.
+              reportedEndTime:
+                description: The end of the time range to retrieve data for.
+                format: rfc3339
+                required: true
+                type: datetime
+                displayName: The end of the time range to retrieve data for.
+              showDetails:
+                description: 'When set to true (default), the aggregates are broken down into the instance metadata which is more granular.'
+                required: false
+                type: boolean
+                displayName: 'When set to true (default), the aggregates are broken down into the instance metadata which is more granular.'
+              aggregationGranularity:
+                default: Daily
+                description: Value is either daily (default) or hourly to tell the API how to return the results grouped by day or hour.
+                enum:
+                  - Daily
+                  - Hourly
+                required: false
+                type: string
+                displayName: Value is either daily (default) or hourly to tell the API how to return the results grouped by day or hour.
+              continuationToken:
+                description: 'Retrieved from previous calls, this is the bookmark used for progress when the responses are paged.'
+                required: false
+                type: string
+                displayName: 'Retrieved from previous calls, this is the bookmark used for progress when the responses are paged.'
+            (oas-tags):
+              - UsageAggregates
+            (oas-externalDocs):
+              url: 'https://msdn.microsoft.com/library/azure/1ea5b323-54bb-423d-916f-190de96c6a3c'
+        /RateCard:
+          displayName: RateCard
+          get:
+            (oas-x-ms-odata): '#/definitions/RateCardQueryParameters'
+            displayName: RateCard_Get
+            description: 'Enables you to query for the resource/meter metadata and related prices used in a given subscription by Offer ID, Currency, Locale and Region. The metadata associated with the billing meters, including but not limited to service names, types, resources, units of measure, and regions, is subject to change at any time and without notice. If you intend to use this billing data in an automated fashion, please use the billing meter GUID to uniquely identify each billable item. If the billing meter GUID is scheduled to change due to a new billing model, you will be notified in advance of the change. '
+            is:
+              - apiVersionParameter
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: ErrorResponse
+              description: CDN error response describing why the operation failed.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ResourceRateCardInfo
+                description: Normal response for a successful query. The response body will contain the data that matches the filters specified in the query parameters.
+            queryParameters:
+              $filter:
+                description: 'The filter to apply on the operation. It ONLY supports the ''eq'' and ''and'' logical operators at this time. All the 4 query parameters ''OfferDurableId'',  ''Currency'', ''Locale'', ''Region'' are required to be a part of the $filter.'
+                required: false
+                type: string
+                displayName: 'The filter to apply on the operation. It ONLY supports the ''eq'' and ''and'' logical operators at this time. All the 4 query parameters ''OfferDurableId'',  ''Currency'', ''Locale'', ''Region'' are required to be a part of the $filter.'
+            (oas-tags):
+              - RateCard
+            (oas-externalDocs):
+              url: 'https://msdn.microsoft.com/en-us/library/azure/mt219004.aspx'
+types:
+  ErrorResponse:
+    description: Describes ehe format of Error response.
+    properties:
+      code:
+        description: Error code
+        type: string
+        required: false
+      message:
+        description: Error message indicating why the operation failed.
+        type: string
+        required: false
+  InfoField:
+    description: Key-value pairs of instance details in the legacy format.
+    properties:
+      project:
+        description: Identifies the name of the instance provisioned by the user.
+        type: string
+        required: false
+  MeterInfo:
+    description: Detailed information about the meter.
+    properties:
+      EffectiveDate:
+        description: Indicates the date from which the meter rate or offer term is effective.
+        format: rfc3339
+        type: datetime
+        required: false
+      IncludedQuantity:
+        description: The resource quantity that is included in the offer at no cost. Consumption beyond this quantity will be charged.
+        format: float
+        type: number
+        required: false
+      MeterCategory:
+        description: 'The category of the meter, e.g., ''Cloud services'', ''Networking'', etc..'
+        type: string
+        required: false
+      MeterId:
+        description: The unique identifier of the resource.
+        format: uuid
+        type: string
+        facets:
+          format: string
+        required: false
+      MeterName:
+        description: 'The name of the meter, within the given meter category'
+        type: string
+        required: false
+      MeterRates:
+        additionalProperties:
+          format: float
+          type: number
+        description: 'The list of key/value pairs for the meter rates, in the format ''key'':''value'' where key = the meter quantity, and value = the corresponding price'
+        type: object
+        required: false
+      MeterSubCategory:
+        description: 'The subcategory of the meter, e.g., ''A6 Cloud services'', ''ExpressRoute (IXP)'', etc..'
+        type: string
+        required: false
+      Unit:
+        description: 'The unit in which the meter consumption is charged, e.g., ''Hours'', ''GB'', etc.'
+        type: string
+        required: false
+  MonetaryCommitment:
+    type: OfferTermInfo
+  MonetaryCredit:
+    type: OfferTermInfo
+  OfferTermInfo:
+    description: Describes the offer term.
+    discriminator: Name
+    properties:
+      EffectiveDate:
+        description: Indicates the date from which the meter rate or offer term is effective.
+        format: rfc3339
+        type: datetime
+        required: false
+      ExcludedMeterIds:
+        description: An array of meter ids that are excluded from the given offer terms.
+        items:
+          format: uuid
+          type: string
+          facets:
+            format: string
+        type: array
+        required: false
+      Name:
+        description: 'Name of the offer term. For example: ''Monetary Credit'', ''Monetary Commitment'
+        type: string
+  RateCardQueryParameters:
+    description: Parameters that are used in the odata $filter query parameter for providing RateCard information.
+    properties:
+      Currency:
+        description: The currency in which the rates need to be provided.
+        type: string
+      Locale:
+        description: The culture in which the resource metadata needs to be localized.
+        type: string
+      OfferDurableId:
+        description: 'The Offer ID parameter consists of the ''MS-AZR-'' prefix, plus the Offer ID number (e.g., MS-AZR-0026P). See https://azure.microsoft.com/en-us/support/legal/offer-details/ for more information on the list of available Offer IDs, country/region availability, and billing currency.'
+        pattern: '^MS-AZR-\d{4}P(-\d{4}P)*$'
+        type: string
+      RegionInfo:
+        description: 2 letter ISO code where the offer was purchased.
+        type: string
+  RecurringCharge:
+    type: OfferTermInfo
+  ResourceRateCardInfo:
+    description: Price and Metadata information for resources
+    properties:
+      Currency:
+        description: The currency in which the rates are provided.
+        type: string
+        required: false
+      IsTaxIncluded:
+        description: 'All rates are pretax, so this will always be returned as ''false''.'
+        type: boolean
+        required: false
+      Locale:
+        description: The culture in which the resource information is localized.
+        type: string
+        required: false
+      MeterRegion:
+        description: The region in which the Azure service is available.
+        type: string
+        required: false
+      Meters:
+        description: A list of meters.
+        items:
+          type: MeterInfo
+        type: array
+        required: false
+      OfferTerms:
+        description: A list of offer terms.
+        items:
+          type: OfferTermInfo
+        type: array
+        required: false
+      Tags:
+        description: Provides additional meter data. 'Third Party' indicates a meter with no discount. Blanks indicate First Party.
+        items:
+          type: string
+        type: array
+        required: false
+  UsageAggregation:
+    description: Describes the usageAggregation.
+    properties:
+      id:
+        description: Unique Id for the usage aggregate.
+        type: string
+        required: false
+      name:
+        description: Name of the usage aggregate.
+        type: string
+        required: false
+      properties:
+        description: Usage data.
+        type: UsageSample
+        required: false
+        (oas-x-ms-client-flatten): true
+      type:
+        description: Type of the resource being returned.
+        type: string
+        required: false
+  UsageAggregationListResult:
+    description: The Get UsageAggregates operation response.
+    properties:
+      nextLink:
+        description: Gets or sets the link to the next set of results.
+        type: string
+        required: false
+      value:
+        description: Gets or sets details for the requested aggregation.
+        items:
+          type: UsageAggregation
+        type: array
+        required: false
+  UsageSample:
+    description: Describes a sample of the usageAggregation.
+    properties:
+      infoFields:
+        description: Key-value pairs of instance details (legacy format).
+        type: InfoField
+        required: false
+      instanceData:
+        description: Key-value pairs of instance details represented as a string.
+        type: string
+        required: false
+      meterCategory:
+        description: Category of the consumed resource.
+        type: string
+        required: false
+      meterId:
+        description: Unique ID for the resource that was consumed (aka ResourceID).
+        type: string
+        required: false
+      meterName:
+        description: Friendly name of the resource being consumed.
+        type: string
+        required: false
+      meterRegion:
+        description: Region of the meterId used for billing purposes
+        type: string
+        required: false
+      meterSubCategory:
+        description: Sub-category of the consumed resource.
+        type: string
+        required: false
+      quantity:
+        description: The amount of the resource consumption that occurred in this time frame.
+        required: false
+      subscriptionId:
+        description: The subscription identifier for the Azure user.
+        format: uuid
+        type: string
+        facets:
+          format: string
+        required: false
+      unit:
+        description: 'The unit in which the usage for this resource is being counted, e.g. Hours, GB.'
+        type: string
+        required: false
+      usageEndTime:
+        description: UTC end time for the usage bucket to which this usage aggregate belongs.
+        format: rfc3339
+        type: datetime
+        required: false
+      usageStartTime:
+        description: UTC start time for the usage bucket to which this usage aggregate belongs.
+        format: rfc3339
+        type: datetime
+        required: false
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client Api Version.
+        required: true

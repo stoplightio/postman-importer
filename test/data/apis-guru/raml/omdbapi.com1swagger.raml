@@ -1,0 +1,275 @@
+#%RAML 1.0
+title: OMDb
+version: '1'
+baseUri: 'http://www.omdbapi.com/'
+mediaType:
+  - application/json
+  - application/xml
+protocols:
+  - HTTP
+  - HTTPS
+description: 'The Open Movie Database. The OMDb API is a free web service to obtain movie information, all content and images on the site are contributed and maintained by our users.'
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#FFFFFF'
+    url: 'https://api.apis.guru/v2/cache/logo/http_raw.githubusercontent.com_Mermade_open_api_specifications_master_OMDb_OMDb.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Mermade/open_api_specifications/master/OMDb/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): omdbapi.com
+  (oas-x-unofficialSpec): true
+  contact:
+    name: Open Movie Database
+    url: 'http://omdbapi.com'
+    email: bfritz@fadingsignal.com
+  termsOfService: 'http://www.omdbapi.com/legal.htm'
+  license:
+    name: CC BY-NC 4.0
+    url: 'https://creativecommons.org/licenses/by-nc/4.0/'
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-unofficialSpec: any
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-externalDocs):
+  description: OMDb Usage
+  url: 'http://www.omdbapi.com/#usage'
+/:
+  get:
+    displayName: Get_OMDb Search
+    description: 'Find a movie, series or episode from the OMDb by title, IMDb-id or by free-text search'
+    (oas-summary): OMDb Search
+    responses:
+      '200':
+        body:
+          application/json:
+            type: combinedResult
+        description: Default response
+    queryParameters:
+      t:
+        description: 'Movie title to search for. One of t, i or s is required.'
+        required: false
+        type: string
+        displayName: 'Movie title to search for. One of t, i or s is required.'
+      i:
+        description: 'A valid IMDb ID (e.g. tt1285016). One of t, i or s is required.'
+        required: false
+        type: string
+        displayName: 'A valid IMDb ID (e.g. tt1285016). One of t, i or s is required.'
+      s:
+        description: 'Movie title to search for. One of t, i or s is required.'
+        required: false
+        type: string
+        displayName: 'Movie title to search for. One of t, i or s is required.'
+      'y':
+        description: Year of release.
+        required: false
+        type: integer
+        displayName: Year of release.
+      type:
+        description: Type of result to return.
+        enum:
+          - movie
+          - series
+          - episode
+        required: false
+        type: string
+        displayName: Type of result to return.
+      plot:
+        default: short
+        description: Return short or full plot.
+        enum:
+          - short
+          - full
+        required: false
+        type: string
+        displayName: Return short or full plot.
+      tomatoes:
+        default: false
+        description: Include Rotten Tomatoes ratings.
+        required: false
+        type: boolean
+        displayName: Include Rotten Tomatoes ratings.
+      r:
+        default: json
+        description: The data type to return.
+        enum:
+          - json
+          - xml
+        required: true
+        type: string
+        displayName: The data type to return.
+      v:
+        default: 1
+        description: API version (reserved for future use).
+        required: false
+        type: integer
+        displayName: API version (reserved for future use).
+      page:
+        default: 1
+        description: Page number to return.
+        format: int32
+        required: false
+        type: integer
+        displayName: Page number to return.
+      callback:
+        description: JSONP callback name.
+        required: false
+        type: string
+        displayName: JSONP callback name.
+types:
+  combinedResult:
+    properties:
+      Actors:
+        type: string
+        required: false
+      Awards:
+        type: string
+        required: false
+      BoxOffice:
+        type: string
+        required: false
+      Country:
+        type: string
+        required: false
+      DVD:
+        type: string
+        required: false
+      Director:
+        type: string
+        required: false
+      Genre:
+        type: string
+        required: false
+      Language:
+        type: string
+        required: false
+      Metascore:
+        type: string
+        required: false
+      Plot:
+        type: string
+        required: false
+      Poster:
+        type: string
+        required: false
+      Production:
+        type: string
+        required: false
+      Rated:
+        type: string
+        required: false
+      Released:
+        type: string
+        required: false
+      Response:
+        type: string
+      Runtime:
+        type: string
+        required: false
+      Search:
+        items:
+          properties:
+            Poster:
+              type: string
+            Title:
+              type: string
+            Type:
+              type: string
+            Year:
+              type: string
+            imdbID:
+              type: string
+          type: object
+        type: array
+        required: false
+      Title:
+        type: string
+        required: false
+      Type:
+        type: string
+        required: false
+      Website:
+        type: string
+        required: false
+      Writer:
+        type: string
+        required: false
+      Year:
+        type: string
+        required: false
+      imdbID:
+        type: string
+        required: false
+      imdbRating:
+        type: string
+        required: false
+      imdbVotes:
+        type: string
+        required: false
+      tomatoConsensus:
+        type: string
+        required: false
+      tomatoFresh:
+        type: string
+        required: false
+      tomatoImage:
+        type: string
+        required: false
+      tomatoMeter:
+        type: string
+        required: false
+      tomatoRating:
+        type: string
+        required: false
+      tomatoReviews:
+        type: string
+        required: false
+      tomatoRotten:
+        type: string
+        required: false
+      tomatoURL:
+        type: string
+        required: false
+      tomatoUserMeter:
+        type: string
+        required: false
+      tomatoUserRating:
+        type: string
+        required: false
+      tomatoUserReviews:
+        type: string
+        required: false
+      totalResults:
+        type: string
+        required: false
+      totalSeasons:
+        type: string
+        required: false

@@ -1,0 +1,192 @@
+#%RAML 1.0
+title: MassiveRand TRNG Web Service
+version: '0.1'
+baseUri: 'http://testmr.eriomem.net/'
+protocols:
+  - HTTP
+description: 'This is the experimental API documentation for <a href=''http://www.massiverand.com/''>MassiveRand</a> TRNG Web Service. Serving true random numbers since December 2014!<p>Explore our <a href=''../tutorials''>Tutorials</a>.</p>'
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.massiverand.com_wp-content_uploads_2014_01_logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://testmr.eriomem.net/doc/ex.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): eriomem.net
+  contact:
+    name: info@massiverand.com
+  termsOfService: terms.html
+  license:
+    name: Terms of Use
+    url: terms.html
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+/randprime:
+  displayName: randprime
+  get:
+    displayName: GET_randprime
+    description: 'Returns a large prime number (1536b long) from MassiveRand''s Million Prime Database, as an hexadecimal string.'
+    (oas-summary): Generate a large random prime number.
+    responses:
+      '200':
+        body:
+          text/plain:
+            type: string
+        description: successful operation
+      '500':
+        description: Service failure
+    (oas-tags):
+      - Million Prime Database
+/randjson:
+  displayName: randjson
+  get:
+    displayName: GET_randjson
+    description: Returns a list of true random bytes from the MassiveRand True Random Number Generator as a JSON string.
+    (oas-summary): Generate a JSON list of true random numbers.
+    responses:
+      '200':
+        body:
+          text/plain:
+            type: RandomArray
+        description: successful operation
+      '500':
+        description: Service failure
+    queryParameters:
+      length:
+        description: Number of bytes to return
+        required: false
+        type: integer
+        displayName: Number of bytes to return
+      sep:
+        description: String to use as separator between bytes
+        required: false
+        type: string
+        displayName: String to use as separator between bytes
+    (oas-tags):
+      - True Random Number Generator
+/randbinds:
+  displayName: randbinds
+  get:
+    displayName: GET_randbinds
+    description: Returns a binary blob of true random bytes from the MassiveRand True Random Number Generator.
+    (oas-summary): Generate a binary stream of true random numbers.
+    responses:
+      '200':
+        description: successful operation
+      '500':
+        description: Service failure
+    queryParameters:
+      length:
+        description: Number of bytes to return
+        required: false
+        type: integer
+        displayName: Number of bytes to return
+    (oas-tags):
+      - True Random Number Generator
+/randbindl:
+  displayName: randbindl
+  get:
+    displayName: GET_randbindl
+    description: Returns a binary blob of true random bytes from the MassiveRand True Random Number Generator as an attached file 'rand.raw'.
+    (oas-summary): Generate a binary encoded file of true random numbers.
+    responses:
+      '200':
+        description: successful operation
+      '500':
+        description: Service failure
+    queryParameters:
+      length:
+        description: Number of bytes to return
+        required: false
+        type: integer
+        displayName: Number of bytes to return
+    (oas-tags):
+      - True Random Number Generator
+/randb64:
+  displayName: randb64
+  get:
+    displayName: GET_randb64
+    description: 'Returns a <a href=''http://en.wikipedia.org/wiki/Base64''>base64</a> string of true random bytes from the MassiveRand True Random Number Generator.'
+    (oas-summary): Generate a base64 encoded page of true random numbers.
+    responses:
+      '200':
+        description: successful operation
+      '500':
+        description: Service failure
+    (oas-tags):
+      - True Random Number Generator
+/randb58:
+  displayName: randb58
+  get:
+    displayName: GET_randb58
+    description: 'Returns a <a href=''http://en.wikipedia.org/wiki/Base58''>base58</a> string of true random bytes from the MassiveRand True Random Number Generator.'
+    (oas-summary): Generate a base58 encoded page of true random numbers.
+    responses:
+      '200':
+        description: successful operation
+      '500':
+        description: Service failure
+    (oas-tags):
+      - True Random Number Generator
+/rand:
+  displayName: rand
+  get:
+    displayName: GET_rand
+    description: Returns a list of true random bytes from the MassiveRand True Random Number Generator as blank-separated decimal strings.
+    (oas-summary): Generate a page of true random numbers.
+    responses:
+      '200':
+        body:
+          text/plain:
+            type: string
+        description: successful operation
+      '500':
+        description: Service failure
+    queryParameters:
+      length:
+        description: Number of bytes to return
+        required: false
+        type: integer
+        displayName: Number of bytes to return
+      sep:
+        description: String to use as separator between bytes
+        required: false
+        type: string
+        displayName: String to use as separator between bytes
+    (oas-tags):
+      - True Random Number Generator
+types:
+  RandomArray:
+    properties:
+      rand:
+        items:
+          format: int8
+          type: integer
+        type: array
+        required: false
+  RandomByte:
+    format: int8
+    type: integer

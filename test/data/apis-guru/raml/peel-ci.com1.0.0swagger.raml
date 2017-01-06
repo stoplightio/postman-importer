@@ -1,0 +1,160 @@
+#%RAML 1.0
+title: Peel Tune-in API
+version: 1.0.0
+baseUri: 'http://hashtag.peel-ci.com/'
+mediaType: application/json
+protocols:
+  - HTTP
+description: 'The machine learning service APIs utilize hashtags from Twitter to find related, trending shows, related Twitter hashtags in real time and to generate direct tune-in URLs.'
+(oas-tags-definition):
+  - description: Operations about hashtags
+    name: hashtag
+  - description: Operations about health of Tune-in service
+    name: health
+  - description: Operations about statuses
+    name: status
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.peel.com_sites_all_themes_peeltheme_img_peelLogo.svg'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://s3-us-west-2.amazonaws.com/tuneinapi.peel-ci.com/resources.json'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): peel-ci.com
+/status:
+  displayName: status
+  '/{showID}':
+    displayName: '{showID}'
+    uriParameters:
+      showID:
+        description: Unique ID for a show
+        required: true
+        type: string
+        displayName: Unique ID for a show
+    get:
+      displayName: getStatuses
+      description: 'For Twitter, statuses are synonymous with tweets.'
+      (oas-summary): Gets the last 100 statuses for this show.
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - status
+/health:
+  displayName: health
+  get:
+    displayName: getHealth
+    (oas-summary): Get health of Tune-in service (which includes its uptime).
+    responses:
+      '200':
+        description: No response was specified
+    (oas-tags):
+      - health
+/hashtag:
+  displayName: hashtag
+  /tuneinlinks:
+    displayName: tuneinlinks
+    get:
+      displayName: getTuneinLinks
+      description: 'Either use <b>tweet</b>, <b>hashtags</b>, or <b>showID</b> as the parameter. The tunein URLs that match best are returned in order of best match.<br/><br/>A <b>tweet</b> in this context is shorthand for text from a social networking conversation, e.g., it could be from Facebook, Twitter, LinkedIn, etc., and be greater than 140 characters.'
+      (oas-summary): 'Gets tunein URLs (links) from either a tweet, hashtags, @mentions, or show ID.'
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        tweet:
+          description: Text from a social networking conversation
+          required: false
+          type: string
+          displayName: Text from a social networking conversation
+        hashtags:
+          description: Comma separated list of hashtags and @mentions
+          required: false
+          type: string
+          displayName: Comma separated list of hashtags and @mentions
+        showID:
+          description: Unique ID for a show
+          required: false
+          type: string
+          displayName: Unique ID for a show
+      (oas-tags):
+        - hashtag
+  /trendingShows:
+    displayName: trendingShows
+    get:
+      displayName: getTrendingShows
+      (oas-summary): Gets trending shows.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        limit:
+          description: Number of trending shows (default is 20)
+          required: false
+          type: string
+          displayName: Number of trending shows (default is 20)
+        timeWindow:
+          description: Time window in seconds (default is 2 hours)
+          required: false
+          type: string
+          displayName: Time window in seconds (default is 2 hours)
+      (oas-tags):
+        - hashtag
+  /related:
+    displayName: related
+    get:
+      displayName: getRelatedHashtags
+      description: Returns any official hashtag and any hashtags which were learned within the most recent time window for the show.
+      (oas-summary): Gets related hashtags for a show.
+      responses:
+        '200':
+          description: No response was specified
+      queryParameters:
+        showID:
+          description: Unique ID for a show
+          required: true
+          type: string
+          displayName: Unique ID for a show
+        timeWindow:
+          description: Time window in seconds (default is 2 hours)
+          required: false
+          type: string
+          displayName: Time window in seconds (default is 2 hours)
+      (oas-tags):
+        - hashtag

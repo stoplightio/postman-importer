@@ -1,0 +1,585 @@
+#%RAML 1.0
+title: Power BI Embedded Management Client
+version: '2016-01-29'
+baseUri: 'https://management.azure.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+  - HTTP
+description: Client to manage your Power BI Embedded workspace collections and retrieve workspaces.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-powerbiembedded/2016-01-29/swagger/powerbiembedded.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-powerbiembedded
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-long-running-operation: any
+  oas-x-ms-enum: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.PowerBI:
+            displayName: Microsoft.PowerBI
+            /workspaceCollections:
+              displayName: workspaceCollections
+              '/{workspaceCollectionName}':
+                displayName: '{workspaceCollectionName}'
+                uriParameters:
+                  workspaceCollectionName:
+                    description: Power BI Embedded Workspace Collection name
+                    required: true
+                    type: string
+                    displayName: Power BI Embedded Workspace Collection name
+                get:
+                  displayName: WorkspaceCollections_getByName
+                  description: Retrieves an existing Power BI Workspace Collection.
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: WorkspaceCollection
+                      description: Workspace collection created successfully
+                  (oas-tags):
+                    - WorkspaceCollections
+                /workspaces:
+                  displayName: workspaces
+                  get:
+                    (oas-x-ms-pageable): {}
+                    displayName: Workspaces_List
+                    description: Retrieves all existing Power BI workspaces in the specified workspace collection.
+                    is:
+                      - apiVersionParameter
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: Error
+                      description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: WorkspaceList
+                        description: Get workspaces completed successfully
+                    (oas-tags):
+                      - Workspaces
+                /regenerateKey:
+                  displayName: regenerateKey
+                  post:
+                    displayName: WorkspaceCollections_regenerateKey
+                    description: Regenerates the primary or secondary access key for the specified Power BI Workspace Collection.
+                    is:
+                      - apiVersionParameter
+                    body:
+                      application/json:
+                        type: WorkspaceCollectionAccessKey
+                        (oas-body-name): body
+                        description: Access key to regenerate
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: Error
+                      description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: WorkspaceCollectionAccessKeys
+                        description: Get access keys completed successfully
+                    (oas-tags):
+                      - WorkspaceCollections
+                /listKeys:
+                  displayName: listKeys
+                  post:
+                    displayName: WorkspaceCollections_getAccessKeys
+                    description: Retrieves the primary and secondary access keys for the specified Power BI Workspace Collection.
+                    is:
+                      - apiVersionParameter
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: Error
+                      description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: WorkspaceCollectionAccessKeys
+                        description: Get access keys completed successfully
+                    (oas-tags):
+                      - WorkspaceCollections
+                put:
+                  displayName: WorkspaceCollections_create
+                  description: 'Creates a new Power BI Workspace Collection with the specified properties. A Power BI Workspace Collection contains one or more workspaces, and can be used to provision keys that provide API access to those workspaces.'
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: CreateWorkspaceCollectionRequest
+                      (oas-body-name): body
+                      description: Create workspace collection request
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: WorkspaceCollection
+                      description: Workspace collection created successfully
+                  (oas-tags):
+                    - WorkspaceCollections
+                patch:
+                  displayName: WorkspaceCollections_update
+                  description: Update an existing Power BI Workspace Collection with the specified properties.
+                  is:
+                    - apiVersionParameter
+                  body:
+                    application/json:
+                      type: UpdateWorkspaceCollectionRequest
+                      (oas-body-name): body
+                      description: Update workspace collection request
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: WorkspaceCollection
+                      description: Workspace collection updated successfully
+                  (oas-tags):
+                    - WorkspaceCollections
+                delete:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: WorkspaceCollections_delete
+                  description: Delete a Power BI Workspace Collection.
+                  is:
+                    - apiVersionParameter
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: Error
+                    description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                  responses:
+                    '202':
+                      description: Workspace collection deleted successfully
+                  (oas-tags):
+                    - WorkspaceCollections
+              get:
+                (oas-x-ms-pageable): {}
+                displayName: WorkspaceCollections_listByResourceGroup
+                description: Retrieves all existing Power BI workspace collections in the specified resource group.
+                is:
+                  - apiVersionParameter
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: Error
+                  description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: WorkspaceCollectionList
+                    description: Get workspaces response
+                (oas-tags):
+                  - WorkspaceCollections
+        /moveResources:
+          displayName: moveResources
+          post:
+            displayName: WorkspaceCollections_migrate
+            description: Migrates an existing Power BI Workspace Collection to a different resource group and/or subscription.
+            is:
+              - apiVersionParameter
+            body:
+              application/json:
+                type: MigrateWorkspaceCollectionRequest
+                (oas-body-name): body
+                description: Workspace migration request
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: Error
+              description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+            responses:
+              '200':
+                description: Migration completed successfully
+            (oas-tags):
+              - WorkspaceCollections
+    /providers:
+      displayName: providers
+      /Microsoft.PowerBI:
+        displayName: Microsoft.PowerBI
+        /locations:
+          displayName: locations
+          '/{location}':
+            displayName: '{location}'
+            /checkNameAvailability:
+              displayName: checkNameAvailability
+              post:
+                displayName: WorkspaceCollections_checkNameAvailability
+                description: Verify the specified Power BI Workspace Collection name is valid and not already in use.
+                is:
+                  - apiVersionParameter
+                body:
+                  application/json:
+                    type: CheckNameRequest
+                    (oas-body-name): body
+                    description: Check name availability request
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: Error
+                  description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: CheckNameResponse
+                    description: Request completed successfully
+                (oas-tags):
+                  - WorkspaceCollections
+        /workspaceCollections:
+          displayName: workspaceCollections
+          get:
+            (oas-x-ms-pageable): {}
+            displayName: WorkspaceCollections_listBySubscription
+            description: Retrieves all existing Power BI workspace collections in the specified subscription.
+            is:
+              - apiVersionParameter
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: Error
+              description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: WorkspaceCollectionList
+                description: Get workspaces response
+            (oas-tags):
+              - WorkspaceCollections
+/providers:
+  displayName: providers
+  /Microsoft.PowerBI:
+    displayName: Microsoft.PowerBI
+    /operations:
+      displayName: operations
+      get:
+        displayName: getAvailableOperations
+        description: Indicates which operations can be performed by the Power BI Resource Provider.
+        is:
+          - apiVersionParameter
+        (oas-responses-default):
+          body:
+            application/json:
+              type: Error
+          description: Default Response. It will be deserialized as per the Error defintion specified in the schema. Exception will be thrown.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: OperationList
+            description: Request completed successfully
+        (oas-tags):
+          - Operations
+types:
+  AzureSku:
+    properties:
+      name:
+        description: SKU name
+        enum:
+          - S1
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: AzureSkuName
+      tier:
+        description: SKU tier
+        enum:
+          - Standard
+        type: string
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: AzureSkuTier
+  CheckNameRequest:
+    properties:
+      name:
+        description: Workspace collection name
+        type: string
+        required: false
+      type:
+        default: Microsoft.PowerBI/workspaceCollections
+        description: Resource type
+        type: string
+        required: false
+  CheckNameResponse:
+    properties:
+      message:
+        description: 'Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.'
+        type: string
+        required: false
+      nameAvailable:
+        description: Specifies a Boolean value that indicates whether the specified Power BI Workspace Collection name is available to use.
+        type: boolean
+        required: false
+      reason:
+        description: Reason why the workspace collection name cannot be used.
+        enum:
+          - Unavailable
+          - Invalid
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: true
+          name: CheckNameReason
+  CreateWorkspaceCollectionRequest:
+    properties:
+      location:
+        description: Azure location
+        type: string
+        required: false
+      sku:
+        type: AzureSku
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        type: object
+        required: false
+  Display:
+    properties:
+      description:
+        description: 'The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise. It will be used in tool-tips and detailed views.'
+        type: string
+        required: false
+      operation:
+        description: 'The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop downs), but clear (self-documenting). Use Title Casing and include the entity/resource to which it applies.'
+        type: string
+        required: false
+      origin:
+        description: 'The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value is ''user,system'''
+        type: string
+        required: false
+      provider:
+        description: The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title Casing. Begin with “Microsoft” for 1st party services.
+        type: string
+        required: false
+      resource:
+        description: 'The localized friendly form of the resource type related to this action/operation. This form should match the public documentation for the resource provider. Use Title Casing. For examples, refer to the “name” section.'
+        type: string
+        required: false
+  Error:
+    properties:
+      code:
+        type: string
+        required: false
+      details:
+        items:
+          type: ErrorDetail
+        type: array
+        required: false
+      message:
+        type: string
+        required: false
+      target:
+        type: string
+        required: false
+  ErrorDetail:
+    properties:
+      code:
+        type: string
+        required: false
+      message:
+        type: string
+        required: false
+      target:
+        type: string
+        required: false
+  MigrateWorkspaceCollectionRequest:
+    properties:
+      resources:
+        items:
+          type: string
+        type: array
+        required: false
+      targetResourceGroup:
+        description: Name of the resource group the Power BI workspace collections will be migrated to.
+        type: string
+        required: false
+  Operation:
+    properties:
+      display:
+        type: Display
+        required: false
+      name:
+        description: The name of the operation being performed on this particular object. This name should match the action name that appears in RBAC / the event service.
+        type: string
+        required: false
+  OperationList:
+    properties:
+      value:
+        items:
+          type: Operation
+        type: array
+        required: false
+  UpdateWorkspaceCollectionRequest:
+    properties:
+      sku:
+        type: AzureSku
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        type: object
+        required: false
+  Workspace:
+    properties:
+      id:
+        description: Workspace id
+        type: string
+        required: false
+      name:
+        description: Workspace name
+        type: string
+        required: false
+      properties:
+        description: Property bag
+        type: object
+        required: false
+      type:
+        description: Resource type
+        type: string
+        required: false
+  WorkspaceCollection:
+    properties:
+      id:
+        description: Resource id
+        type: string
+        required: false
+      location:
+        description: Azure location
+        type: string
+        required: false
+      name:
+        description: Workspace collection name
+        type: string
+        required: false
+      properties:
+        description: Properties
+        type: object
+        required: false
+      sku:
+        type: AzureSku
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        type: object
+        required: false
+      type:
+        description: Resource type
+        type: string
+        required: false
+  WorkspaceCollectionAccessKey:
+    properties:
+      keyName:
+        description: Key name
+        enum:
+          - key1
+          - key2
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: AccessKeyName
+  WorkspaceCollectionAccessKeys:
+    properties:
+      key1:
+        description: Access key 1
+        type: string
+        required: false
+      key2:
+        description: Access key 2
+        type: string
+        required: false
+  WorkspaceCollectionList:
+    properties:
+      value:
+        items:
+          type: WorkspaceCollection
+        type: array
+        required: false
+  WorkspaceList:
+    properties:
+      value:
+        items:
+          type: Workspace
+        type: array
+        required: false
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: Client Api Version.
+        required: true

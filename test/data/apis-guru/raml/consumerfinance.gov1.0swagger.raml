@@ -1,0 +1,195 @@
+#%RAML 1.0
+title: The Consumer Financial Protection Bureau
+version: '1.0'
+baseUri: 'https://api.consumerfinance.gov:443/'
+protocols:
+  - HTTPS
+description: 'Learn more about home mortgage data, download the data yourself, or build new tools using our API.'
+(oas-tags-definition):
+  - description: Operations about datasets
+    name: data
+  - description: Operations about LAR data
+    name: hmda
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_cfpb.github.io_img_logo_210.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.consumerfinance.gov/api-docs'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): consumerfinance.gov
+(oas-externalDocs):
+  url: 'http://cfpb.github.io/api/hmda/'
+/data:
+  displayName: data
+  '/{dataset}':
+    displayName: '{dataset}'
+    uriParameters:
+      dataset:
+        description: Name of dataset
+        required: true
+        type: string
+        displayName: Name of dataset
+    get:
+      displayName: getDataset
+      (oas-summary): Get metadata about a dataset.
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - data
+  /hmda:
+    displayName: hmda
+    /slice:
+      displayName: slice
+      '/{slice}':
+        displayName: '{slice}'
+        /metadata:
+          displayName: metadata
+          get:
+            displayName: getSliceMetadataHmda
+            (oas-summary): Get the metadata for a slice in this dataset.
+            responses:
+              '200':
+                description: No response was specified
+            (oas-tags):
+              - hmda
+        uriParameters:
+          slice:
+            description: Name of slice
+            required: true
+            type: string
+            displayName: Name of slice
+        get:
+          displayName: querySliceHmda
+          (oas-summary): Query a slice in this dataset.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: QueryResponse
+              description: No response was specified
+          queryParameters:
+            $select:
+              description: 'Fields to return, separated by commas.'
+              required: false
+              type: string
+              displayName: 'Fields to return, separated by commas.'
+            $where:
+              description: 'Conditions to search for in the slice, in SQL WHERE style.'
+              required: false
+              type: string
+              displayName: 'Conditions to search for in the slice, in SQL WHERE style.'
+            $group:
+              description: 'Fields to group by, summarizing the data, separated by commas.'
+              required: false
+              type: string
+              displayName: 'Fields to group by, summarizing the data, separated by commas.'
+            $limit:
+              description: 'Number of records to return, 100 by default. Enter 0 for no limit.'
+              required: false
+              type: integer
+              displayName: 'Number of records to return, 100 by default. Enter 0 for no limit.'
+            $offset:
+              description: Number of records to skip.
+              required: false
+              type: integer
+              displayName: Number of records to skip.
+            $orderBy:
+              description: 'Fields to order by, separated by commas. ASC and DESC can be used to modify the order.'
+              required: false
+              type: string
+              displayName: 'Fields to order by, separated by commas. ASC and DESC can be used to modify the order.'
+            $callback:
+              description: JavaScript callback to invoke. Only useful with JSONP requests.
+              required: false
+              type: string
+              displayName: JavaScript callback to invoke. Only useful with JSONP requests.
+          (oas-tags):
+            - hmda
+    /concept:
+      displayName: concept
+      '/{concept}':
+        displayName: '{concept}'
+        uriParameters:
+          concept:
+            description: Name of concept
+            required: true
+            type: string
+            displayName: Name of concept
+        get:
+          displayName: getConceptHmda
+          (oas-summary): Get information about a particular concept in this dataset.
+          responses:
+            '200':
+              description: No response was specified
+          (oas-tags):
+            - hmda
+    get:
+      displayName: getDatasetHmda
+      (oas-summary): Get metadata for this dataset.
+      responses:
+        '200':
+          description: No response was specified
+      (oas-tags):
+        - hmda
+  get:
+    displayName: getDatasets
+    (oas-summary): Get a list of all datasets.
+    responses:
+      '200':
+        description: No response was specified
+    (oas-tags):
+      - data
+types:
+  QueryResponse:
+    description: Response to a slice query.
+    properties:
+      size:
+        type: integer
+      total:
+        type: integer

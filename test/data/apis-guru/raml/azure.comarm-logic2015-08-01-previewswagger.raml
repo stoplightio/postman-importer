@@ -1,0 +1,2590 @@
+#%RAML 1.0
+title: LogicManagementClient
+version: 2015-08-01-preview
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: REST API for Azure Logic Apps.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - developer_tools
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-logic/2015-08-01-preview/swagger/logic.json'
+    version: '2.0'
+  (oas-x-preferred): false
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-logic
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+    - applications
+    - automation
+    - integrations
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-odata: any
+  oas-x-ms-client-flatten: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.Logic:
+            displayName: Microsoft.Logic
+            /integrationAccounts:
+              displayName: integrationAccounts
+              '/{integrationAccountName}':
+                displayName: '{integrationAccountName}'
+                /certificates:
+                  displayName: certificates
+                  '/{certificateName}':
+                    displayName: '{certificateName}'
+                    uriParameters:
+                      certificateName:
+                        description: The integration account certificate name.
+                        required: true
+                        type: string
+                        displayName: The integration account certificate name.
+                    put:
+                      displayName: IntegrationAccountCertificates_CreateOrUpdate
+                      description: Creates or updates an integration account certificate.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: IntegrationAccountCertificate
+                          (oas-body-name): certificate
+                          description: The integration account certificate.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountCertificate
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: IntegrationAccountCertificate
+                          description: Created
+                      (oas-tags):
+                        - IntegrationAccountCertificates
+                    get:
+                      displayName: IntegrationAccountCertificates_Get
+                      description: Gets an integration account certificate.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountCertificate
+                          description: OK
+                      (oas-tags):
+                        - IntegrationAccountCertificates
+                    delete:
+                      displayName: IntegrationAccountCertificates_Delete
+                      description: Deletes an integration account certificate.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          description: OK
+                        '204':
+                          description: No Content
+                      (oas-tags):
+                        - IntegrationAccountCertificates
+                  get:
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: IntegrationAccountCertificates_List
+                    description: Gets a list of integration account certificates.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: IntegrationAccountCertificateListResult
+                        description: OK
+                    queryParameters:
+                      $top:
+                        description: The number of items to be included in the result.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The number of items to be included in the result.
+                    (oas-tags):
+                      - IntegrationAccountCertificates
+                /schemas:
+                  displayName: schemas
+                  '/{schemaName}':
+                    displayName: '{schemaName}'
+                    uriParameters:
+                      schemaName:
+                        description: The integration account schema name.
+                        required: true
+                        type: string
+                        displayName: The integration account schema name.
+                    put:
+                      displayName: IntegrationAccountSchemas_CreateOrUpdate
+                      description: Creates or updates an integration account schema.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: IntegrationAccountSchema
+                          (oas-body-name): schema
+                          description: The integration account schema.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountSchema
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: IntegrationAccountSchema
+                          description: Created
+                      (oas-tags):
+                        - IntegrationAccountSchemas
+                    get:
+                      displayName: IntegrationAccountSchemas_Get
+                      description: Gets an integration account schema.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountSchema
+                          description: OK
+                      (oas-tags):
+                        - IntegrationAccountSchemas
+                    delete:
+                      displayName: IntegrationAccountSchemas_Delete
+                      description: Deletes an integration account schema.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          description: OK
+                        '204':
+                          description: No Content
+                      (oas-tags):
+                        - IntegrationAccountSchemas
+                  get:
+                    (oas-x-ms-odata): '#/definitions/IntegrationAccountSchemaFilter'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: IntegrationAccountSchemas_List
+                    description: Gets a list of integration account schemas.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: IntegrationAccountSchemaListResult
+                        description: OK
+                    queryParameters:
+                      $top:
+                        description: The number of items to be included in the result.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The number of items to be included in the result.
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                    (oas-tags):
+                      - IntegrationAccountSchemas
+                /listCallbackUrl:
+                  displayName: listCallbackUrl
+                  post:
+                    displayName: IntegrationAccounts_ListCallbackUrl
+                    description: Lists the integration account callback URL.
+                    is:
+                      - apiVersion
+                    body:
+                      application/json:
+                        type: ListCallbackUrlParameters
+                        (oas-body-name): parameters
+                        description: The callback URL parameters.
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: CallbackUrl
+                        description: OK
+                    (oas-tags):
+                      - IntegrationAccounts
+                /maps:
+                  displayName: maps
+                  get:
+                    (oas-x-ms-odata): '#/definitions/IntegrationAccountMapFilter'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: IntegrationAccountMaps_List
+                    description: Gets a list of integration account maps.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: IntegrationAccountMapListResult
+                        description: OK
+                    queryParameters:
+                      $top:
+                        description: The number of items to be included in the result.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The number of items to be included in the result.
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                    (oas-tags):
+                      - IntegrationAccountMaps
+                  '/{mapName}':
+                    displayName: '{mapName}'
+                    uriParameters:
+                      mapName:
+                        description: The integration account map name.
+                        required: true
+                        type: string
+                        displayName: The integration account map name.
+                    delete:
+                      displayName: IntegrationAccountMaps_Delete
+                      description: Deletes an integration account map.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          description: OK
+                        '204':
+                          description: No Content
+                      (oas-tags):
+                        - IntegrationAccountMaps
+                    get:
+                      displayName: IntegrationAccountMaps_Get
+                      description: Gets an integration account map.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountMap
+                          description: OK
+                      (oas-tags):
+                        - IntegrationAccountMaps
+                    put:
+                      displayName: IntegrationAccountMaps_CreateOrUpdate
+                      description: Creates or updates an integration account map.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: IntegrationAccountMap
+                          (oas-body-name): map
+                          description: The integration account map.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountMap
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: IntegrationAccountMap
+                          description: Created
+                      (oas-tags):
+                        - IntegrationAccountMaps
+                uriParameters:
+                  integrationAccountName:
+                    description: The integration account name.
+                    required: true
+                    type: string
+                    displayName: The integration account name.
+                delete:
+                  displayName: IntegrationAccounts_Delete
+                  description: Deletes an integration account.
+                  is:
+                    - apiVersion
+                  responses:
+                    '200':
+                      description: OK
+                    '204':
+                      description: No Content
+                  (oas-tags):
+                    - IntegrationAccounts
+                patch:
+                  displayName: IntegrationAccounts_Update
+                  description: Updates an integration account.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: IntegrationAccount
+                      (oas-body-name): integrationAccount
+                      description: The integration account.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: IntegrationAccount
+                      description: OK
+                  (oas-tags):
+                    - IntegrationAccounts
+                /agreements:
+                  displayName: agreements
+                  get:
+                    (oas-x-ms-odata): '#/definitions/IntegrationAccountAgreementFilter'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: IntegrationAccountAgreements_List
+                    description: Gets a list of integration account agreements.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: IntegrationAccountAgreementListResult
+                        description: OK
+                    queryParameters:
+                      $top:
+                        description: The number of items to be included in the result.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The number of items to be included in the result.
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                    (oas-tags):
+                      - IntegrationAccountAgreements
+                  '/{agreementName}':
+                    displayName: '{agreementName}'
+                    uriParameters:
+                      agreementName:
+                        description: The integration account agreement name.
+                        required: true
+                        type: string
+                        displayName: The integration account agreement name.
+                    get:
+                      displayName: IntegrationAccountAgreements_Get
+                      description: Gets an integration account agreement.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountAgreement
+                          description: OK
+                      (oas-tags):
+                        - IntegrationAccountAgreements
+                    delete:
+                      displayName: IntegrationAccountAgreements_Delete
+                      description: Deletes an integration account agreement.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          description: OK
+                        '204':
+                          description: No Content
+                      (oas-tags):
+                        - IntegrationAccountAgreements
+                    put:
+                      displayName: IntegrationAccountAgreements_CreateOrUpdate
+                      description: Creates or updates an integration account agreement.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: IntegrationAccountAgreement
+                          (oas-body-name): agreement
+                          description: The integration account agreement.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountAgreement
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: IntegrationAccountAgreement
+                          description: Created
+                      (oas-tags):
+                        - IntegrationAccountAgreements
+                /partners:
+                  displayName: partners
+                  get:
+                    (oas-x-ms-odata): '#/definitions/IntegrationAccountPartnerFilter'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: IntegrationAccountPartners_List
+                    description: Gets a list of integration account partners.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: IntegrationAccountPartnerListResult
+                        description: OK
+                    queryParameters:
+                      $top:
+                        description: The number of items to be included in the result.
+                        format: int32
+                        required: false
+                        type: integer
+                        displayName: The number of items to be included in the result.
+                      $filter:
+                        description: The filter to apply on the operation.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the operation.
+                    (oas-tags):
+                      - IntegrationAccountPartners
+                  '/{partnerName}':
+                    displayName: '{partnerName}'
+                    uriParameters:
+                      partnerName:
+                        description: The integration account partner name.
+                        required: true
+                        type: string
+                        displayName: The integration account partner name.
+                    delete:
+                      displayName: IntegrationAccountPartners_Delete
+                      description: Deletes an integration account partner.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          description: OK
+                        '204':
+                          description: No Content
+                      (oas-tags):
+                        - IntegrationAccountPartners
+                    get:
+                      displayName: IntegrationAccountPartners_Get
+                      description: Gets an integration account partner.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountPartner
+                          description: OK
+                      (oas-tags):
+                        - IntegrationAccountPartners
+                    put:
+                      displayName: IntegrationAccountPartners_CreateOrUpdate
+                      description: Creates or updates an integration account partner.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: IntegrationAccountPartner
+                          (oas-body-name): partner
+                          description: The integration account partner.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: IntegrationAccountPartner
+                          description: OK
+                        '201':
+                          body:
+                            application/json:
+                              type: IntegrationAccountPartner
+                          description: Created
+                      (oas-tags):
+                        - IntegrationAccountPartners
+                get:
+                  displayName: IntegrationAccounts_Get
+                  description: Gets an integration account.
+                  is:
+                    - apiVersion
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: IntegrationAccount
+                      description: OK
+                  (oas-tags):
+                    - IntegrationAccounts
+                put:
+                  displayName: IntegrationAccounts_CreateOrUpdate
+                  description: Creates or updates an integration account.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: IntegrationAccount
+                      (oas-body-name): integrationAccount
+                      description: The integration account.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: IntegrationAccount
+                      description: OK
+                    '201':
+                      body:
+                        application/json:
+                          type: IntegrationAccount
+                      description: Created
+                  (oas-tags):
+                    - IntegrationAccounts
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: IntegrationAccounts_ListByResourceGroup
+                description: Gets a list of integration accounts by resource group.
+                is:
+                  - apiVersion
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: IntegrationAccountListResult
+                    description: OK
+                queryParameters:
+                  $top:
+                    description: The number of items to be included in the result.
+                    format: int32
+                    required: false
+                    type: integer
+                    displayName: The number of items to be included in the result.
+                (oas-tags):
+                  - IntegrationAccounts
+    /providers:
+      displayName: providers
+      /Microsoft.Logic:
+        displayName: Microsoft.Logic
+        /integrationAccounts:
+          displayName: integrationAccounts
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: IntegrationAccounts_ListBySubscription
+            description: Gets a list of integration accounts by subscription.
+            is:
+              - apiVersion
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: IntegrationAccountListResult
+                description: OK
+            queryParameters:
+              $top:
+                description: The number of items to be included in the result.
+                format: int32
+                required: false
+                type: integer
+                displayName: The number of items to be included in the result.
+            (oas-tags):
+              - IntegrationAccounts
+types:
+  AS2AcknowledgementConnectionSettings:
+    properties:
+      ignoreCertificateNameMismatch:
+        description: The value indicating whether to ignore mismatch in certificate name.
+        type: boolean
+        required: false
+      keepHttpConnectionAlive:
+        description: The value indicating whether to keep the connection alive.
+        type: boolean
+        required: false
+      supportHttpStatusCodeContinue:
+        description: The value indicating whether to support HTTP status code 'CONTINUE'.
+        type: boolean
+        required: false
+      unfoldHttpHeaders:
+        description: The value indicating whether to unfold the HTTP headers.
+        type: boolean
+        required: false
+  AS2AgreementContent:
+    properties:
+      receiveAgreement:
+        description: The AS2 one-way receive agreement.
+        type: AS2OneWayAgreement
+        required: false
+      sendAgreement:
+        description: The AS2 one-way send agreement.
+        type: AS2OneWayAgreement
+        required: false
+  AS2EnvelopeSettings:
+    properties:
+      AutogenerateFileName:
+        description: The value indicating whether to auto generate file name.
+        type: boolean
+        required: false
+      SuspendMessageOnFileNameGenerationError:
+        description: The value indicating whether to suspend message on file name generation error.
+        type: boolean
+        required: false
+      fileNameTemplate:
+        description: The template for file name.
+        type: string
+        required: false
+      messageContentType:
+        description: The message content type.
+        type: string
+        required: false
+      transmitFileNameInMimeHeader:
+        description: The value indicating whether to transmit file name in mime header.
+        type: boolean
+        required: false
+  AS2ErrorSettings:
+    properties:
+      ResendIfMdnNotReceived:
+        description: The value indicating whether to resend message If MDN is not received.
+        type: boolean
+        required: false
+      SuspendDuplicateMessage:
+        description: The value indicating whether to suspend duplicate message.
+        type: boolean
+        required: false
+  AS2MdnSettings:
+    properties:
+      dispositionNotificationTo:
+        description: The disposition notification to header value.
+        type: string
+        required: false
+      mdnText:
+        description: The MDN text.
+        type: string
+        required: false
+      micHashingAlgorithm:
+        description: The signing or hashing algorithm.
+        type: HashingAlgorithm
+        required: false
+      needMdn:
+        description: The value indicating whether to send or request a MDN.
+        type: boolean
+        required: false
+      receiptDeliveryUrl:
+        description: The receipt delivery URL.
+        type: string
+        required: false
+      sendInboundMdnToMessageBox:
+        description: The value indicating whether to send inbound MDN to message box.
+        type: boolean
+        required: false
+      sendMdnAsynchronously:
+        description: The value indicating whether to send the asynchronous MDN.
+        type: boolean
+        required: false
+      signMdn:
+        description: The value indicating whether the MDN needs to be signed or not.
+        type: boolean
+        required: false
+      signOutboundMdnIfOptional:
+        description: The value indicating whether to sign the outbound MDN if optional.
+        type: boolean
+        required: false
+  AS2MessageConnectionSettings:
+    properties:
+      ignoreCertificateNameMismatch:
+        description: The value indicating whether to ignore mismatch in certificate name.
+        type: boolean
+        required: false
+      keepHttpConnectionAlive:
+        description: The value indicating whether to keep the connection alive.
+        type: boolean
+        required: false
+      supportHttpStatusCodeContinue:
+        description: The value indicating whether to support HTTP status code 'CONTINUE'.
+        type: boolean
+        required: false
+      unfoldHttpHeaders:
+        description: The value indicating whether to unfold the HTTP headers.
+        type: boolean
+        required: false
+  AS2OneWayAgreement:
+    properties:
+      protocolSettings:
+        description: The AS2 protocol settings.
+        type: AS2ProtocolSettings
+        required: false
+      receiverBusinessIdentity:
+        description: The receiver business identity
+        type: BusinessIdentity
+        required: false
+      senderBusinessIdentity:
+        description: The sender business identity
+        type: BusinessIdentity
+        required: false
+  AS2ProtocolSettings:
+    properties:
+      acknowledgementConnectionSettings:
+        description: The acknowledgement connection settings.
+        type: AS2AcknowledgementConnectionSettings
+        required: false
+      envelopeSettings:
+        description: The envelope settings.
+        type: AS2EnvelopeSettings
+        required: false
+      errorSettings:
+        description: The error settings.
+        type: AS2ErrorSettings
+        required: false
+      mdnSettings:
+        description: The MDN settings.
+        type: AS2MdnSettings
+        required: false
+      messageConnectionSettings:
+        description: The message connection settings.
+        type: AS2MessageConnectionSettings
+        required: false
+      securitySettings:
+        description: The security settings.
+        type: AS2SecuritySettings
+        required: false
+      validationSettings:
+        description: The validation settings.
+        type: AS2ValidationSettings
+        required: false
+  AS2SecuritySettings:
+    properties:
+      enableNrrForInboundDecodedMessages:
+        description: The value indicating whether to enable NRR for inbound decoded messages.
+        type: boolean
+        required: false
+      enableNrrForInboundEncodedMessages:
+        description: The value indicating whether to enable NRR for inbound encoded messages.
+        type: boolean
+        required: false
+      enableNrrForInboundMdn:
+        description: The value indicating whether to enable NRR for inbound MDN.
+        type: boolean
+        required: false
+      enableNrrForOutboundDecodedMessages:
+        description: The value indicating whether to enable NRR for outbound decoded messages.
+        type: boolean
+        required: false
+      enableNrrForOutboundEncodedMessages:
+        description: The value indicating whether to enable NRR for outbound encoded messages.
+        type: boolean
+        required: false
+      enableNrrForOutboundMdn:
+        description: The value indicating whether to enable NRR for outbound MDN.
+        type: boolean
+        required: false
+      encryptionCertificateName:
+        description: The name of the encryption certificate.
+        type: string
+        required: false
+      overrideGroupSigningCertificate:
+        description: The value indicating whether to send or request a MDN.
+        type: boolean
+        required: false
+      signingCertificateName:
+        description: The name of the signing certificate.
+        type: string
+        required: false
+  AS2ValidationSettings:
+    properties:
+      checkCertificateRevocationListOnReceive:
+        description: The value indicating whether to check for certificate revocation list on receive.
+        type: boolean
+        required: false
+      checkCertificateRevocationListOnSend:
+        description: The value indicating whether to check for certificate revocation list on send.
+        type: boolean
+        required: false
+      checkDuplicateMessage:
+        description: The value indicating whether to check for duplicate message.
+        type: boolean
+        required: false
+      compressMessage:
+        description: The value indicating whether the message has to be compressed.
+        type: boolean
+        required: false
+      encryptMessage:
+        description: The value indicating whether the message has to be encrypted.
+        type: boolean
+        required: false
+      encryptionAlgorithm:
+        description: The encryption algorithm.
+        type: EncryptionAlgorithm
+        required: false
+      interchangeDuplicatesValidityDays:
+        description: The number of days to look back for duplicate interchange.
+        format: int32
+        type: integer
+        required: false
+      overrideMessageProperties:
+        description: The value indicating whether to override incoming message properties with those in agreement.
+        type: boolean
+        required: false
+      signMessage:
+        description: The value indicating whether the message has to be signed.
+        type: boolean
+        required: false
+  AgreementContent:
+    properties:
+      AS2:
+        description: The AS2 agreement content.
+        type: AS2AgreementContent
+        required: false
+      Edifact:
+        description: The EDIFACT agreement content.
+        type: EdifactAgreementContent
+        required: false
+      X12:
+        description: The X12 agreement content.
+        type: X12AgreementContent
+        required: false
+  AgreementType:
+    enum:
+      - NotSpecified
+      - AS2
+      - X12
+      - Edifact
+    type: string
+  B2BPartnerContent:
+    properties:
+      businessIdentities:
+        description: The list of partner business identities.
+        items:
+          type: BusinessIdentity
+        type: array
+        required: false
+  BusinessIdentity:
+    properties:
+      Qualifier:
+        description: The business identity qualifier.
+        type: string
+        required: false
+      Value:
+        description: The business identity value.
+        type: string
+        required: false
+  CallbackUrl:
+    properties:
+      value:
+        description: The URL value.
+        type: string
+        required: false
+  EdifactAcknowledgementSettings:
+    properties:
+      acknowledgementControlNumberLowerBound:
+        description: The acknowledgement control number lower bound.
+        format: int32
+        type: integer
+        required: false
+      acknowledgementControlNumberPrefix:
+        description: The acknowledgement control number prefix.
+        type: string
+        required: false
+      acknowledgementControlNumberSuffix:
+        description: The acknowledgement control number suffix.
+        type: string
+        required: false
+      acknowledgementControlNumberUpperBound:
+        description: The acknowledgement control number upper bound.
+        format: int32
+        type: integer
+        required: false
+      batchFunctionalAcknowledgements:
+        description: The value indicating whether to batch functional acknowledgements.
+        type: boolean
+        required: false
+      batchTechnicalAcknowledgements:
+        description: The value indicating whether to batch the technical acknowledgements.
+        type: boolean
+        required: false
+      needFunctionalAcknowledgement:
+        description: The value indicating whether functional acknowledgement is needed.
+        type: boolean
+        required: false
+      needLoopForValidMessages:
+        description: The value indicating whether a loop is needed for valid messages.
+        type: boolean
+        required: false
+      needTechnicalAcknowledgement:
+        description: The value indicating whether technical acknowledgement is needed.
+        type: boolean
+        required: false
+      rolloverAcknowledgementControlNumber:
+        description: The value indicating whether to rollover acknowledgement control number.
+        type: boolean
+        required: false
+      sendSynchronousAcknowledgement:
+        description: The value indicating whether to send synchronous acknowledgement.
+        type: boolean
+        required: false
+  EdifactAgreementContent:
+    properties:
+      receiveAgreement:
+        description: The EDIFACT one-way receive agreement.
+        type: EdifactOneWayAgreement
+        required: false
+      sendAgreement:
+        description: The EDIFACT one-way send agreement.
+        type: EdifactOneWayAgreement
+        required: false
+  EdifactCharacterSet:
+    enum:
+      - NotSpecified
+      - UNOB
+      - UNOA
+      - UNOC
+      - UNOD
+      - UNOE
+      - UNOF
+      - UNOG
+      - UNOH
+      - UNOI
+      - UNOJ
+      - UNOK
+      - UNOX
+      - UNOY
+      - KECA
+    type: string
+  EdifactDecimalIndicator:
+    enum:
+      - NotSpecified
+      - Comma
+      - Decimal
+    type: string
+  EdifactDelimiterOverride:
+    properties:
+      componentSeparator:
+        description: The component separator.
+        format: int32
+        type: integer
+        required: false
+      dataElementSeparator:
+        description: The data element separator.
+        format: int32
+        type: integer
+        required: false
+      decimalPointIndicator:
+        description: The decimal point indicator.
+        type: EdifactDecimalIndicator
+        required: false
+      messageAssociationAssignedCode:
+        description: The message association assigned code.
+        type: string
+        required: false
+      messageId:
+        description: The message id.
+        type: string
+        required: false
+      messageRelease:
+        description: The message releaseversion.
+        type: string
+        required: false
+      messageVersion:
+        description: The message version.
+        type: string
+        required: false
+      releaseIndicator:
+        description: The release indicator.
+        format: int32
+        type: integer
+        required: false
+      repetitionSeparator:
+        description: The repetition separator.
+        format: int32
+        type: integer
+        required: false
+      segmentTerminator:
+        description: The segment terminator.
+        format: int32
+        type: integer
+        required: false
+      segmentTerminatorSuffix:
+        description: The segment terminator suffix.
+        type: SegmentTerminatorSuffix
+        required: false
+      targetNamespace:
+        description: The target namespace on which this delimiter settings has to be applied.
+        type: string
+        required: false
+  EdifactEnvelopeOverride:
+    properties:
+      applicationPassword:
+        description: The application password.
+        type: string
+        required: false
+      associationAssignedCode:
+        description: The association assigned code.
+        type: string
+        required: false
+      controllingAgencyCode:
+        description: The controlling agency code.
+        type: string
+        required: false
+      functionalGroupId:
+        description: The functional group id.
+        type: string
+        required: false
+      groupHeaderMessageRelease:
+        description: The group header message release.
+        type: string
+        required: false
+      groupHeaderMessageVersion:
+        description: The group header message version.
+        type: string
+        required: false
+      messageAssociationAssignedCode:
+        description: The message association assigned code.
+        type: string
+        required: false
+      messageId:
+        description: The message id on which this envelope settings has to be applied.
+        type: string
+        required: false
+      messageRelease:
+        description: The message release version on which this envelope settings has to be applied.
+        type: string
+        required: false
+      messageVersion:
+        description: The message version on which this envelope settings has to be applied.
+        type: string
+        required: false
+      receiverApplicationId:
+        description: The receiver application id.
+        type: string
+        required: false
+      receiverApplicationQualifier:
+        description: The receiver application qualifier.
+        type: string
+        required: false
+      senderApplicationId:
+        description: The sender application id.
+        type: string
+        required: false
+      senderApplicationQualifier:
+        description: The sender application qualifier.
+        type: string
+        required: false
+      targetNamespace:
+        description: The target namespace on which this envelope settings has to be applied.
+        type: string
+        required: false
+  EdifactEnvelopeSettings:
+    properties:
+      applicationReferenceId:
+        description: The application reference id.
+        type: string
+        required: false
+      applyDelimiterStringAdvice:
+        description: The value indicating whether to apply delimiter string advice.
+        type: boolean
+        required: false
+      communicationAgreementId:
+        description: The communication agreement id.
+        type: string
+        required: false
+      createGroupingSegments:
+        description: The value indicating whether to create grouping segments.
+        type: boolean
+        required: false
+      enableDefaultGroupHeaders:
+        description: The value indicating whether to enable default group headers.
+        type: boolean
+        required: false
+      functionalGroupId:
+        description: The functional group id.
+        type: string
+        required: false
+      groupApplicationPassword:
+        description: The group application password.
+        type: string
+        required: false
+      groupApplicationReceiverId:
+        description: The group application receiver id.
+        type: string
+        required: false
+      groupApplicationReceiverQualifier:
+        description: The group application receiver qualifier.
+        type: string
+        required: false
+      groupApplicationSenderId:
+        description: The group application sender id.
+        type: string
+        required: false
+      groupApplicationSenderQualifier:
+        description: The group application sender qualifier.
+        type: string
+        required: false
+      groupAssociationAssignedCode:
+        description: The group association assigned code.
+        type: string
+        required: false
+      groupControlNumberLowerBound:
+        description: The group control number lower bound.
+        format: int64
+        type: integer
+        required: false
+      groupControlNumberPrefix:
+        description: The group control number prefix.
+        type: string
+        required: false
+      groupControlNumberSuffix:
+        description: The group control number suffix.
+        type: string
+        required: false
+      groupControlNumberUpperBound:
+        description: The group control number upper bound.
+        format: int64
+        type: integer
+        required: false
+      groupControllingAgencyCode:
+        description: The group controlling agency code.
+        type: string
+        required: false
+      groupMessageRelease:
+        description: The group message release.
+        type: string
+        required: false
+      groupMessageVersion:
+        description: The group message version.
+        type: string
+        required: false
+      interchangeControlNumberLowerBound:
+        description: The interchange control number lower bound.
+        format: int64
+        type: integer
+        required: false
+      interchangeControlNumberPrefix:
+        description: The interchange control number prefix.
+        type: string
+        required: false
+      interchangeControlNumberSuffix:
+        description: The interchange control number suffix.
+        type: string
+        required: false
+      interchangeControlNumberUpperBound:
+        description: The interchange control number upper bound.
+        format: int64
+        type: integer
+        required: false
+      isTestInterchange:
+        description: The value indicating whether the message is a test interchange.
+        type: boolean
+        required: false
+      overwriteExistingTransactionSetControlNumber:
+        description: The value indicating whether to overwrite existing transaction set control number.
+        type: boolean
+        required: false
+      processingPriorityCode:
+        description: The processing priority code.
+        type: string
+        required: false
+      receiverInternalIdentification:
+        description: The receiver internal identification.
+        type: string
+        required: false
+      receiverInternalSubIdentification:
+        description: The receiver internal sub identification.
+        type: string
+        required: false
+      receiverReverseRoutingAddress:
+        description: The receiver reverse routing address.
+        type: string
+        required: false
+      recipientReferencePasswordQualifier:
+        description: The recipient reference password qualifier.
+        type: string
+        required: false
+      recipientReferencePasswordValue:
+        description: The recipient reference password value.
+        type: string
+        required: false
+      rolloverGroupControlNumber:
+        description: The value indicating whether to rollover group control number.
+        type: boolean
+        required: false
+      rolloverInterchangeControlNumber:
+        description: The value indicating whether to rollover interchange control number.
+        type: boolean
+        required: false
+      rolloverTransactionSetControlNumber:
+        description: The value indicating whether to rollover transaction set control number.
+        type: boolean
+        required: false
+      senderInternalIdentification:
+        description: The sender internal identification.
+        type: string
+        required: false
+      senderInternalSubIdentification:
+        description: The sender internal sub identification.
+        type: string
+        required: false
+      senderReverseRoutingAddress:
+        description: The sender reverse routing address.
+        type: string
+        required: false
+      transactionSetControlNumberLowerBound:
+        description: The transaction set control number lower bound.
+        format: int64
+        type: integer
+        required: false
+      transactionSetControlNumberPrefix:
+        description: The transaction set control number prefix.
+        type: string
+        required: false
+      transactionSetControlNumberSuffix:
+        description: The transaction set control number suffix.
+        type: string
+        required: false
+      transactionSetControlNumberUpperBound:
+        description: The transaction set control number upper bound.
+        format: int64
+        type: integer
+        required: false
+  EdifactFramingSettings:
+    properties:
+      characterEncoding:
+        description: The character encoding.
+        type: string
+        required: false
+      characterSet:
+        description: The EDIFACT frame setting characterSet.
+        type: EdifactCharacterSet
+        required: false
+      componentSeparator:
+        description: The component separator.
+        format: int32
+        type: integer
+        required: false
+      dataElementSeparator:
+        description: The data element separator.
+        format: int32
+        type: integer
+        required: false
+      decimalPointIndicator:
+        description: The EDIFACT frame setting decimal indicator.
+        type: EdifactDecimalIndicator
+        required: false
+      protocolVersion:
+        description: The protocol version.
+        format: int32
+        type: integer
+        required: false
+      releaseIndicator:
+        description: The release indicator.
+        format: int32
+        type: integer
+        required: false
+      repetitionSeparator:
+        description: The repetition separator.
+        format: int32
+        type: integer
+        required: false
+      segmentTerminator:
+        description: The segment terminator.
+        format: int32
+        type: integer
+        required: false
+      segmentTerminatorSuffix:
+        description: The EDIFACT frame setting segment terminator suffix.
+        type: SegmentTerminatorSuffix
+        required: false
+      serviceCodeListDirectoryVersion:
+        description: The service code list directory version.
+        type: string
+        required: false
+  EdifactMessageFilter:
+    properties:
+      messageFilterType:
+        description: The message filter type.
+        type: MessageFilterType
+        required: false
+  EdifactMessageIdentifier:
+    properties:
+      messageId:
+        description: The message id on which this envelope settings has to be applied.
+        type: string
+        required: false
+  EdifactOneWayAgreement:
+    properties:
+      protocolSettings:
+        description: The EDIFACT protocol settings.
+        type: EdifactProtocolSettings
+        required: false
+      receiverBusinessIdentity:
+        description: The receiver business identity
+        type: BusinessIdentity
+        required: false
+      senderBusinessIdentity:
+        description: The sender business identity
+        type: BusinessIdentity
+        required: false
+  EdifactProcessingSettings:
+    properties:
+      createEmptyXmlTagsForTrailingSeparators:
+        description: The value indicating whether to create empty xml tags for trailing separators.
+        type: boolean
+        required: false
+      maskSecurityInfo:
+        description: The value indicating whether to mask security information.
+        type: boolean
+        required: false
+      preserveInterchange:
+        description: The value indicating whether to preserve interchange.
+        type: boolean
+        required: false
+      suspendInterchangeOnError:
+        description: The value indicating whether to suspend interchange on error.
+        type: boolean
+        required: false
+      useDotAsDecimalSeparator:
+        description: The value indicating whether to use dot as decimal separator.
+        type: boolean
+        required: false
+  EdifactProtocolSettings:
+    properties:
+      acknowledgementSettings:
+        description: The EDIFACT acknowledgement settings.
+        type: EdifactAcknowledgementSettings
+        required: false
+      edifactDelimiterOverrides:
+        description: The EDIFACT delimiter override settings.
+        items:
+          type: EdifactDelimiterOverride
+        type: array
+        required: false
+      envelopeOverrides:
+        description: The EDIFACT envelope override settings.
+        items:
+          type: EdifactEnvelopeOverride
+        type: array
+        required: false
+      envelopeSettings:
+        description: The EDIFACT envelope settings.
+        type: EdifactEnvelopeSettings
+        required: false
+      framingSettings:
+        description: The EDIFACT framing settings.
+        type: EdifactFramingSettings
+        required: false
+      messageFilter:
+        description: The EDIFACT message filter.
+        type: EdifactMessageFilter
+        required: false
+      messageFilterList:
+        description: The EDIFACT message filter list.
+        items:
+          type: EdifactMessageIdentifier
+        type: array
+        required: false
+      processingSettings:
+        description: The EDIFACT processing Settings.
+        type: EdifactProcessingSettings
+        required: false
+      schemaReferences:
+        description: The EDIFACT schema references.
+        items:
+          type: EdifactSchemaReference
+        type: array
+        required: false
+      validationOverrides:
+        description: The EDIFACT validation override settings.
+        items:
+          type: EdifactValidationOverride
+        type: array
+        required: false
+      validationSettings:
+        description: The EDIFACT validation settings.
+        type: EdifactValidationSettings
+        required: false
+  EdifactSchemaReference:
+    properties:
+      associationAssignedCode:
+        description: The association assigned code.
+        type: string
+        required: false
+      messageId:
+        description: The message id.
+        type: string
+        required: false
+      messageRelease:
+        description: The message release version.
+        type: string
+        required: false
+      messageVersion:
+        description: The message version.
+        type: string
+        required: false
+      schemaName:
+        description: The schema name.
+        type: string
+        required: false
+      senderApplicationId:
+        description: The sender application id.
+        type: string
+        required: false
+      senderApplicationQualifier:
+        description: The sender application qualifier.
+        type: string
+        required: false
+  EdifactValidationOverride:
+    properties:
+      allowLeadingAndTrailingSpacesAndZeroes:
+        description: The value indicating whether to allow leading and trailing spaces and zeroes.
+        type: boolean
+        required: false
+      enforceCharacterSet:
+        description: The value indicating whether to validate character Set.
+        type: boolean
+        required: false
+      messageId:
+        description: The message id on which the validation settings has to be applied.
+        type: string
+        required: false
+      trailingSeparatorPolicy:
+        description: The trailing separator policy.
+        type: TrailingSeparatorPolicy
+        required: false
+      trimLeadingAndTrailingSpacesAndZeroes:
+        description: The value indicating whether to trim leading and trailing spaces and zeroes.
+        type: boolean
+        required: false
+      validateEDITypes:
+        description: The value indicating whether to validate EDI types.
+        type: boolean
+        required: false
+      validateXSDTypes:
+        description: The value indicating whether to validate XSD types.
+        type: boolean
+        required: false
+  EdifactValidationSettings:
+    properties:
+      allowLeadingAndTrailingSpacesAndZeroes:
+        description: The value indicating whether to allow leading and trailing spaces and zeroes.
+        type: boolean
+        required: false
+      checkDuplicateGroupControlNumber:
+        description: The value indicating whether to check for duplicate group control number.
+        type: boolean
+        required: false
+      checkDuplicateInterchangeControlNumber:
+        description: The value indicating whether to check for duplicate interchange control number.
+        type: boolean
+        required: false
+      checkDuplicateTransactionSetControlNumber:
+        description: The value indicating whether to check for duplicate transaction set control number.
+        type: boolean
+        required: false
+      interchangeControlNumberValidityDays:
+        description: The validity period of interchange control number.
+        format: int32
+        type: integer
+        required: false
+      trailingSeparatorPolicy:
+        description: The trailing separator policy.
+        type: TrailingSeparatorPolicy
+        required: false
+      trimLeadingAndTrailingSpacesAndZeroes:
+        description: The value indicating whether to trim leading and trailing spaces and zeroes.
+        type: boolean
+        required: false
+      validateCharacterSet:
+        description: The value indicating whether to validate character set in the message.
+        type: boolean
+        required: false
+      validateEDITypes:
+        description: The value indicating whether to Whether to validate EDI types.
+        type: boolean
+        required: false
+      validateXSDTypes:
+        description: The value indicating whether to Whether to validate XSD types.
+        type: boolean
+        required: false
+  EncryptionAlgorithm:
+    enum:
+      - NotSpecified
+      - None
+      - DES3
+      - RC2
+      - AES128
+      - AES192
+      - AES256
+    type: string
+  HashingAlgorithm:
+    enum:
+      - NotSpecified
+      - None
+      - SHA2256
+      - SHA2384
+      - SHA2512
+    type: string
+  IntegrationAccount:
+    type: IntegrationAccountResource
+  IntegrationAccountAgreement:
+    type: IntegrationAccountResource
+  IntegrationAccountAgreementFilter:
+    properties:
+      agreementType:
+        description: The agreement type of integration account agreement.
+        type: AgreementType
+        required: false
+  IntegrationAccountAgreementListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: The list of integration account agreements.
+        items:
+          type: IntegrationAccountAgreement
+        type: array
+        required: false
+  IntegrationAccountAgreementProperties:
+    properties:
+      agreementType:
+        description: The agreement type.
+        type: AgreementType
+        required: false
+      changedTime:
+        description: The changed time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      content:
+        description: The agreement content.
+        type: AgreementContent
+        required: false
+      createdTime:
+        description: The created time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      guestIdentity:
+        description: The guest identity.
+        type: BusinessIdentity
+        required: false
+      guestPartner:
+        description: The guest partner.
+        type: string
+        required: false
+      hostIdentity:
+        description: The host identity.
+        type: BusinessIdentity
+        required: false
+      hostPartner:
+        description: The host partner.
+        type: string
+        required: false
+      metadata:
+        description: The metadata.
+        properties: {}
+        type: object
+        required: false
+  IntegrationAccountCertificate:
+    type: IntegrationAccountResource
+  IntegrationAccountCertificateListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: The list of integration account certificates.
+        items:
+          type: IntegrationAccountCertificate
+        type: array
+        required: false
+  IntegrationAccountCertificateProperties:
+    properties:
+      changedTime:
+        description: The changed time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      createdTime:
+        description: The created time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      key:
+        description: The key details in the key vault.
+        type: KeyVaultKeyReference
+        required: false
+      metadata:
+        description: The metadata.
+        properties: {}
+        type: object
+        required: false
+      publicCertificate:
+        description: The public certificate.
+        type: string
+        required: false
+  IntegrationAccountContentHash:
+    properties:
+      algorithm:
+        description: The conetnt hash algorithm.
+        type: string
+        required: false
+      value:
+        description: The content hash value.
+        type: string
+        required: false
+  IntegrationAccountContentLink:
+    properties:
+      contentHash:
+        description: The content hash.
+        type: IntegrationAccountContentHash
+        required: false
+      contentSize:
+        description: The content size.
+        format: int64
+        type: integer
+        required: false
+      contentVersion:
+        description: The content version.
+        type: string
+        required: false
+      metadata:
+        description: The metadata.
+        properties: {}
+        type: object
+        required: false
+      uri:
+        description: The content link URI.
+        type: string
+        required: false
+  IntegrationAccountListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: The list of integration accounts.
+        items:
+          type: IntegrationAccount
+        type: array
+        required: false
+  IntegrationAccountMap:
+    type: IntegrationAccountResource
+  IntegrationAccountMapFilter:
+    properties:
+      schemaType:
+        description: The map type of integration account map.
+        type: MapType
+        required: false
+  IntegrationAccountMapListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: The list of integration account maps.
+        items:
+          type: IntegrationAccountMap
+        type: array
+        required: false
+  IntegrationAccountMapProperties:
+    properties:
+      changedTime:
+        description: The changed time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      content:
+        description: The content.
+        properties: {}
+        type: object
+        required: false
+      contentLink:
+        description: The content link.
+        readOnly: true
+        type: IntegrationAccountContentLink
+        facets:
+          readOnly?: boolean
+        required: false
+      contentType:
+        description: The content type.
+        type: string
+        required: false
+      createdTime:
+        description: The created time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      mapType:
+        description: The map type.
+        type: MapType
+        required: false
+      metadata:
+        description: The metadata.
+        properties: {}
+        type: object
+        required: false
+  IntegrationAccountPartner:
+    type: IntegrationAccountResource
+  IntegrationAccountPartnerFilter:
+    properties:
+      partnerType:
+        description: The partner type of integration account partner.
+        type: PartnerType
+        required: false
+  IntegrationAccountPartnerListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: The list of integration account partners.
+        items:
+          type: IntegrationAccountPartner
+        type: array
+        required: false
+  IntegrationAccountPartnerProperties:
+    properties:
+      changedTime:
+        description: The changed time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      content:
+        description: The partner content.
+        type: PartnerContent
+        required: false
+      createdTime:
+        description: The created time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      metadata:
+        description: The metadata.
+        properties: {}
+        type: object
+        required: false
+      partnerType:
+        description: The partner type.
+        type: PartnerType
+        required: false
+  IntegrationAccountProperties:
+    type: object
+  IntegrationAccountResource:
+    properties:
+      id:
+        description: The resource id.
+        type: string
+        required: false
+      location:
+        description: The resource location.
+        type: string
+        required: false
+      name:
+        description: The resource name.
+        type: string
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: The resource tags.
+        type: object
+        required: false
+      type:
+        description: The resource type.
+        type: string
+        required: false
+  IntegrationAccountSchema:
+    type: IntegrationAccountResource
+  IntegrationAccountSchemaFilter:
+    properties:
+      schemaType:
+        description: The schema type of integration account schema.
+        type: SchemaType
+        required: false
+  IntegrationAccountSchemaListResult:
+    properties:
+      nextLink:
+        description: The URL to get the next set of results.
+        type: string
+        required: false
+      value:
+        description: The list of integration account schemas.
+        items:
+          type: IntegrationAccountSchema
+        type: array
+        required: false
+  IntegrationAccountSchemaProperties:
+    properties:
+      changedTime:
+        description: The changed time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      content:
+        description: The content.
+        properties: {}
+        type: object
+        required: false
+      contentLink:
+        description: The content link.
+        readOnly: true
+        type: IntegrationAccountContentLink
+        facets:
+          readOnly?: boolean
+        required: false
+      contentType:
+        description: The content type.
+        type: string
+        required: false
+      createdTime:
+        description: The created time.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      metadata:
+        description: The metadata.
+        properties: {}
+        type: object
+        required: false
+      schemaType:
+        description: The schema type.
+        type: SchemaType
+        required: false
+      targetNamespace:
+        description: The target namespace.
+        type: string
+        required: false
+  IntegrationAccountSku:
+    properties:
+      name:
+        description: The sku name.
+        type: IntegrationAccountSkuName
+        required: false
+  IntegrationAccountSkuName:
+    enum:
+      - NotSpecified
+      - Free
+      - Shared
+      - Basic
+      - Standard
+      - Premium
+    type: string
+  KeyVaultKeyReference:
+    properties:
+      keyName:
+        description: The private key name in key vault.
+        type: string
+        required: false
+      keyVault:
+        description: The key vault reference.
+        properties:
+          id:
+            description: The resource id.
+            type: string
+            required: false
+          name:
+            description: The resource name.
+            readOnly: true
+            type: string
+            facets:
+              readOnly?: boolean
+            required: false
+          type:
+            description: The resource type.
+            readOnly: true
+            type: string
+            facets:
+              readOnly?: boolean
+            required: false
+        type: object
+        required: false
+      keyVersion:
+        description: The private key version in key vault.
+        type: string
+        required: false
+  ListCallbackUrlParameters:
+    properties:
+      NotAfter:
+        description: The expiry time.
+        format: rfc3339
+        type: datetime
+        required: false
+  MapType:
+    enum:
+      - NotSpecified
+      - Xslt
+    type: string
+  MessageFilterType:
+    enum:
+      - NotSpecified
+      - Include
+      - Exclude
+    type: string
+  PartnerContent:
+    properties:
+      b2b:
+        description: The B2B partner content.
+        type: B2BPartnerContent
+        required: false
+  PartnerType:
+    enum:
+      - NotSpecified
+      - B2B
+    type: string
+  SchemaType:
+    enum:
+      - NotSpecified
+      - Xml
+    type: string
+  SegmentTerminatorSuffix:
+    enum:
+      - NotSpecified
+      - None
+      - CR
+      - LF
+      - CRLF
+    type: string
+  TrailingSeparatorPolicy:
+    enum:
+      - NotSpecified
+      - NotAllowed
+      - Optional
+      - Mandatory
+    type: string
+  UsageIndicator:
+    enum:
+      - NotSpecified
+      - Test
+      - Information
+      - Production
+    type: string
+  X12AcknowledgementSettings:
+    properties:
+      acknowledgementControlNumberLowerBound:
+        description: The acknowledgement control number lower bound.
+        format: int32
+        type: integer
+        required: false
+      acknowledgementControlNumberPrefix:
+        description: The acknowledgement control number prefix.
+        type: string
+        required: false
+      acknowledgementControlNumberSuffix:
+        description: The acknowledgement control number suffix.
+        type: string
+        required: false
+      acknowledgementControlNumberUpperBound:
+        description: The acknowledgement control number upper bound.
+        format: int32
+        type: integer
+        required: false
+      batchFunctionalAcknowledgements:
+        description: The value indicating whether to batch functional acknowledgements.
+        type: boolean
+        required: false
+      batchImplementationAcknowledgements:
+        description: The value indicating whether to batch implementation acknowledgements.
+        type: boolean
+        required: false
+      batchTechnicalAcknowledgements:
+        description: The value indicating whether to batch the technical acknowledgements.
+        type: boolean
+        required: false
+      functionalAcknowledgementVersion:
+        description: The functional acknowledgement version.
+        type: string
+        required: false
+      implementationAcknowledgementVersion:
+        description: The implementation acknowledgement version.
+        type: string
+        required: false
+      needFunctionalAcknowledgement:
+        description: The value indicating whether functional acknowledgement is needed.
+        type: boolean
+        required: false
+      needImplementationAcknowledgement:
+        description: The value indicating whether implementation acknowledgement is needed.
+        type: boolean
+        required: false
+      needLoopForValidMessages:
+        description: The value indicating whether a loop is needed for valid messages.
+        type: boolean
+        required: false
+      needTechnicalAcknowledgement:
+        description: The value indicating whether technical acknowledgement is needed.
+        type: boolean
+        required: false
+      rolloverAcknowledgementControlNumber:
+        description: The value indicating whether to rollover acknowledgement control number.
+        type: boolean
+        required: false
+      sendSynchronousAcknowledgement:
+        description: The value indicating whether to send synchronous acknowledgement.
+        type: boolean
+        required: false
+  X12AgreementContent:
+    properties:
+      receiveAgreement:
+        description: The X12 one-way receive agreement.
+        type: X12OneWayAgreement
+        required: false
+      sendAgreement:
+        description: The X12 one-way send agreement.
+        type: X12OneWayAgreement
+        required: false
+  X12CharacterSet:
+    enum:
+      - NotSpecified
+      - Basic
+      - Extended
+      - UTF8
+    type: string
+  X12DateFormat:
+    enum:
+      - NotSpecified
+      - CCYYMMDD
+      - YYMMDD
+    type: string
+  X12DelimiterOverrides:
+    properties:
+      componentSeparator:
+        description: The component separator.
+        format: int32
+        type: integer
+        required: false
+      dataElementSeparator:
+        description: The data element separator.
+        format: int32
+        type: integer
+        required: false
+      messageId:
+        description: The message id.
+        type: string
+        required: false
+      protocolVersion:
+        description: The protocol version.
+        type: string
+        required: false
+      replaceCharacter:
+        description: The replacement character.
+        format: int32
+        type: integer
+        required: false
+      replaceSeparatorsInPayload:
+        description: The value indicating whether to replace separators in payload.
+        type: boolean
+        required: false
+      segmentTerminator:
+        description: The segment terminator.
+        format: int32
+        type: integer
+        required: false
+      segmentTerminatorSuffix:
+        description: The segment terminator suffix.
+        type: SegmentTerminatorSuffix
+        required: false
+      targetNamespace:
+        description: The target namespace on which this delimiter settings has to be applied.
+        type: string
+        required: false
+  X12EnvelopeOverride:
+    properties:
+      dateFormat:
+        description: The date format.
+        type: X12DateFormat
+        required: false
+      functionalIdentifierCode:
+        description: The functional identifier code.
+        type: string
+        required: false
+      headerVersion:
+        description: The header version.
+        type: string
+        required: false
+      messageId:
+        description: The message id on which this envelope settings has to be applied.
+        type: string
+        required: false
+      protocolVersion:
+        description: The protocol version on which this envelope settings has to be applied.
+        type: string
+        required: false
+      receiverApplicationId:
+        description: The receiver application id.
+        type: string
+        required: false
+      responsibleAgencyCode:
+        description: The responsible agency code.
+        format: int32
+        type: integer
+        required: false
+      senderApplicationId:
+        description: The sender application id.
+        type: string
+        required: false
+      targetNamespace:
+        description: The target namespace on which this envelope settings has to be applied.
+        type: string
+        required: false
+      timeFormat:
+        description: The time format.
+        type: X12TimeFormat
+        required: false
+  X12EnvelopeSettings:
+    properties:
+      controlStandardsId:
+        description: The controls standards id.
+        format: int32
+        type: integer
+        required: false
+      controlVersionNumber:
+        description: The control version number.
+        type: string
+        required: false
+      enableDefaultGroupHeaders:
+        description: The value indicating whether to enable default group headers.
+        type: boolean
+        required: false
+      functionalGroupId:
+        description: The functional group id.
+        type: string
+        required: false
+      groupControlNumberLowerBound:
+        description: The group control number lower bound.
+        format: int32
+        type: integer
+        required: false
+      groupControlNumberUpperBound:
+        description: The group control number upper bound.
+        format: int32
+        type: integer
+        required: false
+      groupHeaderAgencyCode:
+        description: The group header agency code.
+        type: string
+        required: false
+      groupHeaderDateFormat:
+        description: The group header date format.
+        type: X12DateFormat
+        required: false
+      groupHeaderTimeFormat:
+        description: The group header time format.
+        type: X12TimeFormat
+        required: false
+      groupHeaderVersion:
+        description: The group header version.
+        type: string
+        required: false
+      interchangeControlNumberLowerBound:
+        description: The interchange  control number lower bound.
+        format: int32
+        type: integer
+        required: false
+      interchangeControlNumberUpperBound:
+        description: The interchange  control number upper bound.
+        format: int32
+        type: integer
+        required: false
+      overwriteExistingTransactionSetControlNumber:
+        description: The value indicating whether to overwrite existing transaction set control number.
+        type: boolean
+        required: false
+      receiverApplicationId:
+        description: The receiver application id.
+        type: string
+        required: false
+      rolloverGroupControlNumber:
+        description: The value indicating whether to rollover group control number.
+        type: boolean
+        required: false
+      rolloverInterchangeControlNumber:
+        description: The value indicating whether to rollover interchange control number.
+        type: boolean
+        required: false
+      rolloverTransactionSetControlNumber:
+        description: The value indicating whether to rollover transaction set control number.
+        type: boolean
+        required: false
+      senderApplicationId:
+        description: The sender application id.
+        type: string
+        required: false
+      transactionSetControlNumberLowerBound:
+        description: The transaction set control number lower bound.
+        format: int32
+        type: integer
+        required: false
+      transactionSetControlNumberPrefix:
+        description: The transaction set control number prefix.
+        type: string
+        required: false
+      transactionSetControlNumberSuffix:
+        description: The transaction set control number suffix.
+        type: string
+        required: false
+      transactionSetControlNumberUpperBound:
+        description: The transaction set control number upper bound.
+        format: int32
+        type: integer
+        required: false
+      usageIndicator:
+        description: The usage indicator.
+        type: UsageIndicator
+        required: false
+      useControlStandardsIdAsRepetitionCharacter:
+        description: The value indicating whether to use control standards id as repetition character.
+        type: boolean
+        required: false
+  X12FramingSettings:
+    properties:
+      characterSet:
+        description: The X12 character set.
+        type: X12CharacterSet
+        required: false
+      componentSeparator:
+        description: The component separator.
+        format: int32
+        type: integer
+        required: false
+      dataElementSeparator:
+        description: The data element separator.
+        format: int32
+        type: integer
+        required: false
+      replaceCharacter:
+        description: The replacement character.
+        format: int32
+        type: integer
+        required: false
+      replaceSeparatorsInPayload:
+        description: The value indicating whether to replace separators in payload.
+        type: boolean
+        required: false
+      segmentTerminator:
+        description: The segment terminator.
+        format: int32
+        type: integer
+        required: false
+      segmentTerminatorSuffix:
+        description: The segment terminator suffix.
+        type: SegmentTerminatorSuffix
+        required: false
+  X12MessageFilter:
+    properties:
+      messageFilterType:
+        description: The message filter type.
+        type: MessageFilterType
+        required: false
+  X12MessageIdentifier:
+    properties:
+      messageId:
+        description: The message id.
+        type: string
+        required: false
+  X12OneWayAgreement:
+    properties:
+      protocolSettings:
+        description: The X12 protocol settings.
+        type: X12ProtocolSettings
+        required: false
+      receiverBusinessIdentity:
+        description: The receiver business identity
+        type: BusinessIdentity
+        required: false
+      senderBusinessIdentity:
+        description: The sender business identity
+        type: BusinessIdentity
+        required: false
+  X12ProcessingSettings:
+    properties:
+      convertImpliedDecimal:
+        description: The value indicating whether to convert numerical type to implied decimal.
+        type: boolean
+        required: false
+      createEmptyXmlTagsForTrailingSeparators:
+        description: The value indicating whether to create empty xml tags for trailing separators.
+        type: boolean
+        required: false
+      maskSecurityInfo:
+        description: The value indicating whether to mask security information.
+        type: boolean
+        required: false
+      preserveInterchange:
+        description: The value indicating whether to preserve interchange.
+        type: boolean
+        required: false
+      suspendInterchangeOnError:
+        description: The value indicating whether to suspend interchange on error.
+        type: boolean
+        required: false
+      useDotAsDecimalSeparator:
+        description: The value indicating whether to use dot as decimal separator.
+        type: boolean
+        required: false
+  X12ProtocolSettings:
+    properties:
+      acknowledgementSettings:
+        description: The X12 acknowledgment settings.
+        type: X12AcknowledgementSettings
+        required: false
+      envelopeOverrides:
+        description: The X12 envelope override settings.
+        items:
+          type: X12EnvelopeOverride
+        type: array
+        required: false
+      envelopeSettings:
+        description: The X12 envelope settings.
+        type: X12EnvelopeSettings
+        required: false
+      framingSettings:
+        description: The X12 framing settings.
+        type: X12FramingSettings
+        required: false
+      messageFilter:
+        description: The X12 message filter.
+        type: X12MessageFilter
+        required: false
+      messageFilterList:
+        description: The X12 message filter list.
+        items:
+          type: X12MessageIdentifier
+        type: array
+        required: false
+      processingSettings:
+        description: The X12 processing settings.
+        type: X12ProcessingSettings
+        required: false
+      schemaReferences:
+        description: The X12 schema references.
+        items:
+          type: X12SchemaReference
+        type: array
+        required: false
+      securitySettings:
+        description: The X12 security settings.
+        type: X12SecuritySettings
+        required: false
+      validationOverrides:
+        description: The X12 validation override settings.
+        items:
+          type: X12ValidationOverride
+        type: array
+        required: false
+      validationSettings:
+        description: The X12 validation settings.
+        type: X12ValidationSettings
+        required: false
+      x12DelimiterOverrides:
+        description: The X12 delimiter override settings.
+        items:
+          type: X12DelimiterOverrides
+        type: array
+        required: false
+  X12SchemaReference:
+    properties:
+      messageId:
+        description: The message id.
+        type: string
+        required: false
+      schemaName:
+        description: The schema name.
+        type: string
+        required: false
+      schemaVersion:
+        description: The schema version.
+        type: string
+        required: false
+      senderApplicationId:
+        description: The sender application id.
+        type: string
+        required: false
+  X12SecuritySettings:
+    properties:
+      authorizationQualifier:
+        description: The authorization qualifier.
+        type: string
+        required: false
+      authorizationValue:
+        description: The authorization value.
+        type: string
+        required: false
+      passwordValue:
+        description: The password value.
+        type: string
+        required: false
+      securityQualifier:
+        description: The security qualifier.
+        type: string
+        required: false
+  X12TimeFormat:
+    enum:
+      - NotSpecified
+      - HHMM
+      - HHMMSS
+      - HHMMSSdd
+      - HHMMSSd
+    type: string
+  X12ValidationOverride:
+    properties:
+      allowLeadingAndTrailingSpacesAndZeroes:
+        description: The value indicating whether to allow leading and trailing spaces and zeroes.
+        type: boolean
+        required: false
+      messageId:
+        description: The message id on which the validation settings has to be applied.
+        type: string
+        required: false
+      trailingSeparatorPolicy:
+        description: The trailing separator policy.
+        type: TrailingSeparatorPolicy
+        required: false
+      trimLeadingAndTrailingSpacesAndZeroes:
+        description: The value indicating whether to trim leading and trailing spaces and zeroes.
+        type: boolean
+        required: false
+      validateCharacterSet:
+        description: The value indicating whether to validate character Set.
+        type: boolean
+        required: false
+      validateEDITypes:
+        description: The value indicating whether to validate EDI types.
+        type: boolean
+        required: false
+      validateXSDTypes:
+        description: The value indicating whether to validate XSD types.
+        type: boolean
+        required: false
+  X12ValidationSettings:
+    properties:
+      allowLeadingAndTrailingSpacesAndZeroes:
+        description: The value indicating whether to allow leading and trailing spaces and zeroes.
+        type: boolean
+        required: false
+      checkDuplicateGroupControlNumber:
+        description: The value indicating whether to check for duplicate group control number.
+        type: boolean
+        required: false
+      checkDuplicateInterchangeControlNumber:
+        description: The value indicating whether to check for duplicate interchange control number.
+        type: boolean
+        required: false
+      checkDuplicateTransactionSetControlNumber:
+        description: The value indicating whether to check for duplicate transaction set control number.
+        type: boolean
+        required: false
+      interchangeControlNumberValidityDays:
+        description: The validity period of interchange control number.
+        format: int32
+        type: integer
+        required: false
+      trailingSeparatorPolicy:
+        description: The trailing separator policy.
+        type: TrailingSeparatorPolicy
+        required: false
+      trimLeadingAndTrailingSpacesAndZeroes:
+        description: The value indicating whether to trim leading and trailing spaces and zeroes.
+        type: boolean
+        required: false
+      validateCharacterSet:
+        description: The value indicating whether to validate character set in the message.
+        type: boolean
+        required: false
+      validateEDITypes:
+        description: The value indicating whether to Whether to validate EDI types.
+        type: boolean
+        required: false
+      validateXSDTypes:
+        description: The value indicating whether to Whether to validate XSD types.
+        type: boolean
+        required: false
+traits:
+  apiVersion:
+    queryParameters:
+      api-version:
+        type: string
+        description: The API version.
+        required: true

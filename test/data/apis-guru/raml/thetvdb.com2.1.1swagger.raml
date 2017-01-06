@@ -1,0 +1,1672 @@
+#%RAML 1.0
+title: TheTVDB API v2
+version: 2.1.1
+baseUri: 'https://api-dev.thetvdb.com/'
+mediaType: application/json
+protocols:
+  - HTTPS
+  - HTTP
+description: |-
+  API v2 targets v1 functionality with a few minor additions. The API is accessible via https://api.thetvdb.com and provides the following REST endpoints in JSON format.
+
+
+  How to use this API documentation
+  ----------------
+
+
+  You may browse the API routes without authentication, but if you wish to send requests to the API and see response data, then you must authenticate.
+  1. Obtain a JWT token by `POST`ing  to the `/login` route in the `Authentication` section with your API key and credentials.
+  1. Paste the JWT token from the response into the "JWT Token" field at the top of the page and click the 'Add Token' button.
+
+
+  You will now be able to use the remaining routes to send requests to the API and get a response.
+
+
+  Language Selection
+  ----------------
+
+
+  Language selection is done via the `Accept-Language` header. At the moment, you may only pass one language abbreviation in the header at a time. Valid language abbreviations can be found at the `/languages` route..
+
+
+  Authentication
+  ----------------
+
+
+  Authentication to use the API is similar to the How-to section above. Users must `POST` to the `/login` route with their API key and credentials in the following format in order to obtain a JWT token.
+
+  `{"apikey":"APIKEY","username":"USERNAME","userkey":"USERKEY"}`
+
+  Note that the username and key are ONLY required for the `/user` routes. The user's key is labled `Account Identifier` in the account section of the main site.
+  The token is then used in all subsequent requests by providing it in the `Authorization` header. The header will look like: `Authorization: Bearer <yourJWTtoken>`. Currently, the token expires after 24 hours. You can `GET` the `/refresh_token` route to extend that expiration date.
+
+
+  Versioning
+  ----------------
+
+
+  You may request a different version of the API by including an `Accept` header in your request with the following format: `Accept:application/vnd.thetvdb.v$VERSION`. This documentation automatically uses the version seen at the top and bottom of the page.
+(oas-tags-definition):
+  - description: Obtaining and refreshing your JWT token
+    name: Authentication
+  - description: Information about a specific episode
+    name: Episodes
+  - description: Information about a specific series
+    name: Series
+  - description: Search for a particular series
+    name: Search
+  - description: Series that have been recently updated.
+    name: Updates
+  - description: Routes for handling user data.
+    name: Users
+  - description: Available languages and information
+    name: Languages
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api-dev.thetvdb.com/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): thetvdb.com
+securitySchemes:
+  jwtToken:
+    type: Pass Through
+    describedBy:
+      headers:
+        Authorization:
+          type: string
+    description: JWT token prefixed with "Bearer "
+/series:
+  displayName: series
+  '/{id}':
+    displayName: '{id}'
+    /filter:
+      displayName: filter
+      /params:
+        displayName: params
+        get:
+          displayName: GET_series-id-filter-params
+          description: 'Returns the list of keys available for the `/series/{id}/filter` route'
+          is:
+            - acceptLanguage
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: FilterKeys
+              description: A list of keys to filter by
+            '401':
+              body:
+                application/json:
+                  type: NotAuthorized
+              description: Returned if your JWT token is missing or expired
+            '404':
+              body:
+                application/json:
+                  type: NotFound
+              description: Returned if the given series ID does not exist
+          securedBy:
+            - jwtToken
+          (oas-tags):
+            - Series
+      get:
+        displayName: GET_series-id-filter
+        description: 'Returns a series records, filtered by the supplied comma-separated list of keys. Query keys can be found at the `/series/{id}/filter/params` route.'
+        is:
+          - filterKeys
+          - acceptLanguage
+        responses:
+          '200':
+            body:
+              application/json:
+                type: SeriesData
+            description: A filtered series record
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+          '404':
+            body:
+              application/json:
+                type: NotFound
+            description: Returned if the given series ID does not exist
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Series
+    /images:
+      displayName: images
+      get:
+        displayName: GET_series-id-images
+        description: Returns a summary of the images for a particular series
+        is:
+          - acceptLanguage
+        responses:
+          '200':
+            body:
+              application/json:
+                type: SeriesImagesCounts
+            description: A summary of the image types and counts available for the given series.
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+          '404':
+            body:
+              application/json:
+                type: NotFound
+            description: Returned if the given series ID does not exist
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Series
+      /query:
+        displayName: query
+        get:
+          displayName: GET_series-id-images-query
+          description: Query images for the given series ID.
+          is:
+            - keyType
+            - resolution
+            - subKey
+            - acceptLanguage
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: SeriesImageQueryResults
+              description: An array of basic Episode results that matched the query
+            '401':
+              body:
+                application/json:
+                  type: NotAuthorized
+              description: Returned if your JWT token is missing or expired
+            '404':
+              body:
+                application/json:
+                  type: NotFound
+              description: Returned if the given series ID does not exist or the query returns no results.
+          securedBy:
+            - jwtToken
+          (oas-tags):
+            - Series
+        /params:
+          displayName: params
+          get:
+            displayName: GET_series-id-images-query-params
+            description: 'Returns the allowed query keys for the `/series/{id}/images/query` route. Contains a parameter record for each unique `keyType`, listing values that will return results.'
+            is:
+              - acceptLanguage
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: SeriesImagesQueryParams
+                description: An array of query keys as strings
+              '401':
+                body:
+                  application/json:
+                    type: NotAuthorized
+                description: Returned if your JWT token is missing or expired
+              '404':
+                body:
+                  application/json:
+                    type: NotFound
+                description: Returned if the given series ID does not exist or the query returns no results.
+            securedBy:
+              - jwtToken
+            (oas-tags):
+              - Series
+    uriParameters:
+      id:
+        description: ID of the series
+        format: int64
+        required: true
+        type: integer
+        displayName: ID of the series
+    head:
+      displayName: HEAD_series-id
+      description: Returns header information only about the given series ID.
+      is:
+        - acceptLanguage
+      responses:
+        '200':
+          description: Series header information. Good for getting the Last-Updated header to find out when the series was last modified.
+        '401':
+          body:
+            application/json:
+              type: NotAuthorized
+          description: Returned if your JWT token is missing or expired
+        '404':
+          body:
+            application/json:
+              type: NotFound
+          description: Returned if the given series ID does not exist
+      securedBy:
+        - jwtToken
+      (oas-tags):
+        - Series
+    /episodes:
+      displayName: episodes
+      get:
+        displayName: GET_series-id-episodes
+        description: All episodes for a given series. Paginated with 100 results per page.
+        is:
+          - page
+        responses:
+          '200':
+            body:
+              application/json:
+                type: SeriesEpisodes
+            description: An array of episode objects for the given series id.
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+          '404':
+            body:
+              application/json:
+                type: NotFound
+            description: Returned if the given series ID does not exist
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Series
+      /query:
+        displayName: query
+        /params:
+          displayName: params
+          get:
+            displayName: GET_series-id-episodes-query-params
+            description: 'Returns the allowed query keys for the `/series/{id}/episodes/query` route'
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: SeriesEpisodesQueryParams
+                description: An array of query keys as strings
+              '401':
+                body:
+                  application/json:
+                    type: NotAuthorized
+                description: Returned if your JWT token is missing or expired
+              '404':
+                body:
+                  application/json:
+                    type: NotFound
+                description: Returned if the given series ID does not exist or the query returns no results.
+            securedBy:
+              - jwtToken
+            (oas-tags):
+              - Series
+        get:
+          displayName: GET_series-id-episodes-query
+          description: This route allows the user to query against episodes for the given series. The response is a paginated array of episode records that have been filtered down to basic information.
+          is:
+            - absoluteNumber
+            - airedSeason
+            - airedEpisode
+            - dvdSeason
+            - dvdEpisode
+            - imdbId
+            - page
+            - acceptLanguage
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: SeriesEpisodesQuery
+              description: An array of basic Episode results that matched the query
+            '401':
+              body:
+                application/json:
+                  type: NotAuthorized
+              description: Returned if your JWT token is missing or expired
+            '404':
+              body:
+                application/json:
+                  type: NotFound
+              description: Returned if the given series ID does not exist or the query returns no results.
+          securedBy:
+            - jwtToken
+          (oas-tags):
+            - Series
+      /summary:
+        displayName: summary
+        get:
+          displayName: GET_series-id-episodes-summary
+          description: |-
+            Returns a summary of the episodes and seasons available for the series.
+
+            __Note__: Season "0" is for all episodes that are considered to be specials.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: SeriesEpisodesSummary
+              description: A summary of the episodes and seasons avaialable for the given series.
+            '401':
+              body:
+                application/json:
+                  type: NotAuthorized
+              description: Returned if your JWT token is missing or expired
+            '404':
+              body:
+                application/json:
+                  type: NotFound
+              description: Returned if the given series ID does not exist
+          securedBy:
+            - jwtToken
+          (oas-tags):
+            - Series
+    get:
+      displayName: GET_series-id
+      description: Returns a series records that contains all information known about a particular series id.
+      is:
+        - acceptLanguage
+      responses:
+        '200':
+          body:
+            application/json:
+              type: SeriesData
+          description: A series record.
+        '401':
+          body:
+            application/json:
+              type: NotAuthorized
+          description: Returned if your JWT token is missing or expired
+        '404':
+          body:
+            application/json:
+              type: NotFound
+          description: Returned if the given series ID does not exist
+      securedBy:
+        - jwtToken
+      (oas-tags):
+        - Series
+    /actors:
+      displayName: actors
+      get:
+        displayName: GET_series-id-actors
+        description: Returns actors for the given series id
+        responses:
+          '200':
+            body:
+              application/json:
+                type: SeriesActors
+            description: An array of actor objects for the given series id.
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+          '404':
+            body:
+              application/json:
+                type: NotFound
+            description: Returned if the given series ID does not exist
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Series
+/user:
+  displayName: user
+  /ratings:
+    displayName: ratings
+    '/{itemType}':
+      displayName: '{itemType}'
+      '/{itemId}':
+        displayName: '{itemId}'
+        '/{itemRating}':
+          displayName: '{itemRating}'
+          uriParameters:
+            itemRating:
+              description: The updated rating number
+              format: int64
+              required: true
+              type: integer
+              displayName: The updated rating number
+          put:
+            displayName: PUT_user-ratings-itemType-itemId-itemRating
+            description: This route updates a given rating of a given type.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: UserRatingsDataNoLinks
+                description: Update OK if the update was successful
+              '401':
+                body:
+                  application/json:
+                    type: NotAuthorized
+                description: Returned if your JWT token is missing or expired
+              '404':
+                body:
+                  application/json:
+                    type: NotFound
+                description: Returned if no rating is found that matches your given parameters
+            securedBy:
+              - jwtToken
+            (oas-tags):
+              - Users
+        uriParameters:
+          itemId:
+            description: ID of the ratings record that you wish to modify
+            format: int64
+            required: true
+            type: integer
+            displayName: ID of the ratings record that you wish to modify
+        delete:
+          displayName: DELETE_user-ratings-itemType-itemId
+          description: This route deletes a given rating of a given type.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: UserRatingsDataNoLinksEmptyArray
+              description: Returns OK if the delete was successful
+            '401':
+              body:
+                application/json:
+                  type: NotAuthorized
+              description: Returned if your JWT token is missing or expired
+            '404':
+              body:
+                application/json:
+                  type: NotFound
+              description: Returned if no rating is found that matches your given parameters
+          securedBy:
+            - jwtToken
+          (oas-tags):
+            - Users
+    /query:
+      displayName: query
+      /params:
+        displayName: params
+        get:
+          displayName: GET_user-ratings-query-params
+          description: Returns a list of query params for use in the `/user/ratings/query` route.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: UserRatingsQueryParams
+              description: Parameters to use for querying.
+            '401':
+              body:
+                application/json:
+                  type: NotAuthorized
+              description: Returned if your JWT token is missing or expired
+            '404':
+              body:
+                application/json:
+                  type: NotFound
+              description: Returned if no information exists for the current user
+          securedBy:
+            - jwtToken
+          (oas-tags):
+            - Users
+      get:
+        displayName: GET_user-ratings-query
+        description: Returns an array of ratings for a given user that match the query.
+        is:
+          - itemTypeNr
+        responses:
+          '200':
+            body:
+              application/json:
+                type: UserRatingsData
+            description: List of user ratings that match the given query.
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+          '404':
+            body:
+              application/json:
+                type: NotFound
+            description: Returned if no information exists for the current user
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Users
+    get:
+      displayName: GET_user-ratings
+      description: Returns an array of ratings for the given user.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: UserRatingsData
+          description: Array of user ratings.
+        '401':
+          body:
+            application/json:
+              type: NotAuthorized
+          description: Returned if your JWT token is missing or expired
+        '404':
+          body:
+            application/json:
+              type: NotFound
+          description: Returned if no information exists for the current user
+      securedBy:
+        - jwtToken
+      (oas-tags):
+        - Users
+  get:
+    displayName: GET_user
+    description: Returns basic information about the currently authenticated user.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: UserData
+        description: User information.
+      '401':
+        body:
+          application/json:
+            type: NotAuthorized
+        description: Returned if your JWT token is missing or expired
+      '404':
+        body:
+          application/json:
+            type: NotFound
+        description: Returned if no information exists for the current user
+    securedBy:
+      - jwtToken
+    (oas-tags):
+      - Users
+  /favorites:
+    displayName: favorites
+    get:
+      displayName: GET_user-favorites
+      description: 'Returns an array of favorite series for a given user, will be a blank array if no favorites exist.'
+      responses:
+        '200':
+          body:
+            application/json:
+              type: UserFavoritesData
+          description: User favorites.
+        '401':
+          body:
+            application/json:
+              type: NotAuthorized
+          description: Returned if your JWT token is missing or expired
+        '404':
+          body:
+            application/json:
+              type: NotFound
+          description: Returned if no information exists for the current user
+      securedBy:
+        - jwtToken
+      (oas-tags):
+        - Users
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          description: ID of the series
+          format: int64
+          required: true
+          type: integer
+          displayName: ID of the series
+      delete:
+        displayName: DELETE_user-favorites-id
+        description: Deletes the given series ID from the user’s favorite’s list and returns the updated list.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: UserFavoritesData
+            description: List of user favorites.
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+          '404':
+            body:
+              application/json:
+                type: NotFound
+            description: Returned if no information exists for the current user
+          '409':
+            body:
+              application/json:
+                type: Conflict
+            description: Returned if requested record could not be deleted
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Users
+      put:
+        displayName: PUT_user-favorites-id
+        description: Adds the supplied series ID to the user’s favorite’s list and returns the updated list.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: UserFavoritesData
+            description: List of user favorites.
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+          '404':
+            body:
+              application/json:
+                type: NotFound
+            description: Returned if no information exists for the current user
+          '409':
+            body:
+              application/json:
+                type: Conflict
+            description: Returned if requested record could not be updated
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Users
+/episodes:
+  displayName: episodes
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: ID of the episode
+        format: int64
+        required: true
+        type: integer
+        displayName: ID of the episode
+    get:
+      displayName: GET_episodes-id
+      description: 'Returns the full information for a given episode id. __Deprecation Warning:__ The _director_ key will be deprecated in favor of the new _directors_ key in a future release.'
+      is:
+        - acceptLanguage
+      responses:
+        '200':
+          body:
+            application/json:
+              type: EpisodeRecordData
+          description: An array of query keys as strings
+        '401':
+          body:
+            application/json:
+              type: NotAuthorized
+          description: Returned if your JWT token is missing or expired
+        '404':
+          body:
+            application/json:
+              type: NotFound
+          description: Returned if the given episode ID does not exist.
+      securedBy:
+        - jwtToken
+      (oas-tags):
+        - Episodes
+/languages:
+  displayName: languages
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: ID of the language
+        required: true
+        type: string
+        displayName: ID of the language
+    get:
+      displayName: GET_languages-id
+      description: 'Information about a particular language, given the language ID.'
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Language
+          description: An array of language objects.
+        '401':
+          body:
+            application/json:
+              type: NotAuthorized
+          description: Returned if your JWT token is missing or expired
+        '404':
+          body:
+            application/json:
+              type: NotFound
+          description: Returned if the given language ID does not exist.
+      securedBy:
+        - jwtToken
+      (oas-tags):
+        - Languages
+  get:
+    displayName: GET_languages
+    description: All available languages. These language abbreviations can be used in the `Accept-Language` header for routes that return translation records.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: LanguageData
+        description: An array of language objects.
+      '401':
+        body:
+          application/json:
+            type: NotAuthorized
+        description: Returned if your JWT token is missing or expired
+    securedBy:
+      - jwtToken
+    (oas-tags):
+      - Languages
+/refresh_token:
+  displayName: refresh_token
+  get:
+    displayName: GET_refresh_token
+    description: 'Refreshes your current, valid JWT token and returns a new token. Hit this route so that you do not have to post to `/login` with your API key and credentials once you have already been authenticated.'
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Token
+        description: Returns a new token to use in your subsequent requests
+      '401':
+        body:
+          application/json:
+            type: NotAuthorized
+        description: Returned if your JWT token is missing or expired
+    securedBy:
+      - jwtToken
+    (oas-tags):
+      - Authentication
+/updated:
+  displayName: updated
+  /query:
+    displayName: query
+    get:
+      displayName: GET_updated-query
+      description: |-
+        Returns an array of series that have changed in a maximum of one week blocks since the provided `fromTime`.
+
+
+        The user may specify a `toTime` to grab results for less than a week. Any timespan larger than a week will be reduced down to one week automatically.
+      is:
+        - fromTime
+        - toTime
+        - acceptLanguage
+      responses:
+        '200':
+          body:
+            application/json:
+              type: UpdateData
+          description: An array of Update objects that match the given timeframe.
+        '401':
+          body:
+            application/json:
+              type: NotAuthorized
+          description: Returned if your JWT token is missing or expired
+        '404':
+          body:
+            application/json:
+              type: NotFound
+          description: Returned if no records exist for the given timespan
+      securedBy:
+        - jwtToken
+      (oas-tags):
+        - Updates
+    /params:
+      displayName: params
+      get:
+        displayName: GET_updated-query-params
+        description: Returns an array of valid query keys for the `/updated/query/params` route.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: UpdateDataQueryParams
+            description: An array of Update objects that match the given timeframe.
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+          '404':
+            body:
+              application/json:
+                type: NotFound
+            description: Returned if no records exist for the given timespan
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Updates
+/search:
+  displayName: search
+  /series:
+    displayName: series
+    /params:
+      displayName: params
+      get:
+        displayName: GET_search-series-params
+        description: Returns an array of parameters to query by in the `/search/series` route.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: EpisodeDataQueryParams
+            description: An array of query keys as strings
+          '401':
+            body:
+              application/json:
+                type: NotAuthorized
+            description: Returned if your JWT token is missing or expired
+        securedBy:
+          - jwtToken
+        (oas-tags):
+          - Search
+    get:
+      displayName: GET_search-series
+      description: Allows the user to search for a series based on the following parameters.
+      is:
+        - seriesSearchName
+        - imdbId
+        - zap2ItId
+        - acceptLanguage
+      responses:
+        '200':
+          body:
+            application/json:
+              type: SeriesSearchData
+          description: An array of results that match the provided query.
+        '401':
+          body:
+            application/json:
+              type: NotAuthorized
+          description: Returned if your JWT token is missing or expired
+        '404':
+          body:
+            application/json:
+              type: NotFound
+          description: Returned if no records are found that match your query.
+      securedBy:
+        - jwtToken
+      (oas-tags):
+        - Search
+/login:
+  displayName: login
+  post:
+    displayName: POST_login
+    description: Returns a session token to be included in the rest of the requests. Note that API key authentication is required for all subsequent requests and user auth is required for routes in the `User` section
+    body:
+      application/json:
+        type: Auth
+        (oas-body-name): Authentication string
+        description: JSON string containing your authentication details.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Token
+        description: Returns a JWT token for use with the rest of the API routes
+      '401':
+        body:
+          application/json:
+            type: NotAuthorized
+        description: Invalid credentials and/or API token
+    (oas-tags):
+      - Authentication
+types:
+  Auth:
+    properties:
+      apikey:
+        type: string
+        required: false
+      userkey:
+        type: string
+        required: false
+      username:
+        type: string
+        required: false
+  BasicEpisode:
+    properties:
+      absoluteNumber:
+        type: integer
+        required: false
+      airedEpisodeNumber:
+        type: integer
+        required: false
+      airedSeason:
+        type: integer
+        required: false
+      dvdEpisodeNumber:
+        type: integer
+        required: false
+      dvdSeason:
+        type: integer
+        required: false
+      episodeName:
+        type: string
+        required: false
+      firstAired:
+        type: string
+        required: false
+      id:
+        type: integer
+        required: false
+      lastUpdated:
+        type: integer
+        required: false
+      overview:
+        type: string
+        required: false
+  Conflict:
+    properties:
+      Error:
+        default: Conflict
+        type: string
+        required: false
+  Episode:
+    properties:
+      absoluteNumber:
+        type: integer
+        required: false
+      airedEpisodeNumber:
+        type: integer
+        required: false
+      airedSeason:
+        type: integer
+        required: false
+      airsAfterSeason:
+        type: integer
+        required: false
+      airsBeforeEpisode:
+        type: integer
+        required: false
+      airsBeforeSeason:
+        type: integer
+        required: false
+      director:
+        type: string
+        required: false
+      directors:
+        items:
+          type: string
+        type: array
+        required: false
+      dvdChapter:
+        type: number
+        required: false
+      dvdDiscid:
+        type: string
+        required: false
+      dvdEpisodeNumber:
+        type: number
+        required: false
+      dvdSeason:
+        type: integer
+        required: false
+      episodeName:
+        type: string
+        required: false
+      filename:
+        type: string
+        required: false
+      firstAired:
+        type: string
+        required: false
+      guestStars:
+        items:
+          type: string
+        type: array
+        required: false
+      id:
+        type: integer
+        required: false
+      imdbId:
+        type: string
+        required: false
+      lastUpdated:
+        type: integer
+        required: false
+      lastUpdatedBy:
+        type: string
+        required: false
+      overview:
+        type: string
+        required: false
+      productionCode:
+        type: string
+        required: false
+      seriesId:
+        type: string
+        required: false
+      showUrl:
+        type: string
+        required: false
+      siteRating:
+        type: number
+        required: false
+      siteRatingCount:
+        type: integer
+        required: false
+      thumbAdded:
+        type: string
+        required: false
+      thumbAuthor:
+        type: integer
+        required: false
+      thumbHeight:
+        type: string
+        required: false
+      thumbWidth:
+        type: string
+        required: false
+      writers:
+        items:
+          type: string
+        type: array
+        required: false
+  EpisodeDataQueryParams:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+        required: false
+  EpisodeRecordData:
+    properties:
+      data:
+        type: Episode
+        required: false
+      errors:
+        type: JSONErrors
+        required: false
+  FilterKeys:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+        required: false
+  JSONErrors:
+    properties:
+      invalidFilters:
+        description: Invalid filters passed to route
+        items:
+          type: string
+        type: array
+        required: false
+      invalidLanguage:
+        description: Invalid language or translation missing
+        type: string
+        required: false
+      invalidQueryParams:
+        description: Invalid query params passed to route
+        items:
+          type: string
+        type: array
+        required: false
+  Language:
+    properties:
+      abbreviation:
+        type: string
+        required: false
+      englishName:
+        type: string
+        required: false
+      id:
+        type: integer
+        required: false
+      name:
+        type: string
+        required: false
+  LanguageData:
+    properties:
+      data:
+        items:
+          type: Language
+        type: array
+        required: false
+  Links:
+    properties:
+      first:
+        type: integer
+        required: false
+      last:
+        type: integer
+        required: false
+      next:
+        type: integer
+        required: false
+      previous:
+        type: integer
+        required: false
+  NotAuthorized:
+    properties:
+      Error:
+        default: Not Authorized
+        type: string
+        required: false
+  NotFound:
+    properties:
+      Error:
+        default: Not Found
+        type: string
+        required: false
+  Series:
+    properties:
+      added:
+        type: string
+        required: false
+      airsDayOfWeek:
+        type: string
+        required: false
+      airsTime:
+        type: string
+        required: false
+      aliases:
+        items:
+          type: string
+        type: array
+        required: false
+      banner:
+        type: string
+        required: false
+      firstAired:
+        type: string
+        required: false
+      genre:
+        items:
+          type: string
+        type: array
+        required: false
+      id:
+        type: integer
+        required: false
+      imdbId:
+        type: string
+        required: false
+      lastUpdated:
+        type: integer
+        required: false
+      network:
+        type: string
+        required: false
+      networkId:
+        type: string
+        required: false
+      overview:
+        type: string
+        required: false
+      rating:
+        type: string
+        required: false
+      runtime:
+        type: string
+        required: false
+      seriesId:
+        type: integer
+        required: false
+      seriesName:
+        type: string
+        required: false
+      siteRating:
+        type: number
+        required: false
+      siteRatingCount:
+        type: integer
+        required: false
+      status:
+        type: string
+        required: false
+      zap2itId:
+        type: string
+        required: false
+  SeriesActors:
+    properties:
+      data:
+        items:
+          type: SeriesActorsData
+        type: array
+        required: false
+      errors:
+        type: JSONErrors
+        required: false
+  SeriesActorsData:
+    properties:
+      id:
+        type: integer
+        required: false
+      image:
+        type: string
+        required: false
+      imageAdded:
+        type: string
+        required: false
+      imageAuthor:
+        type: integer
+        required: false
+      lastUpdated:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+      role:
+        type: string
+        required: false
+      seriesId:
+        type: integer
+        required: false
+      sortOrder:
+        type: integer
+        required: false
+  SeriesData:
+    properties:
+      data:
+        type: Series
+        required: false
+      errors:
+        description: Informative error messages (optional)
+        type: JSONErrors
+        required: false
+  SeriesEpisodes:
+    properties:
+      data:
+        items:
+          type: BasicEpisode
+        type: array
+        required: false
+      errors:
+        type: JSONErrors
+        required: false
+      links:
+        type: Links
+        required: false
+  SeriesEpisodesQuery:
+    properties:
+      data:
+        items:
+          type: BasicEpisode
+        type: array
+        required: false
+      errors:
+        type: JSONErrors
+        required: false
+      links:
+        type: Links
+        required: false
+  SeriesEpisodesQueryParams:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+        required: false
+  SeriesEpisodesSummary:
+    properties:
+      airedEpisodes:
+        description: Number of all aired episodes for this series
+        type: string
+        required: false
+      airedSeasons:
+        items:
+          type: string
+        type: array
+        required: false
+      dvdEpisodes:
+        description: Number of all dvd episodes for this series
+        type: string
+        required: false
+      dvdSeasons:
+        items:
+          type: string
+        type: array
+        required: false
+  SeriesImageQueryResult:
+    properties:
+      fileName:
+        type: string
+        required: false
+      id:
+        type: integer
+        required: false
+      keyType:
+        type: string
+        required: false
+      languageId:
+        type: integer
+        required: false
+      ratingsInfo:
+        properties:
+          average:
+            description: Average rating for the given record.
+            type: number
+            required: false
+          count:
+            description: Number of ratings for the given record.
+            type: integer
+            required: false
+        type: object
+        required: false
+      resolution:
+        type: string
+        required: false
+      subKey:
+        type: string
+        required: false
+      thumbnail:
+        type: string
+        required: false
+  SeriesImageQueryResults:
+    properties:
+      data:
+        items:
+          type: SeriesImageQueryResult
+        type: array
+        required: false
+      errors:
+        type: JSONErrors
+        required: false
+  SeriesImagesCount:
+    properties:
+      fanart:
+        type: integer
+        required: false
+      poster:
+        type: integer
+        required: false
+      season:
+        type: integer
+        required: false
+      seasonwide:
+        type: integer
+        required: false
+      series:
+        type: integer
+        required: false
+  SeriesImagesCounts:
+    properties:
+      data:
+        type: SeriesImagesCount
+        required: false
+  SeriesImagesQueryParam:
+    properties:
+      keyType:
+        type: string
+        required: false
+      languageId:
+        type: string
+        required: false
+      resolution:
+        items:
+          type: string
+        type: array
+        required: false
+      subKey:
+        items:
+          type: string
+        type: array
+        required: false
+  SeriesImagesQueryParams:
+    properties:
+      data:
+        items:
+          type: SeriesImagesQueryParam
+        type: array
+        required: false
+  SeriesSearchData:
+    properties:
+      aliases:
+        items:
+          type: string
+        type: array
+        required: false
+      banner:
+        type: string
+        required: false
+      firstAired:
+        type: string
+        required: false
+      id:
+        type: integer
+        required: false
+      network:
+        type: string
+        required: false
+      overview:
+        type: string
+        required: false
+      seriesName:
+        type: string
+        required: false
+      status:
+        type: string
+        required: false
+  Token:
+    properties:
+      token:
+        type: string
+        required: false
+  Update:
+    properties:
+      id:
+        type: integer
+        required: false
+      lastUpdated:
+        type: integer
+        required: false
+  UpdateData:
+    properties:
+      data:
+        items:
+          type: Update
+        type: array
+        required: false
+      errors:
+        type: JSONErrors
+        required: false
+  UpdateDataQueryParams:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+        required: false
+  User:
+    properties:
+      favoritesDisplaymode:
+        type: string
+        required: false
+      language:
+        type: string
+        required: false
+      userName:
+        type: string
+        required: false
+  UserData:
+    properties:
+      data:
+        type: User
+        required: false
+  UserFavorites:
+    properties:
+      favorites:
+        items:
+          type: string
+        type: array
+        required: false
+  UserFavoritesData:
+    properties:
+      data:
+        type: UserFavorites
+        required: false
+      errors:
+        type: JSONErrors
+        required: false
+  UserRatings:
+    properties:
+      rating:
+        type: integer
+        required: false
+      ratingItemId:
+        type: integer
+        required: false
+      ratingType:
+        type: string
+        required: false
+  UserRatingsData:
+    properties:
+      data:
+        items:
+          type: UserRatings
+        type: array
+        required: false
+      errors:
+        type: JSONErrors
+        required: false
+      links:
+        type: Links
+        required: false
+  UserRatingsDataNoLinks:
+    properties:
+      data:
+        items:
+          type: UserRatings
+        type: array
+        required: false
+  UserRatingsDataNoLinksEmptyArray:
+    properties:
+      data:
+        items: {}
+        type: array
+        required: false
+  UserRatingsQueryParams:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+        required: false
+traits:
+  absoluteNumber:
+    queryParameters:
+      absoluteNumber:
+        type: string
+        description: Absolute number of the episode
+  airedEpisode:
+    queryParameters:
+      airedEpisode:
+        type: string
+        description: Aired episode number
+  airedSeason:
+    queryParameters:
+      airedSeason:
+        type: string
+        description: Aired season number
+  dvdEpisode:
+    queryParameters:
+      dvdEpisode:
+        type: string
+        description: DVD episode number
+  dvdSeason:
+    queryParameters:
+      dvdSeason:
+        type: string
+        description: DVD season number
+  filterKeys:
+    queryParameters:
+      keys:
+        type: string
+        description: Comma-separated list of keys to filter by
+        required: true
+  fromTime:
+    queryParameters:
+      fromTime:
+        type: string
+        description: Epoch time to start your date range.
+        required: true
+  imdbId:
+    queryParameters:
+      imdbId:
+        type: string
+        description: IMDB id of the series
+  itemTypeNr:
+    queryParameters:
+      itemType:
+        type: string
+        description: 'Item to query. Can be either ''series'', ''episode'', or ''banner'''
+        format: string
+        facets:
+          format: string
+  keyType:
+    queryParameters:
+      keyType:
+        type: string
+        description: 'Type of image you''re querying for (fanart, poster, etc. See ../images/query/params for more details).'
+  page:
+    queryParameters:
+      page:
+        type: string
+        description: Page of results to fetch. Defaults to page 1 if not provided.
+  resolution:
+    queryParameters:
+      resolution:
+        type: string
+        description: 'Resolution to filter by (1280x1024, for example)'
+  seriesSearchName:
+    queryParameters:
+      name:
+        type: string
+        description: Name of the series to search for.
+  subKey:
+    queryParameters:
+      subKey:
+        type: string
+        description: 'Subkey for the above query keys. See /series/{id}/images/query/params for more information'
+  toTime:
+    queryParameters:
+      toTime:
+        type: string
+        description: Epoch time to end your date range. Must be one week from `fromTime`.
+  zap2ItId:
+    queryParameters:
+      zap2itId:
+        type: string
+        description: Zap2it ID of the series to search for.
+  acceptLanguage:
+    headers:
+      Accept-Language:
+        type: string
+        description: 'Records are returned with the Episode name and Overview in the desired language, if it exists. If there is no translation for the given language, then the record is still returned but with empty values for the translated fields.'

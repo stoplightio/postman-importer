@@ -1,0 +1,2095 @@
+#%RAML 1.0
+title: Botify
+version: 1.0.0
+baseUri: 'https://api.botify.com/v1'
+protocols:
+  - HTTPS
+description: Botify Saas API
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#1A1A1A'
+    url: 'https://api.apis.guru/v2/cache/logo/https_static.botify.com_images_logos_botify-white.dc4215a12b9c.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.botify.com/v1/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): botify.com
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+(oas-externalDocs):
+  url: 'https://developers.botify.com/'
+securitySchemes:
+  DjangoRestToken:
+    type: Pass Through
+    describedBy:
+      headers:
+        Authorization:
+          type: string
+/analyses:
+  displayName: analyses
+  '/{username}':
+    displayName: '{username}'
+    '/{project_slug}':
+      displayName: '{project_slug}'
+      '/{analysis_slug}':
+        displayName: '{analysis_slug}'
+        /urls:
+          displayName: urls
+          post:
+            displayName: getUrls
+            description: Executes a query and returns a paginated response
+            (oas-summary): Executes a query and returns a paginated response
+            body:
+              application/json:
+                type: UrlsQuery
+                (oas-body-name): UrlsQuery
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: DefaultPayload
+              description: error payload
+            responses:
+              '201':
+                body:
+                  application/json:
+                    properties:
+                      count:
+                        description: ''
+                        readOnly: true
+                        type: integer
+                        facets:
+                          readOnly?: boolean
+                        required: false
+                      next:
+                        description: ''
+                        readOnly: true
+                        type: string
+                        facets:
+                          readOnly?: boolean
+                        required: false
+                      page:
+                        description: ''
+                        readOnly: true
+                        type: integer
+                        facets:
+                          readOnly?: boolean
+                        required: false
+                      previous:
+                        description: ''
+                        readOnly: true
+                        type: string
+                        facets:
+                          readOnly?: boolean
+                        required: false
+                      results:
+                        description: ''
+                        items:
+                          type: Default
+                        readOnly: true
+                        type: array
+                        facets:
+                          readOnly?: boolean
+                        required: false
+                      size:
+                        description: ''
+                        readOnly: true
+                        type: integer
+                        facets:
+                          readOnly?: boolean
+                        required: false
+                    type: object
+                description: Successful operation
+            queryParameters:
+              area:
+                default: current
+                description: Analysis context to execute the query
+                enum:
+                  - current
+                  - disappeared
+                  - new
+                  - search_engines_orphans
+                required: false
+                type: string
+                displayName: Analysis context to execute the query
+              page:
+                description: Page Number
+                format: int32
+                required: false
+                type: integer
+                displayName: Page Number
+              size:
+                description: Page Size
+                format: int32
+                required: false
+                type: integer
+                displayName: Page Size
+            (oas-tags):
+              - Analysis
+          /aggs:
+            displayName: aggs
+            post:
+              displayName: getUrlsAggs
+              description: Query aggregator. It accepts multiple queries
+              (oas-summary): Query aggregator
+              body:
+                application/json:
+                  type: UrlsAggsQueries
+                  (oas-body-name): UrlsAggsQueries
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: DefaultPayload
+                description: error payload
+              responses:
+                '201':
+                  body:
+                    application/json:
+                      type: Default
+                  description: Successful operation
+              queryParameters:
+                area:
+                  default: current
+                  description: ''
+                  enum:
+                    - current
+                    - disappeared
+                    - new
+                    - search_engines_orphans
+                  required: false
+                  type: string
+              (oas-tags):
+                - Analysis
+          /datamodel:
+            displayName: datamodel
+            get:
+              displayName: getUrlsDatamodel
+              description: Gets an Analysis datamodel
+              (oas-summary): Gets an Analysis datamodel
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: DefaultPayload
+                description: error payload
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Default
+                  description: Successful operation
+              queryParameters:
+                area:
+                  default: current
+                  description: ''
+                  enum:
+                    - current
+                    - disappeared
+                    - new
+                    - search_engines_orphans
+                  required: false
+                  type: string
+              (oas-tags):
+                - Analysis
+          /export:
+            displayName: export
+            get:
+              displayName: getUrlsExports
+              description: A list of the CSV Exports requests and their current status
+              (oas-summary): A list of the CSV Exports requests and their current status
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: DefaultPayload
+                description: error payload
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      properties:
+                        count:
+                          description: ''
+                          readOnly: true
+                          type: integer
+                          facets:
+                            readOnly?: boolean
+                          required: false
+                        next:
+                          description: ''
+                          readOnly: true
+                          type: string
+                          facets:
+                            readOnly?: boolean
+                          required: false
+                        page:
+                          description: ''
+                          readOnly: true
+                          type: integer
+                          facets:
+                            readOnly?: boolean
+                          required: false
+                        previous:
+                          description: ''
+                          readOnly: true
+                          type: string
+                          facets:
+                            readOnly?: boolean
+                          required: false
+                        results:
+                          description: ''
+                          items:
+                            type: CsvExportStatus
+                          readOnly: true
+                          type: array
+                          facets:
+                            readOnly?: boolean
+                          required: false
+                        size:
+                          description: ''
+                          readOnly: true
+                          type: integer
+                          facets:
+                            readOnly?: boolean
+                          required: false
+                      type: object
+                  description: Successful operation
+              queryParameters:
+                page:
+                  description: Page Number
+                  type: integer
+                  displayName: Page Number
+                size:
+                  description: Page Size
+                  type: integer
+                  displayName: Page Size
+              (oas-tags):
+                - Analysis
+            post:
+              displayName: createUrlsExport
+              description: Creates a new UrlExport object and starts a task that will export the results into a csv. Returns the model id that manages the task
+              (oas-summary): Creates a new UrlExport object and starts a task that will export the results into a csv
+              body:
+                application/json:
+                  type: UrlsQuery
+                  (oas-body-name): UrlsQuery
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: DefaultPayload
+                description: error payload
+              responses:
+                '201':
+                  body:
+                    application/json:
+                      type: CsvExportStatus
+                  description: Successful operation
+              queryParameters:
+                area:
+                  default: current
+                  description: ''
+                  enum:
+                    - current
+                    - disappeared
+                    - new
+                    - search_engines_orphans
+                  required: false
+                  type: string
+              (oas-tags):
+                - Analysis
+            '/{url_export_id}':
+              displayName: '{url_export_id}'
+              uriParameters:
+                url_export_id:
+                  description: Url Export ID
+                  required: true
+                  type: string
+                  displayName: Url Export ID
+              get:
+                displayName: getUrlsExportStatus
+                description: Checks the status of an CSVUrlExportJob object. Returns json object with the status.
+                (oas-summary): Checks the status of an CSVUrlExportJob object
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: DefaultPayload
+                  description: error payload
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: CsvExportStatus
+                    description: Successful operation
+                (oas-tags):
+                  - Analysis
+          /suggested_filters:
+            displayName: suggested_filters
+            post:
+              displayName: getUrlsSuggestedFilters
+              description: Return most frequent segments (= suggested patterns in the previous version) for a Botify Query.
+              (oas-summary): Return most frequent segments (= suggested patterns in the previous version)
+              body:
+                application/json:
+                  type: UrlsAggsQuery
+                  (oas-body-name): UrlsAggsQuery
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: DefaultPayload
+                description: error payload
+              responses:
+                '201':
+                  body:
+                    application/json:
+                      type: UrlsAggsQuery
+                  description: Successful operation
+              queryParameters:
+                area:
+                  default: current
+                  description: ''
+                  enum:
+                    - current
+                    - new
+                  required: false
+                  type: string
+              (oas-tags):
+                - Analysis
+          '/{url}':
+            displayName: '{url}'
+            uriParameters:
+              url:
+                description: (Urlencoded) Searched URL
+                required: true
+                type: string
+                displayName: (Urlencoded) Searched URL
+            get:
+              displayName: getUrlDetail
+              description: Gets the detail of an URL for an analysis
+              (oas-summary): Gets the detail of an URL for an analysis
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: DefaultPayload
+                description: error payload
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Default
+                  description: Successful operation
+              queryParameters:
+                area:
+                  default: current
+                  description: Analysis lookup context
+                  enum:
+                    - current
+                    - disappeared
+                  required: false
+                  type: string
+                  displayName: Analysis lookup context
+                fields:
+                  collectionFormat: csv
+                  description: comma separated list of fields to return (c.f. URLs Datamodel)
+                  items:
+                    type: string
+                  required: false
+                  type: array
+                  displayName: comma separated list of fields to return (c.f. URLs Datamodel)
+                  facets:
+                    collectionFormat: string
+              (oas-tags):
+                - Analysis
+        /crawl_statistics:
+          displayName: crawl_statistics
+          get:
+            displayName: getCrawlStatistics
+            description: Return global statistics for an analysis
+            (oas-summary): Return global statistics for an analysis
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: DefaultPayload
+              description: error payload
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: CrawlStatistics
+                description: Successful operation
+            (oas-tags):
+              - Analysis
+          /urls:
+            displayName: urls
+            '/{list_type}':
+              displayName: '{list_type}'
+              uriParameters:
+                list_type:
+                  description: URLs list type (crawled URLs or error URLs)
+                  enum:
+                    - crawled
+                    - errors
+                  required: true
+                  type: string
+                  displayName: URLs list type (crawled URLs or error URLs)
+              get:
+                displayName: getCrawlStatisticsUrls
+                description: Return a list of 1000 latest URLs crawled (all crawled URLs or only URLS with HTTP errors)
+                (oas-summary): Return a list of 1000 latest URLs crawled (all crawled URLs or only URLS with HTTP errors)
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: DefaultPayload
+                  description: error payload
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: Default
+                    description: Successful operation
+                (oas-tags):
+                  - Analysis
+          /time:
+            displayName: time
+            get:
+              displayName: getCrawlStatisticsByFrequency
+              description: 'Return crawl statistics grouped by time frequency (1 min, 5 mins or 60 min) for an analysis'
+              (oas-summary): 'Return crawl statistics grouped by time frequency (1 min, 5 mins or 60 min)'
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: DefaultPayload
+                description: error payload
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Default
+                  description: Successful operation
+              queryParameters:
+                limit:
+                  description: max number of elements to retrieve
+                  format: int32
+                  required: false
+                  type: integer
+                  displayName: max number of elements to retrieve
+                frequency:
+                  description: Aggregation frequency
+                  enum:
+                    - 1mn
+                    - 5mn
+                    - 60mn
+                  required: true
+                  type: string
+                  displayName: Aggregation frequency
+              (oas-tags):
+                - Analysis
+        /features:
+          displayName: features
+          /links:
+            displayName: links
+            /percentiles:
+              displayName: percentiles
+              get:
+                displayName: getLinksPercentiles
+                description: Get inlinks percentiles
+                (oas-summary): Get inlinks percentiles
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: DefaultPayload
+                  description: error payload
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: Default
+                    description: Successful operation
+                (oas-tags):
+                  - Analysis
+          /sitemaps:
+            displayName: sitemaps
+            /report:
+              displayName: report
+              get:
+                displayName: getSitemapsReport
+                description: 'Get global information of the sitemaps found (sitemaps indexes, invalid sitemaps urls, etc.)'
+                (oas-summary): 'Get global information of the sitemaps found (sitemaps indexes, invalid sitemaps urls, etc'
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: DefaultPayload
+                  description: error payload
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: Default
+                    description: Successful operation
+                (oas-tags):
+                  - Analysis
+            /samples:
+              displayName: samples
+              /sitemap_only:
+                displayName: sitemap_only
+                get:
+                  displayName: getSitemapsSamplesSitemapsOnly
+                  description: 'Sample list of URLs which were found in your sitemaps, within the project allowed scope (allowed domains/subdomains/protocols), but not found by the Botify crawler.'
+                  (oas-summary): 'Sample list of URLs which were found in your sitemaps, within the project'
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: DefaultPayload
+                    description: error payload
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          properties:
+                            count:
+                              description: ''
+                              readOnly: true
+                              type: integer
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            next:
+                              description: ''
+                              readOnly: true
+                              type: string
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            page:
+                              description: ''
+                              readOnly: true
+                              type: integer
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            previous:
+                              description: ''
+                              readOnly: true
+                              type: string
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            results:
+                              description: ''
+                              items:
+                                type: Default
+                              readOnly: true
+                              type: array
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            size:
+                              description: ''
+                              readOnly: true
+                              type: integer
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                          type: object
+                      description: Successful operation
+                  queryParameters:
+                    page:
+                      description: Page Number
+                      type: integer
+                      displayName: Page Number
+                    size:
+                      description: Page Size
+                      type: integer
+                      displayName: Page Size
+                  (oas-tags):
+                    - Analysis
+              /out_of_config:
+                displayName: out_of_config
+                get:
+                  displayName: getSitemapsSamplesOutOfConfig
+                  description: 'Sample list of URLs which were found in your sitemaps but outside of the crawl perimeter defined for the project, for instance domain/subdomain or protocol (HTTP/HTTPS) not allowed in the crawl settings.'
+                  (oas-summary): Sample list of URLs which were found in your sitemaps but outside of the
+                  (oas-responses-default):
+                    body:
+                      application/json:
+                        type: DefaultPayload
+                    description: error payload
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          properties:
+                            count:
+                              description: ''
+                              readOnly: true
+                              type: integer
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            next:
+                              description: ''
+                              readOnly: true
+                              type: string
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            page:
+                              description: ''
+                              readOnly: true
+                              type: integer
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            previous:
+                              description: ''
+                              readOnly: true
+                              type: string
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            results:
+                              description: ''
+                              items:
+                                type: Default
+                              readOnly: true
+                              type: array
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                            size:
+                              description: ''
+                              readOnly: true
+                              type: integer
+                              facets:
+                                readOnly?: boolean
+                              required: false
+                          type: object
+                      description: Successful operation
+                  queryParameters:
+                    page:
+                      description: Page Number
+                      type: integer
+                      displayName: Page Number
+                    size:
+                      description: Page Size
+                      type: integer
+                      displayName: Page Size
+                  (oas-tags):
+                    - Analysis
+          /top_domains:
+            displayName: top_domains
+            /subdomains:
+              displayName: subdomains
+              get:
+                displayName: getLinksTopSubdomains
+                description: Top subddomains
+                (oas-summary): Top subddomains
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: DefaultPayload
+                  description: error payload
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        properties:
+                          count:
+                            description: ''
+                            readOnly: true
+                            type: integer
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          next:
+                            description: ''
+                            readOnly: true
+                            type: string
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          page:
+                            description: ''
+                            readOnly: true
+                            type: integer
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          previous:
+                            description: ''
+                            readOnly: true
+                            type: string
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          results:
+                            description: ''
+                            items:
+                              type: Default
+                            readOnly: true
+                            type: array
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          size:
+                            description: ''
+                            readOnly: true
+                            type: integer
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                        type: object
+                    description: Successful operation
+                queryParameters:
+                  page:
+                    description: Page Number
+                    type: integer
+                    displayName: Page Number
+                  size:
+                    description: Page Size
+                    type: integer
+                    displayName: Page Size
+                (oas-tags):
+                  - Analysis
+            /domains:
+              displayName: domains
+              get:
+                displayName: getLinksTopDomains
+                description: Top domains
+                (oas-summary): Top domains
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: DefaultPayload
+                  description: error payload
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        properties:
+                          count:
+                            description: ''
+                            readOnly: true
+                            type: integer
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          next:
+                            description: ''
+                            readOnly: true
+                            type: string
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          page:
+                            description: ''
+                            readOnly: true
+                            type: integer
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          previous:
+                            description: ''
+                            readOnly: true
+                            type: string
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          results:
+                            description: ''
+                            items:
+                              type: Default
+                            readOnly: true
+                            type: array
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                          size:
+                            description: ''
+                            readOnly: true
+                            type: integer
+                            facets:
+                              readOnly?: boolean
+                            required: false
+                        type: object
+                    description: Successful operation
+                queryParameters:
+                  page:
+                    description: Page Number
+                    type: integer
+                    displayName: Page Number
+                  size:
+                    description: Page Size
+                    type: integer
+                    displayName: Page Size
+                (oas-tags):
+                  - Analysis
+          /ganalytics:
+            displayName: ganalytics
+            /orphan_urls:
+              displayName: orphan_urls
+              '/{medium}':
+                displayName: '{medium}'
+                '/{source}':
+                  displayName: '{source}'
+                  uriParameters:
+                    source:
+                      description: 'Traffic source, value: name of the search engine or social network'
+                      enum:
+                        - all
+                        - aol
+                        - ask
+                        - baidu
+                        - bing
+                        - facebook
+                        - google
+                        - google+
+                        - linkedin
+                        - naver
+                        - pinterest
+                        - reddit
+                        - tumblr
+                        - twitter
+                        - yahoo
+                        - yandex
+                      required: true
+                      type: string
+                      displayName: 'Traffic source, value: name of the search engine or social network'
+                  get:
+                    displayName: getGanalyticsOrphanURLs
+                    description: 'List of Orphan URLs. URLs which generated visits from the selected source according to Google Analytics data, but were not crawled with by the Botify crawler (either because no links to them were found on the website, or because the crawler was not allowed to follow these links according to the project settings).   For a search engine (medium: origanic; sources: all, aol, ask, baidu, bing, google, naver, yahoo, yandex) or a social network (medium: social; sources: all, facebook, google+, linkedin, pinterest, reddit, tumblr, twitter)'
+                    (oas-summary): List of Orphan URLs
+                    (oas-responses-default):
+                      body:
+                        application/json:
+                          type: DefaultPayload
+                      description: error payload
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            properties:
+                              count:
+                                description: ''
+                                readOnly: true
+                                type: integer
+                                facets:
+                                  readOnly?: boolean
+                                required: false
+                              next:
+                                description: ''
+                                readOnly: true
+                                type: string
+                                facets:
+                                  readOnly?: boolean
+                                required: false
+                              page:
+                                description: ''
+                                readOnly: true
+                                type: integer
+                                facets:
+                                  readOnly?: boolean
+                                required: false
+                              previous:
+                                description: ''
+                                readOnly: true
+                                type: string
+                                facets:
+                                  readOnly?: boolean
+                                required: false
+                              results:
+                                description: ''
+                                items:
+                                  type: Default
+                                readOnly: true
+                                type: array
+                                facets:
+                                  readOnly?: boolean
+                                required: false
+                              size:
+                                description: ''
+                                readOnly: true
+                                type: integer
+                                facets:
+                                  readOnly?: boolean
+                                required: false
+                            type: object
+                        description: Successful operation
+                    queryParameters:
+                      page:
+                        description: Page Number
+                        type: integer
+                        displayName: Page Number
+                      size:
+                        description: Page Size
+                        type: integer
+                        displayName: Page Size
+                    (oas-tags):
+                      - Analysis
+          /pagerank:
+            displayName: pagerank
+            /lost:
+              displayName: lost
+              get:
+                displayName: getPageRankLost
+                description: Lost pagerank
+                (oas-summary): Lost pagerank
+                (oas-responses-default):
+                  body:
+                    application/json:
+                      type: DefaultPayload
+                  description: error payload
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: Default
+                    description: Successful operation
+                (oas-tags):
+                  - Analysis
+        uriParameters:
+          analysis_slug:
+            description: Analysis' identifier
+            required: true
+            type: string
+            displayName: Analysis' identifier
+        get:
+          displayName: getAnalysisSummary
+          description: Get an Analysis detail
+          (oas-summary): Get an Analysis detail
+          (oas-responses-default):
+            body:
+              application/json:
+                type: DefaultPayload
+            description: error payload
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: AnalysisDetail
+              description: Successful operation
+          (oas-tags):
+            - Analysis
+      uriParameters:
+        project_slug:
+          description: Project's identifier
+          required: true
+          type: string
+          displayName: Project's identifier
+      get:
+        displayName: getAnalyses
+        description: List all analyses for a project
+        (oas-summary): List all analyses for a project
+        (oas-responses-default):
+          body:
+            application/json:
+              type: DefaultPayload
+          description: error payload
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  count:
+                    description: ''
+                    readOnly: true
+                    type: integer
+                    facets:
+                      readOnly?: boolean
+                    required: false
+                  next:
+                    description: ''
+                    readOnly: true
+                    type: string
+                    facets:
+                      readOnly?: boolean
+                    required: false
+                  page:
+                    description: ''
+                    readOnly: true
+                    type: integer
+                    facets:
+                      readOnly?: boolean
+                    required: false
+                  previous:
+                    description: ''
+                    readOnly: true
+                    type: string
+                    facets:
+                      readOnly?: boolean
+                    required: false
+                  results:
+                    description: ''
+                    items:
+                      type: Analysis
+                    readOnly: true
+                    type: array
+                    facets:
+                      readOnly?: boolean
+                    required: false
+                  size:
+                    description: ''
+                    readOnly: true
+                    type: integer
+                    facets:
+                      readOnly?: boolean
+                    required: false
+                type: object
+            description: Successful operation
+        queryParameters:
+          page:
+            description: Page Number
+            type: integer
+            displayName: Page Number
+          size:
+            description: Page Size
+            type: integer
+            displayName: Page Size
+        (oas-tags):
+          - Analysis
+/projects:
+  displayName: projects
+  '/{username}':
+    displayName: '{username}'
+    '/{project_slug}':
+      displayName: '{project_slug}'
+      /urls:
+        displayName: urls
+        /aggs:
+          displayName: aggs
+          post:
+            displayName: getProjectUrlsAggs
+            description: Project Query aggregator. It accepts multiple queries that will be executed on all completed analyses in the project
+            (oas-summary): Project Query aggregator
+            body:
+              application/json:
+                type: UrlsAggsQueries
+                (oas-body-name): UrlsAggsQueries
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: DefaultPayload
+              description: error payload
+            responses:
+              '201':
+                body:
+                  application/json:
+                    type: Default
+                description: Successful operation
+            queryParameters:
+              area:
+                default: current
+                description: Analysis context to execute the queries
+                enum:
+                  - current
+                  - disappeared
+                  - new
+                required: false
+                type: string
+                displayName: Analysis context to execute the queries
+              last_analysis_slug:
+                description: Last analysis on the trend
+                required: false
+                type: string
+                displayName: Last analysis on the trend
+              nb_analyses:
+                default: 20
+                description: Max number of analysis to return
+                format: int32
+                maximum: 20
+                minimum: 1
+                required: false
+                type: integer
+                displayName: Max number of analysis to return
+            (oas-tags):
+              - Project
+      /filters:
+        displayName: filters
+        '/{identifier}':
+          displayName: '{identifier}'
+          uriParameters:
+            identifier:
+              description: Saved Filter's identifier
+              required: true
+              type: string
+              displayName: Saved Filter's identifier
+          get:
+            displayName: getSavedFilter
+            description: 'Retrieves a specific saved filter''s name, ID and filter value'
+            (oas-summary): 'Retrieves a specific saved filter''s name, ID and filter value'
+            (oas-responses-default):
+              body:
+                application/json:
+                  type: DefaultPayload
+              description: error payload
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ProjectSavedFilter
+                description: Successful operation
+            (oas-tags):
+              - Project
+        get:
+          displayName: getSavedFilters
+          description: 'List all the project''s saved filters (each filter''s name, ID and filter value)'
+          (oas-summary): 'List all the project''s saved filters (each filter''s name, ID and filter value)'
+          (oas-responses-default):
+            body:
+              application/json:
+                type: DefaultPayload
+            description: error payload
+          responses:
+            '200':
+              body:
+                application/json:
+                  properties:
+                    count:
+                      description: ''
+                      readOnly: true
+                      type: integer
+                      facets:
+                        readOnly?: boolean
+                      required: false
+                    next:
+                      description: ''
+                      readOnly: true
+                      type: string
+                      facets:
+                        readOnly?: boolean
+                      required: false
+                    page:
+                      description: ''
+                      readOnly: true
+                      type: integer
+                      facets:
+                        readOnly?: boolean
+                      required: false
+                    previous:
+                      description: ''
+                      readOnly: true
+                      type: string
+                      facets:
+                        readOnly?: boolean
+                      required: false
+                    results:
+                      description: ''
+                      items:
+                        type: ProjectSavedFilter
+                      readOnly: true
+                      type: array
+                      facets:
+                        readOnly?: boolean
+                      required: false
+                    size:
+                      description: ''
+                      readOnly: true
+                      type: integer
+                      facets:
+                        readOnly?: boolean
+                      required: false
+                  type: object
+              description: Successful operation
+          queryParameters:
+            page:
+              description: Page Number
+              type: integer
+              displayName: Page Number
+            size:
+              description: Page Size
+              type: integer
+              displayName: Page Size
+          (oas-tags):
+            - Project
+      /features:
+        displayName: features
+        /url_rewriting:
+          displayName: url_rewriting
+          /rules_validator:
+            displayName: rules_validator
+            post:
+              displayName: testUrlRewritingRules
+              description: Match and replace parts of a URL based on rules passed in POST data.
+              (oas-summary): Match and replace parts of a URL based on rules passed in POST data
+              (oas-responses-default):
+                body:
+                  application/json:
+                    type: DefaultPayload
+                description: error payload
+              responses:
+                '201':
+                  body:
+                    application/json:
+                      type: URLRewritingRulesSerializer
+                  description: Successful operation
+              (oas-tags):
+                - Project
+    uriParameters:
+      username:
+        description: User's identifier
+        required: true
+        type: string
+        displayName: User's identifier
+    get:
+      displayName: getProjects
+      description: List all active projects for the user
+      (oas-summary): List all active projects for the user
+      (oas-responses-default):
+        body:
+          application/json:
+            type: DefaultPayload
+        description: error payload
+      responses:
+        '200':
+          body:
+            application/json:
+              properties:
+                count:
+                  description: ''
+                  readOnly: true
+                  type: integer
+                  facets:
+                    readOnly?: boolean
+                  required: false
+                next:
+                  description: ''
+                  readOnly: true
+                  type: string
+                  facets:
+                    readOnly?: boolean
+                  required: false
+                page:
+                  description: ''
+                  readOnly: true
+                  type: integer
+                  facets:
+                    readOnly?: boolean
+                  required: false
+                previous:
+                  description: ''
+                  readOnly: true
+                  type: string
+                  facets:
+                    readOnly?: boolean
+                  required: false
+                results:
+                  description: ''
+                  items:
+                    type: Project
+                  readOnly: true
+                  type: array
+                  facets:
+                    readOnly?: boolean
+                  required: false
+                size:
+                  description: ''
+                  readOnly: true
+                  type: integer
+                  facets:
+                    readOnly?: boolean
+                  required: false
+              type: object
+          description: Successful operation
+      queryParameters:
+        page:
+          description: Page Number
+          type: integer
+          displayName: Page Number
+        size:
+          description: Page Size
+          type: integer
+          displayName: Page Size
+      (oas-tags):
+        - Project
+types:
+  Analysis:
+    properties:
+      config:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      date_created:
+        description: ''
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      date_finished:
+        description: ''
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      date_last_modified:
+        description: Date of last modified analysis
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      date_launched:
+        description: ''
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      features:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      id:
+        description: ''
+        format: int64
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      slug:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      url:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      urls_done:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      urls_in_queue:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      user:
+        description: ''
+        readOnly: false
+        type: User
+        facets:
+          readOnly?: boolean
+  AnalysisDetail:
+    properties:
+      config:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      date_finished:
+        description: ''
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      date_last_modified:
+        description: Date of last modified analysis
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      date_launched:
+        description: ''
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      failures:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      features:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      id:
+        description: ''
+        format: int64
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      red_button_domain:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      slug:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      url:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      urls_done:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      urls_in_queue:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      user:
+        description: ''
+        readOnly: false
+        type: User
+        facets:
+          readOnly?: boolean
+  CrawlStatistics:
+    properties:
+      depth_current:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      last_upd_dt:
+        description: ''
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+      pages_dones:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      pages_dones_2xx:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      pages_dones_3xx:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      pages_dones_4xx:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      pages_dones_5xx:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      pages_dones_networkerror:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      pages_dones_xxx:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      pages_known:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+  CsvExportStatus:
+    properties:
+      area:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      date_created:
+        description: ''
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      job_id:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      job_status:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      job_url:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      nb_results:
+        description: ''
+        format: int64
+        maximum: 2147483647
+        minimum: 0
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      query:
+        description: ''
+        readOnly: false
+        type: UrlsQuery
+        facets:
+          readOnly?: boolean
+      results:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  Default:
+    properties: {}
+  DefaultPayload:
+    description: default payload for object for all HTTP codes that are not covered individually
+    properties:
+      error:
+        properties:
+          error_code:
+            description: Error Code
+            type: string
+            required: false
+          error_detail:
+            description: 'If available, detailed error'
+            type: object
+            required: false
+          message:
+            description: Error Message
+            type: string
+            required: false
+        type: object
+        required: false
+  FieldValues:
+    properties:
+      count:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      results:
+        description: ''
+        items:
+          type: FieldValuesResult
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+  FieldValuesResult:
+    properties:
+      nb_urls:
+        description: ''
+        format: int64
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      value:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+  Project:
+    properties:
+      active:
+        description: ''
+        readOnly: false
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+      current_settings:
+        description: ''
+        readOnly: false
+        type: ProjectSettingsSerializer
+        facets:
+          readOnly?: boolean
+      date_created:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+      slug:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+      user:
+        description: ''
+        readOnly: false
+        type: User
+        facets:
+          readOnly?: boolean
+  ProjectSavedFilter:
+    properties:
+      filters:
+        description: ''
+        readOnly: false
+        type: object
+        facets:
+          readOnly?: boolean
+      identifier:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+  ProjectSettingsSerializer:
+    properties:
+      allowed_domains:
+        description: ''
+        items:
+          type: string
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+      blacklisted_domains:
+        description: ''
+        items:
+          type: string
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+      compare_crawl:
+        description: ''
+        readOnly: false
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+      crawl_gzip:
+        description: ''
+        readOnly: false
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+      extra_headers:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      google_analytics_account_email:
+        description: Keep email in case user delete his social auth connection
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      google_analytics_nb_days:
+        description: ''
+        format: int64
+        maximum: 90
+        minimum: 1
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      google_analytics_site_id:
+        description: ''
+        format: int64
+        maximum: 2147483647
+        minimum: -2147483648
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      google_social_auth_id:
+        description: ''
+        format: int64
+        maximum: 2147483647
+        minimum: -2147483648
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      has_robots_txt:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      header_settings:
+        description: ''
+        items:
+          type: string
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+      max_depth:
+        description: ''
+        format: int64
+        maximum: 2147483647
+        minimum: 0
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      max_nb_pages:
+        description: ''
+        format: int64
+        maximum: 2147483647
+        minimum: 1
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+      max_pages_per_sec:
+        description: ''
+        format: int64
+        maximum: 2147483647
+        minimum: 1
+        readOnly: false
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      respect_nofollow:
+        description: ''
+        readOnly: false
+        type: boolean
+        facets:
+          readOnly?: boolean
+        required: false
+      sitemaps:
+        description: ''
+        items:
+          type: string
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+      start_urls:
+        description: ''
+        items:
+          type: string
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+      user_agent:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  RewritingRuleSerializer:
+    properties:
+      ignore_case:
+        description: ''
+        readOnly: false
+        type: boolean
+        facets:
+          readOnly?: boolean
+      regex:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+      replace:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+  URLRewritingRulesSerializer:
+    properties:
+      rules:
+        description: ''
+        items:
+          type: RewritingRuleSerializer
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+      urls:
+        description: ''
+        items:
+          type: string
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+  UrlsAggsQueries:
+    items:
+      type: UrlsAggsQuery
+    type: array
+  UrlsAggsQuery:
+    properties:
+      aggs:
+        description: ''
+        items:
+          type: object
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+        required: false
+      filters:
+        description: ''
+        readOnly: false
+        type: object
+        facets:
+          readOnly?: boolean
+        required: false
+  UrlsQuery:
+    properties:
+      fields:
+        description: ''
+        items:
+          type: string
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+        required: false
+      filters:
+        description: ''
+        readOnly: false
+        type: object
+        facets:
+          readOnly?: boolean
+        required: false
+      sort:
+        description: ''
+        items:
+          type: object
+        readOnly: false
+        type: array
+        facets:
+          readOnly?: boolean
+        required: false
+  User:
+    properties:
+      company_name:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      date_joined:
+        description: ''
+        format: rfc3339
+        readOnly: false
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      email:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      first_name:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      is_organization:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      last_name:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      login:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        description: ''
+        readOnly: false
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      url:
+        description: ''
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false

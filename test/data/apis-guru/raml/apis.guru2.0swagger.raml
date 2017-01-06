@@ -1,0 +1,223 @@
+#%RAML 1.0
+title: APIs.guru
+version: '2.0'
+baseUri: 'https://api.apis.guru/v2/'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: |
+  Wikipedia for Web APIs. Repository of API specs in OpenAPI(fka Swagger) 2.0 format.
+
+  **Warning**: If you want to be notified about changes in advance please subscribe to our [Gitter channel](https://gitter.im/APIs-guru/api-models).
+
+  Client sample: [[Demo]](https://apis.guru/simple-ui) [[Repo]](https://github.com/APIs-guru/simple-ui)
+(oas-info):
+  (oas-x-apisguru-categories):
+    - open_data
+    - developer_tools
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_apis.guru_branding_logo_vertical.svg'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.apis.guru/v2/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): apis.guru
+  (oas-x-tags):
+    - API
+    - Catalog
+    - Directory
+    - REST
+    - Swagger
+    - OpenAPI
+  contact:
+    name: APIs.guru
+    url: 'http://APIs.guru'
+    email: founders@apis.guru
+  license:
+    name: CC0 1.0
+    url: 'https://github.com/APIs-guru/api-models#licenses'
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-tags: any
+  oas-x-apiClientRegistration: any
+  oas-x-serviceName: any
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-externalDocs):
+  url: 'https://github.com/APIs-guru/api-models/blob/master/API.md'
+/metrics.json:
+  displayName: metrics.json
+  get:
+    displayName: getMetrics
+    description: |
+      Some basic metrics for the entire directory.
+      Just stunning numbers to put on a front page and are intended purely for WoW effect :)
+    (oas-summary): Get basic metrics
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Metrics
+        description: OK
+/list.json:
+  displayName: list.json
+  get:
+    displayName: listAPIs
+    description: |
+      List all APIs in the directory.
+      Returns links to OpenAPI specification for each API in the directory.
+      If API exist in multiply versions `preferred` one is explicitly marked.
+
+      Some basic info from OpenAPI spec is cached inside each object.
+      This allows to generate some simple views without need to fetch OpenAPI spec for each API.
+    (oas-summary): List all APIs
+    responses:
+      '200':
+        body:
+          application/json:
+            type: APIs
+        description: OK
+types:
+  API:
+    additionalProperties: false
+    description: Meta information about API
+    properties:
+      added:
+        description: Timestamp when the API was first added to the directory
+        format: rfc3339
+        type: datetime
+      preferred:
+        description: Recommended version
+        type: string
+      versions:
+        additionalProperties:
+          type: ApiVersion
+        description: List of supported versions of the API
+        minProperties: 1
+        type: object
+  APIs:
+    description: |
+      List of API details.
+      It is a JSON object with API IDs(`<provider>[:<service>]`) as keys.
+    minProperties: 1
+    type: object
+    properties:
+      //:
+        type: API
+    example:
+      'googleapis.com:drive':
+        added: '2015-02-22T20:00:45.000Z'
+        preferred: v3
+        versions:
+          v2:
+            added: '2015-02-22T20:00:45.000Z'
+            info:
+              title: Drive
+              version: v2
+              (oas-x-apiClientRegistration):
+                url: 'https://console.developers.google.com'
+              (oas-x-logo):
+                url: 'https://api.apis.guru/v2/cache/logo/https_www.gstatic.com_images_icons_material_product_2x_drive_32dp.png'
+              (oas-x-origin):
+                format: google
+                url: 'https://www.googleapis.com/discovery/v1/apis/drive/v2/rest'
+                version: v1
+              (oas-x-preferred): false
+              (oas-x-providerName): googleapis.com
+              (oas-x-serviceName): drive
+            swaggerUrl: 'https://api.apis.guru/v2/specs/googleapis.com/drive/v2/swagger.json'
+            swaggerYamlUrl: 'https://api.apis.guru/v2/specs/googleapis.com/drive/v2/swagger.yaml'
+            updated: '2016-06-17T00:21:44.000Z'
+          v3:
+            added: '2015-12-12T00:25:13.000Z'
+            info:
+              title: Drive
+              version: v3
+              (oas-x-apiClientRegistration):
+                url: 'https://console.developers.google.com'
+              (oas-x-logo):
+                url: 'https://api.apis.guru/v2/cache/logo/https_www.gstatic.com_images_icons_material_product_2x_drive_32dp.png'
+              (oas-x-origin):
+                format: google
+                url: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+                version: v1
+              (oas-x-preferred): true
+              (oas-x-providerName): googleapis.com
+              (oas-x-serviceName): drive
+            swaggerUrl: 'https://api.apis.guru/v2/specs/googleapis.com/drive/v3/swagger.json'
+            swaggerYamlUrl: 'https://api.apis.guru/v2/specs/googleapis.com/drive/v3/swagger.yaml'
+            updated: '2016-06-17T00:21:44.000Z'
+  ApiVersion:
+    additionalProperties: false
+    properties:
+      added:
+        description: Timestamp when the version was added
+        format: rfc3339
+        type: datetime
+      info:
+        description: Copy of `info` section from Swagger spec
+        minProperties: 1
+        type: object
+      swaggerUrl:
+        description: URL to Swagger spec in JSON format
+        format: url
+        type: string
+        facets:
+          format: string
+      swaggerYamlUrl:
+        description: URL to Swagger spec in YAML format
+        format: url
+        type: string
+        facets:
+          format: string
+      updated:
+        description: Timestamp when the version was updated
+        format: rfc3339
+        type: datetime
+  Metrics:
+    additionalProperties: false
+    description: List of basic metrics
+    properties:
+      numAPIs:
+        description: Number of APIs
+        minimum: 1
+        type: integer
+      numEndpoints:
+        description: Total number of endpoints inside all specifications
+        minimum: 1
+        type: integer
+      numSpecs:
+        description: Number of API specifications including different versions of the same API
+        minimum: 1
+        type: integer
+    example:
+      numAPIs: 238
+      numEndpoints: 6448
+      numSpecs: 302

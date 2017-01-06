@@ -1,0 +1,882 @@
+#%RAML 1.0
+title: Europeana
+version: 2.3.0
+baseUri: 'http://www.europeana.eu/api'
+mediaType: application/json
+protocols:
+  - HTTP
+description: 'This Swagger API console provides an overview of and interface to the Europeana REST API. You can build and test anything from the simplest search to a complex query using facetList such as dates, geotags and permissions. For more help and information, head to our comprehensive <a href="http://labs.europeana.api/api/">online documentation</a>.'
+(oas-tags-definition):
+  - description: ' '
+    name: Search
+  - description: ' '
+    name: Providers and Datasets
+  - description: ' '
+    name: Record
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_labs.europeana.eu_files_labs_footer_150203-solid-black-logo-128px.fw-1-.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://www.europeana.eu/api/api-docs/'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): europeana.eu
+  contact:
+    name: 'http://labs.europeana.eu/api'
+  termsOfService: 'http://www.europeana.eu/portal/en/rights.html'
+  license:
+    name: API terms of use
+    url: 'http://www.europeana.eu/portal/en/rights/api.html'
+/v2:
+  displayName: v2
+  /record:
+    displayName: record
+    '/{collectionId}':
+      displayName: '{collectionId}'
+      '/{recordId}.json':
+        displayName: '{recordId}.json'
+        uriParameters:
+          recordId:
+            description: recordId
+            required: true
+            type: string
+            displayName: recordId
+        get:
+          displayName: getSingleRecordJson
+          (oas-summary): get a single record in JSON format
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ModelAndView
+              description: OK
+            '401':
+              description: Unauthorized
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          queryParameters:
+            profile:
+              description: profile
+              required: false
+              type: string
+              displayName: profile
+            wskey:
+              description: wskey
+              required: true
+              type: string
+              displayName: wskey
+            callback:
+              description: callback
+              required: false
+              type: string
+              displayName: callback
+          (oas-tags):
+            - Record
+      '/{recordId}.jsonld':
+        displayName: '{recordId}.jsonld'
+        uriParameters:
+          recordId:
+            description: recordId
+            required: true
+            type: string
+            displayName: recordId
+        get:
+          displayName: getSingleRecordJsonLD
+          (oas-summary): get single record in JSON LD format
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ModelAndView
+              description: OK
+            '401':
+              description: Unauthorized
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          queryParameters:
+            wskey:
+              description: wskey
+              required: true
+              type: string
+              displayName: wskey
+            format:
+              description: format
+              required: false
+              type: string
+              displayName: format
+            callback:
+              description: callback
+              required: false
+              type: string
+              displayName: callback
+          (oas-tags):
+            - Record
+      '/{recordId}.rdf':
+        displayName: '{recordId}.rdf'
+        uriParameters:
+          recordId:
+            description: recordId
+            required: true
+            type: string
+            displayName: recordId
+        get:
+          displayName: getSingleRecordRDF
+          (oas-summary): get single record in RDF format)
+          responses:
+            '200':
+              body:
+                application/rdf+xml:
+                  type: ModelAndView
+              description: OK
+            '401':
+              description: Unauthorized
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          queryParameters:
+            wskey:
+              description: wskey
+              required: true
+              type: string
+              displayName: wskey
+          (oas-tags):
+            - Record
+  /translateQuery.json:
+    displayName: translateQuery.json
+    get:
+      displayName: translateQueryUsingGET
+      (oas-summary): translate a term to different languages
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ModelAndView
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      queryParameters:
+        term:
+          description: term
+          required: true
+          type: string
+          displayName: term
+        languageCodes:
+          collectionFormat: multi
+          description: languageCodes
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: languageCodes
+          facets:
+            collectionFormat: string
+        wskey:
+          description: wskey
+          required: true
+          type: string
+          displayName: wskey
+        profile:
+          description: profile
+          required: false
+          type: string
+          displayName: profile
+        callback:
+          description: callback
+          required: false
+          type: string
+          displayName: callback
+      (oas-tags):
+        - Search
+  /dataset:
+    displayName: dataset
+    '/{id}.json':
+      displayName: '{id}.json'
+      uriParameters:
+        id:
+          description: id
+          required: true
+          type: string
+          displayName: id
+      get:
+        displayName: getDataset
+        (oas-summary): get information about a specific dataset
+        responses:
+          '200':
+            body:
+              application/json:
+                type: ModelAndView
+            description: OK
+          '401':
+            description: Unauthorized
+          '403':
+            description: Forbidden
+          '404':
+            description: Not Found
+        queryParameters:
+          wskey:
+            description: wskey
+            required: false
+            type: string
+            displayName: wskey
+          callback:
+            description: callback
+            required: false
+            type: string
+            displayName: callback
+        (oas-tags):
+          - Providers and Datasets
+  /opensearch.rss:
+    displayName: opensearch.rss
+    get:
+      displayName: suggestions
+      (oas-summary): basic search function following the OpenSearch specification
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: RssResponse
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      queryParameters:
+        searchTerms:
+          description: searchTerms
+          required: true
+          type: string
+          displayName: searchTerms
+        startIndex:
+          description: startIndex
+          format: int32
+          required: false
+          type: integer
+          displayName: startIndex
+        count:
+          description: count
+          format: int32
+          required: false
+          type: integer
+          displayName: count
+      (oas-tags):
+        - Search
+  /suggestions.json:
+    displayName: suggestions.json
+    get:
+      displayName: suggestions_1
+      (oas-summary): get autocompletion recommendations for search queries
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ModelAndView
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      queryParameters:
+        query:
+          description: query
+          required: true
+          type: string
+          displayName: query
+        rows:
+          description: rows
+          format: int32
+          required: false
+          type: integer
+          displayName: rows
+        phrases:
+          description: phrases
+          required: false
+          type: boolean
+          displayName: phrases
+        callback:
+          description: callback
+          required: false
+          type: string
+          displayName: callback
+      (oas-tags):
+        - Search
+  /search.rss:
+    displayName: search.rss
+    get:
+      displayName: fieldTrip
+      (oas-summary): Google Fieldtrip formatted RSS of selected collections
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: ModelAndView
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      queryParameters:
+        query:
+          description: query
+          required: true
+          type: string
+          displayName: query
+        offset:
+          description: offset
+          format: int32
+          required: false
+          type: integer
+          displayName: offset
+        limit:
+          description: limit
+          format: int32
+          required: false
+          type: integer
+          displayName: limit
+        profile:
+          description: profile
+          required: false
+          type: string
+          displayName: profile
+        language:
+          description: language
+          required: false
+          type: string
+          displayName: language
+      (oas-tags):
+        - Search
+  /search.json:
+    displayName: search.json
+    get:
+      displayName: searchRecords
+      (oas-summary): search for records
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ModelAndView
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      queryParameters:
+        wskey:
+          description: wskey
+          required: true
+          type: string
+          displayName: wskey
+        query:
+          description: query
+          required: false
+          type: string
+          displayName: query
+        qf:
+          collectionFormat: multi
+          description: qf
+          items:
+            type: string
+          required: false
+          type: array
+          displayName: qf
+          facets:
+            collectionFormat: string
+        reusability:
+          collectionFormat: multi
+          description: reusability
+          items:
+            type: string
+          required: false
+          type: array
+          displayName: reusability
+          facets:
+            collectionFormat: string
+        profile:
+          description: profile
+          required: false
+          type: string
+          displayName: profile
+        start:
+          description: start
+          format: int32
+          required: false
+          type: integer
+          displayName: start
+        rows:
+          description: rows
+          format: int32
+          required: false
+          type: integer
+          displayName: rows
+        facet:
+          collectionFormat: multi
+          description: facet
+          items:
+            type: string
+          required: false
+          type: array
+          displayName: facet
+          facets:
+            collectionFormat: string
+        sort:
+          description: sort
+          required: false
+          type: string
+          displayName: sort
+        colourpalette:
+          collectionFormat: multi
+          description: colourpalette
+          items:
+            type: string
+          required: false
+          type: array
+          displayName: colourpalette
+          facets:
+            collectionFormat: string
+        thumbnail:
+          description: thumbnail
+          required: false
+          type: boolean
+          displayName: thumbnail
+        media:
+          description: media
+          required: false
+          type: boolean
+          displayName: media
+        text_fulltext:
+          description: text_fulltext
+          required: false
+          type: boolean
+          displayName: text_fulltext
+        landingpage:
+          description: landingpage
+          required: false
+          type: boolean
+          displayName: landingpage
+        cursor:
+          description: cursor
+          required: false
+          type: string
+          displayName: cursor
+        callback:
+          description: callback
+          required: false
+          type: string
+          displayName: callback
+      (oas-tags):
+        - Search
+  /provider:
+    displayName: provider
+    '/{id}.json':
+      displayName: '{id}.json'
+      uriParameters:
+        id:
+          description: id
+          required: true
+          type: string
+          displayName: id
+      get:
+        displayName: getProvider
+        (oas-summary): get information about a specific Europeana provider
+        responses:
+          '200':
+            body:
+              application/json:
+                type: ModelAndView
+            description: OK
+          '401':
+            description: Unauthorized
+          '403':
+            description: Forbidden
+          '404':
+            description: Not Found
+        queryParameters:
+          wskey:
+            description: wskey
+            required: false
+            type: string
+            displayName: wskey
+          callback:
+            description: callback
+            required: false
+            type: string
+            displayName: callback
+        (oas-tags):
+          - Providers and Datasets
+    '/{id}':
+      displayName: '{id}'
+      /datasets.json:
+        displayName: datasets.json
+        get:
+          displayName: listProviderDatasets
+          (oas-summary): get the list of datasets provided by a specific provider
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ModelAndView
+              description: OK
+            '401':
+              description: Unauthorized
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          queryParameters:
+            wskey:
+              description: wskey
+              required: false
+              type: string
+              displayName: wskey
+            callback:
+              description: callback
+              required: false
+              type: string
+              displayName: callback
+          (oas-tags):
+            - Providers and Datasets
+  /datasets.json:
+    displayName: datasets.json
+    get:
+      displayName: listDatasets
+      (oas-summary): get the list of Europeana datasets
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ModelAndView
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      queryParameters:
+        wskey:
+          description: wskey
+          required: false
+          type: string
+          displayName: wskey
+        callback:
+          description: callback
+          required: false
+          type: string
+          displayName: callback
+        edmDatasetName:
+          description: edmDatasetName
+          required: false
+          type: string
+          displayName: edmDatasetName
+        countryCode:
+          description: countryCode
+          required: false
+          type: string
+          displayName: countryCode
+        status:
+          description: status
+          required: false
+          type: string
+          displayName: status
+        offset:
+          description: offset
+          required: false
+          type: string
+          displayName: offset
+        pagesize:
+          description: pagesize
+          required: false
+          type: string
+          displayName: pagesize
+      (oas-tags):
+        - Providers and Datasets
+  /providers.json:
+    displayName: providers.json
+    get:
+      displayName: listProviders
+      (oas-summary): get the list of Europeana data providers
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ModelAndView
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      queryParameters:
+        wskey:
+          description: wskey
+          required: false
+          type: string
+          displayName: wskey
+        callback:
+          description: callback
+          required: false
+          type: string
+          displayName: callback
+        countryCode:
+          description: countryCode
+          required: false
+          type: string
+          displayName: countryCode
+        offset:
+          description: offset
+          required: false
+          type: string
+          displayName: offset
+        pagesize:
+          description: pagesize
+          required: false
+          type: string
+          displayName: pagesize
+      (oas-tags):
+        - Providers and Datasets
+types:
+  AtomLink:
+    properties:
+      href:
+        type: string
+        required: false
+  Channel:
+    properties:
+      atomLink:
+        type: AtomLink
+        required: false
+      image:
+        type: ChannelImage
+        required: false
+      items:
+        items:
+          type: Item
+        type: array
+        required: false
+      itemsPerPage:
+        type: Statistic
+        required: false
+      query:
+        type: Query
+        required: false
+      startIndex:
+        type: Statistic
+        required: false
+      totalResults:
+        type: Statistic
+        required: false
+  ChannelImage: {}
+  Enclosure:
+    properties:
+      url:
+        type: string
+        required: false
+  Item:
+    properties:
+      dcCreator:
+        type: string
+        required: false
+      dcTermsHasPart:
+        items:
+          type: string
+        type: array
+        required: false
+      dcTermsIsPartOf:
+        items:
+          type: string
+        type: array
+        required: false
+      description:
+        type: string
+        required: false
+      enclosure:
+        type: Enclosure
+        required: false
+      enrichmentAgentLabel:
+        items:
+          type: string
+        type: array
+        required: false
+      enrichmentAgentTerm:
+        items:
+          type: string
+        type: array
+        required: false
+      enrichmentConceptLabel:
+        items:
+          type: string
+        type: array
+        required: false
+      enrichmentConceptTerm:
+        items:
+          type: string
+        type: array
+        required: false
+      enrichmentPeriodBegin:
+        type: string
+        required: false
+      enrichmentPeriodEnd:
+        type: string
+        required: false
+      enrichmentPeriodLabel:
+        items:
+          type: string
+        type: array
+        required: false
+      enrichmentPeriodTerm:
+        items:
+          type: string
+        type: array
+        required: false
+      enrichmentPlaceLabel:
+        items:
+          type: string
+        type: array
+        required: false
+      enrichmentPlaceLatitude:
+        format: float
+        type: number
+        required: false
+      enrichmentPlaceLongitude:
+        format: float
+        type: number
+        required: false
+      enrichmentPlaceTerm:
+        items:
+          type: string
+        type: array
+        required: false
+      europeanaDataProvider:
+        type: string
+        required: false
+      europeanaLanguage:
+        type: string
+        required: false
+      europeanaProvider:
+        type: string
+        required: false
+      europeanaRights:
+        items:
+          type: string
+        type: array
+        required: false
+      europeanaType:
+        type: string
+        required: false
+      europeanaYear:
+        type: string
+        required: false
+      guid:
+        type: string
+        required: false
+      link:
+        type: string
+        required: false
+      title:
+        type: string
+        required: false
+  ModelAndView:
+    properties:
+      empty:
+        type: boolean
+        required: false
+      model:
+        type: object
+        required: false
+      modelMap:
+        additionalProperties:
+          type: object
+        type: object
+        required: false
+      reference:
+        type: boolean
+        required: false
+      view:
+        type: View
+        required: false
+      viewName:
+        type: string
+        required: false
+  ModelMap:
+    type: object
+    properties:
+      //:
+        type: object
+  Query:
+    properties:
+      searchTerms:
+        type: string
+        required: false
+      startPage:
+        format: int32
+        type: integer
+        required: false
+  RssResponse:
+    properties:
+      channel:
+        type: Channel
+        required: false
+  Statistic:
+    properties:
+      value:
+        format: int64
+        type: integer
+        required: false
+  View:
+    properties:
+      contentType:
+        type: string
+        required: false

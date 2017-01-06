@@ -1,0 +1,2223 @@
+#%RAML 1.0
+title: Vestorly
+version: 1.0.0
+baseUri: 'https://staging.vestorly.com/api/v2'
+protocols:
+  - HTTPS
+description: Vestorly Developers API
+(oas-tags-definition):
+  - description: Vestorly API docs
+    name: api docs
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#252832'
+    url: 'https://api.apis.guru/v2/cache/logo/http_d1sva73gxwx496.cloudfront.net_images_homepage_logo-white-92827ba4.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'http://developers.vestorly.com/v2/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): vestorly.com
+  contact:
+    name: Vestorly Team
+  termsOfService: 'http://www.vestorly.com/terms/'
+  license:
+    name: MIT
+(oas-externalDocs):
+  description: Find more info here
+  url: 'https://developers.vestorly.com'
+/members:
+  displayName: members
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Mongo ID of member to fetch
+        format: string
+        required: true
+        type: string
+        facets:
+          format: string
+        displayName: Mongo ID of member to fetch
+    put:
+      displayName: updateMemberByID
+      description: Updates a single member
+      body:
+        application/json:
+          type: Member
+          (oas-body-name): member
+          description: Member you want to update
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Memberresponse
+          description: Member response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          format: string
+          required: true
+          type: string
+          facets:
+            format: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - members
+    get:
+      displayName: findMemberByID
+      description: Returns a single member
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Memberresponse
+          description: Member response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          format: string
+          required: true
+          type: string
+          facets:
+            format: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - members
+  post:
+    displayName: createMember
+    description: Create a new member in the Vestorly Platform
+    body:
+      application/json:
+        type: Member
+        (oas-body-name): member
+        description: Member you want to create
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Memberresponse
+        description: member response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - members
+  get:
+    displayName: findMembers
+    description: Returns all members
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Members
+        description: Member response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        format: string
+        required: true
+        type: string
+        facets:
+          format: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - members
+/sources:
+  displayName: sources
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: ID of source to fetch
+        required: true
+        type: string
+        displayName: ID of source to fetch
+    put:
+      displayName: updateSourceByID
+      description: Update Source By ID
+      body:
+        application/json:
+          type: SourceInput
+          (oas-body-name): source
+          description: Source
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Sourceresponse
+          description: source response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - sources
+    get:
+      displayName: getSourceByID
+      description: Get Source By ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Sourceresponse
+          description: source response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - sources
+  post:
+    displayName: createSource
+    description: Create source
+    body:
+      application/json:
+        type: SourceInput
+        (oas-body-name): source
+        description: Source
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Sourceresponse
+        description: source response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - sources
+  get:
+    displayName: findSources
+    description: Returns all sources
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Sources
+        description: source response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - sources
+/newsletter_settings:
+  displayName: newsletter_settings
+  get:
+    displayName: findNewsletterSettings
+    description: Returns all newsletter settings
+    responses:
+      '200':
+        body:
+          application/json:
+            type: NewsletterSettings
+        description: newsletter settings response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - newsletter_settings
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Mongo ID of newsletter settings to update
+        required: true
+        type: string
+        displayName: Mongo ID of newsletter settings to update
+    get:
+      displayName: findNewsletterSettingsByID
+      description: Returns a single newsletter settings if the user has access
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Newslettersettingresponse
+          description: newsletting setting response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - newsletter_settings
+    put:
+      displayName: updateNewsletterSettingsByID
+      description: Update a single newsletter setting by ID
+      body:
+        application/json:
+          type: NewsletterSettingsInput
+          (oas-body-name): newsletter_setting
+          description: newsletter settings
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Newslettersettingresponse
+          description: newsletter settings response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - newsletter_settings
+/advisors:
+  displayName: advisors
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Advisor Id to fetch
+        required: true
+        type: string
+        displayName: Advisor Id to fetch
+    get:
+      displayName: findAdvisorByID
+      description: Returns a single advisor given their ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Advisor
+          description: Advisor response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - advisors
+/articles:
+  displayName: articles
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Article Id to fetch
+        format: string
+        required: true
+        type: string
+        facets:
+          format: string
+        displayName: Article Id to fetch
+    get:
+      displayName: findArticleByID
+      description: Returns a single article
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Articleresponse
+          description: Article response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - articles
+  get:
+    displayName: findArticles
+    description: Returns all articles
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Articles
+        description: Response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+      limit:
+        description: Limit on the number of articles to return
+        format: int32
+        required: false
+        type: integer
+        displayName: Limit on the number of articles to return
+      text_query:
+        description: Search query parameter
+        required: false
+        type: string
+        displayName: Search query parameter
+      sort_direction:
+        description: Direction of sort (used with sort_by parameter)
+        required: false
+        type: string
+        displayName: Direction of sort (used with sort_by parameter)
+      sort_by:
+        description: Field on model to sort by
+        required: false
+        type: string
+        displayName: Field on model to sort by
+    (oas-tags):
+      - articles
+/events:
+  displayName: events
+  post:
+    displayName: createEvent
+    description: Creates a new event in the system
+    body:
+      application/json:
+        type: EventInput
+        (oas-body-name): event
+        description: Event
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Eventcreateresponse
+        description: Event response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - events
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Mongo ID of event to fetch
+        required: true
+        type: string
+        displayName: Mongo ID of event to fetch
+    get:
+      displayName: findEventByID
+      description: Returns a single event if the user has access
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Eventresponse
+          description: Event response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - events
+  get:
+    displayName: findEvents
+    description: Returns all events
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Events
+        description: Event response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - events
+/newsletters:
+  displayName: newsletters
+  get:
+    displayName: findNewsletters
+    description: Returns all newsletters
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Newsletters
+        description: Newsletter response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - newsletters
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Mongo ID of event to update
+        required: true
+        type: string
+        displayName: Mongo ID of event to update
+    get:
+      displayName: getNewsletterByID
+      description: Get a newsletter by ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Newsletterresponse
+          description: Newsletter response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - newsletters
+    put:
+      displayName: updateNewsletterByID
+      description: Updates a newsletter
+      body:
+        application/json:
+          type: NewsletterInput
+          (oas-body-name): newsletter
+          description: Newsletter
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Newsletterresponse
+          description: Newsletter response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - newsletters
+/groups:
+  displayName: groups
+  get:
+    displayName: findGroups
+    description: Returns all groups
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Groups
+        description: Group response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        format: string
+        required: true
+        type: string
+        facets:
+          format: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - groups
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: Mongo ID of group to fetch
+        format: string
+        required: true
+        type: string
+        facets:
+          format: string
+        displayName: Mongo ID of group to fetch
+    delete:
+      displayName: deleteGroup
+      description: Deletes a Group
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Groupresponse
+          description: group response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          format: string
+          required: true
+          type: string
+          facets:
+            format: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - groups
+    put:
+      displayName: updateGroupById
+      description: Updates a Group
+      body:
+        application/json:
+          type: GroupInput
+          (oas-body-name): group
+          description: Group to update
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Groupresponse
+          description: group response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - groups
+    get:
+      displayName: findGroupByID
+      description: Returns a single group if user has access
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Groupresponse
+          description: Group response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          format: string
+          required: true
+          type: string
+          facets:
+            format: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - groups
+  post:
+    displayName: createGroup
+    description: Creates a new Group
+    body:
+      application/json:
+        type: GroupInput
+        (oas-body-name): group
+        description: Group to add
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Groupresponse
+        description: group response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        format: string
+        required: true
+        type: string
+        facets:
+          format: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - groups
+/posts:
+  displayName: posts
+  get:
+    displayName: findPosts
+    description: Query all posts
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Posts
+        description: posts response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+      text_query:
+        description: Filter post by parameters
+        required: false
+        type: string
+        displayName: Filter post by parameters
+      external_url:
+        description: Filter by External URL
+        required: false
+        type: string
+        displayName: Filter by External URL
+      is_published:
+        description: Filter by is_published boolean
+        required: false
+        type: string
+        displayName: Filter by is_published boolean
+    (oas-tags):
+      - posts
+  post:
+    displayName: createPost
+    description: Create a new post in the Vestorly Platform
+    body:
+      application/json:
+        type: PostInput
+        (oas-body-name): post
+        description: Post you want to create
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Postresponse
+        description: posts response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - posts
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: id of post to update
+        required: true
+        type: string
+        displayName: id of post to update
+    get:
+      displayName: getPostByID
+      description: Query all posts
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Postresponse
+          description: post response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - posts
+    put:
+      displayName: updatePostByID
+      description: Update A Post
+      body:
+        application/json:
+          type: Post
+          (oas-body-name): post
+          description: Post you want to update
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Postresponse
+          description: post response
+      queryParameters:
+        vestorly_auth:
+          description: Vestorly Auth Token
+          required: true
+          type: string
+          displayName: Vestorly Auth Token
+      (oas-tags):
+        - posts
+/member_reports:
+  displayName: member_reports
+  get:
+    displayName: findMemberReports
+    description: Returns all member reports
+    responses:
+      '200':
+        body:
+          application/json:
+            type: MemberReports
+        description: member reports response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - member_reports
+/sessions:
+  displayName: sessions
+  post:
+    displayName: login
+    description: Login To Vestorly Platform
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Session
+        description: Response
+    queryParameters:
+      username:
+        description: Username in the vestorly platform
+        required: true
+        type: string
+        displayName: Username in the vestorly platform
+      password:
+        description: Password in Vestorly Platform
+        required: true
+        type: string
+        displayName: Password in Vestorly Platform
+    (oas-tags):
+      - sessions
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        description: ID of pet to session
+        required: true
+        type: string
+        displayName: ID of pet to session
+    delete:
+      displayName: logout
+      description: Logout of the vestorly platform
+      responses:
+        '200':
+          body:
+            application/json:
+              type: SessionLogoutResponse
+          description: You have successfully logged out of the vestorly platform
+      queryParameters:
+        vestorly_auth:
+          description: Authenication token
+          required: true
+          type: string
+          displayName: Authenication token
+      (oas-tags):
+        - sessions
+/member_events:
+  displayName: member_events
+  get:
+    displayName: findMemberEvents
+    description: Returns all MemberEvents
+    responses:
+      '200':
+        body:
+          application/json:
+            type: MemberEvents
+        description: member event response
+    queryParameters:
+      vestorly_auth:
+        description: Vestorly Auth Token
+        required: true
+        type: string
+        displayName: Vestorly Auth Token
+    (oas-tags):
+      - member_events
+types:
+  Advisor:
+    properties:
+      about:
+        type: string
+        required: false
+      account_type:
+        type: string
+        required: false
+      address:
+        type: string
+        required: false
+      adv_brochure:
+        type: string
+        required: false
+      advisor_employees:
+        type: string
+        required: false
+      api_key:
+        type: string
+        required: false
+      city:
+        type: string
+        required: false
+      company:
+        type: string
+        required: false
+      compliance_bcc_email_address:
+        type: string
+        required: false
+      consultation_reminder:
+        type: string
+        required: false
+      dashboard_url:
+        type: string
+        required: false
+      disclosure:
+        type: string
+        required: false
+      email_blast:
+        type: string
+        required: false
+      email_report_blast:
+        type: string
+        required: false
+      external_options:
+        type: string
+        required: false
+      facebook_blast:
+        type: string
+        required: false
+      first_name:
+        type: string
+        required: false
+      id:
+        type: string
+      last_name:
+        type: string
+        required: false
+      linkedin:
+        type: string
+        required: false
+      linkedin_blast:
+        type: string
+        required: false
+      logo:
+        type: string
+        required: false
+      name:
+        type: string
+      other_compensation:
+        type: string
+        required: false
+      other_services_types:
+        type: string
+        required: false
+      performance_audited:
+        type: string
+        required: false
+      plan:
+        type: string
+        required: false
+      profile_picture:
+        type: string
+        required: false
+      referral_reminder:
+        type: string
+        required: false
+      reg_number:
+        type: string
+        required: false
+      state:
+        type: string
+        required: false
+      tag:
+        type: string
+        required: false
+      twitter_blast:
+        type: string
+        required: false
+      twitter_handle:
+        type: string
+        required: false
+      website:
+        type: string
+        required: false
+      weekly_email_blast:
+        type: string
+        required: false
+      zip:
+        type: string
+        required: false
+  Advisorresponse:
+    properties:
+      advisor:
+        type: Advisor
+        required: false
+  Advisors:
+    properties:
+      advisors:
+        items:
+          type: Advisor
+        type: array
+        required: false
+  Article:
+    properties:
+      _id:
+        type: string
+      body:
+        type: string
+        required: false
+      created_at:
+        type: string
+        required: false
+      external_url:
+        type: string
+        required: false
+      external_url_source:
+        type: string
+        required: false
+      external_url_type:
+        type: string
+        required: false
+      image_height:
+        format: int32
+        type: integer
+        required: false
+      image_path:
+        type: string
+        required: false
+      image_url:
+        type: string
+        required: false
+      image_width:
+        format: int32
+        type: integer
+        required: false
+      is_mobile_proxy_needed:
+        type: boolean
+        required: false
+      is_proxy_needed:
+        type: boolean
+        required: false
+      is_responsive:
+        type: boolean
+        required: false
+      logo_url:
+        type: string
+        required: false
+      needs_sanitize:
+        type: boolean
+        required: false
+      proxy_url:
+        type: string
+        required: false
+      square_logo_url:
+        type: string
+        required: false
+      suitability_score:
+        type: string
+        required: false
+      summary:
+        type: string
+        required: false
+      title:
+        type: string
+      topic:
+        type: string
+        required: false
+      url:
+        type: string
+        required: false
+  Articleresponse:
+    properties:
+      article:
+        type: Article
+        required: false
+  Articles:
+    properties:
+      articles:
+        items:
+          type: Article
+        type: array
+        required: false
+  Event:
+    properties:
+      _id:
+        type: string
+      advisor_id:
+        type: string
+        required: false
+      created_at:
+        type: string
+        required: false
+      event_content:
+        type: EventContent
+        required: false
+      original_url:
+        type: string
+      originator_email:
+        type: string
+        required: false
+      originator_id:
+        type: string
+        required: false
+      parent_event_id:
+        type: string
+        required: false
+      referer:
+        type: string
+        required: false
+      subject_email:
+        type: string
+      subject_id:
+        type: string
+        required: false
+      type:
+        enum:
+          - page_view
+          - sign_up
+          - sign_in
+          - content_posted
+          - create_post
+          - publish_post
+          - update_post
+          - delete_post
+          - unpublish_post
+          - invite
+          - publish_newsletter
+          - publish_social
+          - click
+          - delivered
+          - open
+          - dropped
+          - bounce
+        type: string
+  EventContent:
+    properties:
+      _id:
+        description: Mongo id of event
+        type: string
+        required: false
+      content_field:
+        type: string
+        required: false
+      content_id:
+        type: string
+        required: false
+      content_type:
+        type: string
+        required: false
+      created_at:
+        type: string
+        required: false
+      slug:
+        type: string
+        required: false
+      updated_at:
+        type: string
+        required: false
+  EventInput:
+    properties:
+      advisor_id:
+        type: string
+        required: false
+      created_at:
+        type: string
+        required: false
+      event_content:
+        type: EventContent
+        required: false
+      original_url:
+        type: string
+      originator_email:
+        type: string
+        required: false
+      originator_id:
+        type: string
+        required: false
+      parent_event_id:
+        type: string
+        required: false
+      referer:
+        type: string
+        required: false
+      subject_email:
+        type: string
+      subject_id:
+        type: string
+        required: false
+      type:
+        enum:
+          - page_view
+          - sign_up
+          - sign_in
+          - content_posted
+          - create_post
+          - publish_post
+          - update_post
+          - delete_post
+          - unpublish_post
+          - invite
+          - publish_newsletter
+          - publish_social
+          - click
+          - delivered
+          - open
+          - dropped
+          - bounce
+        type: string
+  Eventcreateresponse:
+    properties:
+      meta:
+        type: Meta
+        required: false
+  Eventresponse:
+    properties:
+      event:
+        type: Event
+        required: false
+  Events:
+    properties:
+      events:
+        items:
+          type: Event
+        type: array
+        required: false
+  Features:
+    properties:
+      _id:
+        type: string
+  Group:
+    properties:
+      _id:
+        type: string
+      autopublish:
+        type: boolean
+        required: false
+      is_default:
+        type: boolean
+        required: false
+      is_hidden:
+        type: boolean
+        required: false
+      name:
+        type: string
+        required: false
+      new_weekly_mailer_content:
+        type: string
+        required: false
+      newsletter_subject:
+        type: string
+        required: false
+      number_articles_per_group:
+        format: int32
+        type: integer
+        required: false
+      number_articles_per_newsletter:
+        format: int32
+        type: integer
+        required: false
+  GroupInput:
+    properties:
+      _id:
+        type: string
+      autopublish:
+        type: boolean
+        required: false
+      is_default:
+        type: boolean
+        required: false
+      is_hidden:
+        type: boolean
+        required: false
+      name:
+        type: string
+        required: false
+      new_weekly_mailer_content:
+        type: string
+        required: false
+      newsletter_subject:
+        type: string
+        required: false
+      number_articles_per_group:
+        format: int32
+        type: integer
+        required: false
+      number_articles_per_newsletter:
+        format: int32
+        type: integer
+        required: false
+  Groupresponse:
+    properties:
+      group:
+        type: Group
+        required: false
+  Groups:
+    properties:
+      groups:
+        items:
+          type: Group
+        type: array
+        required: false
+  Member:
+    properties:
+      _id:
+        type: string
+      address:
+        type: string
+        required: false
+      age:
+        type: string
+        required: false
+      assets:
+        type: string
+        required: false
+      city:
+        type: string
+        required: false
+      data_estimated:
+        type: boolean
+        required: false
+      education:
+        type: string
+        required: false
+      email:
+        type: string
+      estimated_location:
+        type: string
+        required: false
+      estimated_zip:
+        type: string
+        required: false
+      family:
+        type: string
+        required: false
+      first_name:
+        type: string
+        required: false
+      gender:
+        type: string
+        required: false
+      genuine_email:
+        type: boolean
+        required: false
+      high_net_worth:
+        type: boolean
+        required: false
+      home_market_value:
+        type: string
+        required: false
+      home_owner_status:
+        type: string
+        required: false
+      hometown:
+        type: string
+        required: false
+      household_income:
+        type: string
+        required: false
+      interest_consultation:
+        type: string
+        required: false
+      interest_in_new_advisor:
+        type: string
+        required: false
+      invited_by:
+        type: string
+        required: false
+      invited_on:
+        type: string
+        required: false
+      is_client:
+        type: boolean
+        required: false
+      is_hidden:
+        type: boolean
+        required: false
+      last_active_date:
+        type: string
+        required: false
+      last_name:
+        type: string
+        required: false
+      location:
+        type: string
+        required: false
+      marital_status:
+        type: string
+        required: false
+      message:
+        type: string
+        required: false
+      occupation:
+        type: string
+        required: false
+      phone:
+        type: string
+        required: false
+      picture_url:
+        type: string
+        required: false
+      portfolio_size:
+        type: string
+        required: false
+      profile_url:
+        type: string
+        required: false
+      register_ip_addr:
+        type: string
+        required: false
+      signed_up_with:
+        type: string
+        required: false
+      state:
+        type: string
+        required: false
+      subscribed_group_ids:
+        items:
+          type: string
+        type: array
+        required: false
+      tags:
+        items:
+          type: string
+        type: array
+        required: false
+      unsubscribed:
+        type: boolean
+        required: false
+      unsubscribed_date:
+        type: boolean
+        required: false
+      user_type:
+        type: string
+        required: false
+      zip:
+        type: string
+        required: false
+  MemberEvent:
+    properties:
+      _id:
+        type: string
+        required: false
+      content_url:
+        type: string
+        required: false
+      created_at:
+        type: string
+        required: false
+      event_date:
+        type: string
+        required: false
+      event_source:
+        type: string
+        required: false
+      event_type:
+        type: string
+        required: false
+      member_id:
+        type: string
+        required: false
+      original_url:
+        type: string
+        required: false
+      originator_email:
+        type: string
+        required: false
+      originator_group_id:
+        type: string
+        required: false
+      originator_id:
+        type: string
+        required: false
+      originator_name:
+        type: string
+        required: false
+      originator_type:
+        type: string
+        required: false
+      parent_event_id:
+        type: string
+        required: false
+      parent_originator_id:
+        type: string
+        required: false
+      referer:
+        type: string
+        required: false
+      source:
+        type: string
+        required: false
+      subject_id:
+        type: string
+        required: false
+      type:
+        type: string
+        required: false
+      username:
+        type: string
+        required: false
+  MemberEvents:
+    properties:
+      member_events:
+        items:
+          type: MemberEvent
+        type: array
+        required: false
+      members:
+        items:
+          type: TruncatedMember
+        type: array
+        required: false
+  MemberReport:
+    properties:
+      day:
+        format: int32
+        type: integer
+        required: false
+      event_count:
+        format: int32
+        type: integer
+        required: false
+      originator_group_id:
+        type: string
+        required: false
+      parent_originator_id:
+        type: string
+        required: false
+      source:
+        type: string
+        required: false
+      type:
+        type: string
+        required: false
+      year:
+        format: int32
+        type: integer
+        required: false
+  MemberReports:
+    properties:
+      member_reports:
+        items:
+          type: MemberReport
+        type: array
+        required: false
+  Memberresponse:
+    properties:
+      member:
+        type: Member
+        required: false
+  Members:
+    properties:
+      members:
+        items:
+          type: Member
+        type: array
+        required: false
+      meta:
+        type: Meta
+        required: false
+      more_results:
+        type: boolean
+        required: false
+  Meta:
+    properties:
+      message:
+        type: string
+        required: false
+  Newsletter:
+    properties:
+      _id:
+        type: string
+        required: false
+      click_count:
+        format: int64
+        type: integer
+        required: false
+      is_default:
+        type: boolean
+        required: false
+      is_sent:
+        type: boolean
+        required: false
+      total_click_count:
+        format: int64
+        type: integer
+        required: false
+      unique_click_count:
+        format: int64
+        type: integer
+        required: false
+  NewsletterInput:
+    properties:
+      click_count:
+        format: int64
+        type: integer
+        required: false
+      is_default:
+        type: boolean
+        required: false
+      is_sent:
+        type: boolean
+        required: false
+      total_click_count:
+        format: int64
+        type: integer
+        required: false
+      unique_click_count:
+        format: int64
+        type: integer
+        required: false
+  NewsletterSetting:
+    properties:
+      _id:
+        type: string
+      banner_color:
+        type: string
+        required: false
+      body_html:
+        type: string
+        required: false
+      email_accent_color:
+        type: string
+        required: false
+      email_day_of_week:
+        type: integer
+        required: false
+      email_hour:
+        type: integer
+        required: false
+      email_status:
+        type: string
+        required: false
+      facebook_active_wall:
+        type: string
+        required: false
+      facebook_day_of_week:
+        type: integer
+        required: false
+      facebook_hour:
+        type: integer
+        required: false
+      facebook_status:
+        type: string
+        required: false
+      footer_email_font:
+        type: string
+        required: false
+      footer_html:
+        type: string
+        required: false
+      footer_image_url:
+        type: string
+        required: false
+      group_id:
+        type: string
+        required: false
+      header_background_color:
+        type: string
+        required: false
+      header_image_url:
+        type: string
+        required: false
+      intro_text:
+        type: string
+        required: false
+      linkedin_active_wall:
+        type: string
+        required: false
+      linkedin_day_of_week:
+        type: integer
+        required: false
+      linkedin_hour:
+        type: integer
+        required: false
+      linkedin_status:
+        type: string
+        required: false
+      montage_enabled:
+        type: boolean
+        required: false
+      montage_facebook_image_url:
+        type: string
+        required: false
+      montage_linkedin_image_url:
+        type: string
+        required: false
+      montage_title:
+        type: string
+        required: false
+      montage_twitter_image_url:
+        type: string
+        required: false
+      newsletter_ids:
+        items:
+          type: string
+        type: array
+        required: false
+      newsletter_type:
+        type: string
+        required: false
+      primary_email_font:
+        type: string
+        required: false
+      render_version:
+        type: string
+        required: false
+      salutation_text:
+        type: string
+        required: false
+      social_description:
+        type: string
+        required: false
+      social_posting_text:
+        type: string
+        required: false
+      social_subtitle:
+        type: string
+        required: false
+      social_title:
+        type: string
+        required: false
+      subject:
+        type: string
+        required: false
+      title_color:
+        type: string
+        required: false
+      twitter_day_of_week:
+        type: integer
+        required: false
+      twitter_hour:
+        type: integer
+        required: false
+      twitter_status:
+        type: string
+        required: false
+  NewsletterSettings:
+    properties:
+      newsletter_settings:
+        items:
+          type: NewsletterSetting
+        type: array
+        required: false
+  NewsletterSettingsInput:
+    properties:
+      newsletter_setting:
+        type: NewsletterSetting
+        required: false
+  Newsletterresponse:
+    properties:
+      newsletter:
+        type: Newsletter
+        required: false
+  Newsletters:
+    properties:
+      newsletters:
+        items:
+          type: Newsletter
+        type: array
+        required: false
+  Newslettersettingresponse:
+    properties:
+      newsletter_setting:
+        type: NewsletterSetting
+        required: false
+  OrgSetting:
+    properties:
+      _id:
+        type: string
+      company_address:
+        type: string
+        required: false
+      company_contact_email:
+        type: string
+        required: false
+      company_homepage_url:
+        type: string
+        required: false
+      email_theme_name:
+        type: string
+        required: false
+      is_default:
+        type: boolean
+        required: false
+      name:
+        type: string
+        required: false
+      privacy_policy_url:
+        type: string
+        required: false
+      site_url:
+        type: string
+        required: false
+      terms_and_conditions_url:
+        type: string
+        required: false
+  PersonalSettings:
+    properties:
+      _id:
+        type: string
+  Post:
+    properties:
+      _id:
+        type: string
+        required: false
+      advisor_id:
+        type: string
+        required: false
+      approval_status:
+        type: string
+        required: false
+      approval_transactions:
+        items:
+          type: string
+        type: array
+        required: false
+      article_id:
+        type: string
+        required: false
+      comment:
+        type: string
+        required: false
+      created_at:
+        type: string
+        required: false
+      display_date:
+        type: string
+        required: false
+      display_summary:
+        type: string
+        required: false
+      display_tag:
+        type: string
+        required: false
+      external_url:
+        type: string
+        required: false
+      external_url_source:
+        type: string
+        required: false
+      external_url_type:
+        type: string
+        required: false
+      group_ids:
+        items:
+          type: string
+        type: array
+        required: false
+      image_height:
+        type: string
+        required: false
+      image_path:
+        type: string
+        required: false
+      image_url:
+        type: string
+        required: false
+      image_width:
+        type: string
+        required: false
+      is_featured:
+        type: boolean
+        required: false
+      is_mobile_proxy_needed:
+        type: boolean
+        required: false
+      is_proxy_needed:
+        type: boolean
+        required: false
+      is_published:
+        type: boolean
+        required: false
+      is_responsive:
+        type: boolean
+        required: false
+      logo_url:
+        type: string
+        required: false
+      needs_sanitize:
+        type: string
+        required: false
+      newsletter_ids:
+        items:
+          type: string
+        type: array
+        required: false
+      pdf_attachment_url:
+        type: string
+        required: false
+      post_date:
+        type: string
+        required: false
+      proxy_url:
+        type: string
+        required: false
+      slug:
+        type: string
+        required: false
+      square_logo_url:
+        type: string
+        required: false
+      suitability_score:
+        type: string
+        required: false
+      summary:
+        type: string
+        required: false
+      title:
+        type: string
+        required: false
+      topic:
+        type: string
+        required: false
+      updated_at:
+        type: string
+        required: false
+      vestorly_url:
+        type: string
+        required: false
+      video:
+        type: string
+        required: false
+      video_id:
+        type: string
+        required: false
+  PostInput:
+    properties:
+      advisor_id:
+        type: string
+        required: false
+      approval_status:
+        type: string
+        required: false
+      approval_transactions:
+        items:
+          type: string
+        type: array
+        required: false
+      article_id:
+        type: string
+        required: false
+      comment:
+        type: string
+        required: false
+      created_at:
+        type: string
+        required: false
+      display_date:
+        type: string
+        required: false
+      display_summary:
+        type: string
+        required: false
+      display_tag:
+        type: string
+        required: false
+      external_url:
+        type: string
+        required: false
+      external_url_source:
+        type: string
+        required: false
+      external_url_type:
+        type: string
+        required: false
+      group_ids:
+        items:
+          type: string
+        type: array
+        required: false
+      image_height:
+        type: string
+        required: false
+      image_path:
+        type: string
+        required: false
+      image_url:
+        type: string
+        required: false
+      image_width:
+        type: string
+        required: false
+      is_featured:
+        type: boolean
+        required: false
+      is_mobile_proxy_needed:
+        type: boolean
+        required: false
+      is_proxy_needed:
+        type: boolean
+        required: false
+      is_published:
+        type: boolean
+        required: false
+      is_responsive:
+        type: boolean
+        required: false
+      logo_url:
+        type: string
+        required: false
+      needs_sanitize:
+        type: string
+        required: false
+      newsletter_ids:
+        items:
+          type: string
+        type: array
+        required: false
+      pdf_attachment_url:
+        type: string
+        required: false
+      post_date:
+        type: string
+        required: false
+      proxy_url:
+        type: string
+        required: false
+      slug:
+        type: string
+        required: false
+      square_logo_url:
+        type: string
+        required: false
+      suitability_score:
+        type: string
+        required: false
+      summary:
+        type: string
+        required: false
+      title:
+        type: string
+      topic:
+        type: string
+        required: false
+      updated_at:
+        type: string
+        required: false
+      vestorly_url:
+        type: string
+        required: false
+      video:
+        type: string
+        required: false
+      video_id:
+        type: string
+        required: false
+  Postrequest:
+    properties:
+      post:
+        type: PostInput
+        required: false
+  Postresponse:
+    properties:
+      post:
+        type: Post
+        required: false
+  Posts:
+    properties:
+      posts:
+        items:
+          type: Post
+        type: array
+        required: false
+  Session:
+    properties:
+      _id:
+        type: string
+        required: false
+      current_user:
+        type: User
+        required: false
+      new_user:
+        type: boolean
+        required: false
+      settings:
+        type: Settings
+        required: false
+      vestorly-auth:
+        type: string
+        required: false
+  SessionLogoutResponse:
+    properties:
+      message:
+        type: string
+        required: false
+  Settings:
+    properties:
+      _id:
+        type: string
+      adv_brochure:
+        type: string
+        required: false
+      company:
+        type: string
+        required: false
+      disclosure:
+        type: string
+        required: false
+      feature:
+        type: Features
+        required: false
+      name:
+        type: string
+        required: false
+      orgsetting:
+        type: OrgSetting
+        required: false
+      personalsetting:
+        type: PersonalSettings
+        required: false
+      picture_url:
+        type: string
+        required: false
+      slug:
+        type: string
+        required: false
+      website:
+        type: string
+        required: false
+  Source:
+    properties:
+      _id:
+        type: string
+      custom_rss_feed:
+        type: boolean
+        required: false
+      enabled:
+        type: boolean
+        required: false
+      logo_url:
+        type: string
+        required: false
+      name:
+        type: string
+      rss_publisher:
+        type: string
+      url:
+        type: string
+  SourceInput:
+    properties:
+      custom_rss_feed:
+        type: boolean
+        required: false
+      enabled:
+        type: boolean
+        required: false
+      logo_url:
+        type: string
+        required: false
+      name:
+        type: string
+      rss_publisher:
+        type: string
+      url:
+        type: string
+  Sourceresponse:
+    properties:
+      source:
+        type: Source
+        required: false
+  Sources:
+    properties:
+      sources:
+        items:
+          type: Source
+        type: array
+        required: false
+  TruncatedMember:
+    properties:
+      _id:
+        type: string
+        required: false
+      added_on:
+        type: string
+        required: false
+      email:
+        type: string
+        required: false
+      first_name:
+        type: string
+        required: false
+      last_name:
+        type: string
+        required: false
+      picture_url:
+        type: string
+        required: false
+  User:
+    properties:
+      _id:
+        type: string
+      company:
+        type: string
+        required: false
+      first_name:
+        type: string
+        required: false
+      last_name:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+      new_user:
+        type: boolean
+        required: false
+      picture_url:
+        type: string
+        required: false
+      plan_expired:
+        type: boolean
+        required: false
+      plan_id:
+        type: string
+        required: false
+      plan_setup:
+        type: boolean
+        required: false
+      plan_status:
+        type: string
+        required: false
+      plan_stripe:
+        type: boolean
+        required: false
+      show_tour:
+        type: boolean
+        required: false
+      slug:
+        type: string
+        required: false
+      user_type:
+        type: string
+        required: false
+      username:
+        type: string
+        required: false
+      website:
+        type: string
+        required: false

@@ -1,0 +1,363 @@
+#%RAML 1.0
+title: Native Ads Publisher
+version: 1.0.0
+baseUri: 'https://api.nativeads.com'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: |
+  This is a Native Ads Publisher API it provides same functionality as Native Ads Publisher Account GUI.
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_api.nativeads.com_docs_publisher_images_nativeads-logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.nativeads.com/docs/publisher/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): nativeads.com
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+/publisher:
+  displayName: publisher
+  /reports:
+    displayName: reports
+    /widget:
+      displayName: widget
+      get:
+        displayName: GET_publisher-reports-widget
+        description: Returns publisher statistics split by widget
+        responses:
+          '200':
+            body:
+              application/json:
+                type: reportsWidgetResponse
+            description: report response
+          '400':
+            body:
+              application/json:
+                type: modelError
+            description: authentication error
+        queryParameters:
+          token:
+            description: Native Ads Publisher API authentication token
+            required: true
+            type: string
+            displayName: Native Ads Publisher API authentication token
+          limit:
+            default: 100
+            description: maximum number of results per page
+            format: int32
+            required: true
+            type: integer
+            displayName: maximum number of results per page
+          page:
+            default: 1
+            description: page number
+            format: int32
+            required: true
+            type: integer
+            displayName: page number
+        (oas-tags):
+          - reports
+    /website:
+      displayName: website
+      get:
+        displayName: GET_publisher-reports-website
+        description: Returns publisher statistics split by website
+        responses:
+          '200':
+            body:
+              application/json:
+                type: reportsWebsiteResponse
+            description: report response
+          '400':
+            body:
+              application/json:
+                type: modelError
+            description: authentication error
+        queryParameters:
+          token:
+            description: Native Ads Publisher API authentication token
+            required: true
+            type: string
+            displayName: Native Ads Publisher API authentication token
+          limit:
+            default: 100
+            description: maximum number of results per page
+            format: int32
+            required: true
+            type: integer
+            displayName: maximum number of results per page
+          page:
+            default: 1
+            description: page number
+            format: int32
+            required: true
+            type: integer
+            displayName: page number
+        (oas-tags):
+          - reports
+    /daily:
+      displayName: daily
+      get:
+        displayName: GET_publisher-reports-daily
+        description: Returns publisher statistics split by date
+        responses:
+          '200':
+            body:
+              application/json:
+                type: reportsDailyResponse
+            description: report response
+          '400':
+            body:
+              application/json:
+                type: modelError
+            description: error message
+        queryParameters:
+          token:
+            description: Native Ads Publisher API authentication token
+            required: true
+            type: string
+            displayName: Native Ads Publisher API authentication token
+          limit:
+            default: 100
+            description: maximum number of results per page
+            format: int32
+            required: true
+            type: integer
+            displayName: maximum number of results per page
+          page:
+            default: 1
+            description: page number
+            format: int32
+            required: true
+            type: integer
+            displayName: page number
+        (oas-tags):
+          - reports
+/auth:
+  displayName: auth
+  /default:
+    displayName: default
+    /login:
+      displayName: login
+      post:
+        displayName: POST_auth-default-login
+        description: Returns Native Ads Publisher API token
+        body:
+          multipart/form-data:
+            properties:
+              username:
+                description: Native Ads Publisher username
+                required: true
+                type: string
+              password:
+                description: Native Ads Publisher password
+                required: true
+                type: string
+        responses:
+          '200':
+            body:
+              application/json:
+                type: authResponse
+            description: authentication response
+          '400':
+            body:
+              application/json:
+                type: modelError
+            description: error message
+        (oas-tags):
+          - auth
+types:
+  authResponse:
+    properties:
+      success:
+        type: boolean
+        required: false
+      token:
+        type: string
+        required: false
+  modelError:
+    properties:
+      errors:
+        items:
+          type: string
+        type: array
+        required: false
+      success:
+        type: boolean
+        required: false
+  reportsDailyItem:
+    properties:
+      clicks:
+        type: string
+        required: false
+      cpc:
+        type: string
+        required: false
+      ctr:
+        type: string
+        required: false
+      date:
+        type: string
+        required: false
+      earnings:
+        type: string
+        required: false
+      impressions:
+        type: string
+        required: false
+      net_ecpm:
+        type: string
+        required: false
+      rpm:
+        type: string
+        required: false
+  reportsDailyResponse:
+    properties:
+      items:
+        items:
+          type: reportsDailyItem
+        type: array
+        required: false
+      success:
+        type: boolean
+        required: false
+      total_count:
+        type: integer
+        required: false
+      totals:
+        type: totals
+        required: false
+  reportsWebsiteItem:
+    properties:
+      clicks:
+        type: string
+        required: false
+      cpc:
+        type: string
+        required: false
+      ctr:
+        type: string
+        required: false
+      date:
+        type: string
+        required: false
+      earnings:
+        type: string
+        required: false
+      impressions:
+        type: string
+        required: false
+      net_ecpm:
+        type: string
+        required: false
+      rpm:
+        type: string
+        required: false
+  reportsWebsiteResponse:
+    properties:
+      items:
+        items:
+          type: reportsWebsiteItem
+        type: array
+        required: false
+      success:
+        type: boolean
+        required: false
+      total_count:
+        type: integer
+        required: false
+      totals:
+        type: totals
+        required: false
+  reportsWidgetItem:
+    properties:
+      campaign:
+        description: widget name
+        type: string
+        required: false
+      campaign_id:
+        description: widget id
+        type: string
+        required: false
+      clicks:
+        type: string
+        required: false
+      cpc:
+        type: string
+        required: false
+      ctr:
+        type: string
+        required: false
+      earnings:
+        type: string
+        required: false
+      impressions:
+        type: string
+        required: false
+      net_ecpm:
+        type: string
+        required: false
+      rpm:
+        type: string
+        required: false
+  reportsWidgetResponse:
+    properties:
+      items:
+        items:
+          type: reportsWidgetItem
+        type: array
+        required: false
+      success:
+        type: boolean
+        required: false
+      total_count:
+        type: integer
+        required: false
+      totals:
+        type: totals
+        required: false
+  totals:
+    properties:
+      total_clicks:
+        type: string
+        required: false
+      total_cpc:
+        type: string
+        required: false
+      total_ctr:
+        type: string
+        required: false
+      total_earnings:
+        type: string
+        required: false
+      total_impressions:
+        type: string
+        required: false
+      total_net_ecpm:
+        type: string
+        required: false
+      total_rpm:
+        type: string
+        required: false

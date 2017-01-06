@@ -1,0 +1,1685 @@
+#%RAML 1.0
+title: Google Cloud Deployment Manager
+version: v2
+baseUri: 'https://www.googleapis.com/deploymentmanager/v2/projects'
+protocols:
+  - HTTPS
+description: 'Declares, configures, and deploys complex solutions on Google Cloud Platform.'
+(oas-tags-definition):
+  - name: deployments
+  - name: manifests
+  - name: operations
+  - name: resources
+  - name: types
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_cloud.google.com__static_images_new-gcp-logo.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/deploymentmanager/v2/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): deploymentmanager
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://cloud.google.com/deployment-manager/'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/cloud-platform'
+        - 'https://www.googleapis.com/auth/cloud-platform.read-only'
+        - 'https://www.googleapis.com/auth/ndev.cloudman'
+        - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+    description: Oauth 2.0 authentication
+'/{project}':
+  displayName: '{project}'
+  /global:
+    displayName: global
+    /deployments:
+      displayName: deployments
+      '/{deployment}':
+        displayName: '{deployment}'
+        /resources:
+          displayName: resources
+          get:
+            displayName: deploymentmanager.resources.list
+            description: Lists all resources in a given deployment.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ResourcesListResponse
+                description: Successful response
+            queryParameters:
+              filter:
+                description: |-
+                  Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+                  The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+                  For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+                  You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+                  To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+                type: string
+                displayName: |-
+                  Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+                  The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+                  For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+                  You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+                  To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+              maxResults:
+                default: 500
+                description: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+                maximum: 500
+                minimum: 0
+                type: integer
+                displayName: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+              orderBy:
+                description: |-
+                  Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+                  You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+                  Currently, only sorting by name or creationTimestamp desc is supported.
+                type: string
+                displayName: |-
+                  Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+                  You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+                  Currently, only sorting by name or creationTimestamp desc is supported.
+              pageToken:
+                description: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+                type: string
+                displayName: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+            (oas-tags):
+              - resources
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+          '/{resource}':
+            displayName: '{resource}'
+            uriParameters:
+              resource:
+                description: The name of the resource for this request.
+                required: true
+                type: string
+                displayName: The name of the resource for this request.
+            get:
+              displayName: deploymentmanager.resources.get
+              description: Gets information about a single resource.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Resource
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+              (oas-tags):
+                - resources
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+        /stop:
+          displayName: stop
+          post:
+            displayName: deploymentmanager.deployments.stop
+            description: 'Stops an ongoing operation. This does not roll back any work that has already been completed, but prevents any new work from being started.'
+            body:
+              application/json:
+                type: DeploymentsStopRequest
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Operation
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman'
+            (oas-tags):
+              - deployments
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+        uriParameters:
+          deployment:
+            description: The name of the deployment for this request.
+            required: true
+            type: string
+            displayName: The name of the deployment for this request.
+        delete:
+          displayName: deploymentmanager.deployments.delete
+          description: Deletes a deployment and all of the resources in the deployment.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Operation
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman'
+          (oas-tags):
+            - deployments
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+        patch:
+          displayName: deploymentmanager.deployments.patch
+          description: Updates a deployment and all of the resources described by the deployment manifest. This method supports patch semantics.
+          body:
+            application/json:
+              type: Deployment
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Operation
+              description: Successful response
+          queryParameters:
+            createPolicy:
+              default: CREATE_OR_ACQUIRE
+              description: Sets the policy to use for creating new resources.
+              enum:
+                - ACQUIRE
+                - CREATE_OR_ACQUIRE
+              type: string
+              displayName: Sets the policy to use for creating new resources.
+            deletePolicy:
+              default: DELETE
+              description: Sets the policy to use for deleting resources.
+              enum:
+                - ABANDON
+                - DELETE
+              type: string
+              displayName: Sets the policy to use for deleting resources.
+            preview:
+              default: false
+              description: 'If set to true, updates the deployment and creates and updates the "shell" resources but does not actually alter or instantiate these resources. This allows you to preview what your deployment will look like. You can use this intent to preview how an update would affect your deployment. You must provide a target.config with a configuration if this is set to true. After previewing a deployment, you can deploy your resources by making a request with the update() or you can cancelPreview() to remove the preview altogether. Note that the deployment will still exist after you cancel the preview and you must separately delete this deployment if you want to remove it.'
+              type: boolean
+              displayName: 'If set to true, updates the deployment and creates and updates the "shell" resources but does not actually alter or instantiate these resources. This allows you to preview what your deployment will look like. You can use this intent to preview how an update would affect your deployment. You must provide a target.config with a configuration if this is set to true. After previewing a deployment, you can deploy your resources by making a request with the update() or you can cancelPreview() to remove the preview altogether. Note that the deployment will still exist after you cancel the preview and you must separately delete this deployment if you want to remove it.'
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman'
+          (oas-tags):
+            - deployments
+        /cancelPreview:
+          displayName: cancelPreview
+          post:
+            displayName: deploymentmanager.deployments.cancelPreview
+            description: Cancels and removes the preview currently associated with the deployment.
+            body:
+              application/json:
+                type: DeploymentsCancelPreviewRequest
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Operation
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman'
+            (oas-tags):
+              - deployments
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+        /manifests:
+          displayName: manifests
+          get:
+            displayName: deploymentmanager.manifests.list
+            description: Lists all manifests for a given deployment.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ManifestsListResponse
+                description: Successful response
+            queryParameters:
+              filter:
+                description: |-
+                  Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+                  The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+                  For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+                  You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+                  To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+                type: string
+                displayName: |-
+                  Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+                  The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+                  For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+                  You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+                  To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+              maxResults:
+                default: 500
+                description: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+                maximum: 500
+                minimum: 0
+                type: integer
+                displayName: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+              orderBy:
+                description: |-
+                  Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+                  You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+                  Currently, only sorting by name or creationTimestamp desc is supported.
+                type: string
+                displayName: |-
+                  Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+                  You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+                  Currently, only sorting by name or creationTimestamp desc is supported.
+              pageToken:
+                description: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+                type: string
+                displayName: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+            (oas-tags):
+              - manifests
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+          '/{manifest}':
+            displayName: '{manifest}'
+            uriParameters:
+              manifest:
+                description: The name of the manifest for this request.
+                required: true
+                type: string
+                displayName: The name of the manifest for this request.
+            get:
+              displayName: deploymentmanager.manifests.get
+              description: Gets information about a specific manifest.
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: Manifest
+                  description: Successful response
+              securedBy:
+                - Oauth2:
+                    scopes:
+                      - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+              (oas-tags):
+                - manifests
+            is:
+              - alt
+              - fields
+              - key
+              - oauthToken
+              - prettyPrint
+              - quotaUser
+              - userIp
+        put:
+          displayName: deploymentmanager.deployments.update
+          description: Updates a deployment and all of the resources described by the deployment manifest.
+          body:
+            application/json:
+              type: Deployment
+              (oas-body-name): body
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Operation
+              description: Successful response
+          queryParameters:
+            createPolicy:
+              default: CREATE_OR_ACQUIRE
+              description: Sets the policy to use for creating new resources.
+              enum:
+                - ACQUIRE
+                - CREATE_OR_ACQUIRE
+              type: string
+              displayName: Sets the policy to use for creating new resources.
+            deletePolicy:
+              default: DELETE
+              description: Sets the policy to use for deleting resources.
+              enum:
+                - ABANDON
+                - DELETE
+              type: string
+              displayName: Sets the policy to use for deleting resources.
+            preview:
+              default: false
+              description: 'If set to true, updates the deployment and creates and updates the "shell" resources but does not actually alter or instantiate these resources. This allows you to preview what your deployment will look like. You can use this intent to preview how an update would affect your deployment. You must provide a target.config with a configuration if this is set to true. After previewing a deployment, you can deploy your resources by making a request with the update() or you can cancelPreview() to remove the preview altogether. Note that the deployment will still exist after you cancel the preview and you must separately delete this deployment if you want to remove it.'
+              type: boolean
+              displayName: 'If set to true, updates the deployment and creates and updates the "shell" resources but does not actually alter or instantiate these resources. This allows you to preview what your deployment will look like. You can use this intent to preview how an update would affect your deployment. You must provide a target.config with a configuration if this is set to true. After previewing a deployment, you can deploy your resources by making a request with the update() or you can cancelPreview() to remove the preview altogether. Note that the deployment will still exist after you cancel the preview and you must separately delete this deployment if you want to remove it.'
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman'
+          (oas-tags):
+            - deployments
+        get:
+          displayName: deploymentmanager.deployments.get
+          description: Gets information about a specific deployment.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Deployment
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+          (oas-tags):
+            - deployments
+      get:
+        displayName: deploymentmanager.deployments.list
+        description: Lists all deployments for a given project.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: DeploymentsListResponse
+            description: Successful response
+        queryParameters:
+          filter:
+            description: |-
+              Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+              The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+              For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+              You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+              To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+            type: string
+            displayName: |-
+              Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+              The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+              For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+              You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+              To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+          maxResults:
+            default: 500
+            description: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+            maximum: 500
+            minimum: 0
+            type: integer
+            displayName: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+          orderBy:
+            description: |-
+              Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+              You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+              Currently, only sorting by name or creationTimestamp desc is supported.
+            type: string
+            displayName: |-
+              Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+              You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+              Currently, only sorting by name or creationTimestamp desc is supported.
+          pageToken:
+            description: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+            type: string
+            displayName: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+        (oas-tags):
+          - deployments
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+      '/{resource}':
+        displayName: '{resource}'
+        /getIamPolicy:
+          displayName: getIamPolicy
+          get:
+            displayName: deploymentmanager.deployments.getIamPolicy
+            description: Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Policy
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman'
+            (oas-tags):
+              - deployments
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+        /testIamPermissions:
+          displayName: testIamPermissions
+          post:
+            displayName: deploymentmanager.deployments.testIamPermissions
+            description: Returns permissions that a caller has on the specified resource.
+            body:
+              application/json:
+                type: TestPermissionsRequest
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: TestPermissionsResponse
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman'
+            (oas-tags):
+              - deployments
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+        /setIamPolicy:
+          displayName: setIamPolicy
+          post:
+            displayName: deploymentmanager.deployments.setIamPolicy
+            description: Sets the access control policy on the specified resource. Replaces any existing policy.
+            body:
+              application/json:
+                type: Policy
+                (oas-body-name): body
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Policy
+                description: Successful response
+            securedBy:
+              - Oauth2:
+                  scopes:
+                    - 'https://www.googleapis.com/auth/ndev.cloudman'
+            (oas-tags):
+              - deployments
+          is:
+            - alt
+            - fields
+            - key
+            - oauthToken
+            - prettyPrint
+            - quotaUser
+            - userIp
+      post:
+        displayName: deploymentmanager.deployments.insert
+        description: Creates a deployment and all of the resources described by the deployment manifest.
+        body:
+          application/json:
+            type: Deployment
+            (oas-body-name): body
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Operation
+            description: Successful response
+        queryParameters:
+          preview:
+            description: 'If set to true, creates a deployment and creates "shell" resources but does not actually instantiate these resources. This allows you to preview what your deployment looks like. After previewing a deployment, you can deploy your resources by making a request with the update() method or you can use the cancelPreview() method to cancel the preview altogether. Note that the deployment will still exist after you cancel the preview and you must separately delete this deployment if you want to remove it.'
+            type: boolean
+            displayName: 'If set to true, creates a deployment and creates "shell" resources but does not actually instantiate these resources. This allows you to preview what your deployment looks like. After previewing a deployment, you can deploy your resources by making a request with the update() method or you can use the cancelPreview() method to cancel the preview altogether. Note that the deployment will still exist after you cancel the preview and you must separately delete this deployment if you want to remove it.'
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/ndev.cloudman'
+        (oas-tags):
+          - deployments
+    /types:
+      displayName: types
+      get:
+        displayName: deploymentmanager.types.list
+        description: Lists all resource types for Deployment Manager.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: TypesListResponse
+            description: Successful response
+        queryParameters:
+          filter:
+            description: |-
+              Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+              The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+              For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+              You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+              To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+            type: string
+            displayName: |-
+              Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+              The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+              For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+              You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+              To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+          maxResults:
+            default: 500
+            description: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+            maximum: 500
+            minimum: 0
+            type: integer
+            displayName: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+          orderBy:
+            description: |-
+              Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+              You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+              Currently, only sorting by name or creationTimestamp desc is supported.
+            type: string
+            displayName: |-
+              Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+              You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+              Currently, only sorting by name or creationTimestamp desc is supported.
+          pageToken:
+            description: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+            type: string
+            displayName: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+        (oas-tags):
+          - types
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+    /operations:
+      displayName: operations
+      '/{operation}':
+        displayName: '{operation}'
+        uriParameters:
+          operation:
+            description: The name of the operation for this request.
+            required: true
+            type: string
+            displayName: The name of the operation for this request.
+        get:
+          displayName: deploymentmanager.operations.get
+          description: Gets information about a specific operation.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Operation
+              description: Successful response
+          securedBy:
+            - Oauth2:
+                scopes:
+                  - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+          (oas-tags):
+            - operations
+        is:
+          - alt
+          - fields
+          - key
+          - oauthToken
+          - prettyPrint
+          - quotaUser
+          - userIp
+      get:
+        displayName: deploymentmanager.operations.list
+        description: Lists all operations for a project.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: OperationsListResponse
+            description: Successful response
+        queryParameters:
+          filter:
+            description: |-
+              Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+              The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+              For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+              You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+              To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+            type: string
+            displayName: |-
+              Sets a filter expression for filtering listed resources, in the form filter={expression}. Your {expression} must be in the format: field_name comparison_string literal_string.
+
+              The field_name is the name of the field you want to compare. Only atomic field types are supported (string, number, boolean). The comparison_string must be either eq (equals) or ne (not equals). The literal_string is the string value to filter to. The literal value must be valid for the type of field you are filtering by (string, number, boolean). For string fields, the literal value is interpreted as a regular expression using RE2 syntax. The literal value must match the entire field.
+
+              For example, to filter for instances that do not have a name of example-instance, you would use filter=name ne example-instance.
+
+              You can filter on nested fields. For example, you could filter on instances that have set the scheduling.automaticRestart field to true. Use filtering on nested fields to take advantage of labels to organize and search for results based on label values.
+
+              To filter on multiple expressions, provide each separate expression within parentheses. For example, (scheduling.automaticRestart eq true) (zone eq us-central1-f). Multiple expressions are treated as AND expressions, meaning that resources must match all expressions to pass the filters.
+          maxResults:
+            default: 500
+            description: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+            maximum: 500
+            minimum: 0
+            type: integer
+            displayName: 'The maximum number of results per page that should be returned. If the number of available results is larger than maxResults, Compute Engine returns a nextPageToken that can be used to get the next page of results in subsequent list requests.'
+          orderBy:
+            description: |-
+              Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+              You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+              Currently, only sorting by name or creationTimestamp desc is supported.
+            type: string
+            displayName: |-
+              Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name.
+
+              You can also sort results in descending order based on the creation timestamp using orderBy="creationTimestamp desc". This sorts results based on the creationTimestamp field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first.
+
+              Currently, only sorting by name or creationTimestamp desc is supported.
+          pageToken:
+            description: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+            type: string
+            displayName: Specifies a page token to use. Set pageToken to the nextPageToken returned by a previous list request to get the next page of results.
+        securedBy:
+          - Oauth2:
+              scopes:
+                - 'https://www.googleapis.com/auth/ndev.cloudman.readonly'
+        (oas-tags):
+          - operations
+      is:
+        - alt
+        - fields
+        - key
+        - oauthToken
+        - prettyPrint
+        - quotaUser
+        - userIp
+types:
+  AuditConfig:
+    description: Enables "data access" audit logging for a service and specifies a list of members that are log-exempted.
+    properties:
+      exemptedMembers:
+        description: Specifies the identities that are exempted from "data access" audit logging for the `service` specified above. Follows the same format of Binding.members.
+        items:
+          type: string
+        type: array
+        required: false
+      service:
+        description: 'Specifies a service that will be enabled for "data access" audit logging. For example, `resourcemanager`, `storage`, `compute`. `allServices` is a special value that covers all services.'
+        type: string
+        required: false
+  Binding:
+    description: Associates `members` with a `role`.
+    properties:
+      members:
+        description: |-
+          Specifies the identities requesting access for a Cloud Platform resource. `members` can have the following values:
+
+          * `allUsers`: A special identifier that represents anyone who is on the internet; with or without a Google account.
+
+          * `allAuthenticatedUsers`: A special identifier that represents anyone who is authenticated with a Google account or a service account.
+
+          * `user:{emailid}`: An email address that represents a specific Google account. For example, `alice@gmail.com` or `joe@example.com`.
+
+
+
+          * `serviceAccount:{emailid}`: An email address that represents a service account. For example, `my-other-app@appspot.gserviceaccount.com`.
+
+          * `group:{emailid}`: An email address that represents a Google group. For example, `admins@example.com`.
+
+          * `domain:{domain}`: A Google Apps domain name that represents all the users of that domain. For example, `google.com` or `example.com`.
+        items:
+          type: string
+        type: array
+        required: false
+      role:
+        description: 'Role that is assigned to `members`. For example, `roles/viewer`, `roles/editor`, or `roles/owner`.'
+        type: string
+        required: false
+  Condition:
+    description: A condition to be met.
+    properties:
+      iam:
+        description: Trusted attributes supplied by the IAM system.
+        type: string
+        required: false
+      op:
+        description: An operator to apply the subject with.
+        type: string
+        required: false
+      svc:
+        description: Trusted attributes discharged by the service.
+        type: string
+        required: false
+      sys:
+        description: Trusted attributes supplied by any service that owns resources and uses the IAM system for access control.
+        type: string
+        required: false
+      value:
+        description: DEPRECATED. Use 'values' instead.
+        type: string
+        required: false
+      values:
+        description: The objects of the condition. This is mutually exclusive with 'value'.
+        items:
+          type: string
+        type: array
+        required: false
+  ConfigFile:
+    description: ''
+    properties:
+      content:
+        description: The contents of the file.
+        type: string
+        required: false
+  Deployment:
+    description: ''
+    properties:
+      description:
+        description: An optional user-provided description of the deployment.
+        type: string
+        required: false
+      fingerprint:
+        description: |-
+          Provides a fingerprint to use in requests to modify a deployment, such as update(), stop(), and cancelPreview() requests. A fingerprint is a randomly generated value that must be provided with update(), stop(), and cancelPreview() requests to perform optimistic locking. This ensures optimistic concurrency so that only one request happens at a time.
+
+          The fingerprint is initially generated by Deployment Manager and changes after every request to modify data. To get the latest fingerprint value, perform a get() request to a deployment.
+        format: byte
+        type: string
+        facets:
+          format: string
+        required: false
+      id:
+        description: '[Output Only] Unique identifier for the resource; defined by the server.'
+        format: uint64
+        type: string
+        facets:
+          format: string
+        required: false
+      insertTime:
+        description: '[Output Only] Timestamp when the deployment was created, in RFC3339 text format .'
+        type: string
+        required: false
+      labels:
+        description: 'Map of labels; provided by the client when the resource is created or updated. Specifically: Label keys must be between 1 and 63 characters long and must conform to the following regular expression: [a-z]([-a-z0-9]*[a-z0-9])? Label values must be between 0 and 63 characters long and must conform to the regular expression ([a-z]([-a-z0-9]*[a-z0-9])?)?'
+        items:
+          type: DeploymentLabelEntry
+        type: array
+        required: false
+      manifest:
+        description: '[Output Only] URL of the manifest representing the last manifest that was successfully deployed.'
+        type: string
+        required: false
+      name:
+        description: 'Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])? which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.'
+        type: string
+        required: false
+      operation:
+        description: '[Output Only] The Operation that most recently ran, or is currently running, on this deployment.'
+        type: Operation
+        required: false
+      selfLink:
+        description: '[Output Only] Self link for the deployment.'
+        type: string
+        required: false
+      target:
+        description: '[Input Only] The parameters that define your deployment, including the deployment configuration and relevant templates.'
+        type: TargetConfiguration
+        required: false
+      update:
+        description: '[Output Only] If Deployment Manager is currently updating or previewing an update to this deployment, the updated configuration appears here.'
+        type: DeploymentUpdate
+        required: false
+  DeploymentLabelEntry:
+    properties:
+      key:
+        type: string
+        required: false
+      value:
+        type: string
+        required: false
+  DeploymentUpdate:
+    description: ''
+    properties:
+      labels:
+        description: '[Output Only] Map of labels; provided by the client when the resource is created or updated. Specifically: Label keys must be between 1 and 63 characters long and must conform to the following regular expression: [a-z]([-a-z0-9]*[a-z0-9])? Label values must be between 0 and 63 characters long and must conform to the regular expression ([a-z]([-a-z0-9]*[a-z0-9])?)?'
+        items:
+          type: DeploymentUpdateLabelEntry
+        type: array
+        required: false
+      manifest:
+        description: '[Output Only] URL of the manifest representing the update configuration of this deployment.'
+        type: string
+        required: false
+  DeploymentUpdateLabelEntry:
+    properties:
+      key:
+        type: string
+        required: false
+      value:
+        type: string
+        required: false
+  DeploymentsCancelPreviewRequest:
+    description: ''
+    properties:
+      fingerprint:
+        description: |-
+          Specifies a fingerprint for cancelPreview() requests. A fingerprint is a randomly generated value that must be provided in cancelPreview() requests to perform optimistic locking. This ensures optimistic concurrency so that the deployment does not have conflicting requests (e.g. if someone attempts to make a new update request while another user attempts to cancel a preview, this would prevent one of the requests).
+
+          The fingerprint is initially generated by Deployment Manager and changes after every request to modify a deployment. To get the latest fingerprint value, perform a get() request on the deployment.
+        format: byte
+        type: string
+        facets:
+          format: string
+        required: false
+  DeploymentsListResponse:
+    description: A response containing a partial list of deployments and a page token used to build the next request if the request has been truncated.
+    properties:
+      deployments:
+        description: '[Output Only] The deployments contained in this response.'
+        items:
+          type: Deployment
+        type: array
+        required: false
+      nextPageToken:
+        description: '[Output Only] A token used to continue a truncated list request.'
+        type: string
+        required: false
+  DeploymentsStopRequest:
+    description: ''
+    properties:
+      fingerprint:
+        description: |-
+          Specifies a fingerprint for stop() requests. A fingerprint is a randomly generated value that must be provided in stop() requests to perform optimistic locking. This ensures optimistic concurrency so that the deployment does not have conflicting requests (e.g. if someone attempts to make a new update request while another user attempts to stop an ongoing update request, this would prevent a collision).
+
+          The fingerprint is initially generated by Deployment Manager and changes after every request to modify a deployment. To get the latest fingerprint value, perform a get() request on the deployment.
+        format: byte
+        type: string
+        facets:
+          format: string
+        required: false
+  ImportFile:
+    description: ''
+    properties:
+      content:
+        description: The contents of the file.
+        type: string
+        required: false
+      name:
+        description: The name of the file.
+        type: string
+        required: false
+  LogConfig:
+    description: Specifies what kind of log the caller must write
+    properties:
+      counter:
+        description: Counter options.
+        type: LogConfigCounterOptions
+        required: false
+  LogConfigCounterOptions:
+    description: Options for counters
+    properties:
+      field:
+        description: The field value to attribute.
+        type: string
+        required: false
+      metric:
+        description: The metric to update.
+        type: string
+        required: false
+  Manifest:
+    description: ''
+    properties:
+      config:
+        description: '[Output Only] The YAML configuration for this manifest.'
+        type: ConfigFile
+        required: false
+      expandedConfig:
+        description: '[Output Only] The fully-expanded configuration file, including any templates and references.'
+        type: string
+        required: false
+      id:
+        description: '[Output Only] Unique identifier for the resource; defined by the server.'
+        format: uint64
+        type: string
+        facets:
+          format: string
+        required: false
+      imports:
+        description: '[Output Only] The imported files for this manifest.'
+        items:
+          type: ImportFile
+        type: array
+        required: false
+      insertTime:
+        description: '[Output Only] Timestamp when the manifest was created, in RFC3339 text format.'
+        type: string
+        required: false
+      layout:
+        description: '[Output Only] The YAML layout for this manifest.'
+        type: string
+        required: false
+      name:
+        description: '[Output Only] The name of the manifest.'
+        type: string
+        required: false
+      selfLink:
+        description: '[Output Only] Self link for the manifest.'
+        type: string
+        required: false
+  ManifestsListResponse:
+    description: A response containing a partial list of manifests and a page token used to build the next request if the request has been truncated.
+    properties:
+      manifests:
+        description: '[Output Only] Manifests contained in this list response.'
+        items:
+          type: Manifest
+        type: array
+        required: false
+      nextPageToken:
+        description: '[Output Only] A token used to continue a truncated list request.'
+        type: string
+        required: false
+  Operation:
+    description: 'An Operation resource, used to manage asynchronous API requests.'
+    properties:
+      clientOperationId:
+        description: '[Output Only] Reserved for future use.'
+        type: string
+        required: false
+      creationTimestamp:
+        description: '[Output Only] Creation timestamp in RFC3339 text format.'
+        type: string
+        required: false
+      description:
+        description: '[Output Only] A textual description of the operation, which is set when the operation is created.'
+        type: string
+        required: false
+      endTime:
+        description: '[Output Only] The time that this operation was completed. This value is in RFC3339 text format.'
+        type: string
+        required: false
+      error:
+        description: '[Output Only] If errors are generated during processing of the operation, this field will be populated.'
+        properties:
+          errors:
+            description: '[Output Only] The array of errors encountered while processing this operation.'
+            items:
+              properties:
+                code:
+                  description: '[Output Only] The error type identifier for this error.'
+                  type: string
+                  required: false
+                location:
+                  description: '[Output Only] Indicates the field in the request that caused the error. This property is optional.'
+                  type: string
+                  required: false
+                message:
+                  description: '[Output Only] An optional, human-readable error message.'
+                  type: string
+                  required: false
+              type: object
+            type: array
+            required: false
+        type: object
+        required: false
+      httpErrorMessage:
+        description: '[Output Only] If the operation fails, this field contains the HTTP error message that was returned, such as NOT FOUND.'
+        type: string
+        required: false
+      httpErrorStatusCode:
+        description: '[Output Only] If the operation fails, this field contains the HTTP error status code that was returned. For example, a 404 means the resource was not found.'
+        format: int32
+        type: integer
+        required: false
+      id:
+        description: '[Output Only] The unique identifier for the resource. This identifier is defined by the server.'
+        format: uint64
+        type: string
+        facets:
+          format: string
+        required: false
+      insertTime:
+        description: '[Output Only] The time that this operation was requested. This value is in RFC3339 text format.'
+        type: string
+        required: false
+      kind:
+        default: 'deploymentmanager#operation'
+        description: '[Output Only] Type of the resource. Always compute#operation for Operation resources.'
+        type: string
+        required: false
+      name:
+        description: '[Output Only] Name of the resource.'
+        type: string
+        required: false
+      operationType:
+        description: '[Output Only] The type of operation, such as insert, update, or delete, and so on.'
+        type: string
+        required: false
+      progress:
+        description: '[Output Only] An optional progress indicator that ranges from 0 to 100. There is no requirement that this be linear or support any granularity of operations. This should not be used to guess when the operation will be complete. This number should monotonically increase as the operation progresses.'
+        format: int32
+        type: integer
+        required: false
+      region:
+        description: '[Output Only] The URL of the region where the operation resides. Only available when performing regional operations.'
+        type: string
+        required: false
+      selfLink:
+        description: '[Output Only] Server-defined URL for the resource.'
+        type: string
+        required: false
+      startTime:
+        description: '[Output Only] The time that this operation was started by the server. This value is in RFC3339 text format.'
+        type: string
+        required: false
+      status:
+        description: '[Output Only] The status of the operation, which can be one of the following: PENDING, RUNNING, or DONE.'
+        type: string
+        required: false
+      statusMessage:
+        description: '[Output Only] An optional textual description of the current status of the operation.'
+        type: string
+        required: false
+      targetId:
+        description: '[Output Only] The unique target ID, which identifies a specific incarnation of the target resource.'
+        format: uint64
+        type: string
+        facets:
+          format: string
+        required: false
+      targetLink:
+        description: '[Output Only] The URL of the resource that the operation modifies. For operations related to creating a snapshot, this points to the persistent disk that the snapshot was created from.'
+        type: string
+        required: false
+      user:
+        description: '[Output Only] User who requested the operation, for example: user@example.com.'
+        type: string
+        required: false
+      warnings:
+        description: '[Output Only] If warning messages are generated during processing of the operation, this field will be populated.'
+        items:
+          properties:
+            code:
+              description: '[Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.'
+              type: string
+              required: false
+            data:
+              description: |-
+                [Output Only] Metadata about this warning in key: value format. For example:
+                "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+              items:
+                properties:
+                  key:
+                    description: '[Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).'
+                    type: string
+                    required: false
+                  value:
+                    description: '[Output Only] A warning data value corresponding to the key.'
+                    type: string
+                    required: false
+                type: object
+              type: array
+              required: false
+            message:
+              description: '[Output Only] A human-readable description of the warning code.'
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+      zone:
+        description: '[Output Only] The URL of the zone where the operation resides. Only available when performing per-zone operations.'
+        type: string
+        required: false
+  OperationsListResponse:
+    description: A response containing a partial list of operations and a page token used to build the next request if the request has been truncated.
+    properties:
+      nextPageToken:
+        description: '[Output Only] A token used to continue a truncated list request.'
+        type: string
+        required: false
+      operations:
+        description: '[Output Only] Operations contained in this list response.'
+        items:
+          type: Operation
+        type: array
+        required: false
+  Policy:
+    description: |-
+      Defines an Identity and Access Management (IAM) policy. It is used to specify access control policies for Cloud Platform resources.
+
+
+
+      A `Policy` consists of a list of `bindings`. A `Binding` binds a list of `members` to a `role`, where the members can be user accounts, Google groups, Google domains, and service accounts. A `role` is a named list of permissions defined by IAM.
+
+      **Example**
+
+      { "bindings": [ { "role": "roles/owner", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-other-app@appspot.gserviceaccount.com", ] }, { "role": "roles/viewer", "members": ["user:sean@example.com"] } ] }
+
+      For a description of IAM and its features, see the [IAM developer's guide](https://cloud.google.com/iam).
+    properties:
+      auditConfigs:
+        description: |-
+          Specifies audit logging configs for "data access". "data access": generally refers to data reads/writes and admin reads. "admin activity": generally refers to admin writes.
+
+          Note: `AuditConfig` doesn't apply to "admin activity", which always enables audit logging.
+        items:
+          type: AuditConfig
+        type: array
+        required: false
+      bindings:
+        description: Associates a list of `members` to a `role`. Multiple `bindings` must not be specified for the same `role`. `bindings` with no members will result in an error.
+        items:
+          type: Binding
+        type: array
+        required: false
+      etag:
+        description: |-
+          `etag` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. It is strongly suggested that systems make use of the `etag` in the read-modify-write cycle to perform policy updates in order to avoid race conditions: An `etag` is returned in the response to `getIamPolicy`, and systems are expected to put that etag in the request to `setIamPolicy` to ensure that their change will be applied to the same version of the policy.
+
+          If no `etag` is provided in the call to `setIamPolicy`, then the existing policy is overwritten blindly.
+        format: byte
+        type: string
+        facets:
+          format: string
+        required: false
+      iamOwned:
+        description: ''
+        type: boolean
+        required: false
+      rules:
+        description: 'If more than one rule is specified, the rules are applied in the following manner: - All matching LOG rules are always applied. - If any DENY/DENY_WITH_LOG rule matches, permission is denied. Logging will be applied if one or more matching rule requires logging. - Otherwise, if any ALLOW/ALLOW_WITH_LOG rule matches, permission is granted. Logging will be applied if one or more matching rule requires logging. - Otherwise, if no rule applies, permission is denied.'
+        items:
+          type: Rule
+        type: array
+        required: false
+      version:
+        description: Version of the `Policy`. The default version is 0.
+        format: int32
+        type: integer
+        required: false
+  Resource:
+    description: ''
+    properties:
+      accessControl:
+        description: The Access Control Policy set on this resource.
+        type: ResourceAccessControl
+        required: false
+      finalProperties:
+        description: '[Output Only] The evaluated properties of the resource with references expanded. Returned as serialized YAML.'
+        type: string
+        required: false
+      id:
+        description: '[Output Only] Unique identifier for the resource; defined by the server.'
+        format: uint64
+        type: string
+        facets:
+          format: string
+        required: false
+      insertTime:
+        description: '[Output Only] Timestamp when the resource was created or acquired, in RFC3339 text format .'
+        type: string
+        required: false
+      manifest:
+        description: '[Output Only] URL of the manifest representing the current configuration of this resource.'
+        type: string
+        required: false
+      name:
+        description: '[Output Only] The name of the resource as it appears in the YAML config.'
+        type: string
+        required: false
+      properties:
+        description: '[Output Only] The current properties of the resource before any references have been filled in. Returned as serialized YAML.'
+        type: string
+        required: false
+      type:
+        description: '[Output Only] The type of the resource, for example compute.v1.instance, or cloudfunctions.v1beta1.function.'
+        type: string
+        required: false
+      update:
+        description: '[Output Only] If Deployment Manager is currently updating or previewing an update to this resource, the updated configuration appears here.'
+        type: ResourceUpdate
+        required: false
+      updateTime:
+        description: '[Output Only] Timestamp when the resource was updated, in RFC3339 text format .'
+        type: string
+        required: false
+      url:
+        description: '[Output Only] The URL of the actual resource.'
+        type: string
+        required: false
+      warnings:
+        description: '[Output Only] If warning messages are generated during processing of this resource, this field will be populated.'
+        items:
+          properties:
+            code:
+              description: '[Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.'
+              type: string
+              required: false
+            data:
+              description: |-
+                [Output Only] Metadata about this warning in key: value format. For example:
+                "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+              items:
+                properties:
+                  key:
+                    description: '[Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).'
+                    type: string
+                    required: false
+                  value:
+                    description: '[Output Only] A warning data value corresponding to the key.'
+                    type: string
+                    required: false
+                type: object
+              type: array
+              required: false
+            message:
+              description: '[Output Only] A human-readable description of the warning code.'
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+  ResourceAccessControl:
+    description: The access controls set on the resource.
+    properties:
+      gcpIamPolicy:
+        description: The GCP IAM Policy to set on the resource.
+        type: string
+        required: false
+  ResourceUpdate:
+    description: ''
+    properties:
+      accessControl:
+        description: The Access Control Policy to set on this resource after updating the resource itself.
+        type: ResourceAccessControl
+        required: false
+      error:
+        description: '[Output Only] If errors are generated during update of the resource, this field will be populated.'
+        properties:
+          errors:
+            description: '[Output Only] The array of errors encountered while processing this operation.'
+            items:
+              properties:
+                code:
+                  description: '[Output Only] The error type identifier for this error.'
+                  type: string
+                  required: false
+                location:
+                  description: '[Output Only] Indicates the field in the request that caused the error. This property is optional.'
+                  type: string
+                  required: false
+                message:
+                  description: '[Output Only] An optional, human-readable error message.'
+                  type: string
+                  required: false
+              type: object
+            type: array
+            required: false
+        type: object
+        required: false
+      finalProperties:
+        description: '[Output Only] The expanded properties of the resource with reference values expanded. Returned as serialized YAML.'
+        type: string
+        required: false
+      intent:
+        description: '[Output Only] The intent of the resource: PREVIEW, UPDATE, or CANCEL.'
+        type: string
+        required: false
+      manifest:
+        description: '[Output Only] URL of the manifest representing the update configuration of this resource.'
+        type: string
+        required: false
+      properties:
+        description: '[Output Only] The set of updated properties for this resource, before references are expanded. Returned as serialized YAML.'
+        type: string
+        required: false
+      state:
+        description: '[Output Only] The state of the resource.'
+        type: string
+        required: false
+      warnings:
+        description: '[Output Only] If warning messages are generated during processing of this resource, this field will be populated.'
+        items:
+          properties:
+            code:
+              description: '[Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.'
+              type: string
+              required: false
+            data:
+              description: |-
+                [Output Only] Metadata about this warning in key: value format. For example:
+                "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+              items:
+                properties:
+                  key:
+                    description: '[Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).'
+                    type: string
+                    required: false
+                  value:
+                    description: '[Output Only] A warning data value corresponding to the key.'
+                    type: string
+                    required: false
+                type: object
+              type: array
+              required: false
+            message:
+              description: '[Output Only] A human-readable description of the warning code.'
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+  ResourcesListResponse:
+    description: A response containing a partial list of resources and a page token used to build the next request if the request has been truncated.
+    properties:
+      nextPageToken:
+        description: A token used to continue a truncated list request.
+        type: string
+        required: false
+      resources:
+        description: Resources contained in this list response.
+        items:
+          type: Resource
+        type: array
+        required: false
+  Rule:
+    description: A rule to be applied in a Policy.
+    properties:
+      action:
+        description: Required
+        type: string
+        required: false
+      conditions:
+        description: Additional restrictions that must be met
+        items:
+          type: Condition
+        type: array
+        required: false
+      description:
+        description: Human-readable description of the rule.
+        type: string
+        required: false
+      ins:
+        description: 'If one or more ''in'' clauses are specified, the rule matches if the PRINCIPAL/AUTHORITY_SELECTOR is in at least one of these entries.'
+        items:
+          type: string
+        type: array
+        required: false
+      logConfigs:
+        description: The config returned to callers of tech.iam.IAM.CheckPolicy for any entries that match the LOG action.
+        items:
+          type: LogConfig
+        type: array
+        required: false
+      notIns:
+        description: 'If one or more ''not_in'' clauses are specified, the rule matches if the PRINCIPAL/AUTHORITY_SELECTOR is in none of the entries.'
+        items:
+          type: string
+        type: array
+        required: false
+      permissions:
+        description: 'A permission is a string of form ''..'' (e.g., ''storage.buckets.list''). A value of ''*'' matches all permissions, and a verb part of ''*'' (e.g., ''storage.buckets.*'') matches all verbs.'
+        items:
+          type: string
+        type: array
+        required: false
+  TargetConfiguration:
+    description: ''
+    properties:
+      config:
+        description: The configuration to use for this deployment.
+        type: ConfigFile
+        required: false
+      imports:
+        description: 'Specifies any files to import for this configuration. This can be used to import templates or other files. For example, you might import a text file in order to use the file in a template.'
+        items:
+          type: ImportFile
+        type: array
+        required: false
+  TestPermissionsRequest:
+    properties:
+      permissions:
+        description: The set of permissions to check for the 'resource'. Permissions with wildcards (such as '*' or 'storage.*') are not allowed.
+        items:
+          type: string
+        type: array
+        required: false
+  TestPermissionsResponse:
+    properties:
+      permissions:
+        description: A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
+        items:
+          type: string
+        type: array
+        required: false
+  Type:
+    description: A resource type supported by Deployment Manager.
+    properties:
+      id:
+        description: '[Output Only] Unique identifier for the resource; defined by the server.'
+        format: uint64
+        type: string
+        facets:
+          format: string
+        required: false
+      insertTime:
+        description: '[Output Only] Timestamp when the type was created, in RFC3339 text format.'
+        type: string
+        required: false
+      name:
+        description: Name of the type.
+        type: string
+        required: false
+      operation:
+        description: '[Output Only] The Operation that most recently ran, or is currently running, on this type.'
+        type: Operation
+        required: false
+      selfLink:
+        description: '[Output Only] Self link for the type.'
+        type: string
+        required: false
+  TypesListResponse:
+    description: A response that returns all Types supported by Deployment Manager
+    properties:
+      nextPageToken:
+        description: A token used to continue a truncated list request.
+        type: string
+        required: false
+      types:
+        description: '[Output Only] A list of resource types supported by Deployment Manager.'
+        items:
+          type: Type
+        type: array
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

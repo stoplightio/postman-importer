@@ -1,0 +1,1110 @@
+#%RAML 1.0
+title: SchedulerManagementClient
+version: '2016-03-01'
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-scheduler/2016-03-01/swagger/scheduler.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-scheduler
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-long-running-operation: any
+  oas-x-ms-odata: any
+  oas-x-ms-pageable: any
+  oas-x-ms-enum: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.Scheduler:
+            displayName: Microsoft.Scheduler
+            /jobCollections:
+              displayName: jobCollections
+              '/{jobCollectionName}':
+                displayName: '{jobCollectionName}'
+                /enable:
+                  displayName: enable
+                  post:
+                    (oas-x-ms-long-running-operation): true
+                    displayName: JobCollections_Enable
+                    description: Enables all of the jobs in the job collection.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        description: All of the jobs in the job collection have been successfully enabled.
+                      '202':
+                        description: Accepted and the enable job collection operation will complete asynchronously.
+                    (oas-tags):
+                      - JobCollections
+                /jobs:
+                  displayName: jobs
+                  '/{jobName}':
+                    displayName: '{jobName}'
+                    /run:
+                      displayName: run
+                      post:
+                        displayName: Jobs_Run
+                        description: Runs a job.
+                        is:
+                          - apiVersion
+                        responses:
+                          '200':
+                            description: The job has been successfully run.
+                        (oas-tags):
+                          - Jobs
+                    uriParameters:
+                      jobName:
+                        description: The job name.
+                        required: true
+                        type: string
+                        displayName: The job name.
+                    delete:
+                      displayName: Jobs_Delete
+                      description: Deletes a job.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          description: The job has been successfully deleted.
+                      (oas-tags):
+                        - Jobs
+                    /history:
+                      displayName: history
+                      get:
+                        (oas-x-ms-odata): '#/definitions/JobHistoryFilter'
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: Jobs_ListJobHistory
+                        description: Lists job history.
+                        is:
+                          - apiVersion
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: JobHistoryListResult
+                            description: The job histories have been successfully returned.
+                        queryParameters:
+                          $top:
+                            description: 'the number of job history to request, in the of range of [1..100].'
+                            maximum: 100
+                            minimum: 1
+                            required: false
+                            type: integer
+                            displayName: 'the number of job history to request, in the of range of [1..100].'
+                          $skip:
+                            description: The (0-based) index of the job history list from which to begin requesting entries.
+                            required: false
+                            type: integer
+                            displayName: The (0-based) index of the job history list from which to begin requesting entries.
+                          $filter:
+                            description: The filter to apply on the job state.
+                            required: false
+                            type: string
+                            displayName: The filter to apply on the job state.
+                        (oas-tags):
+                          - Jobs
+                    put:
+                      displayName: Jobs_CreateOrUpdate
+                      description: Provisions a new job or updates an existing job.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: JobDefinition
+                          (oas-body-name): job
+                          description: The job definition.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: JobDefinition
+                          description: The job has been successfully updated.
+                        '201':
+                          body:
+                            application/json:
+                              type: JobDefinition
+                          description: The job has been successfully created.
+                      (oas-tags):
+                        - Jobs
+                    patch:
+                      displayName: Jobs_Patch
+                      description: Patches an existing job.
+                      is:
+                        - apiVersion
+                      body:
+                        application/json:
+                          type: JobDefinition
+                          (oas-body-name): job
+                          description: The job definition.
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: JobDefinition
+                          description: The job has been successfully patched.
+                      (oas-tags):
+                        - Jobs
+                    get:
+                      displayName: Jobs_Get
+                      description: Gets a job.
+                      is:
+                        - apiVersion
+                      responses:
+                        '200':
+                          body:
+                            application/json:
+                              type: JobDefinition
+                          description: The job has been successfully returned.
+                      (oas-tags):
+                        - Jobs
+                  get:
+                    (oas-x-ms-odata): '#/definitions/JobStateFilter'
+                    (oas-x-ms-pageable):
+                      nextLinkName: nextLink
+                    displayName: Jobs_List
+                    description: Lists all jobs under the specified job collection.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        body:
+                          application/json:
+                            type: JobListResult
+                        description: The job has been successfully returned.
+                    queryParameters:
+                      $top:
+                        description: 'The number of jobs to request, in the of range of [1..100].'
+                        maximum: 100
+                        minimum: 1
+                        required: false
+                        type: integer
+                        displayName: 'The number of jobs to request, in the of range of [1..100].'
+                      $skip:
+                        description: The (0-based) index of the job history list from which to begin requesting entries.
+                        required: false
+                        type: integer
+                        displayName: The (0-based) index of the job history list from which to begin requesting entries.
+                      $filter:
+                        description: The filter to apply on the job state.
+                        required: false
+                        type: string
+                        displayName: The filter to apply on the job state.
+                    (oas-tags):
+                      - Jobs
+                uriParameters:
+                  jobCollectionName:
+                    description: The job collection name.
+                    required: true
+                    type: string
+                    displayName: The job collection name.
+                delete:
+                  (oas-x-ms-long-running-operation): true
+                  displayName: JobCollections_Delete
+                  description: Deletes a job collection.
+                  is:
+                    - apiVersion
+                  responses:
+                    '200':
+                      description: The job collection has been successfully deleted.
+                    '202':
+                      description: The delete operation for the job collection has been accepted and will complete asynchronously.
+                  (oas-tags):
+                    - JobCollections
+                patch:
+                  displayName: JobCollections_Patch
+                  description: Patches an existing job collection.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: JobCollectionDefinition
+                      (oas-body-name): jobCollection
+                      description: The job collection definition.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: JobCollectionDefinition
+                      description: The job collection has been successfully patched.
+                  (oas-tags):
+                    - JobCollections
+                put:
+                  displayName: JobCollections_CreateOrUpdate
+                  description: Provisions a new job collection or updates an existing job collection.
+                  is:
+                    - apiVersion
+                  body:
+                    application/json:
+                      type: JobCollectionDefinition
+                      (oas-body-name): jobCollection
+                      description: The job collection definition.
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: JobCollectionDefinition
+                      description: The job collection has been successfully updated.
+                    '201':
+                      body:
+                        application/json:
+                          type: JobCollectionDefinition
+                      description: The job collection has been successfully created.
+                  (oas-tags):
+                    - JobCollections
+                get:
+                  displayName: JobCollections_Get
+                  description: Gets a job collection.
+                  is:
+                    - apiVersion
+                  responses:
+                    '200':
+                      body:
+                        application/json:
+                          type: JobCollectionDefinition
+                      description: The job collection has been successfully returned.
+                  (oas-tags):
+                    - JobCollections
+                /disable:
+                  displayName: disable
+                  post:
+                    (oas-x-ms-long-running-operation): true
+                    displayName: JobCollections_Disable
+                    description: Disables all of the jobs in the job collection.
+                    is:
+                      - apiVersion
+                    responses:
+                      '200':
+                        description: All of the jobs in the job collection have been successfully disabled.
+                      '202':
+                        description: Accepted and the disable job collection operation will complete asynchronously.
+                    (oas-tags):
+                      - JobCollections
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: JobCollections_ListByResourceGroup
+                description: Gets all job collections under specified resource group.
+                is:
+                  - apiVersion
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: JobCollectionListResult
+                    description: The job collections have been successfully returned.
+                (oas-tags):
+                  - JobCollections
+    /providers:
+      displayName: providers
+      /Microsoft.Scheduler:
+        displayName: Microsoft.Scheduler
+        /jobCollections:
+          displayName: jobCollections
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: JobCollections_ListBySubscription
+            description: Gets all job collections under specified subscription.
+            is:
+              - apiVersion
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: JobCollectionListResult
+                description: The job collections have been successfully returned.
+            (oas-tags):
+              - JobCollections
+types:
+  BasicAuthentication:
+    type: HttpAuthentication
+  ClientCertAuthentication:
+    type: HttpAuthentication
+  HttpAuthentication:
+    properties:
+      type:
+        description: Gets or sets the HTTP authentication type.
+        enum:
+          - NotSpecified
+          - ClientCertificate
+          - ActiveDirectoryOAuth
+          - Basic
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: HttpAuthenticationType
+  HttpRequest:
+    properties:
+      authentication:
+        description: Gets or sets the authentication method of the request.
+        type: HttpAuthentication
+        required: false
+      body:
+        description: Gets or sets the request body.
+        type: string
+        required: false
+      headers:
+        additionalProperties:
+          type: string
+        description: Gets or sets the headers.
+        type: object
+        required: false
+      method:
+        description: Gets or sets the method of the request.
+        type: string
+        required: false
+      uri:
+        description: Gets or sets the URI of the request.
+        type: string
+        required: false
+  JobAction:
+    properties:
+      errorAction:
+        description: Gets or sets the error action.
+        type: JobErrorAction
+        required: false
+      queueMessage:
+        description: Gets or sets the storage queue message.
+        type: StorageQueueMessage
+        required: false
+      request:
+        description: Gets or sets the http requests.
+        type: HttpRequest
+        required: false
+      retryPolicy:
+        description: Gets or sets the retry policy.
+        type: RetryPolicy
+        required: false
+      serviceBusQueueMessage:
+        description: Gets or sets the service bus queue message.
+        type: ServiceBusQueueMessage
+        required: false
+      serviceBusTopicMessage:
+        description: Gets or sets the service bus topic message.
+        type: ServiceBusTopicMessage
+        required: false
+      type:
+        description: Gets or sets the job action type.
+        enum:
+          - Http
+          - Https
+          - StorageQueue
+          - ServiceBusQueue
+          - ServiceBusTopic
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: JobActionType
+  JobCollectionDefinition:
+    properties:
+      id:
+        description: Gets the job collection resource identifier.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      location:
+        description: Gets or sets the storage account location.
+        type: string
+        required: false
+      name:
+        description: Gets or sets the job collection resource name.
+        type: string
+        required: false
+      properties:
+        description: Gets or sets the job collection properties.
+        type: JobCollectionProperties
+        required: false
+      tags:
+        additionalProperties:
+          type: string
+        description: Gets or sets the tags.
+        type: object
+        required: false
+      type:
+        description: Gets the job collection resource type.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  JobCollectionListResult:
+    properties:
+      nextLink:
+        description: Gets or sets the URL to get the next set of job collections.
+        type: string
+        required: false
+      value:
+        description: Gets the job collections.
+        items:
+          type: JobCollectionDefinition
+        readOnly: true
+        type: array
+        facets:
+          readOnly?: boolean
+        required: false
+  JobCollectionProperties:
+    properties:
+      quota:
+        description: Gets or sets the job collection quota.
+        type: JobCollectionQuota
+        required: false
+      sku:
+        description: Gets or sets the SKU.
+        type: Sku
+        required: false
+      state:
+        description: Gets or sets the state.
+        enum:
+          - Enabled
+          - Disabled
+          - Suspended
+          - Deleted
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: JobCollectionState
+  JobCollectionQuota:
+    properties:
+      maxJobCount:
+        description: Gets or set the maximum job count.
+        type: integer
+        required: false
+      maxJobOccurrence:
+        description: Gets or sets the maximum job occurrence.
+        type: integer
+        required: false
+      maxRecurrence:
+        description: Gets or set the maximum recurrence.
+        type: JobMaxRecurrence
+        required: false
+  JobDefinition:
+    properties:
+      id:
+        description: Gets the job resource identifier.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: Gets the job resource name.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      properties:
+        description: Gets or sets the job properties.
+        type: JobProperties
+        required: false
+      type:
+        description: Gets the job resource type.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  JobErrorAction:
+    properties:
+      queueMessage:
+        description: Gets or sets the storage queue message.
+        type: StorageQueueMessage
+        required: false
+      request:
+        description: Gets or sets the http requests.
+        type: HttpRequest
+        required: false
+      retryPolicy:
+        description: Gets or sets the retry policy.
+        type: RetryPolicy
+        required: false
+      serviceBusQueueMessage:
+        description: Gets or sets the service bus queue message.
+        type: ServiceBusQueueMessage
+        required: false
+      serviceBusTopicMessage:
+        description: Gets or sets the service bus topic message.
+        type: ServiceBusTopicMessage
+        required: false
+      type:
+        description: Gets or sets the job error action type.
+        enum:
+          - Http
+          - Https
+          - StorageQueue
+          - ServiceBusQueue
+          - ServiceBusTopic
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: JobActionType
+  JobExecutionStatus:
+    description: Gets the job execution status.
+    enum:
+      - Completed
+      - Failed
+      - Postponed
+    type: string
+  JobHistoryDefinition:
+    properties:
+      id:
+        description: Gets the job history identifier.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      name:
+        description: Gets the job history name.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      properties:
+        description: Gets or sets the job history properties.
+        readOnly: true
+        type: JobHistoryDefinitionProperties
+        facets:
+          readOnly?: boolean
+        required: false
+      type:
+        description: Gets the job history resource type.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+  JobHistoryDefinitionProperties:
+    properties:
+      actionName:
+        description: Gets the job history action name.
+        enum:
+          - MainAction
+          - ErrorAction
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: JobHistoryActionName
+      endTime:
+        description: Gets the end time for this job.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      expectedExecutionTime:
+        description: Gets the expected execution time for this job.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      message:
+        description: Gets the message for the job history.
+        readOnly: true
+        type: string
+        facets:
+          readOnly?: boolean
+        required: false
+      repeatCount:
+        description: Gets the repeat count for the job.
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      retryCount:
+        description: Gets the retry count for job.
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      startTime:
+        description: Gets the start time for this job.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      status:
+        description: Gets the job history status.
+        readOnly: true
+        type: JobExecutionStatus
+        facets:
+          readOnly?: boolean
+        required: false
+  JobHistoryFilter:
+    properties:
+      status:
+        description: Gets or sets the job execution status.
+        type: JobExecutionStatus
+        required: false
+  JobHistoryListResult:
+    properties:
+      nextLink:
+        description: Gets or sets the URL to get the next set of job histories.
+        type: string
+        required: false
+      value:
+        description: Gets or sets the job histories under job.
+        items:
+          type: JobHistoryDefinition
+        type: array
+        required: false
+  JobListResult:
+    properties:
+      nextLink:
+        description: Gets or sets the URL to get the next set of jobs.
+        type: string
+        required: false
+      value:
+        description: Gets or sets all jobs under job collection.
+        items:
+          type: JobDefinition
+        type: array
+        required: false
+  JobMaxRecurrence:
+    properties:
+      frequency:
+        description: 'Gets or sets the frequency of recurrence (second, minute, hour, day, week, month).'
+        enum:
+          - Minute
+          - Hour
+          - Day
+          - Week
+          - Month
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: RecurrenceFrequency
+      interval:
+        description: Gets or sets the interval between retries.
+        type: integer
+        required: false
+  JobProperties:
+    properties:
+      action:
+        description: Gets or sets the job action.
+        type: JobAction
+        required: false
+      recurrence:
+        description: Gets or sets the job recurrence.
+        type: JobRecurrence
+        required: false
+      startTime:
+        description: Gets or sets the job start time.
+        format: rfc3339
+        type: datetime
+        required: false
+      state:
+        description: Gets or set the job state.
+        type: JobState
+        required: false
+      status:
+        description: Gets the job status.
+        readOnly: true
+        type: JobStatus
+        facets:
+          readOnly?: boolean
+        required: false
+  JobRecurrence:
+    properties:
+      count:
+        description: Gets or sets the maximum number of times that the job should run.
+        type: integer
+        required: false
+      endTime:
+        description: Gets or sets the time at which the job will complete.
+        format: rfc3339
+        type: datetime
+        required: false
+      frequency:
+        description: 'Gets or sets the frequency of recurrence (second, minute, hour, day, week, month).'
+        enum:
+          - Minute
+          - Hour
+          - Day
+          - Week
+          - Month
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: RecurrenceFrequency
+      interval:
+        description: Gets or sets the interval between retries.
+        type: integer
+        required: false
+      schedule:
+        type: JobRecurrenceSchedule
+        required: false
+  JobRecurrenceSchedule:
+    properties:
+      hours:
+        description: Gets or sets the hours of the day that the job should execute at.
+        items:
+          type: integer
+        type: array
+        required: false
+      minutes:
+        description: Gets or sets the minutes of the hour that the job should execute at.
+        items:
+          type: integer
+        type: array
+        required: false
+      monthDays:
+        description: Gets or sets the days of the month that the job should execute on. Must be between 1 and 31.
+        items:
+          type: integer
+        type: array
+        required: false
+      monthlyOccurrences:
+        description: Gets or sets the occurrences of days within a month.
+        items:
+          type: JobRecurrenceScheduleMonthlyOccurrence
+        type: array
+        required: false
+      weekDays:
+        description: Gets or sets the days of the week that the job should execute on.
+        items:
+          enum:
+            - Sunday
+            - Monday
+            - Tuesday
+            - Wednesday
+            - Thursday
+            - Friday
+            - Saturday
+          type: string
+          (oas-x-ms-enum):
+            modelAsString: false
+            name: DayOfWeek
+        type: array
+        required: false
+  JobRecurrenceScheduleMonthlyOccurrence:
+    properties:
+      Occurrence:
+        description: Gets or sets the occurrence. Must be between -5 and 5.
+        type: integer
+        required: false
+      day:
+        description: 'Gets or sets the day. Must be one of monday, tuesday, wednesday, thursday, friday, saturday, sunday.'
+        enum:
+          - Monday
+          - Tuesday
+          - Wednesday
+          - Thursday
+          - Friday
+          - Saturday
+          - Sunday
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: JobScheduleDay
+  JobState:
+    description: Gets or set the job state.
+    enum:
+      - Enabled
+      - Disabled
+      - Faulted
+      - Completed
+    type: string
+  JobStateFilter:
+    properties:
+      state:
+        description: Gets or sets the job state.
+        type: JobState
+        required: false
+  JobStatus:
+    properties:
+      executionCount:
+        description: Gets the number of times this job has executed.
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      failureCount:
+        description: Gets the number of times this job has failed.
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      faultedCount:
+        description: Gets the number of faulted occurrences (occurrences that were retried and failed as many times as the retry policy states).
+        readOnly: true
+        type: integer
+        facets:
+          readOnly?: boolean
+        required: false
+      lastExecutionTime:
+        description: Gets the time the last occurrence executed in ISO-8601 format.  Could be empty if job has not run yet.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+      nextExecutionTime:
+        description: Gets the time of the next occurrence in ISO-8601 format. Could be empty if the job is completed.
+        format: rfc3339
+        readOnly: true
+        type: datetime
+        facets:
+          readOnly?: boolean
+        required: false
+  OAuthAuthentication:
+    type: HttpAuthentication
+  RecurrenceFrequency:
+    description: 'Gets or sets the frequency of recurrence (minute, hour, day, week, month).'
+    enum:
+      - Minute
+      - Hour
+      - Day
+      - Week
+      - Month
+    type: string
+  RetryPolicy:
+    properties:
+      retryCount:
+        description: Gets or sets the number of times a retry should be attempted.
+        type: integer
+        required: false
+      retryInterval:
+        description: 'Gets or sets the retry interval between retries, specify duration in ISO 8601 format.'
+        format: duration
+        type: string
+        facets:
+          format: string
+        required: false
+      retryType:
+        description: Gets or sets the retry strategy to be used.
+        enum:
+          - None
+          - Fixed
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: RetryType
+  ServiceBusAuthentication:
+    properties:
+      sasKey:
+        description: Gets or sets the SAS key.
+        type: string
+        required: false
+      sasKeyName:
+        description: Gets or sets the SAS key name.
+        type: string
+        required: false
+      type:
+        description: Gets or sets the authentication type.
+        enum:
+          - NotSpecified
+          - SharedAccessKey
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: ServiceBusAuthenticationType
+  ServiceBusBrokeredMessageProperties:
+    properties:
+      contentType:
+        description: Gets or sets the content type.
+        type: string
+        required: false
+      correlationId:
+        description: Gets or sets the correlation ID.
+        type: string
+        required: false
+      forcePersistence:
+        description: Gets or sets the force persistence.
+        type: boolean
+        required: false
+      label:
+        description: Gets or sets the label.
+        type: string
+        required: false
+      messageId:
+        description: Gets or sets the message ID.
+        type: string
+        required: false
+      partitionKey:
+        description: Gets or sets the partition key.
+        type: string
+        required: false
+      replyTo:
+        description: Gets or sets the reply to.
+        type: string
+        required: false
+      replyToSessionId:
+        description: Gets or sets the reply to session ID.
+        type: string
+        required: false
+      scheduledEnqueueTimeUtc:
+        description: Gets or sets the scheduled enqueue time UTC.
+        format: rfc3339
+        type: datetime
+        required: false
+      sessionId:
+        description: Gets or sets the session ID.
+        type: string
+        required: false
+      timeToLive:
+        description: Gets or sets the time to live.
+        format: rfc3339
+        type: datetime
+        required: false
+      to:
+        description: Gets or sets the to.
+        type: string
+        required: false
+      viaPartitionKey:
+        description: Gets or sets the via partition key.
+        type: string
+        required: false
+  ServiceBusMessage:
+    properties:
+      authentication:
+        description: Gets or sets the Service Bus authentication.
+        type: ServiceBusAuthentication
+        required: false
+      brokeredMessageProperties:
+        description: Gets or sets the brokered message properties.
+        type: ServiceBusBrokeredMessageProperties
+        required: false
+      customMessageProperties:
+        additionalProperties:
+          type: string
+        description: Gets or sets the custom message properties.
+        type: object
+        required: false
+      message:
+        description: Gets or sets the message.
+        type: string
+        required: false
+      namespace:
+        description: Gets or sets the namespace.
+        type: string
+        required: false
+      transportType:
+        description: Gets or sets the transport type.
+        enum:
+          - NotSpecified
+          - NetMessaging
+          - AMQP
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: ServiceBusTransportType
+  ServiceBusQueueMessage:
+    type: ServiceBusMessage
+  ServiceBusTopicMessage:
+    type: ServiceBusMessage
+  Sku:
+    properties:
+      name:
+        description: Gets or set the SKU.
+        enum:
+          - Standard
+          - Free
+          - P10Premium
+          - P20Premium
+        type: string
+        required: false
+        (oas-x-ms-enum):
+          modelAsString: false
+          name: SkuDefinition
+  StorageQueueMessage:
+    properties:
+      message:
+        description: Gets or sets the message.
+        type: string
+        required: false
+      queueName:
+        description: Gets or sets the queue name.
+        type: string
+        required: false
+      sasToken:
+        description: Gets or sets the SAS key.
+        type: string
+        required: false
+      storageAccount:
+        description: Gets or sets the storage account name.
+        type: string
+        required: false
+traits:
+  apiVersion:
+    queryParameters:
+      api-version:
+        type: string
+        description: The API version.
+        required: true

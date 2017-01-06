@@ -1,0 +1,2035 @@
+#%RAML 1.0
+title: ExaVault
+version: 1.0.0
+baseUri: 'https://api.exavault.com/'
+protocols:
+  - HTTPS
+description: |
+  ExaVault's API allows you to incorporate ExaVault's suite of file transfer and user management tools into your own application.
+
+  ExaVault supports both POST (recommended when requesting large data sets) and GET operations, and requires an API key in order to use.
+(oas-tags-definition):
+  - description: 'operations for files, notifications, sharing and users'
+    name: v1
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#222222'
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.exavault.com_common_images_110xNxlogo220x40.png.pagespeed.ic.N1chK3UTV9.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://www.exavault.com/api/docs'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): exavault.com
+(oas-externalDocs):
+  url: 'https://www.exavault.com/developer/'
+/v1:
+  displayName: v1
+  /getNotificationActivity:
+    displayName: getNotificationActivity
+    get:
+      displayName: getNotificationActivity
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'notification' permission
+      (oas-summary): Returns all notification activity for the current user
+      responses:
+        '200':
+          body:
+            application/json:
+              type: NotificationActivityResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+      (oas-tags):
+        - v1
+  /userAvailable:
+    displayName: userAvailable
+    get:
+      displayName: userAvailable
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'manage users' permission
+      (oas-summary): Returns true if requested username has not already been taken in the system
+      responses:
+        '200':
+          body:
+            application/json:
+              type: AvailableUserResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        username:
+          description: Username to check
+          required: true
+          type: string
+          displayName: Username to check
+      (oas-tags):
+        - v1
+  /getNotifications:
+    displayName: getNotifications
+    get:
+      displayName: getNotifications
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'notification' permission
+      (oas-summary): Returns all notifications for the current user
+      responses:
+        '200':
+          body:
+            application/json:
+              type: NotificationsResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        type:
+          description: 'Type of notification to filter on: ''file'', ''folder'', ''shared_folder'', ''send_receipt'', ''share_receipt'', ''file_drop'''
+          required: true
+          type: string
+          displayName: 'Type of notification to filter on: ''file'', ''folder'', ''shared_folder'', ''send_receipt'', ''share_receipt'', ''file_drop'''
+        sortBy:
+          description: 'Sort by one of the following: ''sort_notifications_folder_name'', ''sort_notifications_path'', ''sort_notifications_date'''
+          required: false
+          type: string
+          displayName: 'Sort by one of the following: ''sort_notifications_folder_name'', ''sort_notifications_path'', ''sort_notifications_date'''
+        sortOrder:
+          description: Sort by 'asc' or 'desc' order.
+          required: false
+          type: string
+          displayName: Sort by 'asc' or 'desc' order.
+        filter:
+          description: Filter by the provided search terms.
+          required: false
+          type: string
+          displayName: Filter by the provided search terms.
+      (oas-tags):
+        - v1
+  /authenticateUser:
+    displayName: authenticateUser
+    get:
+      displayName: authenticateUser
+      description: Returns access token in the Response object
+      (oas-summary): Authenticates a user into the API
+      responses:
+        '200':
+          body:
+            application/json:
+              type: AuthResponse
+          description: No response was specified
+      queryParameters:
+        username:
+          description: Name of of user to authenticate
+          required: true
+          type: string
+          displayName: Name of of user to authenticate
+        password:
+          description: User's password
+          required: true
+          type: string
+          displayName: User's password
+      (oas-tags):
+        - v1
+  /getResourceList:
+    displayName: getResourceList
+    get:
+      displayName: getResourceList
+      description: Requires access token obtained via the authenticateUser operation. Available to users with 'list files' permission.
+      (oas-summary): Get a listing of files/folders for the specified path
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ResourceResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        path:
+          description: The remote file path
+          required: true
+          type: string
+          displayName: The remote file path
+        sortBy:
+          description: 'Sort according to attribute: sort_files_name, sort_files_size, sort_files_date, sort_files_type, sort_files_timeline'
+          required: true
+          type: string
+          displayName: 'Sort according to attribute: sort_files_name, sort_files_size, sort_files_date, sort_files_type, sort_files_timeline'
+        sortOrder:
+          description: 'Sort in either ascending or descending order: asc, desc'
+          required: true
+          type: string
+          displayName: 'Sort in either ascending or descending order: asc, desc'
+        offset:
+          description: Determines which item to start on for pagination
+          format: int32
+          required: true
+          type: integer
+          displayName: Determines which item to start on for pagination
+        limit:
+          description: The number of files to limit the result
+          format: int32
+          required: true
+          type: integer
+          displayName: The number of files to limit the result
+        detailed:
+          default: false
+          description: 'If true, returns sharedFolder, notifications or other objects associated with specified path'
+          type: boolean
+          displayName: 'If true, returns sharedFolder, notifications or other objects associated with specified path'
+        pattern:
+          description: 'Regex string. If not null, perform a search with specified pattern'
+          type: string
+          displayName: 'Regex string. If not null, perform a search with specified pattern'
+      (oas-tags):
+        - v1
+  /copyResources:
+    displayName: copyResources
+    get:
+      displayName: copyResources
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'upload' permission.
+      (oas-summary): 'Copies files, folders to the destination path'
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ModifiedResourcesResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        filePaths:
+          description: Remote paths of the files or folders to copy
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: Remote paths of the files or folders to copy
+        destinationPath:
+          description: Remote destination path to copy files/folders to
+          required: true
+          type: string
+          displayName: Remote destination path to copy files/folders to
+      (oas-tags):
+        - v1
+  /getResourceProperties:
+    displayName: getResourceProperties
+    get:
+      displayName: getResourceProperties
+      description: Requires access token obtained via the authenticateUser operation
+      (oas-summary): Get the properties for each of the specified files/folders
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ResourcePropertiesResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        filePaths:
+          description: Array containing paths of the files or folder to get
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: Array containing paths of the files or folder to get
+      (oas-tags):
+        - v1
+  /createNotification:
+    displayName: createNotification
+    get:
+      displayName: createNotification
+      description: Requires access token obtained via the authenticateUser operation. Available to users with 'notification' permission
+      (oas-summary): Creates a new Notification object
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        path:
+          description: Full path of file/folder where notification is set.
+          required: true
+          type: string
+          displayName: Full path of file/folder where notification is set.
+        action:
+          description: 'Type of action to filter on: ''upload'', ''download'', ''delete'', ''all'''
+          required: true
+          type: string
+          displayName: 'Type of action to filter on: ''upload'', ''download'', ''delete'', ''all'''
+        usernames:
+          description: 'User type to filter on: ''notice_user_all'', ''notice_user_all_recipients'', ''notice_user_all_users'''
+          required: true
+          type: string
+          displayName: 'User type to filter on: ''notice_user_all'', ''notice_user_all_recipients'', ''notice_user_all_users'''
+        sendEmail:
+          description: Set to true if the user should be notified by email when the notification is triggered.
+          required: true
+          type: boolean
+          displayName: Set to true if the user should be notified by email when the notification is triggered.
+        emails:
+          description: 'Email addresses to send notification to. If not specified, sends to owner by default.'
+          items:
+            type: string
+          type: array
+          displayName: 'Email addresses to send notification to. If not specified, sends to owner by default.'
+      (oas-tags):
+        - v1
+  /getShare:
+    displayName: getShare
+    get:
+      displayName: getShare
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'share' permission
+      (oas-summary): Returns a share by the specified ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ShareResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        id:
+          description: ID of the requested Share
+          format: int32
+          required: true
+          type: integer
+          displayName: ID of the requested Share
+      (oas-tags):
+        - v1
+  /createUser:
+    displayName: createUser
+    get:
+      displayName: createUser
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'manage users' permission
+      (oas-summary): Adds a new subaccount user to the current account
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        username:
+          description: Name of the subaccount user to create
+          required: true
+          type: string
+          displayName: Name of the subaccount user to create
+        destinationFolder:
+          description: The user's home folder
+          required: true
+          type: string
+          displayName: The user's home folder
+        email:
+          description: The user's email address
+          required: true
+          type: string
+          displayName: The user's email address
+        password:
+          description: The user's password
+          required: true
+          type: string
+          displayName: The user's password
+        role:
+          description: 'The user''s role, i.e: ''user'' or ''admin'''
+          required: true
+          type: string
+          displayName: 'The user''s role, i.e: ''user'' or ''admin'''
+        permissions:
+          description: 'A CSV string of user permissions. The following values are supported: upload, download, delete, modify, list, changePassword, share, notification.'
+          required: true
+          type: string
+          displayName: 'A CSV string of user permissions. The following values are supported: upload, download, delete, modify, list, changePassword, share, notification.'
+        timeZone:
+          default: America/Los_Angeles
+          description: 'The user''s timezone, used for accurate time display within SWFT. See <a href=''https://php.net/manual/en/timezones.php'' target=''blank''>this page</a> for allowed values'
+          required: true
+          type: string
+          displayName: 'The user''s timezone, used for accurate time display within SWFT. See <a href=''https://php.net/manual/en/timezones.php'' target=''blank''>this page</a> for allowed values'
+        nickname:
+          description: The user's nickname
+          type: string
+          displayName: The user's nickname
+        expiration:
+          description: 'The date when the user should expire, formatted YYYY-mm-dd'
+          type: string
+          displayName: 'The date when the user should expire, formatted YYYY-mm-dd'
+        locked:
+          default: false
+          description: 'If true, the user''s account is locked by default'
+          type: boolean
+          displayName: 'If true, the user''s account is locked by default'
+        welcomeEmail:
+          default: false
+          description: 'If true, send a user email upon creation'
+          type: boolean
+          displayName: 'If true, send a user email upon creation'
+      (oas-tags):
+        - v1
+  /getShareActivity:
+    displayName: getShareActivity
+    get:
+      displayName: getShareActivity
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'share' permission
+      (oas-summary): Return activity log entries for the specified Share ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ShareActivityResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        id:
+          description: ID of the Share
+          format: int32
+          required: true
+          type: integer
+          displayName: ID of the Share
+      (oas-tags):
+        - v1
+  /deleteResources:
+    displayName: deleteResources
+    get:
+      displayName: deleteResources
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'delete' permission
+      (oas-summary): Delete the specified files/folders
+      responses:
+        '200':
+          body:
+            application/json:
+              type: DeletedResourcesResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        filePaths:
+          description: Array containing paths of the files or folder to delete
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: Array containing paths of the files or folder to delete
+      (oas-tags):
+        - v1
+  /getShares:
+    displayName: getShares
+    get:
+      displayName: getShares
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'share' permission
+      (oas-summary): Returns all Shares for the current user
+      responses:
+        '200':
+          body:
+            application/json:
+              type: SharesResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        type:
+          description: 'The type of share to return: ''shared_folder'', ''send'', or ''receive''. If no argument specified, will return all Shares types.'
+          required: false
+          type: string
+          displayName: 'The type of share to return: ''shared_folder'', ''send'', or ''receive''. If no argument specified, will return all Shares types.'
+        sortBy:
+          description: 'Sort by one of the following: ''sort_shares_name'', ''sort_shares_date'', ''sort_shares_user'', ''sort_shares_access_mode''.'
+          required: false
+          type: string
+          displayName: 'Sort by one of the following: ''sort_shares_name'', ''sort_shares_date'', ''sort_shares_user'', ''sort_shares_access_mode''.'
+        sortOrder:
+          description: Sort by 'asc' or 'desc' order.
+          required: false
+          type: string
+          displayName: Sort by 'asc' or 'desc' order.
+        filter:
+          description: Filter by the provided search terms.
+          required: false
+          type: string
+          displayName: Filter by the provided search terms.
+        include:
+          description: 'Filter by all, active-only, or current user''s only.'
+          required: false
+          type: string
+          displayName: 'Filter by all, active-only, or current user''s only.'
+        offset:
+          description: 'Start position of results to return, for pagination.'
+          format: int32
+          required: false
+          type: integer
+          displayName: 'Start position of results to return, for pagination.'
+        limit:
+          description: Maximum number of elements to return or 0 if no limit.
+          format: int32
+          required: false
+          type: integer
+          displayName: Maximum number of elements to return or 0 if no limit.
+      (oas-tags):
+        - v1
+  /deleteUser:
+    displayName: deleteUser
+    get:
+      displayName: deleteUser
+      description: Requires access token obtained via the authenticateUser operation. Available to users with 'manage users' permission
+      (oas-summary): Deletes a subaccount user for the current account
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        username:
+          description: Name of the subaccount user to delete
+          required: true
+          type: string
+          displayName: Name of the subaccount user to delete
+      (oas-tags):
+        - v1
+  /getUploadFileUrl:
+    displayName: getUploadFileUrl
+    get:
+      displayName: getUploadFileUrl
+      description: Requires access token obtained via the authenticateUser operation. Called before an upload is started to get URL to appropriate storage server. Available to users with the 'write' permission.
+      (oas-summary): Returns a unique URL for handling file uploads
+      responses:
+        '200':
+          body:
+            application/json:
+              type: UrlResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        fileSize:
+          description: 'Size of the file to upload, in bytes'
+          format: int64
+          required: true
+          type: integer
+          displayName: 'Size of the file to upload, in bytes'
+        destinationPath:
+          description: 'Path relative to account''s home directory, including file name'
+          required: true
+          type: string
+          displayName: 'Path relative to account''s home directory, including file name'
+        allowOverwrite:
+          default: true
+          description: 'True if the file should be overwritten, false if different file names should be generated'
+          required: false
+          type: boolean
+          displayName: 'True if the file should be overwritten, false if different file names should be generated'
+        resume:
+          default: false
+          description: 'True if upload resume is supported, false if it isn''t'
+          required: false
+          type: boolean
+          displayName: 'True if upload resume is supported, false if it isn''t'
+      (oas-tags):
+        - v1
+  /getCurrentUser:
+    displayName: getCurrentUser
+    get:
+      displayName: getCurrentUser
+      description: Requires access token obtained via the authenticateUser operation
+      (oas-summary): Gets the user object for the currently logged in user
+      responses:
+        '200':
+          body:
+            application/json:
+              type: UserResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+      (oas-tags):
+        - v1
+  /getUser:
+    displayName: getUser
+    get:
+      displayName: getUser
+      description: Requires access token obtained via the authenticateUser operation
+      (oas-summary): Get the specified subaccount user for the current account
+      responses:
+        '200':
+          body:
+            application/json:
+              type: UserResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        username:
+          description: Name of the subaccount user to get
+          required: true
+          type: string
+          displayName: Name of the subaccount user to get
+      (oas-tags):
+        - v1
+  /getFileActivityLogs:
+    displayName: getFileActivityLogs
+    get:
+      displayName: getFileActivityLogs
+      (oas-summary): Returns a list of account activity. Allows for searching the activity log.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: LogResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        offset:
+          default: 0
+          description: Starting record in the result set. Can be used for pagination.
+          format: int32
+          required: false
+          type: integer
+          displayName: Starting record in the result set. Can be used for pagination.
+        sortBy:
+          default: sort_logs_date
+          description: 'Sort method [''sort_logs_date'' or ''sort_logs_ip_address'' or ''sort_logs_username'' or ''sort_logs_file'' or ''sort_logs_file_source'' or ''sort_logs_operation'', or ''sort_logs_duration'', or ''sort_logs_size'', or ''sort_logs_protocol'']'
+          required: false
+          type: string
+          displayName: 'Sort method [''sort_logs_date'' or ''sort_logs_ip_address'' or ''sort_logs_username'' or ''sort_logs_file'' or ''sort_logs_file_source'' or ''sort_logs_operation'', or ''sort_logs_duration'', or ''sort_logs_size'', or ''sort_logs_protocol'']'
+        sortOrder:
+          default: desc
+          description: 'Sort in either ascending or descending order: asc, desc'
+          required: false
+          type: string
+          displayName: 'Sort in either ascending or descending order: asc, desc'
+        filterBy:
+          description: 'Field to search on [''filter_logs_date'' or ''filter_logs_ip_address'' or ''filter_logs_username'' or ''filter_logs_operation'' or ''filter_logs_file'']'
+          required: false
+          type: string
+          displayName: 'Field to search on [''filter_logs_date'' or ''filter_logs_ip_address'' or ''filter_logs_username'' or ''filter_logs_operation'' or ''filter_logs_file'']'
+        filter:
+          description: 'Search criteria. For date ranges, use format ''start_date::end_date'''
+          required: false
+          type: string
+          displayName: 'Search criteria. For date ranges, use format ''start_date::end_date'''
+        itemLimit:
+          description: Number of logs to return. Can be used for pagination.
+          format: int32
+          required: false
+          type: integer
+          displayName: Number of logs to return. Can be used for pagination.
+      (oas-tags):
+        - v1
+  /getUsers:
+    displayName: getUsers
+    get:
+      displayName: getUsers
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'manage users' permission set
+      (oas-summary): Gets the user object for the currently logged in user
+      responses:
+        '200':
+          body:
+            application/json:
+              type: UsersResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        sortBy:
+          description: 'sort method [''sort_users_username'' or ''sort_users_nickname'' or ''sort_users_email'' or ''sort_users_home_folder'']'
+          required: true
+          type: string
+          displayName: 'sort method [''sort_users_username'' or ''sort_users_nickname'' or ''sort_users_email'' or ''sort_users_home_folder'']'
+        sortOrder:
+          description: 'sort order, i.e. ''asc'' or ''desc'''
+          required: true
+          type: string
+          displayName: 'sort order, i.e. ''asc'' or ''desc'''
+      (oas-tags):
+        - v1
+  /getNotification:
+    displayName: getNotification
+    get:
+      displayName: getNotification
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'notification' permission
+      (oas-summary): Returns a notification based on the given ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: NotificationResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        id:
+          description: ID of the Notification
+          format: int32
+          required: true
+          type: integer
+          displayName: ID of the Notification
+      (oas-tags):
+        - v1
+  /logoutUser:
+    displayName: logoutUser
+    get:
+      displayName: logoutUser
+      description: Requires access token obtained via the authenticateUser operation
+      (oas-summary): 'Removes user''s access token from database, logging them out of API'
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+      (oas-tags):
+        - v1
+  /createFolder:
+    displayName: createFolder
+    get:
+      displayName: createFolder
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'upload' permission.
+      (oas-summary): Create a folder at a specified path
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        folderName:
+          description: Name of the folder to create
+          required: true
+          type: string
+          displayName: Name of the folder to create
+        path:
+          description: Where to create the folder
+          required: true
+          type: string
+          displayName: Where to create the folder
+      (oas-tags):
+        - v1
+  /moveResources:
+    displayName: moveResources
+    get:
+      displayName: moveResources
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'upload' permission
+      (oas-summary): 'Moves files, folders to the destination path'
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ModifiedResourcesResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        filePaths:
+          description: Remote paths of the files or folders to move
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: Remote paths of the files or folders to move
+        destinationPath:
+          description: Remote destination path to move files/folders to
+          required: true
+          type: string
+          displayName: Remote destination path to move files/folders to
+      (oas-tags):
+        - v1
+  /deleteNotification:
+    displayName: deleteNotification
+    get:
+      displayName: deleteNotification
+      description: Requires access token obtained via the authenticateUser operation. Available to users with 'notification' permission
+      (oas-summary): Deletes a Notification by ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        id:
+          description: ID of the Notification to delete.
+          format: int32
+          required: true
+          type: integer
+          displayName: ID of the Notification to delete.
+      (oas-tags):
+        - v1
+  /previewFile:
+    displayName: previewFile
+    get:
+      displayName: previewFile
+      description: Requires access token obtained via authenticateUser operation
+      (oas-summary): Returns a resized image of the specified document for support file types
+      responses:
+        '200':
+          body:
+            application/json:
+              type: PreviewFileResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        path:
+          description: Path of the image relative to the user's home directory
+          required: true
+          type: string
+          displayName: Path of the image relative to the user's home directory
+        size:
+          description: 'The size of the image: small, medium, large'
+          required: true
+          type: string
+          displayName: 'The size of the image: small, medium, large'
+        width:
+          description: Overrides sizes. Sets to a specific width
+          format: int32
+          type: integer
+          displayName: Overrides sizes. Sets to a specific width
+        height:
+          description: Overrides sizes. Sets to a specific height
+          format: int32
+          type: integer
+          displayName: Overrides sizes. Sets to a specific height
+        page:
+          description: Page number for the document
+          format: int32
+          type: integer
+          displayName: Page number for the document
+      (oas-tags):
+        - v1
+  /getAccount:
+    displayName: getAccount
+    get:
+      displayName: getAccount
+      description: Requires access token obtained via the authenticateUser operation
+      (oas-summary): Gets the account object for the currently logged in user
+      responses:
+        '200':
+          body:
+            application/json:
+              type: AccountResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+      (oas-tags):
+        - v1
+  /getFolders:
+    displayName: getFolders
+    get:
+      displayName: getFolders
+      description: Requires access token obtained via the authenticateUser operation
+      (oas-summary): Get folders for a specified path
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ResourcePropertiesResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        path:
+          description: The remote file path
+          required: true
+          type: string
+          displayName: The remote file path
+      (oas-tags):
+        - v1
+  /updateUser:
+    displayName: updateUser
+    get:
+      displayName: updateUser
+      description: Requires access token obtained via the authenticateUser operation. Available to users with 'manage users' permission
+      (oas-summary): Updates a subaccount user for the current account
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        userId:
+          description: 'The user ID, must be obtained from getUser method first'
+          format: int32
+          required: true
+          type: integer
+          displayName: 'The user ID, must be obtained from getUser method first'
+        username:
+          description: Name of the subaccount user to modify
+          type: string
+          displayName: Name of the subaccount user to modify
+        nickname:
+          description: The user's nickname
+          type: string
+          displayName: The user's nickname
+        expiration:
+          description: 'The date when use should expire in format: YYYY-MM-DD'
+          type: string
+          displayName: 'The date when use should expire in format: YYYY-MM-DD'
+        email:
+          description: The user's email
+          type: string
+          displayName: The user's email
+        destinationFolder:
+          description: The user's home folder
+          type: string
+          displayName: The user's home folder
+        password:
+          description: The user's password
+          type: string
+          displayName: The user's password
+        locked:
+          description: 'If true, the user''s account is locked by default'
+          type: boolean
+          displayName: 'If true, the user''s account is locked by default'
+        role:
+          description: 'The user''s role, i.e: ''user'', ''admin'', ''master'''
+          type: string
+          displayName: 'The user''s role, i.e: ''user'', ''admin'', ''master'''
+        permissions:
+          description: A CSV string of user permissions.
+          type: string
+          displayName: A CSV string of user permissions.
+      (oas-tags):
+        - v1
+  /updateShare:
+    displayName: updateShare
+    get:
+      displayName: updateShare
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'share' permission
+      (oas-summary): Update an existing Share by ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        id:
+          description: The ID of the Share to update.
+          format: int32
+          required: true
+          type: integer
+          displayName: The ID of the Share to update.
+        name:
+          description: Name of the Share.
+          type: string
+          displayName: Name of the Share.
+        filePaths:
+          description: Array of strings containing the file paths to share.
+          items:
+            type: string
+          type: array
+          displayName: Array of strings containing the file paths to share.
+        subject:
+          description: Share message subject (for email invitations).
+          type: string
+          displayName: Share message subject (for email invitations).
+        message:
+          description: Share message contents (for email invitations).
+          type: string
+          displayName: Share message contents (for email invitations).
+        emails:
+          description: Array of strings for email recipients (for email invitations).
+          items:
+            type: string
+          type: array
+          displayName: Array of strings for email recipients (for email invitations).
+        ccEmail:
+          description: Specifies a CC email recipient.
+          type: string
+          displayName: Specifies a CC email recipient.
+        requireEmail:
+          description: Requires a user's email to access.
+          type: boolean
+          displayName: Requires a user's email to access.
+        accessMode:
+          description: 'Type of permissions share recipients have: upload, download, download_upload, download_upload_modify, download_upload_modify_delete.'
+          type: string
+          displayName: 'Type of permissions share recipients have: upload, download, download_upload, download_upload_modify, download_upload_modify_delete.'
+        embed:
+          description: Allows user to embed a widget with the share.
+          type: boolean
+          displayName: Allows user to embed a widget with the share.
+        isPublic:
+          description: 'True if share has a public URL, otherwise defaults to false'
+          type: boolean
+          displayName: 'True if share has a public URL, otherwise defaults to false'
+        password:
+          description: 'If not null, value of password is required to access this Share'
+          type: string
+          displayName: 'If not null, value of password is required to access this Share'
+        expiration:
+          description: 'The date the current Share should expire, formatted YYYY-mm-dd'
+          type: string
+          displayName: 'The date the current Share should expire, formatted YYYY-mm-dd'
+        hasNotification:
+          description: True if the user should be notified about activity on this Share.
+          type: boolean
+          displayName: True if the user should be notified about activity on this Share.
+        notificationEmails:
+          description: An array of recipients who should receive notification emails.
+          items:
+            type: string
+          type: array
+          displayName: An array of recipients who should receive notification emails.
+        fileDropCreateFolders:
+          description: 'If true, all receive folder submissions will be uploaded separate folders (only applicable for Receive folder types)'
+          type: boolean
+          displayName: 'If true, all receive folder submissions will be uploaded separate folders (only applicable for Receive folder types)'
+      (oas-tags):
+        - v1
+  /updateNotification:
+    displayName: updateNotification
+    get:
+      displayName: updateNotification
+      description: Requires access token obtained via the authenticateUser operation. Available to users with 'notification' permission
+      (oas-summary): Updates an existing notification by ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        id:
+          description: The notification ID
+          format: int32
+          required: true
+          type: integer
+          displayName: The notification ID
+        path:
+          description: Full path of file/folder where notification is set.
+          type: string
+          displayName: Full path of file/folder where notification is set.
+        action:
+          description: 'Type of action to filter on: ''upload'', ''download'', ''delete'', ''all'''
+          type: string
+          displayName: 'Type of action to filter on: ''upload'', ''download'', ''delete'', ''all'''
+        usernames:
+          description: 'User type to filter on: ''notice_user_all'', ''notice_user_all_recipients'', ''notice_user_all_users'''
+          type: string
+          displayName: 'User type to filter on: ''notice_user_all'', ''notice_user_all_recipients'', ''notice_user_all_users'''
+        emails:
+          description: 'Email addresses to send notification to. If not specified, sends to owner by default.'
+          items:
+            type: string
+          type: array
+          displayName: 'Email addresses to send notification to. If not specified, sends to owner by default.'
+        sendEmail:
+          description: Set to true if the user should be notified by email when the notification is triggered.
+          type: boolean
+          displayName: Set to true if the user should be notified by email when the notification is triggered.
+      (oas-tags):
+        - v1
+  /renameResource:
+    displayName: renameResource
+    get:
+      displayName: renameResource
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'modify' permission
+      (oas-summary): Rename a file or folder at the specified path
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        filePath:
+          description: Remote path of the files or folder to rename
+          required: true
+          type: string
+          displayName: Remote path of the files or folder to rename
+        newName:
+          description: The new name of the file or folder
+          required: true
+          type: string
+          displayName: The new name of the file or folder
+      (oas-tags):
+        - v1
+  /checkFilesExist:
+    displayName: checkFilesExist
+    get:
+      displayName: checkFilesExist
+      description: Requires access token obtained via the authenticateUser operation
+      (oas-summary): Checks to see if each file or folder in the array exists
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ExistingResourcesResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        filePaths:
+          description: Array containing paths of the files or folders to check
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: Array containing paths of the files or folders to check
+      (oas-tags):
+        - v1
+  /getDownloadFileUrl:
+    displayName: getDownloadFileUrl
+    get:
+      displayName: getDownloadFileUrl
+      description: Requires access token obtained via the authenticateUser operation. URL points at the appropriate storage server for file download.
+      (oas-summary): Returns a unique URL for handling file downloads
+      responses:
+        '200':
+          body:
+            application/json:
+              type: UrlResponse
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        filePaths:
+          description: Path of file to be downloaded
+          required: true
+          type: string
+          displayName: Path of file to be downloaded
+        downloadName:
+          description: The name of the file to be downloaded
+          required: false
+          type: string
+          displayName: The name of the file to be downloaded
+      (oas-tags):
+        - v1
+  /deleteShare:
+    displayName: deleteShare
+    get:
+      displayName: deleteShare
+      description: Requires access token obtained via the authenticateUser operation. Available to users with 'share' permission
+      (oas-summary): Deletes a Share by ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        id:
+          description: ID of the Share to delete.
+          format: int32
+          required: true
+          type: integer
+          displayName: ID of the Share to delete.
+      (oas-tags):
+        - v1
+  /createShare:
+    displayName: createShare
+    get:
+      displayName: createShare
+      description: Requires access token obtained via the authenticateUser operation. Available to users with the 'share' permission
+      (oas-summary): Create a new Share object
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Response
+          description: No response was specified
+      queryParameters:
+        access_token:
+          description: Access token required to make the API call
+          required: true
+          type: string
+          displayName: Access token required to make the API call
+        type:
+          description: 'The type of share to create: shared_folder, send, receive.'
+          required: true
+          type: string
+          displayName: 'The type of share to create: shared_folder, send, receive.'
+        name:
+          description: Name of the Share.
+          required: true
+          type: string
+          displayName: Name of the Share.
+        filePaths:
+          description: Array of strings containing the file paths to share.
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: Array of strings containing the file paths to share.
+        subject:
+          description: Share message subject (for email invitations).
+          required: false
+          type: string
+          displayName: Share message subject (for email invitations).
+        message:
+          description: Share message contents (for email invitations).
+          required: false
+          type: string
+          displayName: Share message contents (for email invitations).
+        emails:
+          description: Array of strings for email recipients (for email invitations).
+          items:
+            type: string
+          required: false
+          type: array
+          displayName: Array of strings for email recipients (for email invitations).
+        ccEmail:
+          description: Specifies a CC email recipient.
+          required: false
+          type: string
+          displayName: Specifies a CC email recipient.
+        requireEmail:
+          default: false
+          description: Requires a user's email to access (defaults to false if not specified).
+          required: false
+          type: boolean
+          displayName: Requires a user's email to access (defaults to false if not specified).
+        accessMode:
+          description: 'Type of permissions share recipients have: upload, download, download_upload, download_upload_modify, download_upload_modify_delete. Defaults to download if no option specified.'
+          required: false
+          type: string
+          displayName: 'Type of permissions share recipients have: upload, download, download_upload, download_upload_modify, download_upload_modify_delete. Defaults to download if no option specified.'
+        embed:
+          default: false
+          description: Allows user to embed a widget with the share. Defaults to false if not specified.
+          required: false
+          type: boolean
+          displayName: Allows user to embed a widget with the share. Defaults to false if not specified.
+        isPublic:
+          default: false
+          description: 'True if share has a public URL, otherwise defaults to false'
+          required: false
+          type: boolean
+          displayName: 'True if share has a public URL, otherwise defaults to false'
+        password:
+          description: 'If not null, value of password is required to access this Share'
+          required: false
+          type: string
+          displayName: 'If not null, value of password is required to access this Share'
+        expiration:
+          description: 'The date the current Share should expire, formatted YYYY-mm-dd'
+          required: false
+          type: string
+          displayName: 'The date the current Share should expire, formatted YYYY-mm-dd'
+        hasNotification:
+          description: True if the user should be notified about activity on this Share.
+          required: false
+          type: boolean
+          displayName: True if the user should be notified about activity on this Share.
+        notificationEmails:
+          description: An array of recipients who should receive notification emails.
+          items:
+            type: string
+          required: false
+          type: array
+          displayName: An array of recipients who should receive notification emails.
+        fileDropCreateFolders:
+          default: false
+          description: 'If true, all receive folder submissions will be uploaded separate folders (only applicable for Receive folder types)'
+          required: false
+          type: boolean
+          displayName: 'If true, all receive folder submissions will be uploaded separate folders (only applicable for Receive folder types)'
+      (oas-tags):
+        - v1
+types:
+  Account:
+    properties:
+      appliedTrial:
+        type: string
+      bandwidthQuotaLimit:
+        format: int64
+        type: integer
+      bandwidthQuotaUsed:
+        format: int64
+        type: integer
+      branding:
+        type: boolean
+      clientId:
+        format: int32
+        type: integer
+      complexPasswords:
+        type: boolean
+      created:
+        type: string
+      customDomain:
+        type: boolean
+      diskQuotaLimit:
+        format: int64
+        type: integer
+      diskQuotaUsed:
+        format: int64
+        type: integer
+      externalDomains:
+        type: string
+      freeTrial:
+        type: boolean
+      id:
+        format: int32
+        type: integer
+      masterAccount:
+        type: User
+      maxUsers:
+        format: int32
+        type: integer
+      modified:
+        type: string
+      planCode:
+        type: string
+      quotaNoticeEnabled:
+        format: int32
+        type: integer
+      quotaNoticeThreshold:
+        format: int32
+        type: integer
+      redirect:
+        type: string
+      secureOnly:
+        type: boolean
+      showReferralLinks:
+        type: boolean
+      status:
+        format: int32
+        type: integer
+      userCount:
+        format: int32
+        type: integer
+      username:
+        type: string
+  AccountResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: Account
+      success:
+        format: int32
+        type: integer
+  Auth:
+    properties:
+      accessToken:
+        type: string
+      clientIp:
+        type: string
+      mode:
+        format: int32
+        type: integer
+      username:
+        type: string
+  AuthResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: Auth
+      success:
+        format: int32
+        type: integer
+  AvailableUser:
+    properties:
+      available:
+        type: boolean
+  AvailableUserResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: AvailableUser
+      success:
+        format: int32
+        type: integer
+  DeletedResource:
+    properties:
+      file:
+        type: string
+      size:
+        format: int64
+        type: integer
+      success:
+        format: int32
+        type: integer
+  DeletedResourcesResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: DeletedResource
+        type: array
+      success:
+        format: int32
+        type: integer
+  Error:
+    properties:
+      code:
+        format: int32
+        type: integer
+      message:
+        type: string
+  ExistingResource:
+    properties:
+      exists:
+        type: boolean
+      resource:
+        type: ResourceProperty
+  ExistingResourcesResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: ExistingResource
+        type: array
+      success:
+        format: int32
+        type: integer
+  LogEntry:
+    properties:
+      bytesTransferred:
+        format: int64
+        type: integer
+      created:
+        type: string
+      duration:
+        type: string
+      fileName:
+        type: string
+      fileSource:
+        type: string
+      id:
+        format: int32
+        type: integer
+      ipAddress:
+        type: string
+      operation:
+        type: string
+      protocol:
+        type: string
+      sessionId:
+        type: string
+      status:
+        type: string
+      username:
+        type: string
+  LogResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: LogEntry
+        type: array
+      success:
+        format: int32
+        type: integer
+  Message:
+    properties:
+      body:
+        type: string
+      created:
+        type: string
+      id:
+        format: int32
+        type: integer
+      modified:
+        type: string
+      shareId:
+        type: string
+      subject:
+        type: string
+      userId:
+        format: int32
+        type: integer
+  ModifiedResource:
+    properties:
+      destination:
+        type: string
+      file:
+        type: string
+      size:
+        format: int64
+        type: integer
+      success:
+        format: int32
+        type: integer
+  ModifiedResourcesResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: ModifiedResource
+        type: array
+      success:
+        format: int32
+        type: integer
+  Notification:
+    properties:
+      action:
+        type: string
+      created:
+        type: string
+      id:
+        format: int32
+        type: integer
+      modified:
+        type: string
+      name:
+        type: string
+      path:
+        type: string
+      readableDescription:
+        type: string
+      readableDescriptionWithoutPath:
+        type: string
+      recipientEmails:
+        items:
+          type: string
+        type: array
+      recipients:
+        items:
+          type: Recipient
+        type: array
+      sendEmail:
+        type: string
+      shareId:
+        type: string
+      type:
+        type: string
+      userId:
+        type: string
+      usernames:
+        items:
+          type: string
+        type: array
+  NotificationActivityResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: NotificationMessage
+        type: array
+      success:
+        format: int32
+        type: integer
+  NotificationMessage:
+    properties:
+      action:
+        type: string
+      created:
+        type: string
+      id:
+        format: int32
+        type: integer
+      message:
+        type: string
+      notificationSetting:
+        type: Notification
+      path:
+        type: string
+      read:
+        type: boolean
+      sent:
+        type: boolean
+      username:
+        type: string
+  NotificationResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: Notification
+      success:
+        format: int32
+        type: integer
+  NotificationsResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: Notification
+        type: array
+      success:
+        format: int32
+        type: integer
+  PreviewFile:
+    properties:
+      image:
+        type: string
+      imageId:
+        type: string
+      size:
+        format: int64
+        type: integer
+  PreviewFileResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: PreviewFile
+      success:
+        format: int32
+        type: integer
+  Recipient:
+    properties:
+      created:
+        type: string
+      email:
+        type: string
+      hash:
+        type: string
+      id:
+        format: int32
+        type: integer
+      received:
+        type: boolean
+      sent:
+        type: boolean
+      shareId:
+        type: string
+      type:
+        type: string
+  Resource:
+    properties:
+      inheritedNotifications:
+        type: string
+      inheritedShares:
+        type: string
+      resources:
+        items:
+          type: ResourceProperty
+        type: array
+      totalFiles:
+        format: int32
+        type: integer
+  ResourcePropertiesResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: ResourceProperty
+        type: array
+      success:
+        format: int32
+        type: integer
+  ResourceProperty:
+    properties:
+      createdBy:
+        type: string
+      file:
+        type: string
+      fileCount:
+        format: int32
+        type: integer
+      name:
+        type: string
+      notificationSettings:
+        type: string
+      parent:
+        type: string
+      path:
+        type: string
+      previewable:
+        type: boolean
+      shares:
+        items:
+          type: Share
+        type: array
+      size:
+        format: int64
+        type: integer
+      type:
+        type: string
+        required: false
+      uploadDate:
+        type: string
+  ResourceResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: Resource
+      success:
+        format: int32
+        type: integer
+  Response:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: string
+        type: array
+      success:
+        format: int32
+        type: integer
+  Share:
+    properties:
+      accessDescription:
+        type: string
+      accessMode:
+        type: string
+      created:
+        type: string
+      embed:
+        type: boolean
+      expiration:
+        type: string
+      expired:
+        type: string
+      fileDropCreateFolders:
+        type: boolean
+      hasNotification:
+        type: boolean
+      hasPassword:
+        type: boolean
+      hash:
+        type: string
+      id:
+        format: int32
+        type: integer
+      inherited:
+        type: boolean
+      isPublic:
+        type: boolean
+      messages:
+        items:
+          type: Message
+        type: array
+      modified:
+        type: string
+      name:
+        type: string
+      notification:
+        type: string
+      owner:
+        format: int32
+        type: integer
+      ownerHash:
+        type: string
+      ownerUsername:
+        type: string
+      paths:
+        items:
+          type: string
+        type: array
+      recipients:
+        items:
+          type: Recipient
+        type: array
+      recipientsWithOwner:
+        items:
+          type: Recipient
+        type: array
+      requireEmail:
+        type: boolean
+      resent:
+        type: boolean
+      status:
+        format: int32
+        type: integer
+      trackingStatus:
+        type: string
+      type:
+        type: string
+  ShareActivityResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: ShareLogEntry
+        type: array
+      success:
+        format: int32
+        type: integer
+  ShareLogEntry:
+    properties:
+      action:
+        type: string
+      actionObjectId:
+        type: string
+      created:
+        type: string
+      detail:
+        type: string
+      id:
+        format: int32
+        type: integer
+      shareId:
+        type: string
+      username:
+        type: string
+  ShareResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: Share
+      success:
+        format: int32
+        type: integer
+  SharesResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: Share
+        type: array
+      success:
+        format: int32
+        type: integer
+  Url:
+    properties:
+      offset:
+        format: int32
+        type: integer
+        required: false
+      url:
+        type: string
+  UrlResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: Url
+      success:
+        format: int32
+        type: integer
+  User:
+    properties:
+      accessTimestamp:
+        type: string
+      changePassword:
+        type: boolean
+      created:
+        type: string
+      delete:
+        type: boolean
+      download:
+        type: boolean
+      email:
+        type: string
+      expiration:
+        type: string
+      gid:
+        format: int32
+        type: integer
+      homeDir:
+        type: string
+      id:
+        format: int32
+        type: integer
+      list:
+        type: boolean
+      modified:
+        type: string
+      modify:
+        type: boolean
+      nickname:
+        type: string
+      notification:
+        type: boolean
+      owningAccountId:
+        format: int32
+        type: integer
+      role:
+        type: string
+      share:
+        type: boolean
+      status:
+        format: int32
+        type: integer
+      timeZone:
+        type: string
+      upload:
+        type: boolean
+      username:
+        type: string
+  UserResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        type: User
+      success:
+        format: int32
+        type: integer
+  UsersResponse:
+    properties:
+      error:
+        type: Error
+      results:
+        items:
+          type: User
+        type: array
+      success:
+        format: int32
+        type: integer

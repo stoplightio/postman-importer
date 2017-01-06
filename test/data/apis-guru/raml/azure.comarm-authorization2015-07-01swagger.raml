@@ -1,0 +1,828 @@
+#%RAML 1.0
+title: AuthorizationManagementClient
+version: '2015-07-01'
+baseUri: 'https://management.azure.com'
+mediaType:
+  - application/json
+  - text/json
+protocols:
+  - HTTPS
+description: Role based access control provides you a way to apply granular level policy administration down to individual resources or resource groups. These operations enable you to manage role definitions and role assignments. A role definition describes the set of actions that can be performed on resources. A role assignment grants access to Azure Active Directory users.
+(oas-info):
+  (oas-x-apisguru-categories):
+    - cloud
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_assets.onestore.ms_cdnfiles_onestorerolling-1606-01000_shell_v3_images_logo_microsoft.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/arm-authorization/2015-07-01/swagger/authorization.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): azure.com
+  (oas-x-serviceName): arm-authorization
+  (oas-x-tags):
+    - Azure
+    - Microsoft
+annotationTypes:
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-x-tags: any
+  oas-x-ms-pageable: any
+  oas-x-ms-odata: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-x-hasEquivalentPaths: any
+securitySchemes:
+  azure_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://login.microsoftonline.com/common/oauth2/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - user_impersonation
+    description: Azure Active Directory OAuth2 Flow
+'/{roleAssignmentId}':
+  displayName: '{roleAssignmentId}'
+  uriParameters:
+    roleAssignmentId:
+      description: The ID of the role assignment to get.
+      required: true
+      type: string
+      displayName: The ID of the role assignment to get.
+  put:
+    displayName: RoleAssignments_CreateById
+    description: Creates a role assignment by ID.
+    is:
+      - apiVersionParameter
+    body:
+      application/json:
+        type: RoleAssignmentCreateParameters
+        (oas-body-name): parameters
+        description: Parameters for the role assignment.
+    responses:
+      '201':
+        body:
+          application/json:
+            type: RoleAssignment
+        description: Created - Returns the role assignment.
+    (oas-tags):
+      - RoleAssignments
+  delete:
+    displayName: RoleAssignments_DeleteById
+    description: Deletes a role assignment.
+    is:
+      - apiVersionParameter
+    responses:
+      '200':
+        body:
+          application/json:
+            type: RoleAssignment
+        description: OK - Returns information about the role assignment.
+    (oas-tags):
+      - RoleAssignments
+  get:
+    displayName: RoleAssignments_GetById
+    description: Gets a role assignment by ID.
+    is:
+      - apiVersionParameter
+    responses:
+      '200':
+        body:
+          application/json:
+            type: RoleAssignment
+        description: OK - Returns the role assignment.
+    (oas-tags):
+      - RoleAssignments
+'/{scope}':
+  displayName: '{scope}'
+  /providers:
+    displayName: providers
+    /Microsoft.Authorization:
+      displayName: Microsoft.Authorization
+      /roleDefinitions:
+        displayName: roleDefinitions
+        '/{roleDefinitionId}':
+          displayName: '{roleDefinitionId}'
+          uriParameters:
+            roleDefinitionId:
+              description: The ID of the role definition to delete.
+              required: true
+              type: string
+              displayName: The ID of the role definition to delete.
+          put:
+            displayName: RoleDefinitions_CreateOrUpdate
+            description: Creates or updates a role definition.
+            is:
+              - apiVersionParameter
+            body:
+              application/json:
+                type: RoleDefinition
+                (oas-body-name): roleDefinition
+                description: The values for the role definition.
+            responses:
+              '201':
+                body:
+                  application/json:
+                    type: RoleDefinition
+                description: OK - Returns information about the role definition.
+            (oas-tags):
+              - RoleDefinitions
+          get:
+            displayName: RoleDefinitions_Get
+            description: Get role definition by name (GUID).
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: RoleDefinition
+                description: OK - Returns information about the role definition.
+            (oas-tags):
+              - RoleDefinitions
+          delete:
+            displayName: RoleDefinitions_Delete
+            description: Deletes a role definition.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: RoleDefinition
+                description: OK - Returns information about the role definition.
+            (oas-tags):
+              - RoleDefinitions
+        get:
+          (oas-x-ms-odata): '#/definitions/RoleDefinitionFilter'
+          (oas-x-ms-pageable):
+            nextLinkName: nextLink
+          displayName: RoleDefinitions_List
+          description: Get all role definitions that are applicable at scope and above.
+          is:
+            - apiVersionParameter
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RoleDefinitionListResult
+              description: OK - Returns an array of role definitions.
+          queryParameters:
+            $filter:
+              description: The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
+              required: false
+              type: string
+              displayName: The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
+          (oas-tags):
+            - RoleDefinitions
+      /roleAssignments:
+        displayName: roleAssignments
+        get:
+          (oas-x-ms-odata): '#/definitions/RoleAssignmentFilter'
+          (oas-x-ms-pageable):
+            nextLinkName: nextLink
+          displayName: RoleAssignments_ListForScope
+          description: Gets role assignments for a scope.
+          is:
+            - apiVersionParameter
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RoleAssignmentListResult
+              description: OK - Returns an array of role assignments.
+          queryParameters:
+            $filter:
+              description: 'The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified principal.'
+              required: false
+              type: string
+              displayName: 'The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified principal.'
+          (oas-tags):
+            - RoleAssignments
+        '/{roleAssignmentName}':
+          displayName: '{roleAssignmentName}'
+          uriParameters:
+            roleAssignmentName:
+              description: The name of the role assignment to create. It can be any valid GUID.
+              required: true
+              type: string
+              displayName: The name of the role assignment to create. It can be any valid GUID.
+          delete:
+            displayName: RoleAssignments_Delete
+            description: Deletes a role assignment.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: RoleAssignment
+                description: OK - Returns information about the role assignment.
+            (oas-tags):
+              - RoleAssignments
+          get:
+            displayName: RoleAssignments_Get
+            description: Get the specified role assignment.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: RoleAssignment
+                description: OK - Returns information about the role assignment.
+            (oas-tags):
+              - RoleAssignments
+          put:
+            displayName: RoleAssignments_Create
+            description: Creates a role assignment.
+            is:
+              - apiVersionParameter
+            body:
+              application/json:
+                type: RoleAssignmentCreateParameters
+                (oas-body-name): parameters
+                description: Parameters for the role assignment.
+            responses:
+              '201':
+                body:
+                  application/json:
+                    type: RoleAssignment
+                description: Created - Returns information about the role assignment.
+            (oas-tags):
+              - RoleAssignments
+'/{roleDefinitionId}':
+  displayName: '{roleDefinitionId}'
+  uriParameters:
+    roleDefinitionId:
+      description: The fully qualified role definition ID to get.
+      required: true
+      type: string
+      displayName: The fully qualified role definition ID to get.
+  get:
+    displayName: RoleDefinitions_GetById
+    description: Gets a role definition by ID.
+    is:
+      - apiVersionParameter
+    responses:
+      '200':
+        body:
+          application/json:
+            type: RoleDefinition
+        description: OK - Returns information about the role definition.
+    (oas-tags):
+      - RoleDefinitions
+/providers:
+  displayName: providers
+  /Microsoft.Authorization:
+    displayName: Microsoft.Authorization
+    /providerOperations:
+      displayName: providerOperations
+      get:
+        (oas-x-ms-pageable):
+          nextLinkName: nextLink
+        displayName: ProviderOperationsMetadata_List
+        description: Gets provider operations metadata for all resource providers.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: ProviderOperationsMetadataListResult
+            description: OK - Returns an array of the operations metadata.
+        queryParameters:
+          api-version:
+            description: The API version to use for this operation.
+            required: true
+            type: string
+            displayName: The API version to use for this operation.
+          $expand:
+            default: resourceTypes
+            description: Specifies whether to expand the values.
+            required: false
+            type: string
+            displayName: Specifies whether to expand the values.
+        (oas-tags):
+          - ProviderOperationsMetadata
+      '/{resourceProviderNamespace}':
+        displayName: '{resourceProviderNamespace}'
+        uriParameters:
+          resourceProviderNamespace:
+            description: The namespace of the resource provider.
+            required: true
+            type: string
+            displayName: The namespace of the resource provider.
+        get:
+          displayName: ProviderOperationsMetadata_Get
+          description: Gets provider operations metadata for the specified resource provider.
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: ProviderOperationsMetadata
+              description: OK - Returns the operations metadata.
+          queryParameters:
+            api-version:
+              description: The API version to use for the operation.
+              required: true
+              type: string
+              displayName: The API version to use for the operation.
+            $expand:
+              default: resourceTypes
+              description: Specifies whether to expand the values.
+              required: false
+              type: string
+              displayName: Specifies whether to expand the values.
+          (oas-tags):
+            - ProviderOperationsMetadata
+/subscriptions:
+  displayName: subscriptions
+  '/{subscriptionId}':
+    displayName: '{subscriptionId}'
+    /providers:
+      displayName: providers
+      /Microsoft.Authorization:
+        displayName: Microsoft.Authorization
+        /classicAdministrators:
+          displayName: classicAdministrators
+          get:
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: ClassicAdministrators_List
+            description: 'Gets service administrator, account administrator, and co-administrators for the subscription.'
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: ClassicAdministratorListResult
+                description: Returns an array of administrators.
+            queryParameters:
+              api-version:
+                description: The API version to use for this operation.
+                required: true
+                type: string
+                displayName: The API version to use for this operation.
+            (oas-tags):
+              - ClassicAdministrators
+        /roleAssignments:
+          displayName: roleAssignments
+          get:
+            (oas-x-ms-odata): '#/definitions/RoleAssignmentFilter'
+            (oas-x-ms-pageable):
+              nextLinkName: nextLink
+            displayName: RoleAssignments_List
+            description: Gets all role assignments for the subscription.
+            is:
+              - apiVersionParameter
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: RoleAssignmentListResult
+                description: OK - Returns an array of role assignments.
+            queryParameters:
+              $filter:
+                description: 'The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified principal.'
+                required: false
+                type: string
+                displayName: 'The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified principal.'
+            (oas-tags):
+              - RoleAssignments
+    /resourceGroups:
+      displayName: resourceGroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          /Microsoft.Authorization:
+            displayName: Microsoft.Authorization
+            /roleAssignments:
+              displayName: roleAssignments
+              get:
+                (oas-x-ms-odata): '#/definitions/RoleAssignmentFilter'
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: RoleAssignments_ListForResourceGroup
+                description: Gets role assignments for a resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: RoleAssignmentListResult
+                    description: OK - Returns an array of role assignments.
+                queryParameters:
+                  $filter:
+                    description: 'The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified principal.'
+                    required: false
+                    type: string
+                    displayName: 'The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified principal.'
+                (oas-tags):
+                  - RoleAssignments
+    /resourcegroups:
+      displayName: resourcegroups
+      '/{resourceGroupName}':
+        displayName: '{resourceGroupName}'
+        /providers:
+          displayName: providers
+          '/{resourceProviderNamespace}':
+            displayName: '{resourceProviderNamespace}'
+            '/{parentResourcePath}':
+              displayName: '{parentResourcePath}'
+              '/{resourceType}':
+                displayName: '{resourceType}'
+                '/{resourceName}':
+                  displayName: '{resourceName}'
+                  /providers:
+                    displayName: providers
+                    /Microsoft.Authorization:
+                      displayName: Microsoft.Authorization
+                      /permissions:
+                        displayName: permissions
+                        get:
+                          (oas-x-ms-pageable):
+                            nextLinkName: nextLink
+                          displayName: Permissions_ListForResource
+                          description: Gets all permissions the caller has for a resource.
+                          is:
+                            - apiVersionParameter
+                          responses:
+                            '200':
+                              body:
+                                application/json:
+                                  type: PermissionGetResult
+                              description: OK - Returns an array of permissions.
+                          (oas-tags):
+                            - Permissions
+                '/{resourceName}providers':
+                  displayName: '{resourceName}providers'
+                  /Microsoft.Authorization:
+                    displayName: Microsoft.Authorization
+                    /roleAssignments:
+                      displayName: roleAssignments
+                      get:
+                        (oas-x-ms-odata): '#/definitions/RoleAssignmentFilter'
+                        (oas-x-ms-pageable):
+                          nextLinkName: nextLink
+                        displayName: RoleAssignments_ListForResource
+                        description: Gets role assignments for a resource.
+                        is:
+                          - apiVersionParameter
+                        responses:
+                          '200':
+                            body:
+                              application/json:
+                                type: RoleAssignmentListResult
+                            description: OK - Returns an array of role assignments.
+                        queryParameters:
+                          $filter:
+                            description: 'The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified principal.'
+                            required: false
+                            type: string
+                            displayName: 'The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified principal.'
+                        (oas-tags):
+                          - RoleAssignments
+          /Microsoft.Authorization:
+            displayName: Microsoft.Authorization
+            /permissions:
+              displayName: permissions
+              get:
+                (oas-x-ms-pageable):
+                  nextLinkName: nextLink
+                displayName: Permissions_ListForResourceGroup
+                description: Gets all permissions the caller has for a resource group.
+                is:
+                  - apiVersionParameter
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: PermissionGetResult
+                    description: OK - Returns an array of permissions.
+                (oas-tags):
+                  - Permissions
+types:
+  ClassicAdministrator:
+    description: Classic Administrators
+    properties:
+      id:
+        description: The ID of the administrator.
+        type: string
+        required: false
+      name:
+        description: The name of the administrator.
+        type: string
+        required: false
+      properties:
+        description: Properties for the classic administrator.
+        type: ClassicAdministratorProperties
+        required: false
+      type:
+        description: The type of the administrator.
+        type: string
+        required: false
+  ClassicAdministratorListResult:
+    description: ClassicAdministrator list result information.
+    properties:
+      nextLink:
+        description: The URL to use for getting the next set of results.
+        type: string
+        required: false
+      value:
+        description: An array of administrators.
+        items:
+          type: ClassicAdministrator
+        type: array
+        required: false
+  ClassicAdministratorProperties:
+    description: Classic Administrator properties.
+    properties:
+      emailAddress:
+        description: The email address of the administrator.
+        type: string
+        required: false
+      role:
+        description: The role of the administrator.
+        type: string
+        required: false
+  Permission:
+    description: Role definition permissions.
+    properties:
+      actions:
+        description: Allowed actions.
+        items:
+          type: string
+        type: array
+        required: false
+      notActions:
+        description: Denied actions.
+        items:
+          type: string
+        type: array
+        required: false
+  PermissionGetResult:
+    description: Permissions information.
+    properties:
+      nextLink:
+        description: The URL to use for getting the next set of results.
+        type: string
+        required: false
+      value:
+        description: An array of permissions.
+        items:
+          type: Permission
+        type: array
+        required: false
+  ProviderOperation:
+    description: Operation
+    properties:
+      description:
+        description: The operation description.
+        type: string
+        required: false
+      displayName:
+        description: The operation display name.
+        type: string
+        required: false
+      name:
+        description: The operation name.
+        type: string
+        required: false
+      origin:
+        description: The operation origin.
+        type: string
+        required: false
+      properties:
+        description: The operation properties.
+        type: object
+        required: false
+  ProviderOperationsMetadata:
+    description: Provider Operations metadata
+    properties:
+      displayName:
+        description: The provider display name.
+        type: string
+        required: false
+      id:
+        description: The provider id.
+        type: string
+        required: false
+      name:
+        description: The provider name.
+        type: string
+        required: false
+      operations:
+        description: The provider operations.
+        items:
+          type: ProviderOperation
+        type: array
+        required: false
+      resourceTypes:
+        description: The provider resource types
+        items:
+          type: ResourceType
+        type: array
+        required: false
+      type:
+        description: The provider type.
+        type: string
+        required: false
+  ProviderOperationsMetadataListResult:
+    description: Provider operations metadata list
+    properties:
+      nextLink:
+        description: The URL to use for getting the next set of results.
+        type: string
+        required: false
+      value:
+        description: The list of providers.
+        items:
+          type: ProviderOperationsMetadata
+        type: array
+        required: false
+  ResourceType:
+    description: Resource Type
+    properties:
+      displayName:
+        description: The resource type display name.
+        type: string
+        required: false
+      name:
+        description: The resource type name.
+        type: string
+        required: false
+      operations:
+        description: The resource type operations.
+        items:
+          type: ProviderOperation
+        type: array
+        required: false
+  RoleAssignment:
+    description: Role Assignments
+    properties:
+      id:
+        description: The role assignment ID.
+        type: string
+        required: false
+      name:
+        description: The role assignment name.
+        type: string
+        required: false
+      properties:
+        description: Role assignment properties.
+        type: RoleAssignmentPropertiesWithScope
+        required: false
+      type:
+        description: The role assignment type.
+        type: string
+        required: false
+  RoleAssignmentCreateParameters:
+    description: Role assignment create parameters.
+    properties:
+      properties:
+        description: Role assignment properties.
+        type: RoleAssignmentProperties
+        required: false
+  RoleAssignmentFilter:
+    description: Role Assignments filter
+    properties:
+      principalId:
+        description: Returns role assignment of the specific principal.
+        type: string
+        required: false
+  RoleAssignmentListResult:
+    description: Role assignment list operation result.
+    properties:
+      nextLink:
+        description: The URL to use for getting the next set of results.
+        type: string
+        required: false
+      value:
+        description: Role assignment list.
+        items:
+          type: RoleAssignment
+        type: array
+        required: false
+  RoleAssignmentProperties:
+    description: Role assignment properties.
+    properties:
+      principalId:
+        description: 'The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.'
+        type: string
+        required: false
+      roleDefinitionId:
+        description: The role definition ID used in the role assignment.
+        type: string
+        required: false
+  RoleAssignmentPropertiesWithScope:
+    description: Role assignment properties with scope.
+    properties:
+      principalId:
+        description: The principal ID.
+        type: string
+        required: false
+      roleDefinitionId:
+        description: The role definition ID.
+        type: string
+        required: false
+      scope:
+        description: The role assignment scope.
+        type: string
+        required: false
+  RoleDefinition:
+    description: Role definition.
+    properties:
+      id:
+        description: The role definition ID.
+        type: string
+        required: false
+      name:
+        description: The role definition name.
+        type: string
+        required: false
+      properties:
+        description: Role definition properties.
+        type: RoleDefinitionProperties
+        required: false
+      type:
+        description: The role definition type.
+        type: string
+        required: false
+  RoleDefinitionFilter:
+    description: Role Definitions filter
+    properties:
+      roleName:
+        description: Returns role definition with the specific name.
+        type: string
+        required: false
+  RoleDefinitionListResult:
+    description: Role definition list operation result.
+    properties:
+      nextLink:
+        description: The URL to use for getting the next set of results.
+        type: string
+        required: false
+      value:
+        description: Role definition list.
+        items:
+          type: RoleDefinition
+        type: array
+        required: false
+  RoleDefinitionProperties:
+    description: Role definition properties.
+    properties:
+      assignableScopes:
+        description: Role definition assignable scopes.
+        items:
+          type: string
+        type: array
+        required: false
+      description:
+        description: The role definition description.
+        type: string
+        required: false
+      permissions:
+        description: Role definition permissions.
+        items:
+          type: Permission
+        type: array
+        required: false
+      roleName:
+        description: The role name.
+        type: string
+        required: false
+      type:
+        description: The role type.
+        type: string
+        required: false
+traits:
+  apiVersionParameter:
+    queryParameters:
+      api-version:
+        type: string
+        description: The API version to use for this operation.
+        required: true
+(oas-x-hasEquivalentPaths): true

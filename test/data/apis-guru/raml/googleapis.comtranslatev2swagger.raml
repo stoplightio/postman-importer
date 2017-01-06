@@ -1,0 +1,286 @@
+#%RAML 1.0
+title: Translate
+version: v2
+baseUri: 'https://www.googleapis.com/language/translate'
+protocols:
+  - HTTPS
+description: Translates text from one language to another.
+(oas-tags-definition):
+  - name: detections
+  - name: languages
+  - name: translations
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_cloud.google.com__static_images_new-gcp-logo.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/translate/v2/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): translate
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/translate/v2/using_rest'
+/v2:
+  displayName: v2
+  /languages:
+    displayName: languages
+    get:
+      displayName: language.languages.list
+      description: List the source/target languages supported by the API
+      responses:
+        '200':
+          body:
+            application/json:
+              type: LanguagesListResponse
+          description: Successful response
+      queryParameters:
+        target:
+          description: the language and collation in which the localized results should be returned
+          type: string
+          displayName: the language and collation in which the localized results should be returned
+      (oas-tags):
+        - languages
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  /detect:
+    displayName: detect
+    get:
+      displayName: language.detections.list
+      description: Detect the language of text.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: DetectionsListResponse
+          description: Successful response
+      queryParameters:
+        q:
+          collectionFormat: multi
+          description: The text to detect
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: The text to detect
+          facets:
+            collectionFormat: string
+      (oas-tags):
+        - detections
+    is:
+      - alt
+      - fields
+      - key
+      - oauthToken
+      - prettyPrint
+      - quotaUser
+      - userIp
+  get:
+    displayName: language.translations.list
+    description: Returns text translations from one language to another.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: TranslationsListResponse
+        description: Successful response
+    queryParameters:
+      q:
+        collectionFormat: multi
+        description: The text to translate
+        items:
+          type: string
+        required: true
+        type: array
+        displayName: The text to translate
+        facets:
+          collectionFormat: string
+      target:
+        description: The target language into which the text should be translated
+        required: true
+        type: string
+        displayName: The target language into which the text should be translated
+      cid:
+        collectionFormat: multi
+        description: The customization id for translate
+        items:
+          type: string
+        type: array
+        displayName: The customization id for translate
+        facets:
+          collectionFormat: string
+      format:
+        description: The format of the text
+        enum:
+          - html
+          - text
+        type: string
+        displayName: The format of the text
+      source:
+        description: The source language of the text
+        type: string
+        displayName: The source language of the text
+    (oas-tags):
+      - translations
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+types:
+  DetectionsListResponse:
+    properties:
+      detections:
+        description: A detections contains detection results of several text
+        items:
+          type: DetectionsResource
+        type: array
+        required: false
+  DetectionsResource:
+    description: An array of languages which we detect for the given text The most likely language list first.
+    items:
+      properties:
+        confidence:
+          description: The confidence of the detection resul of this language.
+          format: float
+          type: number
+        isReliable:
+          description: A boolean to indicate is the language detection result reliable.
+          type: boolean
+        language:
+          description: The language we detect
+          type: string
+      type: object
+    type: array
+  LanguagesListResponse:
+    properties:
+      languages:
+        description: 'List of source/target languages supported by the translation API. If target parameter is unspecified, the list is sorted by the ASCII code point order of the language code. If target parameter is specified, the list is sorted by the collation order of the language name in the target language.'
+        items:
+          type: LanguagesResource
+        type: array
+        required: false
+  LanguagesResource:
+    properties:
+      language:
+        description: The language code.
+        type: string
+        required: false
+      name:
+        description: The localized name of the language if target parameter is given.
+        type: string
+        required: false
+  TranslationsListResponse:
+    properties:
+      translations:
+        description: Translations contains list of translation results of given text
+        items:
+          type: TranslationsResource
+        type: array
+        required: false
+  TranslationsResource:
+    properties:
+      detectedSourceLanguage:
+        description: Detected source language if source parameter is unspecified.
+        type: string
+        required: false
+      translatedText:
+        description: The translation.
+        type: string
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: json
+        enum:
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.

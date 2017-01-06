@@ -1,0 +1,322 @@
+#%RAML 1.0
+title: Groups Settings
+version: v1
+baseUri: 'https://www.googleapis.com/groups/v1/groups'
+protocols:
+  - HTTPS
+description: Lets you manage permission levels and related settings of a group.
+(oas-tags-definition):
+  - name: groups
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://console.developers.google.com'
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_www.google.com_images_branding_googlelogo_2x_googlelogo_color_272x92dp.png'
+  (oas-x-origin):
+    format: google
+    url: 'https://www.googleapis.com/discovery/v1/apis/groupssettings/v1/rest'
+    version: v1
+  (oas-x-preferred): true
+  (oas-x-providerName): googleapis.com
+  (oas-x-serviceName): groupssettings
+  contact:
+    name: Google
+    url: 'https://google.com'
+(oas-externalDocs):
+  url: 'https://developers.google.com/google-apps/groups-settings/get_started'
+securitySchemes:
+  Oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://accounts.google.com/o/oauth2/auth'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'https://www.googleapis.com/auth/apps.groups.settings'
+    description: Oauth 2.0 authentication
+'/{groupUniqueId}':
+  displayName: '{groupUniqueId}'
+  uriParameters:
+    groupUniqueId:
+      description: The resource ID
+      required: true
+      type: string
+      displayName: The resource ID
+  put:
+    displayName: groupsSettings.groups.update
+    description: Updates an existing resource.
+    body:
+      application/json:
+        type: Groups
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Groups
+        description: Successful response
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/apps.groups.settings'
+    (oas-tags):
+      - groups
+  is:
+    - alt
+    - fields
+    - key
+    - oauthToken
+    - prettyPrint
+    - quotaUser
+    - userIp
+  patch:
+    displayName: groupsSettings.groups.patch
+    description: Updates an existing resource. This method supports patch semantics.
+    body:
+      application/json:
+        type: Groups
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Groups
+        description: Successful response
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/apps.groups.settings'
+    (oas-tags):
+      - groups
+  get:
+    displayName: groupsSettings.groups.get
+    description: Gets one resource by id.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Groups
+        description: Successful response
+    securedBy:
+      - Oauth2:
+          scopes:
+            - 'https://www.googleapis.com/auth/apps.groups.settings'
+    (oas-tags):
+      - groups
+types:
+  Groups:
+    description: JSON template for Group resource
+    properties:
+      allowExternalMembers:
+        description: Are external members allowed to join the group.
+        type: string
+        required: false
+      allowGoogleCommunication:
+        description: Is google allowed to contact admins.
+        type: string
+        required: false
+      allowWebPosting:
+        description: If posting from web is allowed.
+        type: string
+        required: false
+      archiveOnly:
+        description: If the group is archive only
+        type: string
+        required: false
+      customFooterText:
+        description: Custom footer text.
+        type: string
+        required: false
+      customReplyTo:
+        description: Default email to which reply to any message should go.
+        type: string
+        required: false
+      defaultMessageDenyNotificationText:
+        description: Default message deny notification message
+        type: string
+        required: false
+      description:
+        description: Description of the group
+        type: string
+        required: false
+      email:
+        description: Email id of the group
+        type: string
+        required: false
+      includeCustomFooter:
+        description: Whether to include custom footer.
+        type: string
+        required: false
+      includeInGlobalAddressList:
+        description: If this groups should be included in global address list or not.
+        type: string
+        required: false
+      isArchived:
+        description: If the contents of the group are archived.
+        type: string
+        required: false
+      kind:
+        default: 'groupsSettings#groups'
+        description: The type of the resource.
+        type: string
+        required: false
+      maxMessageBytes:
+        description: Maximum message size allowed.
+        format: int32
+        type: integer
+        required: false
+      membersCanPostAsTheGroup:
+        description: Can members post using the group email address.
+        type: string
+        required: false
+      messageDisplayFont:
+        description: 'Default message display font. Possible values are: DEFAULT_FONT FIXED_WIDTH_FONT'
+        type: string
+        required: false
+      messageModerationLevel:
+        description: 'Moderation level for messages. Possible values are: MODERATE_ALL_MESSAGES MODERATE_NON_MEMBERS MODERATE_NEW_MEMBERS MODERATE_NONE'
+        type: string
+        required: false
+      name:
+        description: Name of the Group
+        type: string
+        required: false
+      primaryLanguage:
+        description: Primary language for the group.
+        type: string
+        required: false
+      replyTo:
+        description: 'Whome should the default reply to a message go to. Possible values are: REPLY_TO_CUSTOM REPLY_TO_SENDER REPLY_TO_LIST REPLY_TO_OWNER REPLY_TO_IGNORE REPLY_TO_MANAGERS'
+        type: string
+        required: false
+      sendMessageDenyNotification:
+        description: Should the member be notified if his message is denied by owner.
+        type: string
+        required: false
+      showInGroupDirectory:
+        description: Is the group listed in groups directory
+        type: string
+        required: false
+      spamModerationLevel:
+        description: 'Moderation level for messages detected as spam. Possible values are: ALLOW MODERATE SILENTLY_MODERATE REJECT'
+        type: string
+        required: false
+      whoCanAdd:
+        description: 'Permissions to add members. Possible values are: ALL_MANAGERS_CAN_ADD ALL_MEMBERS_CAN_ADD NONE_CAN_ADD'
+        type: string
+        required: false
+      whoCanContactOwner:
+        description: 'Permission to contact owner of the group via web UI. Possible values are: ANYONE_CAN_CONTACT ALL_IN_DOMAIN_CAN_CONTACT ALL_MEMBERS_CAN_CONTACT ALL_MANAGERS_CAN_CONTACT'
+        type: string
+        required: false
+      whoCanInvite:
+        description: 'Permissions to invite members. Possible values are: ALL_MEMBERS_CAN_INVITE ALL_MANAGERS_CAN_INVITE NONE_CAN_INVITE'
+        type: string
+        required: false
+      whoCanJoin:
+        description: 'Permissions to join the group. Possible values are: ANYONE_CAN_JOIN ALL_IN_DOMAIN_CAN_JOIN INVITED_CAN_JOIN CAN_REQUEST_TO_JOIN'
+        type: string
+        required: false
+      whoCanLeaveGroup:
+        description: 'Permission to leave the group. Possible values are: ALL_MANAGERS_CAN_LEAVE ALL_MEMBERS_CAN_LEAVE NONE_CAN_LEAVE'
+        type: string
+        required: false
+      whoCanPostMessage:
+        description: 'Permissions to post messages to the group. Possible values are: NONE_CAN_POST ALL_MANAGERS_CAN_POST ALL_MEMBERS_CAN_POST ALL_IN_DOMAIN_CAN_POST ANYONE_CAN_POST'
+        type: string
+        required: false
+      whoCanViewGroup:
+        description: 'Permissions to view group. Possible values are: ANYONE_CAN_VIEW ALL_IN_DOMAIN_CAN_VIEW ALL_MEMBERS_CAN_VIEW ALL_MANAGERS_CAN_VIEW'
+        type: string
+        required: false
+      whoCanViewMembership:
+        description: 'Permissions to view membership. Possible values are: ALL_IN_DOMAIN_CAN_VIEW ALL_MEMBERS_CAN_VIEW ALL_MANAGERS_CAN_VIEW'
+        type: string
+        required: false
+traits:
+  alt:
+    queryParameters:
+      alt:
+        type: string
+        description: Data format for the response.
+        default: atom
+        enum:
+          - atom
+          - json
+  fields:
+    queryParameters:
+      fields:
+        type: string
+        description: Selector specifying which fields to include in a partial response.
+  key:
+    queryParameters:
+      key:
+        type: string
+        description: 'API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.'
+  oauthToken:
+    queryParameters:
+      oauth_token:
+        type: string
+        description: OAuth 2.0 token for the current user.
+  prettyPrint:
+    queryParameters:
+      prettyPrint:
+        type: boolean
+        description: Returns response with indentations and line breaks.
+        default: true
+  quotaUser:
+    queryParameters:
+      quotaUser:
+        type: string
+        description: 'Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.'
+  userIp:
+    queryParameters:
+      userIp:
+        type: string
+        description: IP address of the site where the request originates. Use this if you want to enforce per-user limits.
