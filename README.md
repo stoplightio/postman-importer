@@ -1,4 +1,4 @@
-# OAS RAML Converter [![Build Status](https://travis-ci.org/mulesoft/oas-raml-converter.svg)](https://travis-ci.org/mulesoft/oas-raml-converter) [![Coverage Status](https://coveralls.io/repos/github/mulesoft/oas-raml-converter/badge.svg?branch=master)](https://coveralls.io/github/mulesoft/oas-raml-converter?branch=master)
+# OAS RAML Converter [![Build Status](https://travis-ci.org/mulesoft/oas-raml-converter.svg)](https://travis-ci.org/mulesoft/oas-raml-converter) [![Coverage Status](https://coveralls.io/repos/github/mulesoft/oas-raml-converter/badge.svg?branch=master)](https://coveralls.io/github/mulesoft/oas-raml-converter?branch=master) [![npm version](https://badge.fury.io/js/oas-raml-converter.svg)](https://www.npmjs.com/package/oas-raml-converter)
 
 This package helps to convert between different API specifications. It was originally forked from [the stoplight.io converter](https://github.com/stoplightio/api-spec-converter). 
 
