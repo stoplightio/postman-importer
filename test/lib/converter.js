@@ -179,10 +179,10 @@ describe('Converter', function () {
 		//   let ramlPath = __dirname + '/../data/swagger-compatible-raml.yaml';
 		//   converter.loadFile(ramlPath, function(){
 		//     try{
-		//       converter.convert('yaml', function(err, covertedSwagger){
+		//       converter.convert('yaml', function(err, convertedSwagger){
 		//         if(err)return done(err);
 		//         let converter2 = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML);
-		//         converter2.loadData(covertedSwagger)
+		//         converter2.loadData(convertedSwagger)
 		//         .then(function(){
 		//           try{
 		//             converter2.convert('yaml', function(err, resultRAML){
@@ -225,8 +225,8 @@ describe('reversable - from swagger 2 raml 2 swagger', function () {
 			swaggerToRamlConverter.loadFile(testFilePath)
 				.then(() => {
 					swaggerToRamlConverter.convert('yaml')
-						.then((covertedRAML) => {
-							ramlToSwaggerConverter.loadData(covertedRAML, options)
+						.then((convertedRAML) => {
+							ramlToSwaggerConverter.loadData(convertedRAML, options)
 								.then(() => {
 									ramlToSwaggerConverter.convert('json')
 										.then((resultSwagger) => {
@@ -278,8 +278,8 @@ describe('reversable - from raml 2 swagger 2 raml', function () {
 							swaggerToRamlConverter.loadData(JSON.stringify(resultSwagger))
 								.then(() => {
 									swaggerToRamlConverter.convert('yaml')
-										.then((covertedRAML) => {
-											expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(testFilePath, 'utf8')));
+										.then((convertedRAML) => {
+											expect(YAML.safeLoad(convertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(testFilePath, 'utf8')));
 											done();
 										})
 										.catch((err) => {
@@ -320,13 +320,13 @@ describe('from swagger to raml', function () {
 				validate: validate,
 				fsResolver: myFsResolver
 			};
-			converter.convertFile(sourceFile, validateOptions).then((covertedRAML) => {
+			converter.convertFile(sourceFile, validateOptions).then((convertedRAML) => {
 				let notExistsTarget = !fs.existsSync(targetFile);
 
 				if (notExistsTarget) {
 					console.log('Content for non existing target file ' + targetFile + '\n.');
 					console.log('********** Begin file **********\n');
-					console.log(covertedRAML);
+					console.log(convertedRAML);
 					console.log('********** Finish file **********\n');
 
 					done('Error');
@@ -334,9 +334,9 @@ describe('from swagger to raml', function () {
 
 				try {
 					if (stringCompare == true) {
-						expect(covertedRAML).to.deep.equal(fs.readFileSync(targetFile, 'utf8'));
+						expect(convertedRAML).to.deep.equal(fs.readFileSync(targetFile, 'utf8'));
 					} else {
-						expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+						expect(YAML.safeLoad(convertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
 					}
 					done();
 				} catch (e) {
@@ -449,20 +449,23 @@ describe.skip('from swagger to raml: apis-guru', function () {
 				validate: validate,
 				fsResolver: myFsResolver
 			};
-			converter.convertFile(sourceFile, validateOptions).then((covertedRAML) => {
+			converter.convertFile(sourceFile, validateOptions).then((convertedRAML) => {
 				let notExistsTarget = !fs.existsSync(targetFile);
 				
 				if (notExistsTarget) {
-					fs.writeFileSync(targetFile, covertedRAML);
+					fs.writeFileSync(targetFile, convertedRAML);
 					// console.log('Content for non existing target file ' + targetFile + '\n.');
 					// console.log('********** Begin file **********\n');
-					// console.log(covertedRAML);
+					// console.log(convertedRAML);
 					// console.log('********** Finish file **********\n');
 					// done('Error');
 				}
 				
 				try {
-					expect(YAML.safeLoad(covertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+					expect(YAML.safeLoad(convertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+					console.log('********** Begin file **********\n');
+					console.log(convertedRAML);
+					console.log('********** Finish file **********\n');
 					done();
 				} catch (e) {
 					done(e);
@@ -473,6 +476,7 @@ describe.skip('from swagger to raml: apis-guru', function () {
 				console.log(err.exportedData);
 				console.log('********** Finish file **********\n');
 				done(err);
+				console.log(err);
 			});
 		};
 	};
