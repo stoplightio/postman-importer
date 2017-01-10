@@ -1,0 +1,474 @@
+#%RAML 1.0
+title: NeoWs - (Near Earth Object Web Service)
+version: '1.0'
+baseUri: 'http://www.neowsapp.com/'
+mediaType: application/json
+protocols:
+  - HTTP
+description: |-
+  A web service for near earth objects. All the data is from the  <a href="http://neo.jpl.nasa.gov/" target="_blank">NASA JPL Asteroid team</a>. 
+
+   
+
+  NeoWs is proud to power AsteroidTracker on <a href="https://itunes.apple.com/us/app/asteroid-tracker/id689684901?mt=8" target="_blank">iOS</a> and <a href="https://play.google.com/store/apps/details?id=com.vitruviussoftware.bunifish.asteroidtracker&feature" target="_blank">Android</a> as well as related apps. 
+
+   Get <a href="http://apps.getpebble.com/en_US/application/55bc4913d1690c372900000f" target="_blank">Asteroid Today on Pebble</a> 
+
+  Follow us on <a href="https://twitter.com/AsteroidTracker" target="_blank">Twitter</a>
+(oas-tags-definition):
+  - description: Operations with NearEarthObjects
+    name: feed
+  - description: Operations with NearEarthObjects
+    name: neo
+  - description: Stats on Near Earth Object data sets
+    name: stats
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-definition-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-origin):
+    format: swagger
+    url: 'http://www.neowsapp.com/api-docs'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): neowsapp.com
+  license:
+    name: Licence Type
+    url: License URL
+/rest:
+  displayName: rest
+  /v1:
+    displayName: v1
+    /stats:
+      displayName: stats
+      get:
+        displayName: retrieveCurrentNeoStatistics
+        description: retrieveCurrentNeoStatistics
+        (oas-summary): Get the Near Earth Object data set totals
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Statistics
+            description: OK
+          '401':
+            description: Unauthorized
+          '403':
+            description: Forbidden
+          '404':
+            description: Not Found
+        (oas-tags):
+          - stats
+    /neo:
+      displayName: neo
+      '/{asteroid_id}':
+        displayName: '{asteroid_id}'
+        uriParameters:
+          asteroid_id:
+            description: 'ID of Near Earth Object - (ex: 3729835)'
+            required: true
+            type: string
+            displayName: 'ID of Near Earth Object - (ex: 3729835)'
+        get:
+          displayName: retrieveNearEarthObjectById
+          description: Retieve a Near Earth Objects with a given id
+          (oas-summary): Find Near Earth Objects by id
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: NearEarthObject
+              description: OK
+            '401':
+              description: Unauthorized
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          (oas-tags):
+            - neo
+      /browse:
+        displayName: browse
+        get:
+          displayName: browseNearEarthObjects
+          description: Retieve a paginated list of Near Earth Objects
+          (oas-summary): Browse the Near Earth Objects service
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: NearEarthObject
+              description: OK
+            '401':
+              description: Unauthorized
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          queryParameters:
+            page:
+              default: 0
+              description: page
+              format: int32
+              required: false
+              type: integer
+              displayName: page
+            size:
+              default: 20
+              description: size
+              format: int32
+              required: false
+              type: integer
+              displayName: size
+          (oas-tags):
+            - neo
+    /feed:
+      displayName: feed
+      /today:
+        displayName: today
+        get:
+          displayName: retrieveNEOFeedToday
+          description: Get a list of Near Earth Objects for today
+          (oas-summary): Find Near Earth Objects for today
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: NearEarthObjectList
+              description: OK
+            '401':
+              description: Unauthorized
+            '403':
+              description: Forbidden
+            '404':
+              description: Not Found
+          queryParameters:
+            detailed:
+              description: detailed
+              required: false
+              type: boolean
+              displayName: detailed
+          (oas-tags):
+            - feed
+      get:
+        displayName: retrieveNearEarthObjectFeed
+        description: 'Get a list of Near Earth Objects within a date range, The max range in one query is 7 days'
+        (oas-summary): Find Near Earth Objects by date
+        responses:
+          '200':
+            body:
+              application/json:
+                type: NearEarthObjectList
+            description: OK
+          '401':
+            description: Unauthorized
+          '403':
+            description: Forbidden
+          '404':
+            description: Not Found
+        queryParameters:
+          start_date:
+            description: 'Start of date range search, format: yyyy-MM-dd - (ex: 2015-04-28)'
+            required: false
+            type: string
+            displayName: 'Start of date range search, format: yyyy-MM-dd - (ex: 2015-04-28)'
+          end_date:
+            description: 'End of date range search, format: yyyy-MM-dd - (ex: 2015-04-28). If left off search will extends 7 days from start_date'
+            required: true
+            type: string
+            displayName: 'End of date range search, format: yyyy-MM-dd - (ex: 2015-04-28). If left off search will extends 7 days from start_date'
+          detailed:
+            description: detailed
+            required: false
+            type: boolean
+            displayName: detailed
+        (oas-tags):
+          - feed
+types:
+  CloseApproachData:
+    properties:
+      close_approach_date:
+        type: string
+        required: false
+      epoch_date_close_approach:
+        format: int64
+        type: integer
+        required: false
+      miss_distance:
+        type: MissDistance
+        required: false
+      orbiting_body:
+        type: string
+        required: false
+      relative_velocity:
+        type: relativeVelocity
+        required: false
+  EstimatedDiameter:
+    properties:
+      estimated_diameter_max:
+        description: An estimate of the maximum size of the Asteroid - bases on the abosolute magnitude
+        format: double
+        type: number
+        required: false
+      estimated_diameter_min:
+        description: An estimate of the minimum size of the Asteroid - bases on the abosolute magnitude
+        format: double
+        type: number
+        required: false
+  EstimatedDiameterContainer:
+    properties:
+      feet:
+        description: estimated diameter feet
+        type: EstimatedDiameter
+        required: false
+      kilometers:
+        description: estimated diameter kilometer
+        type: EstimatedDiameter
+        required: false
+      meters:
+        description: estimated diameter meter
+        type: EstimatedDiameter
+        required: false
+      miles:
+        description: estimated diameter miles
+        type: EstimatedDiameter
+        required: false
+  HashMap_string_List_NearEarthObject__:
+    (oas-definition-name): 'HashMap«string,List«NearEarthObject»»'
+  Link:
+    properties:
+      href:
+        type: string
+        required: false
+      rel:
+        type: string
+        required: false
+      templated:
+        type: boolean
+        required: false
+  MissDistance:
+    properties:
+      astronomical:
+        type: string
+        required: false
+      kilometers:
+        type: string
+        required: false
+      lunar:
+        type: string
+        required: false
+      miles:
+        type: string
+        required: false
+  NearEarthObject:
+    properties:
+      absolute_magnitude_h:
+        description: Is a measure of an asteroids brightness
+        format: double
+        type: number
+        required: false
+      close_approach_data:
+        description: Close approach information of the Asteroid
+        items:
+          type: CloseApproachData
+        type: array
+        required: false
+      estimated_diameter:
+        description: 'A collection of estimated diameters (kilometers, meters, miles, feet'
+        type: EstimatedDiameterContainer
+        required: false
+      is_potentially_hazardous_asteroid:
+        type: boolean
+        required: false
+      name:
+        type: string
+        required: false
+      nasa_jpl_url:
+        description: A Link to the NASA JPL Small-Body Database website
+        type: string
+        required: false
+      neo_reference_id:
+        description: The reference ID of the Asteroid - This correlates to the SPK ID for the JPL NEO data
+        type: string
+        required: false
+      orbital_data:
+        description: Orbital information of the asteroid
+        type: OrbitalData
+        required: false
+  NearEarthObjectList:
+    properties:
+      element_count:
+        description: Number of NEOs in list
+        format: int32
+        type: integer
+        required: false
+      links:
+        description: Hypermedia links to collection
+        type: object
+        required: false
+      near_earth_objects:
+        description: A collection of NearEarthObjects
+        type: HashMap_string_List_NearEarthObject__
+        required: false
+  OrbitalData:
+    properties:
+      aphelion_distance:
+        type: string
+        required: false
+      ascending_node_longitude:
+        type: string
+        required: false
+      eccentricity:
+        type: string
+        required: false
+      epoch_osculation:
+        type: string
+        required: false
+      equinox:
+        type: string
+        required: false
+      inclination:
+        type: string
+        required: false
+      jupiter_tisserand_invariant:
+        type: string
+        required: false
+      mean_anomaly:
+        type: string
+        required: false
+      mean_motion:
+        type: string
+        required: false
+      minimum_orbit_intersection:
+        type: string
+        required: false
+      orbit_determination_date:
+        type: string
+        required: false
+      orbit_id:
+        type: string
+        required: false
+      orbit_uncertainty:
+        type: string
+        required: false
+      orbital_period:
+        type: string
+        required: false
+      perihelion_argument:
+        type: string
+        required: false
+      perihelion_distance:
+        type: string
+        required: false
+      perihelion_time:
+        type: string
+        required: false
+      semi_major_axis:
+        type: string
+        required: false
+  Statistics:
+    properties:
+      close_approach_count:
+        description: Number of Close Approach listings across all NEOs listed in NeoWs
+        format: int64
+        type: integer
+        required: false
+      last_updated:
+        description: TimeStamp the last time the DB was updated
+        type: string
+        required: false
+      links:
+        items:
+          type: Link
+        type: array
+        required: false
+      nasa_jpl_url:
+        type: URL
+        required: false
+      near_earth_object_count:
+        description: Number of NearEarthObjects listed in NeoWs
+        format: int64
+        type: integer
+        required: false
+      source:
+        type: string
+        required: false
+  URL:
+    properties:
+      authority:
+        type: string
+        required: false
+      content:
+        type: object
+        required: false
+      defaultPort:
+        format: int32
+        type: integer
+        required: false
+      file:
+        type: string
+        required: false
+      host:
+        type: string
+        required: false
+      path:
+        type: string
+        required: false
+      port:
+        format: int32
+        type: integer
+        required: false
+      protocol:
+        type: string
+        required: false
+      query:
+        type: string
+        required: false
+      ref:
+        type: string
+        required: false
+      userInfo:
+        type: string
+        required: false
+  relativeVelocity:
+    properties:
+      kilometers_per_hour:
+        type: string
+        required: false
+      miles_per_hour:
+        type: string
+        required: false

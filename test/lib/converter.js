@@ -438,7 +438,9 @@ describe.skip('from swagger to raml: apis-guru', function () {
 	const excludedValidation = [
 		'azure.com/arm-insights/2015-04-01/swagger.json',
 		'azure.com/arm-insights/2015-07-01/swagger.json',
-		'azure.com/arm-insights/2016-03-01/swagger.json'
+		'azure.com/arm-insights/2016-03-01/swagger.json',
+		'azure.comarm-insights2015-07-01swagger.json',
+		'azure.comarm-insights2016-03-01swagger.json'
 	]
 	
 	let testWithData = function (sourceFile, targetFile, validate) {

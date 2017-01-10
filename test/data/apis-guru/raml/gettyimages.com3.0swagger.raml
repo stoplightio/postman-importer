@@ -1,0 +1,4893 @@
+#%RAML 1.0
+title: Getty Images
+version: '3.0'
+baseUri: 'https://api.gettyimages.com/'
+protocols:
+  - HTTPS
+description: Build applications using the world's most powerful imagery
+(oas-tags-definition):
+  - name: AssetChanges
+  - name: AssetRegistration
+  - name: Boards
+  - name: Collections
+  - name: Countries
+  - name: Downloads
+  - name: Events
+  - name: Images
+  - name: Products
+  - name: Purchases
+  - name: Search
+  - name: Usage
+  - name: Videos
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-definition-name:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#333333'
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.gettyimages.com_landing_assets_unisporkal_engine_images_getty-logo-negative-b117d413642b91fba020901fbd8949ba.svg'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://api.gettyimages.com/swagger/api-docs'
+    version: '1.2'
+  (oas-x-preferred): true
+  (oas-x-providerName): gettyimages.com
+securitySchemes:
+  Api-Key:
+    type: Pass Through
+    describedBy:
+      headers:
+        Api-Key:
+          type: string
+    description: Provide your API key.
+/v3:
+  displayName: v3
+  /events:
+    displayName: events
+    get:
+      displayName: GET_v3-events
+      description: Returns an array of event metadata
+      (oas-summary): Get metadata for multiple events
+      headers:
+        Accept-Language:
+          type: string
+          description: Specifies the language of result values.
+          required: false
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: events_result
+          description: OK
+        '400':
+          description: MalformedRequest
+        '401':
+          description: Unauthorized
+        '404':
+          description: EventNotFound
+      queryParameters:
+        fields:
+          description: A comma separated list of fields to return in the response.
+          items:
+            enum:
+              - id
+              - child_event_count
+              - editorial_segments
+              - hero_image
+              - image_count
+              - location
+              - name
+              - start_date
+              - type
+            type: string
+          required: false
+          type: array
+          displayName: A comma separated list of fields to return in the response.
+        ids:
+          description: A comma separated list of event ids.
+          items:
+            format: int32
+            type: integer
+          required: false
+          type: array
+          displayName: A comma separated list of event ids.
+      (oas-tags):
+        - Events
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          description: An event id.
+          format: int32
+          required: true
+          type: integer
+          displayName: An event id.
+      get:
+        displayName: GET_v3-events-id
+        description: Returns an array of event metadata
+        (oas-summary): Get metadata for a single event
+        headers:
+          Accept-Language:
+            type: string
+            description: Specifies the language of result values.
+            required: false
+          Authorization:
+            type: string
+            description: 'Provide access token in the format of ''Bearer {token}''.'
+            required: false
+        responses:
+          '200':
+            body:
+              application/json:
+                type: event
+            description: OK
+          '400':
+            description: MalformedRequest
+          '401':
+            description: Unauthorized
+          '404':
+            description: EventNotFound
+        queryParameters:
+          fields:
+            description: A comma separated list of fields to return in the response.
+            items:
+              enum:
+                - id
+                - child_event_count
+                - editorial_segments
+                - hero_image
+                - image_count
+                - location
+                - name
+                - start_date
+                - type
+              type: string
+            required: false
+            type: array
+            displayName: A comma separated list of fields to return in the response.
+        (oas-tags):
+          - Events
+  /videos:
+    displayName: videos
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          description: A video id. For more than one video please use the /v3/video endpoint.
+          required: true
+          type: string
+          displayName: A video id. For more than one video please use the /v3/video endpoint.
+      get:
+        displayName: GET_v3-videos-id
+        (oas-summary): Get metadata for a single video by supplying one video id
+        headers:
+          Accept-Language:
+            type: string
+            description: Specifies the language of result values.
+            required: false
+          Authorization:
+            type: string
+            description: 'Provide access token in the format of ''Bearer {token}''.'
+            required: false
+        responses:
+          '200':
+            body:
+              application/json:
+                type: video_detail
+            description: OK
+          '400':
+            description: MalformedRequest
+          '401':
+            description: Unauthorized
+          '403':
+            description: UnauthorizedDisplaySize
+          '404':
+            description: VideosNotFound
+        queryParameters:
+          fields:
+            description: comma delimited list of fields to retrive for the video
+            items:
+              enum:
+                - id
+                - allowed_use
+                - artist
+                - asset_family
+                - caption
+                - clip_length
+                - collection_code
+                - collection_id
+                - collection_name
+                - color_type
+                - copyright
+                - video_comp
+                - date_created
+                - detail_set
+                - display_set
+                - download_sizes
+                - downloads
+                - era
+                - editorial_segments
+                - keywords
+                - license_model
+                - mastered_to
+                - originally_shot_on
+                - video_preview
+                - product_types
+                - shot_speed
+                - source
+                - summary_set
+                - video_thumb
+                - title
+              type: string
+            required: false
+            type: array
+            displayName: comma delimited list of fields to retrive for the video
+        (oas-tags):
+          - Videos
+    get:
+      displayName: GET_v3-videos
+      (oas-summary): Get metadata for multiple videos by supplying multiple video ids
+      headers:
+        Accept-Language:
+          type: string
+          description: Specifies the language of result values.
+          required: false
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: videos_detail
+          description: OK
+        '400':
+          description: MalformedRequest
+        '401':
+          description: Unauthorized
+        '403':
+          description: UnauthorizedDisplaySize
+        '404':
+          description: VideosNotFound
+      queryParameters:
+        ids:
+          description: Specifies one or more video ids to return. Use comma delimiter when requesting multiple ids.
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: Specifies one or more video ids to return. Use comma delimiter when requesting multiple ids.
+        fields:
+          description: Specifies fields to return. Defaults to 'summary_set'.
+          items:
+            enum:
+              - id
+              - allowed_use
+              - artist
+              - asset_family
+              - caption
+              - clip_length
+              - collection_code
+              - collection_id
+              - collection_name
+              - color_type
+              - copyright
+              - video_comp
+              - date_created
+              - detail_set
+              - display_set
+              - download_sizes
+              - downloads
+              - era
+              - editorial_segments
+              - keywords
+              - license_model
+              - mastered_to
+              - originally_shot_on
+              - video_preview
+              - product_types
+              - shot_speed
+              - source
+              - summary_set
+              - video_thumb
+              - title
+            type: string
+          required: false
+          type: array
+          displayName: Specifies fields to return. Defaults to 'summary_set'.
+      (oas-tags):
+        - Videos
+  /asset-changes:
+    displayName: asset-changes
+    /change-sets:
+      displayName: change-sets
+      put:
+        displayName: PUT_v3-asset-changes-change-sets
+        (oas-summary): Generates asset changes.
+        headers:
+          Accept-Language:
+            type: string
+            description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+            required: false
+          Authorization:
+            type: string
+            description: Authorization token required. Used for applying content access restrictions. Use one of the OAuth2 grants to auto-populate this value.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: AssetChanges
+            description: No response was specified
+          '403':
+            description: Your access token does not authorize access to this resource
+          '404':
+            description: The channel you specified does not exist
+        queryParameters:
+          channel_id:
+            description: Specifies the id of the channel for the asset data. Valid channel ids can be found in the results of the Get Partner Channel query.
+            format: int32
+            required: true
+            type: integer
+            displayName: Specifies the id of the channel for the asset data. Valid channel ids can be found in the results of the Get Partner Channel query.
+          batch_size:
+            description: Specifies the number of assets to return. The default is 10; maximum is 500.
+            format: int32
+            required: false
+            type: integer
+            displayName: Specifies the number of assets to return. The default is 10; maximum is 500.
+        (oas-tags):
+          - AssetChanges
+      '/{change-set-id}':
+        displayName: '{change-set-id}'
+        uriParameters:
+          change-set-id:
+            description: Specify the change-set-id associated with a transaction resource whose receipt you want to confirm.
+            format: int64
+            required: true
+            type: integer
+            displayName: Specify the change-set-id associated with a transaction resource whose receipt you want to confirm.
+        delete:
+          displayName: DELETE_v3-asset-changes-change-sets-change-set-id
+          (oas-summary): Confirm asset changes acknowledges receipt of asset changes.
+          headers:
+            Accept-Language:
+              type: string
+              description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+              required: false
+            Authorization:
+              type: string
+              description: Authorization token required. Used for applying content access restrictions. Use one of the OAuth2 grants to auto-populate this value.
+              required: true
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: string
+              description: No response was specified
+            '403':
+              description: Your access token does not authorize access to this resource
+            '404':
+              description: Transaction was not found
+          (oas-tags):
+            - AssetChanges
+    /channels:
+      displayName: channels
+      get:
+        displayName: GET_v3-asset-changes-channels
+        (oas-summary): Retrieves the channel data for the partner. This data can be used to populate the channel_id parameter in the Put Asset Changes query.
+        headers:
+          Accept-Language:
+            type: string
+            description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+            required: false
+          Authorization:
+            type: string
+            description: Authorization token required. Used for applying content access restrictions. Use one of the OAuth2 grants to auto-populate this value.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: PartnerChannelList
+            description: No response was specified
+        (oas-tags):
+          - AssetChanges
+  /images:
+    displayName: images
+    get:
+      displayName: GET_v3-images
+      (oas-summary): Get metadata for multiple images by supplying multiple image ids
+      headers:
+        Accept-Language:
+          type: string
+          description: Specifies the language of result values.
+          required: false
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: images_detail
+          description: OK
+        '400':
+          description: ImageIdMustBeSpecified
+        '401':
+          description: Unauthorized
+        '403':
+          description: UnauthorizedDisplaySize
+        '404':
+          description: ImageNotFound
+      queryParameters:
+        ids:
+          description: Specifies one or more image ids to return. Use comma delimiter when requesting multiple ids.
+          items:
+            type: string
+          required: true
+          type: array
+          displayName: Specifies one or more image ids to return. Use comma delimiter when requesting multiple ids.
+        fields:
+          description: Specifies fields to return. Defaults to 'summary_set'.
+          items:
+            enum:
+              - allowed_use
+              - alternative_ids
+              - artist
+              - artist_title
+              - asset_family
+              - call_for_image
+              - caption
+              - city
+              - collection_code
+              - collection_id
+              - collection_name
+              - color_type
+              - comp
+              - copyright
+              - country
+              - credit_line
+              - date_camera_shot
+              - date_created
+              - date_submitted
+              - detail_set
+              - display_set
+              - download_sizes
+              - downloads
+              - editorial_segments
+              - editorial_source
+              - event_ids
+              - graphical_style
+              - id
+              - keywords
+              - largest_downloads
+              - license_model
+              - links
+              - max_dimensions
+              - orientation
+              - people
+              - prestige
+              - preview
+              - product_types
+              - quality_rank
+              - referral_destinations
+              - state_province
+              - summary_set
+              - thumb
+              - title
+              - uri_oembed
+            type: string
+          required: false
+          type: array
+          displayName: Specifies fields to return. Defaults to 'summary_set'.
+      (oas-tags):
+        - Images
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          description: An image id. For more than one image please use the /v3/images endpoint.
+          required: true
+          type: string
+          displayName: An image id. For more than one image please use the /v3/images endpoint.
+      get:
+        displayName: GET_v3-images-id
+        (oas-summary): Get metadata for a single image by supplying one image id
+        headers:
+          Accept-Language:
+            type: string
+            description: Specifies the language of result values.
+            required: false
+          Authorization:
+            type: string
+            description: 'Provide access token in the format of ''Bearer {token}''.'
+            required: false
+        responses:
+          '200':
+            body:
+              application/json:
+                type: images_detail
+            description: OK
+          '400':
+            description: ImageIdMustBeSpecified
+          '401':
+            description: Unauthorized
+          '403':
+            description: UnauthorizedDisplaySize
+          '404':
+            description: ImageNotFound
+        queryParameters:
+          fields:
+            description: Specifies fields to return. Defaults to 'summary_set'.
+            items:
+              enum:
+                - allowed_use
+                - alternative_ids
+                - artist
+                - artist_title
+                - asset_family
+                - call_for_image
+                - caption
+                - city
+                - collection_code
+                - collection_id
+                - collection_name
+                - color_type
+                - comp
+                - copyright
+                - country
+                - credit_line
+                - date_camera_shot
+                - date_created
+                - date_submitted
+                - detail_set
+                - display_set
+                - download_sizes
+                - downloads
+                - editorial_segments
+                - editorial_source
+                - event_ids
+                - graphical_style
+                - id
+                - keywords
+                - largest_downloads
+                - license_model
+                - links
+                - max_dimensions
+                - orientation
+                - people
+                - prestige
+                - preview
+                - product_types
+                - quality_rank
+                - referral_destinations
+                - state_province
+                - summary_set
+                - thumb
+                - title
+                - uri_oembed
+              type: string
+            required: false
+            type: array
+            displayName: Specifies fields to return. Defaults to 'summary_set'.
+        (oas-tags):
+          - Images
+      /similar:
+        displayName: similar
+        get:
+          displayName: GET_v3-images-id-similar
+          (oas-summary): Search for images similar to an image
+          headers:
+            Accept-Language:
+              type: string
+              description: Specifies the language of result values.
+              required: false
+            Authorization:
+              type: string
+              description: 'Provide access token in the format of ''Bearer {token}''.'
+              required: false
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: string
+              description: OK
+            '400':
+              description: ImageIdMustBeSpecified
+            '401':
+              description: Unauthorized
+            '403':
+              description: UnauthorizedDisplaySize
+            '404':
+              description: ImageNotFound
+          queryParameters:
+            fields:
+              description: Specifies fields to return. Defaults to 'summary_set'.
+              items:
+                enum:
+                  - accessrestriction
+                  - allowed_use
+                  - alternative_ids
+                  - artist
+                  - asset_family
+                  - call_for_image
+                  - caption
+                  - collection_code
+                  - collection_id
+                  - collection_name
+                  - color_type
+                  - comp
+                  - copyright
+                  - date_camera_shot
+                  - date_created
+                  - detail_set
+                  - display_set
+                  - editorial_segments
+                  - editorial_source
+                  - event_ids
+                  - graphical_style
+                  - id
+                  - keywords
+                  - largest_downloads
+                  - license_model
+                  - max_dimensions
+                  - orientation
+                  - people
+                  - prestige
+                  - preview
+                  - product_types
+                  - quality_rank
+                  - referral_destinations
+                  - summary_set
+                  - thumb
+                  - title
+                  - uri_oembed
+                type: string
+              required: false
+              type: array
+              displayName: Specifies fields to return. Defaults to 'summary_set'.
+            page:
+              description: Identifies page to return. Default is 1.
+              format: int32
+              required: false
+              type: integer
+              displayName: Identifies page to return. Default is 1.
+            page_size:
+              description: 'Specifies page size. Default is 30, maximum page_size is 100.'
+              format: int32
+              required: false
+              type: integer
+              displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
+          (oas-tags):
+            - Images
+  /boards:
+    displayName: boards
+    get:
+      displayName: GET_v3-boards
+      (oas-summary): <b>***BETA***</b> Get all boards that the user participates in
+      headers:
+        Authorization:
+          type: string
+          description: Authorization token required. Used for applying content access restrictions. Use the OAuth2 Resource Owner Grant to auto-populate this value.
+          required: true
+        Accept-Language:
+          type: string
+          description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: board_list
+          description: OK
+        '400':
+          description: InvalidPageSize
+        '401':
+          description: Unauthorized
+      queryParameters:
+        page:
+          description: Request results starting at a page number (default is 1).
+          format: int32
+          required: false
+          type: integer
+          displayName: Request results starting at a page number (default is 1).
+        page_size:
+          description: Request number of boards to return in each page. (default is 30)
+          format: int32
+          required: false
+          type: integer
+          displayName: Request number of boards to return in each page. (default is 30)
+      (oas-tags):
+        - Boards
+    '/{board_id}':
+      displayName: '{board_id}'
+      uriParameters:
+        board_id:
+          description: A board ID.
+          required: true
+          type: string
+          displayName: A board ID.
+      delete:
+        displayName: DELETE_v3-boards-board_id
+        (oas-summary): <b>***BETA***</b> Delete a board
+        headers:
+          Authorization:
+            type: string
+            description: Authorization token required. Used for applying content access restrictions. Use the OAuth2 Resource Owner Grant to auto-populate this value.
+            required: true
+          Accept-Language:
+            type: string
+            description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+            required: false
+        responses:
+          '200':
+            description: No response was specified
+          '204':
+            description: BoardDeleted
+          '400':
+            description: InvalidParameterValue
+          '401':
+            description: Unauthorized
+          '403':
+            description: InsufficientAccess
+          '404':
+            description: BoardNotFound
+        (oas-tags):
+          - Boards
+      put:
+        displayName: PUT_v3-boards-board_id
+        (oas-summary): <b>***BETA***</b> Update a board
+        body:
+          application/json:
+            type: board_info
+            (oas-body-name): board_info
+            description: Specify the new name and description for the board (name is required).
+        headers:
+          Authorization:
+            type: string
+            description: Authorization token required. Used for applying content access restrictions. Use the OAuth2 Resource Owner Grant to auto-populate this value.
+            required: true
+          Accept-Language:
+            type: string
+            description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+            required: false
+        responses:
+          '200':
+            description: No response was specified
+          '204':
+            description: Updated
+          '400':
+            description: BoardNameRequired
+          '401':
+            description: Unauthorized
+          '403':
+            description: InsufficientAccess
+          '404':
+            description: BoardNotFound
+        (oas-tags):
+          - Boards
+      /assets:
+        displayName: assets
+        '/{asset_id}':
+          displayName: '{asset_id}'
+          uriParameters:
+            asset_id:
+              description: An asset ID.
+              required: true
+              type: string
+              displayName: An asset ID.
+          put:
+            displayName: PUT_v3-boards-board_id-assets-asset_id
+            (oas-summary): <b>***BETA***</b> Add an asset to a board
+            headers:
+              Authorization:
+                type: string
+                description: Authorization token required. Used for applying content access restrictions. Use the OAuth2 Resource Owner Grant to auto-populate this value.
+                required: true
+              Accept-Language:
+                type: string
+                description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+                required: false
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: string
+                description: No response was specified
+              '201':
+                description: Created
+              '400':
+                description: InvalidParameterValue
+              '401':
+                description: Unauthorized
+              '403':
+                description: InsufficientAccess
+              '404':
+                description: BoardNotFound
+            (oas-tags):
+              - Boards
+          delete:
+            displayName: DELETE_v3-boards-board_id-assets-asset_id
+            (oas-summary): <b>***BETA***</b> Remove an asset from a board
+            headers:
+              Authorization:
+                type: string
+                description: Authorization token required. Used for applying content access restrictions. Use the OAuth2 Resource Owner Grant to auto-populate this value.
+                required: true
+              Accept-Language:
+                type: string
+                description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+                required: false
+            responses:
+              '200':
+                description: No response was specified
+              '204':
+                description: AssetRemovedFromBoard
+              '400':
+                description: InvalidParameterValue
+              '401':
+                description: Unauthorized
+              '403':
+                description: InsufficientAccess
+              '404':
+                description: BoardNotFound
+            (oas-tags):
+              - Boards
+      /comments:
+        displayName: comments
+        post:
+          displayName: POST_v3-boards-board_id-comments
+          (oas-summary): <b>***BETA***</b> Add a comment to a board
+          body:
+            application/json:
+              type: comment_request
+              (oas-body-name): comment
+              description: Specifies the comment to be added to the board
+          headers:
+            Authorization:
+              type: string
+              description: Authorization token required. Used for applying content access restrictions. Use the OAuth2 Resource Owner Grant to auto-populate this value.
+              required: true
+            Accept-Language:
+              type: string
+              description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+              required: false
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: string
+              description: No response was specified
+            '201':
+              description: Created
+            '400':
+              description: InvalidParameterValue
+            '401':
+              description: Unauthorized
+            '403':
+              description: InsufficientAccess
+            '404':
+              description: BoardNotFound
+          (oas-tags):
+            - Boards
+      get:
+        displayName: GET_v3-boards-board_id
+        (oas-summary): <b>***BETA***</b> Get assets and metadata for a specific board
+        headers:
+          Authorization:
+            type: string
+            description: Authorization token required. Used for applying content access restrictions. Use the OAuth2 Resource Owner Grant to auto-populate this value.
+            required: true
+          Accept-Language:
+            type: string
+            description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+            required: false
+        responses:
+          '200':
+            body:
+              application/json:
+                type: board_detail
+            description: OK
+          '400':
+            description: InvalidParameterValue
+          '401':
+            description: Unauthorized
+          '404':
+            description: BoardNotFound
+        (oas-tags):
+          - Boards
+    post:
+      displayName: POST_v3-boards
+      (oas-summary): <b>***BETA***</b> Create a new board
+      body:
+        application/json:
+          type: board_info
+          (oas-body-name): new_board
+          description: Name and description of board to create (name is required)
+      headers:
+        Authorization:
+          type: string
+          description: Authorization token required. Used for applying content access restrictions. Use the OAuth2 Resource Owner Grant to auto-populate this value.
+          required: true
+        Accept-Language:
+          type: string
+          description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: string
+          description: No response was specified
+        '201':
+          description: Created
+        '400':
+          description: BoardNameRequired
+        '401':
+          description: Unauthorized
+      (oas-tags):
+        - Boards
+  /products:
+    displayName: products
+    get:
+      displayName: GET_v3-products
+      (oas-summary): Get Products
+      headers:
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: true
+        Accept-Language:
+          type: string
+          description: Specifies the language of result values.
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: ProductsResult
+          description: OK
+        '400':
+          description: InvalidParameterValue
+        '401':
+          description: AuthorizationTokenRequired
+      queryParameters:
+        fields:
+          description: Comma separated list of fields. Allows product download requirements to be returned.
+          items:
+            enum:
+              - download_requirements
+            type: string
+          required: false
+          type: array
+          displayName: Comma separated list of fields. Allows product download requirements to be returned.
+      (oas-tags):
+        - Products
+  /purchased-assets:
+    displayName: purchased-assets
+    get:
+      displayName: GET_v3-purchased-assets
+      (oas-summary): Get Previously Purchased Images and Video
+      headers:
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: PreviousAssetPurchases
+          description: OK
+        '401':
+          description: Unauthorized
+      queryParameters:
+        date_from:
+          description: 'If specified, retrieves previous purchases on or after this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
+          format: rfc3339
+          required: false
+          type: datetime
+          displayName: 'If specified, retrieves previous purchases on or after this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
+        date_to:
+          description: 'If specified, retrieves previous purchases on or before this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
+          format: rfc3339
+          required: false
+          type: datetime
+          displayName: 'If specified, retrieves previous purchases on or before this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
+        page:
+          description: Identifies page to return. Default is 1.
+          format: int32
+          required: false
+          type: integer
+          displayName: Identifies page to return. Default is 1.
+        page_size:
+          description: 'Specifies page size. Default is 75, maximum page_size is 100.'
+          format: int32
+          required: false
+          type: integer
+          displayName: 'Specifies page size. Default is 75, maximum page_size is 100.'
+      (oas-tags):
+        - Purchases
+  /purchased-images:
+    displayName: purchased-images
+    get:
+      displayName: GET_v3-purchased-images
+      (oas-summary): Get Previously Purchased Images
+      headers:
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: PreviousPurchases
+          description: OK
+        '401':
+          description: Unauthorized
+      queryParameters:
+        date_from:
+          description: 'If specified, retrieves previous purchases on or after this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
+          format: rfc3339
+          required: false
+          type: datetime
+          displayName: 'If specified, retrieves previous purchases on or after this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
+        date_to:
+          description: 'If specified, retrieves previous purchases on or before this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
+          format: rfc3339
+          required: false
+          type: datetime
+          displayName: 'If specified, retrieves previous purchases on or before this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
+        page:
+          description: Identifies page to return. Default is 1.
+          format: int32
+          required: false
+          type: integer
+          displayName: Identifies page to return. Default is 1.
+        page_size:
+          description: 'Specifies page size. Default is 75, maximum page_size is 100.'
+          format: int32
+          required: false
+          type: integer
+          displayName: 'Specifies page size. Default is 75, maximum page_size is 100.'
+      (oas-tags):
+        - Purchases
+  /collections:
+    displayName: collections
+    get:
+      displayName: GET_v3-collections
+      (oas-summary): Gets collections applicable for the customer.
+      headers:
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: true
+        Accept-Language:
+          type: string
+          description: Specifies the language of result values.
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: collections
+          description: OK
+        '401':
+          description: Unauthorized
+      (oas-tags):
+        - Collections
+  /search:
+    displayName: search
+    /events:
+      displayName: events
+      get:
+        displayName: GET_v3-search-events
+        (oas-summary): Search for events
+        headers:
+          Accept-Language:
+            type: string
+            description: Specifies the language of result values.
+            required: false
+          Authorization:
+            type: string
+            description: 'Provide access token in the format of ''Bearer {token}''.'
+            required: false
+        responses:
+          '200':
+            body:
+              application/json:
+                type: events_result
+            description: OK
+          '400':
+            description: MalformedRequest
+          '401':
+            description: Unauthorized
+          '403':
+            description: NoAccessToProductType
+        queryParameters:
+          editorial_segment:
+            description: Filters to events with a matching editorial segment.
+            enum:
+              - archival
+              - entertainment
+              - news
+              - publicity
+              - royalty
+              - sport
+            required: true
+            type: string
+            displayName: Filters to events with a matching editorial segment.
+          date_from:
+            description: 'Filters to events that start on or after this date. Use ISO 8601 format (e.g., 1999-12-31).'
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: 'Filters to events that start on or after this date. Use ISO 8601 format (e.g., 1999-12-31).'
+          date_to:
+            description: 'Filters to events that start on or before this date. Use ISO 8601 format (e.g., 1999-12-31).'
+            format: rfc3339
+            required: false
+            type: datetime
+            displayName: 'Filters to events that start on or before this date. Use ISO 8601 format (e.g., 1999-12-31).'
+          fields:
+            description: 'Specifies fields to return. Default set is ''id'',''name'',''start_date''.'
+            items:
+              enum:
+                - id
+                - child_event_count
+                - editorial_segments
+                - hero_image
+                - image_count
+                - location
+                - name
+                - start_date
+                - type
+              type: string
+            required: false
+            type: array
+            displayName: 'Specifies fields to return. Default set is ''id'',''name'',''start_date''.'
+        (oas-tags):
+          - Search
+    /images:
+      displayName: images
+      get:
+        displayName: GET_v3-search-images
+        (oas-summary): Search for both creative and editorial images
+        headers:
+          Accept-Language:
+            type: string
+            description: Specifies the language of result values.
+            required: false
+          Authorization:
+            type: string
+            description: 'Provide access token in the format of ''Bearer {token}''.'
+            required: false
+        responses:
+          '200':
+            body:
+              application/json:
+                type: image_search_results
+            description: OK
+          '400':
+            description: InvalidColor
+          '401':
+            description: Unauthorized
+          '403':
+            description: NoAccessToProductType
+        queryParameters:
+          age_of_people:
+            description: Filter based on the age of individuals in an image.
+            items:
+              enum:
+                - newborn
+                - baby
+                - child
+                - teenager
+                - young_adult
+                - adult
+                - adults_only
+                - mature_adult
+                - senior_adult
+                - months_0_1
+                - months_2_5
+                - months_6_11
+                - months_12_17
+                - months_18_23
+                - years_2_3
+                - years_4_5
+                - years_6_7
+                - years_8_9
+                - years_10_11
+                - years_12_13
+                - years_14_15
+                - years_16_17
+                - years_18_19
+                - years_20_24
+                - years_20_29
+                - years_25_29
+                - years_30_34
+                - years_30_39
+                - years_35_39
+                - years_40_44
+                - years_40_49
+                - years_45_49
+                - years_50_54
+                - years_50_59
+                - years_55_59
+                - years_60_64
+                - years_60_69
+                - years_65_69
+                - years_70_79
+                - years_80_89
+                - over_90
+                - over_100
+              type: string
+            required: false
+            type: array
+            displayName: Filter based on the age of individuals in an image.
+          artists:
+            description: 'Search for images by specific artists (free-text, comma-separated list of artists).'
+            required: false
+            type: string
+            displayName: 'Search for images by specific artists (free-text, comma-separated list of artists).'
+          collection_codes:
+            description: Filter by collection codes (comma-separated list). Include or exclude based on collections_filter_type.
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Filter by collection codes (comma-separated list). Include or exclude based on collections_filter_type.
+          collections_filter_type:
+            description: Provides searching based on specified collection(s).
+            enum:
+              - include
+              - exclude
+            required: false
+            type: string
+            displayName: Provides searching based on specified collection(s).
+          color:
+            description: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
+            required: false
+            type: string
+            displayName: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
+          compositions:
+            description: Filter based on image composition.
+            items:
+              enum:
+                - abstract
+                - candid
+                - close_up
+                - copy_space
+                - cut_out
+                - full_frame
+                - full_length
+                - headshot
+                - looking_at_camera
+                - macro
+                - portrait
+                - sparse
+                - still_life
+                - three_quarter_length
+                - waist_up
+              type: string
+            required: false
+            type: array
+            displayName: Filter based on image composition.
+          embed_content_only:
+            description: Restrict search results to embeddable images. The default is false.
+            required: false
+            type: boolean
+            displayName: Restrict search results to embeddable images. The default is false.
+          ethnicity:
+            description: Filter search results based on the ethnicity of individuals in an image.
+            items:
+              enum:
+                - black
+                - caucasian
+                - east_asian
+                - hispanic_latino
+                - japanese
+                - middle_eastern
+                - mixed_race_person
+                - multiethnic_group
+                - native_american_first_nations
+                - pacific_islander
+                - south_asian
+                - southeast_asian
+              type: string
+            required: false
+            type: array
+            displayName: Filter search results based on the ethnicity of individuals in an image.
+          event_ids:
+            description: Filter based on specific events
+            items:
+              format: int32
+              type: integer
+            required: false
+            type: array
+            displayName: Filter based on specific events
+          exclude_nudity:
+            description: Excludes images containing nudity. The default is false.
+            required: false
+            type: boolean
+            displayName: Excludes images containing nudity. The default is false.
+          fields:
+            description: Specifies fields to return. Defaults to 'summary_set'.
+            items:
+              enum:
+                - accessrestriction
+                - allowed_use
+                - alternative_ids
+                - artist
+                - asset_family
+                - call_for_image
+                - caption
+                - collection_code
+                - collection_id
+                - collection_name
+                - color_type
+                - comp
+                - copyright
+                - date_camera_shot
+                - date_created
+                - detail_set
+                - display_set
+                - editorial_segments
+                - editorial_source
+                - event_ids
+                - graphical_style
+                - id
+                - keywords
+                - largest_downloads
+                - license_model
+                - max_dimensions
+                - orientation
+                - people
+                - prestige
+                - preview
+                - product_types
+                - quality_rank
+                - referral_destinations
+                - summary_set
+                - thumb
+                - title
+                - uri_oembed
+              type: string
+            required: false
+            type: array
+            displayName: Specifies fields to return. Defaults to 'summary_set'.
+          file_types:
+            description: Return only images having a specific file type.
+            items:
+              enum:
+                - eps
+                - gif
+                - jpg
+                - png
+              type: string
+            required: false
+            type: array
+            displayName: Return only images having a specific file type.
+          graphical_styles:
+            description: Filter based on graphical style of the image.
+            items:
+              enum:
+                - fine_art
+                - illustration
+                - photography
+              type: string
+            required: false
+            type: array
+            displayName: Filter based on graphical style of the image.
+          keyword_ids:
+            description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+            items:
+              format: int32
+              type: integer
+            required: false
+            type: array
+            displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+          license_models:
+            description: Specifies the image licensing model(s).
+            items:
+              enum:
+                - rights_managed
+                - royalty_free
+              type: string
+            required: false
+            type: array
+            displayName: Specifies the image licensing model(s).
+          number_of_people:
+            description: Filter based on the number of people in the image.
+            items:
+              enum:
+                - none
+                - one
+                - two
+                - group
+              type: string
+            required: false
+            type: array
+            displayName: Filter based on the number of people in the image.
+          orientations:
+            description: Return only images with selected aspect ratios.
+            items:
+              enum:
+                - horizontal
+                - vertical
+                - square
+                - panoramic_horizontal
+                - panoramic_vertical
+              type: string
+            required: false
+            type: array
+            displayName: Return only images with selected aspect ratios.
+          page:
+            description: Request results starting at a page number (default is 1).
+            format: int32
+            required: false
+            type: integer
+            displayName: Request results starting at a page number (default is 1).
+          page_size:
+            description: Request number of images to return in each page.
+            format: int32
+            required: false
+            type: integer
+            displayName: Request number of images to return in each page.
+          phrase:
+            description: Search images using a search phrase.
+            required: false
+            type: string
+            displayName: Search images using a search phrase.
+          prestige_content_only:
+            description: Restrict search results to prestige images. The default is false.
+            required: false
+            type: boolean
+            displayName: Restrict search results to prestige images. The default is false.
+          product_types:
+            description: Filter images to those having product types from the selected list.
+            items:
+              enum:
+                - easy_access
+                - editorial_subscription
+                - image_pack
+                - premium_access
+                - royalty_free_subscription
+                - credit_pack
+              type: string
+            required: false
+            type: array
+            displayName: Filter images to those having product types from the selected list.
+          sort_order:
+            description: Select sort order of results.
+            enum:
+              - best_match
+              - most_popular
+              - newest
+            required: false
+            type: string
+            displayName: Select sort order of results.
+          specific_people:
+            description: Return only images associated with specific people (using a comma-delimited list).
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Return only images associated with specific people (using a comma-delimited list).
+        (oas-tags):
+          - Search
+      /creative:
+        displayName: creative
+        get:
+          displayName: GET_v3-search-images-creative
+          (oas-summary): Search for creative images only
+          headers:
+            Accept-Language:
+              type: string
+              description: Specifies the language of result values.
+              required: false
+            Authorization:
+              type: string
+              description: 'Provide access token in the format of ''Bearer {token}''.'
+              required: false
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: creative_image_search_results
+              description: OK
+            '400':
+              description: InvalidColor
+            '401':
+              description: Unauthorized
+            '403':
+              description: NoAccessToProductType
+          queryParameters:
+            age_of_people:
+              description: Filter based on the age of individuals in an image.
+              items:
+                enum:
+                  - newborn
+                  - baby
+                  - child
+                  - teenager
+                  - young_adult
+                  - adult
+                  - adults_only
+                  - mature_adult
+                  - senior_adult
+                  - months_0_1
+                  - months_2_5
+                  - months_6_11
+                  - months_12_17
+                  - months_18_23
+                  - years_2_3
+                  - years_4_5
+                  - years_6_7
+                  - years_8_9
+                  - years_10_11
+                  - years_12_13
+                  - years_14_15
+                  - years_16_17
+                  - years_18_19
+                  - years_20_24
+                  - years_20_29
+                  - years_25_29
+                  - years_30_34
+                  - years_30_39
+                  - years_35_39
+                  - years_40_44
+                  - years_40_49
+                  - years_45_49
+                  - years_50_54
+                  - years_50_59
+                  - years_55_59
+                  - years_60_64
+                  - years_60_69
+                  - years_65_69
+                  - years_70_79
+                  - years_80_89
+                  - over_90
+                  - over_100
+                type: string
+              required: false
+              type: array
+              displayName: Filter based on the age of individuals in an image.
+            artists:
+              description: 'Search for images by specific artists (free-text, comma-separated list of artists).'
+              required: false
+              type: string
+              displayName: 'Search for images by specific artists (free-text, comma-separated list of artists).'
+            collection_codes:
+              description: Filter by collection codes (comma-separated list). Include or exclude based on collections_filter_type.
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Filter by collection codes (comma-separated list). Include or exclude based on collections_filter_type.
+            collections_filter_type:
+              description: Use to include or exclude collections from search.
+              enum:
+                - include
+                - exclude
+              required: false
+              type: string
+              displayName: Use to include or exclude collections from search.
+            color:
+              description: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
+              required: false
+              type: string
+              displayName: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
+            compositions:
+              description: Filter based on image composition.
+              items:
+                enum:
+                  - abstract
+                  - candid
+                  - close_up
+                  - copy_space
+                  - cut_out
+                  - full_frame
+                  - full_length
+                  - headshot
+                  - looking_at_camera
+                  - macro
+                  - portrait
+                  - sparse
+                  - still_life
+                  - three_quarter_length
+                  - waist_up
+                type: string
+              required: false
+              type: array
+              displayName: Filter based on image composition.
+            embed_content_only:
+              description: Restrict search results to embeddable images. The default is false.
+              required: false
+              type: boolean
+              displayName: Restrict search results to embeddable images. The default is false.
+            ethnicity:
+              description: Filter search results based on the ethnicity of individuals in an image.
+              items:
+                enum:
+                  - black
+                  - caucasian
+                  - east_asian
+                  - hispanic_latino
+                  - japanese
+                  - middle_eastern
+                  - mixed_race_person
+                  - multiethnic_group
+                  - native_american_first_nations
+                  - pacific_islander
+                  - south_asian
+                  - southeast_asian
+                type: string
+              required: false
+              type: array
+              displayName: Filter search results based on the ethnicity of individuals in an image.
+            exclude_nudity:
+              description: Excludes images containing nudity. The default is false.
+              required: false
+              type: boolean
+              displayName: Excludes images containing nudity. The default is false.
+            fields:
+              description: Specifies fields to return. Defaults to 'summary_set'.
+              items:
+                enum:
+                  - allowed_use
+                  - alternative_ids
+                  - artist
+                  - asset_family
+                  - call_for_image
+                  - caption
+                  - collection_code
+                  - collection_id
+                  - collection_name
+                  - color_type
+                  - comp
+                  - copyright
+                  - date_camera_shot
+                  - date_created
+                  - detail_set
+                  - display_set
+                  - graphical_style
+                  - id
+                  - keywords
+                  - largest_downloads
+                  - license_model
+                  - max_dimensions
+                  - orientation
+                  - prestige
+                  - preview
+                  - product_types
+                  - quality_rank
+                  - referral_destinations
+                  - summary_set
+                  - thumb
+                  - title
+                  - uri_oembed
+                type: string
+              required: false
+              type: array
+              displayName: Specifies fields to return. Defaults to 'summary_set'.
+            file_types:
+              description: Return only images having a specific file type.
+              items:
+                enum:
+                  - eps
+                  - gif
+                  - jpg
+                  - png
+                type: string
+              required: false
+              type: array
+              displayName: Return only images having a specific file type.
+            graphical_styles:
+              description: Filter based on graphical style of the image.
+              items:
+                enum:
+                  - fine_art
+                  - illustration
+                  - photography
+                type: string
+              required: false
+              type: array
+              displayName: Filter based on graphical style of the image.
+            keyword_ids:
+              description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+              items:
+                format: int32
+                type: integer
+              required: false
+              type: array
+              displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+            license_models:
+              description: Specifies the image licensing model(s).
+              items:
+                enum:
+                  - rights_managed
+                  - royalty_free
+                type: string
+              required: false
+              type: array
+              displayName: Specifies the image licensing model(s).
+            number_of_people:
+              description: Filter based on the number of people in the image.
+              items:
+                enum:
+                  - none
+                  - one
+                  - two
+                  - group
+                type: string
+              required: false
+              type: array
+              displayName: Filter based on the number of people in the image.
+            orientations:
+              description: Return only images with selected aspect ratios.
+              items:
+                enum:
+                  - horizontal
+                  - vertical
+                  - square
+                  - panoramic_horizontal
+                  - panoramic_vertical
+                type: string
+              required: false
+              type: array
+              displayName: Return only images with selected aspect ratios.
+            page:
+              description: Request results starting at a page number (default is 1).
+              format: int32
+              required: false
+              type: integer
+              displayName: Request results starting at a page number (default is 1).
+            page_size:
+              description: Request number of images to return in each page.
+              format: int32
+              required: false
+              type: integer
+              displayName: Request number of images to return in each page.
+            phrase:
+              description: Search images using a search phrase.
+              required: false
+              type: string
+              displayName: Search images using a search phrase.
+            prestige_content_only:
+              description: Restrict search results to prestige images. The default is false.
+              required: false
+              type: boolean
+              displayName: Restrict search results to prestige images. The default is false.
+            product_types:
+              description: Filter images to those having product types from the selected list.
+              items:
+                enum:
+                  - easy_access
+                  - editorial_subscription
+                  - image_pack
+                  - premium_access
+                  - royalty_free_subscription
+                  - credit_pack
+                type: string
+              required: false
+              type: array
+              displayName: Filter images to those having product types from the selected list.
+            sort_order:
+              description: Select sort order of results.
+              enum:
+                - best_match
+                - most_popular
+                - newest
+              required: false
+              type: string
+              displayName: Select sort order of results.
+          (oas-tags):
+            - Search
+      /editorial:
+        displayName: editorial
+        get:
+          displayName: GET_v3-search-images-editorial
+          (oas-summary): Search for editorial images only
+          headers:
+            Accept-Language:
+              type: string
+              description: Specifies the language of result values.
+              required: false
+            Authorization:
+              type: string
+              description: 'Provide access token in the format of ''Bearer {token}''.'
+              required: false
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: editorial_image_search_results
+              description: OK
+            '400':
+              description: InvalidColor
+            '401':
+              description: Unauthorized
+            '403':
+              description: NoAccessToProductType
+          queryParameters:
+            age_of_people:
+              description: Filter based on the age of individuals in an image.
+              items:
+                enum:
+                  - newborn
+                  - baby
+                  - child
+                  - teenager
+                  - young_adult
+                  - adult
+                  - adults_only
+                  - mature_adult
+                  - senior_adult
+                  - months_0_1
+                  - months_2_5
+                  - months_6_11
+                  - months_12_17
+                  - months_18_23
+                  - years_2_3
+                  - years_4_5
+                  - years_6_7
+                  - years_8_9
+                  - years_10_11
+                  - years_12_13
+                  - years_14_15
+                  - years_16_17
+                  - years_18_19
+                  - years_20_24
+                  - years_20_29
+                  - years_25_29
+                  - years_30_34
+                  - years_30_39
+                  - years_35_39
+                  - years_40_44
+                  - years_40_49
+                  - years_45_49
+                  - years_50_54
+                  - years_50_59
+                  - years_55_59
+                  - years_60_64
+                  - years_60_69
+                  - years_65_69
+                  - years_70_79
+                  - years_80_89
+                  - over_90
+                  - over_100
+                type: string
+              required: false
+              type: array
+              displayName: Filter based on the age of individuals in an image.
+            artists:
+              description: 'Search for images by specific artists (free-text, comma-separated list of artists).'
+              required: false
+              type: string
+              displayName: 'Search for images by specific artists (free-text, comma-separated list of artists).'
+            collection_codes:
+              description: Filter by collections (comma-separated list of collection codes). Include or exclude based on collections_filter_type.
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Filter by collections (comma-separated list of collection codes). Include or exclude based on collections_filter_type.
+            collections_filter_type:
+              description: Use to include or exclude collections from search.
+              enum:
+                - include
+                - exclude
+              required: false
+              type: string
+              displayName: Use to include or exclude collections from search.
+            color:
+              description: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
+              required: false
+              type: string
+              displayName: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
+            compositions:
+              description: Filter based on image composition.
+              items:
+                enum:
+                  - abstract
+                  - candid
+                  - close_up
+                  - copy_space
+                  - cut_out
+                  - full_frame
+                  - full_length
+                  - headshot
+                  - looking_at_camera
+                  - macro
+                  - portrait
+                  - sparse
+                  - still_life
+                  - three_quarter_length
+                  - waist_up
+                type: string
+              required: false
+              type: array
+              displayName: Filter based on image composition.
+            date_from:
+              description: 'Return only images that are created on or after this date. Use ISO 8601 format (e.g., 1999-12-31).'
+              format: rfc3339
+              required: false
+              type: datetime
+              displayName: 'Return only images that are created on or after this date. Use ISO 8601 format (e.g., 1999-12-31).'
+            date_to:
+              description: 'Return only images that are created on or before this date. Use ISO 8601 format (e.g., 1999-12-31).'
+              format: rfc3339
+              required: false
+              type: datetime
+              displayName: 'Return only images that are created on or before this date. Use ISO 8601 format (e.g., 1999-12-31).'
+            editorial_segments:
+              description: Return only events with a matching editorial segment.
+              items:
+                enum:
+                  - archival
+                  - entertainment
+                  - news
+                  - publicity
+                  - royalty
+                  - sport
+                type: string
+              required: false
+              type: array
+              displayName: Return only events with a matching editorial segment.
+            embed_content_only:
+              description: Restrict search results to embeddable images. The default is false.
+              required: false
+              type: boolean
+              displayName: Restrict search results to embeddable images. The default is false.
+            entity_uris:
+              description: specify linked data entity uri.
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: specify linked data entity uri.
+            ethnicity:
+              description: Filter search results based on the ethnicity of individuals in an image.
+              items:
+                enum:
+                  - black
+                  - caucasian
+                  - east_asian
+                  - hispanic_latino
+                  - japanese
+                  - middle_eastern
+                  - mixed_race_person
+                  - multiethnic_group
+                  - native_american_first_nations
+                  - pacific_islander
+                  - south_asian
+                  - southeast_asian
+                type: string
+              required: false
+              type: array
+              displayName: Filter search results based on the ethnicity of individuals in an image.
+            event_ids:
+              description: Filter based on specific events
+              items:
+                format: int32
+                type: integer
+              required: false
+              type: array
+              displayName: Filter based on specific events
+            exclude_nudity:
+              description: Excludes images containing nudity. The default is false.
+              required: false
+              type: boolean
+              displayName: Excludes images containing nudity. The default is false.
+            fields:
+              description: Specifies fields to return. Defaults to 'summary_set'.
+              items:
+                enum:
+                  - allowed_use
+                  - alternative_ids
+                  - artist
+                  - asset_family
+                  - call_for_image
+                  - caption
+                  - collection_code
+                  - collection_id
+                  - collection_name
+                  - color_type
+                  - comp
+                  - copyright
+                  - date_camera_shot
+                  - date_created
+                  - detail_set
+                  - display_set
+                  - editorial_segments
+                  - editorial_source
+                  - event_ids
+                  - graphical_style
+                  - id
+                  - keywords
+                  - largest_downloads
+                  - license_model
+                  - max_dimensions
+                  - orientation
+                  - people
+                  - preview
+                  - product_types
+                  - quality_rank
+                  - referral_destinations
+                  - summary_set
+                  - thumb
+                  - title
+                  - uri_oembed
+                type: string
+              required: false
+              type: array
+              displayName: Specifies fields to return. Defaults to 'summary_set'.
+            file_types:
+              description: Return only images having a specific file type.
+              items:
+                enum:
+                  - eps
+                  - gif
+                  - jpg
+                  - png
+                type: string
+              required: false
+              type: array
+              displayName: Return only images having a specific file type.
+            graphical_styles:
+              description: Filter based on graphical style of the image.
+              items:
+                enum:
+                  - photography
+                  - illustration
+                type: string
+              required: false
+              type: array
+              displayName: Filter based on graphical style of the image.
+            keyword_ids:
+              description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+              items:
+                format: int32
+                type: integer
+              required: false
+              type: array
+              displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+            number_of_people:
+              description: Filter based on the number of people in the image.
+              items:
+                enum:
+                  - none
+                  - one
+                  - two
+                  - group
+                type: string
+              required: false
+              type: array
+              displayName: Filter based on the number of people in the image.
+            orientations:
+              description: Return only images with selected aspect ratios.
+              items:
+                enum:
+                  - horizontal
+                  - vertical
+                  - square
+                  - panoramic_horizontal
+                  - panoramic_vertical
+                type: string
+              required: false
+              type: array
+              displayName: Return only images with selected aspect ratios.
+            page:
+              description: Request results starting at a page number (default is 1).
+              format: int32
+              required: false
+              type: integer
+              displayName: Request results starting at a page number (default is 1).
+            page_size:
+              description: Request number of images to return in each page.
+              format: int32
+              required: false
+              type: integer
+              displayName: Request number of images to return in each page.
+            phrase:
+              description: Search images using a search phrase.
+              required: false
+              type: string
+              displayName: Search images using a search phrase.
+            product_types:
+              description: Filter images to those having product types from the selected list.
+              items:
+                enum:
+                  - easy_access
+                  - editorial_subscription
+                  - image_pack
+                  - premium_access
+                  - royalty_free_subscription
+                  - credit_pack
+                type: string
+              required: false
+              type: array
+              displayName: Filter images to those having product types from the selected list.
+            sort_order:
+              description: Select sort order of results.
+              enum:
+                - best_match
+                - most_popular
+                - newest
+                - oldest
+              required: false
+              type: string
+              displayName: Select sort order of results.
+            specific_people:
+              description: Return only images associated with specific people (using a comma-delimited list).
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Return only images associated with specific people (using a comma-delimited list).
+          (oas-tags):
+            - Search
+    /videos:
+      displayName: videos
+      get:
+        displayName: GET_v3-search-videos
+        (oas-summary): Search for both creative and editorial videos
+        headers:
+          Accept-Language:
+            type: string
+            description: Specifies the language of result values.
+            required: false
+          Authorization:
+            type: string
+            description: 'Provide access token in the format of ''Bearer {token}''.'
+            required: false
+        responses:
+          '200':
+            body:
+              application/json:
+                type: video_search_results
+            description: OK
+          '400':
+            description: MalformedRequest
+          '401':
+            description: Unauthorized
+          '403':
+            description: NoAccessToProductType
+        queryParameters:
+          age_of_people:
+            description: Provides filtering according to the age of individuals in a video.
+            items:
+              enum:
+                - newborn
+                - baby
+                - child
+                - teenager
+                - young_adult
+                - adult
+                - adults_only
+                - mature_adult
+                - senior_adult
+                - months_0_1
+                - months_2_5
+                - months_6_11
+                - months_12_17
+                - months_18_23
+                - years_2_3
+                - years_4_5
+                - years_6_7
+                - years_8_9
+                - years_10_11
+                - years_12_13
+                - years_14_15
+                - years_16_17
+                - years_18_19
+                - years_20_24
+                - years_20_29
+                - years_25_29
+                - years_30_34
+                - years_30_39
+                - years_35_39
+                - years_40_44
+                - years_40_49
+                - years_45_49
+                - years_50_54
+                - years_50_59
+                - years_55_59
+                - years_60_64
+                - years_60_69
+                - years_65_69
+                - years_70_79
+                - years_80_89
+                - over_90
+                - over_100
+              type: string
+            required: false
+            type: array
+            displayName: Provides filtering according to the age of individuals in a video.
+          collection_codes:
+            description: Provides filtering by collection code.
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Provides filtering by collection code.
+          collections_filter_type:
+            description: Provides searching based on specified collection(s).
+            enum:
+              - include
+              - exclude
+            required: false
+            type: string
+            displayName: Provides searching based on specified collection(s).
+          exclude_nudity:
+            description: Excludes images containing nudity. The default is false.
+            required: false
+            type: boolean
+            displayName: Excludes images containing nudity. The default is false.
+          fields:
+            description: Specifies fields to return. Defaults to 'summary_set'.
+            items:
+              enum:
+                - allowed_use
+                - artist
+                - asset_family
+                - caption
+                - clip_length
+                - collection_code
+                - collection_id
+                - collection_name
+                - color_type
+                - comp
+                - copyright
+                - date_created
+                - detail_set
+                - display_set
+                - editorial_segments
+                - era
+                - id
+                - keywords
+                - largest_downloads
+                - license_model
+                - mastered_to
+                - originally_shot_on
+                - preview
+                - product_types
+                - shot_speed
+                - source
+                - summary_set
+                - thumb
+                - title
+              type: string
+            required: false
+            type: array
+            displayName: Specifies fields to return. Defaults to 'summary_set'.
+          format_available:
+            description: Filters according to the digital video format available on a film asset.
+            enum:
+              - sd
+              - hd
+              - 4k
+            required: false
+            type: string
+            displayName: Filters according to the digital video format available on a film asset.
+          keyword_ids:
+            description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+            items:
+              format: int32
+              type: integer
+            required: false
+            type: array
+            displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+          license_models:
+            description: Specifies the video licensing model(s).
+            items:
+              enum:
+                - rights_ready
+                - royalty_free
+              type: string
+            required: false
+            type: array
+            displayName: Specifies the video licensing model(s).
+          page:
+            description: Identifies page to return. Default is 1.
+            format: int32
+            required: false
+            type: integer
+            displayName: Identifies page to return. Default is 1.
+          page_size:
+            description: 'Specifies page size. Default is 30, maximum page_size is 100.'
+            format: int32
+            required: false
+            type: integer
+            displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
+          phrase:
+            description: Free-text search query.
+            required: false
+            type: string
+            displayName: Free-text search query.
+          product_types:
+            description: Provides filtering by a list of product types.
+            items:
+              enum:
+                - easy_access
+                - editorial_subscription
+                - image_pack
+                - premium_access
+                - royalty_free_subscription
+                - credit_pack
+              type: string
+            required: false
+            type: array
+            displayName: Provides filtering by a list of product types.
+          sort_order:
+            description: Allows sorting of results.
+            enum:
+              - best_match
+              - most_popular
+              - newest
+              - oldest
+            required: false
+            type: string
+            displayName: Allows sorting of results.
+          specific_people:
+            description: Provides filtering by specific peoples' names.
+            items:
+              type: string
+            required: false
+            type: array
+            displayName: Provides filtering by specific peoples' names.
+        (oas-tags):
+          - Search
+      /editorial:
+        displayName: editorial
+        get:
+          displayName: GET_v3-search-videos-editorial
+          (oas-summary): Search for editorial videos
+          headers:
+            Accept-Language:
+              type: string
+              description: Specifies the language of result values.
+              required: false
+            Authorization:
+              type: string
+              description: 'Provide access token in the format of ''Bearer {token}''.'
+              required: false
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: editorial_video_search_results
+              description: OK
+            '400':
+              description: MalformedRequest
+            '401':
+              description: Unauthorized
+            '403':
+              description: NoAccessToProductType
+          queryParameters:
+            age_of_people:
+              description: Provides filtering according to the age of individuals in a video.
+              items:
+                enum:
+                  - newborn
+                  - baby
+                  - child
+                  - teenager
+                  - young_adult
+                  - adult
+                  - adults_only
+                  - mature_adult
+                  - senior_adult
+                  - months_0_1
+                  - months_2_5
+                  - months_6_11
+                  - months_12_17
+                  - months_18_23
+                  - years_2_3
+                  - years_4_5
+                  - years_6_7
+                  - years_8_9
+                  - years_10_11
+                  - years_12_13
+                  - years_14_15
+                  - years_16_17
+                  - years_18_19
+                  - years_20_24
+                  - years_20_29
+                  - years_25_29
+                  - years_30_34
+                  - years_30_39
+                  - years_35_39
+                  - years_40_44
+                  - years_40_49
+                  - years_45_49
+                  - years_50_54
+                  - years_50_59
+                  - years_55_59
+                  - years_60_64
+                  - years_60_69
+                  - years_65_69
+                  - years_70_79
+                  - years_80_89
+                  - over_90
+                  - over_100
+                type: string
+              required: false
+              type: array
+              displayName: Provides filtering according to the age of individuals in a video.
+            collection_codes:
+              description: Provides filtering by collection code.
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Provides filtering by collection code.
+            collections_filter_type:
+              description: Provides searching based on specified collection(s).
+              enum:
+                - include
+                - exclude
+              required: false
+              type: string
+              displayName: Provides searching based on specified collection(s).
+            entity_uris:
+              description: specify link data entity uri.
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: specify link data entity uri.
+            exclude_nudity:
+              description: Excludes images containing nudity. The default is false.
+              required: false
+              type: boolean
+              displayName: Excludes images containing nudity. The default is false.
+            fields:
+              description: Specifies fields to return. Defaults to 'summary_set'.
+              items:
+                enum:
+                  - allowed_use
+                  - artist
+                  - asset_family
+                  - caption
+                  - clip_length
+                  - collection_code
+                  - collection_id
+                  - collection_name
+                  - color_type
+                  - comp
+                  - copyright
+                  - date_created
+                  - detail_set
+                  - display_set
+                  - editorial_segments
+                  - era
+                  - id
+                  - keywords
+                  - largest_downloads
+                  - license_model
+                  - mastered_to
+                  - originally_shot_on
+                  - preview
+                  - product_types
+                  - shot_speed
+                  - source
+                  - summary_set
+                  - thumb
+                  - title
+                type: string
+              required: false
+              type: array
+              displayName: Specifies fields to return. Defaults to 'summary_set'.
+            format_available:
+              description: Filters according to the digital video format available on a film asset.
+              enum:
+                - sd
+                - hd
+                - 4k
+              required: false
+              type: string
+              displayName: Filters according to the digital video format available on a film asset.
+            keyword_ids:
+              description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+              items:
+                format: int32
+                type: integer
+              required: false
+              type: array
+              displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+            page:
+              description: Identifies page to return. Default is 1.
+              format: int32
+              required: false
+              type: integer
+              displayName: Identifies page to return. Default is 1.
+            page_size:
+              description: 'Specifies page size. Default is 30, maximum page_size is 100.'
+              format: int32
+              required: false
+              type: integer
+              displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
+            phrase:
+              description: Free-text search query.
+              required: false
+              type: string
+              displayName: Free-text search query.
+            product_types:
+              description: Allows filtering by a list of product types.
+              items:
+                enum:
+                  - easy_access
+                  - editorial_subscription
+                  - image_pack
+                  - premium_access
+                  - royalty_free_subscription
+                  - credit_pack
+                type: string
+              required: false
+              type: array
+              displayName: Allows filtering by a list of product types.
+            sort_order:
+              description: Allows sorting of results.
+              enum:
+                - best_match
+                - most_popular
+                - newest
+                - oldest
+              required: false
+              type: string
+              displayName: Allows sorting of results.
+            specific_people:
+              description: Allows filtering by specific peoples' names.
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Allows filtering by specific peoples' names.
+          (oas-tags):
+            - Search
+      /creative:
+        displayName: creative
+        get:
+          displayName: GET_v3-search-videos-creative
+          (oas-summary): Search for creative videos
+          headers:
+            Accept-Language:
+              type: string
+              description: Specifies the language of result values.
+              required: false
+            Authorization:
+              type: string
+              description: 'Provide access token in the format of ''Bearer {token}''.'
+              required: false
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: creative_video_search_results
+              description: OK
+            '400':
+              description: MalformedRequest
+            '401':
+              description: Unauthorized
+            '403':
+              description: NoAccessToProductType
+          queryParameters:
+            age_of_people:
+              description: Provides filtering according to the age of individuals in a video.
+              items:
+                enum:
+                  - newborn
+                  - baby
+                  - child
+                  - teenager
+                  - young_adult
+                  - adult
+                  - adults_only
+                  - mature_adult
+                  - senior_adult
+                  - months_0_1
+                  - months_2_5
+                  - months_6_11
+                  - months_12_17
+                  - months_18_23
+                  - years_2_3
+                  - years_4_5
+                  - years_6_7
+                  - years_8_9
+                  - years_10_11
+                  - years_12_13
+                  - years_14_15
+                  - years_16_17
+                  - years_18_19
+                  - years_20_24
+                  - years_20_29
+                  - years_25_29
+                  - years_30_34
+                  - years_30_39
+                  - years_35_39
+                  - years_40_44
+                  - years_40_49
+                  - years_45_49
+                  - years_50_54
+                  - years_50_59
+                  - years_55_59
+                  - years_60_64
+                  - years_60_69
+                  - years_65_69
+                  - years_70_79
+                  - years_80_89
+                  - over_90
+                  - over_100
+                type: string
+              required: false
+              type: array
+              displayName: Provides filtering according to the age of individuals in a video.
+            collection_codes:
+              description: Provides filtering by collection code.
+              items:
+                type: string
+              required: false
+              type: array
+              displayName: Provides filtering by collection code.
+            collections_filter_type:
+              description: Provides searching based on specified collection(s).
+              enum:
+                - include
+                - exclude
+              required: false
+              type: string
+              displayName: Provides searching based on specified collection(s).
+            exclude_nudity:
+              description: Excludes images containing nudity. The default is false.
+              required: false
+              type: boolean
+              displayName: Excludes images containing nudity. The default is false.
+            fields:
+              description: Specifies fields to return. Defaults to 'summary_set'.
+              items:
+                enum:
+                  - allowed_use
+                  - artist
+                  - asset_family
+                  - caption
+                  - clip_length
+                  - collection_code
+                  - collection_id
+                  - collection_name
+                  - color_type
+                  - comp
+                  - copyright
+                  - date_created
+                  - detail_set
+                  - display_set
+                  - era
+                  - id
+                  - keywords
+                  - largest_downloads
+                  - license_model
+                  - mastered_to
+                  - originally_shot_on
+                  - preview
+                  - product_types
+                  - shot_speed
+                  - source
+                  - summary_set
+                  - thumb
+                  - title
+                type: string
+              required: false
+              type: array
+              displayName: Specifies fields to return. Defaults to 'summary_set'.
+            format_available:
+              description: Filters according to the digital video format available on a film asset.
+              enum:
+                - sd
+                - hd
+                - 4k
+              required: false
+              type: string
+              displayName: Filters according to the digital video format available on a film asset.
+            keyword_ids:
+              description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+              items:
+                format: int32
+                type: integer
+              required: false
+              type: array
+              displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
+            license_models:
+              description: Specifies the video licensing model(s).
+              items:
+                enum:
+                  - rights_ready
+                  - royalty_free
+                type: string
+              required: false
+              type: array
+              displayName: Specifies the video licensing model(s).
+            page:
+              description: Identifies page to return. Default is 1.
+              format: int32
+              required: false
+              type: integer
+              displayName: Identifies page to return. Default is 1.
+            page_size:
+              description: 'Specifies page size. Default is 30, maximum page_size is 100.'
+              format: int32
+              required: false
+              type: integer
+              displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
+            phrase:
+              description: Free-text search query.
+              required: false
+              type: string
+              displayName: Free-text search query.
+            product_types:
+              description: Allows filtering by a list of product types.
+              items:
+                enum:
+                  - easy_access
+                  - editorial_subscription
+                  - image_pack
+                  - premium_access
+                  - royalty_free_subscription
+                  - credit_pack
+                type: string
+              required: false
+              type: array
+              displayName: Allows filtering by a list of product types.
+            sort_order:
+              description: Allows sorting of results.
+              enum:
+                - best_match
+                - newest
+              required: false
+              type: string
+              displayName: Allows sorting of results.
+          (oas-tags):
+            - Search
+  /downloads:
+    displayName: downloads
+    get:
+      displayName: GET_v3-downloads
+      (oas-summary): Returns information about a customer's downloaded assets.
+      headers:
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: true
+      responses:
+        '200':
+          body:
+            application/json:
+              type: downloads_response
+          description: OK
+        '400':
+          description: InvalidRequest
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      queryParameters:
+        date_from:
+          description: "If specified, select assets downloaded on or after this date. Dates should be submitted in ISO\r\n                8601 format (i.e., YYYY-MM-DD hh:mm:ss.sss). If time is omitted, midnight is assumed. Date/times are UTC."
+          format: rfc3339
+          required: false
+          type: datetime
+          displayName: "If specified, select assets downloaded on or after this date. Dates should be submitted in ISO\r\n                8601 format (i.e., YYYY-MM-DD hh:mm:ss.sss). If time is omitted, midnight is assumed. Date/times are UTC."
+        date_to:
+          description: "If specified, select assets downloaded on or before this date. Dates should be submitted in ISO\r\n                8601 format (i.e., YYYY-MM-DD hh:mm:ss.sss). If time is omitted, midnight is assumed. Date/times are UTC."
+          format: rfc3339
+          required: false
+          type: datetime
+          displayName: "If specified, select assets downloaded on or before this date. Dates should be submitted in ISO\r\n                8601 format (i.e., YYYY-MM-DD hh:mm:ss.sss). If time is omitted, midnight is assumed. Date/times are UTC."
+        page:
+          description: Identifies page to return. Default is 1.
+          format: int32
+          required: false
+          type: integer
+          displayName: Identifies page to return. Default is 1.
+        page_size:
+          description: 'Specifies page size. Default is 30, maximum page_size is 100.'
+          format: int32
+          required: false
+          type: integer
+          displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
+        product_type:
+          description: Specifies product type to be included in the previous download results.
+          enum:
+            - easyaccess
+            - editorialsubscription
+            - imagepack
+            - premiumaccess
+            - royaltyfreesubscription
+            - creditpack
+          required: false
+          type: string
+          displayName: Specifies product type to be included in the previous download results.
+      (oas-tags):
+        - Downloads
+    /videos:
+      displayName: videos
+      '/{id}':
+        displayName: '{id}'
+        uriParameters:
+          id:
+            description: Id of video to download.
+            required: true
+            type: string
+            displayName: Id of video to download.
+        post:
+          displayName: POST_v3-downloads-videos-id
+          description: "The single step download call returns either a redirect or a response message with the URI to download the largest\r\n                video available.\r\n                Returns HTTP status code 303 Redirect to download URI or HTTP status code 200."
+          (oas-summary): Download a video
+          headers:
+            Authorization:
+              type: string
+              description: 'Provide access token in the format of ''Bearer {token}''.'
+              required: true
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: string
+              description: OK
+            '303':
+              description: See Other
+            '400':
+              description: ProductIdNotSpecified
+            '401':
+              description: ProductIdNotAvailableForUser
+            '404':
+              description: FileDownloadSizeNotFound
+          queryParameters:
+            auto_download:
+              description: "Specifies whether to auto-download the video. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the video.\r\n                    If false is specified, the download URI will be returned in the response message."
+              required: false
+              type: boolean
+              displayName: "Specifies whether to auto-download the video. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the video.\r\n                    If false is specified, the download URI will be returned in the response message."
+            product_id:
+              description: Identifier of the instance for the selected product offering type.
+              format: int32
+              required: false
+              type: integer
+              displayName: Identifier of the instance for the selected product offering type.
+            size:
+              description: Specifies the size to be downloaded.
+              required: false
+              type: string
+              displayName: Specifies the size to be downloaded.
+          (oas-tags):
+            - Downloads
+    /images:
+      displayName: images
+      '/{id}':
+        displayName: '{id}'
+        uriParameters:
+          id:
+            description: Id of image to download.
+            required: true
+            type: string
+            displayName: Id of image to download.
+        post:
+          displayName: POST_v3-downloads-images-id
+          description: "The single step download call returns either a redirect or a response message with the URI to download the largest\r\n                image available.\r\n                Returns HTTP status code 303 Redirect to download URI or HTTP status code 200."
+          (oas-summary): Download an image
+          body:
+            application/json:
+              type: PremiumAccessDownloadData
+              (oas-body-name): download_details
+              description: "Additional information required from specific customers when downloading. \r\n                    Only users who have been set up with a project code by Getty Images Sales need to use this field."
+          headers:
+            Authorization:
+              type: string
+              description: 'Provide access token in the format of ''Bearer {token}''.'
+              required: true
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: string
+              description: OK
+            '303':
+              description: See Other
+            '400':
+              description: ProductIdNotSpecified
+            '401':
+              description: ProductIdNotAvailableForUser
+            '404':
+              description: FileDownloadSizeNotFound
+          queryParameters:
+            auto_download:
+              description: "Specifies whether to auto-download the image. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the image.\r\n                    If false is specified, the download URI will be returned in the response message."
+              required: false
+              type: boolean
+              displayName: "Specifies whether to auto-download the image. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the image.\r\n                    If false is specified, the download URI will be returned in the response message."
+            file_type:
+              description: File Type expressed with three character file extension.
+              enum:
+                - eps
+                - jpg
+              required: false
+              type: string
+              displayName: File Type expressed with three character file extension.
+            height:
+              description: "Specifies the pixel height of the particular image to download.\r\n                    Available heights can be found in the images/{ids} response for the specific image.\r\n                    If left blank, it will return the largest available size."
+              required: false
+              type: string
+              displayName: "Specifies the pixel height of the particular image to download.\r\n                    Available heights can be found in the images/{ids} response for the specific image.\r\n                    If left blank, it will return the largest available size."
+            product_id:
+              description: Identifier of the instance for the selected product offering type.
+              format: int32
+              required: false
+              type: integer
+              displayName: Identifier of the instance for the selected product offering type.
+            product_type:
+              description: Product type.
+              enum:
+                - easyaccess
+                - editorialsubscription
+                - imagepack
+                - premiumaccess
+                - royaltyfreesubscription
+                - creditpack
+              required: false
+              type: string
+              displayName: Product type.
+          (oas-tags):
+            - Downloads
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          description: Id of image to download.
+          required: true
+          type: string
+          displayName: Id of image to download.
+      post:
+        displayName: POST_v3-downloads-id
+        description: "The single step download call returns either a redirect or a response message with the URI to download the largest\r\n                image available.\r\n                Returns HTTP status code 303 Redirect to download URI or HTTP status code 200."
+        (oas-summary): Download an image
+        body:
+          application/json:
+            type: PremiumAccessDownloadData
+            (oas-body-name): download_details
+            description: "Additional information required from specific customers when downloading. \r\n                    Only users who have been set up with a project code by Getty Images Sales need to use this field."
+        headers:
+          Authorization:
+            type: string
+            description: 'Provide access token in the format of ''Bearer {token}''.'
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: string
+            description: OK
+          '303':
+            description: See Other
+          '400':
+            description: ProductIdNotSpecified
+          '401':
+            description: ProductIdNotAvailableForUser
+          '404':
+            description: FileDownloadSizeNotFound
+        queryParameters:
+          auto_download:
+            description: "Specifies whether to auto-download the image. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the image.\r\n                    If false is specified, the download URI will be returned in the response message."
+            required: false
+            type: boolean
+            displayName: "Specifies whether to auto-download the image. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the image.\r\n                    If false is specified, the download URI will be returned in the response message."
+          file_type:
+            description: File Type expressed with three character file extension.
+            enum:
+              - eps
+              - jpg
+            required: false
+            type: string
+            displayName: File Type expressed with three character file extension.
+          height:
+            description: "Specifies the pixel height of the particular image to download.\r\n                    Available heights can be found in the images/{ids} response for the specific image.\r\n                    If left blank, it will return the largest available size."
+            required: false
+            type: string
+            displayName: "Specifies the pixel height of the particular image to download.\r\n                    Available heights can be found in the images/{ids} response for the specific image.\r\n                    If left blank, it will return the largest available size."
+          product_id:
+            description: Identifier of the instance for the selected product offering type.
+            format: int32
+            required: false
+            type: integer
+            displayName: Identifier of the instance for the selected product offering type.
+          product_type:
+            description: Product type.
+            enum:
+              - easyaccess
+              - editorialsubscription
+              - imagepack
+              - premiumaccess
+              - royaltyfreesubscription
+              - creditpack
+            required: false
+            type: string
+            displayName: Product type.
+        (oas-tags):
+          - Downloads
+  /countries:
+    displayName: countries
+    get:
+      displayName: GET_v3-countries
+      (oas-summary): Gets countries codes and names.
+      headers:
+        Accept-Language:
+          type: string
+          description: Specifies the language of result values.
+          required: false
+        Authorization:
+          type: string
+          description: 'Provide access token in the format of ''Bearer {token}''.'
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: countries
+          description: OK
+        '401':
+          description: Unauthorized
+      (oas-tags):
+        - Countries
+  /usage-batches:
+    displayName: usage-batches
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          description: Specifies a unique batch transaction id to identify the report.
+          required: true
+          type: string
+          displayName: Specifies a unique batch transaction id to identify the report.
+      put:
+        displayName: PUT_v3-usage-batches-id
+        (oas-summary): Report usage of assets via a batch format.
+        body:
+          application/json:
+            type: report_usage_batch_request
+            (oas-body-name): request
+            description: "Specifies up to 1000 sets of asset Id, usage count, and date of use to submit usages for. \r\n            Note that all asset Ids specified must be valid or the operation will fail causing no usages to be recorded. \r\n            The date format should be ISO 8601 (ex: YYYY-MM-DD), time is not needed."
+        headers:
+          Accept-Language:
+            type: string
+            description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+            required: false
+          Authorization:
+            type: string
+            description: Authorization token required. Used for applying content access restrictions. Use one of the OAuth2 grants to auto-populate this value.
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: report_usage_batch_response
+            description: Success - All usages reported were successfully recorded.
+          '400':
+            description: InvalidAssets - Invalid assets found in the request.
+          '401':
+            description: UnauthorizedToReportUsage - User was not authorized to report usages. Contact your Getty Images Account Manager to discuss options for submitting your usage data.
+          '409':
+            description: TransactionIdDuplicated - The id parameter supplied was already used in a previous usage report.
+        (oas-tags):
+          - Usage
+  /asset-registrations:
+    displayName: asset-registrations
+    post:
+      displayName: POST_v3-asset-registrations
+      (oas-summary): Register a list of customer assets.
+      body:
+        application/json:
+          type: RegisterAssetsRequest
+          (oas-body-name): request
+          description: Specify JSON containing an array of asset ids to register.  Limited to 500 asset ids per call.
+      headers:
+        Authorization:
+          type: string
+          description: Authorization token required. Used for applying content access restrictions. Use one of the OAuth2 grants to auto-populate this value.
+          required: true
+        Accept-Language:
+          type: string
+          description: Accept-Language parameter optional. Used to restrict the set of natural languages that are preferred as a response to the request.
+          required: false
+      responses:
+        '200':
+          body:
+            application/json:
+              type: string
+          description: Success - The assets were successfully registered.
+        '401':
+          description: AuthorizationTokenRequired - Authorization token was missing or not valid.
+        '500':
+          description: AssetRegistrationFailed - There was a failure when registering assets.
+      (oas-tags):
+        - AssetRegistration
+types:
+  AssetChanges:
+    properties:
+      ChangeSetId:
+        type: string
+        required: false
+      ChangedAssetList:
+        items:
+          type: ChangedAssetDetail
+        type: array
+        required: false
+  AssetToAdd:
+    properties:
+      note:
+        type: string
+        required: false
+  ChangedAssetDetail:
+    properties:
+      AssetChangedUtcDateTime:
+        format: rfc3339
+        type: datetime
+        required: false
+      AssetLifecycle:
+        type: string
+        required: false
+      AssetType:
+        type: string
+        required: false
+      Id:
+        type: string
+        required: false
+      Uri:
+        type: string
+        required: false
+  DownloadDetails:
+    properties:
+      download_notes:
+        description: Associate a note with the download of an image.
+        type: string
+        required: false
+      project_code:
+        description: Specifies the associated project code saved with the downloaded of an image.
+        type: string
+        required: false
+  EditorialSource:
+    properties:
+      id:
+        description: Specifies the editorial source id of the image
+        format: int32
+        type: integer
+        required: false
+      name:
+        description: Specifies the editorial source name of the image
+        type: string
+        required: false
+  KeyValuePair_String_String_:
+    properties:
+      Key:
+        type: string
+        required: false
+      Value:
+        type: string
+        required: false
+    (oas-definition-name): 'KeyValuePair[String,String]'
+  PartnerChannel:
+    description: partner_channel
+    properties:
+      AssetFamily:
+        description: Specifies the asset family for the channel (e.g. "editorial" or "creative")
+        type: string
+        required: false
+      ChannelId:
+        description: Specifies the identification number for the channel
+        format: int32
+        type: integer
+        required: false
+      ChannelType:
+        description: 'Specifies the channel type (i.e. "New," "Updated" or "Deleted")'
+        type: string
+        required: false
+      NotificationCount:
+        description: Specifies the current count of notifications pending in the channel
+        format: int32
+        type: integer
+        required: false
+      StartDate:
+        format: rfc3339
+        type: datetime
+        required: false
+  PartnerChannelList:
+    properties:
+      Channels:
+        items:
+          type: PartnerChannel
+        type: array
+        required: false
+  PremiumAccessDownloadData:
+    properties:
+      download_notes:
+        description: Associate a note with the download of an image.
+        type: string
+        required: false
+      project_code:
+        description: Specifies the associated project code saved with the downloaded of an image.
+        type: string
+        required: false
+  PreviousAssetPurchase:
+    properties:
+      asset_id:
+        description: Specifies the unique identifier for the asset.
+        type: string
+        required: false
+      asset_type:
+        description: 'Indicates the asset type classification. Possible values are: image, video.'
+        type: string
+        required: false
+      date_purchased:
+        description: 'Specifies the date the asset was downloaded, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the asset. Possible values are: royaltyfree, rightsmanaged, rightsready.'
+        type: string
+        required: false
+      order_id:
+        description: Specifies the purchase order id.
+        type: string
+        required: false
+      thumb_uri:
+        description: GET this URI to download the thumbnail.
+        type: string
+        required: false
+  PreviousAssetPurchases:
+    properties:
+      previous_purchases:
+        description: List of previously purchased assets.
+        items:
+          type: PreviousAssetPurchase
+        type: array
+        required: false
+      result_count:
+        description: Count of previously purchased assets returned.
+        format: int32
+        type: integer
+        required: false
+  PreviousPurchase:
+    properties:
+      date_purchased:
+        description: 'Specifies the date the image was downloaded, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      image_id:
+        description: Specifies the unique identifier for the image.
+        type: string
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the image. Possible values are: royaltyfree, rightsmanaged.'
+        type: string
+        required: false
+      order_id:
+        description: Specifies the purchase order id.
+        type: string
+        required: false
+      thumb_uri:
+        description: GET this URI to download the thumbnail.
+        type: string
+        required: false
+  PreviousPurchases:
+    properties:
+      previous_purchases:
+        description: List of previously purchased images.
+        items:
+          type: PreviousPurchase
+        type: array
+        required: false
+      result_count:
+        description: Count of previously purchased images returned.
+        format: int32
+        type: integer
+        required: false
+  ProductsResult:
+    properties:
+      products:
+        description: List of available Getty Images products.
+        items:
+          type: product
+        type: array
+        required: false
+  RegisterAssetsRequest:
+    description: Specify request containing the list of asset ids you want to register.
+    properties:
+      asset_ids:
+        description: Specifies the list of asset ids you want to register.
+        items:
+          type: string
+        type: array
+        required: false
+  allowed_use:
+    properties:
+      how_can_i_use_it:
+        description: Specifies how the asset can be used.
+        type: string
+        required: false
+      release_info:
+        description: Specifies the release status.
+        type: string
+        required: false
+      usage_restrictions:
+        description: Specifies the asset usage restriction.
+        items:
+          type: string
+        type: array
+        required: false
+  asset:
+    properties:
+      asset_type:
+        enum:
+          - image
+          - video
+        type: string
+        required: false
+      date_added:
+        format: rfc3339
+        type: datetime
+        required: false
+      display_sizes:
+        items:
+          type: display_size
+        type: array
+        required: false
+      id:
+        type: string
+        required: false
+  asset_usage:
+    description: 'Specifies the id, usage quantity, and date of when an asset was used.'
+    properties:
+      asset_id:
+        description: Specifies the Id of the asset that was used.
+        type: string
+        required: false
+      quantity:
+        description: Specifies the number of times the asset was used.
+        format: int32
+        type: integer
+        required: false
+      usage_date:
+        description: 'Identifies the date the asset was used, in ISO 8601 format (e.g., YYYY-MM-DD), time is not needed.'
+        format: rfc3339
+        type: datetime
+        required: false
+  board:
+    properties:
+      asset_count:
+        format: int32
+        type: integer
+        required: false
+      date_created:
+        format: rfc3339
+        type: datetime
+        required: false
+      date_last_updated:
+        format: rfc3339
+        type: datetime
+        required: false
+      description:
+        type: string
+        required: false
+      hero_asset:
+        type: asset
+        required: false
+      id:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+  board_detail:
+    properties:
+      asset_count:
+        format: int32
+        type: integer
+        required: false
+      assets:
+        items:
+          type: asset
+        type: array
+        required: false
+      comments:
+        items:
+          type: comment
+        type: array
+        required: false
+      date_created:
+        format: rfc3339
+        type: datetime
+        required: false
+      date_last_updated:
+        format: rfc3339
+        type: datetime
+        required: false
+      description:
+        type: string
+        required: false
+      id:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+  board_info:
+    properties:
+      description:
+        type: string
+        required: false
+      name:
+        type: string
+        required: false
+  board_list:
+    properties:
+      board_count:
+        format: int32
+        type: integer
+        required: false
+      boards:
+        items:
+          type: board
+        type: array
+        required: false
+  collaborator:
+    properties:
+      first_name:
+        type: string
+        required: false
+      id:
+        type: string
+        required: false
+      last_name:
+        type: string
+        required: false
+  collection:
+    properties:
+      asset_family:
+        description: 'Indicates the asset family classification. Possible values are: creative, editorial.'
+        type: string
+        required: false
+      code:
+        description: Specifies the code of the collection.
+        type: string
+        required: false
+      id:
+        description: Specifies the unique identifier for the collection.
+        format: int32
+        type: integer
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the asset. Possible values are: royaltyfree, rightsmanaged, rightsready.'
+        type: string
+        required: false
+      name:
+        description: Specifies the name of the collection.
+        type: string
+        required: false
+      product_types:
+        description: 'Specifies the license agreements applied to this collection. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack.'
+        items:
+          type: string
+        type: array
+        required: false
+  collections:
+    properties:
+      collections:
+        description: List of collections that belongs to the client.
+        items:
+          type: collection
+        type: array
+        required: false
+  comment:
+    properties:
+      can_remove:
+        type: boolean
+        required: false
+      created_by:
+        type: collaborator
+        required: false
+      date_created:
+        format: rfc3339
+        type: datetime
+        required: false
+      id:
+        type: string
+        required: false
+      text:
+        type: string
+        required: false
+  comment_request:
+    properties:
+      text:
+        type: string
+        required: false
+  countries:
+    properties:
+      countries:
+        description: List of country records.
+        items:
+          type: country
+        type: array
+        required: false
+  country:
+    properties:
+      iso_alpha_2:
+        description: 'The 2 Character ISO 3166-1 code for the country aka US, GB, CA, MX.'
+        type: string
+        required: false
+      iso_alpha_3:
+        description: 'The 3 character ISO 3166-1 code for the country aka USA, CAN, GBR, MEX.'
+        type: string
+        required: false
+      name:
+        description: Specifies the name of the country.
+        type: string
+        required: false
+  creative_image_search_item:
+    properties:
+      allowed_use:
+        description: Specifies how customers are allowed to use the image.
+        type: allowed_use
+        required: false
+      alternative_ids:
+        description: Lists all of the alternative ids for the asset.
+        items:
+          type: KeyValuePair_String_String_
+        type: array
+        required: false
+      artist:
+        description: Specifies image creator.
+        type: string
+        required: false
+      asset_family:
+        description: 'Indicates the asset family classification. Possible values are: creative, editorial.'
+        type: string
+        required: false
+      call_for_image:
+        description: Indicates whether a customer needs to call Getty Images in order to license this image.
+        type: boolean
+        required: false
+      caption:
+        description: Gives a brief description of the image.
+        type: string
+        required: false
+      collection_code:
+        description: Specifies the code of the collection to which the image belongs.
+        type: string
+        required: false
+      collection_id:
+        description: Specifies the id of the collection to which the image belongs.
+        format: int32
+        type: integer
+        required: false
+      collection_name:
+        description: Specifies the name of the collection to which the image belongs.
+        type: string
+        required: false
+      color_type:
+        description: 'Specifies whether the image or video is color or black and white. Possible values are color, black_and_white, and null.'
+        type: string
+        required: false
+      copyright:
+        description: Specifies the copyright of the image.
+        type: string
+        required: false
+      date_camera_shot:
+        description: 'Specifies the date the image was shot, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      date_created:
+        description: 'Specifies the date the image was created, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      display_sizes:
+        description: Lists the display sizes available for this image.
+        items:
+          type: display_size
+        type: array
+        required: false
+      graphical_style:
+        description: 'Specifies the graphical style for the image. Possible values are Photography, Fine Art, and Illustration.'
+        type: string
+        required: false
+      id:
+        description: Specifies the unique identifier for the image.
+        type: string
+        required: false
+      keywords:
+        description: Lists the keywords that are associated with this image.
+        items:
+          type: keywords
+        type: array
+        required: false
+      largest_downloads:
+        description: Lists the available largest download sizes.
+        items:
+          type: download
+        type: array
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the image. Possible values are: royaltyfree, rightsmanaged.'
+        type: string
+        required: false
+      max_dimensions:
+        description: Specifies the maximum height and width of any size for this image.
+        type: max_dimensions
+        required: false
+      orientation:
+        description: 'Specifies the orientation of the image. Possible values are: Horizontal, PanoramicHorizontal, PanoramicVertical, Square, Vertical, and null.'
+        type: string
+        required: false
+      prestige:
+        description: Specifies the image is in the curated Prestige collection.
+        type: boolean
+        required: false
+      product_types:
+        description: 'Lists the product types for the image. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack.'
+        items:
+          type: string
+        type: array
+        required: false
+      quality_rank:
+        description: 'Assigned to editorial images to rank their relevance to the event they belong to. This number has no relevance for creative images even though it does appear in the metadata. Possible values are: 1 - most relevant, 2 - tells story from a wider perspective, 3 - stock/repeats/less important.'
+        format: int32
+        type: integer
+        required: false
+      referral_destinations:
+        description: Lists the referral destinations for Getty Images assets.
+        items:
+          type: referral_destination
+        type: array
+        required: false
+      title:
+        description: Specifies the image title.
+        type: string
+        required: false
+      uri_oembed:
+        description: 'GET this URI to retrieve the display image, if embeddable.'
+        type: string
+        required: false
+  creative_image_search_results:
+    properties:
+      images:
+        description: List of image search results.
+        items:
+          type: creative_image_search_item
+        type: array
+        required: false
+      result_count:
+        description: Specifies the count of matching images returned.
+        format: int32
+        type: integer
+        required: false
+  creative_video_search_results:
+    properties:
+      result_count:
+        description: Specifies the count of matching assets returned.
+        format: int32
+        type: integer
+        required: false
+      videos:
+        description: List of video search results.
+        items:
+          type: video_search_item
+        type: array
+        required: false
+  display_size:
+    properties:
+      name:
+        type: string
+        required: false
+      uri:
+        type: string
+        required: false
+  download:
+    properties:
+      agreement_name:
+        description: Specifies the customer-defined name of the Premium Access agreement
+        type: string
+        required: false
+      date_downloaded:
+        description: 'Specifies the date the asset was downloaded, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      download_details:
+        description: Customer stored details associated with this download.
+        type: DownloadDetails
+        required: false
+      id:
+        description: Specifies the unique identifier of the asset.
+        type: string
+        required: false
+      product_type:
+        description: 'Specifies the license agreement applied to this download. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack, sandbox.'
+        type: string
+        required: false
+      thumb_uri:
+        description: GET this URI to download the thumbnail.
+        type: string
+        required: false
+  download_requirements:
+    properties:
+      is_note_required:
+        description: Indicates if users must enter a note on download.
+        type: boolean
+        required: false
+      is_project_code_required:
+        description: Indicates if users must enter a product code on download.
+        type: boolean
+        required: false
+      project_codes:
+        description: Only users who have been set up with a project code by Getty Sales need to use this field.
+        items:
+          type: string
+        type: array
+        required: false
+  download_size:
+    properties:
+      bit_depth:
+        description: Specifies the bit depth of the video.
+        type: string
+        required: false
+      broadcast_video_standard:
+        description: 'Indicates broadcast video standard of the video (e.g., NTSC, PAL).'
+        type: string
+        required: false
+      compression:
+        description: Specifies the video compression.
+        type: string
+        required: false
+      content_type:
+        description: 'Specifies the content type of the video (e.g., "video/mp4").'
+        type: string
+        required: false
+      description:
+        description: Description of video.
+        type: string
+        required: false
+      downloads:
+        description: List of video download information.
+        items:
+          type: download
+        type: array
+        required: false
+      format:
+        description: 'Specifies the video format (e.g., SD, HD, 4K, Multimedia, or Web).'
+        type: string
+        required: false
+      frame_rate:
+        description: 'Specifies the video frame rate (e.g., 24, 25, 29.97).'
+        format: double
+        type: number
+        required: false
+      frame_size:
+        description: 'Specifies the video frame size (e.g., "640x360").'
+        type: string
+        required: false
+      height:
+        description: Specifies the height in pixels.
+        format: double
+        type: number
+        required: false
+      interlaced:
+        description: Specifies whether the video is interlaced.
+        type: boolean
+        required: false
+      name:
+        description: Specifies the name of the video size.
+        type: string
+        required: false
+      width:
+        description: Specifies the width.
+        format: int32
+        type: integer
+        required: false
+  downloads_response:
+    properties:
+      downloads:
+        description: Provides a list of download items.
+        items:
+          type: download
+        type: array
+        required: false
+      result_count:
+        description: Specifies the count of matching assets returned.
+        format: int32
+        type: integer
+        required: false
+  editorial_image_search_item:
+    properties:
+      allowed_use:
+        description: Specifies how customers are allowed to use the image.
+        type: allowed_use
+        required: false
+      alternative_ids:
+        description: Lists all of the alternative ids for the asset.
+        items:
+          type: KeyValuePair_String_String_
+        type: array
+        required: false
+      artist:
+        description: Specifies image creator.
+        type: string
+        required: false
+      asset_family:
+        description: 'Indicates the asset family classification. Possible values are: creative, editorial.'
+        type: string
+        required: false
+      call_for_image:
+        description: Indicates whether a customer needs to call Getty Images in order to license this image.
+        type: boolean
+        required: false
+      caption:
+        description: Gives a brief description of the image.
+        type: string
+        required: false
+      collection_code:
+        description: Specifies the code of the collection to which the image belongs.
+        type: string
+        required: false
+      collection_id:
+        description: Specifies the id of the collection to which the image belongs.
+        format: int32
+        type: integer
+        required: false
+      collection_name:
+        description: Specifies the name of the collection to which the image belongs.
+        type: string
+        required: false
+      color_type:
+        description: 'Specifies whether the image or video is color or black and white. Possible values are color, black_and_white, and null.'
+        type: string
+        required: false
+      copyright:
+        description: Specifies the copyright of the image.
+        type: string
+        required: false
+      date_camera_shot:
+        description: 'Specifies the date the image was shot, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      date_created:
+        description: 'Specifies the date the image was created, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      display_sizes:
+        description: Lists the display sizes available for this image.
+        items:
+          type: display_size
+        type: array
+        required: false
+      editorial_segments:
+        description: 'Lists the editorial segments for this asset. Possible values are archival, entertainment, news, publicity, royalty, sport.'
+        items:
+          type: string
+        type: array
+        required: false
+      editorial_source:
+        description: Specifies the editorial source of the image
+        type: EditorialSource
+        required: false
+      event_ids:
+        description: Lists the events that are relevant for this image.
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      graphical_style:
+        description: 'Specifies the graphical style for the image. Possible values are Photography, Fine Art, and Illustration.'
+        type: string
+        required: false
+      id:
+        description: Specifies the unique identifier for the image.
+        type: string
+        required: false
+      keywords:
+        description: Lists the keywords that are associated with this image.
+        items:
+          type: keywords
+        type: array
+        required: false
+      largest_downloads:
+        description: Lists the available largest download sizes.
+        items:
+          type: download
+        type: array
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the image. Possible values are: royaltyfree, rightsmanaged.'
+        type: string
+        required: false
+      max_dimensions:
+        description: Specifies the maximum height and width of any size for this image.
+        type: max_dimensions
+        required: false
+      orientation:
+        description: 'Specifies the orientation of the image. Possible values are: Horizontal, PanoramicHorizontal, PanoramicVertical, Square, Vertical, and null.'
+        type: string
+        required: false
+      people:
+        description: List of people appearing in the image.
+        items:
+          type: string
+        type: array
+        required: false
+      product_types:
+        description: 'Lists the product types for the image. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack.'
+        items:
+          type: string
+        type: array
+        required: false
+      quality_rank:
+        description: Specifies the quality ranking of the image.
+        format: int32
+        type: integer
+        required: false
+      referral_destinations:
+        description: Lists the referral destinations for Getty Images assets.
+        items:
+          type: referral_destination
+        type: array
+        required: false
+      title:
+        description: Specifies the image title.
+        type: string
+        required: false
+      uri_oembed:
+        description: 'GET this URI to retrieve oEmbed data for the image, if embeddable.'
+        type: string
+        required: false
+  editorial_image_search_results:
+    properties:
+      images:
+        description: List of image search results.
+        items:
+          type: editorial_image_search_item
+        type: array
+        required: false
+      result_count:
+        description: Specifies the count of matching images returned.
+        format: int32
+        type: integer
+        required: false
+  editorial_video_search_results:
+    properties:
+      result_count:
+        description: Specifies the count of matching assets returned.
+        format: int32
+        type: integer
+        required: false
+      videos:
+        description: List of video search results.
+        items:
+          type: video_search_item
+        type: array
+        required: false
+  event:
+    properties:
+      child_event_count:
+        description: Specifies the count of children events associated with this event.
+        format: int32
+        type: integer
+        required: false
+      editorial_segments:
+        description: 'Lists the editorial segments for this asset. Possible values are archival, entertainment, news, publicity, royalty, sport.'
+        items:
+          type: string
+        type: array
+        required: false
+      hero_image:
+        description: Spcifies the image that best captures the event.
+        type: hero_image
+        required: false
+      id:
+        description: Specifies the unique identifier for the event.
+        format: int32
+        type: integer
+        required: false
+      image_count:
+        description: Specifies the count of images associated with event.
+        format: int32
+        type: integer
+        required: false
+      location:
+        description: Specifies the location where the event took place.
+        type: location
+        required: false
+      name:
+        description: Specifies the name of the event.
+        type: string
+        required: false
+      start_date:
+        description: 'Specifies the start date of event, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+  events_result:
+    properties:
+      events:
+        description: Lists the event ids matching the search criteria.
+        items:
+          type: event
+        type: array
+        required: false
+      events_not_found:
+        description: Lists the event ids which were not found.
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+  hero_display_size:
+    properties:
+      is_watermarked:
+        description: Specifies whether the image is watermarked.
+        type: boolean
+        required: false
+      name:
+        description: Specifies the name of the display size.
+        type: string
+        required: false
+      uri:
+        description: GET this URI to retrieve the display size image.
+        type: string
+        required: false
+  hero_image:
+    properties:
+      display_sizes:
+        description: Lists the display sizes available for this image.
+        items:
+          type: hero_display_size
+        type: array
+        required: false
+      id:
+        description: Specifies the image id of the image that best captures the associated group of images.
+        type: string
+        required: false
+  image_detail:
+    properties:
+      allowed_use:
+        description: Specifies how customers are allowed to use the image.
+        type: allowed_use
+        required: false
+      alternative_ids:
+        description: Lists all of the alternative ids for the asset.
+        items:
+          type: KeyValuePair_String_String_
+        type: array
+        required: false
+      artist:
+        description: Specifies image creator.
+        type: string
+        required: false
+      artist_title:
+        description: Specifies the title given by the artist.
+        type: string
+        required: false
+      asset_family:
+        description: 'Indicates the asset family classification. Possible values are: creative, editorial.'
+        type: string
+        required: false
+      call_for_image:
+        description: Indicates whether a customer needs to call Getty Images in order to license this image.
+        type: boolean
+        required: false
+      caption:
+        description: Gives a brief description of the image.
+        type: string
+        required: false
+      city:
+        description: Specifies the city name.
+        type: string
+        required: false
+      collection_code:
+        description: Specifies the code of the collection to which the image belongs.
+        type: string
+        required: false
+      collection_id:
+        description: Specifies the id of the collection to which the image belongs.
+        format: int32
+        type: integer
+        required: false
+      collection_name:
+        description: Specifies the name of the collection to which the image belongs.
+        type: string
+        required: false
+      color_type:
+        description: 'Specifies whether the image or video is color or black and white. Possible values are color, black_and_white, and null.'
+        type: string
+        required: false
+      copyright:
+        description: Specifies the copyright of the image.
+        type: string
+        required: false
+      country:
+        description: Specifies the country where the image was created.
+        type: string
+        required: false
+      credit_line:
+        description: Specifies the line of copy acknowledging the source or origin of the image.
+        type: string
+        required: false
+      date_camera_shot:
+        description: 'Specifies the date the image was shot, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      date_created:
+        description: 'Specifies the date the image was created, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      date_submitted:
+        description: 'Specifies the date the image was submitted, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      display_sizes:
+        description: Lists the display sizes available for this image.
+        items:
+          type: display_size
+        type: array
+        required: false
+      download_sizes:
+        description: Lists the available download size information.
+        items:
+          type: download_size
+        type: array
+        required: false
+      editorial_segments:
+        description: 'Lists the editorial segments for this asset. Possible values are archival, entertainment, news, publicity, royalty, sport.'
+        items:
+          type: string
+        type: array
+        required: false
+      editorial_source:
+        description: Specifies the editorial source of the image
+        type: EditorialSource
+        required: false
+      event_ids:
+        description: Lists the events that are relevant for this image.
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      graphical_style:
+        description: 'Specifies the graphical style for the image. Possible values are Photography, Fine Art, and Illustration.'
+        type: string
+        required: false
+      id:
+        description: Specifies the unique identifier for the image.
+        type: string
+        required: false
+      keywords:
+        description: Lists the keywords that are associated with this image.
+        items:
+          type: keywords
+        type: array
+        required: false
+      largest_downloads:
+        description: Lists the available largest download sizes.
+        items:
+          type: download_size
+        type: array
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the image. Possible values are: royaltyfree, rightsmanaged.'
+        type: string
+        required: false
+      links:
+        description: 'List of links to explore related content, such as similar images and images from the same artist.'
+        items:
+          type: link
+        type: array
+        required: false
+      max_dimensions:
+        description: Specifies the maximum height and width of any size for this image.
+        type: max_dimensions
+        required: false
+      orientation:
+        description: 'Specifies the orientation of the image. Possible values are: Horizontal, PanoramicHorizontal, PanoramicVertical, Square, Vertical, and null.'
+        type: string
+        required: false
+      people:
+        description: List of people appearing in the image.
+        items:
+          type: string
+        type: array
+        required: false
+      prestige:
+        description: Specifies the image is in the curated Prestige collection.
+        type: boolean
+        required: false
+      product_types:
+        description: 'Lists the product types for the image. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack.'
+        items:
+          type: string
+        type: array
+        required: false
+      quality_rank:
+        description: Specifies the quality ranking of the image.
+        format: int32
+        type: integer
+        required: false
+      referral_destinations:
+        description: Specifies the referral destination for Getty Images assets.
+        items:
+          type: referral_destination
+        type: array
+        required: false
+      state_province:
+        description: Specifies the state or province where the image was created.
+        type: string
+        required: false
+      title:
+        description: Specifies the image title.
+        type: string
+        required: false
+      uri_oembed:
+        description: 'GET this URI to retrieve oEmbed data for the image, if embeddable.'
+        type: string
+        required: false
+  image_search_item:
+    properties:
+      allowed_use:
+        description: Specifies how customers are allowed to use the image.
+        type: allowed_use
+        required: false
+      alternative_ids:
+        description: Lists all of the alternative ids for the asset.
+        items:
+          type: KeyValuePair_String_String_
+        type: array
+        required: false
+      artist:
+        description: Specifies image creator.
+        type: string
+        required: false
+      asset_family:
+        description: 'Indicates the asset family classification. Possible values are: creative, editorial.'
+        type: string
+        required: false
+      call_for_image:
+        description: Indicates whether a customer needs to call Getty Images in order to license this image.
+        type: boolean
+        required: false
+      caption:
+        description: Gives a brief description of the image.
+        type: string
+        required: false
+      collection_code:
+        description: Specifies the code of the collection to which the image belongs.
+        type: string
+        required: false
+      collection_id:
+        description: Specifies the id of the collection to which the image belongs.
+        format: int32
+        type: integer
+        required: false
+      collection_name:
+        description: Specifies the name of the collection to which the image belongs.
+        type: string
+        required: false
+      color_type:
+        description: 'Specifies whether the image or video is color or black and white. Possible values are color, black_and_white, and null.'
+        type: string
+        required: false
+      copyright:
+        description: Specifies the copyright of the image.
+        type: string
+        required: false
+      date_camera_shot:
+        description: 'Specifies the date the image was shot, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      date_created:
+        description: 'Specifies the date the image was created, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      display_sizes:
+        description: Lists the display sizes available for this image.
+        items:
+          type: display_size
+        type: array
+        required: false
+      editorial_segments:
+        description: 'Lists the editorial segments for this asset. Possible values are archival, entertainment, news, publicity, royalty, sport.'
+        items:
+          type: string
+        type: array
+        required: false
+      event_ids:
+        description: Lists the events that are relevant for this image.
+        items:
+          format: int32
+          type: integer
+        type: array
+        required: false
+      graphical_style:
+        description: 'Specifies the graphical style for the image. Possible values are Photography, Fine Art, and Illustration.'
+        type: string
+        required: false
+      id:
+        description: Specifies the unique identifier for the image.
+        type: string
+        required: false
+      keywords:
+        description: Lists the keywords that are associated with this image.
+        items:
+          type: keywords
+        type: array
+        required: false
+      largest_downloads:
+        description: Lists the available largest download sizes.
+        items:
+          type: download
+        type: array
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the image. Possible values are: royaltyfree, rightsmanaged.'
+        type: string
+        required: false
+      max_dimensions:
+        description: Specifies the maximum height and width of any size for this image.
+        type: max_dimensions
+        required: false
+      orientation:
+        description: 'Specifies the orientation of the image. Possible values are: Horizontal, PanoramicHorizontal, PanoramicVertical, Square, Vertical, and null.'
+        type: string
+        required: false
+      people:
+        description: List of people appearing in the image.
+        items:
+          type: string
+        type: array
+        required: false
+      prestige:
+        description: Specifies the image is in the curated Prestige collection.
+        type: boolean
+        required: false
+      product_types:
+        description: 'Lists the product types for the image. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack.'
+        items:
+          type: string
+        type: array
+        required: false
+      quality_rank:
+        description: Specifies the quality ranking of the image.
+        format: int32
+        type: integer
+        required: false
+      referral_destinations:
+        description: Lists the referral destinations for Getty Images assets.
+        items:
+          type: referral_destination
+        type: array
+        required: false
+      title:
+        description: Specifies the image title.
+        type: string
+        required: false
+      uri_oembed:
+        description: 'GET this URI to retrieve oEmbed data for the image, if embeddable.'
+        type: string
+        required: false
+  image_search_results:
+    properties:
+      images:
+        description: List of image search results.
+        items:
+          type: image_search_item
+        type: array
+        required: false
+      result_count:
+        description: Specifies the count of matching images returned.
+        format: int32
+        type: integer
+        required: false
+  images_detail:
+    properties:
+      images:
+        description: List of image identifiers found.
+        items:
+          type: image_detail
+        type: array
+        required: false
+      images_not_found:
+        description: List of image identifiers not found.
+        items:
+          type: string
+        type: array
+        required: false
+  keywords:
+    properties:
+      keyword_id:
+        description: Specifies the unique identifier for the keyword.
+        type: string
+        required: false
+      relevance:
+        description: 'Specifies the relevancy of the keyword to the asset. 0-5 or null, 5 being most relevant.'
+        format: int32
+        type: integer
+        required: false
+      text:
+        description: Provides localized text of the keyword.
+        type: string
+        required: false
+      type:
+        description: Specifies the keyword type.
+        type: string
+        required: false
+  link:
+    properties:
+      rel:
+        description: Specifies the link's relationship to the asset.
+        type: string
+        required: false
+      uri:
+        description: GET this URI to retrieve image details regarding the related resource.
+        type: string
+        required: false
+  location:
+    properties:
+      city:
+        description: Specifies the city where the event took place.
+        type: string
+        required: false
+      country:
+        description: Specifies the country where the event took place.
+        type: string
+        required: false
+      state_province:
+        description: Specifies the state or province where the event took place.
+        type: string
+        required: false
+      venue:
+        description: Specifies the venue where the event took place.
+        type: string
+        required: false
+  max_dimensions:
+    properties:
+      height:
+        description: Specifies the height in pixels.
+        format: int32
+        type: integer
+        required: false
+      width:
+        description: Specifies the width in pixels.
+        format: int32
+        type: integer
+        required: false
+  overage:
+    properties:
+      count:
+        description: Count of download overages used to date on a Premium Access agreement
+        format: int32
+        type: integer
+        required: false
+      limit:
+        description: Maximum count of download overages allowed on a Premium Access agreement
+        format: int32
+        type: integer
+        required: false
+      overages_reached:
+        description: Specifies whether the download limit has been reached and download overages are being used on a Premium Access agreement
+        type: boolean
+        required: false
+      remaining:
+        description: Count of remaining download overages available on a Premium Access agreement
+        format: int32
+        type: integer
+        required: false
+  product:
+    properties:
+      agreement_name:
+        description: Specifies the customer-defined name of the Premium Access agreement
+        type: string
+        required: false
+      application_website:
+        description: URI of application website.
+        type: string
+        required: false
+      credits_remaining:
+        description: Specifies the remaining credit pack limit
+        format: int32
+        type: integer
+        required: false
+      download_limit:
+        description: Specifies the download limit for product or package.
+        format: int32
+        type: integer
+        required: false
+      download_limit_duration:
+        description: Specifies the end date of current download limit.
+        type: string
+        required: false
+      download_limit_reset_utc_date:
+        description: 'Specifies the date when download limit will reset, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      download_requirements:
+        description: Specifies the download requirements a company can apply on its users.
+        type: download_requirements
+        required: false
+      downloads_remaining:
+        description: Specifies the remaining available downloads.
+        format: int32
+        type: integer
+        required: false
+      expiration_utc_date:
+        description: 'Specifies the expiration date, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      id:
+        description: Specifies the unique identifier for the product.
+        format: int32
+        type: integer
+        required: false
+      name:
+        description: Specifies the name of Getty Images product.
+        type: string
+        required: false
+      overage:
+        description: Describes the current state of the download overage provision on a Premium Access agreement
+        type: overage
+        required: false
+      status:
+        description: Specifies if product status is active or inactive.
+        enum:
+          - active
+          - inactive
+        type: string
+        required: false
+      type:
+        description: 'List of product types available. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack.'
+        enum:
+          - easyaccess
+          - editorialsubscription
+          - imagepack
+          - premiumaccess
+          - royaltyfreesubscription
+          - creditpack
+        type: string
+        required: false
+  referral_destination:
+    properties:
+      site_name:
+        description: Specifies the asset domain name.
+        type: string
+        required: false
+      uri:
+        description: GET this URI to retrieve appropriate referral destination data.
+        type: string
+        required: false
+  report_usage_batch_request:
+    description: Specifies the request information for the Batch Usages endpoint.
+    properties:
+      asset_usages:
+        description: 'Identifies the list of asset id, usage count and date of usage combinations to record.'
+        items:
+          type: asset_usage
+        type: array
+        required: false
+  report_usage_batch_response:
+    description: Specifies the response from the Batch Usages endpoint.
+    properties:
+      invalid_assets:
+        description: Identifies a list of asset ids submitted that did not match known Getty asset ids.
+        items:
+          type: string
+        type: array
+        required: false
+      total_asset_usages_processed:
+        description: Specifies the number of asset usage records that were successfully recorded.
+        format: int32
+        type: integer
+        required: false
+  video_detail:
+    properties:
+      allowed_use:
+        description: Specifies how customers are allowed to use the video.
+        type: allowed_use
+        required: false
+      artist:
+        description: Specifies video creator.
+        type: string
+        required: false
+      asset_family:
+        description: 'Indicates the asset family classification. Possible values are: creative, editorial.'
+        type: string
+        required: false
+      caption:
+        description: Gives a brief description of the video.
+        type: string
+        required: false
+      clip_length:
+        description: 'Specifies the length of the film clip (Example: "00:00:12:08").'
+        type: string
+        required: false
+      collection_code:
+        description: Specifies the code of the collection to which the video belongs.
+        type: string
+        required: false
+      collection_id:
+        description: Specifies the id of the collection to which the video belongs.
+        format: int32
+        type: integer
+        required: false
+      collection_name:
+        description: Specifies the id of the collection to which the video belongs.
+        type: string
+        required: false
+      color_type:
+        description: 'Specifies whether the image or video is color or black and white. Possible values are color, black_and_white, and null.'
+        type: string
+        required: false
+      copyright:
+        description: Specifies the copyright of the video.
+        type: string
+        required: false
+      date_created:
+        description: 'Specifies the date the video was created, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      display_sizes:
+        description: Lists the display size information for this video.
+        items:
+          type: display_size
+        type: array
+        required: false
+      download_sizes:
+        description: Lists the available download size information.
+        items:
+          type: download_size
+        type: array
+        required: false
+      editorial_segments:
+        description: 'Lists the editorial segments for this asset. Possible values are archival, entertainment, news, publicity, royalty, sport.'
+        items:
+          type: string
+        type: array
+        required: false
+      era:
+        description: 'The era of the video. Possible values are: archival, contemporary, and null.'
+        type: string
+        required: false
+      id:
+        description: Specifies the unique identifier for the video.
+        type: string
+        required: false
+      keywords:
+        description: Lists the keywords that are associated with this video.
+        items:
+          type: keywords
+        type: array
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the video. Possible values are: royaltyfree, rightsready.'
+        type: string
+        required: false
+      mastered_to:
+        description: Specifies the video format of the master.
+        type: string
+        required: false
+      originally_shot_on:
+        description: Specifies the media the video was originally shot on.
+        type: string
+        required: false
+      product_types:
+        description: 'Lists the product types for the video. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack.'
+        items:
+          type: string
+        type: array
+        required: false
+      shot_speed:
+        description: 'Specifies the speed the at which the video was shot. Possible values are: real_time, slow_motion, time_lapse, and null.'
+        type: string
+        required: false
+      source:
+        description: Specifies the editorial source of this video.
+        type: string
+        required: false
+      title:
+        description: Specifies the title of this video.
+        type: string
+        required: false
+  video_search_item:
+    properties:
+      allowed_use:
+        description: Specifies how customers are allowed to use the asset.
+        type: allowed_use
+        required: false
+      artist:
+        description: Specifies video creator.
+        type: string
+        required: false
+      asset_family:
+        description: 'Indicates the asset family classification. Possible values are: creative, editorial.'
+        type: string
+        required: false
+      caption:
+        description: Gives a brief description of the video.
+        type: string
+        required: false
+      clip_length:
+        description: 'Specifies the length of the film clip (Example: "00:00:12:08").'
+        type: string
+        required: false
+      collection_code:
+        description: Specifies the code of the collection to which the video belongs.
+        type: string
+        required: false
+      collection_id:
+        description: Specifies the id of the collection to which the video belongs.
+        format: int32
+        type: integer
+        required: false
+      collection_name:
+        description: Specifies the name of the collection to which the video belongs.
+        type: string
+        required: false
+      color_type:
+        description: 'Specifies whether the image or video is color or black and white. Possible values are color, black_and_white, and null.'
+        type: string
+        required: false
+      copyright:
+        description: Specifies the copyright of the video.
+        type: string
+        required: false
+      date_created:
+        description: 'Specifies the date the video was created, in ISO 8601 format (e.g., 1999-12-31T00:00:00-00:00).'
+        format: rfc3339
+        type: datetime
+        required: false
+      display_sizes:
+        description: Lists the display size information for this video.
+        items:
+          type: display_size
+        type: array
+        required: false
+      era:
+        description: 'The era of the video. Possible values are: archival, contemporary, and null.'
+        type: string
+        required: false
+      id:
+        description: Specifies the unique identifier of the asset.
+        type: string
+        required: false
+      keywords:
+        description: Lists the keyword entries associated with image/asset.
+        items:
+          type: keywords
+        type: array
+        required: false
+      largest_downloads:
+        description: Lists the available largest download sizes.
+        items:
+          type: download
+        type: array
+        required: false
+      license_model:
+        description: 'Specifies the licensing model for the video. Possible values are: royaltyfree, rightsready.'
+        type: string
+        required: false
+      mastered_to:
+        description: Specifies the mastered to media.
+        type: string
+        required: false
+      originally_shot_on:
+        description: Specifies the film stock originally shot on.
+        type: string
+        required: false
+      product_types:
+        description: 'Lists the product types for the video. Possible values are: premiumaccess, easyaccess, editorialsubscription, imagepack, royaltyfreesubscription, creditpack.'
+        items:
+          type: string
+        type: array
+        required: false
+      shot_speed:
+        description: 'Specifies the speed the at which the video was shot. Possible values are: real_time, slow_motion, time_lapse, and null.'
+        type: string
+        required: false
+      source:
+        description: Specifies the editorial source.
+        type: string
+        required: false
+      title:
+        description: Specifies the title given by the artist.
+        type: string
+        required: false
+  video_search_results:
+    properties:
+      result_count:
+        description: Specifies the count of matching assets returned.
+        format: int32
+        type: integer
+        required: false
+      videos:
+        description: List of video search results.
+        items:
+          type: video_search_item
+        type: array
+        required: false
+  videos_detail:
+    properties:
+      Videos:
+        description: List of video identifiers found.
+        items:
+          type: video_detail
+        type: array
+        required: false
+      images_not_found:
+        description: List of video identifiers not found.
+        items:
+          type: string
+        type: array
+        required: false
