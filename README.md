@@ -4,8 +4,8 @@ This package helps to convert between different API specifications. It was origi
 
 ## Supported Conversions (beta)
 
-- OAS (Swagger 2.0) -> RAML 1.0: [Complete Functional Specification](https://docs.google.com/a/tekgenesis.com/document/d/1LNDz9XrkfkPYILZwpgVytNs4WmLvNga81Ua4jdUWltk/pub)
-- RAML 1.0 -> OAS (Swagger 2.0): [Complete Functional Specification](https://docs.google.com/a/tekgenesis.com/document/d/1UzRyR_46oc3bEyWoo3ONzfI7wWIH5LCVFxtJZLlvykY/pub)
+- OAS (Swagger 2.0) -> RAML 1.0: [Complete Functional Specification](https://docs.google.com/a/tekgenesis.com/document/d/1LNDz9XrkfkPYILZwpgVytNs4WmLvNga81Ua4jdUWltk/view)
+- RAML 1.0 -> OAS (Swagger 2.0): [Complete Functional Specification](https://docs.google.com/a/tekgenesis.com/document/d/1UzRyR_46oc3bEyWoo3ONzfI7wWIH5LCVFxtJZLlvykY/view)
 - RAML 0.8 -> OAS (Swagger 2.0)
 - RAML 0.8 -> RAML 1.0
 
