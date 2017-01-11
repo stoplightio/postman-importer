@@ -1,0 +1,5761 @@
+#%RAML 1.0
+title: BBC Nitro
+version: 1.0.0
+baseUri: 'http://programmes.api.bbc.com/nitro/api'
+mediaType:
+  - application/json
+  - application/xml
+protocols:
+  - HTTP
+  - HTTPS
+description: BBC Nitro is the BBC's application programming interface (API) for BBC Programmes Metadata.
+(oas-tags-definition):
+  - description: Nitro data feeds
+    name: feeds
+  - description: Nitro metadata
+    name: schema
+  - description: Nitro Raw
+    name: Raw
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-tags: any
+  oas-x-unofficialSpec: any
+  oas-x-anyOf: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'https://developer.bbc.co.uk/user/register'
+  (oas-x-apisguru-categories):
+    - media
+    - open_data
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_developer.bbc.co.uk_sites_default_files_Nitro On White.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Mermade/bbcparse/master/nitroApi/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): bbc.com
+  (oas-x-tags):
+    - BBC
+    - programme information
+    - iPlayer
+    - iPlayer Radio
+  (oas-x-unofficialSpec): true
+  contact:
+    name: Open Nitro Project
+    url: 'http://developer.bbc.co.uk/'
+    email: nitro@bbc.co.uk
+  termsOfService: 'http://www.bbc.co.uk/terms/'
+  license:
+    name: Nitro Public License
+    url: 'https://developer.bbc.co.uk/nitropubliclicence/'
+(oas-externalDocs):
+  description: Nitro for developers
+  url: 'https://developer.bbc.co.uk/nitro'
+securitySchemes:
+  api_key:
+    type: Pass Through
+    describedBy:
+      queryParameters:
+        api_key:
+          type: string
+/schema:
+  displayName: schema
+  get:
+    displayName: getXSD
+    description: Get Schema definition
+    (oas-summary): Get Schema definition
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        description: Metadata response
+    (oas-tags):
+      - schema
+/versions:
+  displayName: versions
+  get:
+    displayName: listVersions
+    description: 'The versions feed exposes editorial "Versions" of programmes. These are concepts used to capture different presentations of an overall programme: for example, versions of a programme may include one with sign language, one with audio description, one edited for content and more. Versions are also important to understand for broadcasts: a linear broadcast or an ondemand is always of a specific version, not merely of a programme.'
+    (oas-summary): 'Metadata on editorial programme versions: original, signed, audio-described, etc'
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      availability:
+        collectionFormat: multi
+        description: filter for subset of versions that have availability
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of versions that have availability
+        facets:
+          collectionFormat: string
+      descendants_of:
+        collectionFormat: multi
+        description: filter for subset of versions having given programme PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of versions having given programme PID
+        facets:
+          collectionFormat: string
+      media_set:
+        collectionFormat: multi
+        description: filter for subset of versions with availability in the given media set
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of versions with availability in the given media set
+        facets:
+          collectionFormat: string
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for versions by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for versions by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for versions by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for versions by partner PID
+        facets:
+          collectionFormat: string
+      payment_type:
+        collectionFormat: multi
+        description: filter for a subset of versions that are of the given payment_type
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for a subset of versions that are of the given payment_type
+        facets:
+          collectionFormat: string
+      pid:
+        collectionFormat: multi
+        description: filter for subset of versions having given PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of versions having given PID
+        facets:
+          collectionFormat: string
+    (oas-tags):
+      - feeds
+/services:
+  displayName: services
+  get:
+    displayName: listServices
+    description: The services feed exposes the linear broadcast "services" from PIPs. These are the actual services which broadcast programmes (eg bbc_one_oxford is the service for BBC One in Oxford).
+    (oas-summary): Information about the linear services used for broadcast transmissions
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      end_from:
+        description: Return services that end on or later than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: Return services that end on or later than the specified datetime
+      end_to:
+        description: filter for subset of broadcasts that end on or earlier than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts that end on or earlier than the specified datetime
+      mid:
+        collectionFormat: multi
+        description: filter for services by masterbrand MID
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for services by masterbrand MID
+        facets:
+          collectionFormat: string
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for services by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for services by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for services by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for services by partner PID
+        facets:
+          collectionFormat: string
+      q:
+        description: filter for subset of services matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of services matching supplied keyword/phrase (boolean operators permitted)
+      service_type:
+        collectionFormat: multi
+        description: filter for specified type of linear services
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for specified type of linear services
+        facets:
+          collectionFormat: string
+      sid:
+        collectionFormat: multi
+        description: filter for specified linear service
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for specified linear service
+        facets:
+          collectionFormat: string
+      start_from:
+        description: Return services that start on or later than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: Return services that start on or later than the specified datetime
+      start_to:
+        description: Return services that start earlier than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: Return services that start earlier than the specified datetime
+    (oas-tags):
+      - feeds
+/:
+  get:
+    displayName: getAPI
+    description: Get API definition
+    (oas-summary): Get API definition
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        description: Metadata response
+    (oas-tags):
+      - schema
+/v1:
+  displayName: v1
+  /brands:
+    displayName: brands
+    '/{pid}':
+      displayName: '{pid}'
+      uriParameters:
+        pid:
+          required: true
+          type: string
+      get:
+        displayName: Get_Raw_brand
+        description: Get raw brand
+        (oas-summary): Get raw brand
+        responses:
+          '200':
+            body:
+              application/json:
+                type: nitro
+            description: Nitro response
+        (oas-tags):
+          - Raw
+      /franchises:
+        displayName: franchises
+        /:
+          get:
+            displayName: Get_Raw_brand franchises
+            description: Get raw brand franchises
+            (oas-summary): Get raw brand franchise
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: nitro
+                description: Nitro response
+            (oas-tags):
+              - Raw
+  /episodes:
+    displayName: episodes
+    '/{pid}':
+      displayName: '{pid}'
+      uriParameters:
+        pid:
+          required: true
+          type: string
+      get:
+        displayName: Get_Raw_episode
+        description: Get raw episode
+        (oas-summary): Get raw episode
+        responses:
+          '200':
+            body:
+              application/json:
+                type: nitro
+            description: Nitro response
+        (oas-tags):
+          - Raw
+      /ancestors:
+        displayName: ancestors
+        /:
+          get:
+            displayName: Get_Raw_ancestors
+            description: Get raw ancestors
+            (oas-summary): Get raw ancestors
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: nitro
+                description: Nitro response
+            (oas-tags):
+              - Raw
+      /formats:
+        displayName: formats
+        /:
+          get:
+            displayName: Get_Raw_formats
+            description: Get raw formats
+            (oas-summary): Get raw formats
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: nitro
+                description: Nitro response
+            (oas-tags):
+              - Raw
+      /genre_groups:
+        displayName: genre_groups
+        /:
+          get:
+            displayName: Get_Raw_genre_groups
+            description: Get raw genre groups
+            (oas-summary): Get raw genre groups
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: nitro
+                description: Nitro response
+            (oas-tags):
+              - Raw
+  /promotions:
+    displayName: promotions
+    '/{pid}':
+      displayName: '{pid}'
+      uriParameters:
+        pid:
+          required: true
+          type: string
+      get:
+        displayName: Get_Raw_promotion
+        description: Get raw promotion
+        (oas-summary): Get raw promotion
+        responses:
+          '200':
+            body:
+              application/json:
+                type: nitro
+            description: Nitro response
+        (oas-tags):
+          - Raw
+  /master_brands:
+    displayName: master_brands
+    '/{mbid}':
+      displayName: '{mbid}'
+      uriParameters:
+        mbid:
+          required: true
+          type: string
+      get:
+        displayName: Get_Raw_masterbrand
+        description: Get raw masterbrand
+        (oas-summary): Get raw masterbrand
+        responses:
+          '200':
+            body:
+              application/json:
+                type: nitro
+            description: Nitro response
+        (oas-tags):
+          - Raw
+  /images:
+    displayName: images
+    '/{pid}':
+      displayName: '{pid}'
+      uriParameters:
+        pid:
+          required: true
+          type: string
+      get:
+        displayName: Get_Raw_image
+        description: Get raw image
+        (oas-summary): Get raw image
+        responses:
+          '200':
+            body:
+              application/json:
+                type: nitro
+            description: Nitro response
+        (oas-tags):
+          - Raw
+/broadcasts:
+  displayName: broadcasts
+  get:
+    displayName: listBroadcasts
+    description: 'Fetch metadata about linear Broadcasts and Services, allowing the generation of Television and Radio schedules and other datasets for broadcast items. Use /schedules instead of this feed as it is more efficient. Broadcasts will be deprecated in the future.'
+    (oas-summary): Build schedules and find metadata for TV and radio broadcasts
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      sort:
+        description: |
+          Sorts:
+          * sort chronologically by scheduled start time/date, ascending
+        enum:
+          - start_date
+        required: false
+        type: string
+        displayName: |
+          Sorts:
+          * sort chronologically by scheduled start time/date, ascending
+      sort_direction:
+        description: Sort direction
+        enum:
+          - ascending
+          - descending
+        required: false
+        type: string
+        displayName: Sort direction
+      mixin:
+        collectionFormat: multi
+        description: |
+          Mixins:
+          * return ancestor programme titles
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: |
+          Mixins:
+          * return ancestor programme titles
+        facets:
+          collectionFormat: string
+      authority:
+        collectionFormat: multi
+        description: filter for subset of broadcasts that have given authority
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts that have given authority
+        facets:
+          collectionFormat: string
+      descendants_of:
+        collectionFormat: multi
+        description: filter for subset of broadcasts that are descendants of the given programme PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts that are descendants of the given programme PID
+        facets:
+          collectionFormat: string
+      end_from:
+        description: filter for subset of broadcasts that end on or later than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts that end on or later than the specified datetime
+      end_to:
+        description: filter for subset of broadcasts that end on or earlier than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts that end on or earlier than the specified datetime
+      format:
+        collectionFormat: multi
+        description: filter for subset of broadcasts that are classified in the given format ID
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts that are classified in the given format ID
+        facets:
+          collectionFormat: string
+      genre:
+        collectionFormat: multi
+        description: filter for subset of broadcasts that are classified in the given genre ID
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts that are classified in the given genre ID
+        facets:
+          collectionFormat: string
+      id:
+        collectionFormat: multi
+        description: filter for subset of broadcasts that have given identifier
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts that have given identifier
+        facets:
+          collectionFormat: string
+      item:
+        collectionFormat: multi
+        description: filter for subset of broadcasts with the given item performed on it
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts with the given item performed on it
+        facets:
+          collectionFormat: string
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      people:
+        description: filter for subset of broadcasts that have given contributor
+        required: false
+        type: string
+        displayName: filter for subset of broadcasts that have given contributor
+      pid:
+        collectionFormat: multi
+        description: filter for subset of broadcasts having given PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts having given PID
+        facets:
+          collectionFormat: string
+      q:
+        description: filter for subset of broadcasts matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of broadcasts matching supplied keyword/phrase (boolean operators permitted)
+      service_master_brand:
+        collectionFormat: multi
+        description: filter for subset of broadcasts with given service master brand
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts with given service master brand
+        facets:
+          collectionFormat: string
+      sid:
+        collectionFormat: multi
+        description: filter for subset of broadcasts that are on the specified linear service
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts that are on the specified linear service
+        facets:
+          collectionFormat: string
+      start_from:
+        description: filter for subset of broadcasts that start on or later than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts that start on or later than the specified datetime
+      start_to:
+        description: filter for subset of broadcasts that start on or earlier than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts that start on or earlier than the specified datetime
+      version:
+        collectionFormat: multi
+        description: filter for subset of broadcasts with given PID as their parent version
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts with given PID as their parent version
+        facets:
+          collectionFormat: string
+    (oas-tags):
+      - feeds
+/images:
+  displayName: images
+  get:
+    displayName: listImages
+    description: 'Find metadata for images, particularly those in galleries'
+    (oas-summary): Find metadata for images
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      sort:
+        description: |
+          Sorts:
+          * sort numerically by position, ascending only
+          * sort alphabetically by PID
+        enum:
+          - group_position
+          - pid
+        required: false
+        type: string
+        displayName: |
+          Sorts:
+          * sort numerically by position, ascending only
+          * sort alphabetically by PID
+      sort_direction:
+        description: Sort direction
+        enum:
+          - ascending
+          - descending
+        required: false
+        type: string
+        displayName: Sort direction
+      group:
+        description: filter for images belonging to the given group (i.e. Gallery)
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for images belonging to the given group (i.e. Gallery)
+      image_type:
+        collectionFormat: multi
+        description: filter for images by type
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for images by type
+        facets:
+          collectionFormat: string
+      is_alternate_image_for:
+        description: filter for alternate images by entity PID
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for alternate images by entity PID
+      is_image_for:
+        description: filter for images by entity PID
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for images by entity PID
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for images by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for images by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for images by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for images by partner PID
+        facets:
+          collectionFormat: string
+      pid:
+        collectionFormat: multi
+        description: filter for subset of images having given PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of images having given PID
+        facets:
+          collectionFormat: string
+      q:
+        description: filter for subset of images matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of images matching supplied keyword/phrase (boolean operators permitted)
+    (oas-tags):
+      - feeds
+/master_brands:
+  displayName: master_brands
+  get:
+    displayName: listMasterbrands
+    description: List all Master Brands
+    (oas-summary): List all Master Brands
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      sort:
+        description: |
+          Sorts:
+          * sort by mid, ascending
+        enum:
+          - mid
+        required: false
+        type: string
+        displayName: |
+          Sorts:
+          * sort by mid, ascending
+      sort_direction:
+        description: Sort direction
+        enum:
+          - ascending
+        required: false
+        type: string
+        displayName: Sort direction
+      mixin:
+        collectionFormat: multi
+        description: |
+          Mixins:
+          * mixin to add image information for a masterbrand
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: |
+          Mixins:
+          * mixin to add image information for a masterbrand
+        facets:
+          collectionFormat: string
+      mid:
+        collectionFormat: multi
+        description: filter for subset of masterbrands that have given identifier
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of masterbrands that have given identifier
+        facets:
+          collectionFormat: string
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for masterbrands by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for masterbrands by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for masterbrands by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for masterbrands by partner PID
+        facets:
+          collectionFormat: string
+      q:
+        description: filter for subset of masterbrands matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of masterbrands matching supplied keyword/phrase (boolean operators permitted)
+    (oas-tags):
+      - feeds
+/pips:
+  displayName: pips
+  get:
+    displayName: listPips
+    description: Look inside pips entities
+    (oas-summary): Look inside pips entities
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      q:
+        description: filter for subset of programmes matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of programmes matching supplied keyword/phrase (boolean operators permitted)
+    (oas-tags):
+      - feeds
+/promotions:
+  displayName: promotions
+  get:
+    displayName: listPromotions
+    description: 'Details of short-term editorially curated "promotions", for instance those programmes featured on iPlayer today'
+    (oas-summary): Discover metadata for content promotions
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      mixin:
+        collectionFormat: multi
+        description: |
+          Mixins:
+          * mixin to return information about related links to a promotion
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: |
+          Mixins:
+          * mixin to return information about related links to a promotion
+        facets:
+          collectionFormat: string
+      context:
+        description: filter for subset of promotions belonging to a given context
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for subset of promotions belonging to a given context
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for promotions by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for promotions by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for promotions by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for promotions by partner PID
+        facets:
+          collectionFormat: string
+      pid:
+        collectionFormat: multi
+        description: filter for subset of promotions having given PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of promotions having given PID
+        facets:
+          collectionFormat: string
+      promoted_by:
+        collectionFormat: multi
+        description: filter for subset of promotions having given promoted by
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of promotions having given promoted by
+        facets:
+          collectionFormat: string
+      promoted_for:
+        collectionFormat: multi
+        description: filter for subset of promotions having given promoted for
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of promotions having given promoted for
+        facets:
+          collectionFormat: string
+      q:
+        description: filter for subset of promotions matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of promotions matching supplied keyword/phrase (boolean operators permitted)
+      status:
+        collectionFormat: multi
+        description: filter for subset of promotions with status
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of promotions with status
+        facets:
+          collectionFormat: string
+    (oas-tags):
+      - feeds
+/availabilities:
+  displayName: availabilities
+  get:
+    displayName: listAvailability
+    description: Discover details of on-demand availability for programmes and their versions
+    (oas-summary): Discover details of on-demand availability for programmes and their versions
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      sort:
+        description: |
+          Sorts:
+          * sort chronologically by scheduled start time/date, ascending
+        enum:
+          - scheduled_start
+        required: false
+        type: string
+        displayName: |
+          Sorts:
+          * sort chronologically by scheduled start time/date, ascending
+      sort_direction:
+        description: Sort direction
+        enum:
+          - ascending
+          - descending
+        required: false
+        type: string
+        displayName: Sort direction
+      availability:
+        collectionFormat: multi
+        description: filter for subset of availabilities
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of availabilities
+        facets:
+          collectionFormat: string
+      descendants_of:
+        collectionFormat: multi
+        description: filter for subset of availabilities that have PID as ancestor
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of availabilities that have PID as ancestor
+        facets:
+          collectionFormat: string
+      media_set:
+        collectionFormat: multi
+        description: filter for subset of availabilities with media set
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of availabilities with media set
+        facets:
+          collectionFormat: string
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      territory:
+        collectionFormat: multi
+        description: filter for availabilities in given territory
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for availabilities in given territory
+        facets:
+          collectionFormat: string
+      debug:
+        description: Turn on debug information (undocumented)
+        required: false
+        type: boolean
+        displayName: Turn on debug information (undocumented)
+    (oas-tags):
+      - feeds
+/groups:
+  displayName: groups
+  get:
+    displayName: listGroups
+    description: 'Long-lived curated collections of programmes and more, including Collections, Seasons, Franchises and Galleries'
+    (oas-summary): 'Find metadata for curated groups: seasons, collections, galleries or franchises'
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      sort:
+        description: |
+          Sorts:
+          * sort alphabetically by PID
+        enum:
+          - pid
+        required: false
+        type: string
+        displayName: |
+          Sorts:
+          * sort alphabetically by PID
+      sort_direction:
+        description: Sort direction
+        enum:
+          - descending
+        required: false
+        type: string
+        displayName: Sort direction
+      mixin:
+        collectionFormat: multi
+        description: |
+          Mixins:
+          * mixin to return the alternate images for a group
+          * mixin to return links to programme entities that group belongs to
+          * mixin to add image information for a group
+          * mixin to return related links for the group
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: |
+          Mixins:
+          * mixin to return the alternate images for a group
+          * mixin to return links to programme entities that group belongs to
+          * mixin to add image information for a group
+          * mixin to return related links for the group
+        facets:
+          collectionFormat: string
+      for_descendants_of:
+        description: filter for groups related to given programme or its descendants
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for groups related to given programme or its descendants
+      for_programme:
+        description: filter for subset of groups directly related to a given programme
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for subset of groups directly related to a given programme
+      group:
+        description: filter for subset of groups which belong to the given group pid
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for subset of groups which belong to the given group pid
+      group_type:
+        collectionFormat: multi
+        description: filter for subset of groups that have the given group type
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of groups that have the given group type
+        facets:
+          collectionFormat: string
+      member:
+        description: filter for subset of groups which contain an entity with the given pid as a member
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for subset of groups which contain an entity with the given pid as a member
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for groups by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for groups by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for groups by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for groups by partner PID
+        facets:
+          collectionFormat: string
+      pid:
+        collectionFormat: multi
+        description: 'filter for subset of seasons, collections, galleries or franchises having given PID'
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: 'filter for subset of seasons, collections, galleries or franchises having given PID'
+        facets:
+          collectionFormat: string
+      q:
+        description: filter for subset of groups matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of groups matching supplied keyword/phrase (boolean operators permitted)
+    (oas-tags):
+      - feeds
+/schedules:
+  displayName: schedules
+  get:
+    displayName: listSchedules
+    description: 'Dates, Times, Schedules: when and where are programmes being shown?'
+    (oas-summary): Build schedules and find metadata for TV and radio broadcasts and webcasts
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      sort:
+        description: |
+          Sorts:
+          * sort chronologically by scheduled start time/date, ascending
+        enum:
+          - start_date
+        required: false
+        type: string
+        displayName: |
+          Sorts:
+          * sort chronologically by scheduled start time/date, ascending
+      sort_direction:
+        description: Sort direction
+        enum:
+          - ascending
+          - descending
+        required: false
+        type: string
+        displayName: Sort direction
+      mixin:
+        collectionFormat: multi
+        description: |
+          Mixins:
+          * return ancestor programme titles
+          * mixin to add image information for broadcasts and webcasts
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: |
+          Mixins:
+          * return ancestor programme titles
+          * mixin to add image information for broadcasts and webcasts
+        facets:
+          collectionFormat: string
+      authority:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts that have given authority
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts that have given authority
+        facets:
+          collectionFormat: string
+      descendants_of:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts that are descendants of the given programme PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts that are descendants of the given programme PID
+        facets:
+          collectionFormat: string
+      end_from:
+        description: filter for subset of broadcasts and webcasts that end on or later than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts and webcasts that end on or later than the specified datetime
+      end_to:
+        description: filter for subset of broadcasts and webcasts that end on or earlier than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts and webcasts that end on or earlier than the specified datetime
+      format:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts that are classified in the given format ID
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts that are classified in the given format ID
+        facets:
+          collectionFormat: string
+      genre:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts that are classified in the given genre ID
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts that are classified in the given genre ID
+        facets:
+          collectionFormat: string
+      group:
+        description: filter for subset of broadcasts and webcasts that have programmes in the given group
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for subset of broadcasts and webcasts that have programmes in the given group
+      id:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts that have given identifier
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts that have given identifier
+        facets:
+          collectionFormat: string
+      id_type:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts that have given id type
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts that have given id type
+        facets:
+          collectionFormat: string
+      item:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts with the given item performed on it
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts with the given item performed on it
+        facets:
+          collectionFormat: string
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for broadcasts and webcasts by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for broadcasts and webcasts by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for broadcasts and webcasts by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for broadcasts and webcasts by partner PID
+        facets:
+          collectionFormat: string
+      people:
+        description: filter for subset of broadcasts and webcasts that have given contributor
+        required: false
+        type: string
+        displayName: filter for subset of broadcasts and webcasts that have given contributor
+      pid:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts having given PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts having given PID
+        facets:
+          collectionFormat: string
+      q:
+        description: filter for subset of broadcasts and webcasts matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of broadcasts and webcasts matching supplied keyword/phrase (boolean operators permitted)
+      repeat:
+        description: filter to show either only repeats or non-repeats
+        required: false
+        type: boolean
+        displayName: filter to show either only repeats or non-repeats
+      service_master_brand:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts with given service master brand
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts with given service master brand
+        facets:
+          collectionFormat: string
+      sid:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts that are on the specified linear service
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts that are on the specified linear service
+        facets:
+          collectionFormat: string
+      start_from:
+        description: filter for subset of broadcasts and webcasts that start on or later than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts and webcasts that start on or later than the specified datetime
+      start_to:
+        description: filter for subset of broadcasts and webcasts that start on or earlier than the specified datetime
+        format: rfc3339
+        required: false
+        type: datetime
+        displayName: filter for subset of broadcasts and webcasts that start on or earlier than the specified datetime
+      version:
+        collectionFormat: multi
+        description: filter for subset of broadcasts and webcasts with given PID as their parent version
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of broadcasts and webcasts with given PID as their parent version
+        facets:
+          collectionFormat: string
+    (oas-tags):
+      - feeds
+/programmes:
+  displayName: programmes
+  get:
+    displayName: listProgrammes
+    description: 'Fetch metadata about Programmes (brands, series, episodes, clips). By applying different filter restrictions this feed can be used in many ways, for example to retrieve all series belonging to a brand, all the episodes and/or clips for a specific series, or any TLEO objects for a masterbrand. Other filters permit restricting to specific formats and/or genres, and you can request specific versions (for example Signed or Audio-Described). Parameters may be combined in any way suitable for your application.'
+    (oas-summary): 'Start here for programmes metadata: Brands, Series, Episodes and Clips'
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      sort:
+        description: |
+          Sorts:
+          * sort numerically by position in group, ascending
+          * sort alphabetically by PID, descending
+          * sort numerically by position, ascending
+          * sort by promotion rank, ascending
+          * sort chronologically by release date, descending
+          * sort by weighting of search term (use with q parameter)
+          * sort chronologically by scheduled start time/date, ascending
+          * sort alphabetically by title, ascending
+          * sort by title librarian style (ignoring leading 'The', 'A', etc), ascending
+          * sort by root pid and then preorder tree sort. Requires entities to have release date.
+          * sort numerically by number of views (most popular first)
+        enum:
+          - group_position
+          - pid
+          - position
+          - promotion
+          - release_date
+          - relevance
+          - scheduled_start
+          - strict_title
+          - title
+          - tree
+          - views
+        required: false
+        type: string
+        displayName: |
+          Sorts:
+          * sort numerically by position in group, ascending
+          * sort alphabetically by PID, descending
+          * sort numerically by position, ascending
+          * sort by promotion rank, ascending
+          * sort chronologically by release date, descending
+          * sort by weighting of search term (use with q parameter)
+          * sort chronologically by scheduled start time/date, ascending
+          * sort alphabetically by title, ascending
+          * sort by title librarian style (ignoring leading 'The', 'A', etc), ascending
+          * sort by root pid and then preorder tree sort. Requires entities to have release date.
+          * sort numerically by number of views (most popular first)
+      sort_direction:
+        description: Sort direction
+        enum:
+          - ascending
+          - descending
+        required: false
+        type: string
+        displayName: Sort direction
+      mixin:
+        collectionFormat: multi
+        description: |
+          Mixins:
+          * mixin to return the alternate images for a programme
+          * mixin to return ancestor programme titles
+          * mixin to return programme availability information
+          * mixin to return information about programmes that are currently available as simulcasts
+          * mixin to return information about programmes that are currently available on demand
+          * mixin to return information about programmes that are currently available as webcasts
+          * mixin to return information about contributors to a programme
+          * mixin to return original version duration in programme concept entities
+          * mixin to return list of genre groupings
+          * mixin to add image information for a programme
+          * mixin to add embeddable information for a programme
+          * mixin to return the programmes which appear before and after a programme (as determined by the sort applied in the request)
+          * mixin to return information about related links to a programme
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: |
+          Mixins:
+          * mixin to return the alternate images for a programme
+          * mixin to return ancestor programme titles
+          * mixin to return programme availability information
+          * mixin to return information about programmes that are currently available as simulcasts
+          * mixin to return information about programmes that are currently available on demand
+          * mixin to return information about programmes that are currently available as webcasts
+          * mixin to return information about contributors to a programme
+          * mixin to return original version duration in programme concept entities
+          * mixin to return list of genre groupings
+          * mixin to add image information for a programme
+          * mixin to add embeddable information for a programme
+          * mixin to return the programmes which appear before and after a programme (as determined by the sort applied in the request)
+          * mixin to return information about related links to a programme
+        facets:
+          collectionFormat: string
+      audio_described:
+        collectionFormat: multi
+        description: filter for subset of programmes that are audio-described
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes that are audio-described
+        facets:
+          collectionFormat: string
+      availability:
+        collectionFormat: multi
+        description: filter for subset of programmes that have availability
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes that have availability
+        facets:
+          collectionFormat: string
+      availability_entity_type:
+        collectionFormat: multi
+        description: additional filter when availability=available
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: additional filter when availability=available
+        facets:
+          collectionFormat: string
+      availability_type:
+        collectionFormat: multi
+        description: filter for a subset of programmes that are available for a given type
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for a subset of programmes that are available for a given type
+        facets:
+          collectionFormat: string
+      children_of:
+        collectionFormat: multi
+        description: filter for subset of programmes that have PID as immediate parent
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes that have PID as immediate parent
+        facets:
+          collectionFormat: string
+      descendants_of:
+        collectionFormat: multi
+        description: filter for subset of programmes that have PID as ancestor
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes that have PID as ancestor
+        facets:
+          collectionFormat: string
+      duration:
+        collectionFormat: multi
+        description: filter for subset of programmes that have given duration
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes that have given duration
+        facets:
+          collectionFormat: string
+      entity_type:
+        collectionFormat: multi
+        description: filter for subset of programmes that have given entity type
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes that have given entity type
+        facets:
+          collectionFormat: string
+      format:
+        collectionFormat: multi
+        description: filter for subset of programmes with format
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes with format
+        facets:
+          collectionFormat: string
+      genre:
+        collectionFormat: multi
+        description: filter for subset of programmes with genre
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes with genre
+        facets:
+          collectionFormat: string
+      group:
+        description: filter for subset of programmes which belong to the given group pid
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for subset of programmes which belong to the given group pid
+      initial_letter:
+        description: 'filter for subset of programmes with title beginning with initial letter librarian style (ignoring leading ''The'', ''An'' (Welsh), etc) 0-9 a-z'
+        maxLength: 1
+        minLength: 1
+        required: false
+        type: string
+        displayName: 'filter for subset of programmes with title beginning with initial letter librarian style (ignoring leading ''The'', ''An'' (Welsh), etc) 0-9 a-z'
+      initial_letter_end:
+        description: Programmes with (librarian) titles whose initial letter is equal/before given letter. Use with initial_letter_start for a range
+        maxLength: 1
+        minLength: 1
+        required: false
+        type: string
+        displayName: Programmes with (librarian) titles whose initial letter is equal/before given letter. Use with initial_letter_start for a range
+      initial_letter_start:
+        description: Programmes with (librarian) titles whose initial letter is equal/after given letter. Use with initial_letter_end for range.
+        maxLength: 1
+        minLength: 1
+        required: false
+        type: string
+        displayName: Programmes with (librarian) titles whose initial letter is equal/after given letter. Use with initial_letter_end for range.
+      initial_letter_strict:
+        collectionFormat: multi
+        description: filter for subset of programmes with title beginning with initial letter
+        items:
+          maxLength: 1
+          minLength: 1
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes with title beginning with initial letter
+        facets:
+          collectionFormat: string
+      item:
+        collectionFormat: multi
+        description: filter for subset of programmes with linked to versions which have the given item pids
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes with linked to versions which have the given item pids
+        facets:
+          collectionFormat: string
+      master_brand:
+        collectionFormat: multi
+        description: filter for subset of programmes with master_brand
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes with master_brand
+        facets:
+          collectionFormat: string
+      media_set:
+        description: filter for subset of programmes with media set
+        required: false
+        type: string
+        displayName: filter for subset of programmes with media set
+      media_type:
+        collectionFormat: multi
+        description: filter for subset of programmes with media type
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes with media type
+        facets:
+          collectionFormat: string
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for programmes by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for programmes by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for programmes by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for programmes by partner PID
+        facets:
+          collectionFormat: string
+      payment_type:
+        collectionFormat: multi
+        description: filter for a subset of programmes that are of the given payment_type
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for a subset of programmes that are of the given payment_type
+        facets:
+          collectionFormat: string
+      people:
+        description: filter for subset of programmes with contributions by given people PID
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for subset of programmes with contributions by given people PID
+      pid:
+        collectionFormat: multi
+        description: filter for subset of programmes having given PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes having given PID
+        facets:
+          collectionFormat: string
+      promoted_for:
+        description: filter for subset of programmes which are promoted for given service
+        required: false
+        type: string
+        displayName: filter for subset of programmes which are promoted for given service
+      q:
+        description: filter for subset of programmes matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of programmes matching supplied keyword/phrase (boolean operators permitted)
+      signed:
+        collectionFormat: multi
+        description: filter for subset of programmes that are signed
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes that are signed
+        facets:
+          collectionFormat: string
+      tag_name:
+        description: filter for subset of programmes with tag
+        required: false
+        type: string
+        displayName: filter for subset of programmes with tag
+      tag_scheme:
+        description: filter for subset of programmes with a tag
+        required: false
+        type: string
+        displayName: filter for subset of programmes with a tag
+      tleo:
+        collectionFormat: multi
+        description: filter for subset of programmes that are TLEOs
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes that are TLEOs
+        facets:
+          collectionFormat: string
+      version:
+        collectionFormat: multi
+        description: filter for subset of programmes with given PID as one of their versions
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of programmes with given PID as one of their versions
+        facets:
+          collectionFormat: string
+    (oas-tags):
+      - feeds
+/people:
+  displayName: people
+  get:
+    displayName: listPeople
+    description: 'The People feed allows you to search for the people and groups that contribute to programmes. This is the starting point for cast and crew credits, as well as finding contributors using external IDs (such as Wikipedia URLs)'
+    (oas-summary): 'Find the people behind and in programmes: cast, crew, guests and more'
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      authority:
+        description: filter for subset of people that have an ID issued by the given authority
+        required: false
+        type: string
+        displayName: filter for subset of people that have an ID issued by the given authority
+      has_external_id:
+        collectionFormat: multi
+        description: filter for people who have an external identifier
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for people who have an external identifier
+        facets:
+          collectionFormat: string
+      id:
+        collectionFormat: multi
+        description: filter for subset of people having given ID
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of people having given ID
+        facets:
+          collectionFormat: string
+      id_type:
+        description: filter for subset of people that have given an ID of the given type
+        required: false
+        type: string
+        displayName: filter for subset of people that have given an ID of the given type
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for people by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for people by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for people by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for people by partner PID
+        facets:
+          collectionFormat: string
+      pid:
+        collectionFormat: multi
+        description: filter for subset of people having given PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of people having given PID
+        facets:
+          collectionFormat: string
+      programme:
+        description: filter for subset of people that have contributed to the given programme pid
+        required: false
+        type: string
+        displayName: filter for subset of people that have contributed to the given programme pid
+      q:
+        description: filter for subset of people matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of people matching supplied keyword/phrase (boolean operators permitted)
+    (oas-tags):
+      - feeds
+/items:
+  displayName: items
+  get:
+    displayName: listItems
+    description: 'Look inside programmes to find segments: chapters, tracks and more'
+    (oas-summary): 'Look inside programmes to find segments: chapters, tracks and more'
+    (oas-responses-default):
+      body:
+        application/json:
+          type: ErrorModel
+      description: Unexpected error
+    responses:
+      '200':
+        body:
+          application/json:
+            type: nitro
+        description: Nitro response
+    queryParameters:
+      sort:
+        description: |
+          Sorts:
+          * sort by pid, descending
+        enum:
+          - pid
+        required: false
+        type: string
+        displayName: |
+          Sorts:
+          * sort by pid, descending
+      sort_direction:
+        description: Sort direction
+        enum:
+          - descending
+        required: false
+        type: string
+        displayName: Sort direction
+      mixin:
+        collectionFormat: multi
+        description: |
+          Mixins:
+          * mixin to return information about contributors to items
+          * mixin to add image information for an item
+          * mixin to return programme segment events, works in conjunction with programme or segment_event filters
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: |
+          Mixins:
+          * mixin to return information about contributors to items
+          * mixin to add image information for an item
+          * mixin to return programme segment events, works in conjunction with programme or segment_event filters
+        facets:
+          collectionFormat: string
+      authority:
+        description: filter for subset of items that have an ID issued by the given authority
+        required: false
+        type: string
+        displayName: filter for subset of items that have an ID issued by the given authority
+      id:
+        collectionFormat: multi
+        description: filter for subset of items having given ID
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of items having given ID
+        facets:
+          collectionFormat: string
+      id_type:
+        description: filter for subset of items that have given an ID of the given type
+        required: false
+        type: string
+        displayName: filter for subset of items that have given an ID of the given type
+      item_type:
+        collectionFormat: multi
+        description: filter for specific type(s) of items
+        items:
+          type: string
+        required: false
+        type: array
+        displayName: filter for specific type(s) of items
+        facets:
+          collectionFormat: string
+      page:
+        default: 1
+        description: which page of results to return
+        minimum: 1
+        required: false
+        type: integer
+        displayName: which page of results to return
+      page_size:
+        default: 10
+        description: number of results in each page
+        maximum: 300
+        required: false
+        type: integer
+        displayName: number of results in each page
+      partner_id:
+        collectionFormat: multi
+        description: filter for items by partner ID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for items by partner ID
+        facets:
+          collectionFormat: string
+      partner_pid:
+        collectionFormat: multi
+        description: filter for items by partner PID
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for items by partner PID
+        facets:
+          collectionFormat: string
+      people:
+        description: filter for subset of items that have specified person involved
+        required: false
+        type: string
+        displayName: filter for subset of items that have specified person involved
+      pid:
+        collectionFormat: multi
+        description: filter for subset of items matching one of the given PIDs
+        items:
+          minLength: 8
+          pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+          type: string
+        required: false
+        type: array
+        displayName: filter for subset of items matching one of the given PIDs
+        facets:
+          collectionFormat: string
+      programme:
+        description: filter for subset of items that are part of the given programme
+        minLength: 8
+        pattern: '^([0-9,a-d,f-h,j-n,p-t,v-z]){8,}$'
+        required: false
+        type: string
+        displayName: filter for subset of items that are part of the given programme
+      q:
+        description: filter for subset of items matching supplied keyword/phrase (boolean operators permitted)
+        required: false
+        type: string
+        displayName: filter for subset of items matching supplied keyword/phrase (boolean operators permitted)
+      segment_event:
+        description: filter for item with the given segment_event
+        required: false
+        type: string
+        displayName: filter for item with the given segment_event
+    (oas-tags):
+      - feeds
+types:
+  ErrorModel:
+    properties:
+      fault:
+        properties:
+          detail:
+            properties:
+              errorcode:
+                type: string
+                required: false
+            type: object
+            required: false
+          faultString:
+            type: string
+            required: false
+        type: object
+        required: false
+  accurate_programme_time:
+    type: dateRange
+  accurate_time:
+    type: broadcastTime
+  actual_start:
+    format: rfc3339
+    type: datetime
+  advertising_allowed:
+    pattern: '[a-z0-9_]+'
+    type: string
+  affected_by:
+    additionalProperties: false
+    properties:
+      filter:
+        items:
+          additionalProperties: false
+          properties:
+            description:
+              type: string
+            filter:
+              items:
+                additionalProperties: false
+                properties:
+                  description:
+                    type: string
+                  name:
+                    type: string
+                type: object
+              type: array
+              required: false
+            name:
+              type: string
+          type: object
+        type: array
+        required: false
+  alternate_images_mixin:
+    additionalProperties: false
+    properties:
+      alternate_images:
+        additionalProperties: false
+        properties:
+          alternate_image:
+            items:
+              additionalProperties: false
+              properties:
+                alternate_images:
+                  additionalProperties: false
+                  properties:
+                    alternate_image:
+                      items:
+                        additionalProperties: false
+                        properties:
+                          href:
+                            type: string
+                            required: false
+                          template_url:
+                            type: string
+                          type:
+                            type: string
+                            required: false
+                        type: object
+                      type: array
+                      required: false
+                  type: object
+                href:
+                  type: string
+                  required: false
+                template_url:
+                  type: string
+                type:
+                  type: string
+                  required: false
+              type: object
+            type: array
+            required: false
+        type: object
+  ancestor_titles:
+    additionalProperties: false
+    properties:
+      brand:
+        additionalProperties: false
+        properties:
+          pid:
+            type: pid
+          title:
+            type: title
+            required: false
+        type: object
+        required: false
+      episode:
+        additionalProperties: false
+        properties:
+          brand:
+            additionalProperties: false
+            properties:
+              pid:
+                type: pid
+              title:
+                type: title
+                required: false
+            type: object
+            required: false
+          containers_title:
+            type: containers_title
+            required: false
+          episode:
+            additionalProperties: false
+            properties:
+              containers_title:
+                type: containers_title
+                required: false
+              pid:
+                type: pid
+              presentation_title:
+                type: presentation_title
+                required: false
+              title:
+                type: title
+                required: false
+            type: object
+            required: false
+          pid:
+            type: pid
+          presentation_title:
+            type: presentation_title
+            required: false
+          series:
+            items:
+              additionalProperties: false
+              properties:
+                pid:
+                  type: pid
+                title:
+                  type: title
+                  required: false
+              type: object
+            maxItems: 5
+            type: array
+            required: false
+          title:
+            type: title
+            required: false
+        type: object
+        required: false
+      series:
+        items:
+          additionalProperties: false
+          properties:
+            pid:
+              type: pid
+            title:
+              type: title
+              required: false
+          type: object
+        maxItems: 5
+        type: array
+        required: false
+  ancestors:
+    type: reference
+  ancestors_titles:
+    additionalProperties: false
+    properties:
+      brand:
+        additionalProperties: false
+        properties:
+          pid:
+            type: pid
+          title:
+            type: title
+            required: false
+        type: object
+        required: false
+      episode:
+        additionalProperties: false
+        properties:
+          brand:
+            additionalProperties: false
+            properties:
+              pid:
+                type: pid
+              title:
+                type: title
+                required: false
+            type: object
+            required: false
+          containers_title:
+            type: containers_title
+            required: false
+          episode:
+            additionalProperties: false
+            properties:
+              containers_title:
+                type: containers_title
+                required: false
+              pid:
+                type: pid
+              presentation_title:
+                type: presentation_title
+                required: false
+              title:
+                type: title
+                required: false
+            type: object
+            required: false
+          pid:
+            type: pid
+          presentation_title:
+            type: presentation_title
+            required: false
+          series:
+            items:
+              additionalProperties: false
+              properties:
+                pid:
+                  type: pid
+                title:
+                  type: title
+                  required: false
+              type: object
+            maxItems: 5
+            type: array
+            required: false
+          title:
+            type: title
+            required: false
+        type: object
+        required: false
+      series:
+        items:
+          additionalProperties: false
+          properties:
+            pid:
+              type: pid
+            title:
+              type: title
+              required: false
+          type: object
+        maxItems: 5
+        type: array
+        required: false
+  availability:
+    additionalProperties: false
+    properties:
+      accurate_programme_time:
+        type: accurate_programme_time
+        required: false
+      actual_start:
+        type: actual_start
+        required: false
+      availability-debug:
+        type: availability-debug
+        required: false
+      availability_of:
+        items:
+          type: availability_of
+        type: array
+        required: false
+      availability_type:
+        type: availability_type
+      media_availability_time:
+        type: media_availability_time
+        required: false
+      media_set:
+        items:
+          type: media_set
+        type: array
+        required: false
+      revocation_status:
+        type: revocation_status
+        required: false
+      scheduled_time:
+        type: scheduled_time
+        required: false
+      status:
+        type: status
+  availability-debug:
+    additionalProperties: false
+    properties:
+      availability_of:
+        type: pidReference
+      media_profile_groups:
+        type: media_profile_groups
+        required: false
+      service:
+        type: serviceReference
+        required: false
+      territory:
+        type: string
+        required: false
+  availability_mixin:
+    additionalProperties: false
+    properties:
+      availability:
+        items:
+          additionalProperties: false
+          properties:
+            status:
+              type: status
+            version_types:
+              additionalProperties: false
+              properties:
+                version_type:
+                  items:
+                    additionalProperties: false
+                    properties:
+                      end:
+                        format: rfc3339
+                        type: datetime
+                        required: false
+                      id:
+                        type: string
+                        required: false
+                      start:
+                        format: rfc3339
+                        type: datetime
+                        required: false
+                      version_type:
+                        items:
+                          additionalProperties: false
+                          properties:
+                            availability:
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  status:
+                                    type: status
+                                  version_types:
+                                    additionalProperties: false
+                                    properties:
+                                      version_type:
+                                        items:
+                                          additionalProperties: false
+                                          properties:
+                                            end:
+                                              format: rfc3339
+                                              type: datetime
+                                              required: false
+                                            id:
+                                              type: string
+                                              required: false
+                                            start:
+                                              format: rfc3339
+                                              type: datetime
+                                              required: false
+                                            version_type:
+                                              items:
+                                                additionalProperties: false
+                                                properties:
+                                                  end:
+                                                    format: rfc3339
+                                                    type: datetime
+                                                    required: false
+                                                  id:
+                                                    type: string
+                                                    required: false
+                                                  start:
+                                                    format: rfc3339
+                                                    type: datetime
+                                                    required: false
+                                                type: object
+                                              minItems: 1
+                                              type: array
+                                          type: object
+                                        minItems: 1
+                                        type: array
+                                    type: object
+                                type: object
+                              type: array
+                              required: false
+                            end:
+                              format: rfc3339
+                              type: datetime
+                              required: false
+                            id:
+                              type: string
+                              required: false
+                            start:
+                              format: rfc3339
+                              type: datetime
+                              required: false
+                          type: object
+                        minItems: 1
+                        type: array
+                    type: object
+                  minItems: 1
+                  type: array
+              type: object
+          type: object
+        type: array
+        required: false
+  availability_of:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+      pid:
+        type: pid
+      result_type:
+        type: string
+      type:
+        type: string
+        required: false
+  availability_type:
+    enum:
+      - ondemand
+      - simulcast
+      - webcast
+  available_media_sets:
+    additionalProperties: false
+    properties:
+      media_sets:
+        additionalProperties: false
+        properties:
+          media_set:
+            items:
+              additionalProperties: false
+              properties:
+                '#text':
+                  type: string
+                  required: false
+                media_sets:
+                  additionalProperties: false
+                  properties:
+                    media_set:
+                      items:
+                        additionalProperties: false
+                        properties:
+                          '#text':
+                            type: string
+                            required: false
+                        type: object
+                      minItems: 1
+                      type: array
+                  type: object
+                  required: false
+              type: object
+            minItems: 1
+            type: array
+        type: object
+        required: false
+  available_mixins:
+    additionalProperties: false
+    properties:
+      availabilities:
+        additionalProperties: false
+        properties:
+          availabilities:
+            additionalProperties: false
+            properties:
+              availability:
+                items:
+                  additionalProperties: false
+                  properties:
+                    accurate_end:
+                      format: rfc3339
+                      type: datetime
+                      required: false
+                    accurate_start:
+                      format: rfc3339
+                      type: datetime
+                      required: false
+                    available_versions_media_sets:
+                      type: available_versions_media_sets
+                    media_availability_end:
+                      format: rfc3339
+                      type: datetime
+                      required: false
+                    media_availability_start:
+                      format: rfc3339
+                      type: datetime
+                      required: false
+                    payment_type:
+                      type: string
+                      required: false
+                    scheduled_end:
+                      format: rfc3339
+                      type: datetime
+                      required: false
+                    scheduled_start:
+                      format: rfc3339
+                      type: datetime
+                      required: false
+                    status:
+                      type: string
+                      required: false
+                    type:
+                      type: string
+                      required: false
+                  type: object
+                minItems: 1
+                type: array
+              type:
+                type: string
+                required: false
+            type: object
+          availability:
+            items:
+              additionalProperties: false
+              properties:
+                accurate_end:
+                  format: rfc3339
+                  type: datetime
+                  required: false
+                accurate_start:
+                  format: rfc3339
+                  type: datetime
+                  required: false
+                available_versions_media_sets:
+                  type: available_versions_media_sets
+                media_availability_end:
+                  format: rfc3339
+                  type: datetime
+                  required: false
+                media_availability_start:
+                  format: rfc3339
+                  type: datetime
+                  required: false
+                payment_type:
+                  type: string
+                  required: false
+                scheduled_end:
+                  format: rfc3339
+                  type: datetime
+                  required: false
+                scheduled_start:
+                  format: rfc3339
+                  type: datetime
+                  required: false
+                status:
+                  type: string
+                  required: false
+                type:
+                  type: string
+                  required: false
+              type: object
+            minItems: 1
+            type: array
+          type:
+            type: string
+            required: false
+        type: object
+  available_simulcasts:
+    additionalProperties: false
+    properties:
+      available:
+        type: integer
+      available_versions_element:
+        type: available_versions_element
+  available_versions:
+    additionalProperties: false
+    properties:
+      available:
+        type: integer
+      available_versions_element:
+        type: available_versions_element
+  available_versions_element:
+    additionalProperties: false
+    properties:
+      version:
+        items:
+          additionalProperties: false
+          properties:
+            available_mixins:
+              type: available_mixins
+              required: false
+            competition_warning:
+              type: boolean
+              required: false
+            duration:
+              pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+              type: string
+              required: false
+            guidance_warnings:
+              type: guidance_warnings
+              required: false
+            pid:
+              type: pid
+              required: false
+            types:
+              items:
+                additionalProperties: false
+                properties:
+                  type:
+                    items:
+                      type: string
+                    type: array
+                    required: false
+                type: object
+              minItems: 1
+              type: array
+            version:
+              items:
+                additionalProperties: false
+                properties:
+                  available_mixins:
+                    type: available_mixins
+                    required: false
+                  competition_warning:
+                    type: boolean
+                    required: false
+                  duration:
+                    pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+                    type: string
+                    required: false
+                  guidance_warnings:
+                    type: guidance_warnings
+                    required: false
+                  pid:
+                    type: pid
+                    required: false
+                  types:
+                    items:
+                      additionalProperties: false
+                      properties:
+                        type:
+                          items:
+                            type: string
+                          type: array
+                          required: false
+                      type: object
+                    minItems: 1
+                    type: array
+                type: object
+              type: array
+              required: false
+          type: object
+        type: array
+        required: false
+  available_versions_media_sets:
+    additionalProperties: false
+    properties:
+      media_sets:
+        additionalProperties: false
+        properties:
+          media_set:
+            items:
+              additionalProperties: false
+              properties:
+                actual_start:
+                  format: rfc3339
+                  type: datetime
+                  required: false
+                media_sets:
+                  additionalProperties: false
+                  properties:
+                    media_set:
+                      items:
+                        additionalProperties: false
+                        properties:
+                          actual_start:
+                            format: rfc3339
+                            type: datetime
+                            required: false
+                          name:
+                            type: string
+                        type: object
+                      minItems: 1
+                      type: array
+                  type: object
+                  required: false
+                name:
+                  type: string
+              type: object
+            minItems: 1
+            type: array
+        type: object
+        required: false
+  available_webcasts:
+    additionalProperties: false
+    properties:
+      available:
+        type: integer
+      available_versions_element:
+        type: available_versions_element
+  brand:
+    additionalProperties: false
+    properties:
+      alternate_images_mixin:
+        type: alternate_images_mixin
+        required: false
+      availability_mixin:
+        type: availability_mixin
+        required: false
+      contributions_mixin:
+        type: contributions_mixin
+        required: false
+      embargoed:
+        type: embargoed
+      expected_child_count:
+        type: expected_child_count
+        required: false
+      franchises:
+        type: franchises
+        required: false
+      genre_groupings:
+        type: genre_groupings
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      image_link:
+        type: image_link
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      is_embeddable:
+        type: is_embeddable
+        required: false
+      items_for:
+        type: items_for
+        required: false
+      master_brand_link:
+        type: master_brand_link
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      previous_next_mixin:
+        type: previous_next_mixin
+        required: false
+      programme_formats:
+        type: programme_formats
+        required: false
+      related_links:
+        type: related_links
+        required: false
+      release_date_group:
+        type: release_date_group
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: title
+        required: false
+      updated_time:
+        type: updated_time
+      uri:
+        type: uri
+        required: false
+  broadcast:
+    additionalProperties: false
+    properties:
+      ancestor_titles:
+        type: ancestor_titles
+        required: false
+      ancestors_titles:
+        type: ancestors_titles
+        required: false
+      broadcast_of:
+        items:
+          type: broadcast_of
+        type: array
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      ids:
+        type: ids
+        required: false
+      image_link:
+        type: image_link
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      is_audio_described:
+        type: is_audio_described
+        required: false
+      is_blanked:
+        type: is_blanked
+        required: false
+      is_critical:
+        type: is_critical
+        required: false
+      is_repeat:
+        type: is_repeat
+        required: false
+      is_simulcast:
+        type: is_simulcast
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      published_time:
+        type: published_time
+        required: false
+      service:
+        type: serviceReference
+        required: false
+      tx_time:
+        type: tx_time
+        required: false
+      updated_time:
+        type: updated_time
+        required: false
+  broadcastTime:
+    properties:
+      duration:
+        pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+        type: string
+        required: false
+    type: dateRange
+  broadcast_of:
+    type: pidReference
+  broadcaster:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+      result_type:
+        type: string
+      sid:
+        type: sid
+  caption:
+    type: string
+  catalogue_number:
+    maxLength: 32
+    minLength: 1
+    type: string
+  chapter:
+    type: item
+  clip:
+    additionalProperties: false
+    properties:
+      advertising_allowed:
+        type: advertising_allowed
+      alternate_images_mixin:
+        type: alternate_images_mixin
+        required: false
+      ancestor_titles:
+        type: ancestor_titles
+        required: false
+      ancestors:
+        type: ancestors
+        required: false
+      ancestors_titles:
+        type: ancestors_titles
+        required: false
+      availability_mixin:
+        type: availability_mixin
+        required: false
+      caption:
+        type: caption
+        required: false
+      clip_of:
+        type: clip_of
+        required: false
+      contributions_mixin:
+        type: contributions_mixin
+        required: false
+      embargoed:
+        type: embargoed
+      genre_groupings:
+        type: genre_groupings
+        required: false
+      genre_groups:
+        type: genre_groups
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      image_link:
+        type: image_link
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      is_embeddable:
+        type: is_embeddable
+        required: false
+      items_for:
+        type: items_for
+        required: false
+      master_brand_link:
+        type: master_brand_link
+        required: false
+      media_type:
+        type: media_type
+        required: false
+      most_popular:
+        type: most_popular
+        required: false
+      original_version_duration:
+        type: original_version_duration
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      previous_next_mixin:
+        type: previous_next_mixin
+        required: false
+      programme_formats:
+        type: programme_formats
+        required: false
+      related_links:
+        type: related_links
+        required: false
+      release_date_group:
+        type: release_date_group
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: title
+        required: false
+      updated_time:
+        type: updated_time
+      uri:
+        type: uri
+        required: false
+      versions_mixin:
+        type: versions_mixin
+        required: false
+  clip_of:
+    type: pidReference
+  code:
+    type: string
+  collection:
+    type: group-body
+  competition_warning:
+    type: boolean
+  containers_title:
+    type: string
+  context:
+    additionalProperties: false
+    properties:
+      cascades_to_descendants:
+        type: boolean
+        required: false
+      href:
+        type: string
+        required: false
+      pid:
+        type: pid
+      result_type:
+        type: string
+  contributions_mixin:
+    additionalProperties: false
+    properties:
+      contributions:
+        additionalProperties: false
+        properties:
+          contributions:
+            additionalProperties: false
+            properties:
+              contributions_mixin_contribution:
+                items:
+                  type: contributions_mixin_contribution
+                type: array
+                required: false
+              href:
+                type: string
+                required: false
+            type: object
+          contributions_mixin_contribution:
+            items:
+              type: contributions_mixin_contribution
+            type: array
+            required: false
+          href:
+            type: string
+            required: false
+        type: object
+  contributions_mixin_contribution:
+    additionalProperties: false
+    properties:
+      contribution:
+        additionalProperties: false
+        properties:
+          character_name:
+            type: string
+            required: false
+          contribution:
+            additionalProperties: false
+            properties:
+              character_name:
+                type: string
+                required: false
+              contributions_mixin_contributor:
+                type: contributions_mixin_contributor
+                required: false
+              credit_role:
+                additionalProperties: false
+                properties:
+                  '#text':
+                    type: string
+                    required: false
+                  id:
+                    type: string
+                    required: false
+                type: object
+                required: false
+            type: object
+          contributions_mixin_contributor:
+            type: contributions_mixin_contributor
+            required: false
+          credit_role:
+            additionalProperties: false
+            properties:
+              '#text':
+                type: string
+                required: false
+              id:
+                type: string
+                required: false
+            type: object
+            required: false
+        type: object
+  contributions_mixin_contributor:
+    additionalProperties: false
+    properties:
+      contributor:
+        additionalProperties: false
+        properties:
+          contributions_mixin_contributor_name:
+            type: contributions_mixin_contributor_name
+            required: false
+          contributor:
+            additionalProperties: false
+            properties:
+              contributions_mixin_contributor_name:
+                type: contributions_mixin_contributor_name
+                required: false
+              href:
+                type: string
+                required: false
+              type:
+                type: type
+                required: false
+            type: object
+          href:
+            type: string
+            required: false
+          type:
+            type: type
+            required: false
+        type: object
+  contributions_mixin_contributor_name:
+    additionalProperties: false
+    properties:
+      name:
+        additionalProperties: false
+        properties:
+          family:
+            type: string
+            required: false
+          given:
+            type: string
+            required: false
+          name:
+            additionalProperties: false
+            properties:
+              family:
+                type: string
+                required: false
+              given:
+                type: string
+                required: false
+              presentation:
+                type: string
+                required: false
+              title:
+                type: string
+                required: false
+            type: object
+          presentation:
+            type: string
+            required: false
+          title:
+            type: string
+            required: false
+        type: object
+  contributor:
+    additionalProperties: false
+    properties:
+      contributor_name:
+        type: contributor_name
+        required: false
+      contributor_to:
+        items:
+          type: contributor_to
+        type: array
+        required: false
+      disambiguation:
+        type: disambiguation
+        required: false
+      href:
+        type: string
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      ids:
+        type: ids
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      type:
+        type: type
+        required: false
+  contributor_name:
+    additionalProperties: false
+    properties:
+      name:
+        additionalProperties: false
+        properties:
+          family:
+            type: string
+            required: false
+          given:
+            type: string
+            required: false
+          lang:
+            type: string
+            required: false
+          name:
+            additionalProperties: false
+            properties:
+              family:
+                type: string
+                required: false
+              given:
+                type: string
+                required: false
+              lang:
+                type: string
+                required: false
+              presentation:
+                type: string
+                required: false
+              title:
+                type: string
+                required: false
+            type: object
+          presentation:
+            type: string
+            required: false
+          title:
+            type: string
+            required: false
+        type: object
+  contributor_to:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+      result_type:
+        type: string
+  credits_time:
+    additionalProperties: false
+    properties:
+      squeeze_end:
+        format: rfc3339
+        type: datetime
+        required: false
+      squeeze_start:
+        format: rfc3339
+        type: datetime
+        required: false
+  data:
+    additionalProperties: false
+    properties:
+      datum:
+        type: datum
+        required: false
+  dateRange:
+    additionalProperties: false
+    properties:
+      end:
+        format: rfc3339
+        type: datetime
+        required: false
+      start:
+        format: rfc3339
+        type: datetime
+        required: false
+  date_range:
+    type: dateRange
+  datum:
+    type: string
+  dependency_on:
+    additionalProperties: false
+    properties:
+      filter:
+        type: string
+        required: false
+      value:
+        type: string
+        required: false
+  deprecated:
+    additionalProperties: false
+    properties:
+      deprecated_since:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+      name:
+        type: string
+      replaced_by:
+        type: string
+        required: false
+      replacement_type:
+        type: string
+        required: false
+      type:
+        type: string
+  deprecatedReferenceElement:
+    type:
+      - referenceAttributes
+      - deprecationAttributes
+  deprecationAttributes:
+    additionalProperties: false
+    properties:
+      deprecated:
+        type: boolean
+      deprecated_since:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+      replaced_by:
+        type: string
+  deprecations:
+    additionalProperties: false
+    properties:
+      deprecated:
+        items:
+          type: deprecated
+        type: array
+        required: false
+  description:
+    type: string
+  dimensions:
+    additionalProperties: false
+    properties:
+      height:
+        type: integer
+        required: false
+      width:
+        type: integer
+        required: false
+  disambiguation:
+    type: string
+  embargoed:
+    enum:
+      - 'true'
+      - 'false'
+  end:
+    format: rfc3339
+    type: datetime
+  end_time:
+    format: rfc3339
+    type: datetime
+  episode:
+    additionalProperties: false
+    properties:
+      advertising_allowed:
+        type: advertising_allowed
+      alternate_images_mixin:
+        type: alternate_images_mixin
+        required: false
+      ancestor_titles:
+        type: ancestor_titles
+        required: false
+      ancestors:
+        type: ancestors
+        required: false
+      ancestors_titles:
+        type: ancestors_titles
+        required: false
+      availability_mixin:
+        type: availability_mixin
+        required: false
+      contributions_mixin:
+        type: contributions_mixin
+        required: false
+      embargoed:
+        type: embargoed
+      episode_of:
+        type: episode_of
+        required: false
+      genre_groupings:
+        type: genre_groupings
+        required: false
+      genre_groups:
+        type: genre_groups
+        required: false
+      has_guidance:
+        type: has_guidance
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      image_link:
+        type: image_link
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      is_embeddable:
+        type: is_embeddable
+        required: false
+      is_stacked:
+        type: is_stacked
+        required: false
+      items_for:
+        type: items_for
+        required: false
+      master_brand_link:
+        type: master_brand_link
+        required: false
+      media_type:
+        type: media_type
+        required: false
+      most_popular:
+        type: most_popular
+        required: false
+      original_version_duration:
+        type: original_version_duration
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      presentation_title:
+        type: presentation_title
+        required: false
+      previous_next_mixin:
+        type: previous_next_mixin
+        required: false
+      programme_formats:
+        type: programme_formats
+        required: false
+      related_links:
+        type: related_links
+        required: false
+      release_date_group:
+        type: release_date_group
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: title
+        required: false
+      updated_time:
+        type: updated_time
+      uri:
+        type: uri
+        required: false
+      versions_mixin:
+        type: versions_mixin
+        required: false
+  episode_of:
+    type: pidReference
+  error:
+    additionalProperties: false
+    properties:
+      code:
+        type: code
+      data:
+        type: data
+      error-name:
+        type: error-name
+      expr:
+        type: expr
+      format-string:
+        type: format-string
+      message:
+        type: message
+      retryable:
+        type: retryable
+      xquery-version:
+        type: xquery-version
+  error-name:
+    type: string
+  errors:
+    additionalProperties: false
+    properties:
+      error:
+        type: error
+        required: false
+  expected_child_count:
+    type: integer
+  expr:
+    type: string
+  feed:
+    additionalProperties: false
+    properties:
+      deprecations:
+        type: deprecations
+        required: false
+      filters:
+        type: filters
+        required: false
+      href:
+        type: string
+      mixins:
+        type: mixins
+        required: false
+      name:
+        type: string
+      rel:
+        type: string
+      release_status:
+        type: release_status_type
+        required: false
+      sorts:
+        type: sorts
+        required: false
+      title:
+        type: string
+  feeds:
+    additionalProperties: false
+    properties:
+      deployment_root:
+        type: string
+        required: false
+      deprecations:
+        type: deprecations
+        required: false
+      feed:
+        items:
+          type: feed
+        type: array
+        required: false
+  filter:
+    additionalProperties: false
+    properties:
+      default:
+        type: string
+        required: false
+      depends_on:
+        type: string
+        required: false
+      deprecated:
+        type: boolean
+        required: false
+      deprecated_since:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+        required: false
+      guaranteed_until:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+        required: false
+      max_value:
+        type: integer
+        required: false
+      min_value:
+        type: integer
+        required: false
+      multiple_values:
+        type: boolean
+        required: false
+      name:
+        type: string
+      option:
+        items:
+          type: option
+        type: array
+        required: false
+      prefer:
+        type: string
+        required: false
+      prohibits:
+        items:
+          type: prohibits
+        type: array
+        required: false
+      release_status:
+        type: release_status_type
+        required: false
+      replaced_by:
+        type: string
+        required: false
+      required:
+        type: boolean
+        required: false
+      title:
+        type: string
+      type:
+        type: string
+  filters:
+    additionalProperties: false
+    properties:
+      filter:
+        items:
+          type: filter
+        type: array
+        required: false
+      unstable_filters:
+        type: unstable_filters
+        required: false
+  focus_point:
+    additionalProperties: false
+    properties:
+      x:
+        type: integer
+        required: false
+      'y':
+        type: integer
+        required: false
+  for_programme:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+        required: false
+  for_programmes:
+    additionalProperties: false
+    properties:
+      for_programme:
+        items:
+          type: for_programme
+        type: array
+        required: false
+  format:
+    additionalProperties: false
+    properties:
+      '#text':
+        type: string
+        required: false
+      format_id:
+        type: string
+        required: false
+  format-string:
+    type: string
+  franchise:
+    type: group-body
+  franchises:
+    type: reference
+  gallery:
+    type: group-body
+  genre:
+    additionalProperties: false
+    properties:
+      '#text':
+        type: string
+        required: false
+      id:
+        type: string
+        required: false
+      type:
+        type: string
+        required: false
+  genreGroupingsType:
+    additionalProperties: false
+    properties:
+      genre_group:
+        items:
+          type: genre_group
+        type: array
+        required: false
+  genreGroupsType:
+    properties:
+      genre_group:
+        items:
+          type: genre_group
+        type: array
+        required: false
+    type: deprecatedReferenceElement
+  genre_group:
+    additionalProperties: false
+    properties:
+      genres:
+        additionalProperties: false
+        properties:
+          genre:
+            items:
+              type: genre
+            type: array
+            required: false
+        type: object
+      id:
+        type: string
+        required: false
+      type:
+        type: string
+        required: false
+  genre_groupings:
+    type: genreGroupingsType
+  genre_groups:
+    type: genreGroupsType
+  group-body:
+    additionalProperties: false
+    properties:
+      alternate_images_mixin:
+        type: alternate_images_mixin
+        required: false
+      embargoed:
+        type: embargoed
+      for_programmes:
+        type: for_programmes
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      ids:
+        type: ids
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      master_brand_link:
+        type: master_brand_link
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      related_links:
+        type: related_links
+        required: false
+      scheduled:
+        type: scheduled
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: title
+        required: false
+      updated_time:
+        type: updated_time
+      url_key:
+        type: url_key
+        required: false
+  guidance_warnings:
+    additionalProperties: false
+    properties:
+      warnings:
+        additionalProperties: false
+        properties:
+          warning_items:
+            type: warning_items
+            required: false
+          warning_texts:
+            type: warning_texts
+            required: false
+          warnings:
+            additionalProperties: false
+            properties:
+              warning_items:
+                type: warning_items
+                required: false
+              warning_texts:
+                type: warning_texts
+                required: false
+            type: object
+            required: false
+        type: object
+        required: false
+  has_guidance:
+    type: boolean
+  highlight:
+    type: item
+  id:
+    additionalProperties: false
+    properties:
+      '#text':
+        type: string
+        required: false
+      authority:
+        type: string
+        required: false
+      type:
+        type: string
+        required: false
+  identifier:
+    additionalProperties: false
+    properties:
+      '#text':
+        type: string
+        required: false
+      authority:
+        type: string
+        required: false
+      type:
+        type: string
+        required: false
+  identifiers:
+    additionalProperties: false
+    properties:
+      identifier:
+        items:
+          type: identifier
+        minItems: 1
+        type: array
+  ids:
+    additionalProperties: false
+    properties:
+      id:
+        items:
+          type: id
+        minItems: 1
+        type: array
+  image:
+    additionalProperties: false
+    properties:
+      author:
+        type: string
+        required: false
+      embargoed:
+        type: embargoed
+      identifiers:
+        type: identifiers
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      shoot_date:
+        format: rfc3339
+        type: datetime
+        required: false
+      source_asset:
+        type: source_asset
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      template_url:
+        type: string
+        required: false
+      title:
+        type: title
+        required: false
+      type:
+        type: string
+        required: false
+  image_link:
+    additionalProperties: false
+    properties:
+      image:
+        type: object
+        (oas-x-anyOf):
+          - type: deprecationAttributes
+          - properties:
+              image:
+                additionalProperties: false
+                properties:
+                  pid:
+                    type: pid
+                    required: false
+                  template_url:
+                    type: string
+                type: object
+              pid:
+                type: pid
+                required: false
+              template_url:
+                type: string
+  images_mixin:
+    additionalProperties: false
+    properties:
+      images:
+        additionalProperties: false
+        properties:
+          image:
+            additionalProperties: false
+            properties:
+              href:
+                type: string
+                required: false
+              images:
+                additionalProperties: false
+                properties:
+                  image:
+                    additionalProperties: false
+                    properties:
+                      href:
+                        type: string
+                        required: false
+                      inherited_from:
+                        additionalProperties: false
+                        properties:
+                          href:
+                            type: string
+                            required: false
+                          result_type:
+                            type: string
+                            required: false
+                        type: object
+                        required: false
+                      template_url:
+                        type: string
+                      type:
+                        type: string
+                        required: false
+                    type: object
+                    required: false
+                type: object
+              inherited_from:
+                additionalProperties: false
+                properties:
+                  href:
+                    type: string
+                    required: false
+                  result_type:
+                    type: string
+                    required: false
+                type: object
+                required: false
+              template_url:
+                type: string
+              type:
+                type: string
+                required: false
+            type: object
+            required: false
+        type: object
+  is_audio_described:
+    type: boolean
+  is_blanked:
+    type: boolean
+  is_concrete:
+    type: boolean
+  is_critical:
+    type: boolean
+  is_downloadable:
+    type: boolean
+  is_embeddable:
+    type: boolean
+  is_external:
+    type: boolean
+  is_repeat:
+    type: boolean
+  is_signed:
+    type: boolean
+  is_simulcast:
+    type: boolean
+  is_stacked:
+    type: boolean
+  is_streamable:
+    type: boolean
+  item:
+    additionalProperties: false
+    properties:
+      catalogue_number:
+        type: catalogue_number
+        required: false
+      contributions_mixin:
+        type: contributions_mixin
+        required: false
+      duration:
+        format: float
+        type: number
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      ids:
+        type: ids
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      item_of:
+        type: item_of
+        required: false
+      music_code:
+        type: music_code
+        required: false
+      offsets:
+        type: offsets
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      play_events:
+        type: play_events
+        required: false
+      publisher:
+        type: publisher
+        required: false
+      record_label:
+        type: record_label
+        required: false
+      recording_date:
+        type: recording_date
+        required: false
+      release_title:
+        type: release_title
+        required: false
+      snippet_url:
+        type: snippet_url
+        required: false
+      source_media:
+        type: source_media
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: title
+        required: false
+      track_number:
+        type: track_number
+        required: false
+      track_side:
+        type: track_side
+        required: false
+      type:
+        type: string
+        required: false
+      updated_time:
+        type: updated_time
+        required: false
+  item_of:
+    type: reference
+  items_for:
+    type: reference
+  long:
+    type: string
+  master_brand:
+    additionalProperties: false
+    properties:
+      colour:
+        type: string
+        required: false
+      competition_warning:
+        additionalProperties: false
+        properties:
+          href:
+            type: string
+          pid:
+            type: pid
+        type: object
+        required: false
+      ident:
+        type: string
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      image_link:
+        type: image_link
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      master_brand_date_range:
+        additionalProperties: false
+        properties:
+          end:
+            format: rfc3339
+            type: datetime
+            required: false
+          start:
+            format: rfc3339
+            type: datetime
+            required: false
+        type: object
+        required: false
+      mid:
+        type: mid
+      name:
+        type: name
+        required: false
+      partner:
+        type: partner
+      position:
+        type: position
+        required: false
+      synopses:
+        additionalProperties: false
+        properties:
+          long:
+            type: long
+            required: false
+          medium:
+            type: medium
+            required: false
+          short:
+            type: short
+            required: false
+        type: object
+        required: false
+      title:
+        type: title
+        required: false
+      url_key:
+        type: string
+        required: false
+  master_brand_link:
+    additionalProperties: false
+    properties:
+      master_brand:
+        additionalProperties: false
+        properties:
+          href:
+            type: string
+          master_brand:
+            additionalProperties: false
+            properties:
+              href:
+                type: string
+              mid:
+                type: mid
+              result_type:
+                type: string
+            type: object
+          mid:
+            type: mid
+          result_type:
+            type: string
+        type: object
+  media_availability_time:
+    type: dateRange
+  media_profile_group:
+    additionalProperties: false
+    properties:
+      '#text':
+        type: string
+        required: false
+      context:
+        type: string
+        required: false
+      pid:
+        type: pid
+        required: false
+      platform:
+        type: string
+        required: false
+      territory:
+        type: string
+        required: false
+      transport:
+        type: string
+        required: false
+  media_profile_groups:
+    additionalProperties: false
+    properties:
+      media_profile_group:
+        items:
+          type: media_profile_group
+        type: array
+        required: false
+  media_set:
+    type: string
+  media_type:
+    enum:
+      - Video
+      - Audio
+  medium:
+    type: string
+  message:
+    type: string
+  mid:
+    type: string
+  mixin:
+    additionalProperties: false
+    properties:
+      affected_by:
+        items:
+          type: affected_by
+        type: array
+        required: false
+      dependency_on:
+        items:
+          type: dependency_on
+        type: array
+        required: false
+      depends_on:
+        type: string
+        required: false
+      deprecated:
+        type: boolean
+        required: false
+      deprecated_since:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+        required: false
+      guaranteed_until:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+        required: false
+      href:
+        type: string
+        required: false
+      name:
+        type: string
+      prohibits:
+        items:
+          type: prohibits
+        type: array
+        required: false
+      release_status:
+        type: release_status_type
+        required: false
+      replaced_by:
+        type: string
+        required: false
+      title:
+        type: string
+  mixins:
+    additionalProperties: false
+    properties:
+      mixin:
+        items:
+          type: mixin
+        type: array
+        required: false
+      unstable_mixins:
+        type: unstable_mixins
+        required: false
+  most_popular:
+    additionalProperties: false
+    properties:
+      updated_at:
+        format: rfc3339
+        type: datetime
+        required: false
+  music:
+    type: item
+  music_code:
+    maxLength: 8
+    minLength: 1
+    type: string
+  name:
+    type: string
+  next:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+  nitro:
+    properties:
+      deprecations:
+        type: deprecations
+        required: false
+      filters:
+        type: filters
+        required: false
+      mixins:
+        type: mixins
+        required: false
+      pagination:
+        type: pagination
+        required: false
+      results:
+        type: results
+        required: false
+      sorts:
+        type: sorts
+        required: false
+  offset_in:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+      offset:
+        type: integer
+        required: false
+      position:
+        type: number
+        required: false
+      programme:
+        type: pid
+      version:
+        type: pid
+  offsets:
+    additionalProperties: false
+    properties:
+      offset_in:
+        items:
+          type: offset_in
+        type: array
+        required: false
+  option:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+        required: false
+      release_status:
+        type: release_status_type
+        required: false
+      title:
+        type: string
+      value:
+        type: string
+  original_version_duration:
+    additionalProperties: false
+    properties:
+      version:
+        additionalProperties: false
+        properties:
+          duration:
+            pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+            type: string
+            required: false
+          href:
+            type: string
+          pid:
+            type: pid
+          version:
+            additionalProperties: false
+            properties:
+              duration:
+                pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+                type: string
+                required: false
+              href:
+                type: string
+              pid:
+                type: pid
+            type: object
+            required: false
+        type: object
+        required: false
+  other:
+    type: item
+  pagination:
+    additionalProperties: false
+    properties:
+      next:
+        type: next
+        required: false
+      previous:
+        type: previous
+        required: false
+  partner:
+    type: pid
+  pid:
+    pattern: '([a-z0-9\.\-]+|.*PID.*)'
+    type: string
+  pidReference:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+        required: false
+      pid:
+        type: pid
+      position:
+        type: integer
+        required: false
+      result_type:
+        type: string
+  play_event:
+    additionalProperties: false
+    properties:
+      offset:
+        type: integer
+        required: false
+      pid:
+        type: pid
+      played_in_links:
+        items:
+          type: played_in_links
+        type: array
+        required: false
+      position:
+        type: number
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: string
+        required: false
+  play_events:
+    additionalProperties: false
+    properties:
+      play_event:
+        items:
+          type: play_event
+        type: array
+        required: false
+  played_in_links:
+    additionalProperties: false
+    properties:
+      played_in:
+        additionalProperties: false
+        properties:
+          href:
+            type: string
+            required: false
+          played_in:
+            additionalProperties: false
+            properties:
+              href:
+                type: string
+                required: false
+              result_type:
+                type: string
+                required: false
+            type: object
+            required: false
+          result_type:
+            type: string
+            required: false
+        type: object
+        required: false
+  position:
+    type: integer
+  presentation_title:
+    type: string
+  previous:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+  previous_next_mixin:
+    additionalProperties: false
+    properties:
+      previous_next:
+        additionalProperties: false
+        properties:
+          next:
+            type: reference
+            required: false
+          previous:
+            type: reference
+            required: false
+          previous_next:
+            additionalProperties: false
+            properties:
+              next:
+                type: reference
+                required: false
+              previous:
+                type: reference
+                required: false
+            type: object
+        type: object
+  priority:
+    type: integer
+  programme_formats:
+    additionalProperties: false
+    properties:
+      format:
+        items:
+          type: format
+        minItems: 1
+        type: array
+  prohibits:
+    additionalProperties: false
+    properties:
+      filter:
+        items:
+          additionalProperties: false
+          properties:
+            name:
+              type: string
+          type: object
+        type: array
+        required: false
+      mixin:
+        items:
+          additionalProperties: false
+          properties:
+            filter:
+              items:
+                additionalProperties: false
+                properties:
+                  name:
+                    type: string
+                type: object
+              type: array
+              required: false
+            mixin:
+              items:
+                additionalProperties: false
+                properties:
+                  name:
+                    type: string
+                type: object
+              type: array
+              required: false
+            name:
+              type: string
+          type: object
+        type: array
+        required: false
+  promoted_by:
+    type: string
+  promoted_for:
+    type: string
+  promotion:
+    additionalProperties: false
+    properties:
+      context:
+        type: context
+        required: false
+      end_time:
+        type: end_time
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      priority:
+        type: priority
+        required: false
+      promoted_by:
+        type: promoted_by
+        required: false
+      promoted_for:
+        type: promoted_for
+        required: false
+      promotion_of:
+        type: promotion_of
+        required: false
+      related_links:
+        type: related_links
+        required: false
+      start_time:
+        type: start_time
+        required: false
+      status:
+        type: status
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: title
+        required: false
+      updated_time:
+        type: updated_time
+      uri:
+        type: uri
+        required: false
+      url:
+        type: url
+        required: false
+  promotion_of:
+    type: pidReference
+  publication_rights:
+    additionalProperties: false
+    properties:
+      '#text':
+        type: string
+        required: false
+      context:
+        type: string
+        required: false
+      platform:
+        type: string
+        required: false
+      territory:
+        type: string
+        required: false
+      transport:
+        type: string
+        required: false
+  published_time:
+    type: broadcastTime
+  publisher:
+    maxLength: 255
+    minLength: 1
+    type: string
+  record_label:
+    maxLength: 255
+    minLength: 1
+    type: string
+  recording_date:
+    maxLength: 10
+    minLength: 4
+    type: string
+  reference:
+    properties:
+      href_deprecated:
+        type: boolean
+        required: false
+      result_type_deprecated:
+        type: boolean
+        required: false
+    type: referenceAttributes
+  referenceAttributes:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+      result_type:
+        type: string
+  region:
+    type: string
+  related_link:
+    additionalProperties: false
+    properties:
+      availability:
+        additionalProperties: false
+        properties:
+          end:
+            format: rfc3339
+            type: datetime
+            required: false
+          start:
+            format: rfc3339
+            type: datetime
+            required: false
+        type: object
+        required: false
+      is_external:
+        type: is_external
+        required: false
+      pid:
+        type: pid
+      position:
+        type: position
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: title
+        required: false
+      type:
+        type: type
+        required: false
+      uri:
+        type: uri
+        required: false
+  related_links:
+    additionalProperties: false
+    properties:
+      related_link:
+        items:
+          type: related_link
+        type: array
+        required: false
+  release_date_group:
+    additionalProperties: false
+    properties:
+      release_date:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+        required: false
+      release_year:
+        pattern: '[0-9]{4}'
+        type: string
+        required: false
+      release_year_month:
+        pattern: '[0-9]{4}-[0-9]{2}'
+        type: string
+        required: false
+  release_status_type:
+    enum:
+      - alpha
+      - beta
+      - supported
+      - deprecated
+  release_title:
+    maxLength: 255
+    minLength: 1
+    type: string
+  results:
+    additionalProperties: false
+    properties:
+      availability:
+        type: availability
+        required: false
+      brand:
+        type: brand
+        required: false
+      broadcast:
+        type: broadcast
+        required: false
+      chapter:
+        type: chapter
+        required: false
+      clip:
+        type: clip
+        required: false
+      collection:
+        type: collection
+        required: false
+      contributor:
+        type: contributor
+        required: false
+      episode:
+        type: episode
+        required: false
+      franchise:
+        type: franchise
+        required: false
+      gallery:
+        type: gallery
+        required: false
+      highlight:
+        type: highlight
+        required: false
+      image:
+        type: image
+        required: false
+      master_brand:
+        type: master_brand
+        required: false
+      more_than:
+        type: integer
+        required: false
+      music:
+        type: music
+        required: false
+      other:
+        type: other
+        required: false
+      page:
+        type: integer
+      page_size:
+        type: integer
+      promotion:
+        type: promotion
+        required: false
+      season:
+        type: season
+        required: false
+      series:
+        type: series
+        required: false
+      service:
+        type: service
+        required: false
+      speech:
+        type: speech
+        required: false
+      total:
+        type: integer
+        required: false
+      version_group:
+        type: version_group
+        required: false
+      window:
+        type: window
+        required: false
+  retryable:
+    type: boolean
+  revocation_status:
+    type: string
+  schedule_date:
+    pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+    type: string
+  scheduled:
+    additionalProperties: false
+    properties:
+      end:
+        format: rfc3339
+        type: datetime
+        required: false
+      start:
+        format: rfc3339
+        type: datetime
+        required: false
+  scheduled_publication_rights:
+    additionalProperties: false
+    properties:
+      publication_rights:
+        items:
+          type: publication_rights
+        type: array
+        required: false
+  scheduled_time:
+    additionalProperties: false
+    properties:
+      end:
+        format: rfc3339
+        type: datetime
+        required: false
+      start:
+        format: rfc3339
+        type: datetime
+        required: false
+  season:
+    type: group-body
+  series:
+    additionalProperties: false
+    properties:
+      alternate_images_mixin:
+        type: alternate_images_mixin
+        required: false
+      ancestor_titles:
+        type: ancestor_titles
+        required: false
+      ancestors:
+        type: ancestors
+        required: false
+      ancestors_titles:
+        type: ancestors_titles
+        required: false
+      availability_mixin:
+        type: availability_mixin
+        required: false
+      contributions_mixin:
+        type: contributions_mixin
+        required: false
+      embargoed:
+        type: embargoed
+      expected_child_count:
+        type: expected_child_count
+        required: false
+      genre_groupings:
+        type: genre_groupings
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      image_link:
+        type: image_link
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      is_embeddable:
+        type: is_embeddable
+        required: false
+      items_for:
+        type: items_for
+        required: false
+      master_brand_link:
+        type: master_brand_link
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      previous_next_mixin:
+        type: previous_next_mixin
+        required: false
+      programme_formats:
+        type: programme_formats
+        required: false
+      related_links:
+        type: related_links
+        required: false
+      release_date_group:
+        type: release_date_group
+        required: false
+      series_of:
+        type: series_of
+        required: false
+      synopses:
+        type: synopses
+        required: false
+      title:
+        type: title
+        required: false
+      updated_time:
+        type: updated_time
+      uri:
+        type: uri
+        required: false
+  series_of:
+    type: pidReference
+  service:
+    additionalProperties: false
+    properties:
+      date_range:
+        type: date_range
+        required: false
+      description:
+        type: description
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      ids:
+        type: ids
+        required: false
+      is_concrete:
+        type: is_concrete
+        required: false
+      is_downloadable:
+        type: is_downloadable
+        required: false
+      is_streamable:
+        type: is_streamable
+        required: false
+      master_brand_link:
+        type: master_brand_link
+        required: false
+      media_type:
+        type: media_type
+        required: false
+      name:
+        type: name
+        required: false
+      partner:
+        type: partner
+      region:
+        type: region
+        required: false
+      sid:
+        type: sid
+      type:
+        type: type
+        required: false
+      updated_time:
+        type: updated_time
+        required: false
+  serviceReference:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+      result_type:
+        type: string
+      sid:
+        type: string
+  short:
+    type: string
+  sid:
+    pattern: '[a-z0-9A-Z_\.\-]+'
+    type: string
+  size:
+    additionalProperties: false
+    properties:
+      units:
+        type: string
+        required: false
+  snippet_url:
+    type: string
+  sort:
+    additionalProperties: false
+    properties:
+      deprecated:
+        type: boolean
+        required: false
+      deprecated_since:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+        required: false
+      guaranteed_until:
+        pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$'
+        type: string
+        required: false
+      is_default:
+        type: string
+        required: false
+      name:
+        type: string
+      release_status:
+        type: release_status_type
+        required: false
+      replaced_by:
+        type: string
+        required: false
+      sort_direction:
+        items:
+          type: sort_direction
+        type: array
+        required: false
+      title:
+        type: string
+  sort_direction:
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+      is_default:
+        type: string
+      name:
+        type: string
+      value:
+        type: string
+  sorts:
+    additionalProperties: false
+    properties:
+      sort:
+        items:
+          type: sort
+        type: array
+        required: false
+      unstable_sorts:
+        type: unstable_sorts
+        required: false
+  source_asset:
+    additionalProperties: false
+    properties:
+      dimensions:
+        type: dimensions
+        required: false
+      focus_point:
+        type: focus_point
+        required: false
+      mime_type:
+        type: string
+        required: false
+      size:
+        type: size
+        required: false
+      uri:
+        type: string
+        required: false
+  source_media:
+    maxLength: 64
+    minLength: 1
+    type: string
+  speech:
+    type: item
+  start_time:
+    format: rfc3339
+    type: datetime
+  status:
+    type: string
+  synopses:
+    additionalProperties: false
+    properties:
+      long:
+        type: long
+        required: false
+      medium:
+        type: medium
+        required: false
+      short:
+        type: short
+        required: false
+  title:
+    type: string
+  track_number:
+    maxLength: 8
+    minLength: 1
+    type: string
+  track_side:
+    maxLength: 8
+    minLength: 1
+    type: string
+  tx_time:
+    additionalProperties: false
+    properties:
+      credits_showing:
+        format: rfc3339
+        type: datetime
+        required: false
+      end:
+        format: rfc3339
+        type: datetime
+        required: false
+      start:
+        format: rfc3339
+        type: datetime
+        required: false
+  type:
+    type: string
+  types_with_id:
+    additionalProperties: false
+    properties:
+      types:
+        additionalProperties: false
+        properties:
+          type:
+            items:
+              additionalProperties: false
+              properties:
+                id:
+                  type: string
+                  required: false
+                types:
+                  additionalProperties: false
+                  properties:
+                    type:
+                      items:
+                        additionalProperties: false
+                        properties:
+                          id:
+                            type: string
+                            required: false
+                        type: object
+                      minItems: 1
+                      type: array
+                  type: object
+              type: object
+            minItems: 1
+            type: array
+        type: object
+  unstable_filters:
+    additionalProperties: false
+    properties:
+      filter:
+        items:
+          type: filter
+        type: array
+        required: false
+  unstable_mixins:
+    additionalProperties: false
+    properties:
+      mixin:
+        items:
+          type: mixin
+        type: array
+        required: false
+  unstable_sorts:
+    additionalProperties: false
+    properties:
+      sort:
+        items:
+          type: sort
+        type: array
+        required: false
+  updated_time:
+    format: rfc3339
+    type: datetime
+  uri:
+    type: string
+  url:
+    type: string
+  url_key:
+    type: string
+  version_availability:
+    additionalProperties: false
+    properties:
+      availability:
+        additionalProperties: false
+        properties:
+          availability:
+            additionalProperties: false
+            properties:
+              availability_end:
+                format: rfc3339
+                type: datetime
+                required: false
+              availability_start:
+                format: rfc3339
+                type: datetime
+                required: false
+              available_media_sets:
+                type: available_media_sets
+              status:
+                type: string
+                required: false
+            type: object
+          availability_end:
+            format: rfc3339
+            type: datetime
+            required: false
+          availability_start:
+            format: rfc3339
+            type: datetime
+            required: false
+          available_media_sets:
+            type: available_media_sets
+          status:
+            type: string
+            required: false
+        type: object
+  version_availability_mixin:
+    additionalProperties: false
+    properties:
+      version:
+        items:
+          additionalProperties: false
+          properties:
+            availabilities:
+              items:
+                additionalProperties: false
+                properties:
+                  version_availability:
+                    items:
+                      type: version_availability
+                    minItems: 1
+                    type: array
+                type: object
+              type: array
+              required: false
+            competition_warning:
+              type: string
+              required: false
+            duration:
+              pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+              type: string
+              required: false
+            guidance_warnings:
+              type: guidance_warnings
+              required: false
+            pid:
+              type: pid
+              required: false
+            types:
+              items:
+                additionalProperties: false
+                properties:
+                  type:
+                    items:
+                      type: string
+                    type: array
+                    required: false
+                type: object
+              minItems: 1
+              type: array
+            version:
+              items:
+                additionalProperties: false
+                properties:
+                  availabilities:
+                    items:
+                      additionalProperties: false
+                      properties:
+                        version_availability:
+                          items:
+                            type: version_availability
+                          minItems: 1
+                          type: array
+                      type: object
+                    type: array
+                    required: false
+                  competition_warning:
+                    type: string
+                    required: false
+                  duration:
+                    pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+                    type: string
+                    required: false
+                  guidance_warnings:
+                    type: guidance_warnings
+                    required: false
+                  pid:
+                    type: pid
+                    required: false
+                  types:
+                    items:
+                      additionalProperties: false
+                      properties:
+                        type:
+                          items:
+                            type: string
+                          type: array
+                          required: false
+                      type: object
+                    minItems: 1
+                    type: array
+                type: object
+              type: array
+              required: false
+          type: object
+        type: array
+        required: false
+  version_group:
+    additionalProperties: false
+    properties:
+      version:
+        additionalProperties: false
+        properties:
+          aspect_ratio:
+            type: string
+            required: false
+          competition_warning:
+            type: competition_warning
+            required: false
+          duration:
+            pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+            type: string
+            required: false
+          identifiers:
+            type: identifiers
+            required: false
+          ids:
+            type: ids
+            required: false
+          pid:
+            type: pid
+          types_with_id:
+            type: types_with_id
+            required: false
+          updated_time:
+            type: updated_time
+          version:
+            additionalProperties: false
+            properties:
+              aspect_ratio:
+                type: string
+                required: false
+              competition_warning:
+                type: competition_warning
+                required: false
+              duration:
+                pattern: '^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$'
+                type: string
+                required: false
+              identifiers:
+                type: identifiers
+                required: false
+              ids:
+                type: ids
+                required: false
+              pid:
+                type: pid
+              types_with_id:
+                type: types_with_id
+                required: false
+              updated_time:
+                type: updated_time
+              version_of:
+                type: version_of
+                required: false
+              version_types_with_id:
+                type: version_types_with_id
+                required: false
+              warnings:
+                type: warnings
+                required: false
+            type: object
+          version_of:
+            type: version_of
+            required: false
+          version_types_with_id:
+            type: version_types_with_id
+            required: false
+          warnings:
+            type: warnings
+            required: false
+        type: object
+  version_of:
+    type: pidReference
+  version_types_with_id:
+    additionalProperties: false
+    properties:
+      version_types:
+        additionalProperties: false
+        properties:
+          version_type:
+            items:
+              additionalProperties: false
+              properties:
+                id:
+                  type: string
+                  required: false
+                version_types:
+                  additionalProperties: false
+                  properties:
+                    version_type:
+                      items:
+                        additionalProperties: false
+                        properties:
+                          id:
+                            type: string
+                            required: false
+                        type: object
+                      minItems: 1
+                      type: array
+                  type: object
+              type: object
+            minItems: 1
+            type: array
+        type: object
+  versions:
+    additionalProperties: false
+    properties:
+      available:
+        type: integer
+      version_availability_mixin:
+        type: version_availability_mixin
+  versions_mixin:
+    additionalProperties: false
+    properties:
+      available_simulcasts:
+        type: available_simulcasts
+        required: false
+      available_versions:
+        type: available_versions
+        required: false
+      available_webcasts:
+        type: available_webcasts
+        required: false
+      versions:
+        items:
+          type: versions
+        type: array
+        required: false
+  warning:
+    additionalProperties: false
+    properties:
+      '#text':
+        type: string
+        required: false
+      short_description:
+        type: string
+        required: false
+      warning_code:
+        type: string
+        required: false
+  warning_items:
+    additionalProperties: false
+    properties:
+      warning:
+        items:
+          additionalProperties: false
+          properties:
+            '#text':
+              type: string
+              required: false
+            short_description:
+              type: string
+              required: false
+            warning:
+              items:
+                additionalProperties: false
+                properties:
+                  '#text':
+                    type: string
+                    required: false
+                  short_description:
+                    type: string
+                    required: false
+                  warning_code:
+                    type: string
+                    required: false
+                type: object
+              type: array
+              required: false
+            warning_code:
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+  warning_text:
+    additionalProperties: false
+    properties:
+      '#text':
+        type: string
+        required: false
+      length:
+        type: string
+        required: false
+  warning_texts:
+    additionalProperties: false
+    properties:
+      warning_text:
+        items:
+          additionalProperties: false
+          properties:
+            '#text':
+              type: string
+              required: false
+            length:
+              type: string
+              required: false
+            warning_text:
+              items:
+                additionalProperties: false
+                properties:
+                  '#text':
+                    type: string
+                    required: false
+                  length:
+                    type: string
+                    required: false
+                type: object
+              type: array
+              required: false
+          type: object
+        type: array
+        required: false
+  warnings:
+    additionalProperties: false
+    properties:
+      warning:
+        items:
+          type: warning
+        type: array
+        required: false
+      warning_text:
+        items:
+          type: warning_text
+        type: array
+        required: false
+  window:
+    additionalProperties: false
+    properties:
+      accurate_programme_time:
+        type: accurate_programme_time
+        required: false
+      ancestor_titles:
+        type: ancestor_titles
+        required: false
+      ancestors_titles:
+        type: ancestors_titles
+        required: false
+      identifiers:
+        type: identifiers
+        required: false
+      ids:
+        type: ids
+        required: false
+      image_link:
+        type: image_link
+        required: false
+      images_mixin:
+        type: images_mixin
+        required: false
+      media_availability_time:
+        type: media_availability_time
+        required: false
+      partner:
+        type: partner
+      pid:
+        type: pid
+      scheduled_publication_rights:
+        type: scheduled_publication_rights
+        required: false
+      scheduled_time:
+        type: scheduled_time
+        required: false
+      service:
+        type: serviceReference
+        required: false
+      updated_time:
+        type: updated_time
+        required: false
+      window_of:
+        items:
+          type: window_of
+        type: array
+        required: false
+  window_of:
+    type: pidReference
+  xquery-version:
+    description: The XQuery language version.
+    enum:
+      - 1.0-ml
+      - 0.9-ml
+      - '1.0'
+      - XSLT

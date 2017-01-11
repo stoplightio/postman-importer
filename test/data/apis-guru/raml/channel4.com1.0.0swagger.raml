@@ -1,0 +1,2000 @@
+#%RAML 1.0
+title: Channel 4
+version: 1.0.0
+baseUri: 'http://api.channel4.com/pmlsd'
+mediaType: application/xml
+protocols:
+  - HTTP
+  - HTTPS
+description: This is the place to come for all the technical details you need to power your applications with Channel 4's deep programmes data.
+(oas-tags-definition):
+  - description: Channel 4 data feeds
+    name: discoveryresources
+  - description: Channel 4 metadata
+    name: metadataresources
+annotationTypes:
+  oas-tags-definition:
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+    allowedTargets: API
+  oas-x-apiClientRegistration: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-documentation: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'http://developer.channel4.com/apps/register'
+  (oas-x-logo):
+    backgroundColor: '#FFFFFF'
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.channel4.com_static_programmes_images_c4-atom-logo.gif'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/Mermade/openC4/master/c4Api/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): channel4.com
+  contact:
+    name: Open C4 Project
+    url: 'http://developer.channel4.com/'
+    email: developer@channel4.co.uk
+  termsOfService: 'http://developer.channel4.com/page/read/API_Terms_of_Use'
+  license:
+    name: Channel 4 API license
+    url: 'http://developer.channel4.com/page/read/API_Terms_of_Use'
+(oas-externalDocs):
+  description: Programmes API Guide
+  url: 'http://developer.channel4.com/docs/read/ProgrammesAPIGuide'
+securitySchemes:
+  apikey:
+    type: Pass Through
+    describedBy:
+      queryParameters:
+        apikey:
+          type: string
+/categories:
+  displayName: categories
+  '/{category}':
+    displayName: '{category}'
+    /derived:
+      displayName: derived
+      /ad:
+        displayName: ad
+        /4od:
+          displayName: 4od
+          /popular:
+            displayName: popular
+            '/page-{pageno}.atom':
+              displayName: 'page-{pageno}.atom'
+              uriParameters:
+                pageno:
+                  description: Page number of results to return
+                  required: true
+                  type: integer
+                  displayName: Page number of results to return
+              get:
+                (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Most_Popular_Brands_Feed'
+                displayName: Most_Popular_Brands_Feed(8)
+                description: |-
+                  Lists all Channel 4oD most popular brands for the given category within the 
+                    last 7 days, in order of popularity.
+
+                    http://api.channel4.com/pmlsd/categories/category/derived/ad/4od/popular/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                    http://api.channel4.com/pmlsd/categories/comedy/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+                (oas-summary): Most Popular Brands Feed(8)
+                is:
+                  - platform
+                responses:
+                  '200':
+                    body:
+                      application/xml:
+                        type: atom
+                    description: Default response
+                (oas-tags):
+                  - discoveryresources
+          /title.atom:
+            displayName: title.atom
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_Title'
+              displayName: 4oD_Programmes_by_Title(3)
+              description: |-
+                Lists all Channel 4oD programmes associated with the specified category 
+                  (tag), alphanumerically in order of Title.
+
+                  http://api.channel4.com/pmlsd/categories/category/derived/ad/4od/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                  http://api.channel4.com/pmlsd/categories/religion-and-belief/4oD/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+              (oas-summary): 4oD Programmes by Title(3)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+          /title:
+            displayName: title
+            '/page-{pageno}.atom':
+              displayName: 'page-{pageno}.atom'
+              uriParameters:
+                pageno:
+                  description: Page number of results to return
+                  required: true
+                  type: integer
+                  displayName: Page number of results to return
+              get:
+                (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_Title'
+                displayName: 4oD_Programmes_by_Title(6)
+                description: |-
+                  Lists all Channel 4oD programmes associated with the specified category 
+                    (tag), alphanumerically in order of Title.
+
+                    http://api.channel4.com/pmlsd/categories/category/derived/ad/4od/title/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                    http://api.channel4.com/pmlsd/categories/religion-and-belief/4oD/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+                (oas-summary): 4oD Programmes by Title(6)
+                is:
+                  - platform
+                responses:
+                  '200':
+                    body:
+                      application/xml:
+                        type: atom
+                    description: Default response
+                (oas-tags):
+                  - discoveryresources
+          '/page-{pageno}.atom':
+            displayName: 'page-{pageno}.atom'
+            uriParameters:
+              pageno:
+                description: Page number of results to return
+                required: true
+                type: integer
+                displayName: Page number of results to return
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_TX_Date'
+              displayName: 4oD_Programmes_by_TX_Date(6)
+              description: "Lists all Channel 4oD programmes associated with the specified category \n  (tag).By default, the\_programmes are listed in order of Transmission (TX) \n  Date, with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/derived/ad/4od/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals/4oD.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+              (oas-summary): 4oD Programmes by TX Date(6)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+          /popular.atom:
+            displayName: popular.atom
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Most_Popular_Brands_Feed'
+              displayName: Most_Popular_Brands_Feed(4)
+              description: |-
+                Lists all Channel 4oD most popular brands for the given category within the 
+                  last 7 days, in order of popularity.
+
+                  http://api.channel4.com/pmlsd/categories/category/derived/ad/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                  http://api.channel4.com/pmlsd/categories/comedy/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+              (oas-summary): Most Popular Brands Feed(4)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+        '/page-{pageno}.atom':
+          displayName: 'page-{pageno}.atom'
+          uriParameters:
+            pageno:
+              description: Page number of results to return
+              required: true
+              type: integer
+              displayName: Page number of results to return
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_TX_Date'
+            displayName: All_Programmes_by_TX_Date(6)
+            description: "Lists all Channel 4 programmes associated with the specified category (tag).\_ \n  By default, the programmes are listed in order of Transmission (TX) Date, \n  with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/derived/ad/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+            (oas-summary): All Programmes by TX Date(6)
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+        /title.atom:
+          displayName: title.atom
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_Title'
+            displayName: All_Programmes_by_Title(3)
+            description: |-
+              Lists all Channel 4 programmes associated with the specified category (tag), 
+                alphanumerically in order of Title.
+
+                http://api.channel4.com/pmlsd/categories/category/derived/ad/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                http://api.channel4.com/pmlsd/categories/history/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+            (oas-summary): All Programmes by Title(3)
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+        /title:
+          displayName: title
+          '/page-{pageno}.atom':
+            displayName: 'page-{pageno}.atom'
+            uriParameters:
+              pageno:
+                description: Page number of results to return
+                required: true
+                type: integer
+                displayName: Page number of results to return
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_Title'
+              displayName: All_Programmes_by_Title(6)
+              description: |-
+                Lists all Channel 4 programmes associated with the specified category (tag), 
+                  alphanumerically in order of Title.
+
+                  http://api.channel4.com/pmlsd/categories/category/derived/ad/title/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                  http://api.channel4.com/pmlsd/categories/history/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+              (oas-summary): All Programmes by Title(6)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+        /4od.atom:
+          displayName: 4od.atom
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_TX_Date'
+            displayName: 4oD_Programmes_by_TX_Date(3)
+            description: "Lists all Channel 4oD programmes associated with the specified category \n  (tag).By default, the\_programmes are listed in order of Transmission (TX) \n  Date, with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/derived/ad/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals/4oD.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+            (oas-summary): 4oD Programmes by TX Date(3)
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+      /ad.atom:
+        displayName: ad.atom
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_TX_Date'
+          displayName: All_Programmes_by_TX_Date(3)
+          description: "Lists all Channel 4 programmes associated with the specified category (tag).\_ \n  By default, the programmes are listed in order of Transmission (TX) Date, \n  with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/derived/ad.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+          (oas-summary): All Programmes by TX Date(3)
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+    '/page-{pageno}.atom':
+      displayName: 'page-{pageno}.atom'
+      uriParameters:
+        pageno:
+          description: Page number of results to return
+          required: true
+          type: integer
+          displayName: Page number of results to return
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_TX_Date'
+        displayName: All_Programmes_by_TX_Date(4)
+        description: "Lists all Channel 4 programmes associated with the specified category (tag).\_ \n  By default, the programmes are listed in order of Transmission (TX) Date, \n  with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+        (oas-summary): All Programmes by TX Date(4)
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+    /popular.atom:
+      displayName: popular.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Most_Popular_Brands_Feed'
+        displayName: Most_Popular_Brands_Feed(2)
+        description: |-
+          Lists all Channel 4oD most popular brands for the given category within the 
+            last 7 days, in order of popularity.
+
+            http://api.channel4.com/pmlsd/categories/category/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/categories/comedy/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): Most Popular Brands Feed(2)
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+    /popular:
+      displayName: popular
+      '/page-{pageno}.atom':
+        displayName: 'page-{pageno}.atom'
+        uriParameters:
+          pageno:
+            description: Page number of results to return
+            required: true
+            type: integer
+            displayName: Page number of results to return
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Most_Popular_Brands_Feed'
+          displayName: Most_Popular_Brands_Feed(6)
+          description: |-
+            Lists all Channel 4oD most popular brands for the given category within the 
+              last 7 days, in order of popularity.
+
+              http://api.channel4.com/pmlsd/categories/category/popular/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+              http://api.channel4.com/pmlsd/categories/comedy/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+          (oas-summary): Most Popular Brands Feed(6)
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+    /4od.atom:
+      displayName: 4od.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_TX_Date'
+        displayName: 4oD_Programmes_by_TX_Date
+        description: "Lists all Channel 4oD programmes associated with the specified category \n  (tag).By default, the\_programmes are listed in order of Transmission (TX) \n  Date, with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals/4oD.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+        (oas-summary): 4oD Programmes by TX Date
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+    /title.atom:
+      displayName: title.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_Title'
+        displayName: All_Programmes_by_Title
+        description: |-
+          Lists all Channel 4 programmes associated with the specified category (tag), 
+            alphanumerically in order of Title.
+
+            http://api.channel4.com/pmlsd/categories/category/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/categories/history/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): All Programmes by Title
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+    /4od:
+      displayName: 4od
+      /popular.atom:
+        displayName: popular.atom
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Most_Popular_Brands_Feed'
+          displayName: Most_Popular_Brands_Feed
+          description: |-
+            Lists all Channel 4oD most popular brands for the given category within the 
+              last 7 days, in order of popularity.
+
+              http://api.channel4.com/pmlsd/categories/category/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+              http://api.channel4.com/pmlsd/categories/comedy/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+          (oas-summary): Most Popular Brands Feed
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+      /title.atom:
+        displayName: title.atom
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_Title'
+          displayName: 4oD_Programmes_by_Title
+          description: |-
+            Lists all Channel 4oD programmes associated with the specified category 
+              (tag), alphanumerically in order of Title.
+
+              http://api.channel4.com/pmlsd/categories/category/4od/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+              http://api.channel4.com/pmlsd/categories/religion-and-belief/4oD/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+          (oas-summary): 4oD Programmes by Title
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+      /popular:
+        displayName: popular
+        '/page-{pageno}.atom':
+          displayName: 'page-{pageno}.atom'
+          uriParameters:
+            pageno:
+              description: Page number of results to return
+              required: true
+              type: integer
+              displayName: Page number of results to return
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Most_Popular_Brands_Feed'
+            displayName: Most_Popular_Brands_Feed(5)
+            description: |-
+              Lists all Channel 4oD most popular brands for the given category within the 
+                last 7 days, in order of popularity.
+
+                http://api.channel4.com/pmlsd/categories/category/4od/popular/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                http://api.channel4.com/pmlsd/categories/comedy/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+            (oas-summary): Most Popular Brands Feed(5)
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+      '/page-{pageno}.atom':
+        displayName: 'page-{pageno}.atom'
+        uriParameters:
+          pageno:
+            description: Page number of results to return
+            required: true
+            type: integer
+            displayName: Page number of results to return
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_TX_Date'
+          displayName: 4oD_Programmes_by_TX_Date(4)
+          description: "Lists all Channel 4oD programmes associated with the specified category \n  (tag).By default, the\_programmes are listed in order of Transmission (TX) \n  Date, with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/4od/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals/4oD.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+          (oas-summary): 4oD Programmes by TX Date(4)
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+      /title:
+        displayName: title
+        '/page-{pageno}.atom':
+          displayName: 'page-{pageno}.atom'
+          uriParameters:
+            pageno:
+              description: Page number of results to return
+              required: true
+              type: integer
+              displayName: Page number of results to return
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_Title'
+            displayName: 4oD_Programmes_by_Title(4)
+            description: |-
+              Lists all Channel 4oD programmes associated with the specified category 
+                (tag), alphanumerically in order of Title.
+
+                http://api.channel4.com/pmlsd/categories/category/4od/title/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                http://api.channel4.com/pmlsd/categories/religion-and-belief/4oD/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+            (oas-summary): 4oD Programmes by Title(4)
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+    /title:
+      displayName: title
+      '/page-{pageno}.atom':
+        displayName: 'page-{pageno}.atom'
+        uriParameters:
+          pageno:
+            description: Page number of results to return
+            required: true
+            type: integer
+            displayName: Page number of results to return
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_Title'
+          displayName: All_Programmes_by_Title(4)
+          description: |-
+            Lists all Channel 4 programmes associated with the specified category (tag), 
+              alphanumerically in order of Title.
+
+              http://api.channel4.com/pmlsd/categories/category/title/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+              http://api.channel4.com/pmlsd/categories/history/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+          (oas-summary): All Programmes by Title(4)
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+    /channel:
+      displayName: channel
+      '/{channel}.atom':
+        displayName: '{channel}.atom'
+        uriParameters:
+          channel:
+            description: The name of the channel for which you seek associated Channel 4oD programmes
+            enum:
+              - c4
+              - f4
+              - e4
+              - m4
+              - 4m
+              - 4s
+            required: true
+            type: string
+            displayName: The name of the channel for which you seek associated Channel 4oD programmes
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_TX_Date'
+          displayName: All_Programmes_by_TX_Date(2)
+          description: "Lists all Channel 4 programmes associated with the specified category (tag).\_ \n  By default, the programmes are listed in order of Transmission (TX) Date, \n  with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/channel/[channel].atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+          (oas-summary): All Programmes by TX Date(2)
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+      '/{channel}':
+        displayName: '{channel}'
+        /4od:
+          displayName: 4od
+          '/page-{pageno}.atom':
+            displayName: 'page-{pageno}.atom'
+            uriParameters:
+              pageno:
+                description: Page number of results to return
+                required: true
+                type: integer
+                displayName: Page number of results to return
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_TX_Date'
+              displayName: 4oD_Programmes_by_TX_Date(5)
+              description: "Lists all Channel 4oD programmes associated with the specified category \n  (tag).By default, the\_programmes are listed in order of Transmission (TX) \n  Date, with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/channel/[channel]/4od/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals/4oD.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+              (oas-summary): 4oD Programmes by TX Date(5)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+          /popular:
+            displayName: popular
+            '/page-{pageno}.atom':
+              displayName: 'page-{pageno}.atom'
+              uriParameters:
+                pageno:
+                  description: Page number of results to return
+                  required: true
+                  type: integer
+                  displayName: Page number of results to return
+              get:
+                (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Most_Popular_Brands_Feed'
+                displayName: Most_Popular_Brands_Feed(7)
+                description: |-
+                  Lists all Channel 4oD most popular brands for the given category within the 
+                    last 7 days, in order of popularity.
+
+                    http://api.channel4.com/pmlsd/categories/category/channel/[channel]/4od/popular/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                    http://api.channel4.com/pmlsd/categories/comedy/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+                (oas-summary): Most Popular Brands Feed(7)
+                is:
+                  - platform
+                responses:
+                  '200':
+                    body:
+                      application/xml:
+                        type: atom
+                    description: Default response
+                (oas-tags):
+                  - discoveryresources
+          /title:
+            displayName: title
+            '/page-{pageno}.atom':
+              displayName: 'page-{pageno}.atom'
+              uriParameters:
+                pageno:
+                  description: Page number of results to return
+                  required: true
+                  type: integer
+                  displayName: Page number of results to return
+              get:
+                (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_Title'
+                displayName: 4oD_Programmes_by_Title(5)
+                description: |-
+                  Lists all Channel 4oD programmes associated with the specified category 
+                    (tag), alphanumerically in order of Title.
+
+                    http://api.channel4.com/pmlsd/categories/category/channel/[channel]/4od/title/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                    http://api.channel4.com/pmlsd/categories/religion-and-belief/4oD/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+                (oas-summary): 4oD Programmes by Title(5)
+                is:
+                  - platform
+                responses:
+                  '200':
+                    body:
+                      application/xml:
+                        type: atom
+                    description: Default response
+                (oas-tags):
+                  - discoveryresources
+          /title.atom:
+            displayName: title.atom
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_Title'
+              displayName: 4oD_Programmes_by_Title(2)
+              description: |-
+                Lists all Channel 4oD programmes associated with the specified category 
+                  (tag), alphanumerically in order of Title.
+
+                  http://api.channel4.com/pmlsd/categories/category/channel/[channel]/4od/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                  http://api.channel4.com/pmlsd/categories/religion-and-belief/4oD/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+              (oas-summary): 4oD Programmes by Title(2)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+          /popular.atom:
+            displayName: popular.atom
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Most_Popular_Brands_Feed'
+              displayName: Most_Popular_Brands_Feed(3)
+              description: |-
+                Lists all Channel 4oD most popular brands for the given category within the 
+                  last 7 days, in order of popularity.
+
+                  http://api.channel4.com/pmlsd/categories/category/channel/[channel]/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                  http://api.channel4.com/pmlsd/categories/comedy/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+              (oas-summary): Most Popular Brands Feed(3)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+        /title.atom:
+          displayName: title.atom
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_Title'
+            displayName: All_Programmes_by_Title(2)
+            description: |-
+              Lists all Channel 4 programmes associated with the specified category (tag), 
+                alphanumerically in order of Title.
+
+                http://api.channel4.com/pmlsd/categories/category/channel/[channel]/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                http://api.channel4.com/pmlsd/categories/history/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+            (oas-summary): All Programmes by Title(2)
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+        /4od.atom:
+          displayName: 4od.atom
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Programmes_by_TX_Date'
+            displayName: 4oD_Programmes_by_TX_Date(2)
+            description: "Lists all Channel 4oD programmes associated with the specified category \n  (tag).By default, the\_programmes are listed in order of Transmission (TX) \n  Date, with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/channel/[channel]/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals/4oD.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+            (oas-summary): 4oD Programmes by TX Date(2)
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+        /title:
+          displayName: title
+          '/page-{pageno}.atom':
+            displayName: 'page-{pageno}.atom'
+            uriParameters:
+              pageno:
+                description: Page number of results to return
+                required: true
+                type: integer
+                displayName: Page number of results to return
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_Title'
+              displayName: All_Programmes_by_Title(5)
+              description: |-
+                Lists all Channel 4 programmes associated with the specified category (tag), 
+                  alphanumerically in order of Title.
+
+                  http://api.channel4.com/pmlsd/categories/category/channel/[channel]/title/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                  http://api.channel4.com/pmlsd/categories/history/title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+              (oas-summary): All Programmes by Title(5)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+        '/page-{pageno}.atom':
+          displayName: 'page-{pageno}.atom'
+          uriParameters:
+            pageno:
+              description: Page number of results to return
+              required: true
+              type: integer
+              displayName: Page number of results to return
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_TX_Date'
+            displayName: All_Programmes_by_TX_Date(5)
+            description: "Lists all Channel 4 programmes associated with the specified category (tag).\_ \n  By default, the programmes are listed in order of Transmission (TX) Date, \n  with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category/channel/[channel]/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+            (oas-summary): All Programmes by TX Date(5)
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+  '/{category}.atom':
+    displayName: '{category}.atom'
+    uriParameters:
+      category:
+        description: 'The name of the category for which you seek associated Channel 4 programmes. (For a full list of categories, please see http://api.channel4.com/pmlsd/categories.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx)'
+        required: true
+        type: string
+        displayName: 'The name of the category for which you seek associated Channel 4 programmes. (For a full list of categories, please see http://api.channel4.com/pmlsd/categories.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx)'
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/All_Programmes_by_TX_Date'
+      displayName: All_Programmes_by_TX_Date
+      description: "Lists all Channel 4 programmes associated with the specified category (tag).\_ \n  By default, the programmes are listed in order of Transmission (TX) Date, \n  with the most-recently-transmitted programmes listed first.\n\n  http://api.channel4.com/pmlsd/categories/category.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/categories/animals.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+      (oas-summary): All Programmes by TX Date
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - discoveryresources
+'/{brand-web-safe-title}':
+  displayName: '{brand-web-safe-title}'
+  /videos:
+    displayName: videos
+    '/{clip-asset-id}.atom':
+      displayName: '{clip-asset-id}.atom'
+      uriParameters:
+        clip-asset-id:
+          description: Asset id for this clip
+          required: true
+          type: string
+          displayName: Asset id for this clip
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Clip_Detail_Atom_Feed'
+        displayName: Clip_Detail_Atom_Feed
+        description: |-
+          A feed containing metadata about a single short-form video (clip).
+
+            http://api.channel4.com/pmlsd/brand-web-safe-title/videos/clip-asset-id.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/the-it-crowd/videos/TCGS_CLIP_0000001015.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): Clip Detail Atom Feed
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - metadataresources
+    '/series-{series_number}':
+      displayName: 'series-{series_number}'
+      '/episode-{episode_number}.atom':
+        displayName: 'episode-{episode_number}.atom'
+        uriParameters:
+          episode_number:
+            description: Unique identifier of episode to which clips belong
+            required: true
+            type: string
+            displayName: Unique identifier of episode to which clips belong
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Clips_Landing_Feed_Brand_Series_and_Episode_Levels'
+          displayName: Clips_Landing_Feed_Brand_Series_and_Episode_Levels(3)
+          description: "A feed containing metadata about all the short-form (clip) videos. The clips \n  feed can be accessed at different levels: the content is then filtered \n  depending on the level, but the structure is identical.When accessed: from \n  the top, the feed contains all the clips for the brand;\_ at series level, \n  the feed contains only clips from the series; and\_ at episode level, the \n  feed contains only clips for the episode (and is very unlikely to require \n  pagination). The entries for the Clips Landing Feed contain references to \n  each short-form asset.\n\n  http://api.channel4.com/pmlsd/brand-web-safe-title/videos/series-series_number/episode-episode_number.atom?apikey=xxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/peep-show/videos.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+          (oas-summary): Clips Landing Feed Brand Series and Episode Levels(3)
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - metadataresources
+    '/series-{series_number}.atom':
+      displayName: 'series-{series_number}.atom'
+      uriParameters:
+        series_number:
+          description: Unique identifier of series to which clips belong
+          required: true
+          type: string
+          displayName: Unique identifier of series to which clips belong
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Clips_Landing_Feed_Brand_Series_and_Episode_Levels'
+        displayName: Clips_Landing_Feed_Brand_Series_and_Episode_Levels(2)
+        description: "A feed containing metadata about all the short-form (clip) videos. The clips \n  feed can be accessed at different levels: the content is then filtered \n  depending on the level, but the structure is identical.When accessed: from \n  the top, the feed contains all the clips for the brand;\_ at series level, \n  the feed contains only clips from the series; and\_ at episode level, the \n  feed contains only clips for the episode (and is very unlikely to require \n  pagination). The entries for the Clips Landing Feed contain references to \n  each short-form asset.\n\n  http://api.channel4.com/pmlsd/brand-web-safe-title/videos/series-series_number.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/peep-show/videos.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+        (oas-summary): Clips Landing Feed Brand Series and Episode Levels(2)
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - metadataresources
+    /all.atom:
+      displayName: all.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Clips_Landing_Feed_Brand_Series_and_Episode_Levels'
+        displayName: Clips_Landing_Feed_Brand_Series_and_Episode_Levels
+        description: "A feed containing metadata about all the short-form (clip) videos. The clips \n  feed can be accessed at different levels: the content is then filtered \n  depending on the level, but the structure is identical.When accessed: from \n  the top, the feed contains all the clips for the brand;\_ at series level, \n  the feed contains only clips from the series; and\_ at episode level, the \n  feed contains only clips for the episode (and is very unlikely to require \n  pagination). The entries for the Clips Landing Feed contain references to \n  each short-form asset.\n\n  http://api.channel4.com/pmlsd/brand-web-safe-title/videos/all.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/peep-show/videos.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+        (oas-summary): Clips Landing Feed Brand Series and Episode Levels
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - metadataresources
+  /4od.atom:
+    displayName: 4od.atom
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/4oD_Feed'
+      displayName: 4oD_Feed
+      description: |-
+        A feed containing all available on-demand long-form content for a specified 
+          brand. The entries for the 4oD feed contain references to each long-form 
+          asset for a brand, ordered by series number and episode number.
+
+          http://api.channel4.com/pmlsd/[brand-web-safe-title]/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+          http://api.channel4.com/pmlsd/the-it-crowd/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+      (oas-summary): 4oD Feed
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - metadataresources
+  /epg.atom:
+    displayName: epg.atom
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Brand_EPG_Atom_Feed'
+      displayName: Brand_EPG_Atom_Feed
+      description: |-
+        This feed contains metadata about upcoming electronic programme guide (EPG) 
+          information for a brand. The entry details upcoming transmission slots for 
+          this brand.
+
+          http://api.channel4.com/pmlsd/brand-web-safe-title/epg.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+          http://api.channel4.com/pmlsd/the-simpsons/epg.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+      (oas-summary): Brand EPG Atom Feed
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - metadataresources
+  /episode-guide.atom:
+    displayName: episode-guide.atom
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Episode_Guide_Feed_Series_Landing'
+      displayName: Episode_Guide_Feed_Series_Landing
+      description: |-
+        A feed containing metadata about all series for a specified brand. The 
+          entries in this feed contain references to each of the series (where 
+          metadata has been published), with some convenient links.
+
+          http://api.channel4.com/pmlsd/brand-web-safe-title/episode-guide.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+          http://api.channel4.com/pmlsd/father-ted/episode-guide.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+      (oas-summary): Episode Guide Feed Series Landing
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - metadataresources
+  /episode-guide:
+    displayName: episode-guide
+    '/series-{series_number}.atom':
+      displayName: 'series-{series_number}.atom'
+      uriParameters:
+        series_number:
+          description: Unique enumerated identifier of the series within its brand
+          required: true
+          type: string
+          displayName: Unique enumerated identifier of the series within its brand
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Episode_Guide_Feed_Series_Detail'
+        displayName: Episode_Guide_Feed_Series_Detail
+        description: |-
+          A feed containing metadata about all the episodes for a specific series. The 
+            entries in this feed contain references to each of the episodes (where 
+            metadata has been published), with some convenient links.
+
+            http://api.channel4.com/pmlsd/brand-web-safe-title/episode-guide/series-series_number.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/chelmsford-123/episode-guide/series-1.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): Episode Guide Feed Series Detail
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - metadataresources
+    '/series-{series_number}':
+      displayName: 'series-{series_number}'
+      '/episode-{episode_number}.atom':
+        displayName: 'episode-{episode_number}.atom'
+        uriParameters:
+          episode_number:
+            description: Unique enumerated identifier of the episode within its series
+            required: true
+            type: string
+            displayName: Unique enumerated identifier of the episode within its series
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Episode_Guide_Feed_Episode_Detail'
+          displayName: Episode_Guide_Feed_Episode_Detail
+          description: |-
+            A feed containing metadata about a specified episode. (This feed does not 
+              contain any entries and only contains a feed element regarding this 
+              episode.)
+
+              http://api.channel4.com/pmlsd/brand-web-safe-title/episode-guide/series-series_number/episode-episode_number.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+              http://api.channel4.com/pmlsd/the-it-crowd/episode-guide/series-1/episode-1.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+          (oas-summary): Episode Guide Feed Episode Detail
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - metadataresources
+/4od:
+  displayName: 4od
+  /episode-list:
+    displayName: episode-list
+    /date:
+      displayName: date
+      '/{yyyy}':
+        displayName: '{yyyy}'
+        '/{mm}':
+          displayName: '{mm}'
+          '/{dd}.atom':
+            displayName: '{dd}.atom'
+            uriParameters:
+              dd:
+                description: The date for which you wish to see programming information
+                required: true
+                type: string
+                displayName: The date for which you wish to see programming information
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Browse_by_Date_Feed'
+              displayName: 4oD_Browse_by_Date_Feed
+              description: |-
+                Information of daily broadcast content available on 4oD, according to 
+                  broadcast date
+
+                  http://api.channel4.com/pmlsd/4od/episode-list/date/[yyyy]/[mm]/[dd].atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                  http://api.channel4.com/pmlsd/4od/episode-list/date/2010/11/28.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+              (oas-summary): 4oD Browse by Date Feed
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+    /popular.atom:
+      displayName: popular.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Most_Popular_Episodes_Feed'
+        displayName: 4oD_Most_Popular_Episodes_Feed
+        description: |-
+          Information of the most popular content available on 4oD, according to user 
+            data driven.
+
+            http://api.channel4.com/pmlsd/4od/episode-list/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/4od/episode-list/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): 4oD Most Popular Episodes Feed
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+  /recently-added:
+    displayName: recently-added
+    /videos.atom:
+      displayName: videos.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Clips_Catch_Up_Feed'
+        displayName: 4oD_Clips_Catch_Up_Feed
+        description: |-
+          A feed containing metadata about short-form content relating to 4oD Episodes 
+            recently added to 4oD based on linear transmission. The entries for the 
+            Clips Landing Feed contain references to each short-form asset. It will 
+            return up to 20 entries.
+
+            http://api.channel4.com/pmlsd/4od/recently-added/videos.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/4od/episode-list/videos.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): 4oD Clips Catch Up Feed
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+/atoz:
+  displayName: atoz
+  '/{start_letter}.atom':
+    displayName: '{start_letter}.atom'
+    uriParameters:
+      start_letter:
+        description: The letter of the alphabet for which you seek associated Channel 4 programmes
+        required: true
+        type: string
+        displayName: The letter of the alphabet for which you seek associated Channel 4 programmes
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/DiscoveryResources/A_to_Z_Letter_Feed'
+      displayName: A_to_Z_Letter_Feed
+      description: |-
+        Lists Channel 4 programmes whose names begin with the associated letter.
+
+          http://api.channel4.com/pmlsd/atoz/start_letter.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+          http://api.channel4.com/pmlsd/atoz/a.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+      (oas-summary): A to Z Letter Feed
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - discoveryresources
+  '/{start_letter}':
+    displayName: '{start_letter}'
+    '/page-{pageno}.atom':
+      displayName: 'page-{pageno}.atom'
+      uriParameters:
+        pageno:
+          description: Page number of results to return
+          required: true
+          type: integer
+          displayName: Page number of results to return
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/DiscoveryResources/A_to_Z_Letter_Feed'
+        displayName: A_to_Z_Letter_Feed(2)
+        description: |-
+          Lists Channel 4 programmes whose names begin with the associated letter.
+
+            http://api.channel4.com/pmlsd/atoz/start_letter/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/atoz/a.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): A to Z Letter Feed(2)
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+/brands:
+  displayName: brands
+  /4od.atom:
+    displayName: 4od.atom
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Title_All_Brands_Feed'
+      displayName: 4oD_Title_All_Brands_Feed
+      description: "Lists all Channel 4 programmes available on 4oD.\_ By default, the programmes \n  are listed by title in alphabetical order (case unsensitive).\n\n  http://api.channel4.com/pmlsd/brands/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/brands/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+      (oas-summary): 4oD Title All Brands Feed
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - discoveryresources
+  /4od:
+    displayName: 4od
+    /popular.atom:
+      displayName: popular.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Popular_All_Brands_Feed'
+        displayName: 4oD_Popular_All_Brands_Feed
+        description: |-
+          Lists all Channel 4 programmes available on 4oD by popularity considering 
+            the data gathered within the last 7 days.
+
+            http://api.channel4.com/pmlsd/brands/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/brands/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): 4oD Popular All Brands Feed
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+    /popular:
+      displayName: popular
+      '/page-{pageno}.atom':
+        displayName: 'page-{pageno}.atom'
+        uriParameters:
+          pageno:
+            description: Page number of results to return
+            required: true
+            type: integer
+            displayName: Page number of results to return
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Popular_All_Brands_Feed'
+          displayName: 4oD_Popular_All_Brands_Feed(2)
+          description: |-
+            Lists all Channel 4 programmes available on 4oD by popularity considering 
+              the data gathered within the last 7 days.
+
+              http://api.channel4.com/pmlsd/brands/4od/popular/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+              http://api.channel4.com/pmlsd/brands/4od/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+          (oas-summary): 4oD Popular All Brands Feed(2)
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+    '/page-{pageno}.atom':
+      displayName: 'page-{pageno}.atom'
+      uriParameters:
+        pageno:
+          description: Page number of results to return
+          required: true
+          type: integer
+          displayName: Page number of results to return
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/4oD_Title_All_Brands_Feed'
+        displayName: 4oD_Title_All_Brands_Feed(2)
+        description: "Lists all Channel 4 programmes available on 4oD.\_ By default, the programmes \n  are listed by title in alphabetical order (case unsensitive).\n\n  http://api.channel4.com/pmlsd/brands/4od/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/brands/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+        (oas-summary): 4oD Title All Brands Feed(2)
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+  /popular.atom:
+    displayName: popular.atom
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Popular_Brands_Feed'
+      displayName: Popular_Brands_Feed
+      description: |-
+        Lists all Channel 4 programmes by popularity considering the data gathered 
+          within the last 7 days.
+
+          http://api.channel4.com/pmlsd/brands/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+          http://api.channel4.com/pmlsd/brands/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+      (oas-summary): Popular Brands Feed
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - discoveryresources
+  /popular:
+    displayName: popular
+    '/page-{pageno}.atom':
+      displayName: 'page-{pageno}.atom'
+      uriParameters:
+        pageno:
+          description: Page number of results to return
+          required: true
+          type: integer
+          displayName: Page number of results to return
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Popular_Brands_Feed'
+        displayName: Popular_Brands_Feed(2)
+        description: |-
+          Lists all Channel 4 programmes by popularity considering the data gathered 
+            within the last 7 days.
+
+            http://api.channel4.com/pmlsd/brands/popular/page-{pageno}.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/brands/popular.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): Popular Brands Feed(2)
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+/categories.atom:
+  displayName: categories.atom
+  get:
+    (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Categories_Landing_Feed'
+    displayName: Categories_Landing_Feed
+    description: |-
+      Lists Channel 4 programmes by category (/ tag).
+
+        http://api.channel4.com/pmlsd/categories.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+        http://api.channel4.com/pmlsd/categories.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+    (oas-summary): Categories Landing Feed
+    is:
+      - platform
+    responses:
+      '200':
+        body:
+          application/xml:
+            type: atom
+        description: Default response
+    (oas-tags):
+      - discoveryresources
+/collections:
+  displayName: collections
+  '/{collection_name}.atom':
+    displayName: '{collection_name}.atom'
+    uriParameters:
+      collection_name:
+        description: Web safe title for the collection.
+        required: true
+        type: string
+        displayName: Web safe title for the collection.
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Collections_Feed'
+      displayName: Collections_Feed(2)
+      description: "Collections are editorially controlled groups of brands, series, episodes or \n  other collections used for promotion and discovery of content. A SIMPLE \n  collection can contain an assortment of Brands, Series, Episodes or Freeform \n  items.\_A GROUP collection contains other collections.\n\n  http://api.channel4.com/pmlsd/collections/collection_name.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/collections/4od-home-promo/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+      (oas-summary): Collections Feed(2)
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - discoveryresources
+  '/{collection_name}':
+    displayName: '{collection_name}'
+    /4od.atom:
+      displayName: 4od.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Collections_Feed'
+        displayName: Collections_Feed
+        description: "Collections are editorially controlled groups of brands, series, episodes or \n  other collections used for promotion and discovery of content. A SIMPLE \n  collection can contain an assortment of Brands, Series, Episodes or Freeform \n  items.\_A GROUP collection contains other collections.\n\n  http://api.channel4.com/pmlsd/collections/collection_name/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/collections/4od-home-promo/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+        (oas-summary): Collections Feed
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+    /flattened.atom:
+      displayName: flattened.atom
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Flattened_Collection_Feed'
+        displayName: Flattened_Collection_Feed(2)
+        description: |-
+          The Flattened Collections Feed is only applicable for GROUP collections and 
+            its purpose is mainly return 3 items (BRAND, SERIES or EPSIODE) of each of 
+            the simple collections assigned to the GROUP.
+
+            http://api.channel4.com/pmlsd/collections/collection_name/flattened.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+            http://api.channel4.com/pmlsd/collections/4od-home-promo/flattened/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): Flattened Collection Feed(2)
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+    /flattened:
+      displayName: flattened
+      /4od.atom:
+        displayName: 4od.atom
+        get:
+          (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Flattened_Collection_Feed'
+          displayName: Flattened_Collection_Feed
+          description: |-
+            The Flattened Collections Feed is only applicable for GROUP collections and 
+              its purpose is mainly return 3 items (BRAND, SERIES or EPSIODE) of each of 
+              the simple collections assigned to the GROUP.
+
+              http://api.channel4.com/pmlsd/collections/collection_name/flattened/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+              http://api.channel4.com/pmlsd/collections/4od-home-promo/flattened/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+          (oas-summary): Flattened Collection Feed
+          is:
+            - platform
+          responses:
+            '200':
+              body:
+                application/xml:
+                  type: atom
+              description: Default response
+          (oas-tags):
+            - discoveryresources
+/coming-soon.atom:
+  displayName: coming-soon.atom
+  get:
+    (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Coming_Soon_feed'
+    displayName: Coming_Soon_feed
+    description: |-
+      Coming Soon feed display a list of episodes coming soon to linear TV so that 
+        I can promote new Channel 4 content.
+
+        http://api.channel4.com/pmlsd/coming-soon.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+        http://api.channel4.com/pmlsd/coming-soon.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+    (oas-summary): Coming Soon feed
+    is:
+      - platform
+    responses:
+      '200':
+        body:
+          application/xml:
+            type: atom
+        description: Default response
+    (oas-tags):
+      - metadataresources
+/coming-soon:
+  displayName: coming-soon
+  '/{category}.atom':
+    displayName: '{category}.atom'
+    uriParameters:
+      category:
+        description: The category websafe_title to filter the coming soon programmes on TV.
+        required: true
+        type: string
+        displayName: The category websafe_title to filter the coming soon programmes on TV.
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Coming_Soon_feed'
+      displayName: Coming_Soon_feed(2)
+      description: |-
+        Coming Soon feed display a list of episodes coming soon to linear TV so that 
+          I can promote new Channel 4 content.
+
+          http://api.channel4.com/pmlsd/coming-soon/[category].atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+          http://api.channel4.com/pmlsd/coming-soon.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+      (oas-summary): Coming Soon feed(2)
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - metadataresources
+/programme:
+  displayName: programme
+  '/{programme-id}.atom':
+    displayName: '{programme-id}.atom'
+    uriParameters:
+      programme-id:
+        description: The websafe programme identifier for the episode for which you seek on-demand content
+        required: true
+        type: string
+        displayName: The websafe programme identifier for the episode for which you seek on-demand content
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Programme_Feed'
+      displayName: Programme_Feed
+      description: "A feed containing all long-form content currently or previously available \n  for a specified Programme Id.\_The entries for the Programme feed contain \n  references to long-form assets for each platform.\n\n  http://api.channel4.com/pmlsd/programme/[programme-id].atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx\n\n  http://api.channel4.com/pmlsd/programme/33881-001/4od.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx"
+      (oas-summary): Programme Feed
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - metadataresources
+/search.atom:
+  displayName: search.atom
+  get:
+    (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Search_Feed'
+    displayName: Search_Feed
+    description: |-
+      Lists all Channel 4 programmes where title (brand name) matching the search 
+        term. Matches are made from the beginning of individual words in the title.
+
+        http://api.channel4.com/pmlsd/search.atom?q=search-term&apikey=xxx
+
+        http://api.channel4.com/pmlsd/search.atom?q=the+it+crowd&apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+    (oas-summary): Search Feed
+    is:
+      - platform
+      - q
+    responses:
+      '200':
+        body:
+          application/xml:
+            type: atom
+        description: Default response
+    (oas-tags):
+      - discoveryresources
+/search:
+  displayName: search
+  '/page-{pageno}.atom':
+    displayName: 'page-{pageno}.atom'
+    uriParameters:
+      pageno:
+        description: Page number of results to return
+        required: true
+        type: integer
+        displayName: Page number of results to return
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Search_Feed'
+      displayName: Search_Feed(3)
+      description: |-
+        Lists all Channel 4 programmes where title (brand name) matching the search 
+          term. Matches are made from the beginning of individual words in the title.
+
+          http://api.channel4.com/pmlsd/search/page-{pageno}.atom?q=search-term&apikey=xxx
+
+          http://api.channel4.com/pmlsd/search.atom?q=the+it+crowd&apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+      (oas-summary): Search Feed(3)
+      is:
+        - platform
+        - q
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - discoveryresources
+  '/{q}.atom':
+    displayName: '{q}.atom'
+    uriParameters:
+      q:
+        description: 'The programme name to look for, minimum length: 2 chars.Looking for programme names with special chars might be URL encoded.'
+        required: true
+        type: string
+        displayName: 'The programme name to look for, minimum length: 2 chars.Looking for programme names with special chars might be URL encoded.'
+    get:
+      (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Search_Feed'
+      displayName: Search_Feed(2)
+      description: |-
+        Lists all Channel 4 programmes where title (brand name) matching the search 
+          term. Matches are made from the beginning of individual words in the title.
+
+          http://api.channel4.com/pmlsd/search/search-term.atom?apikey=xxx
+
+          http://api.channel4.com/pmlsd/search.atom?q=the+it+crowd&apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+      (oas-summary): Search Feed(2)
+      is:
+        - platform
+      responses:
+        '200':
+          body:
+            application/xml:
+              type: atom
+          description: Default response
+      (oas-tags):
+        - discoveryresources
+  '/{q}':
+    displayName: '{q}'
+    '/page-{pageno}.atom':
+      displayName: 'page-{pageno}.atom'
+      uriParameters:
+        pageno:
+          description: Page number of results to return
+          required: true
+          type: integer
+          displayName: Page number of results to return
+      get:
+        (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/Search_Feed'
+        displayName: Search_Feed(4)
+        description: |-
+          Lists all Channel 4 programmes where title (brand name) matching the search 
+            term. Matches are made from the beginning of individual words in the title.
+
+            http://api.channel4.com/pmlsd/search/search-term/page-{pageno}.atom?apikey=xxx
+
+            http://api.channel4.com/pmlsd/search.atom?q=the+it+crowd&apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+        (oas-summary): Search Feed(4)
+        is:
+          - platform
+        responses:
+          '200':
+            body:
+              application/xml:
+                type: atom
+            description: Default response
+        (oas-tags):
+          - discoveryresources
+/tv-listings:
+  displayName: tv-listings
+  /daily:
+    displayName: daily
+    '/{yyyy}':
+      displayName: '{yyyy}'
+      '/{mm}':
+        displayName: '{mm}'
+        '/{dd}.atom':
+          displayName: '{dd}.atom'
+          uriParameters:
+            dd:
+              description: The date for which you wish to see programming information. Note the schedule days start from 6am and run until 6am on the next calendar day.
+              required: true
+              type: string
+              displayName: The date for which you wish to see programming information. Note the schedule days start from 6am and run until 6am on the next calendar day.
+          get:
+            (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/TV_Listings_Feed'
+            displayName: TV_Listings_Feed
+            description: |-
+              EPG Information of daily broadcast content aired per channels, according to 
+                broadcast date
+
+                http://api.channel4.com/pmlsd/tv-listings/daily/[yyyy]/[mm]/[dd].atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                http://api.channel4.com/pmlsd/tv-listings/daily/2010/11/28.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+            (oas-summary): TV Listings Feed
+            is:
+              - platform
+            responses:
+              '200':
+                body:
+                  application/xml:
+                    type: atom
+                description: Default response
+            (oas-tags):
+              - discoveryresources
+        '/{dd}':
+          displayName: '{dd}'
+          '/{channel}.atom':
+            displayName: '{channel}.atom'
+            uriParameters:
+              channel:
+                description: 'The EPG for a specific channel (c4, e4, m4, 4m, f4, 4s)'
+                enum:
+                  - c4
+                  - f4
+                  - e4
+                  - m4
+                  - 4m
+                  - 4s
+                required: true
+                type: string
+                displayName: 'The EPG for a specific channel (c4, e4, m4, 4m, f4, 4s)'
+            get:
+              (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/discoveryresources/TV_Listings_Feed'
+              displayName: TV_Listings_Feed(2)
+              description: |-
+                EPG Information of daily broadcast content aired per channels, according to 
+                  broadcast date
+
+                  http://api.channel4.com/pmlsd/tv-listings/daily/[yyyy]/[mm]/[dd]/[channel].atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+                  http://api.channel4.com/pmlsd/tv-listings/daily/2010/11/28.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+              (oas-summary): TV Listings Feed(2)
+              is:
+                - platform
+              responses:
+                '200':
+                  body:
+                    application/xml:
+                      type: atom
+                  description: Default response
+              (oas-tags):
+                - discoveryresources
+'/{brand-web-safe-title}.atom':
+  displayName: '{brand-web-safe-title}.atom'
+  uriParameters:
+    brand-web-safe-title:
+      description: The title of the programme for which you seek associated data
+      required: true
+      type: string
+      displayName: The title of the programme for which you seek associated data
+  get:
+    (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/metadataresources/Hub_Feed'
+    displayName: Hub_Feed
+    description: |-
+      The basis for all brand information
+
+        http://api.channel4.com/pmlsd/brand-web-safe-title.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+
+        http://api.channel4.com/pmlsd/the-it-crowd.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+    (oas-summary): Hub Feed
+    is:
+      - platform
+    responses:
+      '200':
+        body:
+          application/xml:
+            type: atom
+        description: Default response
+    (oas-tags):
+      - metadataresources
+/atoz.atom:
+  displayName: atoz.atom
+  get:
+    (oas-x-documentation): 'http://developer.channel4.com/docs/read/programmesapiguide/DiscoveryResources/A_to_Z_Landing_Feed'
+    displayName: A_to_Z_Landing_Feed
+    description: |-
+      Lists Channel 4 programmes alphabetically from A to Z, providing the same 
+        functionality and information as is available in the A to Z section of the 
+        Channel 4 Programmes page, http://www.channel4.com/programmes.
+
+        http://api.channel4.com/pmlsd/atoz.atom
+
+        http://api.channel4.com/pmlsd/atoz.atom?apikey=xxxxxxxxxxxxxxxxxxxxxxxx
+    (oas-summary): A to Z Landing Feed
+    is:
+      - platform
+    responses:
+      '200':
+        body:
+          application/xml:
+            type: atom
+        description: Default response
+    (oas-tags):
+      - discoveryresources
+types:
+  ContentTypeType:
+    additionalProperties: false
+    type: object
+  KnownRelCodeType:
+    description: 'alternate: The value "alternate" signifies that the IRI in the value of the href attribute identifies an alternate version of the resource described by the containing element.related: The value "related" signifies that the IRI in the value of the href attribute identifies a resource related to the resource described by the containing element. For example, the feed for a site that discusses the performance of the search engine at "http://search.example.com" might contain, as a child of atom:feed. An identical link might appear as a child of any atom:entry whose content contains a discussion of that same search engine.self: The value "self" signifies that the IRI in the value of the href attribute identifies a resource equivalent to the containing element.enclosure: The value "enclosure" signifies that the IRI in the value of the href attribute identifies a related resource that is potentially large in size and might require special handling. For atom:link elements with rel="enclosure", the length attribute SHOULD be provided.via: The value "via" signifies that the IRI in the value of the href attribute identifies a resource that is the source of the information provided in the containing element.'
+    enum:
+      - alternate
+      - related
+      - self
+      - enclosure
+      - via
+  MimeType:
+    description: 'XML encoded identifier of a standard MIME type, possibly a parameterized MIME type. Copied from ows 2.0.1'
+    pattern: (application|audio|image|text|video|message|multipart|model)/.+(;\s*.+=.+)*
+    type: string
+  RelCodeType:
+    additionalProperties: false
+    type: object
+  atom:
+    additionalProperties: false
+    description: |-
+      This version of the Atom schema is based on version 1.0 of the format specifications, found here http://www.atomenabled.org/developers/syndication/atom-format-spec.php. The original namespace was http://www.w3.org/2005/Atom but we changed it to http://www.opengis.net/atom/2005 to avoid conflicting definitions of the same namespace in the future. NOT DONE YET. There is no XSD official schema for atom but this one seems to be the most known: http://www.kbcafe.com/rss/atom.xsd.xml (The Atom Publishing Protocol was issued as a Proposed Standard in IETF RFC 5023 in October 2007 http://tools.ietf.org/html/rfc5023)
+      An Atom document may have two root elements, feed and entry, as defined in section 2.
+    properties:
+      feed:
+        type: feedType
+    (oas-schema-title): converted/atomSchema.xsd
+  categoryType:
+    additionalProperties: false
+    description: The Atom category construct is defined in section 4.2.2 of the format spec.
+    type: object
+  commonAttributes:
+    properties:
+      'xml:base':
+        type: string
+        required: false
+      'xml:lang':
+        type: string
+        required: false
+  contentType:
+    description: The Atom content construct is defined in section 4.1.3 of the format spec.
+    type: object
+  dateTimeType:
+    additionalProperties: false
+    type: object
+  emailType:
+    description: Schema definition for an email address.
+    pattern: \w+@(\w+\.)+\w+
+    type: string
+  entry:
+    type: entryType
+  entryType:
+    description: The Atom entry construct is defined in section 4.1.2 of the format spec.
+    type: object
+  feedType:
+    description: The Atom feed construct is defined in section 4.1.1 of the format spec.
+    type: object
+  generatorType:
+    additionalProperties: false
+    description: The Atom generator element is defined in section 4.2.4 of the format spec.
+    type: object
+  iconType:
+    additionalProperties: false
+    description: The Atom icon construct is defined in section 4.2.5 of the format spec.
+    type: object
+  idType:
+    additionalProperties: false
+    description: The Atom id construct is defined in section 4.2.6 of the format spec.
+    type: object
+  linkType:
+    additionalProperties: false
+    description: The Atom link construct is defined in section 3.4 of the format spec.
+    type: object
+  logoType:
+    additionalProperties: false
+    description: The Atom logo construct is defined in section 4.2.8 of the format spec.
+    type: object
+  personType:
+    description: The Atom person construct is defined in section 3.2 of the format spec.
+    type: object
+  sourceType:
+    description: The Atom source construct is defined in section 4.2.11 of the format spec.
+    type: object
+  textType:
+    description: The Atom text construct is defined in section 3.1 of the format spec.
+    type: object
+  textTypeType:
+    enum:
+      - text
+      - html
+      - xhtml
+  uriType:
+    additionalProperties: false
+    type: object
+traits:
+  platform:
+    queryParameters:
+      platform:
+        type: string
+        description: The platform to use for the query. Alias 'client'.
+        enum:
+          - c4
+          - ps3
+          - yv
+          - ios
+          - fm
+          - p06
+          - ctv
+          - freesat
+          - android
+          - samsung
+        required: false
+  q:
+    queryParameters:
+      q:
+        type: string
+        description: 'The programme name to look for, minimum length: 2 chars.Looking for programme names with special chars might be URL encoded.'
+        required: true
