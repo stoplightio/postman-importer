@@ -122,7 +122,6 @@ securitySchemes:
                               minimum: 0
                               required: false
                               type: integer
-                              displayName: 'Control paging of export tasks, start results at the given offset, defaults to 0 (1st page of data).'
                             $top:
                               default: 20
                               description: |-
@@ -133,10 +132,6 @@ securitySchemes:
                               minimum: 1
                               required: false
                               type: integer
-                              displayName: |-
-                                Control paging of export tasks, number of export tasks to return with each call. By default, it returns all export tasks with a default paging of 20.
-                                The response contains a `nextLink` property describing the path to get the next page if there are more results.
-                                The maximum paging limit for $top is 40.
                             $orderby:
                               description: |-
                                 Sort results by an expression which looks like `$orderby=taskId asc` (default when not specified).
@@ -147,13 +142,6 @@ securitySchemes:
                                 Only one orderby property can be specified.
                               required: false
                               type: string
-                              displayName: |-
-                                Sort results by an expression which looks like `$orderby=taskId asc` (default when not specified).
-                                The syntax is orderby={property} {direction} or just orderby={property}.
-                                Properties that can be specified for sorting: taskId, errorDetails, dateCreated, taskStatus, and dateCreated.
-                                The available directions are asc (for ascending order) and desc (for descending order).
-                                When not specified the asc direction is used.
-                                Only one orderby property can be specified.
                           (oas-tags):
                             - export
                             - list
@@ -474,7 +462,6 @@ securitySchemes:
                               description: Export task identifier.
                               required: true
                               type: string
-                              displayName: Export task identifier.
                           get:
                             displayName: ExportTasks_Get
                             description: Retrieves information about a previously created export task.
@@ -525,7 +512,6 @@ securitySchemes:
                               minimum: 0
                               required: false
                               type: integer
-                              displayName: 'Control paging of import jobs, start results at the given offset, defaults to 0 (1st page of data).'
                             $top:
                               default: 20
                               description: |-
@@ -536,10 +522,6 @@ securitySchemes:
                               minimum: 1
                               required: false
                               type: integer
-                              displayName: |-
-                                Control paging of import jobs, number of import jobs to return with each call. By default, it returns all import jobs with a default paging of 20.
-                                The response contains a `nextLink` property describing the path to get the next page if there are more results.
-                                The maximum paging limit for $top is 40.
                             $orderby:
                               description: |-
                                 Sort results by an expression which looks like `$orderby=jobId asc` (default when not specified).
@@ -550,13 +532,6 @@ securitySchemes:
                                 Only one orderby property can be specified.
                               required: false
                               type: string
-                              displayName: |-
-                                Sort results by an expression which looks like `$orderby=jobId asc` (default when not specified).
-                                The syntax is orderby={property} {direction} or just orderby={property}.
-                                Properties that can be specified for sorting: jobId, errorDetails, dateCreated, jobStatus, and dateCreated.
-                                The available directions are asc (for ascending order) and desc (for descending order).
-                                When not specified the asc direction is used.
-                                Only one orderby property can be specified.
                           (oas-tags):
                             - import
                             - list
@@ -605,7 +580,6 @@ securitySchemes:
                               description: Import job identifier.
                               required: true
                               type: string
-                              displayName: Import job identifier.
                           get:
                             displayName: ImportTasks_Get
                             description: The Get import job operation retrieves information about a previously created import job.
@@ -653,17 +627,14 @@ securitySchemes:
                             description: Number of devices to return with each call. Defaults to 100 and cannot return more. Passing a greater value is ignored. The response contains a `nextLink` property describing the URI path to get the next page of results if not all results could be returned at once.
                             required: false
                             type: integer
-                            displayName: Number of devices to return with each call. Defaults to 100 and cannot return more. Passing a greater value is ignored. The response contains a `nextLink` property describing the URI path to get the next page of results if not all results could be returned at once.
                           $select:
                             description: 'By default all `meta` and `appInfo` properties are returned, this property is used to restrict the output to the desired properties. It also excludes all devices from the output that have none of the selected properties. In other terms, only devices having at least one of the selected property being set is part of the results. Examples: - `$select=appInfo` : select all devices having at least 1 appInfo, return them all and don’t return any meta property. - `$select=meta` : return only meta properties in the output. - `$select=appInfo,meta/firstSeen,meta/lastSeen` : return all `appInfo`, plus meta object containing only firstSeen and lastSeen properties. The format is thus a comma separated list of properties to select. Use `appInfo` to select all appInfo properties, `meta` to select all meta properties. Use `appInfo/{key}` and `meta/{key}` to select specific appInfo and meta properties.'
                             required: false
                             type: string
-                            displayName: 'By default all `meta` and `appInfo` properties are returned, this property is used to restrict the output to the desired properties. It also excludes all devices from the output that have none of the selected properties. In other terms, only devices having at least one of the selected property being set is part of the results. Examples: - `$select=appInfo` : select all devices having at least 1 appInfo, return them all and don’t return any meta property. - `$select=meta` : return only meta properties in the output. - `$select=appInfo,meta/firstSeen,meta/lastSeen` : return all `appInfo`, plus meta object containing only firstSeen and lastSeen properties. The format is thus a comma separated list of properties to select. Use `appInfo` to select all appInfo properties, `meta` to select all meta properties. Use `appInfo/{key}` and `meta/{key}` to select specific appInfo and meta properties.'
                           $filter:
                             description: 'Filter can be used to reduce the number of results. Filter is a boolean expression that can look like the following examples: * `$filter=deviceId gt ''abcdef0123456789abcdef0123456789''` * `$filter=lastModified le 1447284263690L` * `$filter=(deviceId ge ''abcdef0123456789abcdef0123456789'') and (deviceId lt ''bacdef0123456789abcdef0123456789'') and (lastModified gt 1447284263690L)` The first example is used automatically for paging when returning the `nextLink` property. The filter expression is a combination of checks on some properties that can be compared to their value. The available operators are: * `gt`  : greater than * `ge`  : greater than or equals * `lt`  : less than * `le`  : less than or equals * `and` : to add multiple checks (all checks must pass), optional parentheses can be used. The properties that can be used in the expression are the following: * `deviceId {operator} ''{deviceIdValue}''` : a lexicographical comparison is made on the deviceId value, use single quotes for the value. * `lastModified {operator} {number}L` : returns only meta properties or appInfo properties whose last value modification timestamp compared to the specified value is matching (value is milliseconds since January 1st, 1970 UTC). Please note the `L` character after the number of milliseconds, its required when the number of milliseconds exceeds `2^31 - 1` (which is always the case for recent timestamps). Using `lastModified` excludes all devices from the output that have no property matching the timestamp criteria, like `$select`. Please note that the internal value of `lastModified` timestamp for a given property is never part of the results.'
                             required: false
                             type: string
-                            displayName: 'Filter can be used to reduce the number of results. Filter is a boolean expression that can look like the following examples: * `$filter=deviceId gt ''abcdef0123456789abcdef0123456789''` * `$filter=lastModified le 1447284263690L` * `$filter=(deviceId ge ''abcdef0123456789abcdef0123456789'') and (deviceId lt ''bacdef0123456789abcdef0123456789'') and (lastModified gt 1447284263690L)` The first example is used automatically for paging when returning the `nextLink` property. The filter expression is a combination of checks on some properties that can be compared to their value. The available operators are: * `gt`  : greater than * `ge`  : greater than or equals * `lt`  : less than * `le`  : less than or equals * `and` : to add multiple checks (all checks must pass), optional parentheses can be used. The properties that can be used in the expression are the following: * `deviceId {operator} ''{deviceIdValue}''` : a lexicographical comparison is made on the deviceId value, use single quotes for the value. * `lastModified {operator} {number}L` : returns only meta properties or appInfo properties whose last value modification timestamp compared to the specified value is matching (value is milliseconds since January 1st, 1970 UTC). Please note the `L` character after the number of milliseconds, its required when the number of milliseconds exceeds `2^31 - 1` (which is always the case for recent timestamps). Using `lastModified` excludes all devices from the output that have no property matching the timestamp criteria, like `$select`. Please note that the internal value of `lastModified` timestamp for a given property is never part of the results.'
                         (oas-tags):
                           - Device
                       '/{deviceId}':
@@ -673,7 +644,6 @@ securitySchemes:
                             description: Device identifier.
                             required: true
                             type: string
-                            displayName: Device identifier.
                         get:
                           displayName: Devices_GetByDeviceId
                           description: Get the information associated to a device running an application.
@@ -732,7 +702,6 @@ securitySchemes:
                             description: User identifier.
                             required: true
                             type: string
-                            displayName: User identifier.
                         get:
                           displayName: Devices_GetByUserId
                           description: Get the information associated to a device running an application using the user identifier.
@@ -796,7 +765,6 @@ securitySchemes:
                               - nativePushes
                             required: true
                             type: string
-                            displayName: Campaign kind.
                         get:
                           (oas-x-ms-pageable):
                             nextLinkName: nextLink
@@ -822,27 +790,22 @@ securitySchemes:
                               description: 'Control paging of campaigns, start results at the given offset, defaults to 0 (1st page of data).'
                               required: false
                               type: integer
-                              displayName: 'Control paging of campaigns, start results at the given offset, defaults to 0 (1st page of data).'
                             $top:
                               description: 'Control paging of campaigns, number of campaigns to return with each call. It returns all campaigns by default. When specifying $top parameter, the response contains a `nextLink` property describing the path to get the next page if there are more results.'
                               required: false
                               type: integer
-                              displayName: 'Control paging of campaigns, number of campaigns to return with each call. It returns all campaigns by default. When specifying $top parameter, the response contains a `nextLink` property describing the path to get the next page if there are more results.'
                             $filter:
                               description: 'Filter can be used to restrict the results to campaigns matching a specific state. The syntax is `$filter=state eq ''draft''`. Valid state values are: draft, scheduled, in-progress, and finished. Only the eq operator and the state property are supported.'
                               required: false
                               type: string
-                              displayName: 'Filter can be used to restrict the results to campaigns matching a specific state. The syntax is `$filter=state eq ''draft''`. Valid state values are: draft, scheduled, in-progress, and finished. Only the eq operator and the state property are supported.'
                             $orderby:
                               description: 'Sort results by an expression which looks like `$orderby=id asc` (this example is actually the default behavior). The syntax is orderby={property} {direction} or just orderby={property}. The available sorting properties are id, name, state, activatedDate, and finishedDate. The available directions are asc (for ascending order) and desc (for descending order). When not specified the asc direction is used. Only one property at a time can be used for sorting.'
                               required: false
                               type: string
-                              displayName: 'Sort results by an expression which looks like `$orderby=id asc` (this example is actually the default behavior). The syntax is orderby={property} {direction} or just orderby={property}. The available sorting properties are id, name, state, activatedDate, and finishedDate. The available directions are asc (for ascending order) and desc (for descending order). When not specified the asc direction is used. Only one property at a time can be used for sorting.'
                             $search:
                               description: 'Restrict results to campaigns matching the optional `search` expression. This currently performs the search based on the name on the campaign only, case insensitive. If the campaign contains the value of the `search` parameter anywhere in the name, it matches.'
                               required: false
                               type: string
-                              displayName: 'Restrict results to campaigns matching the optional `search` expression. This currently performs the search based on the name on the campaign only, case insensitive. If the campaign contains the value of the `search` parameter anywhere in the name, it matches.'
                           (oas-tags):
                             - Campaign
                             - List
@@ -881,7 +844,6 @@ securitySchemes:
                               description: Campaign identifier.
                               required: true
                               type: integer
-                              displayName: Campaign identifier.
                           get:
                             displayName: Campaigns_Get
                             description: The Get campaign operation retrieves information about a previously created campaign.
@@ -1142,7 +1104,6 @@ securitySchemes:
                               description: Campaign name.
                               required: true
                               type: string
-                              displayName: Campaign name.
                           get:
                             displayName: Campaigns_GetByName
                             description: The Get campaign operation retrieves information about a previously created campaign.

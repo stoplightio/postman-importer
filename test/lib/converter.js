@@ -435,6 +435,11 @@ describe.skip('from swagger to raml: apis-guru', function () {
 	let baseDir = __dirname + '/../data/apis-guru/swagger';
 	let testFiles = fs.readdirSync(baseDir);
 	
+	const excluded = [
+		'watchful.li1.0.0swagger.json',
+		'versioneye.comv2swagger.json',
+		'uploady.comv1-betaswagger.json'
+	]
 	const excludedValidation = [
 		'azure.com/arm-insights/2015-04-01/swagger.json',
 		'azure.com/arm-insights/2015-07-01/swagger.json',
@@ -487,7 +492,7 @@ describe.skip('from swagger to raml: apis-guru', function () {
 		if (!_.startsWith(testFile, '.')) {
 			let sourceFile = baseDir + '/' + testFile;
 			let targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'raml');
-			let validate = !excludedValidation.includes(testFile);
+			let validate = !excluded.includes(testFile) && !excludedValidation.includes(testFile);
 			
 			if (process.env.fileToTest) {
 				if (_.endsWith(sourceFile, process.env.fileToTest)) {

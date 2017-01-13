@@ -142,7 +142,6 @@ securitySchemes:
               description: 'Identifier of the teacher to return. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
               required: true
               type: string
-              displayName: 'Identifier of the teacher to return. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
           delete:
             displayName: classroom.courses.teachers.delete
             description: 'Deletes a teacher of a course. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to delete teachers of this course or for access errors. * `NOT_FOUND` if no teacher of this course has the requested ID or if the course does not exist. * `FAILED_PRECONDITION` if the requested ID belongs to the primary teacher of this course.'
@@ -200,11 +199,9 @@ securitySchemes:
             pageSize:
               description: Maximum number of items to return. Zero means no maximum. The server may return fewer than the specified number of results.
               type: integer
-              displayName: Maximum number of items to return. Zero means no maximum. The server may return fewer than the specified number of results.
             pageToken:
               description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
               type: string
-              displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
           securedBy:
             - Oauth2:
                 scopes:
@@ -226,11 +223,9 @@ securitySchemes:
             pageSize:
               description: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
               type: integer
-              displayName: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
             pageToken:
               description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
               type: string
-              displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
           securedBy:
             - Oauth2:
                 scopes:
@@ -258,7 +253,6 @@ securitySchemes:
               description: Alias to delete. This may not be the Classroom-assigned identifier.
               required: true
               type: string
-              displayName: Alias to delete. This may not be the Classroom-assigned identifier.
           delete:
             displayName: classroom.courses.aliases.delete
             description: 'Deletes an alias of a course. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to remove the alias or for access errors. * `NOT_FOUND` if the alias does not exist.'
@@ -353,7 +347,6 @@ securitySchemes:
                   description: Identifier of the student submission.
                   required: true
                   type: string
-                  displayName: Identifier of the student submission.
               get:
                 displayName: classroom.courses.courseWork.studentSubmissions.get
                 description: 'Returns a student submission. * `PERMISSION_DENIED` if the requesting user is not permitted to access the requested course, course work, or student submission or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course, course work, or student submission does not exist.'
@@ -400,7 +393,6 @@ securitySchemes:
                   updateMask:
                     description: 'Mask that identifies which fields on the student submission to update. This field is required to do an update. The update fails if invalid fields are specified. The following fields may be specified by teachers: * `draft_grade` * `assigned_grade`'
                     type: string
-                    displayName: 'Mask that identifies which fields on the student submission to update. This field is required to do an update. The update fails if invalid fields are specified. The following fields may be specified by teachers: * `draft_grade` * `assigned_grade`'
                 securedBy:
                   - Oauth2:
                       scopes:
@@ -414,7 +406,6 @@ securitySchemes:
                   description: Identifier of the student submission.
                   required: true
                   type: string
-                  displayName: Identifier of the student submission.
               post:
                 displayName: classroom.courses.courseWork.studentSubmissions.modifyAttachments
                 description: 'Modifies attachments of student submission. Attachments may only be added to student submissions whose type is `ASSIGNMENT`. This request must be made by the Developer Console project of the [OAuth client ID](https://support.google.com/cloud/answer/6158849) used to create the corresponding course work item. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access the requested course or course work, if the user is not permitted to modify attachments on the requested student submission, or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course, course work, or student submission does not exist.'
@@ -455,7 +446,6 @@ securitySchemes:
                   description: Identifier of the student submission.
                   required: true
                   type: string
-                  displayName: Identifier of the student submission.
               post:
                 displayName: classroom.courses.courseWork.studentSubmissions.return
                 description: 'Returns a student submission. Returning a student submission transfers ownership of attached Drive files to the student and may also update the submission state. Unlike the Classroom application, returning a student submission does not set assignedGrade to the draftGrade value. Only a teacher of the course that contains the requested student submission may call this method. This request must be made by the Developer Console project of the [OAuth client ID](https://support.google.com/cloud/answer/6158849) used to create the corresponding course work item. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access the requested course or course work, return the requested student submission, or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course, course work, or student submission does not exist.'
@@ -496,7 +486,6 @@ securitySchemes:
                   description: Identifier of the student submission.
                   required: true
                   type: string
-                  displayName: Identifier of the student submission.
               post:
                 displayName: classroom.courses.courseWork.studentSubmissions.turnIn
                 description: 'Turns in a student submission. Turning in a student submission transfers ownership of attached Drive files to the teacher and may also update the submission state. This may only be called by the student that owns the specified student submission. This request must be made by the Developer Console project of the [OAuth client ID](https://support.google.com/cloud/answer/6158849) used to create the corresponding course work item. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access the requested course or course work, turn in the requested student submission, or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course, course work, or student submission does not exist.'
@@ -537,7 +526,6 @@ securitySchemes:
                   description: Identifier of the student submission.
                   required: true
                   type: string
-                  displayName: Identifier of the student submission.
               post:
                 displayName: classroom.courses.courseWork.studentSubmissions.reclaim
                 description: 'Reclaims a student submission on behalf of the student that owns it. Reclaiming a student submission transfers ownership of attached Drive files to the student and update the submission state. Only the student that ownes the requested student submission may call this method, and only for a student submission that has been turned in. This request must be made by the Developer Console project of the [OAuth client ID](https://support.google.com/cloud/answer/6158849) used to create the corresponding course work item. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access the requested course or course work, unsubmit the requested student submission, or for access errors. * `FAILED_PRECONDITION` if the student submission has not been turned in. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course, course work, or student submission does not exist.'
@@ -584,7 +572,6 @@ securitySchemes:
                 userId:
                   description: 'Optional argument to restrict returned student work to those owned by the student with the specified identifier. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
                   type: string
-                  displayName: 'Optional argument to restrict returned student work to those owned by the student with the specified identifier. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
                 states:
                   collectionFormat: multi
                   description: 'Requested submission states. If specified, returned student submissions match one of the specified submission states.'
@@ -598,7 +585,6 @@ securitySchemes:
                       - RECLAIMED_BY_STUDENT
                     type: string
                   type: array
-                  displayName: 'Requested submission states. If specified, returned student submissions match one of the specified submission states.'
                   facets:
                     collectionFormat: string
                 late:
@@ -608,15 +594,12 @@ securitySchemes:
                     - LATE_ONLY
                     - NOT_LATE_ONLY
                   type: string
-                  displayName: 'Requested lateness value. If specified, returned student submissions are restricted by the requested value. If unspecified, submissions are returned regardless of `late` value.'
                 pageSize:
                   description: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
                   type: integer
-                  displayName: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
                 pageToken:
                   description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
                   type: string
-                  displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
               securedBy:
                 - Oauth2:
                     scopes:
@@ -644,7 +627,6 @@ securitySchemes:
               description: Identifier of the course work.
               required: true
               type: string
-              displayName: Identifier of the course work.
           get:
             displayName: classroom.courses.courseWork.get
             description: 'Returns course work. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access the requested course or course work, or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course or course work does not exist.'
@@ -695,21 +677,17 @@ securitySchemes:
                   - DELETED
                 type: string
               type: array
-              displayName: 'Restriction on the work status to return. Only courseWork that matches is returned. If unspecified, items with a work status of `PUBLISHED` is returned.'
               facets:
                 collectionFormat: string
             orderBy:
               description: 'Optional sort ordering for results. A comma-separated list of fields with an optional sort direction keyword. Supported fields are `updateTime` and `dueDate`. Supported direction keywords are `asc` and `desc`. If not specified, `updateTime desc` is the default behavior. Examples: `dueDate asc,updateTime desc`, `updateTime,dueDate desc`'
               type: string
-              displayName: 'Optional sort ordering for results. A comma-separated list of fields with an optional sort direction keyword. Supported fields are `updateTime` and `dueDate`. Supported direction keywords are `asc` and `desc`. If not specified, `updateTime desc` is the default behavior. Examples: `dueDate asc,updateTime desc`, `updateTime,dueDate desc`'
             pageSize:
               description: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
               type: integer
-              displayName: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
             pageToken:
               description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
               type: string
-              displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
           securedBy:
             - Oauth2:
                 scopes:
@@ -735,7 +713,6 @@ securitySchemes:
             enrollmentCode:
               description: Enrollment code of the course to create the student in. This code is required if userId corresponds to the requesting user; it may be omitted if the requesting user has administrative permissions to create students for any user.
               type: string
-              displayName: Enrollment code of the course to create the student in. This code is required if userId corresponds to the requesting user; it may be omitted if the requesting user has administrative permissions to create students for any user.
           securedBy:
             - Oauth2:
                 scopes:
@@ -763,7 +740,6 @@ securitySchemes:
               description: 'Identifier of the student to delete. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
               required: true
               type: string
-              displayName: 'Identifier of the student to delete. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
           get:
             displayName: classroom.courses.students.get
             description: 'Returns a student of a course. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to view students of this course or for access errors. * `NOT_FOUND` if no student of this course has the requested ID or if the course does not exist.'
@@ -821,11 +797,9 @@ securitySchemes:
             pageSize:
               description: Maximum number of items to return. Zero means no maximum. The server may return fewer than the specified number of results.
               type: integer
-              displayName: Maximum number of items to return. Zero means no maximum. The server may return fewer than the specified number of results.
             pageToken:
               description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
               type: string
-              displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
           securedBy:
             - Oauth2:
                 scopes:
@@ -845,11 +819,9 @@ securitySchemes:
         studentId:
           description: 'Restricts returned courses to those having a student with the specified identifier. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
           type: string
-          displayName: 'Restricts returned courses to those having a student with the specified identifier. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
         teacherId:
           description: 'Restricts returned courses to those having a teacher with the specified identifier. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
           type: string
-          displayName: 'Restricts returned courses to those having a teacher with the specified identifier. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
         courseStates:
           collectionFormat: multi
           description: Restricts returned courses to those in one of the specified states
@@ -862,17 +834,14 @@ securitySchemes:
               - DECLINED
             type: string
           type: array
-          displayName: Restricts returned courses to those in one of the specified states
           facets:
             collectionFormat: string
         pageSize:
           description: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
           type: integer
-          displayName: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
         pageToken:
           description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
           type: string
-          displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
       securedBy:
         - Oauth2:
             scopes:
@@ -900,7 +869,6 @@ securitySchemes:
           description: Identifier of the course to update. This identifier can be either the Classroom-assigned identifier or an alias.
           required: true
           type: string
-          displayName: Identifier of the course to update. This identifier can be either the Classroom-assigned identifier or an alias.
       delete:
         displayName: classroom.courses.delete
         description: 'Deletes a course. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to delete the requested course or for access errors. * `NOT_FOUND` if no course exists with the requested ID.'
@@ -962,7 +930,6 @@ securitySchemes:
           updateMask:
             description: 'Mask that identifies which fields on the course to update. This field is required to do an update. The update will fail if invalid fields are specified. The following fields are valid: * `name` * `section` * `descriptionHeading` * `description` * `room` * `courseState` When set in a query parameter, this field should be specified as `updateMask=,,...`'
             type: string
-            displayName: 'Mask that identifies which fields on the course to update. This field is required to do an update. The update will fail if invalid fields are specified. The following fields are valid: * `name` * `section` * `descriptionHeading` * `description` * `room` * `courseState` When set in a query parameter, this field should be specified as `updateMask=,,...`'
         securedBy:
           - Oauth2:
               scopes:
@@ -1016,7 +983,6 @@ securitySchemes:
           description: 'Identifier of the profile to return. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
           required: true
           type: string
-          displayName: 'Identifier of the profile to return. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
       get:
         displayName: classroom.userProfiles.get
         description: 'Returns a user profile. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access this user profile or if no profile exists with the requested ID or for access errors.'
@@ -1063,7 +1029,6 @@ securitySchemes:
             invitedEmailAddress:
               description: 'If specified, only results with the specified `invited_email_address` will be returned.'
               type: string
-              displayName: 'If specified, only results with the specified `invited_email_address` will be returned.'
             states:
               collectionFormat: multi
               description: 'If specified, only results with the specified `state` values will be returned. Otherwise, results with a `state` of `PENDING` will be returned.'
@@ -1074,17 +1039,14 @@ securitySchemes:
                   - COMPLETE
                 type: string
               type: array
-              displayName: 'If specified, only results with the specified `state` values will be returned. Otherwise, results with a `state` of `PENDING` will be returned.'
               facets:
                 collectionFormat: string
             pageToken:
               description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
               type: string
-              displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
             pageSize:
               description: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
               type: integer
-              displayName: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
           (oas-tags):
             - userProfiles
         is:
@@ -1123,7 +1085,6 @@ securitySchemes:
               description: The `id` field of the `GuardianInvitation` to be modified.
               required: true
               type: string
-              displayName: The `id` field of the `GuardianInvitation` to be modified.
           get:
             displayName: classroom.userProfiles.guardianInvitations.get
             description: 'Returns a specific guardian invitation. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to view guardian invitations for the student identified by the `student_id`, if guardians are not enabled for the domain in question, or for other access errors. * `INVALID_ARGUMENT` if a `student_id` is specified, but its format cannot be recognized (it is not an email address, nor a `student_id` from the API, nor the literal string `me`). * `NOT_FOUND` if Classroom cannot find any record of the given student or `invitation_id`. May also be returned if the student exists, but the requesting user does not have access to see that student.'
@@ -1166,7 +1127,6 @@ securitySchemes:
               updateMask:
                 description: 'Mask that identifies which fields on the course to update. This field is required to do an update. The update will fail if invalid fields are specified. The following fields are valid: * `state` When set in a query parameter, this field should be specified as `updateMask=,,...`'
                 type: string
-                displayName: 'Mask that identifies which fields on the course to update. This field is required to do an update. The update will fail if invalid fields are specified. The following fields are valid: * `state` When set in a query parameter, this field should be specified as `updateMask=,,...`'
             (oas-tags):
               - userProfiles
       /guardians:
@@ -1178,7 +1138,6 @@ securitySchemes:
               description: The `id` field from a `Guardian`.
               required: true
               type: string
-              displayName: The `id` field from a `Guardian`.
           get:
             displayName: classroom.userProfiles.guardians.get
             description: 'Returns a specific guardian. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to view guardian information for the student identified by the `student_id`, if guardians are not enabled for the domain in question, or for other access errors. * `INVALID_ARGUMENT` if a `student_id` is specified, but its format cannot be recognized (it is not an email address, nor a `student_id` from the API, nor the literal string `me`). * `NOT_FOUND` if Classroom cannot find any record of the given student or `guardian_id`, or if the guardian has been disabled.'
@@ -1228,15 +1187,12 @@ securitySchemes:
             invitedEmailAddress:
               description: 'Filter results by the email address that the original invitation was sent to, resulting in this guardian link. This filter can only be used by domain administrators.'
               type: string
-              displayName: 'Filter results by the email address that the original invitation was sent to, resulting in this guardian link. This filter can only be used by domain administrators.'
             pageToken:
               description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
               type: string
-              displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
             pageSize:
               description: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
               type: integer
-              displayName: Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results.
           (oas-tags):
             - userProfiles
         is:
@@ -1268,19 +1224,15 @@ securitySchemes:
         userId:
           description: 'Restricts returned invitations to those for a specific user. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
           type: string
-          displayName: 'Restricts returned invitations to those for a specific user. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user'
         courseId:
           description: Restricts returned invitations to those for a course with the specified identifier.
           type: string
-          displayName: Restricts returned invitations to those for a course with the specified identifier.
         pageSize:
           description: Maximum number of items to return. Zero means no maximum. The server may return fewer than the specified number of results.
           type: integer
-          displayName: Maximum number of items to return. Zero means no maximum. The server may return fewer than the specified number of results.
         pageToken:
           description: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
           type: string
-          displayName: 'nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token.'
       securedBy:
         - Oauth2:
             scopes:
@@ -1327,7 +1279,6 @@ securitySchemes:
           description: Identifier of the invitation to return.
           required: true
           type: string
-          displayName: Identifier of the invitation to return.
       delete:
         displayName: classroom.invitations.delete
         description: 'Deletes an invitation. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to delete the requested invitation or for access errors. * `NOT_FOUND` if no invitation exists with the requested ID.'
@@ -1379,7 +1330,6 @@ securitySchemes:
           description: Identifier of the invitation to accept.
           required: true
           type: string
-          displayName: Identifier of the invitation to accept.
       post:
         displayName: classroom.invitations.accept
         description: 'Accepts an invitation, removing it and adding the invited user to the teachers or students (as appropriate) of the specified course. Only the invited user may accept an invitation. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to accept the requested invitation or for access errors. * `FAILED_PRECONDITION` for the following request errors: * CourseMemberLimitReached * CourseNotModifiable * CourseTeacherLimitReached * UserGroupsMembershipLimitReached * `NOT_FOUND` if no invitation exists with the requested ID.'

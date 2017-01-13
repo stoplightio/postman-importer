@@ -140,7 +140,6 @@ securitySchemes:
             description: The ID of the parent.
             required: true
             type: string
-            displayName: The ID of the parent.
         delete:
           displayName: drive.parents.delete
           description: Removes a parent from a file.
@@ -233,12 +232,10 @@ securitySchemes:
           emailMessage:
             description: A custom message to include in notification emails.
             type: string
-            displayName: A custom message to include in notification emails.
           sendNotificationEmails:
             default: true
             description: Whether to send notification emails when sharing to users or groups. This parameter is ignored and an email is sent if the role is owner.
             type: boolean
-            displayName: Whether to send notification emails when sharing to users or groups. This parameter is ignored and an email is sent if the role is owner.
         securedBy:
           - Oauth2:
               scopes:
@@ -252,7 +249,6 @@ securitySchemes:
             description: The ID for the permission.
             required: true
             type: string
-            displayName: The ID for the permission.
         delete:
           displayName: drive.permissions.delete
           description: Deletes a permission from a file.
@@ -306,12 +302,10 @@ securitySchemes:
               default: false
               description: Whether to remove the expiration date.
               type: boolean
-              displayName: Whether to remove the expiration date.
             transferOwnership:
               default: false
               description: Whether changing a role to 'owner' downgrades the current owners to writers. Does nothing if the specified role is not 'owner'.
               type: boolean
-              displayName: Whether changing a role to 'owner' downgrades the current owners to writers. Does nothing if the specified role is not 'owner'.
           securedBy:
             - Oauth2:
                 scopes:
@@ -336,12 +330,10 @@ securitySchemes:
               default: false
               description: Whether to remove the expiration date.
               type: boolean
-              displayName: Whether to remove the expiration date.
             transferOwnership:
               default: false
               description: Whether changing a role to 'owner' downgrades the current owners to writers. Does nothing if the specified role is not 'owner'.
               type: boolean
-              displayName: Whether changing a role to 'owner' downgrades the current owners to writers. Does nothing if the specified role is not 'owner'.
           securedBy:
             - Oauth2:
                 scopes:
@@ -353,7 +345,6 @@ securitySchemes:
         description: The ID of the file to delete.
         required: true
         type: string
-        displayName: The ID of the file to delete.
     get:
       displayName: drive.files.get
       description: Gets a file's metadata by ID.
@@ -368,23 +359,19 @@ securitySchemes:
           default: false
           description: Whether the user is acknowledging the risk of downloading known malware or other abusive files.
           type: boolean
-          displayName: Whether the user is acknowledging the risk of downloading known malware or other abusive files.
         projection:
           description: This parameter is deprecated and has no function.
           enum:
             - BASIC
             - FULL
           type: string
-          displayName: This parameter is deprecated and has no function.
         revisionId:
           description: Specifies the Revision ID that should be downloaded. Ignored unless alt=media is specified.
           type: string
-          displayName: Specifies the Revision ID that should be downloaded. Ignored unless alt=media is specified.
         updateViewedDate:
           default: false
           description: 'Deprecated: Use files.update with modifiedDateBehavior=noChange, updateViewedDate=true and an empty request body.'
           type: boolean
-          displayName: 'Deprecated: Use files.update with modifiedDateBehavior=noChange, updateViewedDate=true and an empty request body.'
       securedBy:
         - Oauth2:
             scopes:
@@ -416,12 +403,10 @@ securitySchemes:
         addParents:
           description: Comma-separated list of parent IDs to add.
           type: string
-          displayName: Comma-separated list of parent IDs to add.
         convert:
           default: false
           description: This parameter is deprecated and has no function.
           type: boolean
-          displayName: This parameter is deprecated and has no function.
         modifiedDateBehavior:
           description: Determines the behavior in which modifiedDate is updated. This overrides setModifiedDate.
           enum:
@@ -432,53 +417,42 @@ securitySchemes:
             - now
             - nowIfNeeded
           type: string
-          displayName: Determines the behavior in which modifiedDate is updated. This overrides setModifiedDate.
         newRevision:
           default: true
           description: 'Whether a blob upload should create a new revision. If false, the blob data in the current head revision is replaced. If true or not set, a new blob is created as head revision, and previous unpinned revisions are preserved for a short period of time. Pinned revisions are stored indefinitely, using additional storage quota, up to a maximum of 200 revisions. For details on how revisions are retained, see the Drive Help Center.'
           type: boolean
-          displayName: 'Whether a blob upload should create a new revision. If false, the blob data in the current head revision is replaced. If true or not set, a new blob is created as head revision, and previous unpinned revisions are preserved for a short period of time. Pinned revisions are stored indefinitely, using additional storage quota, up to a maximum of 200 revisions. For details on how revisions are retained, see the Drive Help Center.'
         ocr:
           default: false
           description: 'Whether to attempt OCR on .jpg, .png, .gif, or .pdf uploads.'
           type: boolean
-          displayName: 'Whether to attempt OCR on .jpg, .png, .gif, or .pdf uploads.'
         ocrLanguage:
           description: 'If ocr is true, hints at the language to use. Valid values are BCP 47 codes.'
           type: string
-          displayName: 'If ocr is true, hints at the language to use. Valid values are BCP 47 codes.'
         pinned:
           default: false
           description: Whether to pin the new revision. A file can have a maximum of 200 pinned revisions.
           type: boolean
-          displayName: Whether to pin the new revision. A file can have a maximum of 200 pinned revisions.
         removeParents:
           description: Comma-separated list of parent IDs to remove.
           type: string
-          displayName: Comma-separated list of parent IDs to remove.
         setModifiedDate:
           default: false
           description: Whether to set the modified date with the supplied modified date.
           type: boolean
-          displayName: Whether to set the modified date with the supplied modified date.
         timedTextLanguage:
           description: The language of the timed text.
           type: string
-          displayName: The language of the timed text.
         timedTextTrackName:
           description: The timed text track name.
           type: string
-          displayName: The timed text track name.
         updateViewedDate:
           default: true
           description: Whether to update the view date after successfully updating the file.
           type: boolean
-          displayName: Whether to update the view date after successfully updating the file.
         useContentAsIndexableText:
           default: false
           description: Whether to use the content as indexable text.
           type: boolean
-          displayName: Whether to use the content as indexable text.
       securedBy:
         - Oauth2:
             scopes:
@@ -536,7 +510,6 @@ securitySchemes:
             description: The key of the property.
             required: true
             type: string
-            displayName: The key of the property.
         delete:
           displayName: drive.properties.delete
           description: Deletes a property.
@@ -548,7 +521,6 @@ securitySchemes:
               default: private
               description: The visibility of the property.
               type: string
-              displayName: The visibility of the property.
           securedBy:
             - Oauth2:
                 scopes:
@@ -577,7 +549,6 @@ securitySchemes:
               default: private
               description: The visibility of the property.
               type: string
-              displayName: The visibility of the property.
           securedBy:
             - Oauth2:
                 scopes:
@@ -602,7 +573,6 @@ securitySchemes:
               default: private
               description: The visibility of the property.
               type: string
-              displayName: The visibility of the property.
           securedBy:
             - Oauth2:
                 scopes:
@@ -627,7 +597,6 @@ securitySchemes:
               default: private
               description: The visibility of the property.
               type: string
-              displayName: The visibility of the property.
           securedBy:
             - Oauth2:
                 scopes:
@@ -670,7 +639,6 @@ securitySchemes:
             description: The ID of the comment.
             required: true
             type: string
-            displayName: The ID of the comment.
         get:
           displayName: drive.comments.get
           description: Gets a comment by ID.
@@ -685,7 +653,6 @@ securitySchemes:
               default: false
               description: 'If set, this will succeed when retrieving a deleted comment, and will include any deleted replies.'
               type: boolean
-              displayName: 'If set, this will succeed when retrieving a deleted comment, and will include any deleted replies.'
           securedBy:
             - Oauth2:
                 scopes:
@@ -755,7 +722,6 @@ securitySchemes:
                 description: The ID of the reply.
                 required: true
                 type: string
-                displayName: The ID of the reply.
             get:
               displayName: drive.replies.get
               description: Gets a reply.
@@ -770,7 +736,6 @@ securitySchemes:
                   default: false
                   description: 'If set, this will succeed when retrieving a deleted reply.'
                   type: boolean
-                  displayName: 'If set, this will succeed when retrieving a deleted reply.'
               securedBy:
                 - Oauth2:
                     scopes:
@@ -849,18 +814,15 @@ securitySchemes:
                 default: false
                 description: 'If set, all replies, including deleted replies (with content stripped) will be returned.'
                 type: boolean
-                displayName: 'If set, all replies, including deleted replies (with content stripped) will be returned.'
               maxResults:
                 default: 20
                 description: 'The maximum number of replies to include in the response, used for paging.'
                 maximum: 100
                 minimum: 0
                 type: integer
-                displayName: 'The maximum number of replies to include in the response, used for paging.'
               pageToken:
                 description: 'The continuation token, used to page through large result sets. To get the next page of results, set this parameter to the value of "nextPageToken" from the previous response.'
                 type: string
-                displayName: 'The continuation token, used to page through large result sets. To get the next page of results, set this parameter to the value of "nextPageToken" from the previous response.'
             securedBy:
               - Oauth2:
                   scopes:
@@ -912,22 +874,18 @@ securitySchemes:
             default: false
             description: 'If set, all comments and replies, including deleted comments and replies (with content stripped) will be returned.'
             type: boolean
-            displayName: 'If set, all comments and replies, including deleted comments and replies (with content stripped) will be returned.'
           maxResults:
             default: 20
             description: 'The maximum number of discussions to include in the response, used for paging.'
             maximum: 100
             minimum: 0
             type: integer
-            displayName: 'The maximum number of discussions to include in the response, used for paging.'
           pageToken:
             description: 'The continuation token, used to page through large result sets. To get the next page of results, set this parameter to the value of "nextPageToken" from the previous response.'
             type: string
-            displayName: 'The continuation token, used to page through large result sets. To get the next page of results, set this parameter to the value of "nextPageToken" from the previous response.'
           updatedMin:
             description: Only discussions that were updated after this timestamp will be returned. Formatted as an RFC 3339 timestamp.
             type: string
-            displayName: Only discussions that were updated after this timestamp will be returned. Formatted as an RFC 3339 timestamp.
         securedBy:
           - Oauth2:
               scopes:
@@ -947,7 +905,6 @@ securitySchemes:
             description: 'The revision of the Realtime API data model to export. Revisions start at 1 (the initial empty data model) and are incremented with each change. If this parameter is excluded, the most recent data model will be returned.'
             minimum: 1
             type: integer
-            displayName: 'The revision of the Realtime API data model to export. Revisions start at 1 (the initial empty data model) and are incremented with each change. If this parameter is excluded, the most recent data model will be returned.'
         securedBy:
           - Oauth2:
               scopes:
@@ -972,7 +929,6 @@ securitySchemes:
           baseRevision:
             description: 'The revision of the model to diff the uploaded model against. If set, the uploaded model is diffed against the provided revision and those differences are merged with any changes made to the model after the provided revision. If not set, the uploaded model replaces the current model on the server.'
             type: string
-            displayName: 'The revision of the model to diff the uploaded model against. If set, the uploaded model is diffed against the provided revision and those differences are merged with any changes made to the model after the provided revision. If not set, the uploaded model replaces the current model on the server.'
         securedBy:
           - Oauth2:
               scopes:
@@ -992,7 +948,6 @@ securitySchemes:
             description: The MIME type of the format requested for this export.
             required: true
             type: string
-            displayName: The MIME type of the format requested for this export.
         securedBy:
           - Oauth2:
               scopes:
@@ -1025,11 +980,9 @@ securitySchemes:
             maximum: 1000
             minimum: 1
             type: integer
-            displayName: Maximum number of revisions to return.
           pageToken:
             description: 'Page token for revisions. To get the next page of results, set this parameter to the value of "nextPageToken" from the previous response.'
             type: string
-            displayName: 'Page token for revisions. To get the next page of results, set this parameter to the value of "nextPageToken" from the previous response.'
         securedBy:
           - Oauth2:
               scopes:
@@ -1051,7 +1004,6 @@ securitySchemes:
             description: The ID for the revision.
             required: true
             type: string
-            displayName: The ID for the revision.
         delete:
           displayName: drive.revisions.delete
           description: Removes a revision.
@@ -1142,12 +1094,10 @@ securitySchemes:
         addParents:
           description: Comma-separated list of parent IDs to add.
           type: string
-          displayName: Comma-separated list of parent IDs to add.
         convert:
           default: false
           description: This parameter is deprecated and has no function.
           type: boolean
-          displayName: This parameter is deprecated and has no function.
         modifiedDateBehavior:
           description: Determines the behavior in which modifiedDate is updated. This overrides setModifiedDate.
           enum:
@@ -1158,53 +1108,42 @@ securitySchemes:
             - now
             - nowIfNeeded
           type: string
-          displayName: Determines the behavior in which modifiedDate is updated. This overrides setModifiedDate.
         newRevision:
           default: true
           description: 'Whether a blob upload should create a new revision. If false, the blob data in the current head revision is replaced. If true or not set, a new blob is created as head revision, and previous unpinned revisions are preserved for a short period of time. Pinned revisions are stored indefinitely, using additional storage quota, up to a maximum of 200 revisions. For details on how revisions are retained, see the Drive Help Center.'
           type: boolean
-          displayName: 'Whether a blob upload should create a new revision. If false, the blob data in the current head revision is replaced. If true or not set, a new blob is created as head revision, and previous unpinned revisions are preserved for a short period of time. Pinned revisions are stored indefinitely, using additional storage quota, up to a maximum of 200 revisions. For details on how revisions are retained, see the Drive Help Center.'
         ocr:
           default: false
           description: 'Whether to attempt OCR on .jpg, .png, .gif, or .pdf uploads.'
           type: boolean
-          displayName: 'Whether to attempt OCR on .jpg, .png, .gif, or .pdf uploads.'
         ocrLanguage:
           description: 'If ocr is true, hints at the language to use. Valid values are BCP 47 codes.'
           type: string
-          displayName: 'If ocr is true, hints at the language to use. Valid values are BCP 47 codes.'
         pinned:
           default: false
           description: Whether to pin the new revision. A file can have a maximum of 200 pinned revisions.
           type: boolean
-          displayName: Whether to pin the new revision. A file can have a maximum of 200 pinned revisions.
         removeParents:
           description: Comma-separated list of parent IDs to remove.
           type: string
-          displayName: Comma-separated list of parent IDs to remove.
         setModifiedDate:
           default: false
           description: Whether to set the modified date with the supplied modified date.
           type: boolean
-          displayName: Whether to set the modified date with the supplied modified date.
         timedTextLanguage:
           description: The language of the timed text.
           type: string
-          displayName: The language of the timed text.
         timedTextTrackName:
           description: The timed text track name.
           type: string
-          displayName: The timed text track name.
         updateViewedDate:
           default: true
           description: Whether to update the view date after successfully updating the file.
           type: boolean
-          displayName: Whether to update the view date after successfully updating the file.
         useContentAsIndexableText:
           default: false
           description: Whether to use the content as indexable text.
           type: boolean
-          displayName: Whether to use the content as indexable text.
       securedBy:
         - Oauth2:
             scopes:
@@ -1306,23 +1245,19 @@ securitySchemes:
             default: false
             description: Whether the user is acknowledging the risk of downloading known malware or other abusive files.
             type: boolean
-            displayName: Whether the user is acknowledging the risk of downloading known malware or other abusive files.
           projection:
             description: This parameter is deprecated and has no function.
             enum:
               - BASIC
               - FULL
             type: string
-            displayName: This parameter is deprecated and has no function.
           revisionId:
             description: Specifies the Revision ID that should be downloaded. Ignored unless alt=media is specified.
             type: string
-            displayName: Specifies the Revision ID that should be downloaded. Ignored unless alt=media is specified.
           updateViewedDate:
             default: false
             description: 'Deprecated: Use files.update with modifiedDateBehavior=noChange, updateViewedDate=true and an empty request body.'
             type: boolean
-            displayName: 'Deprecated: Use files.update with modifiedDateBehavior=noChange, updateViewedDate=true and an empty request body.'
         securedBy:
           - Oauth2:
               scopes:
@@ -1357,29 +1292,23 @@ securitySchemes:
             default: false
             description: Whether to convert this file to the corresponding Google Docs format.
             type: boolean
-            displayName: Whether to convert this file to the corresponding Google Docs format.
           ocr:
             default: false
             description: 'Whether to attempt OCR on .jpg, .png, .gif, or .pdf uploads.'
             type: boolean
-            displayName: 'Whether to attempt OCR on .jpg, .png, .gif, or .pdf uploads.'
           ocrLanguage:
             description: 'If ocr is true, hints at the language to use. Valid values are BCP 47 codes.'
             type: string
-            displayName: 'If ocr is true, hints at the language to use. Valid values are BCP 47 codes.'
           pinned:
             default: false
             description: Whether to pin the head revision of the new copy. A file can have a maximum of 200 pinned revisions.
             type: boolean
-            displayName: Whether to pin the head revision of the new copy. A file can have a maximum of 200 pinned revisions.
           timedTextLanguage:
             description: The language of the timed text.
             type: string
-            displayName: The language of the timed text.
           timedTextTrackName:
             description: The timed text track name.
             type: string
-            displayName: The timed text track name.
           visibility:
             default: DEFAULT
             description: The visibility of the new file. This parameter is only relevant when the source is not a native Google Doc and convert=false.
@@ -1387,7 +1316,6 @@ securitySchemes:
               - DEFAULT
               - PRIVATE
             type: string
-            displayName: The visibility of the new file. This parameter is only relevant when the source is not a native Google Doc and convert=false.
         securedBy:
           - Oauth2:
               scopes:
@@ -1432,34 +1360,27 @@ securitySchemes:
         default: false
         description: Whether to convert this file to the corresponding Google Docs format.
         type: boolean
-        displayName: Whether to convert this file to the corresponding Google Docs format.
       ocr:
         default: false
         description: 'Whether to attempt OCR on .jpg, .png, .gif, or .pdf uploads.'
         type: boolean
-        displayName: 'Whether to attempt OCR on .jpg, .png, .gif, or .pdf uploads.'
       ocrLanguage:
         description: 'If ocr is true, hints at the language to use. Valid values are BCP 47 codes.'
         type: string
-        displayName: 'If ocr is true, hints at the language to use. Valid values are BCP 47 codes.'
       pinned:
         default: false
         description: Whether to pin the head revision of the uploaded file. A file can have a maximum of 200 pinned revisions.
         type: boolean
-        displayName: Whether to pin the head revision of the uploaded file. A file can have a maximum of 200 pinned revisions.
       timedTextLanguage:
         description: The language of the timed text.
         type: string
-        displayName: The language of the timed text.
       timedTextTrackName:
         description: The timed text track name.
         type: string
-        displayName: The timed text track name.
       useContentAsIndexableText:
         default: false
         description: Whether to use the content as indexable text.
         type: boolean
-        displayName: Whether to use the content as indexable text.
       visibility:
         default: DEFAULT
         description: The visibility of the new file. This parameter is only relevant when convert=false.
@@ -1467,7 +1388,6 @@ securitySchemes:
           - DEFAULT
           - PRIVATE
         type: string
-        displayName: The visibility of the new file. This parameter is only relevant when convert=false.
     securedBy:
       - Oauth2:
           scopes:
@@ -1522,12 +1442,10 @@ securitySchemes:
           maximum: 1000
           minimum: 1
           type: integer
-          displayName: Maximum number of IDs to return.
         space:
           default: drive
           description: The space in which the IDs can be used to create new files. Supported values are 'drive' and 'appDataFolder'.
           type: string
-          displayName: The space in which the IDs can be used to create new files. Supported values are 'drive' and 'appDataFolder'.
       securedBy:
         - Oauth2:
             scopes:
@@ -1558,36 +1476,29 @@ securitySchemes:
           - DEFAULT
           - DOMAIN
         type: string
-        displayName: The body of items (files/documents) to which the query applies.
       maxResults:
         default: 100
         description: Maximum number of files to return.
         minimum: 0
         type: integer
-        displayName: Maximum number of files to return.
       orderBy:
         description: 'A comma-separated list of sort keys. Valid keys are ''createdDate'', ''folder'', ''lastViewedByMeDate'', ''modifiedByMeDate'', ''modifiedDate'', ''quotaBytesUsed'', ''recency'', ''sharedWithMeDate'', ''starred'', and ''title''. Each key sorts ascending by default, but may be reversed with the ''desc'' modifier. Example usage: ?orderBy=folder,modifiedDate desc,title. Please note that there is a current limitation for users with approximately one million files in which the requested sort order is ignored.'
         type: string
-        displayName: 'A comma-separated list of sort keys. Valid keys are ''createdDate'', ''folder'', ''lastViewedByMeDate'', ''modifiedByMeDate'', ''modifiedDate'', ''quotaBytesUsed'', ''recency'', ''sharedWithMeDate'', ''starred'', and ''title''. Each key sorts ascending by default, but may be reversed with the ''desc'' modifier. Example usage: ?orderBy=folder,modifiedDate desc,title. Please note that there is a current limitation for users with approximately one million files in which the requested sort order is ignored.'
       pageToken:
         description: Page token for files.
         type: string
-        displayName: Page token for files.
       projection:
         description: This parameter is deprecated and has no function.
         enum:
           - BASIC
           - FULL
         type: string
-        displayName: This parameter is deprecated and has no function.
       q:
         description: Query string for searching files.
         type: string
-        displayName: Query string for searching files.
       spaces:
         description: 'A comma-separated list of spaces to query. Supported values are ''drive'', ''appDataFolder'' and ''photos''.'
         type: string
-        displayName: 'A comma-separated list of spaces to query. Supported values are ''drive'', ''appDataFolder'' and ''photos''.'
     securedBy:
       - Oauth2:
           scopes:
@@ -1605,7 +1516,6 @@ securitySchemes:
             description: The ID of the child.
             required: true
             type: string
-            displayName: The ID of the child.
         get:
           displayName: drive.children.get
           description: Gets a specific child reference.
@@ -1683,19 +1593,15 @@ securitySchemes:
             description: Maximum number of children to return.
             minimum: 0
             type: integer
-            displayName: Maximum number of children to return.
           orderBy:
             description: 'A comma-separated list of sort keys. Valid keys are ''createdDate'', ''folder'', ''lastViewedByMeDate'', ''modifiedByMeDate'', ''modifiedDate'', ''quotaBytesUsed'', ''recency'', ''sharedWithMeDate'', ''starred'', and ''title''. Each key sorts ascending by default, but may be reversed with the ''desc'' modifier. Example usage: ?orderBy=folder,modifiedDate desc,title. Please note that there is a current limitation for users with approximately one million files in which the requested sort order is ignored.'
             type: string
-            displayName: 'A comma-separated list of sort keys. Valid keys are ''createdDate'', ''folder'', ''lastViewedByMeDate'', ''modifiedByMeDate'', ''modifiedDate'', ''quotaBytesUsed'', ''recency'', ''sharedWithMeDate'', ''starred'', and ''title''. Each key sorts ascending by default, but may be reversed with the ''desc'' modifier. Example usage: ?orderBy=folder,modifiedDate desc,title. Please note that there is a current limitation for users with approximately one million files in which the requested sort order is ignored.'
           pageToken:
             description: Page token for children.
             type: string
-            displayName: Page token for children.
           q:
             description: Query string for searching children.
             type: string
-            displayName: Query string for searching children.
         securedBy:
           - Oauth2:
               scopes:
@@ -1711,7 +1617,6 @@ securitySchemes:
         description: The email address for which to return a permission ID
         required: true
         type: string
-        displayName: The email address for which to return a permission ID
     get:
       displayName: drive.permissions.getIdForEmail
       description: Returns the permission ID for an email address.
@@ -1751,16 +1656,13 @@ securitySchemes:
         default: true
         description: 'When calculating the number of remaining change IDs, whether to include public files the user has opened and shared files. When set to false, this counts only change IDs for owned files and any shared or public files that the user has explicitly added to a folder they own.'
         type: boolean
-        displayName: 'When calculating the number of remaining change IDs, whether to include public files the user has opened and shared files. When set to false, this counts only change IDs for owned files and any shared or public files that the user has explicitly added to a folder they own.'
       maxChangeIdCount:
         default: '1'
         description: Maximum number of remaining change IDs to count
         type: string
-        displayName: Maximum number of remaining change IDs to count
       startChangeId:
         description: Change ID to start counting from when calculating number of remaining change IDs
         type: string
-        displayName: Change ID to start counting from when calculating number of remaining change IDs
     securedBy:
       - Oauth2:
           scopes:
@@ -1784,7 +1686,6 @@ securitySchemes:
         description: The ID of the app.
         required: true
         type: string
-        displayName: The ID of the app.
     get:
       displayName: drive.apps.get
       description: Gets a specific app.
@@ -1822,16 +1723,13 @@ securitySchemes:
         default: ''
         description: 'A comma-separated list of file extensions for open with filtering. All apps within the given app query scope which can open any of the given file extensions will be included in the response. If appFilterMimeTypes are provided as well, the result is a union of the two resulting app lists.'
         type: string
-        displayName: 'A comma-separated list of file extensions for open with filtering. All apps within the given app query scope which can open any of the given file extensions will be included in the response. If appFilterMimeTypes are provided as well, the result is a union of the two resulting app lists.'
       appFilterMimeTypes:
         default: ''
         description: 'A comma-separated list of MIME types for open with filtering. All apps within the given app query scope which can open any of the given MIME types will be included in the response. If appFilterExtensions are provided as well, the result is a union of the two resulting app lists.'
         type: string
-        displayName: 'A comma-separated list of MIME types for open with filtering. All apps within the given app query scope which can open any of the given MIME types will be included in the response. If appFilterExtensions are provided as well, the result is a union of the two resulting app lists.'
       languageCode:
         description: 'A language or locale code, as defined by BCP 47, with some extensions from Unicode''s LDML format (http://www.unicode.org/reports/tr35/).'
         type: string
-        displayName: 'A language or locale code, as defined by BCP 47, with some extensions from Unicode''s LDML format (http://www.unicode.org/reports/tr35/).'
     securedBy:
       - Oauth2:
           scopes:
@@ -1868,30 +1766,24 @@ securitySchemes:
           default: true
           description: Whether to include deleted items.
           type: boolean
-          displayName: Whether to include deleted items.
         includeSubscribed:
           default: true
           description: 'Whether to include public files the user has opened and shared files. When set to false, the list only includes owned files plus any shared or public files the user has explicitly added to a folder they own.'
           type: boolean
-          displayName: 'Whether to include public files the user has opened and shared files. When set to false, the list only includes owned files plus any shared or public files the user has explicitly added to a folder they own.'
         maxResults:
           default: 100
           description: Maximum number of changes to return.
           minimum: 1
           type: integer
-          displayName: Maximum number of changes to return.
         pageToken:
           description: Page token for changes.
           type: string
-          displayName: Page token for changes.
         spaces:
           description: 'A comma-separated list of spaces to query. Supported values are ''drive'', ''appDataFolder'' and ''photos''.'
           type: string
-          displayName: 'A comma-separated list of spaces to query. Supported values are ''drive'', ''appDataFolder'' and ''photos''.'
         startChangeId:
           description: Change ID to start listing changes from.
           type: string
-          displayName: Change ID to start listing changes from.
       securedBy:
         - Oauth2:
             scopes:
@@ -1913,7 +1805,6 @@ securitySchemes:
         description: The ID of the change.
         required: true
         type: string
-        displayName: The ID of the change.
     get:
       displayName: drive.changes.get
       description: Gets a specific change.
@@ -1951,30 +1842,24 @@ securitySchemes:
         default: true
         description: Whether to include deleted items.
         type: boolean
-        displayName: Whether to include deleted items.
       includeSubscribed:
         default: true
         description: 'Whether to include public files the user has opened and shared files. When set to false, the list only includes owned files plus any shared or public files the user has explicitly added to a folder they own.'
         type: boolean
-        displayName: 'Whether to include public files the user has opened and shared files. When set to false, the list only includes owned files plus any shared or public files the user has explicitly added to a folder they own.'
       maxResults:
         default: 100
         description: Maximum number of changes to return.
         minimum: 1
         type: integer
-        displayName: Maximum number of changes to return.
       pageToken:
         description: Page token for changes.
         type: string
-        displayName: Page token for changes.
       spaces:
         description: 'A comma-separated list of spaces to query. Supported values are ''drive'', ''appDataFolder'' and ''photos''.'
         type: string
-        displayName: 'A comma-separated list of spaces to query. Supported values are ''drive'', ''appDataFolder'' and ''photos''.'
       startChangeId:
         description: Change ID to start listing changes from.
         type: string
-        displayName: Change ID to start listing changes from.
     securedBy:
       - Oauth2:
           scopes:

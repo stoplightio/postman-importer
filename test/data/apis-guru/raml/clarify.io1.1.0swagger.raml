@@ -131,7 +131,6 @@ annotationTypes:
           description: id of a bundle
           required: true
           type: string
-          displayName: id of a bundle
       delete:
         displayName: DELETE_v1-bundles-bundle_id
         description: Delete a bundle and its related metadata and tracks. This will only delete media stored on Clarify systems and not delete the source media on remote systems.<br/><br/>Successful response will be a HTTP code 204 with an empty body.
@@ -171,7 +170,6 @@ annotationTypes:
               description: id of a track
               required: true
               type: string
-              displayName: id of a track
           get:
             displayName: GET_v1-bundles-bundle_id-tracks-track_id
             description: 'Gets a single track in a bundle. This includes the specification of the media and the status of fetching and processing it.<br/><br/>Media for a track is fetched asynchronously. Until media has been retrieved, a track&apos;s <b>duration</b> and <b>size</b> will both be set to -1.'
@@ -355,7 +353,6 @@ annotationTypes:
               description: id of an insight
               required: true
               type: string
-              displayName: id of an insight
           get:
             displayName: GET_v1-bundles-bundle_id-insights-insight_id
             description: 'Gets a particular insight for a bundle. Typically, you will hit this endpoint from a link contained in a response to <b>/v1/bundles/{bundle_id}/insights</b><br/><br/>The insight response contains an array of objects called <b>track_data</b>, where the array indexes correspond to the tracks in the bundle. Each object in the array contains insight-specific data related to that insight. For example, in the <b>spoken_words</b> insight, the <b>track_data</b> objects contain the field <b>word_count</b> which is the number of spoken words found in the track.<br/><br/>Insights that contain data in different file formats will have one or more link relations in the _links array for the corresponding data. Note that the href URLs in these links have a limited lifespan and should not be stored locally.'
@@ -407,7 +404,6 @@ annotationTypes:
             description: 'list of link relations to embed in the result bundle. Zero or more of: tracks, metadata, insights. List is space or comma separated single string or an array of strings'
             required: false
             type: string
-            displayName: 'list of link relations to embed in the result bundle. Zero or more of: tracks, metadata, insights. List is space or comma separated single string or an array of strings'
         (oas-tags):
           - bundles
     get:
@@ -429,17 +425,14 @@ annotationTypes:
           minimum: 1
           required: false
           type: integer
-          displayName: limit results to specified number of bundles. Default is 10. Max 100.
         embed:
           description: 'list of link relations to embed in the result collection. Zero or more of: items, tracks, metadata, insights. List is space or comma separated single string or an array of strings'
           required: false
           type: string
-          displayName: 'list of link relations to embed in the result collection. Zero or more of: items, tracks, metadata, insights. List is space or comma separated single string or an array of strings'
         iterator:
           description: 'opaque value, automatically provided in next/prev links'
           required: false
           type: string
-          displayName: 'opaque value, automatically provided in next/prev links'
       (oas-tags):
         - bundles
     post:
@@ -516,17 +509,14 @@ annotationTypes:
           description: 'search terms, typically as typed into a search field. Up to 120 characters.'
           required: false
           type: string
-          displayName: 'search terms, typically as typed into a search field. Up to 120 characters.'
         query_fields:
           description: 'list of insights, metadata, and bundle fields to search with the query. Use insights.spoken_words for searching audio, metadata.* for all metadata fields, bundle.* for all bundle fields, * for audio and all fields. Default is insights.spoken_words and metadata.*. List is space or comma separated single string or an array of strings. If single string, up to 1024 characters.'
           required: false
           type: string
-          displayName: 'list of insights, metadata, and bundle fields to search with the query. Use insights.spoken_words for searching audio, metadata.* for all metadata fields, bundle.* for all bundle fields, * for audio and all fields. Default is insights.spoken_words and metadata.*. List is space or comma separated single string or an array of strings. If single string, up to 1024 characters.'
         filter:
           description: 'filter expression, typically programmatically generated based on input controls and data segregation rules etc. Up to 500 characters.'
           required: false
           type: string
-          displayName: 'filter expression, typically programmatically generated based on input controls and data segregation rules etc. Up to 500 characters.'
         language:
           description: 'Language to search in, specified with an RFC5646 code. Default is "en"'
           enum:
@@ -537,24 +527,20 @@ annotationTypes:
             - fr
           required: false
           type: string
-          displayName: 'Language to search in, specified with an RFC5646 code. Default is "en"'
         limit:
           description: limit results to specified number of bundles. Default is 10. Max 100.
           maximum: 100
           minimum: 1
           required: false
           type: integer
-          displayName: limit results to specified number of bundles. Default is 10. Max 100.
         embed:
           description: 'list of link relations to embed in the result collection. Zero or more of: items, tracks, metadata, insights. List is space or comma separated single string or an array of strings'
           required: false
           type: string
-          displayName: 'list of link relations to embed in the result collection. Zero or more of: items, tracks, metadata, insights. List is space or comma separated single string or an array of strings'
         iterator:
           description: 'opaque value, automatically provided in next/prev links'
           required: false
           type: string
-          displayName: 'opaque value, automatically provided in next/prev links'
       (oas-tags):
         - search
 types:

@@ -127,17 +127,14 @@ securitySchemes:
         description: ID of the Home you're interested in
         required: true
         type: string
-        displayName: ID of the Home you're interested in
       event_id:
         description: Your request will retrieve events occured before this one
         required: true
         type: string
-        displayName: Your request will retrieve events occured before this one
       size:
         description: Number of events to retrieve. Default is 30.
         required: false
         type: integer
-        displayName: Number of events to retrieve. Default is 30.
     securedBy:
       - password_oauth
     (oas-tags):
@@ -163,12 +160,10 @@ securitySchemes:
         description: The relay id
         required: true
         type: string
-        displayName: The relay id
       module_id:
         description: The thermostat id
         required: true
         type: string
-        displayName: The thermostat id
     securedBy:
       - password_oauth
     (oas-tags):
@@ -189,7 +184,6 @@ securitySchemes:
         description: Id of the device you want to retrieve information of
         required: false
         type: string
-        displayName: Id of the device you want to retrieve information of
     (oas-tags):
       - station
 /addwebhook:
@@ -209,12 +203,10 @@ securitySchemes:
         description: Your webhook callback url
         required: true
         type: string
-        displayName: Your webhook callback url
       app_type:
         description: 'Webhooks are only available for Welcome, enter app_camera.'
         required: true
         type: string
-        displayName: 'Webhooks are only available for Welcome, enter app_camera.'
     securedBy:
       - password_oauth
     (oas-tags):
@@ -235,7 +227,6 @@ securitySchemes:
         description: Id of the device you want to retrieve information of
         required: false
         type: string
-        displayName: Id of the device you want to retrieve information of
     (oas-tags):
       - thermostat
 /devicelist:
@@ -259,17 +250,14 @@ securitySchemes:
           - app_station
         required: false
         type: string
-        displayName: Defines which device type will be returned by devicelist. It could be app_thermostat or app_station (by default if not provided)
       device_id:
         description: Specify a device_id if you want to retrieve only this device informations.
         required: false
         type: string
-        displayName: Specify a device_id if you want to retrieve only this device informations.
       get_favorites:
         description: 'When set to "true", the favorite devices of the user are returned. This flag is available only if the devices requested are Weather Stations.'
         required: false
         type: boolean
-        displayName: 'When set to "true", the favorite devices of the user are returned. This flag is available only if the devices requested are Weather Stations.'
     securedBy:
       - password_oauth
     (oas-tags):
@@ -293,12 +281,10 @@ securitySchemes:
         description: The relay id
         required: true
         type: string
-        displayName: The relay id
       module_id:
         description: The thermostat id
         required: true
         type: string
-        displayName: The thermostat id
     securedBy:
       - password_oauth
     (oas-tags):
@@ -325,12 +311,10 @@ securitySchemes:
         description: 'id of the image (can be retrieved as ''id'' in ''face'' in Gethomedata, or as ''id'' in ''snapshot'' in Getnextevents, Getlasteventof and Geteventsuntil)'
         required: true
         type: string
-        displayName: 'id of the image (can be retrieved as ''id'' in ''face'' in Gethomedata, or as ''id'' in ''snapshot'' in Getnextevents, Getlasteventof and Geteventsuntil)'
       key:
         description: Security key to access snapshots.
         required: true
         type: string
-        displayName: Security key to access snapshots.
     securedBy:
       - password_oauth
     (oas-tags):
@@ -370,12 +354,10 @@ securitySchemes:
         description: Specify if you're looking for the events of a specific Home.
         required: false
         type: string
-        displayName: Specify if you're looking for the events of a specific Home.
       size:
         description: Number of events to retrieve. Default is 30.
         required: false
         type: integer
-        displayName: Number of events to retrieve. Default is 30.
     securedBy:
       - password_oauth
     (oas-tags):
@@ -397,12 +379,10 @@ securitySchemes:
         description: Id of the device whose module's measurements you want to retrieve. This _id can be found in the user's devices field.
         required: true
         type: string
-        displayName: Id of the device whose module's measurements you want to retrieve. This _id can be found in the user's devices field.
       module_id:
         description: If you don't specify any module_id you will retrieve the device's measurements. If you specify a module_id you will retrieve the module's measurements.
         required: false
         type: string
-        displayName: If you don't specify any module_id you will retrieve the device's measurements. If you specify a module_id you will retrieve the module's measurements.
       scale:
         description: |
           Defines the time interval between two measurements.
@@ -424,16 +404,6 @@ securitySchemes:
           - 1month
         required: true
         type: string
-        displayName: |
-          Defines the time interval between two measurements.
-          Possible values :
-          max -> every value stored will be returned
-          30min -> 1 value every 30 minutes
-          1hour -> 1 value every hour
-          3hours -> 1 value every 3 hours
-          1day -> 1 value per day
-          1week -> 1 value per week
-          1month -> 1 value per month
       type:
         collectionFormat: csv
         description: |
@@ -528,63 +498,6 @@ securitySchemes:
           type: string
         required: true
         type: array
-        displayName: |
-          Sets the type of measurement you want to retrieve.
-          The different types of measurements must be given in a comma separated list of strings.
-          Example: type="Temperature,Humidity"
-          Depending on the device's type and the scale, different measurements are available:
-          For Weather Station :
-
-            max -> Temperature, CO2, Humidity, Pressure, Noise, Rain (if
-          module_id is a rain sensor)
-
-            30min, 1hour, 3hours -> Temperature, CO2, Humidity, Pressure,
-          Noise, min_temp, max_temp, min_hum, max_hum, min_pressure, max_pressure, min_noise, max_noise, sum_rain (if module_id is a rain sensor)
-
-            1day, 1week, 1month -> Temperature, Co2, Humidity, Pressure, Noise,
-          min_temp, date_min_temp, max_temp, date_max_temp, min_hum, date_min_hum, max_hum, date_max_hum, min_pressure, date_min_pressure, max_pressure, date_max_pressure, min_noise, date_min_noise, max_noise, date_max_noise, date_min_co2, date_max_co2, sum_rain (if module_id is a rain sensor)
-          Please note, the measurements sent in the response will be in the same order as in this list.
-          All measurements are expressed in metric units:
-
-            Temperature: Celsius
-
-            Humidity: %
-
-            Co2: ppm
-
-            Pressure: mbar
-
-            Noise: db
-
-            Rain: mm
-
-          For Thermostat:
-
-            max -> Temperature, Sp_Temperature, BoilerOn, BoilerOff
-
-            30min, 1hour, 3hours -> Temperature, Sp_Temperature, min_temp,
-          max_temp, sum_boiler_on, sum_boiler_off
-
-            1day, 1week, 1month -> Temperature, min_temp, date_min_temp,
-          max_temp, sum_boiler_on, sum_boiler_off
-
-            where
-
-          Temperature: Celsius
-
-            Sp_Temperature (temperature setpoint): Celsius
-
-            BoilerOn: Duration, since the previous data point, during which the
-          boiler has been on (in seconds)
-
-            BoilerOff : Duration, since the previous data point, during which
-          the boiler has been off (in seconds).
-
-            sum_boiler_on: Total duration during which the boiler has been on,
-          at a specific scale (in seconds).
-
-            sum_boiler_off: Total duration during which the boiler has been
-          off, at a specific scale (in seconds).
         facets:
           collectionFormat: string
       date_begin:
@@ -594,25 +507,18 @@ securitySchemes:
         format: int32
         required: false
         type: integer
-        displayName: |
-          Starting timestamp (utc) of the requested measurements.
-          Please note measurement retrieving is limited to 1024 measurements. 
       date_end:
         description: |
           Ending timestamp (utc) of the request measurements.
           If you want only the last measurement, do not provide date_begin, and set date_end to "last". 
         required: false
         type: string
-        displayName: |
-          Ending timestamp (utc) of the request measurements.
-          If you want only the last measurement, do not provide date_begin, and set date_end to "last". 
       limit:
         description: Limits the number of measurements returned (default & max is 1024)
         format: int32
         maximum: 1024
         required: false
         type: integer
-        displayName: Limits the number of measurements returned (default & max is 1024)
       optimize:
         description: |
           Allows you to choose the format of the answer.
@@ -638,28 +544,6 @@ securitySchemes:
           Default value is true.
         required: false
         type: boolean
-        displayName: |
-          Allows you to choose the format of the answer.
-          If you build a mobile app and bandwith usage is an issue, use optimize = true.
-          Use optimize = false, for an easier parse. In this case, values are indexed by sorted timestamp.
-          Example of un-optimized response :
-          {"status": "ok", 
-            "body": {
-              "1347575400": [18.3,39],
-              "1347586200": [20.6,48]
-            },
-          "time_exec": 0.012136936187744}
-          If optimize is set true, measurements are returned as an array of series of regularly spaced measurements. Each series is defined by a beginning time beg_time and a step between measurements, step_time:
-          {"status": "ok",
-            "body": [
-              {"beg_time": 1347575400,
-               "step_time": 10800,
-               "value": 
-                  [[18.3,39],
-                  [ 20.6,48]]
-              }],
-          "time_exec": 0.014238119125366}
-          Default value is true.
       real_time:
         description: |
           In scales higher than max, since the data is aggregated, the timestamps returned are by default offset by +(scale/2).
@@ -667,10 +551,6 @@ securitySchemes:
           NB : The servers always store data with real_time set to true and data are offset by this parameter AFTER having being time-filtered, thus you could have data after date_end if real_time is set to false.
         required: false
         type: boolean
-        displayName: |
-          In scales higher than max, since the data is aggregated, the timestamps returned are by default offset by +(scale/2).
-          For instance, if you ask for measurements at a daily scale, you will receive data timestamped at 12:00 if real_time is set to false (default case), and timestamped at 00:00 if real_time is set to true.
-          NB : The servers always store data with real_time set to true and data are offset by this parameter AFTER having being time-filtered, thus you could have data after date_end if real_time is set to false.
     securedBy:
       - password_oauth
     (oas-tags):
@@ -694,19 +574,15 @@ securitySchemes:
         description: The relay id
         required: true
         type: string
-        displayName: The relay id
       module_id:
         description: The thermostat id
         required: true
         type: string
-        displayName: The thermostat id
       schedule_id:
         description: |
           The schedule id. It can be found in the getthermstate response, under the keys "therm_program_backup" and "therm_program".
         required: true
         type: string
-        displayName: |
-          The schedule id. It can be found in the getthermstate response, under the keys "therm_program_backup" and "therm_program".
     securedBy:
       - password_oauth
     (oas-tags):
@@ -727,12 +603,10 @@ securitySchemes:
         description: The relay id
         required: true
         type: string
-        displayName: The relay id
       module_id:
         description: The thermostat id
         required: true
         type: string
-        displayName: The thermostat id
       setpoint_mode:
         description: Chosen setpoint_mode
         enum:
@@ -744,19 +618,16 @@ securitySchemes:
           - max
         required: true
         type: string
-        displayName: Chosen setpoint_mode
       setpoint_endtime:
         description: 'When using the manual or max setpoint_mode, this parameter defines when the setpoint expires.'
         format: int32
         required: false
         type: integer
-        displayName: 'When using the manual or max setpoint_mode, this parameter defines when the setpoint expires.'
       setpoint_temp:
         description: 'When using the manual setpoint_mode, this parameter defines the temperature setpoint (in Celcius) to use.'
         format: float
         required: false
         type: number
-        displayName: 'When using the manual setpoint_mode, this parameter defines the temperature setpoint (in Celcius) to use.'
     securedBy:
       - password_oauth
     (oas-tags):
@@ -778,12 +649,10 @@ securitySchemes:
         description: ID of the Home you're interested in
         required: true
         type: string
-        displayName: ID of the Home you're interested in
       person_id:
         description: 'If a person_id is specified, that person will be set as ''Away''. If no person_id is specified, the Home will be set as ''Empty''.'
         required: false
         type: string
-        displayName: 'If a person_id is specified, that person will be set as ''Away''. If no person_id is specified, the Home will be set as ''Empty''.'
     securedBy:
       - password_oauth
     (oas-tags):
@@ -824,12 +693,10 @@ securitySchemes:
         description: The relay id
         required: true
         type: string
-        displayName: The relay id
       module_id:
         description: The thermostat id
         required: true
         type: string
-        displayName: The thermostat id
     securedBy:
       - password_oauth
     (oas-tags):
@@ -851,17 +718,14 @@ securitySchemes:
         description: ID of the Home you're interested in
         required: true
         type: string
-        displayName: ID of the Home you're interested in
       person_id:
         description: Your request will retrieve all events of the given home until the most recent event of the given person
         required: true
         type: string
-        displayName: Your request will retrieve all events of the given home until the most recent event of the given person
       offset:
         description: Number of events to retrieve. Default is 30.
         required: false
         type: integer
-        displayName: Number of events to retrieve. Default is 30.
     securedBy:
       - password_oauth
     (oas-tags):
@@ -883,12 +747,10 @@ securitySchemes:
         description: ID of the Home you're interested in
         required: true
         type: string
-        displayName: ID of the Home you're interested in
       event_id:
         description: Your request will retrieve all the events until this one
         required: true
         type: string
-        displayName: Your request will retrieve all the events until this one
     securedBy:
       - password_oauth
     (oas-tags):
@@ -910,7 +772,6 @@ securitySchemes:
         description: 'For Welcome, use app_camera'
         required: true
         type: string
-        displayName: 'For Welcome, use app_camera'
     securedBy:
       - password_oauth
     (oas-tags):

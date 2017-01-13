@@ -102,7 +102,6 @@ annotationTypes:
                 format: int64
                 required: true
                 type: integer
-                displayName: The key of the webinar panelist
             delete:
               displayName: deleteWebinarPanelist
               description: Removes a webinar panelist.
@@ -224,7 +223,6 @@ annotationTypes:
                 format: int64
                 required: true
                 type: integer
-                displayName: The key of the webinar session
             get:
               displayName: getWebinarSession
               description: 'Retrieves attendance details for a specific webinar session that has ended. If attendees attended the session (''registrantsAttended''), specific attendance details, such as attendenceTime for a registrant, will also be retrieved.'
@@ -279,7 +277,6 @@ annotationTypes:
                     format: int64
                     required: true
                     type: integer
-                    displayName: The key of the registrant
                 get:
                   displayName: getAttendee
                   description: Retrieve registration details for a particular attendee of a specific webinar session.
@@ -548,7 +545,6 @@ annotationTypes:
                 description: Indicates whether the confirmation email should be resent when a registrant is re-registered. The default value is false.
                 required: false
                 type: boolean
-                displayName: Indicates whether the confirmation email should be resent when a registrant is re-registered. The default value is false.
             (oas-tags):
               - Registrants
           /fields:
@@ -581,7 +577,6 @@ annotationTypes:
                 format: int64
                 required: true
                 type: integer
-                displayName: The key of the registrant
             delete:
               displayName: deleteRegistrant
               description: 'Removes a webinar registrant from current registrations for the specified webinar. The webinar must be a scheduled, future webinar.'
@@ -625,7 +620,6 @@ annotationTypes:
             format: int64
             required: true
             type: integer
-            displayName: The key of the webinar
         get:
           displayName: getWebinar
           description: 'Retrieve information on a specific webinar. If the type of the webinar is ''sequence'', a sequence of future times will be provided. Webinars of type ''series'' are treated the same as normal webinars - each session in the webinar series has a different webinarKey. If an organizer cancels a webinar, then a request to get that webinar would return a ''404 Not Found'' error.'
@@ -697,7 +691,6 @@ annotationTypes:
                 description: Defines whether to send notifications to participants
                 required: false
                 type: boolean
-                displayName: Defines whether to send notifications to participants
             (oas-tags):
               - Webinars
           get:
@@ -775,7 +768,6 @@ annotationTypes:
                     description: By default only internal co-organizers (with a GoToWebinar account) will retrieve the resent invitation email. If you want to use this call for external co-organizers you have to set this parameter to 'true'.
                     required: false
                     type: boolean
-                    displayName: By default only internal co-organizers (with a GoToWebinar account) will retrieve the resent invitation email. If you want to use this call for external co-organizers you have to set this parameter to 'true'.
                 (oas-tags):
                   - Co-organizers
             uriParameters:
@@ -784,13 +776,11 @@ annotationTypes:
                 format: int64
                 required: true
                 type: integer
-                displayName: The key of the organizer
               coorganizerKey:
                 description: The key of the internal or external co-organizer (memberKey)
                 format: int64
                 required: true
                 type: integer
-                displayName: The key of the internal or external co-organizer (memberKey)
             delete:
               displayName: deleteCoorganizer
               description: Deletes an internal co-organizer specified by the coorganizerKey (memberKey).
@@ -811,7 +801,6 @@ annotationTypes:
                   description: By default only internal co-organizers (with a GoToWebinar account) can be deleted. If you want to use this call for external co-organizers you have to set this parameter to 'true'.
                   required: false
                   type: boolean
-                  displayName: By default only internal co-organizers (with a GoToWebinar account) can be deleted. If you want to use this call for external co-organizers you have to set this parameter to 'true'.
               (oas-tags):
                 - Co-organizers
           get:
@@ -858,7 +847,6 @@ annotationTypes:
               description: Indicates whether cancellation notice emails should be sent. The default value is false
               required: false
               type: boolean
-              displayName: Indicates whether cancellation notice emails should be sent. The default value is false
           (oas-tags):
             - Webinars
         /meetingtimes:
@@ -908,7 +896,6 @@ annotationTypes:
               description: Defines whether to send notifications to participants
               required: false
               type: boolean
-              displayName: Defines whether to send notifications to participants
           (oas-tags):
             - Webinars
       post:
@@ -980,13 +967,11 @@ annotationTypes:
             format: rfc3339
             required: true
             type: datetime
-            displayName: 'A required start of datetime range in ISO8601 UTC format, e.g. 2015-07-13T10:00:00Z'
           toTime:
             description: 'A required end of datetime range in ISO8601 UTC format, e.g. 2015-07-13T22:00:00Z'
             format: rfc3339
             required: true
             type: datetime
-            displayName: 'A required end of datetime range in ISO8601 UTC format, e.g. 2015-07-13T22:00:00Z'
         (oas-tags):
           - Webinars
     /upcomingWebinars:
@@ -1037,18 +1022,15 @@ annotationTypes:
             format: rfc3339
             required: true
             type: datetime
-            displayName: 'A required start of datetime range in ISO8601 UTC format, e.g. 2015-07-13T10:00:00Z'
           toTime:
             description: 'A required end of datetime range in ISO8601 UTC format, e.g. 2015-07-13T22:00:00Z'
             format: rfc3339
             required: true
             type: datetime
-            displayName: 'A required end of datetime range in ISO8601 UTC format, e.g. 2015-07-13T22:00:00Z'
           includes:
             description: 'Optional comma-delimited list to request additional information for each webinar session in the response. The supported values are: audio, attendees, attendeepolls, attendeesurveys, attendeequestions, attendeeinterestrating, panelists, webinar. The format is &include=audio,attendees,panelists'
             required: false
             type: string
-            displayName: 'Optional comma-delimited list to request additional information for each webinar session in the response. The supported values are: audio, attendees, attendeepolls, attendeesurveys, attendeequestions, attendeeinterestrating, panelists, webinar. The format is &include=audio,attendees,panelists'
         (oas-tags):
           - Sessions
 types:

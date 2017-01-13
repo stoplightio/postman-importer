@@ -126,7 +126,6 @@ securitySchemes:
           description: ISSN identifier of journal that needs to be fetched.
           required: true
           type: string
-          displayName: ISSN identifier of journal that needs to be fetched.
       get:
         displayName: GET_journals-get-issn
         description: Returns a journal with given ISSN identifier.
@@ -206,7 +205,6 @@ securitySchemes:
           description: Search query
           required: true
           type: string
-          displayName: Search query
       get:
         displayName: GET_journals-search-query
         description: 'Searches through all journals and returns a JSON array of search results. Method searches through all journal fields (title, identifiers, subjects, language, rights and publisher).'
@@ -230,7 +228,6 @@ securitySchemes:
             minimum: 1
             required: false
             type: integer
-            displayName: 'Which page of the search results should be retrieved. Can be any number betwen 1 and 100, default is 1 (first page).'
           pageSize:
             default: 10
             description: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
@@ -239,7 +236,6 @@ securitySchemes:
             minimum: 10
             required: false
             type: integer
-            displayName: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
         (oas-tags):
           - journals
 /search:
@@ -251,7 +247,6 @@ securitySchemes:
         description: The search query
         required: true
         type: string
-        displayName: The search query
     get:
       displayName: GET_search-query
       description: Searches through all resources and returns a JSON array with search results. Method searches through all resources and all fields. The results are ordered by relevance score and contain type of the relevant resource and its ID. The metadata of each resource need to be obtained through an appropriate method.
@@ -277,7 +272,6 @@ securitySchemes:
           minimum: 1
           required: false
           type: integer
-          displayName: 'Which page of the search results should be retrieved. Can be any number betwen 1 and 100, default is 1 (first page).'
         pageSize:
           default: 10
           description: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
@@ -286,7 +280,6 @@ securitySchemes:
           minimum: 10
           required: false
           type: integer
-          displayName: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
       (oas-tags):
         - all
   post:
@@ -355,43 +348,36 @@ securitySchemes:
           description: Whether to retrieve the full article metadata or only the IDs. The default value is true
           required: false
           type: boolean
-          displayName: Whether to retrieve the full article metadata or only the IDs. The default value is true
         fulltext:
           default: false
           description: Whether to retrieve fulltexts of the articles. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve fulltexts of the articles. The default value is false
         citations:
           default: false
           description: Whether to retrieve citations found in the articles. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve citations found in the articles. The default value is false
         similar:
           default: false
           description: 'Whether to retrieve lists of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
           required: false
           type: boolean
-          displayName: 'Whether to retrieve lists of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
         duplicate:
           default: false
           description: Whether to retrieve CORE IDs of different versions of the articles. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve CORE IDs of different versions of the articles. The default value is false
         urls:
           default: false
           description: Whether to retrieve lists of URLs of the article fulltexts. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve lists of URLs of the article fulltexts. The default value is false
         faithfulMetadata:
           default: false
           description: Returns the records raw XML metadata from the original repository. The default value is false
           required: false
           type: boolean
-          displayName: Returns the records raw XML metadata from the original repository. The default value is false
       (oas-tags):
         - articles
     '/{coreId}':
@@ -442,7 +428,6 @@ securitySchemes:
               minimum: 1
               required: false
               type: integer
-              displayName: 'Which page of the history results should be retrieved. Can be any number betwen 1 and 100, default is 1 (first page).'
             pageSize:
               default: 10
               description: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
@@ -451,7 +436,6 @@ securitySchemes:
               minimum: 10
               required: false
               type: integer
-              displayName: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
           (oas-tags):
             - articles
       uriParameters:
@@ -460,7 +444,6 @@ securitySchemes:
           format: int64
           required: true
           type: integer
-          displayName: CORE ID of the article that needs to be fetched.
       get:
         displayName: GET_articles-get-coreId
         description: Method will retrieve an article based on given CORE ID.
@@ -483,43 +466,36 @@ securitySchemes:
             description: Whether to retrieve the full article metadata or only the ID. The default value is true.
             required: false
             type: boolean
-            displayName: Whether to retrieve the full article metadata or only the ID. The default value is true.
           fulltext:
             default: false
             description: Whether to retrieve full text of the article. The default value is false
             required: false
             type: boolean
-            displayName: Whether to retrieve full text of the article. The default value is false
           citations:
             default: false
             description: Whether to retrieve citations found in the article. The default value is false
             required: false
             type: boolean
-            displayName: Whether to retrieve citations found in the article. The default value is false
           similar:
             default: false
             description: 'Whether to retrieve a list of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
             required: false
             type: boolean
-            displayName: 'Whether to retrieve a list of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
           duplicate:
             default: false
             description: Whether to retrieve a list of CORE IDs of different versions of the article. The default value is false
             required: false
             type: boolean
-            displayName: Whether to retrieve a list of CORE IDs of different versions of the article. The default value is false
           urls:
             default: false
             description: Whether to retrieve a list of URLs from which the article can be downloaded. This can include links to PDFs as well as HTML pages. The default value is false
             required: false
             type: boolean
-            displayName: Whether to retrieve a list of URLs from which the article can be downloaded. This can include links to PDFs as well as HTML pages. The default value is false
           faithfulMetadata:
             default: false
             description: Returns the records raw XML metadata from the original repository. The default value is false
             required: false
             type: boolean
-            displayName: Returns the records raw XML metadata from the original repository. The default value is false
         (oas-tags):
           - articles
   /search:
@@ -557,43 +533,36 @@ securitySchemes:
           description: Whether to retrieve the full article metadata or only the ID. The default value is true.
           required: false
           type: boolean
-          displayName: Whether to retrieve the full article metadata or only the ID. The default value is true.
         fulltext:
           default: false
           description: Whether to retrieve full text of the article. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve full text of the article. The default value is false
         citations:
           default: false
           description: Whether to retrieve citations found in the article. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve citations found in the article. The default value is false
         similar:
           default: false
           description: 'Whether to retrieve a list of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
           required: false
           type: boolean
-          displayName: 'Whether to retrieve a list of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
         duplicate:
           default: false
           description: Whether to retrieve a list of CORE IDs of different versions of the article. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve a list of CORE IDs of different versions of the article. The default value is false
         urls:
           default: false
           description: Whether to retrieve a list of URLs from which the article can be downloaded. This can include links to PDFs as well as HTML pages. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve a list of URLs from which the article can be downloaded. This can include links to PDFs as well as HTML pages. The default value is false
         faithfulMetadata:
           default: false
           description: Whether to retrieve the raw XML metadata of the article. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve the raw XML metadata of the article. The default value is false
       (oas-tags):
         - articles
     '/{query}':
@@ -604,7 +573,6 @@ securitySchemes:
           format: int64
           required: true
           type: integer
-          displayName: The search query
       get:
         displayName: GET_articles-search-query
         description: Searches through all articles and returns a JSON array with search results. Method searches through all article fields.
@@ -630,7 +598,6 @@ securitySchemes:
             minimum: 1
             required: false
             type: integer
-            displayName: 'Which page of the search results should be retrieved. Can be any number betwen 1 and 100, default is 1 (first page).'
           pageSize:
             default: 10
             description: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
@@ -639,49 +606,41 @@ securitySchemes:
             minimum: 10
             required: false
             type: integer
-            displayName: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
           metadata:
             default: true
             description: Whether to retrieve the full article metadata or only the ID. The default value is true.
             required: false
             type: boolean
-            displayName: Whether to retrieve the full article metadata or only the ID. The default value is true.
           fulltext:
             default: false
             description: Whether to retrieve full text of the article. The default value is false
             required: false
             type: boolean
-            displayName: Whether to retrieve full text of the article. The default value is false
           citations:
             default: false
             description: Whether to retrieve citations found in the article. The default value is false
             required: false
             type: boolean
-            displayName: Whether to retrieve citations found in the article. The default value is false
           similar:
             default: false
             description: 'Whether to retrieve a list of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
             required: false
             type: boolean
-            displayName: 'Whether to retrieve a list of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
           duplicate:
             default: false
             description: Whether to retrieve a list of CORE IDs of different versions of the article. The default value is false
             required: false
             type: boolean
-            displayName: Whether to retrieve a list of CORE IDs of different versions of the article. The default value is false
           urls:
             default: false
             description: Whether to retrieve a list of URLs from which the article can be downloaded. This can include links to PDFs as well as HTML pages. The default value is false
             required: false
             type: boolean
-            displayName: Whether to retrieve a list of URLs from which the article can be downloaded. This can include links to PDFs as well as HTML pages. The default value is false
           faithfulMetadata:
             default: false
             description: Returns the records raw XML metadata from the original repository. The default value is false
             required: false
             type: boolean
-            displayName: Returns the records raw XML metadata from the original repository. The default value is false
         (oas-tags):
           - articles
   /similar:
@@ -715,49 +674,41 @@ securitySchemes:
           minimum: 1
           required: false
           type: integer
-          displayName: 'How many similar articles to retrieve at most. Can be any number betwen 1 and 100, default is 10'
         metadata:
           default: true
           description: Whether to retrieve the full article metadata or only the IDs of the similar articles. The default value is true
           required: false
           type: boolean
-          displayName: Whether to retrieve the full article metadata or only the IDs of the similar articles. The default value is true
         fulltext:
           default: false
           description: Whether to retrieve fulltexts of the similar articles. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve fulltexts of the similar articles. The default value is false
         citations:
           default: false
           description: Whether to retrieve citations found in the articles. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve citations found in the articles. The default value is false
         similar:
           default: false
           description: 'Whether to retrieve lists of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
           required: false
           type: boolean
-          displayName: 'Whether to retrieve lists of similar articles. The default value is false. Because the similar articles are calculated on demand, setting this parameter to true might slightly slow down the response time'
         duplicate:
           default: false
           description: Whether to retrieve CORE IDs of different versions of the articles. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve CORE IDs of different versions of the articles. The default value is false
         urls:
           default: false
           description: Whether to retrieve lists of URLs of the article fulltexts. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve lists of URLs of the article fulltexts. The default value is false
         faithfulMetadata:
           default: false
           description: Whether to retrieve the raw XML metadata of the articles. The default value is false
           required: false
           type: boolean
-          displayName: Whether to retrieve the raw XML metadata of the articles. The default value is false
       (oas-tags):
         - articles
 /repositories:
@@ -800,7 +751,6 @@ securitySchemes:
           description: CORE repository ID of the article that needs to be fetched.
           required: true
           type: integer
-          displayName: CORE repository ID of the article that needs to be fetched.
       get:
         displayName: GET_repositories-get-repositoryId
         description: Method will retrieve a repository based on given CORE repository ID.
@@ -828,7 +778,6 @@ securitySchemes:
           description: The search query
           required: true
           type: string
-          displayName: The search query
       get:
         displayName: GET_repositories-search-query
         description: Searches through all repositories and returns a JSON array with search results. Method searches through all repository fields.
@@ -854,7 +803,6 @@ securitySchemes:
             minimum: 1
             required: false
             type: integer
-            displayName: 'Which page of the search results should be retrieved. Can be any number betwen 1 and 100, default is 1 (first page).'
           pageSize:
             default: 10
             description: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
@@ -863,7 +811,6 @@ securitySchemes:
             minimum: 10
             required: false
             type: integer
-            displayName: 'The number of results to return per page. Can be any number between 10 and 100, default is 10.'
         (oas-tags):
           - repositories
     post:

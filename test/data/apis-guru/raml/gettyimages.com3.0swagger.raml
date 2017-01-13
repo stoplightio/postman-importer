@@ -124,7 +124,6 @@ securitySchemes:
             type: string
           required: false
           type: array
-          displayName: A comma separated list of fields to return in the response.
         ids:
           description: A comma separated list of event ids.
           items:
@@ -132,7 +131,6 @@ securitySchemes:
             type: integer
           required: false
           type: array
-          displayName: A comma separated list of event ids.
       (oas-tags):
         - Events
     '/{id}':
@@ -143,7 +141,6 @@ securitySchemes:
           format: int32
           required: true
           type: integer
-          displayName: An event id.
       get:
         displayName: GET_v3-events-id
         description: Returns an array of event metadata
@@ -186,7 +183,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: A comma separated list of fields to return in the response.
         (oas-tags):
           - Events
   /videos:
@@ -198,7 +194,6 @@ securitySchemes:
           description: A video id. For more than one video please use the /v3/video endpoint.
           required: true
           type: string
-          displayName: A video id. For more than one video please use the /v3/video endpoint.
       get:
         displayName: GET_v3-videos-id
         (oas-summary): Get metadata for a single video by supplying one video id
@@ -263,7 +258,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: comma delimited list of fields to retrive for the video
         (oas-tags):
           - Videos
     get:
@@ -299,7 +293,6 @@ securitySchemes:
             type: string
           required: true
           type: array
-          displayName: Specifies one or more video ids to return. Use comma delimiter when requesting multiple ids.
         fields:
           description: Specifies fields to return. Defaults to 'summary_set'.
           items:
@@ -337,7 +330,6 @@ securitySchemes:
             type: string
           required: false
           type: array
-          displayName: Specifies fields to return. Defaults to 'summary_set'.
       (oas-tags):
         - Videos
   /asset-changes:
@@ -372,13 +364,11 @@ securitySchemes:
             format: int32
             required: true
             type: integer
-            displayName: Specifies the id of the channel for the asset data. Valid channel ids can be found in the results of the Get Partner Channel query.
           batch_size:
             description: Specifies the number of assets to return. The default is 10; maximum is 500.
             format: int32
             required: false
             type: integer
-            displayName: Specifies the number of assets to return. The default is 10; maximum is 500.
         (oas-tags):
           - AssetChanges
       '/{change-set-id}':
@@ -389,7 +379,6 @@ securitySchemes:
             format: int64
             required: true
             type: integer
-            displayName: Specify the change-set-id associated with a transaction resource whose receipt you want to confirm.
         delete:
           displayName: DELETE_v3-asset-changes-change-sets-change-set-id
           (oas-summary): Confirm asset changes acknowledges receipt of asset changes.
@@ -471,7 +460,6 @@ securitySchemes:
             type: string
           required: true
           type: array
-          displayName: Specifies one or more image ids to return. Use comma delimiter when requesting multiple ids.
         fields:
           description: Specifies fields to return. Defaults to 'summary_set'.
           items:
@@ -524,7 +512,6 @@ securitySchemes:
             type: string
           required: false
           type: array
-          displayName: Specifies fields to return. Defaults to 'summary_set'.
       (oas-tags):
         - Images
     '/{id}':
@@ -534,7 +521,6 @@ securitySchemes:
           description: An image id. For more than one image please use the /v3/images endpoint.
           required: true
           type: string
-          displayName: An image id. For more than one image please use the /v3/images endpoint.
       get:
         displayName: GET_v3-images-id
         (oas-summary): Get metadata for a single image by supplying one image id
@@ -614,7 +600,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Specifies fields to return. Defaults to 'summary_set'.
         (oas-tags):
           - Images
       /similar:
@@ -690,19 +675,16 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Specifies fields to return. Defaults to 'summary_set'.
             page:
               description: Identifies page to return. Default is 1.
               format: int32
               required: false
               type: integer
-              displayName: Identifies page to return. Default is 1.
             page_size:
               description: 'Specifies page size. Default is 30, maximum page_size is 100.'
               format: int32
               required: false
               type: integer
-              displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
           (oas-tags):
             - Images
   /boards:
@@ -735,13 +717,11 @@ securitySchemes:
           format: int32
           required: false
           type: integer
-          displayName: Request results starting at a page number (default is 1).
         page_size:
           description: Request number of boards to return in each page. (default is 30)
           format: int32
           required: false
           type: integer
-          displayName: Request number of boards to return in each page. (default is 30)
       (oas-tags):
         - Boards
     '/{board_id}':
@@ -751,7 +731,6 @@ securitySchemes:
           description: A board ID.
           required: true
           type: string
-          displayName: A board ID.
       delete:
         displayName: DELETE_v3-boards-board_id
         (oas-summary): <b>***BETA***</b> Delete a board
@@ -820,7 +799,6 @@ securitySchemes:
               description: An asset ID.
               required: true
               type: string
-              displayName: An asset ID.
           put:
             displayName: PUT_v3-boards-board_id-assets-asset_id
             (oas-summary): <b>***BETA***</b> Add an asset to a board
@@ -1005,7 +983,6 @@ securitySchemes:
             type: string
           required: false
           type: array
-          displayName: Comma separated list of fields. Allows product download requirements to be returned.
       (oas-tags):
         - Products
   /purchased-assets:
@@ -1032,25 +1009,21 @@ securitySchemes:
           format: rfc3339
           required: false
           type: datetime
-          displayName: 'If specified, retrieves previous purchases on or after this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
         date_to:
           description: 'If specified, retrieves previous purchases on or before this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
           format: rfc3339
           required: false
           type: datetime
-          displayName: 'If specified, retrieves previous purchases on or before this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
         page:
           description: Identifies page to return. Default is 1.
           format: int32
           required: false
           type: integer
-          displayName: Identifies page to return. Default is 1.
         page_size:
           description: 'Specifies page size. Default is 75, maximum page_size is 100.'
           format: int32
           required: false
           type: integer
-          displayName: 'Specifies page size. Default is 75, maximum page_size is 100.'
       (oas-tags):
         - Purchases
   /purchased-images:
@@ -1077,25 +1050,21 @@ securitySchemes:
           format: rfc3339
           required: false
           type: datetime
-          displayName: 'If specified, retrieves previous purchases on or after this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
         date_to:
           description: 'If specified, retrieves previous purchases on or before this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
           format: rfc3339
           required: false
           type: datetime
-          displayName: 'If specified, retrieves previous purchases on or before this date. Dates should be submitted in ISO 8601 format (i.e., YYYY-MM-DD).'
         page:
           description: Identifies page to return. Default is 1.
           format: int32
           required: false
           type: integer
-          displayName: Identifies page to return. Default is 1.
         page_size:
           description: 'Specifies page size. Default is 75, maximum page_size is 100.'
           format: int32
           required: false
           type: integer
-          displayName: 'Specifies page size. Default is 75, maximum page_size is 100.'
       (oas-tags):
         - Purchases
   /collections:
@@ -1162,19 +1131,16 @@ securitySchemes:
               - sport
             required: true
             type: string
-            displayName: Filters to events with a matching editorial segment.
           date_from:
             description: 'Filters to events that start on or after this date. Use ISO 8601 format (e.g., 1999-12-31).'
             format: rfc3339
             required: false
             type: datetime
-            displayName: 'Filters to events that start on or after this date. Use ISO 8601 format (e.g., 1999-12-31).'
           date_to:
             description: 'Filters to events that start on or before this date. Use ISO 8601 format (e.g., 1999-12-31).'
             format: rfc3339
             required: false
             type: datetime
-            displayName: 'Filters to events that start on or before this date. Use ISO 8601 format (e.g., 1999-12-31).'
           fields:
             description: 'Specifies fields to return. Default set is ''id'',''name'',''start_date''.'
             items:
@@ -1191,7 +1157,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: 'Specifies fields to return. Default set is ''id'',''name'',''start_date''.'
         (oas-tags):
           - Search
     /images:
@@ -1270,19 +1235,16 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Filter based on the age of individuals in an image.
           artists:
             description: 'Search for images by specific artists (free-text, comma-separated list of artists).'
             required: false
             type: string
-            displayName: 'Search for images by specific artists (free-text, comma-separated list of artists).'
           collection_codes:
             description: Filter by collection codes (comma-separated list). Include or exclude based on collections_filter_type.
             items:
               type: string
             required: false
             type: array
-            displayName: Filter by collection codes (comma-separated list). Include or exclude based on collections_filter_type.
           collections_filter_type:
             description: Provides searching based on specified collection(s).
             enum:
@@ -1290,12 +1252,10 @@ securitySchemes:
               - exclude
             required: false
             type: string
-            displayName: Provides searching based on specified collection(s).
           color:
             description: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
             required: false
             type: string
-            displayName: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
           compositions:
             description: Filter based on image composition.
             items:
@@ -1318,12 +1278,10 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Filter based on image composition.
           embed_content_only:
             description: Restrict search results to embeddable images. The default is false.
             required: false
             type: boolean
-            displayName: Restrict search results to embeddable images. The default is false.
           ethnicity:
             description: Filter search results based on the ethnicity of individuals in an image.
             items:
@@ -1343,7 +1301,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Filter search results based on the ethnicity of individuals in an image.
           event_ids:
             description: Filter based on specific events
             items:
@@ -1351,12 +1308,10 @@ securitySchemes:
               type: integer
             required: false
             type: array
-            displayName: Filter based on specific events
           exclude_nudity:
             description: Excludes images containing nudity. The default is false.
             required: false
             type: boolean
-            displayName: Excludes images containing nudity. The default is false.
           fields:
             description: Specifies fields to return. Defaults to 'summary_set'.
             items:
@@ -1401,7 +1356,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Specifies fields to return. Defaults to 'summary_set'.
           file_types:
             description: Return only images having a specific file type.
             items:
@@ -1413,7 +1367,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Return only images having a specific file type.
           graphical_styles:
             description: Filter based on graphical style of the image.
             items:
@@ -1424,7 +1377,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Filter based on graphical style of the image.
           keyword_ids:
             description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
             items:
@@ -1432,7 +1384,6 @@ securitySchemes:
               type: integer
             required: false
             type: array
-            displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
           license_models:
             description: Specifies the image licensing model(s).
             items:
@@ -1442,7 +1393,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Specifies the image licensing model(s).
           number_of_people:
             description: Filter based on the number of people in the image.
             items:
@@ -1454,7 +1404,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Filter based on the number of people in the image.
           orientations:
             description: Return only images with selected aspect ratios.
             items:
@@ -1467,29 +1416,24 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Return only images with selected aspect ratios.
           page:
             description: Request results starting at a page number (default is 1).
             format: int32
             required: false
             type: integer
-            displayName: Request results starting at a page number (default is 1).
           page_size:
             description: Request number of images to return in each page.
             format: int32
             required: false
             type: integer
-            displayName: Request number of images to return in each page.
           phrase:
             description: Search images using a search phrase.
             required: false
             type: string
-            displayName: Search images using a search phrase.
           prestige_content_only:
             description: Restrict search results to prestige images. The default is false.
             required: false
             type: boolean
-            displayName: Restrict search results to prestige images. The default is false.
           product_types:
             description: Filter images to those having product types from the selected list.
             items:
@@ -1503,7 +1447,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Filter images to those having product types from the selected list.
           sort_order:
             description: Select sort order of results.
             enum:
@@ -1512,14 +1455,12 @@ securitySchemes:
               - newest
             required: false
             type: string
-            displayName: Select sort order of results.
           specific_people:
             description: Return only images associated with specific people (using a comma-delimited list).
             items:
               type: string
             required: false
             type: array
-            displayName: Return only images associated with specific people (using a comma-delimited list).
         (oas-tags):
           - Search
       /creative:
@@ -1598,19 +1539,16 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter based on the age of individuals in an image.
             artists:
               description: 'Search for images by specific artists (free-text, comma-separated list of artists).'
               required: false
               type: string
-              displayName: 'Search for images by specific artists (free-text, comma-separated list of artists).'
             collection_codes:
               description: Filter by collection codes (comma-separated list). Include or exclude based on collections_filter_type.
               items:
                 type: string
               required: false
               type: array
-              displayName: Filter by collection codes (comma-separated list). Include or exclude based on collections_filter_type.
             collections_filter_type:
               description: Use to include or exclude collections from search.
               enum:
@@ -1618,12 +1556,10 @@ securitySchemes:
                 - exclude
               required: false
               type: string
-              displayName: Use to include or exclude collections from search.
             color:
               description: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
               required: false
               type: string
-              displayName: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
             compositions:
               description: Filter based on image composition.
               items:
@@ -1646,12 +1582,10 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter based on image composition.
             embed_content_only:
               description: Restrict search results to embeddable images. The default is false.
               required: false
               type: boolean
-              displayName: Restrict search results to embeddable images. The default is false.
             ethnicity:
               description: Filter search results based on the ethnicity of individuals in an image.
               items:
@@ -1671,12 +1605,10 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter search results based on the ethnicity of individuals in an image.
             exclude_nudity:
               description: Excludes images containing nudity. The default is false.
               required: false
               type: boolean
-              displayName: Excludes images containing nudity. The default is false.
             fields:
               description: Specifies fields to return. Defaults to 'summary_set'.
               items:
@@ -1716,7 +1648,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Specifies fields to return. Defaults to 'summary_set'.
             file_types:
               description: Return only images having a specific file type.
               items:
@@ -1728,7 +1659,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Return only images having a specific file type.
             graphical_styles:
               description: Filter based on graphical style of the image.
               items:
@@ -1739,7 +1669,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter based on graphical style of the image.
             keyword_ids:
               description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
               items:
@@ -1747,7 +1676,6 @@ securitySchemes:
                 type: integer
               required: false
               type: array
-              displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
             license_models:
               description: Specifies the image licensing model(s).
               items:
@@ -1757,7 +1685,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Specifies the image licensing model(s).
             number_of_people:
               description: Filter based on the number of people in the image.
               items:
@@ -1769,7 +1696,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter based on the number of people in the image.
             orientations:
               description: Return only images with selected aspect ratios.
               items:
@@ -1782,29 +1708,24 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Return only images with selected aspect ratios.
             page:
               description: Request results starting at a page number (default is 1).
               format: int32
               required: false
               type: integer
-              displayName: Request results starting at a page number (default is 1).
             page_size:
               description: Request number of images to return in each page.
               format: int32
               required: false
               type: integer
-              displayName: Request number of images to return in each page.
             phrase:
               description: Search images using a search phrase.
               required: false
               type: string
-              displayName: Search images using a search phrase.
             prestige_content_only:
               description: Restrict search results to prestige images. The default is false.
               required: false
               type: boolean
-              displayName: Restrict search results to prestige images. The default is false.
             product_types:
               description: Filter images to those having product types from the selected list.
               items:
@@ -1818,7 +1739,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter images to those having product types from the selected list.
             sort_order:
               description: Select sort order of results.
               enum:
@@ -1827,7 +1747,6 @@ securitySchemes:
                 - newest
               required: false
               type: string
-              displayName: Select sort order of results.
           (oas-tags):
             - Search
       /editorial:
@@ -1906,19 +1825,16 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter based on the age of individuals in an image.
             artists:
               description: 'Search for images by specific artists (free-text, comma-separated list of artists).'
               required: false
               type: string
-              displayName: 'Search for images by specific artists (free-text, comma-separated list of artists).'
             collection_codes:
               description: Filter by collections (comma-separated list of collection codes). Include or exclude based on collections_filter_type.
               items:
                 type: string
               required: false
               type: array
-              displayName: Filter by collections (comma-separated list of collection codes). Include or exclude based on collections_filter_type.
             collections_filter_type:
               description: Use to include or exclude collections from search.
               enum:
@@ -1926,12 +1842,10 @@ securitySchemes:
                 - exclude
               required: false
               type: string
-              displayName: Use to include or exclude collections from search.
             color:
               description: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
               required: false
               type: string
-              displayName: 'Filter based on predominant color in an image. Use 6 character hexidecimal format (e.g., #002244).'
             compositions:
               description: Filter based on image composition.
               items:
@@ -1954,19 +1868,16 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter based on image composition.
             date_from:
               description: 'Return only images that are created on or after this date. Use ISO 8601 format (e.g., 1999-12-31).'
               format: rfc3339
               required: false
               type: datetime
-              displayName: 'Return only images that are created on or after this date. Use ISO 8601 format (e.g., 1999-12-31).'
             date_to:
               description: 'Return only images that are created on or before this date. Use ISO 8601 format (e.g., 1999-12-31).'
               format: rfc3339
               required: false
               type: datetime
-              displayName: 'Return only images that are created on or before this date. Use ISO 8601 format (e.g., 1999-12-31).'
             editorial_segments:
               description: Return only events with a matching editorial segment.
               items:
@@ -1980,19 +1891,16 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Return only events with a matching editorial segment.
             embed_content_only:
               description: Restrict search results to embeddable images. The default is false.
               required: false
               type: boolean
-              displayName: Restrict search results to embeddable images. The default is false.
             entity_uris:
               description: specify linked data entity uri.
               items:
                 type: string
               required: false
               type: array
-              displayName: specify linked data entity uri.
             ethnicity:
               description: Filter search results based on the ethnicity of individuals in an image.
               items:
@@ -2012,7 +1920,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter search results based on the ethnicity of individuals in an image.
             event_ids:
               description: Filter based on specific events
               items:
@@ -2020,12 +1927,10 @@ securitySchemes:
                 type: integer
               required: false
               type: array
-              displayName: Filter based on specific events
             exclude_nudity:
               description: Excludes images containing nudity. The default is false.
               required: false
               type: boolean
-              displayName: Excludes images containing nudity. The default is false.
             fields:
               description: Specifies fields to return. Defaults to 'summary_set'.
               items:
@@ -2068,7 +1973,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Specifies fields to return. Defaults to 'summary_set'.
             file_types:
               description: Return only images having a specific file type.
               items:
@@ -2080,7 +1984,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Return only images having a specific file type.
             graphical_styles:
               description: Filter based on graphical style of the image.
               items:
@@ -2090,7 +1993,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter based on graphical style of the image.
             keyword_ids:
               description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
               items:
@@ -2098,7 +2000,6 @@ securitySchemes:
                 type: integer
               required: false
               type: array
-              displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
             number_of_people:
               description: Filter based on the number of people in the image.
               items:
@@ -2110,7 +2011,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter based on the number of people in the image.
             orientations:
               description: Return only images with selected aspect ratios.
               items:
@@ -2123,24 +2023,20 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Return only images with selected aspect ratios.
             page:
               description: Request results starting at a page number (default is 1).
               format: int32
               required: false
               type: integer
-              displayName: Request results starting at a page number (default is 1).
             page_size:
               description: Request number of images to return in each page.
               format: int32
               required: false
               type: integer
-              displayName: Request number of images to return in each page.
             phrase:
               description: Search images using a search phrase.
               required: false
               type: string
-              displayName: Search images using a search phrase.
             product_types:
               description: Filter images to those having product types from the selected list.
               items:
@@ -2154,7 +2050,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Filter images to those having product types from the selected list.
             sort_order:
               description: Select sort order of results.
               enum:
@@ -2164,14 +2059,12 @@ securitySchemes:
                 - oldest
               required: false
               type: string
-              displayName: Select sort order of results.
             specific_people:
               description: Return only images associated with specific people (using a comma-delimited list).
               items:
                 type: string
               required: false
               type: array
-              displayName: Return only images associated with specific people (using a comma-delimited list).
           (oas-tags):
             - Search
     /videos:
@@ -2250,14 +2143,12 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Provides filtering according to the age of individuals in a video.
           collection_codes:
             description: Provides filtering by collection code.
             items:
               type: string
             required: false
             type: array
-            displayName: Provides filtering by collection code.
           collections_filter_type:
             description: Provides searching based on specified collection(s).
             enum:
@@ -2265,12 +2156,10 @@ securitySchemes:
               - exclude
             required: false
             type: string
-            displayName: Provides searching based on specified collection(s).
           exclude_nudity:
             description: Excludes images containing nudity. The default is false.
             required: false
             type: boolean
-            displayName: Excludes images containing nudity. The default is false.
           fields:
             description: Specifies fields to return. Defaults to 'summary_set'.
             items:
@@ -2307,7 +2196,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Specifies fields to return. Defaults to 'summary_set'.
           format_available:
             description: Filters according to the digital video format available on a film asset.
             enum:
@@ -2316,7 +2204,6 @@ securitySchemes:
               - 4k
             required: false
             type: string
-            displayName: Filters according to the digital video format available on a film asset.
           keyword_ids:
             description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
             items:
@@ -2324,7 +2211,6 @@ securitySchemes:
               type: integer
             required: false
             type: array
-            displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
           license_models:
             description: Specifies the video licensing model(s).
             items:
@@ -2334,24 +2220,20 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Specifies the video licensing model(s).
           page:
             description: Identifies page to return. Default is 1.
             format: int32
             required: false
             type: integer
-            displayName: Identifies page to return. Default is 1.
           page_size:
             description: 'Specifies page size. Default is 30, maximum page_size is 100.'
             format: int32
             required: false
             type: integer
-            displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
           phrase:
             description: Free-text search query.
             required: false
             type: string
-            displayName: Free-text search query.
           product_types:
             description: Provides filtering by a list of product types.
             items:
@@ -2365,7 +2247,6 @@ securitySchemes:
               type: string
             required: false
             type: array
-            displayName: Provides filtering by a list of product types.
           sort_order:
             description: Allows sorting of results.
             enum:
@@ -2375,14 +2256,12 @@ securitySchemes:
               - oldest
             required: false
             type: string
-            displayName: Allows sorting of results.
           specific_people:
             description: Provides filtering by specific peoples' names.
             items:
               type: string
             required: false
             type: array
-            displayName: Provides filtering by specific peoples' names.
         (oas-tags):
           - Search
       /editorial:
@@ -2461,14 +2340,12 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Provides filtering according to the age of individuals in a video.
             collection_codes:
               description: Provides filtering by collection code.
               items:
                 type: string
               required: false
               type: array
-              displayName: Provides filtering by collection code.
             collections_filter_type:
               description: Provides searching based on specified collection(s).
               enum:
@@ -2476,19 +2353,16 @@ securitySchemes:
                 - exclude
               required: false
               type: string
-              displayName: Provides searching based on specified collection(s).
             entity_uris:
               description: specify link data entity uri.
               items:
                 type: string
               required: false
               type: array
-              displayName: specify link data entity uri.
             exclude_nudity:
               description: Excludes images containing nudity. The default is false.
               required: false
               type: boolean
-              displayName: Excludes images containing nudity. The default is false.
             fields:
               description: Specifies fields to return. Defaults to 'summary_set'.
               items:
@@ -2525,7 +2399,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Specifies fields to return. Defaults to 'summary_set'.
             format_available:
               description: Filters according to the digital video format available on a film asset.
               enum:
@@ -2534,7 +2407,6 @@ securitySchemes:
                 - 4k
               required: false
               type: string
-              displayName: Filters according to the digital video format available on a film asset.
             keyword_ids:
               description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
               items:
@@ -2542,24 +2414,20 @@ securitySchemes:
                 type: integer
               required: false
               type: array
-              displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
             page:
               description: Identifies page to return. Default is 1.
               format: int32
               required: false
               type: integer
-              displayName: Identifies page to return. Default is 1.
             page_size:
               description: 'Specifies page size. Default is 30, maximum page_size is 100.'
               format: int32
               required: false
               type: integer
-              displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
             phrase:
               description: Free-text search query.
               required: false
               type: string
-              displayName: Free-text search query.
             product_types:
               description: Allows filtering by a list of product types.
               items:
@@ -2573,7 +2441,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Allows filtering by a list of product types.
             sort_order:
               description: Allows sorting of results.
               enum:
@@ -2583,14 +2450,12 @@ securitySchemes:
                 - oldest
               required: false
               type: string
-              displayName: Allows sorting of results.
             specific_people:
               description: Allows filtering by specific peoples' names.
               items:
                 type: string
               required: false
               type: array
-              displayName: Allows filtering by specific peoples' names.
           (oas-tags):
             - Search
       /creative:
@@ -2669,14 +2534,12 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Provides filtering according to the age of individuals in a video.
             collection_codes:
               description: Provides filtering by collection code.
               items:
                 type: string
               required: false
               type: array
-              displayName: Provides filtering by collection code.
             collections_filter_type:
               description: Provides searching based on specified collection(s).
               enum:
@@ -2684,12 +2547,10 @@ securitySchemes:
                 - exclude
               required: false
               type: string
-              displayName: Provides searching based on specified collection(s).
             exclude_nudity:
               description: Excludes images containing nudity. The default is false.
               required: false
               type: boolean
-              displayName: Excludes images containing nudity. The default is false.
             fields:
               description: Specifies fields to return. Defaults to 'summary_set'.
               items:
@@ -2725,7 +2586,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Specifies fields to return. Defaults to 'summary_set'.
             format_available:
               description: Filters according to the digital video format available on a film asset.
               enum:
@@ -2734,7 +2594,6 @@ securitySchemes:
                 - 4k
               required: false
               type: string
-              displayName: Filters according to the digital video format available on a film asset.
             keyword_ids:
               description: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
               items:
@@ -2742,7 +2601,6 @@ securitySchemes:
                 type: integer
               required: false
               type: array
-              displayName: 'Return only images tagged with specific keyword(s). Specify using a comma-separated list of keyword Ids. If keyword Ids and phrase are both specified, only those images matching the query phrase which also contain the requested keyword(s) are returned.'
             license_models:
               description: Specifies the video licensing model(s).
               items:
@@ -2752,24 +2610,20 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Specifies the video licensing model(s).
             page:
               description: Identifies page to return. Default is 1.
               format: int32
               required: false
               type: integer
-              displayName: Identifies page to return. Default is 1.
             page_size:
               description: 'Specifies page size. Default is 30, maximum page_size is 100.'
               format: int32
               required: false
               type: integer
-              displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
             phrase:
               description: Free-text search query.
               required: false
               type: string
-              displayName: Free-text search query.
             product_types:
               description: Allows filtering by a list of product types.
               items:
@@ -2783,7 +2637,6 @@ securitySchemes:
                 type: string
               required: false
               type: array
-              displayName: Allows filtering by a list of product types.
             sort_order:
               description: Allows sorting of results.
               enum:
@@ -2791,7 +2644,6 @@ securitySchemes:
                 - newest
               required: false
               type: string
-              displayName: Allows sorting of results.
           (oas-tags):
             - Search
   /downloads:
@@ -2822,25 +2674,21 @@ securitySchemes:
           format: rfc3339
           required: false
           type: datetime
-          displayName: "If specified, select assets downloaded on or after this date. Dates should be submitted in ISO\r\n                8601 format (i.e., YYYY-MM-DD hh:mm:ss.sss). If time is omitted, midnight is assumed. Date/times are UTC."
         date_to:
           description: "If specified, select assets downloaded on or before this date. Dates should be submitted in ISO\r\n                8601 format (i.e., YYYY-MM-DD hh:mm:ss.sss). If time is omitted, midnight is assumed. Date/times are UTC."
           format: rfc3339
           required: false
           type: datetime
-          displayName: "If specified, select assets downloaded on or before this date. Dates should be submitted in ISO\r\n                8601 format (i.e., YYYY-MM-DD hh:mm:ss.sss). If time is omitted, midnight is assumed. Date/times are UTC."
         page:
           description: Identifies page to return. Default is 1.
           format: int32
           required: false
           type: integer
-          displayName: Identifies page to return. Default is 1.
         page_size:
           description: 'Specifies page size. Default is 30, maximum page_size is 100.'
           format: int32
           required: false
           type: integer
-          displayName: 'Specifies page size. Default is 30, maximum page_size is 100.'
         product_type:
           description: Specifies product type to be included in the previous download results.
           enum:
@@ -2852,7 +2700,6 @@ securitySchemes:
             - creditpack
           required: false
           type: string
-          displayName: Specifies product type to be included in the previous download results.
       (oas-tags):
         - Downloads
     /videos:
@@ -2864,7 +2711,6 @@ securitySchemes:
             description: Id of video to download.
             required: true
             type: string
-            displayName: Id of video to download.
         post:
           displayName: POST_v3-downloads-videos-id
           description: "The single step download call returns either a redirect or a response message with the URI to download the largest\r\n                video available.\r\n                Returns HTTP status code 303 Redirect to download URI or HTTP status code 200."
@@ -2893,18 +2739,15 @@ securitySchemes:
               description: "Specifies whether to auto-download the video. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the video.\r\n                    If false is specified, the download URI will be returned in the response message."
               required: false
               type: boolean
-              displayName: "Specifies whether to auto-download the video. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the video.\r\n                    If false is specified, the download URI will be returned in the response message."
             product_id:
               description: Identifier of the instance for the selected product offering type.
               format: int32
               required: false
               type: integer
-              displayName: Identifier of the instance for the selected product offering type.
             size:
               description: Specifies the size to be downloaded.
               required: false
               type: string
-              displayName: Specifies the size to be downloaded.
           (oas-tags):
             - Downloads
     /images:
@@ -2916,7 +2759,6 @@ securitySchemes:
             description: Id of image to download.
             required: true
             type: string
-            displayName: Id of image to download.
         post:
           displayName: POST_v3-downloads-images-id
           description: "The single step download call returns either a redirect or a response message with the URI to download the largest\r\n                image available.\r\n                Returns HTTP status code 303 Redirect to download URI or HTTP status code 200."
@@ -2950,7 +2792,6 @@ securitySchemes:
               description: "Specifies whether to auto-download the image. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the image.\r\n                    If false is specified, the download URI will be returned in the response message."
               required: false
               type: boolean
-              displayName: "Specifies whether to auto-download the image. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the image.\r\n                    If false is specified, the download URI will be returned in the response message."
             file_type:
               description: File Type expressed with three character file extension.
               enum:
@@ -2958,18 +2799,15 @@ securitySchemes:
                 - jpg
               required: false
               type: string
-              displayName: File Type expressed with three character file extension.
             height:
               description: "Specifies the pixel height of the particular image to download.\r\n                    Available heights can be found in the images/{ids} response for the specific image.\r\n                    If left blank, it will return the largest available size."
               required: false
               type: string
-              displayName: "Specifies the pixel height of the particular image to download.\r\n                    Available heights can be found in the images/{ids} response for the specific image.\r\n                    If left blank, it will return the largest available size."
             product_id:
               description: Identifier of the instance for the selected product offering type.
               format: int32
               required: false
               type: integer
-              displayName: Identifier of the instance for the selected product offering type.
             product_type:
               description: Product type.
               enum:
@@ -2981,7 +2819,6 @@ securitySchemes:
                 - creditpack
               required: false
               type: string
-              displayName: Product type.
           (oas-tags):
             - Downloads
     '/{id}':
@@ -2991,7 +2828,6 @@ securitySchemes:
           description: Id of image to download.
           required: true
           type: string
-          displayName: Id of image to download.
       post:
         displayName: POST_v3-downloads-id
         description: "The single step download call returns either a redirect or a response message with the URI to download the largest\r\n                image available.\r\n                Returns HTTP status code 303 Redirect to download URI or HTTP status code 200."
@@ -3025,7 +2861,6 @@ securitySchemes:
             description: "Specifies whether to auto-download the image. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the image.\r\n                    If false is specified, the download URI will be returned in the response message."
             required: false
             type: boolean
-            displayName: "Specifies whether to auto-download the image. If true is specified, a 303 SeeOther status is returned with a\r\n                    Location header set to the location of the image.\r\n                    If false is specified, the download URI will be returned in the response message."
           file_type:
             description: File Type expressed with three character file extension.
             enum:
@@ -3033,18 +2868,15 @@ securitySchemes:
               - jpg
             required: false
             type: string
-            displayName: File Type expressed with three character file extension.
           height:
             description: "Specifies the pixel height of the particular image to download.\r\n                    Available heights can be found in the images/{ids} response for the specific image.\r\n                    If left blank, it will return the largest available size."
             required: false
             type: string
-            displayName: "Specifies the pixel height of the particular image to download.\r\n                    Available heights can be found in the images/{ids} response for the specific image.\r\n                    If left blank, it will return the largest available size."
           product_id:
             description: Identifier of the instance for the selected product offering type.
             format: int32
             required: false
             type: integer
-            displayName: Identifier of the instance for the selected product offering type.
           product_type:
             description: Product type.
             enum:
@@ -3056,7 +2888,6 @@ securitySchemes:
               - creditpack
             required: false
             type: string
-            displayName: Product type.
         (oas-tags):
           - Downloads
   /countries:
@@ -3092,7 +2923,6 @@ securitySchemes:
           description: Specifies a unique batch transaction id to identify the report.
           required: true
           type: string
-          displayName: Specifies a unique batch transaction id to identify the report.
       put:
         displayName: PUT_v3-usage-batches-id
         (oas-summary): Report usage of assets via a batch format.

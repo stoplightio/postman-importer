@@ -1,0 +1,3087 @@
+#%RAML 1.0
+title: reverb
+version: '2.0'
+baseUri: 'https://reverb.com/api'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: reverb
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_d1g5417jjjo7sf.cloudfront.net_assets_top-level_reverb-logo-d2c75af0b020521f0bc5e90c883a13b5.svg'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://s3.amazonaws.com/swagger.reverb.com/swagger.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): reverb.com
+  contact:
+    name: Reverb API
+    url: 'https://dev.reverb.com'
+    email: integrations@reverb.com
+  termsOfService: 'https://reverb.com/page/terms'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-x-hasEquivalentPaths: any
+(oas-externalDocs):
+  url: 'https://dev.reverb.com/'
+securitySchemes:
+  oauth2:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://reverb.com/oauth/authorize'
+      accessTokenUri: 'https://reverb.com/oauth/token'
+      authorizationGrants:
+        - authorization_code
+      scopes:
+        - update_listings
+        - write
+/my:
+  displayName: my
+  /follows:
+    displayName: follows
+    '/{follow_id}':
+      displayName: '{follow_id}'
+      uriParameters:
+        follow_id:
+          required: true
+          type: string
+      delete:
+        displayName: DELETE_my-follows-follow_id
+        description: Delete a follow
+        (oas-summary): Delete a follow
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+    get:
+      displayName: GET_my-follows
+      description: See what the user is following
+      (oas-summary): See what the user is following
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - my
+    /brands:
+      displayName: brands
+      '/{slug}':
+        displayName: '{slug}'
+        uriParameters:
+          slug:
+            required: true
+            type: string
+        get:
+          displayName: GET_my-follows-brands-slug
+          description: Follow status for a brand
+          (oas-summary): Follow status for a brand
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        post:
+          displayName: POST_my-follows-brands-slug
+          description: Follow a brand
+          (oas-summary): Follow a brand
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        delete:
+          displayName: DELETE_my-follows-brands-slug
+          description: Unfollow a brand
+          (oas-summary): Unfollow a brand
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+    /categories:
+      displayName: categories
+      '/{category}':
+        displayName: '{category}'
+        '/{subcategory}':
+          displayName: '{subcategory}'
+          uriParameters:
+            category:
+              required: true
+              type: string
+            subcategory:
+              required: true
+              type: string
+          delete:
+            displayName: DELETE_my-follows-categories-category-subcategory
+            description: Unfollow a subcategory
+            (oas-summary): Unfollow a subcategory
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+          post:
+            displayName: POST_my-follows-categories-category-subcategory
+            description: Follow a subcategory
+            (oas-summary): Follow a subcategory
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+          get:
+            displayName: GET_my-follows-categories-category-subcategory
+            description: Follow status for a subcategory
+            (oas-summary): Follow status for a subcategory
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+      '/{slug}':
+        displayName: '{slug}'
+        uriParameters:
+          slug:
+            required: true
+            type: string
+        get:
+          displayName: GET_my-follows-categories-slug
+          description: Follow status for a category
+          (oas-summary): Follow status for a category
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        delete:
+          displayName: DELETE_my-follows-categories-slug
+          description: Unfollow a category
+          (oas-summary): Unfollow a category
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        post:
+          displayName: POST_my-follows-categories-slug
+          description: Follow a category
+          (oas-summary): Follow a category
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+    /collections:
+      displayName: collections
+      '/{slug}':
+        displayName: '{slug}'
+        uriParameters:
+          slug:
+            required: true
+            type: string
+        delete:
+          displayName: DELETE_my-follows-collections-slug
+          description: Unfollow a collection
+          (oas-summary): Unfollow a collection
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        post:
+          displayName: POST_my-follows-collections-slug
+          description: Follow a collection
+          (oas-summary): Follow a collection
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        get:
+          displayName: GET_my-follows-collections-slug
+          description: Follow status for a collection
+          (oas-summary): Follow status for a collection
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+    /handpicked:
+      displayName: handpicked
+      '/{slug}':
+        displayName: '{slug}'
+        uriParameters:
+          slug:
+            required: true
+            type: string
+        get:
+          displayName: GET_my-follows-handpicked-slug
+          description: Follow status for a handpicked collection
+          (oas-summary): Follow status for a handpicked collection
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        post:
+          displayName: POST_my-follows-handpicked-slug
+          description: Follow a handpicked collection
+          (oas-summary): Follow a handpicked collection
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        delete:
+          displayName: DELETE_my-follows-handpicked-slug
+          description: Unfollow a handpicked collection
+          (oas-summary): Unfollow a handpicked collection
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+    /search:
+      displayName: search
+      get:
+        displayName: GET_my-follows-search
+        description: Follow status for a search
+        (oas-summary): Follow status for a search
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+      post:
+        displayName: POST_my-follows-search
+        description: Follow a search
+        (oas-summary): Follow a search
+        body:
+          application/json:
+            properties:
+              accepts_gift_cards:
+                description: 'If true, include only items that accept gift cards'
+                type: boolean
+                required: false
+              accepts_payment_plans:
+                description: 'If true, only show items that can be purchased with a payment plan'
+                type: boolean
+                required: false
+              auction_price_max:
+                description: Maximum current auction price
+                format: float
+                type: number
+                required: false
+              category:
+                description: Category slug from /api/categories
+                type: string
+                required: false
+              condition:
+                description: 'Condition: new,used,all'
+                type: string
+                required: false
+              decade:
+                description: 'Decade: e.g. 1970s, early 70s'
+                type: string
+                required: false
+              exclude_auctions:
+                description: 'If true, exclude auctions'
+                type: boolean
+                required: false
+              finish:
+                description: 'Visual finish of the item, common for guitars'
+                type: string
+                required: false
+              handmade:
+                description: Handmade items only
+                type: boolean
+                required: false
+              item_city:
+                description: City where item is located
+                type: string
+                required: false
+              item_country:
+                description: Country code where item is located
+                type: string
+                required: false
+              item_state:
+                description: State or region code where item is located
+                type: string
+                required: false
+              listing_type:
+                description: 'Type of listing: auction,make_an_offer,buy_it_now'
+                type: string
+                required: false
+              make:
+                description: Make(s)/brand of item (e.g. Fender). Can take a single value or an array.
+                items:
+                  type: string
+                type: array
+                required: false
+              model:
+                description: Model of item (e.g. Stratocaster)
+                type: string
+                required: false
+              must_not:
+                description: 'Search term negation. If you want to exclude a term, add it here'
+                type: string
+                required: false
+              preferred_seller:
+                description: 'If true, include only items by Reverb Preferred Sellers'
+                type: boolean
+                required: false
+              price_max:
+                description: Maximum price of search results (USD)
+                format: float
+                type: number
+                required: false
+              price_min:
+                description: Minimum price of search results (USD)
+                format: float
+                type: number
+                required: false
+              product_type:
+                description: Product type slug from /api/categories
+                type: string
+                required: false
+              query:
+                description: Search query.
+                type: string
+                required: false
+              ships_to:
+                description: Limit search to items that ship to this country code
+                type: string
+                required: false
+              shop:
+                description: Slug of shop to search
+                type: string
+                required: false
+              shop_id:
+                description: ID of shop to search
+                type: string
+                required: false
+              watchers_count_min:
+                description: Minimum number of watchers (used to find popular items)
+                type: integer
+                required: false
+              year_max:
+                description: Maximum year of manufacture
+                type: integer
+                required: false
+              year_min:
+                description: Minumum year of manufacture
+                type: integer
+                required: false
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+    /shops:
+      displayName: shops
+      '/{slug}':
+        displayName: '{slug}'
+        uriParameters:
+          slug:
+            required: true
+            type: string
+        delete:
+          displayName: DELETE_my-follows-shops-slug
+          description: Unfollow a shop
+          (oas-summary): Unfollow a shop
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        post:
+          displayName: POST_my-follows-shops-slug
+          description: Follow a shop
+          (oas-summary): Follow a shop
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        get:
+          displayName: GET_my-follows-shops-slug
+          description: Follow status for a shop
+          (oas-summary): Follow status for a shop
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+  /listings:
+    displayName: listings
+    get:
+      displayName: GET_my-listings
+      description: Retrieve a list of live listings for the seller. To search all listings specify state=all
+      (oas-summary): Retrieve a list of live listings for the seller. To search all listings specify state=all
+      (oas-responses-default):
+        description: Unexpected error
+      queryParameters:
+        state:
+          description: 'Available: ["all", "draft", "ended", "live", "ordered", "sold_out", "suspended", "seller_unavailable"]. Defaults to ''live'''
+          type: string
+          displayName: 'Available: ["all", "draft", "ended", "live", "ordered", "sold_out", "suspended", "seller_unavailable"]. Defaults to ''live'''
+      (oas-tags):
+        - my
+    /drafts:
+      displayName: drafts
+      get:
+        displayName: GET_my-listings-drafts
+        description: Retrieve a list your draft listings
+        (oas-summary): Retrieve a list your draft listings
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+    /negotiations:
+      displayName: negotiations
+      get:
+        displayName: GET_my-listings-negotiations
+        description: Get a list of active negotiations as a seller
+        (oas-summary): Get a list of active negotiations as a seller
+        (oas-responses-default):
+          description: Unexpected error
+        queryParameters:
+          page:
+            default: 1
+            type: integer
+          per_page:
+            default: 24
+            type: integer
+        (oas-tags):
+          - my
+    '/{slug}':
+      displayName: '{slug}'
+      /state:
+        displayName: state
+        /end:
+          displayName: end
+          put:
+            displayName: PUT_my-listings-slug-state-end
+            description: End a listing
+            (oas-summary): End a listing
+            body:
+              application/json:
+                properties:
+                  reason:
+                    description: 'The reason this listing is being ended. Valid reasons: ["not_sold", "reverb_sale"].'
+                    type: string
+                type: object
+                (oas-body-name): body
+                description: the content of the request
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+  /lists:
+    displayName: lists
+    get:
+      displayName: GET_my-lists
+      description: 'Get a list of your lists (wishlist, watch list, etc)'
+      (oas-summary): 'Get a list of your lists (wishlist, watch list, etc)'
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - my
+  /negotiations:
+    displayName: negotiations
+    /buying:
+      displayName: buying
+      get:
+        displayName: GET_my-negotiations-buying
+        description: Get a list of active negotiations as a buyer
+        (oas-summary): Get a list of active negotiations as a buyer
+        (oas-responses-default):
+          description: Unexpected error
+        queryParameters:
+          page:
+            default: 1
+            type: integer
+          per_page:
+            default: 24
+            type: integer
+        (oas-tags):
+          - my
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          required: true
+          type: string
+      get:
+        displayName: GET_my-negotiations-id
+        description: Get offer details
+        (oas-summary): Get offer details
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+      /accept:
+        displayName: accept
+        post:
+          displayName: POST_my-negotiations-id-accept
+          description: Accept an offer
+          (oas-summary): Accept an offer
+          body:
+            application/json:
+              properties:
+                message:
+                  description: Message to include with accepted offer
+                  type: string
+                  required: false
+              type: object
+              (oas-body-name): body
+              description: the content of the request
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+      /counter:
+        displayName: counter
+        post:
+          displayName: POST_my-negotiations-id-counter
+          description: Counter an offer
+          (oas-summary): Counter an offer
+          body:
+            application/json:
+              properties:
+                message:
+                  description: Message to include with counter offer
+                  type: string
+                  required: false
+                price:
+                  description: Offer price
+                  type: string
+                shipping_price:
+                  description: Shipping price (sellers only)
+                  type: string
+                  required: false
+              type: object
+              (oas-body-name): body
+              description: the content of the request
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+      /decline:
+        displayName: decline
+        post:
+          displayName: POST_my-negotiations-id-decline
+          description: Decline an offer
+          (oas-summary): Decline an offer
+          body:
+            application/json:
+              properties:
+                message:
+                  description: Message to include with declined offer
+                  type: string
+                  required: false
+              type: object
+              (oas-body-name): body
+              description: the content of the request
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+  /orders:
+    displayName: orders
+    /awaiting_feedback:
+      displayName: awaiting_feedback
+      get:
+        displayName: GET_my-orders-awaiting_feedback
+        description: List of orders that need feedback
+        (oas-summary): List of orders that need feedback
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+    /buying:
+      displayName: buying
+      /all:
+        displayName: all
+        get:
+          displayName: GET_my-orders-buying-all
+          description: 'Returns all orders, newest first.'
+          (oas-summary): 'Returns all orders, newest first.'
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+      /buying_history:
+        displayName: buying_history
+        '/{seller_id}':
+          displayName: '{seller_id}'
+          uriParameters:
+            seller_id:
+              required: true
+              type: string
+          get:
+            displayName: GET_my-orders-buying-buying_history-seller_id
+            description: See previous orders from a seller
+            (oas-summary): See previous orders from a seller
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+      /unpaid:
+        displayName: unpaid
+        get:
+          displayName: GET_my-orders-buying-unpaid
+          description: 'Returns unpaid orders, newest first.'
+          (oas-summary): 'Returns unpaid orders, newest first.'
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+      '/{id}':
+        displayName: '{id}'
+        uriParameters:
+          id:
+            required: true
+            type: string
+        get:
+          displayName: GET_my-orders-buying-id
+          description: Returns order details for a buyer
+          (oas-summary): Returns order details for a buyer
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        /mark_received:
+          displayName: mark_received
+          post:
+            displayName: POST_my-orders-buying-id-mark_received
+            description: Marks an order as received by the buyer
+            (oas-summary): Marks an order as received by the buyer
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+    /selling:
+      displayName: selling
+      /all:
+        displayName: all
+        get:
+          displayName: GET_my-orders-selling-all
+          description: 'Get all seller orders, newest first.'
+          (oas-summary): 'Get all seller orders, newest first.'
+          (oas-responses-default):
+            description: Unexpected error
+          queryParameters:
+            created_start_date:
+              description: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            created_end_date:
+              description: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            updated_start_date:
+              description: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            updated_end_date:
+              description: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            page:
+              default: 1
+              type: integer
+            per_page:
+              default: 24
+              type: integer
+          (oas-tags):
+            - my
+      /awaiting_shipment:
+        displayName: awaiting_shipment
+        get:
+          displayName: GET_my-orders-selling-awaiting_shipment
+          description: 'Get seller orders awaiting shipment, newest first.'
+          (oas-summary): 'Get seller orders awaiting shipment, newest first.'
+          (oas-responses-default):
+            description: Unexpected error
+          queryParameters:
+            created_start_date:
+              description: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            created_end_date:
+              description: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            updated_start_date:
+              description: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            updated_end_date:
+              description: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            page:
+              default: 1
+              type: integer
+            per_page:
+              default: 24
+              type: integer
+          (oas-tags):
+            - my
+      /buyer_history:
+        displayName: buyer_history
+        '/{buyer_id}':
+          displayName: '{buyer_id}'
+          uriParameters:
+            buyer_id:
+              required: true
+              type: string
+          get:
+            displayName: GET_my-orders-selling-buyer_history-buyer_id
+            description: See previous orders from buyer
+            (oas-summary): See previous orders from buyer
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+      /unpaid:
+        displayName: unpaid
+        get:
+          displayName: GET_my-orders-selling-unpaid
+          description: 'Get unpaid seller orders, newest first.'
+          (oas-summary): 'Get unpaid seller orders, newest first.'
+          (oas-responses-default):
+            description: Unexpected error
+          queryParameters:
+            created_start_date:
+              description: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            created_end_date:
+              description: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            updated_start_date:
+              description: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            updated_end_date:
+              description: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+              type: string
+              displayName: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            page:
+              default: 1
+              type: integer
+            per_page:
+              default: 24
+              type: integer
+          (oas-tags):
+            - my
+      '/{id}':
+        displayName: '{id}'
+        uriParameters:
+          id:
+            required: true
+            type: string
+        get:
+          displayName: GET_my-orders-selling-id
+          description: Returns order details for a seller
+          (oas-summary): Returns order details for a seller
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+        /mark_picked_up:
+          displayName: mark_picked_up
+          post:
+            displayName: POST_my-orders-selling-id-mark_picked_up
+            description: Marks an order as picked up
+            (oas-summary): Marks an order as picked up
+            body:
+              application/json:
+                properties:
+                  date:
+                    description: Date the item was picked up.
+                    type: string
+                    required: false
+                type: object
+                (oas-body-name): body
+                description: the content of the request
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+        /ship:
+          displayName: ship
+          post:
+            displayName: POST_my-orders-selling-id-ship
+            description: Marks an order as shipped
+            (oas-summary): Marks an order as shipped
+            body:
+              application/json:
+                properties:
+                  date:
+                    description: Date the item was shipped
+                    type: string
+                    required: false
+                  provider:
+                    description: 'Shipping provider: One of UPS, USPS, FedEx, DHL, Canada Post, Royal Mail, PostNL, Australia Post, EMS, La Poste, China Post, GLS, Parcelforce, Purolator, Other'
+                    type: string
+                  send_notification:
+                    description: Should we send an email notification to the buyer
+                    type: boolean
+                  tracking_number:
+                    description: Tracking number provided by the shipping provider
+                    type: string
+                type: object
+                (oas-body-name): body
+                description: the content of the request
+            (oas-responses-default):
+              description: Unexpected error
+            (oas-tags):
+              - my
+  /account:
+    displayName: account
+    get:
+      displayName: GET_my-account
+      description: Get account details
+      (oas-summary): Get account details
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - my
+  /conversations:
+    displayName: conversations
+    post:
+      displayName: POST_my-conversations
+      description: Start a conversation
+      (oas-summary): Start a conversation
+      body:
+        application/json:
+          properties:
+            body:
+              description: The body of the message
+              type: string
+            cloudinary_photos:
+              description: An array of cloudinary data hashes (Reverb internal use only).
+              items:
+                type: string
+              type: array
+              required: false
+            listing_id:
+              description: The id of the listing being discussed
+              type: integer
+              required: false
+            recipient_id:
+              description: The id of the user you are trying to contact
+              type: integer
+              required: false
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - my
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          required: true
+          type: string
+      get:
+        displayName: GET_my-conversations-id
+        description: Display conversation details with messages in natural time order (oldest to newest)
+        (oas-summary): Display conversation details with messages in natural time order (oldest to newest)
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+      put:
+        displayName: PUT_my-conversations-id
+        description: Mark a conversation read/unread
+        (oas-summary): Mark a conversation read/unread
+        body:
+          application/json:
+            properties:
+              read:
+                description: Should the conversation be marked as read
+                type: boolean
+                required: false
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+    get:
+      displayName: GET_my-conversations
+      description: Get a list of your conversations
+      (oas-summary): Get a list of your conversations
+      (oas-responses-default):
+        description: Unexpected error
+      queryParameters:
+        search:
+          description: Query string to search conversations by
+          type: string
+          displayName: Query string to search conversations by
+        unread_only:
+          description: Show unread conversations only
+          type: boolean
+          displayName: Show unread conversations only
+        page:
+          default: 1
+          type: integer
+        per_page:
+          default: 24
+          type: integer
+      (oas-tags):
+        - my
+    '/{conversation_id}':
+      displayName: '{conversation_id}'
+      /messages:
+        displayName: messages
+        post:
+          displayName: POST_my-conversations-conversation_id-messages
+          description: Send a message
+          (oas-summary): Send a message
+          body:
+            application/json:
+              properties:
+                body:
+                  type: string
+              type: object
+              (oas-body-name): body
+              description: the content of the request
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+  /payments:
+    displayName: payments
+    /selling:
+      displayName: selling
+      get:
+        displayName: GET_my-payments-selling
+        description: Get payments
+        (oas-summary): Get payments
+        (oas-responses-default):
+          description: Unexpected error
+        queryParameters:
+          page:
+            default: 1
+            type: integer
+          per_page:
+            default: 24
+            type: integer
+          created_start_date:
+            description: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            type: string
+            displayName: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+          created_end_date:
+            description: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            type: string
+            displayName: 'Filter by date created in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+          updated_start_date:
+            description: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            type: string
+            displayName: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+          updated_end_date:
+            description: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+            type: string
+            displayName: 'Filter by date modified in ISO8601 format - e.g: 2015-04-09T10:52:23-00:00'
+          order_id:
+            description: Look up payments by order id
+            type: string
+            displayName: Look up payments by order id
+        (oas-tags):
+          - my
+      '/{id}':
+        displayName: '{id}'
+        uriParameters:
+          id:
+            required: true
+            type: string
+        get:
+          displayName: GET_my-payments-selling-id
+          description: Get payment
+          (oas-summary): Get payment
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - my
+  /counts:
+    displayName: counts
+    get:
+      displayName: GET_my-counts
+      description: Get your actionable status counts
+      (oas-summary): Get your actionable status counts
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - my
+  /viewed_listings:
+    displayName: viewed_listings
+    get:
+      displayName: GET_my-viewed_listings
+      description: Get a list of your recently viewed listings.
+      (oas-summary): Get a list of your recently viewed listings.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - my
+  /feedback:
+    displayName: feedback
+    /received:
+      displayName: received
+      get:
+        displayName: GET_my-feedback-received
+        description: List of received feedback
+        (oas-summary): List of received feedback
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+    /sent:
+      displayName: sent
+      get:
+        displayName: GET_my-feedback-sent
+        description: List of sent feedback
+        (oas-summary): List of sent feedback
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+  /wishlist:
+    displayName: wishlist
+    get:
+      displayName: GET_my-wishlist
+      description: Get a list of wishlisted items
+      (oas-summary): Get a list of wishlisted items
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - my
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          required: true
+          type: string
+      delete:
+        displayName: DELETE_my-wishlist-id
+        description: Remove a listing from your wishlist
+        (oas-summary): Remove a listing from your wishlist
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+      put:
+        displayName: PUT_my-wishlist-id
+        description: Add a listing to your wishlist
+        (oas-summary): Add a listing to your wishlist
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - my
+  /feed:
+    displayName: feed
+    get:
+      displayName: GET_my-feed
+      description: Get listings from your feed
+      (oas-summary): Get listings from your feed
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - my
+/webhooks:
+  displayName: webhooks
+  /registrations:
+    displayName: registrations
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          required: true
+          type: string
+      get:
+        displayName: GET_webhooks-registrations-id
+        description: Get details of a webhook registration
+        (oas-summary): Get details of a webhook registration
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - webhooks
+      delete:
+        displayName: DELETE_webhooks-registrations-id
+        description: Remove a webhook
+        (oas-summary): Remove a webhook
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - webhooks
+    post:
+      displayName: POST_webhooks-registrations
+      description: Register a webhook
+      (oas-summary): Register a webhook
+      body:
+        application/json:
+          properties:
+            topic:
+              description: 'Valid values: listings/update, orders/create, orders/update, payments/create, payments/update'
+              type: string
+            url:
+              type: string
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - webhooks
+    get:
+      displayName: GET_webhooks-registrations
+      description: Get webhook registrations
+      (oas-summary): Get webhook registrations
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - webhooks
+/accounts:
+  displayName: accounts
+  post:
+    displayName: POST_accounts
+    description: Create an account.
+    (oas-summary): Create an account.
+    body:
+      application/json:
+        properties:
+          email:
+            description: Email address.
+            type: string
+          first_name:
+            description: First Name
+            type: string
+          last_name:
+            description: Last Name
+            type: string
+          newsletter_opt_in:
+            description: Subscribe to gear deals by email
+            type: boolean
+            required: false
+          password:
+            description: Password (at least 8 characters).
+            type: string
+        type: object
+        (oas-body-name): body
+        description: the content of the request
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - accounts
+/addresses:
+  displayName: addresses
+  post:
+    displayName: POST_addresses
+    description: Create a new address in your address book
+    (oas-summary): Create a new address in your address book
+    body:
+      application/json:
+        properties:
+          country_code:
+            description: Country Code
+            type: string
+          extended_address:
+            description: Extended Address
+            type: string
+            required: false
+          locality:
+            description: City
+            type: string
+          name:
+            description: Name
+            type: string
+          phone:
+            description: Phone
+            type: string
+          postal_code:
+            description: 'Postal, Zip Code'
+            type: string
+          primary:
+            description: Primary
+            type: boolean
+            required: false
+          region:
+            description: State
+            type: string
+          street_address:
+            description: Street Address
+            type: string
+        type: object
+        (oas-body-name): body
+        description: the content of the request
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - addresses
+  '/{address_id}':
+    displayName: '{address_id}'
+    uriParameters:
+      address_id:
+        required: true
+        type: string
+    put:
+      displayName: PUT_addresses-address_id
+      description: Update an existing address in your address book
+      (oas-summary): Update an existing address in your address book
+      body:
+        application/json:
+          properties:
+            country_code:
+              description: Country Code
+              type: string
+            extended_address:
+              description: Extended Address
+              type: string
+              required: false
+            locality:
+              description: City
+              type: string
+            name:
+              description: Name
+              type: string
+            phone:
+              description: Phone
+              type: string
+            postal_code:
+              description: 'Postal, Zip Code'
+              type: string
+            primary:
+              description: Primary
+              type: boolean
+              required: false
+            region:
+              description: State
+              type: string
+            street_address:
+              description: Street Address
+              type: string
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - addresses
+    delete:
+      displayName: DELETE_addresses-address_id
+      description: Delete an existing address in your address book
+      (oas-summary): Delete an existing address in your address book
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - addresses
+  get:
+    displayName: GET_addresses
+    description: See all addresses in your address book
+    (oas-summary): See all addresses in your address book
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - addresses
+/articles:
+  displayName: articles
+  /featured:
+    displayName: featured
+    get:
+      displayName: GET_articles-featured
+      description: See featured Reverb blog posts
+      (oas-summary): See featured Reverb blog posts
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - articles
+  '/{slug}':
+    displayName: '{slug}'
+    /related-listings:
+      displayName: related-listings
+      get:
+        displayName: GET_articles-slug-related-listings
+        description: Find listings related to an article
+        (oas-summary): Find listings related to an article
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - articles
+    uriParameters:
+      slug:
+        required: true
+        type: string
+    get:
+      displayName: GET_articles-slug
+      description: Display a single article
+      (oas-summary): Display a single article
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - articles
+  get:
+    displayName: GET_articles
+    description: See all Reverb blog posts
+    (oas-summary): See all Reverb blog posts
+    (oas-responses-default):
+      description: Unexpected error
+    queryParameters:
+      exclude_featured:
+        description: Number of featured articles to exclude
+        type: integer
+        displayName: Number of featured articles to exclude
+    (oas-tags):
+      - articles
+/auth:
+  displayName: auth
+  /facebook:
+    displayName: facebook
+    post:
+      displayName: POST_auth-facebook
+      description: Login by facebook token
+      (oas-summary): Login by facebook token
+      body:
+        application/json:
+          properties:
+            fb_token:
+              description: Facebook access token.
+              type: string
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - auth
+  /logout:
+    displayName: logout
+    put:
+      displayName: PUT_auth-logout
+      description: Logout (primarily for mobile clients)
+      (oas-summary): Logout (primarily for mobile clients)
+      body:
+        application/json:
+          properties:
+            device_token:
+              type: string
+              required: false
+            device_type:
+              type: string
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - auth
+  /forgot_password:
+    displayName: forgot_password
+    post:
+      displayName: POST_auth-forgot_password
+      description: Send a password reset email
+      (oas-summary): Send a password reset email
+      body:
+        application/json:
+          properties:
+            email:
+              type: string
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - auth
+  /email:
+    displayName: email
+    post:
+      displayName: POST_auth-email
+      description: Login by email/password
+      (oas-summary): Login by email/password
+      body:
+        application/json:
+          properties:
+            email:
+              description: Email address.
+              type: string
+            password:
+              description: Password
+              type: string
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - auth
+/cart:
+  displayName: cart
+  get:
+    displayName: GET_cart
+    description: Get all cart items
+    (oas-summary): Get all cart items
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - cart
+  '/{cart_item_id}':
+    displayName: '{cart_item_id}'
+    uriParameters:
+      cart_item_id:
+        required: true
+        type: string
+    put:
+      displayName: PUT_cart-cart_item_id
+      description: Update cart item details
+      (oas-summary): Update cart item details
+      body:
+        application/json:
+          properties:
+            quantity:
+              description: Requested Quantity
+              type: integer
+              required: false
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - cart
+  '/{product_id}':
+    displayName: '{product_id}'
+    uriParameters:
+      product_id:
+        required: true
+        type: string
+    post:
+      displayName: POST_cart-product_id
+      description: Add product to the cart
+      (oas-summary): Add product to the cart
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - cart
+    delete:
+      displayName: DELETE_cart-product_id
+      description: Remove a product from the cart
+      (oas-summary): Remove a product from the cart
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - cart
+  /move_to_watch_list:
+    displayName: move_to_watch_list
+    '/{cart_item_id}':
+      displayName: '{cart_item_id}'
+      uriParameters:
+        cart_item_id:
+          required: true
+          type: string
+      post:
+        displayName: POST_cart-move_to_watch_list-cart_item_id
+        description: Remove a cart item and add it to watch list
+        (oas-summary): Remove a cart item and add it to watch list
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - cart
+/categories:
+  displayName: categories
+  '/{product_type}':
+    displayName: '{product_type}'
+    uriParameters:
+      product_type:
+        required: true
+        type: string
+    get:
+      displayName: GET_categories-product_type
+      description: Get category details
+      (oas-summary): Get category details
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - categories
+    '/{category}':
+      displayName: '{category}'
+      uriParameters:
+        category:
+          required: true
+          type: string
+      get:
+        displayName: GET_categories-product_type-category
+        description: Get subcategory details
+        (oas-summary): Get subcategory details
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - categories
+  get:
+    displayName: GET_categories
+    description: List of supported product categories
+    (oas-summary): List of supported product categories
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - categories
+/collections:
+  displayName: collections
+  get:
+    displayName: GET_collections
+    description: List of curated collections
+    (oas-summary): List of curated collections
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - collections
+  '/{slug}':
+    displayName: '{slug}'
+    uriParameters:
+      slug:
+        required: true
+        type: string
+    get:
+      displayName: GET_collections-slug
+      description: Collection details
+      (oas-summary): Collection details
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - collections
+/comparison_shopping:
+  displayName: comparison_shopping
+  get:
+    displayName: GET_comparison_shopping
+    description: Find comparison shopping pages
+    (oas-summary): Find comparison shopping pages
+    (oas-responses-default):
+      description: Unexpected error
+    queryParameters:
+      query:
+        description: Search string to find comparison shopping pages
+        type: string
+        displayName: Search string to find comparison shopping pages
+    (oas-tags):
+      - comparison_shopping
+  '/{slug}':
+    displayName: '{slug}'
+    uriParameters:
+      slug:
+        required: true
+        type: string
+    get:
+      displayName: GET_comparison_shopping-slug
+      description: Show comparison shopping page
+      (oas-summary): Show comparison shopping page
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - comparison_shopping
+/conversations:
+  displayName: conversations
+  '/{id}':
+    displayName: '{id}'
+    /offer:
+      displayName: offer
+      post:
+        displayName: POST_conversations-id-offer
+        description: Make an offer to the other participant in the conversation
+        (oas-summary): Make an offer to the other participant in the conversation
+        body:
+          application/json:
+            properties:
+              message:
+                description: Message to include with counter offer
+                type: string
+                required: false
+              price:
+                description: Offer price
+                type: string
+              shipping_price:
+                description: Shipping price (sellers only)
+                type: string
+                required: false
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - conversations
+/handpicked:
+  displayName: handpicked
+  '/{slug}':
+    displayName: '{slug}'
+    uriParameters:
+      slug:
+        required: true
+        type: string
+    get:
+      displayName: GET_handpicked-slug
+      description: Get results from a handpicked collection
+      (oas-summary): Get results from a handpicked collection
+      (oas-responses-default):
+        description: Unexpected error
+      queryParameters:
+        query:
+          description: Search query.
+          type: string
+          displayName: Search query.
+        auction_price_max:
+          description: Maximum current auction price
+          format: float
+          type: number
+          displayName: Maximum current auction price
+        category:
+          description: Category slug from /api/categories
+          type: string
+          displayName: Category slug from /api/categories
+        product_type:
+          description: Product type slug from /api/categories
+          type: string
+          displayName: Product type slug from /api/categories
+        condition:
+          description: 'Condition: new,used,all'
+          type: string
+          displayName: 'Condition: new,used,all'
+        decade:
+          description: 'Decade: e.g. 1970s, early 70s'
+          type: string
+          displayName: 'Decade: e.g. 1970s, early 70s'
+        finish:
+          description: 'Visual finish of the item, common for guitars'
+          type: string
+          displayName: 'Visual finish of the item, common for guitars'
+        handmade:
+          description: Handmade items only
+          type: boolean
+          displayName: Handmade items only
+        item_city:
+          description: City where item is located
+          type: string
+          displayName: City where item is located
+        item_country:
+          description: Country code where item is located
+          type: string
+          displayName: Country code where item is located
+        item_state:
+          description: State or region code where item is located
+          type: string
+          displayName: State or region code where item is located
+        make:
+          description: Make(s)/brand of item (e.g. Fender). Can take a single value or an array.
+          type: string
+          displayName: Make(s)/brand of item (e.g. Fender). Can take a single value or an array.
+        model:
+          description: Model of item (e.g. Stratocaster)
+          type: string
+          displayName: Model of item (e.g. Stratocaster)
+        must_not:
+          description: 'Search term negation. If you want to exclude a term, add it here'
+          type: string
+          displayName: 'Search term negation. If you want to exclude a term, add it here'
+        price_max:
+          description: Maximum price of search results (USD)
+          format: float
+          type: number
+          displayName: Maximum price of search results (USD)
+        price_min:
+          description: Minimum price of search results (USD)
+          format: float
+          type: number
+          displayName: Minimum price of search results (USD)
+        year_max:
+          description: Maximum year of manufacture
+          type: integer
+          displayName: Maximum year of manufacture
+        year_min:
+          description: Minumum year of manufacture
+          type: integer
+          displayName: Minumum year of manufacture
+        accepts_gift_cards:
+          description: 'If true, include only items that accept gift cards'
+          type: boolean
+          displayName: 'If true, include only items that accept gift cards'
+        preferred_seller:
+          description: 'If true, include only items by Reverb Preferred Sellers'
+          type: boolean
+          displayName: 'If true, include only items by Reverb Preferred Sellers'
+        shop:
+          description: Slug of shop to search
+          type: string
+          displayName: Slug of shop to search
+        shop_id:
+          description: ID of shop to search
+          type: string
+          displayName: ID of shop to search
+        listing_type:
+          description: 'Type of listing: auction,make_an_offer,buy_it_now'
+          type: string
+          displayName: 'Type of listing: auction,make_an_offer,buy_it_now'
+        ships_to:
+          description: Limit search to items that ship to this country code
+          type: string
+          displayName: Limit search to items that ship to this country code
+        exclude_auctions:
+          description: 'If true, exclude auctions'
+          type: boolean
+          displayName: 'If true, exclude auctions'
+        accepts_payment_plans:
+          description: 'If true, only show items that can be purchased with a payment plan'
+          type: boolean
+          displayName: 'If true, only show items that can be purchased with a payment plan'
+        watchers_count_min:
+          description: Minimum number of watchers (used to find popular items)
+          type: integer
+          displayName: Minimum number of watchers (used to find popular items)
+        page:
+          default: 1
+          type: integer
+        per_page:
+          default: 24
+          type: integer
+      (oas-tags):
+        - handpicked
+/listings:
+  displayName: listings
+  post:
+    displayName: POST_listings
+    description: Create a listing
+    (oas-summary): Create a listing
+    body:
+      application/json:
+        properties:
+          categories:
+            description: Array of up to two additional categories. Must be children of product_type.
+            items:
+              type: string
+            type: array
+            required: false
+          condition:
+            description: 'Condition name (values: Non Functioning,Poor,Fair,Good,Very Good,Excellent,Mint,Mint (with inventory),Like New,Brand New)'
+            type: string
+            required: false
+          description:
+            description: Product description. Please keep formatting to a minimum.
+            type: string
+            required: false
+          finish:
+            description: 'Finish, e.g. ''Sunburst'''
+            type: string
+            required: false
+          has_inventory:
+            description: Set true if selling more than one
+            type: boolean
+            required: false
+          inventory:
+            description: Number of items available for sale. Reverb will increment and decrement automatically.
+            type: integer
+            required: false
+          location:
+            properties:
+              country_code:
+                description: 'Ex: US'
+                type: string
+                required: false
+              locality:
+                description: 'Ex: Chicago'
+                type: string
+                required: false
+              region:
+                description: 'Ex: IL'
+                type: string
+                required: false
+            type: object
+            required: false
+          make:
+            description: 'ex: Fender, Gibson'
+            type: string
+            required: false
+          model:
+            description: 'ex: Stratocaster, SG'
+            type: string
+            required: false
+          offers_enabled:
+            description: 'Whether the listing accepts negotiated offers (default: true)'
+            type: boolean
+            required: false
+          origin_country_code:
+            description: 'Country of origin/manufacture, ISO code (e.g: US)'
+            type: string
+            required: false
+          photos:
+            description: 'An array of image URLs. Ex: [''http://my.site.com/image.jpg'']'
+            items:
+              type: string
+            type: array
+            required: false
+          price:
+            description: Asking price in your currency
+            type: string
+            required: false
+          product_type:
+            description: 'Top level category slug. Ex: electric-guitar, acoustic-guitar. Full list: /api/categories'
+            type: string
+            required: false
+          publish:
+            description: Publish your listing if draft
+            type: boolean
+            required: false
+          seller:
+            properties:
+              paypal_email:
+                type: string
+                required: false
+            type: object
+            required: false
+          seller_cost:
+            description: 'Cost of goods in your currency (internal use only, not shown to buyers)'
+            type: string
+            required: false
+          shipping:
+            properties:
+              local:
+                description: True if you offer local pickup
+                type: boolean
+                required: false
+              rates:
+                description: List of shipping rates. Set to null to clear rates.
+                items:
+                  properties:
+                    rate:
+                      description: Shipping rate in your currency
+                      type: string
+                      required: false
+                    region_code:
+                      description: Country code or subregion/superregion code. Full list of codes at /api/shipping/regions
+                      type: string
+                      required: false
+                    region_type:
+                      description: '[everywhere_else,country,subregion,superregion]'
+                      type: string
+                      required: false
+                  type: object
+                type: array
+                required: false
+            type: object
+            required: false
+          shipping_profile_id:
+            description: id of a shop's shipping profile
+            type: string
+            required: false
+          shipping_profile_name:
+            description: Name of a shipping profile
+            type: string
+            required: false
+          sku:
+            description: Unique identifier for product
+            type: string
+            required: false
+          sold_as_is:
+            description: This item is sold As-Is and cannot be returned
+            type: boolean
+            required: false
+          title:
+            description: Title of your listing
+            type: string
+            required: false
+          year:
+            description: 'Supports many formats. Ex: 1979, mid-70s, late 90s'
+            type: string
+            required: false
+        type: object
+        (oas-body-name): body
+        description: the content of the request
+    (oas-responses-default):
+      description: Unexpected error
+    securedBy:
+      - oauth2:
+          scopes:
+            - update_listings
+    (oas-tags):
+      - listings
+  '/{id}':
+    displayName: '{id}'
+    /offer:
+      displayName: offer
+      post:
+        displayName: POST_listings-id-offer
+        description: Make an offer to the seller of a listing
+        (oas-summary): Make an offer to the seller of a listing
+        body:
+          application/json:
+            properties:
+              message:
+                description: Message to include with counter offer
+                type: string
+                required: false
+              price:
+                description: Offer price
+                type: string
+              shipping_price:
+                description: Shipping price (sellers only)
+                type: string
+                required: false
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - listings
+  '/{listing_id}':
+    displayName: '{listing_id}'
+    /bump:
+      displayName: bump
+      '/{budget_type}':
+        displayName: '{budget_type}'
+        uriParameters:
+          budget_type:
+            required: true
+            type: string
+        post:
+          displayName: POST_listings-listing_id-bump-budget_type
+          description: Bump a listing
+          (oas-summary): Bump a listing
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - listings
+      get:
+        displayName: GET_listings-listing_id-bump
+        description: View available bump tiers and stats for a listing
+        (oas-summary): View available bump tiers and stats for a listing
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - listings
+    /sales:
+      displayName: sales
+      get:
+        displayName: GET_listings-listing_id-sales
+        description: See all sales that include a listing.
+        (oas-summary): See all sales that include a listing.
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - listings
+    /conversations:
+      displayName: conversations
+      post:
+        displayName: POST_listings-listing_id-conversations
+        description: Start a conversation with a seller
+        (oas-summary): Start a conversation with a seller
+        body:
+          application/json:
+            properties:
+              body:
+                type: string
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - listings
+  '/{slug}':
+    displayName: '{slug}'
+    uriParameters:
+      slug:
+        required: true
+        type: string
+    get:
+      displayName: GET_listings-slug
+      description: Listing details
+      (oas-summary): Listing details
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - listings
+    /edit:
+      displayName: edit
+      get:
+        displayName: GET_listings-slug-edit
+        description: Edit listing.
+        (oas-summary): Edit listing.
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - listings
+    put:
+      displayName: PUT_listings-slug
+      description: Update a listing
+      (oas-summary): Update a listing
+      body:
+        application/json:
+          properties:
+            categories:
+              description: Array of up to two additional categories. Must be children of product_type.
+              items:
+                type: string
+              type: array
+              required: false
+            condition:
+              description: 'Condition name (values: Non Functioning,Poor,Fair,Good,Very Good,Excellent,Mint,Mint (with inventory),Like New,Brand New)'
+              type: string
+              required: false
+            description:
+              description: Product description. Please keep formatting to a minimum.
+              type: string
+              required: false
+            finish:
+              description: 'Finish, e.g. ''Sunburst'''
+              type: string
+              required: false
+            has_inventory:
+              description: Set true if selling more than one
+              type: boolean
+              required: false
+            inventory:
+              description: Number of items available for sale. Reverb will increment and decrement automatically.
+              type: integer
+              required: false
+            location:
+              properties:
+                country_code:
+                  description: 'Ex: US'
+                  type: string
+                  required: false
+                locality:
+                  description: 'Ex: Chicago'
+                  type: string
+                  required: false
+                region:
+                  description: 'Ex: IL'
+                  type: string
+                  required: false
+              type: object
+              required: false
+            make:
+              description: 'ex: Fender, Gibson'
+              type: string
+              required: false
+            model:
+              description: 'ex: Stratocaster, SG'
+              type: string
+              required: false
+            offers_enabled:
+              description: 'Whether the listing accepts negotiated offers (default: true)'
+              type: boolean
+              required: false
+            origin_country_code:
+              description: 'Country of origin/manufacture, ISO code (e.g: US)'
+              type: string
+              required: false
+            photos:
+              description: 'An array of image URLs. Ex: [''http://my.site.com/image.jpg'']'
+              items:
+                type: string
+              type: array
+              required: false
+            price:
+              description: Asking price in your currency
+              type: string
+              required: false
+            product_type:
+              description: 'Top level category slug. Ex: electric-guitar, acoustic-guitar. Full list: /api/categories'
+              type: string
+              required: false
+            publish:
+              description: Publish your listing if draft
+              type: boolean
+              required: false
+            seller:
+              properties:
+                paypal_email:
+                  type: string
+                  required: false
+              type: object
+              required: false
+            seller_cost:
+              description: 'Cost of goods in your currency (internal use only, not shown to buyers)'
+              type: string
+              required: false
+            shipping:
+              properties:
+                local:
+                  description: True if you offer local pickup
+                  type: boolean
+                  required: false
+                rates:
+                  description: List of shipping rates. Set to null to clear rates.
+                  items:
+                    properties:
+                      rate:
+                        description: Shipping rate in your currency
+                        type: string
+                        required: false
+                      region_code:
+                        description: Country code or subregion/superregion code. Full list of codes at /api/shipping/regions
+                        type: string
+                        required: false
+                      region_type:
+                        description: '[everywhere_else,country,subregion,superregion]'
+                        type: string
+                        required: false
+                    type: object
+                  type: array
+                  required: false
+              type: object
+              required: false
+            shipping_profile_id:
+              description: id of a shop's shipping profile
+              type: string
+              required: false
+            shipping_profile_name:
+              description: Name of a shipping profile
+              type: string
+              required: false
+            sku:
+              description: Unique identifier for product
+              type: string
+              required: false
+            sold_as_is:
+              description: This item is sold As-Is and cannot be returned
+              type: boolean
+              required: false
+            title:
+              description: Title of your listing
+              type: string
+              required: false
+            year:
+              description: 'Supports many formats. Ex: 1979, mid-70s, late 90s'
+              type: string
+              required: false
+          type: object
+          (oas-body-name): body
+          description: the content of the request
+      (oas-responses-default):
+        description: Unexpected error
+      securedBy:
+        - oauth2:
+            scopes:
+              - update_listings
+      (oas-tags):
+        - listings
+    delete:
+      displayName: DELETE_listings-slug
+      description: Delete a draft listing. Cannot be used on non-drafts.
+      (oas-summary): Delete a draft listing. Cannot be used on non-drafts.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - listings
+    /flag:
+      displayName: flag
+      post:
+        displayName: POST_listings-slug-flag
+        description: Flag a listing for inappropriate content or fraud
+        (oas-summary): Flag a listing for inappropriate content or fraud
+        body:
+          application/json:
+            properties:
+              reason:
+                description: 'Valid reasons: ''Sexuality/nudity'', ''Hateful or inappropriate speech'', ''Item not as described or potential fraud'', ''Trademark infringement'', ''Other'''
+                type: string
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - listings
+  /all:
+    displayName: all
+    get:
+      displayName: GET_listings-all
+      description: 'All listings including used, handmade, and brand new'
+      (oas-summary): 'All listings including used, handmade, and brand new'
+      (oas-responses-default):
+        description: Unexpected error
+      queryParameters:
+        query:
+          description: Search query.
+          type: string
+          displayName: Search query.
+        auction_price_max:
+          description: Maximum current auction price
+          format: float
+          type: number
+          displayName: Maximum current auction price
+        category:
+          description: Category slug from /api/categories
+          type: string
+          displayName: Category slug from /api/categories
+        product_type:
+          description: Product type slug from /api/categories
+          type: string
+          displayName: Product type slug from /api/categories
+        condition:
+          description: 'Condition: new,used,all'
+          type: string
+          displayName: 'Condition: new,used,all'
+        decade:
+          description: 'Decade: e.g. 1970s, early 70s'
+          type: string
+          displayName: 'Decade: e.g. 1970s, early 70s'
+        finish:
+          description: 'Visual finish of the item, common for guitars'
+          type: string
+          displayName: 'Visual finish of the item, common for guitars'
+        handmade:
+          description: Handmade items only
+          type: boolean
+          displayName: Handmade items only
+        item_city:
+          description: City where item is located
+          type: string
+          displayName: City where item is located
+        item_country:
+          description: Country code where item is located
+          type: string
+          displayName: Country code where item is located
+        item_state:
+          description: State or region code where item is located
+          type: string
+          displayName: State or region code where item is located
+        make:
+          description: Make(s)/brand of item (e.g. Fender). Can take a single value or an array.
+          type: string
+          displayName: Make(s)/brand of item (e.g. Fender). Can take a single value or an array.
+        model:
+          description: Model of item (e.g. Stratocaster)
+          type: string
+          displayName: Model of item (e.g. Stratocaster)
+        must_not:
+          description: 'Search term negation. If you want to exclude a term, add it here'
+          type: string
+          displayName: 'Search term negation. If you want to exclude a term, add it here'
+        price_max:
+          description: Maximum price of search results (USD)
+          format: float
+          type: number
+          displayName: Maximum price of search results (USD)
+        price_min:
+          description: Minimum price of search results (USD)
+          format: float
+          type: number
+          displayName: Minimum price of search results (USD)
+        year_max:
+          description: Maximum year of manufacture
+          type: integer
+          displayName: Maximum year of manufacture
+        year_min:
+          description: Minumum year of manufacture
+          type: integer
+          displayName: Minumum year of manufacture
+        accepts_gift_cards:
+          description: 'If true, include only items that accept gift cards'
+          type: boolean
+          displayName: 'If true, include only items that accept gift cards'
+        preferred_seller:
+          description: 'If true, include only items by Reverb Preferred Sellers'
+          type: boolean
+          displayName: 'If true, include only items by Reverb Preferred Sellers'
+        shop:
+          description: Slug of shop to search
+          type: string
+          displayName: Slug of shop to search
+        shop_id:
+          description: ID of shop to search
+          type: string
+          displayName: ID of shop to search
+        listing_type:
+          description: 'Type of listing: auction,make_an_offer,buy_it_now'
+          type: string
+          displayName: 'Type of listing: auction,make_an_offer,buy_it_now'
+        ships_to:
+          description: Limit search to items that ship to this country code
+          type: string
+          displayName: Limit search to items that ship to this country code
+        exclude_auctions:
+          description: 'If true, exclude auctions'
+          type: boolean
+          displayName: 'If true, exclude auctions'
+        accepts_payment_plans:
+          description: 'If true, only show items that can be purchased with a payment plan'
+          type: boolean
+          displayName: 'If true, only show items that can be purchased with a payment plan'
+        watchers_count_min:
+          description: Minimum number of watchers (used to find popular items)
+          type: integer
+          displayName: Minimum number of watchers (used to find popular items)
+        page:
+          default: 1
+          type: integer
+        per_page:
+          default: 24
+          type: integer
+      (oas-tags):
+        - listings
+  get:
+    displayName: GET_listings
+    description: Default search of listings includes only used & handmade. Add a filter to view all listings or use the /listings/all endpoint.
+    (oas-summary): Default search of listings includes only used & handmade. Add a filter to view all listings or use the /listings/all endpoint.
+    (oas-responses-default):
+      description: Unexpected error
+    queryParameters:
+      query:
+        description: Search query.
+        type: string
+        displayName: Search query.
+      auction_price_max:
+        description: Maximum current auction price
+        format: float
+        type: number
+        displayName: Maximum current auction price
+      category:
+        description: Category slug from /api/categories
+        type: string
+        displayName: Category slug from /api/categories
+      product_type:
+        description: Product type slug from /api/categories
+        type: string
+        displayName: Product type slug from /api/categories
+      condition:
+        description: 'Condition: new,used,all'
+        type: string
+        displayName: 'Condition: new,used,all'
+      decade:
+        description: 'Decade: e.g. 1970s, early 70s'
+        type: string
+        displayName: 'Decade: e.g. 1970s, early 70s'
+      finish:
+        description: 'Visual finish of the item, common for guitars'
+        type: string
+        displayName: 'Visual finish of the item, common for guitars'
+      handmade:
+        description: Handmade items only
+        type: boolean
+        displayName: Handmade items only
+      item_city:
+        description: City where item is located
+        type: string
+        displayName: City where item is located
+      item_country:
+        description: Country code where item is located
+        type: string
+        displayName: Country code where item is located
+      item_state:
+        description: State or region code where item is located
+        type: string
+        displayName: State or region code where item is located
+      make:
+        description: Make(s)/brand of item (e.g. Fender). Can take a single value or an array.
+        type: string
+        displayName: Make(s)/brand of item (e.g. Fender). Can take a single value or an array.
+      model:
+        description: Model of item (e.g. Stratocaster)
+        type: string
+        displayName: Model of item (e.g. Stratocaster)
+      must_not:
+        description: 'Search term negation. If you want to exclude a term, add it here'
+        type: string
+        displayName: 'Search term negation. If you want to exclude a term, add it here'
+      price_max:
+        description: Maximum price of search results (USD)
+        format: float
+        type: number
+        displayName: Maximum price of search results (USD)
+      price_min:
+        description: Minimum price of search results (USD)
+        format: float
+        type: number
+        displayName: Minimum price of search results (USD)
+      year_max:
+        description: Maximum year of manufacture
+        type: integer
+        displayName: Maximum year of manufacture
+      year_min:
+        description: Minumum year of manufacture
+        type: integer
+        displayName: Minumum year of manufacture
+      accepts_gift_cards:
+        description: 'If true, include only items that accept gift cards'
+        type: boolean
+        displayName: 'If true, include only items that accept gift cards'
+      preferred_seller:
+        description: 'If true, include only items by Reverb Preferred Sellers'
+        type: boolean
+        displayName: 'If true, include only items by Reverb Preferred Sellers'
+      shop:
+        description: Slug of shop to search
+        type: string
+        displayName: Slug of shop to search
+      shop_id:
+        description: ID of shop to search
+        type: string
+        displayName: ID of shop to search
+      listing_type:
+        description: 'Type of listing: auction,make_an_offer,buy_it_now'
+        type: string
+        displayName: 'Type of listing: auction,make_an_offer,buy_it_now'
+      ships_to:
+        description: Limit search to items that ship to this country code
+        type: string
+        displayName: Limit search to items that ship to this country code
+      exclude_auctions:
+        description: 'If true, exclude auctions'
+        type: boolean
+        displayName: 'If true, exclude auctions'
+      accepts_payment_plans:
+        description: 'If true, only show items that can be purchased with a payment plan'
+        type: boolean
+        displayName: 'If true, only show items that can be purchased with a payment plan'
+      watchers_count_min:
+        description: Minimum number of watchers (used to find popular items)
+        type: integer
+        displayName: Minimum number of watchers (used to find popular items)
+      page:
+        default: 1
+        type: integer
+      per_page:
+        default: 24
+        type: integer
+    (oas-tags):
+      - listings
+/orders:
+  displayName: orders
+  '/{order_id}':
+    displayName: '{order_id}'
+    /feedback:
+      displayName: feedback
+      /buyer:
+        displayName: buyer
+        get:
+          displayName: GET_orders-order_id-feedback-buyer
+          description: Feedback details for an order's buyer
+          (oas-summary): Feedback details for an order's buyer
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - orders
+        post:
+          displayName: POST_orders-order_id-feedback-buyer
+          description: Add feedback about an order's buyer
+          (oas-summary): Add feedback about an order's buyer
+          body:
+            application/json:
+              properties:
+                message:
+                  type: string
+                  required: false
+                rating:
+                  description: Number 1-5; Higher is better
+                  type: integer
+                  required: false
+              type: object
+              (oas-body-name): body
+              description: the content of the request
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - orders
+      /seller:
+        displayName: seller
+        get:
+          displayName: GET_orders-order_id-feedback-seller
+          description: Feedback details for an order's seller
+          (oas-summary): Feedback details for an order's seller
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - orders
+        post:
+          displayName: POST_orders-order_id-feedback-seller
+          description: Add feedback about an order's seller
+          (oas-summary): Add feedback about an order's seller
+          body:
+            application/json:
+              properties:
+                message:
+                  type: string
+                  required: false
+                rating:
+                  description: Number 1-5; Higher is better
+                  type: integer
+                  required: false
+              type: object
+              (oas-body-name): body
+              description: the content of the request
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - orders
+/payment_methods:
+  displayName: payment_methods
+  get:
+    displayName: GET_payment_methods
+    description: Get list of payment methods
+    (oas-summary): Get list of payment methods
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - payment_methods
+/priceguide:
+  displayName: priceguide
+  get:
+    displayName: GET_priceguide
+    description: Search the Price Guide
+    (oas-summary): Search the Price Guide
+    (oas-responses-default):
+      description: Unexpected error
+    queryParameters:
+      query:
+        description: Search query.
+        type: string
+        displayName: Search query.
+    (oas-tags):
+      - priceguide
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        required: true
+        type: string
+    get:
+      displayName: GET_priceguide-id
+      description: Retrieve a Price Guide
+      (oas-summary): Retrieve a Price Guide
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - priceguide
+    /transactions:
+      displayName: transactions
+      get:
+        displayName: GET_priceguide-id-transactions
+        description: Get a list of paginated transactions for a price guide.
+        (oas-summary): Get a list of paginated transactions for a price guide.
+        (oas-responses-default):
+          description: Unexpected error
+        queryParameters:
+          condition:
+            default: used
+            type: string
+        (oas-tags):
+          - priceguide
+      /summary:
+        displayName: summary
+        get:
+          displayName: GET_priceguide-id-transactions-summary
+          description: Get a summary of transactions for a given price guide
+          (oas-summary): Get a summary of transactions for a given price guide
+          (oas-responses-default):
+            description: Unexpected error
+          queryParameters:
+            number_of_months:
+              default: 3
+              type: integer
+            condition:
+              default: used
+              type: string
+          (oas-tags):
+            - priceguide
+/products:
+  displayName: products
+  /reviews:
+    displayName: reviews
+    '/{id}':
+      displayName: '{id}'
+      uriParameters:
+        id:
+          required: true
+          type: string
+      get:
+        displayName: GET_products-reviews-id
+        description: View a review
+        (oas-summary): View a review
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - products
+      put:
+        displayName: PUT_products-reviews-id
+        description: Update a review
+        (oas-summary): Update a review
+        body:
+          application/json:
+            properties:
+              body:
+                description: Content of the review
+                type: string
+                required: false
+              rating:
+                description: Rating from 1 to 5
+                type: integer
+                required: false
+              title:
+                description: Title for the review
+                type: string
+                required: false
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - products
+  '/{slug}':
+    displayName: '{slug}'
+    /reviews:
+      displayName: reviews
+      get:
+        displayName: GET_products-slug-reviews
+        description: View reviews of a product
+        (oas-summary): View reviews of a product
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - products
+      post:
+        displayName: POST_products-slug-reviews
+        description: Create a review
+        (oas-summary): Create a review
+        body:
+          application/json:
+            properties:
+              body:
+                description: Content of the review (html not allowed)
+                type: string
+              rating:
+                description: Rating from 1 to 5
+                type: integer
+              title:
+                description: Title for the review
+                type: string
+                required: false
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - products
+/sales:
+  displayName: sales
+  /reverb:
+    displayName: reverb
+    get:
+      displayName: GET_sales-reverb
+      description: View upcoming and live Reverb official sales.
+      (oas-summary): View upcoming and live Reverb official sales.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - sales
+  /seller:
+    displayName: seller
+    get:
+      displayName: GET_sales-seller
+      description: View your created sales.
+      (oas-summary): View your created sales.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - sales
+  '/{sale_id}':
+    displayName: '{sale_id}'
+    /listings:
+      displayName: listings
+      delete:
+        displayName: DELETE_sales-sale_id-listings
+        description: Remove a listing from a sale
+        (oas-summary): Remove a listing from a sale
+        (oas-responses-default):
+          description: Unexpected error
+        queryParameters:
+          listing_ids:
+            description: Listing IDs to be removed from the sale.
+            items:
+              type: string
+            type: array
+            displayName: Listing IDs to be removed from the sale.
+        (oas-tags):
+          - sales
+      post:
+        displayName: POST_sales-sale_id-listings
+        description: Add listings to a sale
+        (oas-summary): Add listings to a sale
+        body:
+          application/json:
+            properties:
+              listing_ids:
+                description: Listing IDs to be added to the sale.
+                items:
+                  type: string
+                type: array
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - sales
+/feedback:
+  displayName: feedback
+  '/{feedback_id}':
+    displayName: '{feedback_id}'
+    uriParameters:
+      feedback_id:
+        required: true
+        type: string
+    get:
+      displayName: GET_feedback-feedback_id
+      description: Feedback details
+      (oas-summary): Feedback details
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - feedback
+/shipping:
+  displayName: shipping
+  /providers:
+    displayName: providers
+    get:
+      displayName: GET_shipping-providers
+      description: List of supported shipping providers
+      (oas-summary): List of supported shipping providers
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - shipping
+  /regions:
+    displayName: regions
+    get:
+      displayName: GET_shipping-regions
+      description: Get a list of shipping regions
+      (oas-summary): Get a list of shipping regions
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - shipping
+/shop:
+  displayName: shop
+  get:
+    displayName: GET_shop
+    description: Get your own shop details
+    (oas-summary): Get your own shop details
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - shop
+  put:
+    displayName: PUT_shop
+    description: Update your shop profile
+    (oas-summary): Update your shop profile
+    body:
+      application/json:
+        properties:
+          address:
+            properties:
+              extended_address:
+                type: string
+                required: false
+              locality:
+                type: string
+                required: false
+              phone:
+                type: string
+                required: false
+              postal_code:
+                type: string
+                required: false
+              region:
+                type: string
+                required: false
+              street_address:
+                type: string
+                required: false
+            type: object
+            required: false
+          description:
+            type: string
+            required: false
+          name:
+            type: string
+            required: false
+          payment_policy:
+            type: string
+            required: false
+          return_policy:
+            type: string
+            required: false
+          shipping_policy:
+            type: string
+            required: false
+          website:
+            type: string
+            required: false
+        type: object
+        (oas-body-name): body
+        description: the content of the request
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - shop
+  /payment_methods:
+    displayName: payment_methods
+    get:
+      displayName: GET_shop-payment_methods
+      description: Get accepted payment methods
+      (oas-summary): Get accepted payment methods
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - shop
+    /direct_checkout:
+      displayName: direct_checkout
+      delete:
+        displayName: DELETE_shop-payment_methods-direct_checkout
+        description: Disable direct checkout as an accepted payment method
+        (oas-summary): Disable direct checkout as an accepted payment method
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - shop
+      get:
+        displayName: GET_shop-payment_methods-direct_checkout
+        description: Get direct checkout settings
+        (oas-summary): Get direct checkout settings
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - shop
+      post:
+        displayName: POST_shop-payment_methods-direct_checkout
+        description: Add direct checkout account
+        (oas-summary): Add direct checkout account
+        body:
+          application/json:
+            properties:
+              bank_account_number:
+                type: string
+              bank_account_type:
+                type: string
+              name_on_account:
+                type: string
+              routing_number:
+                type: string
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - shop
+    /paypal:
+      displayName: paypal
+      delete:
+        displayName: DELETE_shop-payment_methods-paypal
+        description: Disable paypal as an accepted payment method
+        (oas-summary): Disable paypal as an accepted payment method
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - shop
+      get:
+        displayName: GET_shop-payment_methods-paypal
+        description: Get your paypal profile
+        (oas-summary): Get your paypal profile
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - shop
+      post:
+        displayName: POST_shop-payment_methods-paypal
+        description: Add paypal account
+        (oas-summary): Add paypal account
+        body:
+          application/json:
+            properties:
+              email:
+                type: string
+              first_name:
+                type: string
+              last_name:
+                type: string
+            type: object
+            (oas-body-name): body
+            description: the content of the request
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - shop
+  /stats:
+    displayName: stats
+    get:
+      displayName: GET_shop-stats
+      description: Get listings stats
+      (oas-summary): Get listings stats
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - shop
+    /activity:
+      displayName: activity
+      get:
+        displayName: GET_shop-stats-activity
+        description: Get shop activity for a particular time period
+        (oas-summary): Get shop activity for a particular time period
+        (oas-responses-default):
+          description: Unexpected error
+        queryParameters:
+          start_time:
+            description: 'Filter by date in ISO8601 format - e.g: 2015-04-09T10:52:23-05:00'
+            type: string
+            displayName: 'Filter by date in ISO8601 format - e.g: 2015-04-09T10:52:23-05:00'
+          end_time:
+            description: 'Filter by date in ISO8601 format - e.g: 2015-04-09T10:52:23-05:00'
+            type: string
+            displayName: 'Filter by date in ISO8601 format - e.g: 2015-04-09T10:52:23-05:00'
+        (oas-tags):
+          - shop
+  /vacation:
+    displayName: vacation
+    delete:
+      displayName: DELETE_shop-vacation
+      description: Disable vacation mode. All listings will be re-enabled.
+      (oas-summary): Disable vacation mode. All listings will be re-enabled.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - shop
+    get:
+      displayName: GET_shop-vacation
+      description: Returns shop vacation status
+      (oas-summary): Returns shop vacation status
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - shop
+    post:
+      displayName: POST_shop-vacation
+      description: Enable vacation mode. All listings will be unavailable until vacation mode is turned off.
+      (oas-summary): Enable vacation mode. All listings will be unavailable until vacation mode is turned off.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - shop
+/autosuggest:
+  displayName: autosuggest
+  get:
+    displayName: GET_autosuggest
+    description: Autosuggest terms for searches
+    (oas-summary): Autosuggest terms for searches
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - autosuggest
+/shops:
+  displayName: shops
+  '/{slug}':
+    displayName: '{slug}'
+    uriParameters:
+      slug:
+        required: true
+        type: string
+    get:
+      displayName: GET_shops-slug
+      description: Get details on a shop.
+      (oas-summary): Get details on a shop.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - shops
+    /feedback:
+      displayName: feedback
+      get:
+        displayName: GET_shops-slug-feedback
+        description: Get seller's feedback
+        (oas-summary): Get seller's feedback
+        (oas-responses-default):
+          description: Unexpected error
+        (oas-tags):
+          - shops
+      /buyer:
+        displayName: buyer
+        get:
+          displayName: GET_shops-slug-feedback-buyer
+          description: Get seller's feedback as a buyer
+          (oas-summary): Get seller's feedback as a buyer
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - shops
+      /seller:
+        displayName: seller
+        get:
+          displayName: GET_shops-slug-feedback-seller
+          description: Get seller's feedback as a seller
+          (oas-summary): Get seller's feedback as a seller
+          (oas-responses-default):
+            description: Unexpected error
+          (oas-tags):
+            - shops
+/wants:
+  displayName: wants
+  get:
+    displayName: GET_wants
+    description: A list of wanted items by the user
+    (oas-summary): A list of wanted items by the user
+    (oas-responses-default):
+      description: Unexpected error
+    (oas-tags):
+      - wants
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        required: true
+        type: string
+    delete:
+      displayName: DELETE_wants-id
+      description: Unmark an item wanted. Returns 204.
+      (oas-summary): Unmark an item wanted. Returns 204.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - wants
+    put:
+      displayName: PUT_wants-id
+      description: Mark an item wanted. Returns 204 on success or 412 on failure.
+      (oas-summary): Mark an item wanted. Returns 204 on success or 412 on failure.
+      (oas-responses-default):
+        description: Unexpected error
+      (oas-tags):
+        - wants
+(oas-x-hasEquivalentPaths): true

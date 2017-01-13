@@ -95,10 +95,6 @@ securitySchemes:
           Format: `projects/{project_id}`
         required: true
         type: string
-        displayName: |-
-          Name of the project.
-
-          Format: `projects/{project_id}`
     post:
       displayName: firebaserules.projects.test
       description: |-
@@ -219,15 +215,9 @@ securitySchemes:
               than `page_size` due to the size of the output. To traverse all of the
               releases, caller should iterate until the `page_token` is empty.
             type: integer
-            displayName: |-
-              Page size to load. Maximum of 100. Defaults to 10.
-              Note: `page_size` is just a hint and the service may choose to load less
-              than `page_size` due to the size of the output. To traverse all of the
-              releases, caller should iterate until the `page_token` is empty.
           pageToken:
             description: Next page token for loading the next batch of `Ruleset` instances.
             type: string
-            displayName: Next page token for loading the next batch of `Ruleset` instances.
         securedBy:
           - Oauth2:
               scopes:
@@ -311,11 +301,6 @@ securitySchemes:
               than `page_size` due to the size of the output. To traverse all of the
               releases, caller should iterate until the `page_token` is empty.
             type: integer
-            displayName: |-
-              Page size to load. Maximum of 100. Defaults to 10.
-              Note: `page_size` is just a hint and the service may choose to load less
-              than `page_size` due to the size of the output. To traverse all of the
-              releases, caller should iterate until the `page_token` is empty.
           filter:
             description: |-
               `Release` filter. The list method supports filters with restrictions on the
@@ -344,36 +329,9 @@ securitySchemes:
               collections. Fully qualified prefixed may also be used. e.g.
               `name=projects/foo/releases/prod* ruleset_name=projects/foo/rulesets/uuid1`
             type: string
-            displayName: |-
-              `Release` filter. The list method supports filters with restrictions on the
-              `Release` `name` and also on the `Ruleset` `ruleset_name`.
-
-              Example 1) A filter of 'name=prod*' might return `Release`s with names
-              within 'projects/foo' prefixed with 'prod':
-
-              Name                          | Ruleset Name
-              ------------------------------|-------------
-              projects/foo/releases/prod    | projects/foo/rulesets/uuid1234
-              projects/foo/releases/prod/v1 | projects/foo/rulesets/uuid1234
-              projects/foo/releases/prod/v2 | projects/foo/rulesets/uuid8888
-
-              Example 2) A filter of `name=prod* ruleset_name=uuid1234` would return only
-              `Release` instances for 'projects/foo' with names prefixed with 'prod'
-              referring to the same `Ruleset` name of 'uuid1234':
-
-              Name                          | Ruleset Name
-              ------------------------------|-------------
-              projects/foo/releases/prod    | projects/foo/rulesets/1234
-              projects/foo/releases/prod/v1 | projects/foo/rulesets/1234
-
-              In the examples, the filter parameters refer to the search filters for
-              release and ruleset names are relative to the project releases and rulesets
-              collections. Fully qualified prefixed may also be used. e.g.
-              `name=projects/foo/releases/prod* ruleset_name=projects/foo/rulesets/uuid1`
           pageToken:
             description: Next page token for the next batch of `Release` instances.
             type: string
-            displayName: Next page token for the next batch of `Release` instances.
         securedBy:
           - Oauth2:
               scopes:
@@ -388,10 +346,6 @@ securitySchemes:
           Format: `projects/{project_id}/releases/{release_id}`
         required: true
         type: string
-        displayName: |-
-          Resource name for the `Release` to delete.
-
-          Format: `projects/{project_id}/releases/{release_id}`
     put:
       displayName: firebaserules.projects.releases.update
       description: |-

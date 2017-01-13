@@ -77,11 +77,6 @@ securitySchemes:
           - picks
         required: true
         type: string
-        displayName: |+
-          Specify all to retrieve all reviews, including NYT Critics' Picks.
-
-          Specify picks to get NYT Critics' Picks currently in theaters.
-
     get:
       displayName: GET_reviews-resource-type-json
       responses:
@@ -111,7 +106,6 @@ securitySchemes:
           description: 'Positive integer, multiple of 20'
           required: false
           type: integer
-          displayName: 'Positive integer, multiple of 20'
         order:
           default: by-publication-date
           description: |
@@ -126,12 +120,6 @@ securitySchemes:
             - by-opening-date
           required: false
           type: string
-          displayName: |
-            Sets the sort order of the results.
-
-            Results ordered by-title are in ascending alphabetical order. Results ordered by one of the date parameters are in reverse chronological order.
-
-            If you do not specify a sort order, the results will be ordered by publication-date.
   /search.json:
     displayName: search.json
     get:
@@ -169,14 +157,6 @@ securitySchemes:
               If you omit the query parameter, your request will be equivalent to a reviews and NYT Critics' Picks request.
           required: false
           type: string
-          displayName: |
-            Search keywords; matches movie title and indexed terms
-
-            To limit your search to exact matches only, surround your search string with single quotation marks (e.g., query='28+days+later'). Otherwise, responses will include partial matches ("head words") as well as exact matches (e.g., president will match president, presidents and presidential).
-              
-              If you specify multiple terms without quotation marks, they will be combined in an OR search.
-              
-              If you omit the query parameter, your request will be equivalent to a reviews and NYT Critics' Picks request.
         critics-pick:
           description: |
             Set this parameter to Y to limit the results to NYT Critics' Picks. To get only those movies that have not been highlighted by Times critics, specify critics-pick=N. (To get all reviews regardless of critics-pick status, simply omit this parameter.)
@@ -184,14 +164,10 @@ securitySchemes:
             - 'Y'
             - 'N'
           type: string
-          displayName: |
-            Set this parameter to Y to limit the results to NYT Critics' Picks. To get only those movies that have not been highlighted by Times critics, specify critics-pick=N. (To get all reviews regardless of critics-pick status, simply omit this parameter.)
         reviewer:
           description: |
             Include this parameter to limit your results to reviews by a specific critic. Reviewer names should be formatted like this: Manohla Dargis.
           type: string
-          displayName: |
-            Include this parameter to limit your results to reviews by a specific critic. Reviewer names should be formatted like this: Manohla Dargis.
         publication-date:
           description: |
             Single date: YYYY-MM-DD
@@ -200,12 +176,6 @@ securitySchemes:
 
             The publication-date is the date the review was first published in The Times.
           type: string
-          displayName: |
-            Single date: YYYY-MM-DD
-
-            Start and end date: YYYY-MM-DD;YYYY-MM-DD
-
-            The publication-date is the date the review was first published in The Times.
         opening-date:
           description: |
             Single date: YYYY-MM-DD
@@ -215,18 +185,11 @@ securitySchemes:
             The opening-date is the date the movie's opening date in the New York region.
           required: false
           type: string
-          displayName: |
-            Single date: YYYY-MM-DD
-
-            Start and end date: YYYY-MM-DD;YYYY-MM-DD
-
-            The opening-date is the date the movie's opening date in the New York region.
         offset:
           default: 20
           description: 'Positive integer, multiple of 20'
           required: false
           type: integer
-          displayName: 'Positive integer, multiple of 20'
         order:
           description: |
             Sets the sort order of the results.
@@ -235,12 +198,6 @@ securitySchemes:
 
             If you do not specify a sort order, the results will be ordered by publication-date.
           type: string
-          displayName: |
-            Sets the sort order of the results.
-
-            Results ordered by-title are in ascending alphabetical order. Results ordered by one of the date parameters are in reverse chronological order.
-
-            If you do not specify a sort order, the results will be ordered by publication-date.
 /critics:
   displayName: critics
   '/{resource-type}.json':
@@ -253,10 +210,6 @@ securitySchemes:
           Specify all to get all Times reviewers, or specify full-time or part-time to get that subset. Specify a reviewer's name to get details about a particular reviewer.
         required: true
         type: string
-        displayName: |
-          all | full-time | part-time | [reviewer-name]
-
-          Specify all to get all Times reviewers, or specify full-time or part-time to get that subset. Specify a reviewer's name to get details about a particular reviewer.
     get:
       displayName: GET_critics-resource-type-json
       responses:

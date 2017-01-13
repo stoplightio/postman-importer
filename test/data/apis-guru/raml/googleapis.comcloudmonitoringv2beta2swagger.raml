@@ -94,7 +94,6 @@ securitySchemes:
           description: 'Metric names are protocol-free URLs as listed in the Supported Metrics page. For example, compute.googleapis.com/instance/disk/read_ops_count.'
           required: true
           type: string
-          displayName: 'Metric names are protocol-free URLs as listed in the Supported Metrics page. For example, compute.googleapis.com/instance/disk/read_ops_count.'
       get:
         displayName: cloudmonitoring.timeseriesDescriptors.list
         description: List the descriptors of the time series that match the metric and labels values and that have data points in the interval. Large responses are paginated; use the nextPageToken returned in the response to request subsequent pages of results by setting the pageToken query parameter to the value of the nextPageToken.
@@ -109,7 +108,6 @@ securitySchemes:
             description: 'End of the time interval (inclusive), which is expressed as an RFC 3339 timestamp.'
             required: true
             type: string
-            displayName: 'End of the time interval (inclusive), which is expressed as an RFC 3339 timestamp.'
           aggregator:
             description: The aggregation function that will reduce the data points in each window to a single point. This parameter is only valid for non-cumulative metrics with a value type of INT64 or DOUBLE.
             enum:
@@ -118,14 +116,12 @@ securitySchemes:
               - min
               - sum
             type: string
-            displayName: The aggregation function that will reduce the data points in each window to a single point. This parameter is only valid for non-cumulative metrics with a value type of INT64 or DOUBLE.
           count:
             default: 100
             description: 'Maximum number of time series descriptors per page. Used for pagination. If not specified, count = 100.'
             maximum: 1000
             minimum: 1
             type: integer
-            displayName: 'Maximum number of time series descriptors per page. Used for pagination. If not specified, count = 100.'
           labels:
             collectionFormat: multi
             description: |-
@@ -138,23 +134,14 @@ securitySchemes:
             items:
               type: string
             type: array
-            displayName: |-
-              A collection of labels for the matching time series, which are represented as:  
-              - key==value: key equals the value 
-              - key=~value: key regex matches the value 
-              - key!=value: key does not equal the value 
-              - key!~value: key regex does not match the value  For example, to list all of the time series descriptors for the region us-central1, you could specify:
-              label=cloud.googleapis.com%2Flocation=~us-central1.*
             facets:
               collectionFormat: string
           oldest:
             description: 'Start of the time interval (exclusive), which is expressed as an RFC 3339 timestamp. If neither oldest nor timespan is specified, the default time interval will be (youngest - 4 hours, youngest]'
             type: string
-            displayName: 'Start of the time interval (exclusive), which is expressed as an RFC 3339 timestamp. If neither oldest nor timespan is specified, the default time interval will be (youngest - 4 hours, youngest]'
           pageToken:
             description: 'The pagination token, which is used to page through large result sets. Set this value to the value of the nextPageToken to retrieve the next page of results.'
             type: string
-            displayName: 'The pagination token, which is used to page through large result sets. Set this value to the value of the nextPageToken to retrieve the next page of results.'
           timespan:
             description: |-
               Length of the time interval to query, which is an alternative way to declare the interval: (youngest - timespan, youngest]. The timespan and oldest parameters should not be used together. Units:  
@@ -166,15 +153,6 @@ securitySchemes:
 
               If neither oldest nor timespan is specified, the default time interval will be (youngest - 4 hours, youngest].
             type: string
-            displayName: |-
-              Length of the time interval to query, which is an alternative way to declare the interval: (youngest - timespan, youngest]. The timespan and oldest parameters should not be used together. Units:  
-              - s: second 
-              - m: minute 
-              - h: hour 
-              - d: day 
-              - w: week  Examples: 2s, 3m, 4w. Only one unit is allowed, for example: 2w3d is not allowed; you should use 17d instead.
-
-              If neither oldest nor timespan is specified, the default time interval will be (youngest - 4 hours, youngest].
           window:
             description: |-
               The sampling window. At most one data point will be returned for each window in the requested time interval. This parameter is only valid for non-cumulative metric types. Units:  
@@ -183,12 +161,6 @@ securitySchemes:
               - d: day 
               - w: week  Examples: 3m, 4w. Only one unit is allowed, for example: 2w3d is not allowed; you should use 17d instead.
             type: string
-            displayName: |-
-              The sampling window. At most one data point will be returned for each window in the requested time interval. This parameter is only valid for non-cumulative metric types. Units:  
-              - m: minute 
-              - h: hour 
-              - d: day 
-              - w: week  Examples: 3m, 4w. Only one unit is allowed, for example: 2w3d is not allowed; you should use 17d instead.
         securedBy:
           - Oauth2:
               scopes:
@@ -241,7 +213,6 @@ securitySchemes:
           description: 'Metric names are protocol-free URLs as listed in the Supported Metrics page. For example, compute.googleapis.com/instance/disk/read_ops_count.'
           required: true
           type: string
-          displayName: 'Metric names are protocol-free URLs as listed in the Supported Metrics page. For example, compute.googleapis.com/instance/disk/read_ops_count.'
       get:
         displayName: cloudmonitoring.timeseries.list
         description: List the data points of the time series that match the metric and labels values and that have data points in the interval. Large responses are paginated; use the nextPageToken returned in the response to request subsequent pages of results by setting the pageToken query parameter to the value of the nextPageToken.
@@ -256,7 +227,6 @@ securitySchemes:
             description: 'End of the time interval (inclusive), which is expressed as an RFC 3339 timestamp.'
             required: true
             type: string
-            displayName: 'End of the time interval (inclusive), which is expressed as an RFC 3339 timestamp.'
           aggregator:
             description: The aggregation function that will reduce the data points in each window to a single point. This parameter is only valid for non-cumulative metrics with a value type of INT64 or DOUBLE.
             enum:
@@ -265,14 +235,12 @@ securitySchemes:
               - min
               - sum
             type: string
-            displayName: The aggregation function that will reduce the data points in each window to a single point. This parameter is only valid for non-cumulative metrics with a value type of INT64 or DOUBLE.
           count:
             default: 6000
             description: 'Maximum number of data points per page, which is used for pagination of results.'
             maximum: 12000
             minimum: 1
             type: integer
-            displayName: 'Maximum number of data points per page, which is used for pagination of results.'
           labels:
             collectionFormat: multi
             description: |-
@@ -285,23 +253,14 @@ securitySchemes:
             items:
               type: string
             type: array
-            displayName: |-
-              A collection of labels for the matching time series, which are represented as:  
-              - key==value: key equals the value 
-              - key=~value: key regex matches the value 
-              - key!=value: key does not equal the value 
-              - key!~value: key regex does not match the value  For example, to list all of the time series descriptors for the region us-central1, you could specify:
-              label=cloud.googleapis.com%2Flocation=~us-central1.*
             facets:
               collectionFormat: string
           oldest:
             description: 'Start of the time interval (exclusive), which is expressed as an RFC 3339 timestamp. If neither oldest nor timespan is specified, the default time interval will be (youngest - 4 hours, youngest]'
             type: string
-            displayName: 'Start of the time interval (exclusive), which is expressed as an RFC 3339 timestamp. If neither oldest nor timespan is specified, the default time interval will be (youngest - 4 hours, youngest]'
           pageToken:
             description: 'The pagination token, which is used to page through large result sets. Set this value to the value of the nextPageToken to retrieve the next page of results.'
             type: string
-            displayName: 'The pagination token, which is used to page through large result sets. Set this value to the value of the nextPageToken to retrieve the next page of results.'
           timespan:
             description: |-
               Length of the time interval to query, which is an alternative way to declare the interval: (youngest - timespan, youngest]. The timespan and oldest parameters should not be used together. Units:  
@@ -313,15 +272,6 @@ securitySchemes:
 
               If neither oldest nor timespan is specified, the default time interval will be (youngest - 4 hours, youngest].
             type: string
-            displayName: |-
-              Length of the time interval to query, which is an alternative way to declare the interval: (youngest - timespan, youngest]. The timespan and oldest parameters should not be used together. Units:  
-              - s: second 
-              - m: minute 
-              - h: hour 
-              - d: day 
-              - w: week  Examples: 2s, 3m, 4w. Only one unit is allowed, for example: 2w3d is not allowed; you should use 17d instead.
-
-              If neither oldest nor timespan is specified, the default time interval will be (youngest - 4 hours, youngest].
           window:
             description: |-
               The sampling window. At most one data point will be returned for each window in the requested time interval. This parameter is only valid for non-cumulative metric types. Units:  
@@ -330,12 +280,6 @@ securitySchemes:
               - d: day 
               - w: week  Examples: 3m, 4w. Only one unit is allowed, for example: 2w3d is not allowed; you should use 17d instead.
             type: string
-            displayName: |-
-              The sampling window. At most one data point will be returned for each window in the requested time interval. This parameter is only valid for non-cumulative metric types. Units:  
-              - m: minute 
-              - h: hour 
-              - d: day 
-              - w: week  Examples: 3m, 4w. Only one unit is allowed, for example: 2w3d is not allowed; you should use 17d instead.
         securedBy:
           - Oauth2:
               scopes:
@@ -359,7 +303,6 @@ securitySchemes:
           description: Name of the metric.
           required: true
           type: string
-          displayName: Name of the metric.
       delete:
         displayName: cloudmonitoring.metricDescriptors.delete
         description: Delete an existing metric.
@@ -426,15 +369,12 @@ securitySchemes:
           maximum: 1000
           minimum: 1
           type: integer
-          displayName: 'Maximum number of metric descriptors per page. Used for pagination. If not specified, count = 100.'
         pageToken:
           description: 'The pagination token, which is used to page through large result sets. Set this value to the value of the nextPageToken to retrieve the next page of results.'
           type: string
-          displayName: 'The pagination token, which is used to page through large result sets. Set this value to the value of the nextPageToken to retrieve the next page of results.'
         query:
           description: 'The query used to search against existing metrics. Separate keywords with a space; the service joins all keywords with AND, meaning that all keywords must match for a metric to be returned. If this field is omitted, all metrics are returned. If an empty string is passed with this field, no metrics are returned.'
           type: string
-          displayName: 'The query used to search against existing metrics. Separate keywords with a space; the service joins all keywords with AND, meaning that all keywords must match for a metric to be returned. If this field is omitted, all metrics are returned. If an empty string is passed with this field, no metrics are returned.'
       securedBy:
         - Oauth2:
             scopes:

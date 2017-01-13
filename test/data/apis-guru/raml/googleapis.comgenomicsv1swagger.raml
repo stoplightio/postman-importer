@@ -105,7 +105,6 @@ securitySchemes:
           description: Required. The ID of the read group set to export. The caller must have READ access to this read group set.
           required: true
           type: string
-          displayName: Required. The ID of the read group set to export. The caller must have READ access to this read group set.
       post:
         displayName: genomics.readgroupsets.export
         description: 'Exports a read group set to a BAM file in Google Cloud Storage. For the definitions of read group sets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics) Note that currently there may be some differences between exported BAM files and the original BAM file at the time of import. See ImportReadGroupSets for caveats.'
@@ -181,7 +180,6 @@ securitySchemes:
           description: The ID of the read group set to be updated. The caller must have WRITE permissions to the dataset associated with this read group set.
           required: true
           type: string
-          displayName: The ID of the read group set to be updated. The caller must have WRITE permissions to the dataset associated with this read group set.
       get:
         displayName: genomics.readgroupsets.get
         description: 'Gets a read group set by ID. For the definitions of read group sets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics)'
@@ -226,27 +224,21 @@ securitySchemes:
             referenceName:
               description: 'The name of the reference to query, within the reference set associated with this query. Optional.'
               type: string
-              displayName: 'The name of the reference to query, within the reference set associated with this query. Optional.'
             start:
               description: 'The start position of the range on the reference, 0-based inclusive. If specified, `referenceName` must also be specified. Defaults to 0.'
               type: string
-              displayName: 'The start position of the range on the reference, 0-based inclusive. If specified, `referenceName` must also be specified. Defaults to 0.'
             end:
               description: 'The end position of the range on the reference, 0-based exclusive. If specified, `referenceName` must also be specified. If unset or 0, defaults to the length of the reference.'
               type: string
-              displayName: 'The end position of the range on the reference, 0-based exclusive. If specified, `referenceName` must also be specified. If unset or 0, defaults to the length of the reference.'
             targetBucketWidth:
               description: 'The desired width of each reported coverage bucket in base pairs. This will be rounded down to the nearest precomputed bucket width; the value of which is returned as `bucketWidth` in the response. Defaults to infinity (each bucket spans an entire reference sequence) or the length of the target range, if specified. The smallest precomputed `bucketWidth` is currently 2048 base pairs; this is subject to change.'
               type: string
-              displayName: 'The desired width of each reported coverage bucket in base pairs. This will be rounded down to the nearest precomputed bucket width; the value of which is returned as `bucketWidth` in the response. Defaults to infinity (each bucket spans an entire reference sequence) or the length of the target range, if specified. The smallest precomputed `bucketWidth` is currently 2048 base pairs; this is subject to change.'
             pageToken:
               description: 'The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of `nextPageToken` from the previous response.'
               type: string
-              displayName: 'The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of `nextPageToken` from the previous response.'
             pageSize:
               description: 'The maximum number of results to return in a single page. If unspecified, defaults to 1024. The maximum value is 2048.'
               type: integer
-              displayName: 'The maximum number of results to return in a single page. If unspecified, defaults to 1024. The maximum value is 2048.'
           securedBy:
             - Oauth2:
                 scopes:
@@ -299,7 +291,6 @@ securitySchemes:
           updateMask:
             description: 'An optional mask specifying which fields to update. Supported fields: * name. * referenceSetId. Leaving `updateMask` unset is equivalent to specifying all mutable fields.'
             type: string
-            displayName: 'An optional mask specifying which fields to update. Supported fields: * name. * referenceSetId. Leaving `updateMask` unset is equivalent to specifying all mutable fields.'
         securedBy:
           - Oauth2:
               scopes:
@@ -313,7 +304,6 @@ securitySchemes:
         description: 'REQUIRED: The resource for which policy is being specified. Format is `datasets/`.'
         required: true
         type: string
-        displayName: 'REQUIRED: The resource for which policy is being specified. Format is `datasets/`.'
     post:
       displayName: genomics.datasets.testIamPermissions
       description: 'Returns permissions that a caller has on the specified resource. See Testing Permissions for more information. For the definitions of datasets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics)'
@@ -424,7 +414,6 @@ securitySchemes:
           description: The ID of the annotation to be retrieved.
           required: true
           type: string
-          displayName: The ID of the annotation to be retrieved.
       delete:
         displayName: genomics.annotations.delete
         description: Deletes an annotation. Caller must have WRITE permission for the associated annotation set.
@@ -471,7 +460,6 @@ securitySchemes:
           updateMask:
             description: 'An optional mask specifying which fields to update. Mutable fields are name, variant, transcript, and info. If unspecified, all mutable fields will be updated.'
             type: string
-            displayName: 'An optional mask specifying which fields to update. Mutable fields are name, variant, transcript, and info. If unspecified, all mutable fields will be updated.'
         securedBy:
           - Oauth2:
               scopes:
@@ -644,7 +632,6 @@ securitySchemes:
           description: The ID of the reference.
           required: true
           type: string
-          displayName: The ID of the reference.
       get:
         displayName: genomics.references.get
         description: 'Gets a reference. For the definitions of references and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics) Implements [GlobalAllianceApi.getReference](https://github.com/ga4gh/schemas/blob/v0.5.1/src/main/resources/avro/referencemethods.avdl#L158).'
@@ -689,19 +676,15 @@ securitySchemes:
             start:
               description: The start position (0-based) of this query. Defaults to 0.
               type: string
-              displayName: The start position (0-based) of this query. Defaults to 0.
             end:
               description: 'The end position (0-based, exclusive) of this query. Defaults to the length of this reference.'
               type: string
-              displayName: 'The end position (0-based, exclusive) of this query. Defaults to the length of this reference.'
             pageToken:
               description: 'The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of `nextPageToken` from the previous response.'
               type: string
-              displayName: 'The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of `nextPageToken` from the previous response.'
             pageSize:
               description: 'The maximum number of bases to return in a single page. If unspecified, defaults to 200Kbp (kilo base pairs). The maximum value is 10Mbp (mega base pairs).'
               type: integer
-              displayName: 'The maximum number of bases to return in a single page. If unspecified, defaults to 200Kbp (kilo base pairs). The maximum value is 10Mbp (mega base pairs).'
           securedBy:
             - Oauth2:
                 scopes:
@@ -764,7 +747,6 @@ securitySchemes:
           description: The ID of the annotation set to be retrieved.
           required: true
           type: string
-          displayName: The ID of the annotation set to be retrieved.
       delete:
         displayName: genomics.annotationsets.delete
         description: Deletes an annotation set. Caller must have WRITE permission for the associated annotation set.
@@ -811,7 +793,6 @@ securitySchemes:
           updateMask:
             description: 'An optional mask specifying which fields to update. Mutable fields are name, source_uri, and info. If unspecified, all mutable fields will be updated.'
             type: string
-            displayName: 'An optional mask specifying which fields to update. Mutable fields are name, source_uri, and info. If unspecified, all mutable fields will be updated.'
         securedBy:
           - Oauth2:
               scopes:
@@ -912,7 +893,6 @@ securitySchemes:
           description: The ID of the reference set.
           required: true
           type: string
-          displayName: The ID of the reference set.
       get:
         displayName: genomics.referencesets.get
         description: 'Gets a reference set. For the definitions of references and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics) Implements [GlobalAllianceApi.getReferenceSet](https://github.com/ga4gh/schemas/blob/v0.5.1/src/main/resources/avro/referencemethods.avdl#L83).'
@@ -986,7 +966,6 @@ securitySchemes:
           description: The ID of the call set to be deleted.
           required: true
           type: string
-          displayName: The ID of the call set to be deleted.
       get:
         displayName: genomics.callsets.get
         description: 'Gets a call set by ID. For the definitions of call sets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics)'
@@ -1033,7 +1012,6 @@ securitySchemes:
           updateMask:
             description: 'An optional mask specifying which fields to update. At this time, the only mutable field is name. The only acceptable value is "name". If unspecified, all mutable fields will be updated.'
             type: string
-            displayName: 'An optional mask specifying which fields to update. At this time, the only mutable field is name. The only acceptable value is "name". If unspecified, all mutable fields will be updated.'
         securedBy:
           - Oauth2:
               scopes:
@@ -1165,7 +1143,6 @@ securitySchemes:
           description: The ID of the variant to be updated.
           required: true
           type: string
-          displayName: The ID of the variant to be updated.
       delete:
         displayName: genomics.variants.delete
         description: 'Deletes a variant. For the definitions of variants and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics)'
@@ -1227,7 +1204,6 @@ securitySchemes:
           updateMask:
             description: 'An optional mask specifying which fields to update. At this time, mutable fields are names and info. Acceptable values are "names" and "info". If unspecified, all mutable fields will be updated.'
             type: string
-            displayName: 'An optional mask specifying which fields to update. At this time, mutable fields are names and info. Acceptable values are "names" and "info". If unspecified, all mutable fields will be updated.'
         securedBy:
           - Oauth2:
               scopes:
@@ -1249,15 +1225,12 @@ securitySchemes:
         projectId:
           description: Required. The Google Cloud project ID to list datasets for.
           type: string
-          displayName: Required. The Google Cloud project ID to list datasets for.
         pageSize:
           description: 'The maximum number of results to return in a single page. If unspecified, defaults to 50. The maximum value is 1024.'
           type: integer
-          displayName: 'The maximum number of results to return in a single page. If unspecified, defaults to 50. The maximum value is 1024.'
         pageToken:
           description: 'The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of `nextPageToken` from the previous response.'
           type: string
-          displayName: 'The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of `nextPageToken` from the previous response.'
       securedBy:
         - Oauth2:
             scopes:
@@ -1285,7 +1258,6 @@ securitySchemes:
           description: The ID of the dataset.
           required: true
           type: string
-          displayName: The ID of the dataset.
       delete:
         displayName: genomics.datasets.delete
         description: 'Deletes a dataset and all of its contents (all read group sets, reference sets, variant sets, call sets, annotation sets, etc.) This is reversible (up to one week after the deletion) via the datasets.undelete operation. For the definitions of datasets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics)'
@@ -1332,7 +1304,6 @@ securitySchemes:
           updateMask:
             description: 'An optional mask specifying which fields to update. At this time, the only mutable field is name. The only acceptable value is "name". If unspecified, all mutable fields will be updated.'
             type: string
-            displayName: 'An optional mask specifying which fields to update. At this time, the only mutable field is name. The only acceptable value is "name". If unspecified, all mutable fields will be updated.'
         securedBy:
           - Oauth2:
               scopes:
@@ -1380,7 +1351,6 @@ securitySchemes:
           description: The ID of the dataset to be undeleted.
           required: true
           type: string
-          displayName: The ID of the dataset to be undeleted.
       post:
         displayName: genomics.datasets.undelete
         description: 'Undeletes a dataset by restoring a dataset which was deleted via this API. For the definitions of datasets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics) This operation is only possible for a week after the deletion occurred.'
@@ -1596,7 +1566,6 @@ securitySchemes:
           description: The ID of the variant to be updated (must already exist).
           required: true
           type: string
-          displayName: The ID of the variant to be updated (must already exist).
       delete:
         displayName: genomics.variantsets.delete
         description: 'Deletes a variant set including all variants, call sets, and calls within. This is not reversible. For the definitions of variant sets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics)'
@@ -1658,7 +1627,6 @@ securitySchemes:
           updateMask:
             description: 'An optional mask specifying which fields to update. Supported fields: * metadata. * name. * description. Leaving `updateMask` unset is equivalent to specifying all mutable fields.'
             type: string
-            displayName: 'An optional mask specifying which fields to update. Supported fields: * metadata. * name. * description. Leaving `updateMask` unset is equivalent to specifying all mutable fields.'
         securedBy:
           - Oauth2:
               scopes:
@@ -1672,7 +1640,6 @@ securitySchemes:
           description: Required. The ID of the variant set that contains variant data which should be exported. The caller must have READ access to this variant set.
           required: true
           type: string
-          displayName: Required. The ID of the variant set that contains variant data which should be exported. The caller must have READ access to this variant set.
       post:
         displayName: genomics.variantsets.export
         description: 'Exports variant set data to an external destination. For the definitions of variant sets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics)'
@@ -1713,7 +1680,6 @@ securitySchemes:
         description: 'REQUIRED: The resource for which policy is being specified. Format is `datasets/`.'
         required: true
         type: string
-        displayName: 'REQUIRED: The resource for which policy is being specified. Format is `datasets/`.'
     post:
       displayName: genomics.datasets.setIamPolicy
       description: 'Sets the access control policy on the specified dataset. Replaces any existing policy. For the definitions of datasets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics) See Setting a Policy for more information.'
@@ -1754,7 +1720,6 @@ securitySchemes:
         description: 'REQUIRED: The resource for which policy is being specified. Format is `datasets/`.'
         required: true
         type: string
-        displayName: 'REQUIRED: The resource for which policy is being specified. Format is `datasets/`.'
     post:
       displayName: genomics.datasets.getIamPolicy
       description: 'Gets the access control policy for the dataset. This is empty if the policy or resource does not exist. See Getting a Policy for more information. For the definitions of datasets and other genomics resources, see [Fundamentals of Google Genomics](https://cloud.google.com/genomics/fundamentals-of-google-genomics)'
@@ -1795,7 +1760,6 @@ securitySchemes:
         description: The name of the operation resource to be cancelled.
         required: true
         type: string
-        displayName: The name of the operation resource to be cancelled.
     post:
       displayName: genomics.operations.cancel
       description: 'Starts asynchronous cancellation on a long-running operation. The server makes a best effort to cancel the operation, but success is not guaranteed. Clients may use Operations.GetOperation or Operations.ListOperations to check whether the cancellation succeeded or the operation completed despite cancellation.'
@@ -1836,7 +1800,6 @@ securitySchemes:
         description: The name of the operation resource.
         required: true
         type: string
-        displayName: The name of the operation resource.
     get:
       displayName: genomics.operations.get
       description: Gets the latest state of a long-running operation. Clients can use this method to poll the operation result at intervals as recommended by the API service.

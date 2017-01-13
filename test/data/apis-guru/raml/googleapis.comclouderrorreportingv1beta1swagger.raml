@@ -107,9 +107,6 @@ securitySchemes:
               - ALIGNMENT_EQUAL_ROUNDED
               - ALIGNMENT_EQUAL_AT_END
             type: string
-            displayName: |-
-              [Optional] The alignment of the timed counts to be returned.
-              Default is `ALIGNMENT_EQUAL_AT_END`.
           timeRange.period:
             description: Restricts the query to the specified time range.
             enum:
@@ -120,7 +117,6 @@ securitySchemes:
               - PERIOD_1_WEEK
               - PERIOD_30_DAYS
             type: string
-            displayName: Restricts the query to the specified time range.
           order:
             description: |-
               [Optional] The sort order in which the results are returned.
@@ -132,16 +128,12 @@ securitySchemes:
               - CREATED_DESC
               - AFFECTED_USERS_DESC
             type: string
-            displayName: |-
-              [Optional] The sort order in which the results are returned.
-              Default is `COUNT_DESC`.
           groupId:
             collectionFormat: multi
             description: '[Optional] List all <code>ErrorGroupStats</code> with these IDs.'
             items:
               type: string
             type: array
-            displayName: '[Optional] List all <code>ErrorGroupStats</code> with these IDs.'
             facets:
               collectionFormat: string
           serviceFilter.service:
@@ -149,51 +141,32 @@ securitySchemes:
               [Optional] The exact value to match against
               [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
             type: string
-            displayName: |-
-              [Optional] The exact value to match against
-              [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
           alignmentTime:
             description: |-
               [Optional] Time where the timed counts shall be aligned if rounded
               alignment is chosen. Default is 00:00 UTC.
             type: string
-            displayName: |-
-              [Optional] Time where the timed counts shall be aligned if rounded
-              alignment is chosen. Default is 00:00 UTC.
           serviceFilter.version:
             description: |-
               [Optional] The exact value to match against
               [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
             type: string
-            displayName: |-
-              [Optional] The exact value to match against
-              [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
           pageSize:
             description: |-
               [Optional] The maximum number of results to return per response.
               Default is 20.
             type: integer
-            displayName: |-
-              [Optional] The maximum number of results to return per response.
-              Default is 20.
           timedCountDuration:
             description: |-
               [Optional] The preferred duration for a single returned `TimedCount`.
               If not set, no timed counts are returned.
             type: string
-            displayName: |-
-              [Optional] The preferred duration for a single returned `TimedCount`.
-              If not set, no timed counts are returned.
           pageToken:
             description: |-
               [Optional] A `next_page_token` provided by a previous response. To view
               additional results, pass this token along with the identical query
               parameters as the first request.
             type: string
-            displayName: |-
-              [Optional] A `next_page_token` provided by a previous response. To view
-              additional results, pass this token along with the identical query
-              parameters as the first request.
         securedBy:
           - Oauth2:
               scopes:
@@ -279,35 +252,25 @@ securitySchemes:
               - PERIOD_1_WEEK
               - PERIOD_30_DAYS
             type: string
-            displayName: Restricts the query to the specified time range.
           serviceFilter.service:
             description: |-
               [Optional] The exact value to match against
               [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
             type: string
-            displayName: |-
-              [Optional] The exact value to match against
-              [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
           groupId:
             description: '[Required] The group for which events shall be returned.'
             type: string
-            displayName: '[Required] The group for which events shall be returned.'
           serviceFilter.version:
             description: |-
               [Optional] The exact value to match against
               [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
             type: string
-            displayName: |-
-              [Optional] The exact value to match against
-              [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
           pageSize:
             description: '[Optional] The maximum number of results to return per response.'
             type: integer
-            displayName: '[Optional] The maximum number of results to return per response.'
           pageToken:
             description: '[Optional] A `next_page_token` provided by a previous response.'
             type: string
-            displayName: '[Optional] A `next_page_token` provided by a previous response.'
         securedBy:
           - Oauth2:
               scopes:
@@ -352,9 +315,6 @@ securitySchemes:
           Example: <code>projects/my-project-123/groups/my-groupid</code>
         required: true
         type: string
-        displayName: |-
-          The group resource name.
-          Example: <code>projects/my-project-123/groups/my-groupid</code>
     put:
       displayName: clouderrorreporting.projects.groups.update
       description: |-
@@ -405,15 +365,6 @@ securitySchemes:
           Example: <code>projects/my-project-123/groups/my-group</code>
         required: true
         type: string
-        displayName: |-
-          [Required] The group resource name. Written as
-          <code>projects/<var>projectID</var>/groups/<var>group_name</var></code>.
-          Call
-          <a href="/error-reporting/reference/rest/v1beta1/projects.groupStats/list">
-          <code>groupStats.list</code></a> to return a list of groups belonging to
-          this project.
-
-          Example: <code>projects/my-project-123/groups/my-group</code>
     get:
       displayName: clouderrorreporting.projects.groups.get
       description: Get the specified group.

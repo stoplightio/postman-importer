@@ -157,11 +157,6 @@ securitySchemes:
         format: int64
         required: true
         type: integer
-        displayName: |
-          The `mlsId` field is a unique identifier which is specific
-          to the SimplyRETS API only.  This field is different from
-          the `listingId` field (which is the public number given to
-          a listing by the MLS and is not used here).
     get:
       displayName: GET_properties-mlsId
       description: |
@@ -237,25 +232,6 @@ securitySchemes:
             type: string
           required: false
           type: array
-          displayName: |
-            Include a extra fields which are not in the default
-            response body
-            - 'association' includes additional HOA data
-            - 'agreement' information on the listing agreement
-            - 'garageSpaces' additional garage data
-            - 'maintenanceExpense' data on maintenance expenses
-            - 'parking' additional parking data
-            - 'pool' includes an additional pool description
-            - 'rooms' include parameter will include
-               any additional rooms as a list.
-
-            Note that your MLS must provide these fields in their RETS
-            data for them to be available with valid data in the API
-            response. If your MLS does not offer these fields, they will
-            contain 'null'.
-
-            In the future, fields which require an 'include' may become available
-            by default.
           facets:
             collectionFormat: string
       securedBy:
@@ -324,16 +300,6 @@ securitySchemes:
             - postal code
         required: false
         type: string
-        displayName: |
-          A textual keyword search. This parameter will search  the following
-          fields, when available:
-            - listingId (This does _not_ search the `mlsId` field in the SimplyRETS response body)
-            - street number
-            - street name
-            - mls area (major)
-            - city
-            - subdivision name
-            - postal code
       status:
         collectionFormat: multi
         description: |
@@ -362,28 +328,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Request listings by a specific status. This parameter
-          defaults to active and you can specify multiple statuses
-          in a single query.
-
-          Listing statuses depend on your MLS's availability. Below is
-          a brief description of each status with possible synonyms which
-          may map to your MLS-specific statuses
-          - *Active*: Active Listing which is still on the market
-          - *ActiveUnderContract*: An offer has been accepted but the listing is still on market. Synonyms: Accepting Backup Offers, Backup Offer, Active With Accepted. Synonyms: Offer, Backup, Contingent
-          - *Pending*: An offer has been accepted and the listing is no longer on market. Synonyms: Offer Accepted, Under Contract
-          - *Hold*: The listing has been withdrawn from the market, but a contract
-            still exists between the seller and the listing member. Synonyms: Hold, Hold Do Not Show, Temp Off Market
-          - *Withdrawn*: The listing has been withdrawn from the market, but a contract
-            still exists between the seller and the listing member. Synonyms: Hold, Hold Do Not Show, Temp Off Market
-          - *Closed*: The purchase agreement has been fulfilled or the lease
-            agreement has been executed. Synonyms: Sold, Leased, Rented, Closed Sale
-          - *Expired*: The listing contract has expired
-          - *Delete*: The listing contract was never valid or other reason for the contract to be nullified. Synonyms: Kill, Zap
-          - *Incomplete*: The listing has not yet be completely entered and is not yet
-            published in the MLS. Synonyms: Draft, Partially Complted
-          - *ComingSoon*
         facets:
           collectionFormat: string
       type:
@@ -396,10 +340,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Request listings by a specific property type. This
-          defaults to Residential and Rental. You can specify
-          multiple property types in a single query.
         facets:
           collectionFormat: string
       agent:
@@ -410,11 +350,6 @@ securitySchemes:
           The co-listing agent is not included in this query parameter.
         required: false
         type: string
-        displayName: |
-          Filter the listings returned by an agent ID.  Note, the
-          Agent ID is provided by your MLS.
-
-          The co-listing agent is not included in this query parameter.
       brokers:
         collectionFormat: multi
         description: |
@@ -427,12 +362,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Filter the listings returned by brokerage with a Broker
-          ID. For some MLS areas, this is the ListOfficeId (Listing
-          Office ID).  You can specific multiple broker
-          parameters. Note, this query parameter is only available
-          if a Broker ID is provided by your MLS.
         facets:
           collectionFormat: string
       minprice:
@@ -440,73 +369,52 @@ securitySchemes:
           Filter listings by a minimum price.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a minimum price.
       maxprice:
         description: |
           Filter listings by a maximum price
         required: false
         type: integer
-        displayName: |
-          Filter listings by a maximum price
       minarea:
         description: |
           Filter listings by a minimum area size in Sq Ft.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a minimum area size in Sq Ft.
       maxarea:
         description: |
           Filter listings by a maximum area size in Sq Ft.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a maximum area size in Sq Ft.
       minbaths:
         description: |
           Filter listings by a minimum number of bathrooms.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a minimum number of bathrooms.
       maxbaths:
         description: |
           Filter listings by a maximum number of bathrooms.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a maximum number of bathrooms.
       minbeds:
         description: |
           Filter listings by a minimum number of bedrooms.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a minimum number of bedrooms.
       maxbeds:
         description: |
           Filter listings by a maximum number of bedrooms.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a maximum number of bedrooms.
       maxdom:
         description: |
           Filter listings by a maximum number of days on market.
           _Note that your MLS must provide Days on Market data._
         required: false
         type: integer
-        displayName: |
-          Filter listings by a maximum number of days on market.
-          _Note that your MLS must provide Days on Market data._
       minyear:
         description: |
           Filter listings by a setting a minimum year built.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a setting a minimum year built.
       limit:
         description: |
           Set the number of listings to return in the response.
@@ -516,12 +424,6 @@ securitySchemes:
           Header.
         required: false
         type: integer
-        displayName: |
-          Set the number of listings to return in the response.
-          This defaults to 20 listings, and can be a maximum of 500.
-          To paginate through to the next page of listings, take a
-          look at the `offset` parameter, or the Link in the HTTP
-          Header.
       offset:
         description: |
           Increase the offset parameter by the limit to go to the
@@ -534,22 +436,11 @@ securitySchemes:
           `HTTP 400 offset too high` error message.
         required: false
         type: integer
-        displayName: |
-          Increase the offset parameter by the limit to go to the
-          next "page" of listings. Also take a look at the Link HTTP
-          Header for pre-built pagination.
-
-          *NOTE:* Use the `lastId` field to paginate response
-
-          *NOTE:* If you're offset is too high, you will receive an
-          `HTTP 400 offset too high` error message.
       lastId:
         description: |
           Used as a cursor for pagination.
         required: false
         type: integer
-        displayName: |
-          Used as a cursor for pagination.
       vendor:
         description: |
           Used to specify the vendor (MLS) to search from. This
@@ -558,11 +449,6 @@ securitySchemes:
           an OPTIONS request to https://api.simplyrets.com.
         required: false
         type: string
-        displayName: |
-          Used to specify the vendor (MLS) to search from. This
-          parameter is required on multi-MLS apps, and you can only
-          query one vendor at a time. To get your vendor id's make
-          an OPTIONS request to https://api.simplyrets.com.
       postalCodes:
         collectionFormat: multi
         description: |
@@ -572,9 +458,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Filter the listings returned by postal codes / zip
-          code. You can specify multiple.
         facets:
           collectionFormat: string
       features:
@@ -602,25 +485,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Filter the listings by specific interior features.  You
-          can filter by multiple. For example, to filter trial listings
-          by multiple features you can use,
-          Return listings that are within a set of latitude
-          longitude coordinates. For example,
-
-          ```
-          Wet Bar
-          High Ceiling
-          ```
-
-          e.g. `https://simplyrets.com/services?features=Wet%20Bar&features=High%20Ceiling`
-
-          The features provided by your MLS can be seen in your
-          OPTIONS request. To view all valid features, make a
-          request to the SimplyRETS api root
-
-          `curl -XOPTIONS -u simplyrets:simplyrets https://api.simplyrets.com/`
         facets:
           collectionFormat: string
       water:
@@ -629,9 +493,6 @@ securitySchemes:
           filter waterfront listings.
         required: false
         type: string
-        displayName: |
-          Query water/waterfront listings only. Specify `true` to
-          filter waterfront listings.
       neighborhoods:
         collectionFormat: multi
         description: |
@@ -641,9 +502,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Filter the listings returned by specific neighborhoods and
-          subdivisions. You can specify multiple.
         facets:
           collectionFormat: string
       cities:
@@ -655,9 +513,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Filter the listings returned by specific cities. You can
-          specify multiple.
         facets:
           collectionFormat: string
       counties:
@@ -669,9 +524,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Filter the listings returned by specific counties. You can
-          specify multiple.
         facets:
           collectionFormat: string
       points:
@@ -698,24 +550,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Return listings that are within a set of latitude
-          longitude coordinates. For example;
-          ```
-          29.723837,-95.69778
-          29.938275,-95.69778
-          29.938275,-95.32974
-          29.723837,-95.32974
-          ```
-          Note that some MLS's do not provide latitude and longitude
-          for their listings, which is required for this parameter
-          to work. In these cases, SimplyRETS offers a [Geocoding
-          Addon](https://simplyrets.com/services#geocoding).
-
-          Check out our
-          [blog post](https://simplyrets.com/blog/interactive-map-search.html)
-          on using the `points` parameter to build a map-based app
-          in javascript.
         facets:
           collectionFormat: string
       include:
@@ -743,25 +577,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Include a extra fields which are not in the default
-          response body
-          - 'association' includes additional HOA data
-          - 'agreement' information on the listing agreement
-          - 'garageSpaces' additional garage data
-          - 'maintenanceExpense' data on maintenance expenses
-          - 'parking' additional parking data
-          - 'pool' includes an additional pool description
-          - 'taxAnnualAmount' include the annual tax amount
-          - 'taxYear' include the tax year data
-          - 'rooms' include parameter will include
-             any additional rooms as a list.
-
-          Note that your MLS must provide these fields in their RETS
-          data for them to be available in the API response.
-
-          In the future, fields which require an 'include' may become available
-          by default.
         facets:
           collectionFormat: string
       sort:
@@ -780,10 +595,6 @@ securitySchemes:
           - '-baths'
         required: false
         type: string
-        displayName: |
-          Sort the response by a specific field. Values starting
-          with a minus (-) denote descending order, while the others
-          are ascending.
     securedBy:
       - basicAuth
 /openhouses:
@@ -797,7 +608,6 @@ securitySchemes:
         format: int64
         required: true
         type: integer
-        displayName: A unique OpenHouse identification key
     get:
       displayName: GET_openhouses-openHouseKey
       description: |
@@ -865,25 +675,6 @@ securitySchemes:
             type: string
           required: false
           type: array
-          displayName: |
-            Include a extra fields which are not in the default
-            response body
-            - 'association' includes additional HOA data
-            - 'agreement' information on the listing agreement
-            - 'garageSpaces' additional garage data
-            - 'maintenanceExpense' data on maintenance expenses
-            - 'parking' additional parking data
-            - 'pool' includes an additional pool description
-            - 'taxAnnualAmount' include the annual tax amount
-            - 'taxYear' include the tax year data
-            - 'rooms' include parameter will include
-               any additional rooms as a list.
-
-            Note that your MLS must provide these fields in their RETS
-            data for them to be available in the API response.
-
-            In the future, fields which require an 'include' may
-            become available by default.
           facets:
             collectionFormat: string
       securedBy:
@@ -947,10 +738,6 @@ securitySchemes:
           - Land
         required: false
         type: string
-        displayName: |
-          Request listings by a specific property type. This
-          defaults to Residential, and you can only specify one type
-          in a single query.
         facets:
           collectionFormat: string
       listingId:
@@ -958,8 +745,6 @@ securitySchemes:
           Request openhouses for a specific `listingId`.
         required: false
         type: string
-        displayName: |
-          Request openhouses for a specific `listingId`.
       cities:
         collectionFormat: multi
         description: |
@@ -970,10 +755,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Filter the openhouses returned by a list of valid cities. A
-          list of valid cities can be found by making an OPTIONS
-          request to the `/openhouses` endpoint.
         facets:
           collectionFormat: string
       brokers:
@@ -986,10 +767,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Filter the listings returned by brokerage with a Broker ID.
-          You can specific multiple broker parameters. Note, the Broker
-          ID is provided by your MLS.
         facets:
           collectionFormat: string
       agent:
@@ -998,21 +775,15 @@ securitySchemes:
           Agent ID is provided by your MLS.
         required: false
         type: string
-        displayName: |
-          Filter the listings returned by an agent ID.  Note, the
-          Agent ID is provided by your MLS.
       minprice:
         description: |
           Filter listings by a minimum price.
         required: false
         type: integer
-        displayName: |
-          Filter listings by a minimum price.
       startdate:
         description: Scheduled date and time of the open house showing
         format: rfc3339
         type: datetime
-        displayName: Scheduled date and time of the open house showing
       offset:
         description: |
           Increase the offset parameter by the limit to go to the
@@ -1022,19 +793,11 @@ securitySchemes:
           *NOTE:* Use the `lastId` parameter for pagination.
         required: false
         type: integer
-        displayName: |
-          Increase the offset parameter by the limit to go to the
-          next "page" of listings. Also take a look at the Link HTTP
-          Header for pre-built pagination.
-
-          *NOTE:* Use the `lastId` parameter for pagination.
       lastId:
         description: |
           Used as a cursor for pagination.
         required: false
         type: integer
-        displayName: |
-          Used as a cursor for pagination.
       limit:
         description: |
           Set the number of listings to return in the response.
@@ -1044,12 +807,6 @@ securitySchemes:
           Header.
         required: false
         type: integer
-        displayName: |
-          Set the number of listings to return in the response.
-          This defaults to 20 listings, and can be a maximum of 500.
-          To paginate through to the next page of listings, take a
-          look at the `offset` parameter, or the Link in the HTTP
-          Header.
       sort:
         description: |
           Sort the response by a specific field. Values starting
@@ -1066,10 +823,6 @@ securitySchemes:
           - '-baths'
         required: false
         type: string
-        displayName: |
-          Sort the response by a specific field. Values starting
-          with a minus (-) denote descending order, while the others
-          are ascending.
       include:
         collectionFormat: multi
         description: |
@@ -1095,25 +848,6 @@ securitySchemes:
           type: string
         required: false
         type: array
-        displayName: |
-          Include a extra fields which are not in the default
-          response body
-          - 'association' includes additional HOA data
-          - 'agreement' information on the listing agreement
-          - 'garageSpaces' additional garage data
-          - 'maintenanceExpense' data on maintenance expenses
-          - 'parking' additional parking data
-          - 'pool' includes an additional pool description
-          - 'taxAnnualAmount' include the annual tax amount
-          - 'taxYear' include the tax year data
-          - 'rooms' include parameter will include
-             any additional rooms as a list.
-
-          Note that your MLS must provide these fields in their RETS
-          data for them to be available in the API response.
-
-          In the future, fields which require an 'include' may become available
-          by default.
         facets:
           collectionFormat: string
     securedBy:
