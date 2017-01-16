@@ -1,0 +1,40 @@
+#%RAML 1.0
+title: Definition names conversion example
+version: 1.0.0
+types:
+  ResourceLink:
+    description: a description
+    properties:
+      href:
+        type: string
+        required: false
+      rel:
+        type: string
+        enum:
+          - self
+          - next
+          - prev
+        required: false
+  Image_Link_:
+    properties:
+      href:
+        type: string
+        required: false
+      rel:
+        type: string
+        enum:
+          - SmallImage
+          - MediumImage
+          - LargeImage
+        required: false
+    (oas-definition-name): 'Image[Link]'
+  Image__link__:
+    properties:
+      success:
+        type: boolean
+        required: false
+    (oas-definition-name): 'Image[[link]]'
+annotationTypes:
+  oas-definition-name:
+    type: string
+    allowedTargets: TypeDeclaration
