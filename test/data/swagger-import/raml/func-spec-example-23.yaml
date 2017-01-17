@@ -1,21 +1,6 @@
 #%RAML 1.0
 title: Definition names conversion example
 version: 1.0.0
-/test:
- displayName: test
- post:
-   displayName: POST_test
-   body:
-     application/json:
-       type: User
-       properties:
-         //:
-          type: string
-       (oas-body-name): username
-       description: The person's username
-   responses:
-     '200':
-       description: OK
 types:
  User:
    properties:
@@ -35,7 +20,10 @@ types:
      email:
        type: string
        required: false
-annotationTypes:
- oas-body-name:
-   type: string
-   allowedTargets: TypeDeclaration
+     //:
+       type: string
+ ExtendedUsers:
+   type: object
+   properties:
+     //:
+       type: User
