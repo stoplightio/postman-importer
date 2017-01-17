@@ -1,0 +1,1017 @@
+#%RAML 1.0
+title: Microsoft Azure File Service
+version: 1.0.0
+baseUri: https://{myaccount}.file.core.windows.net/
+#baseUriParameters:
+#  myaccount:
+#    description: Name of your storage account
+mediaType: application/xml
+protocols:
+  - HTTP
+  - HTTPS
+documentation:
+  - title: Microsoft Azure File Service
+    content: |
+      The Server Message Block (SMB) protocol is the preferred file share protocol used on premise today. The Microsoft Azure File service enables customers to leverage the availability and scalability of Azure’s Cloud Infrastructure as a Service (IaaS) SMB without having to rewrite SMB client applications.
+
+      The Azure File service also offers a compelling alternative to traditional Direct Attached Storage (DAS) and Storage Area Network (SAN) solutions, which are often complex and expensive to install, configure, and operate. Pricing for the new Azure File service is consistent with existing Azure Storage services and is charged in units of storage capacity and transactions. See the Azure Storage Pricing page for details.
+
+      Files stored in Azure File service shares are accessible via the SMB protocol, and also via REST APIs, at the endpoint http|https://<account>.file.core.window.net. Note that HTTPS is recommended.
+
+      While the Azure File service REST APIs are similar to the Azure Blob service REST APIs, there are minor differences related to how the service models the underlying file system. These differences are noted in the operations table below.
+/:
+  get:
+    description: |
+      Depending on what values you provide for **comp** and **restype** query params, response is returned as following:
+      * **comp==list** and **restype not provided**: a list of shares under specified account
+      * **comp==properties** and **restype==service**: storage service properties
+    queryParameters:
+      restype:
+        enum: [service]
+        default: service
+        required: false
+      comp:
+        enum: [list, propertie, stats]
+        default: list
+        required: true
+      prefix:
+        description: Filters the results to return only containers whose name begins with the specified prefix.
+        required: false
+      marker:
+        description: |
+          A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items.
+
+          The marker value is opaque to the client.
+        required: false
+      maxresults:
+        description: |
+          Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5,000, the server will return up to 5,000 items. If the parameter is set to a value less than or equal to zero, the server will return status code 400 (Bad Request).
+        required: false
+      include:
+        description: |
+          Include this parameter to specify that the container's metadata be returned as part of the response body.
+
+          Note that metadata requested with this parameter must be stored in accordance with the naming restrictions imposed by the 2009-09-19 version of the Blob service. Beginning with this version, all metadata names must adhere to the naming conventions for [C# identifiers](https://msdn.microsoft.com/library/aa664670(vs.71).aspx).
+        default: metadata
+        enum: [metadata]
+        required: false
+      timeout:
+        description: |
+          The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Blob Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179431.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+    responses:
+      200:
+        headers:
+          Content-Type:
+            description: Standard HTTP/1.1 header. Specifies the format in which the results are returned. Currently, this value is application/xml.
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the Blob service used to execute the request. This header is returned for requests made against version 2009-09-19 and above.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+        body:
+          application/xml:
+            examples:
+              List_Shares: |
+                <?xml version="1.0" encoding="utf-8"?>
+                <EnumerationResults AccountName="https://myaccount.file.core.windows.net">
+                  <Prefix>string-value</Prefix>
+                  <Marker>string-value</Marker>
+                  <MaxResults>int-value</MaxResults>
+                  <Shares>
+                    <Share>
+                      <Name>share-name</Name>
+                      <Properties>
+                        <Last-Modified>date/time-value</Last-Modified>
+                        <Etag>etag</Etag>
+                        <Quota>max-share-size</Quota>
+                      </Properties>
+                      <Metadata>
+                        <metadata-name>value</metadata-name>
+                      </Metadata>
+                    </Share>
+                  </Shares>
+                  <NextMarker>marker-value</NextMarker>
+                </EnumerationResults>
+              Stoarge_service_properties_(2015-04-05): |
+                <?xml version="1.0" encoding="utf-8"?>
+                <StorageServiceProperties>
+                  <HourMetrics>
+                      <Version>version-number</Version>
+                      <Enabled>true|false</Enabled>
+                      <IncludeAPIs>true|false</IncludeAPIs>
+                      <RetentionPolicy>
+                        <Enabled>true|false</Enabled>
+                        <Days>number-of-days</Days>
+                      </RetentionPolicy>
+                  </HourMetrics>
+                  <MinuteMetrics>
+                      <Version>version-number</Version>
+                      <Enabled>true|false</Enabled>
+                      <IncludeAPIs>true|false</IncludeAPIs>
+                      <RetentionPolicy>
+                        <Enabled>true|false</Enabled>
+                        <Days>number-of-days</Days>
+                      </RetentionPolicy>
+                  </MinuteMetrics>
+                  <Cors>
+                    <CorsRule>
+                      <AllowedOrigins>comma-separated-list-of-allowed-origins</AllowedOrigins>
+                      <AllowedMethods>comma-separated-list-of-HTTP-verb</AllowedMethods>
+                      <MaxAgeInSeconds>max-caching-age-in-seconds</MaxAgeInSeconds>
+                      <ExposedHeaders>comma-seperated-list-of-response-headers</ExposedHeaders>
+                      <AllowedHeaders> comma-seperated-list-of-request-headers </AllowedHeaders>
+                    </CorsRule>
+                  </Cors>
+                </StorageServiceProperties>
+              Stoarage_service_properties_(2015-02-21): |
+                <?xml version="1.0" encoding="utf-8"?>
+                <StorageServiceProperties>
+                  <Cors>
+                    <CorsRule>
+                      <AllowedOrigins>comma-separated-list-of-allowed-origins</AllowedOrigins>
+                      <AllowedMethods>comma-separated-list-of-HTTP-verb</AllowedMethods>
+                      <MaxAgeInSeconds>max-caching-age-in-seconds</MaxAgeInSeconds>
+                      <ExposedHeaders>comma-seperated-list-of-response-headers</ExposedHeaders>
+                      <AllowedHeaders> comma-seperated-list-of-request-headers </AllowedHeaders>
+                    </CorsRule>
+                  </Cors>
+                </StorageServiceProperties>
+  put:
+    description: |
+      The **Set Blob Service Properties** operation sets properties for a storage account’s Blob service endpoint, including properties for [Storage Analytics](https://msdn.microsoft.com/en-us/library/azure/hh343270.aspx) and CORS (Cross-Origin Resource Sharing) rules. See [Cross-Origin Resource Sharing (CORS) Support for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dn535601.aspx) for more information on CORS rules.
+
+      You can also use this operation to set the default request version for all incoming requests to the Blob service that do not have a version specified.
+    queryParameters:
+      restype:
+        enum: [service]
+        default: service
+        required: false
+      comp:
+        enum: [propertie]
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+      x-client-requiest-id:
+        description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+        required: false
+    body:
+      properties:
+        StorageServiceProperties:
+          required: true
+          properties:
+            HourMetrics:
+              description: |
+                Optional for version 2013-08-15 or later; not applicable for earlier versions. Groups the Azure Analytics **HourMetrics** settings. The **HourMetrics** settings provide a summary of request statistics grouped by API in hourly aggregates for blobs.
+              required: false
+              properties:
+                Version:
+                  description: |
+                    The version of Storage Analytics to configure.
+                  required: true
+                Enabled:
+                  description: |
+                    Indicates whether hour metrics are enabled for the Blob service.
+
+                    If read-access geo-redundant replication is enabled, both primary and secondary metrics are collected. If read-access geo-redundant replication is not enabled, only primary metrics are collected.
+                  type: boolean
+                  required: true
+                IncludeAPIs:
+                  description: |
+                    Required only if hour metrics are enabled. Indicates whether metrics should generate summary statistics for called API operations.
+                  type: boolean
+                  required: false
+                RetentionPolicy:
+                  required: true
+                  properties:
+                    Enabled:
+                      description: Indicates whether a retention policy is enabled for the storage service.
+                      type: boolean
+                      required: true
+                    Days:
+                      description: |
+                       Required only if a retention policy is enabled. Indicates the number of days that metrics or logging data should be retained. All data older than this value will be deleted. The minimum value you can specify is 1; the largest value is 365 (one year).
+                      type: number
+                      required: false
+            MinuteMetrics:
+              description: |
+                Optional for version 2013-08-15 or later; not applicable for earlier versions. Groups the Azure Analytics **MinuteMetrics** settings. The **MinuteMetrics** settings provide request statistics for each minute for blobs. For versions earlier than 2013-08-15, **MinuteMetrics** is not included in the response body.
+              required: false
+              properties:
+                Version:
+                  description: |
+                    The version of Storage Analytics to configure.
+                  required: true
+                Enabled:
+                  description: |
+                    Indicates whether minute metrics are enabled for the Blob service.
+
+                    If read-access geo-redundant replication is enabled, both primary and secondary metrics are collected. If read-access geo-redundant replication is not enabled, only primary metrics are collected.
+                  type: boolean
+                  required: true
+                IncludeAPIs:
+                  description: |
+                    Required only if minute metrics are enabled. Indicates whether metrics should generate summary statistics for called API operations.
+                  type: boolean
+                  required: false
+                RetentionPolicy:
+                  properties:
+                    Enabled:
+                      description: Indicates whether a retention policy is enabled for the storage service.
+                      type: boolean
+                      required: true
+                    Days:
+                      description: |
+                       Required only if a retention policy is enabled. Indicates the number of days that metrics or logging data should be retained. All data older than this value will be deleted. The minimum value you can specify is 1; the largest value is 365 (one year).
+                      type: number
+                      required: false
+            Cors:
+              description: |
+                The **Cors** element is supported for version 2013-08-15 or later. Groups all CORS rules.
+
+                Omitting this element group will not overwrite existing CORS settings.
+              required: false
+              properties:
+                CorsRule:
+                  description: |
+                    Specifies a CORS rule for the Blob service. You can include up to five **CorsRule** elements in the request. If no **CorsRule** elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service.
+                  required: true
+                  properties:
+                    AllowedOrigins:
+                      description: |
+                        A comma-separated list of origin domains that will be allowed via CORS, or "*" to allow all domains. Limited to 64 origin domains. Each allowed origin can have up to 256 characters.
+                      required: true
+                    ExposedHeaders:
+                      description: |
+                        A comma-separated list of response headers to expose to CORS clients. Limited to 64 defined headers and two prefixed headers. Each header can be up to 256 characters.
+                      required: true
+                    MaxAgeInSeconds:
+                      description: |
+                        The number of seconds that the client/browser should cache a preflight response.
+                      type: number
+                      required: true
+                    AllowedHeaders:
+                      description: |
+                        A comma-separated list of headers allowed to be part of the cross-origin request. Limited to 64 defined headers and 2 prefixed headers. Each header can be up to 256 characters.
+                      required: true
+                    AllowedMethods:
+                      description: |
+                        A comma-separated list of HTTP methods that are allowed to be executed by the origin. For Azure Storage, permitted methods are DELETE, GET, HEAD, MERGE, POST, OPTIONS or PUT.
+                      required: true
+    responses:
+      202:
+        headers:
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the Blob service used to execute the request. This header is returned for requests made against version 2009-09-19 and above.
+/{file-resource}:
+  options:
+    description: |
+      The **Preflight File Request** operation queries the Cross-Origin Resource Sharing (CORS) rules for the File service prior to sending the actual request. A web browser or another user agent sends a preflight request that includes the origin domain, method, and headers for the actual request that the agent wishes to make. If CORS is enabled for the File service, then the File service evaluates the preflight request against the CORS rules that the account owner has configured via [Set File Service Properties](https://msdn.microsoft.com/en-us/library/azure/mt427374.aspx), and accepts or rejects the request.
+
+      For more information about CORS and the preflight request, see [the CORS specification](http://www.w3.org/TR/cors/) and [Cross-Origin Resource Sharing (CORS) Support for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dn535601.aspx)
+    queryParameters:
+      restype:
+        enum: [share, directory]
+        default: share
+        required: false
+    headers:
+      Origin:
+        description: Specifies the origin from which the actual request will be issued. The origin is checked against the service's CORS rules to determine the success or failure of the preflight request.
+        required: true
+      Access-Control-Request-Method:
+        description: Specifies the method (or HTTP verb) for the actual request. The method is checked against the service's CORS rules to determine the failure or success of the preflight request.
+        required: true
+      Access-Control-Request-Headers:
+        description: Specifies the headers for the actual request headers that will be sent, then the service assumes no headers are sent with the actual request.
+        required: false
+    responses:
+      200:
+        headers:
+          Access-Control-Allow-Origin:
+            description: The allowed origin, which matches the origin header in the request if the preflight request succeeded.
+          Access-Control-Allow-Methods:
+            description: If the preflight requests succeeds, this header is set to the value or values specified for the request header Access-Control-Request-Method.
+          Access-Control-Allow-Headers:
+            description: If the preflight request succeeds, this header is set to the value or values specified for the request header Access-Control-Request-Headers.
+          Access-Control-Max-Age:
+            description: Specifies the length of time the user agent is allowed to cache the preflight request for future requests.
+          Access-Control-Allow-Credentials:
+            description: Indicates whether the actual request can be made using credentials. This header is always set to **true**.
+  put:
+    description: |
+      Depending on what values you provide for **comp** and **restype** query params, request has the following meaning:
+      * **comp not provided** and **restype==share**: create a new share
+      * **comp==properties** and **restype==share**: sets service-defined properties for the specified share.
+      * **comp==metadata** and **restype==share**: sets one or more user-defined name-value pairs for the specified share.
+      * **comp==acl** and **restype==share**: sets a stored access policy for use with shared access signatures.
+    queryParameters:
+      restype:
+        enum: [share]
+        required: true
+      comp:
+        enum: [metadata, propertie, acl]
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+      "x-ms-meta-name:value":
+        description: |
+          A name-value pair to associate with the share as metadata.
+
+          Metadata names must adhere to the naming rules for [C# identifiers](https://msdn.microsoft.com/library/aa664670(vs.71).aspx).
+        required: false
+      x-ms-share-quota:
+        description: Supported in version 2015-02-21 and above. Specifies the maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
+        required: false
+    body:
+      properties:
+        SignedIdentifiers:
+          required: false
+          properties:
+            SignedIdentifier:
+              properties:
+                Id:
+                  required: true
+                AccessPolicy:
+                  required: true
+                  properties:
+                    Start:
+                      required: true
+                    Expiry:
+                      required: true
+                    Permission:
+                      required: true
+    responses:
+      201:
+        headers:
+          ETag:
+            description: The ETag contains a value which represents the version of the share, in quotes.
+          Last-Modified:
+            description: |
+              Returns the date and time the share was last modified. The date format follows RFC 1123. For more information, see [Representation of Date/Time Values in Headers](https://msdn.microsoft.com/en-us/library/azure/dd135714.aspx).
+
+              Any operation that modifies the share or its properties or metadata updates the last modified time. Operations on files do not affect the last modified time of the share.
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the Blob service used to execute the request. This header is returned for requests made against version 2009-09-19 and above.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+  get:
+    description: |
+      Depending on what values you provide for **comp** and **restype** query params, response is returned as following:
+      * **comp not provided** and **restype==share**: all user-defined metadata and system properties for the specified share
+      * **comp==metadata** and **restype==share**: all user-defined metadata for the share
+      * **comp==acl** and **restype==share**: information about stored access policies specified on the share
+      * **comp==stats** and **restype==share**: statistics related to the share
+    queryParameters:
+      restype:
+        enum: [share]
+        required: true
+      comp:
+        enum: [metadata, acl, stats]
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+    responses:
+      200:
+        headers:
+          ETag:
+            description: The ETag contains a value which represents the version of the share, in quotes.
+          Last-Modified:
+            description: |
+              Returns the date and time the share was last modified. The date format follows RFC 1123. For more information, see [Representation of Date/Time Values in Headers](https://msdn.microsoft.com/en-us/library/azure/dd135714.aspx).
+
+              Any operation that modifies the share or its properties or metadata updates the last modified time. Operations on files do not affect the last modified time of the share.
+          "x-ms-meta-name:value":
+            description: |
+              A name-value pair to associate with the share as metadata.
+
+              Metadata names must adhere to the naming rules for [C# identifiers](https://msdn.microsoft.com/library/aa664670(vs.71).aspx)
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the Blob service used to execute the request. This header is returned for requests made against version 2009-09-19 and above.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+          x-ms-share-quota:
+            description: Returns the current share quota in GB for version 2015-02-21 and above.
+        body:
+          application/xml:
+            examples:
+              Get_Share_ACL: |
+                <?xml version="1.0" encoding="utf-8"?>
+                <SignedIdentifiers>
+                  <SignedIdentifier>
+                    <Id>unique-value</Id>
+                    <AccessPolicy>
+                      <Start>start-time</Start>
+                      <Expiry>expiry-time</Expiry>
+                      <Permission>abbreviated-permission-list</Permission>
+                    </AccessPolicy>
+                  </SignedIdentifier>
+                </SignedIdentifiers>
+              Get_Share_stats: |
+                <?xml version="1.0" encoding="utf-8"?>
+                <ShareStats>
+                   <ShareUsage>15</ShareUsage>
+                </ShareStats>
+  head:
+    description: |
+      Depending on what values you provide for **comp** and **restype** query params, response is returned as following:
+      * **comp not provided** and **restype==share**: all user-defined metadata and system properties for the specified share
+      * **comp==metadata** and **restype==share**: all user-defined metadata for the share
+      * **comp==acl** and **restype==share**: information about stored access policies specified on the share
+      * **comp==stats** and **restype==share**: statistics related to the share
+    queryParameters:
+      restype:
+        enum: [share]
+        required: true
+      comp:
+        enum: [metadata, acl]
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+    responses:
+      200:
+        headers:
+          ETag:
+            description: The ETag contains a value which represents the version of the share, in quotes.
+          Last-Modified:
+            description: |
+              Returns the date and time the share was last modified. The date format follows RFC 1123. For more information, see [Representation of Date/Time Values in Headers](https://msdn.microsoft.com/en-us/library/azure/dd135714.aspx).
+
+              Any operation that modifies the share or its properties or metadata updates the last modified time. Operations on files do not affect the last modified time of the share.
+          "x-ms-meta-name:value":
+            description: |
+              A name-value pair to associate with the share as metadata.
+
+              Metadata names must adhere to the naming rules for [C# identifiers](https://msdn.microsoft.com/library/aa664670(vs.71).aspx)
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the Blob service used to execute the request. This header is returned for requests made against version 2009-09-19 and above.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+          x-ms-share-quota:
+            description: Returns the current share quota in GB for version 2015-02-21 and above.
+        body:
+
+  delete:
+    description: The **Delete Share** operation marks the specified share for deletion. The share and any files contained within it are later deleted during garbage collection.
+    queryParameters:
+      restype:
+        enum: [share]
+        required: true
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+    responses:
+      202:
+        headers:
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the Blob service used to execute the request. This header is returned for requests made against version 2009-09-19 and above.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+/{share}/{directory-path}:
+  get:
+    description: The **List Directories and Files** operation returns a list of files or directories under the specified share or directory. It lists the contents only for a single level of the directory hierarchy.
+    queryParameters:
+      restype:
+        enum: [directory]
+        default: directory
+        required: false
+      comp:
+        enum: [list]
+        default: list
+        required: true
+      marker:
+        description: |
+          A string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items.
+
+          The marker value is opaque to the client.
+        required: false
+      maxresults:
+        description: |
+          Specifies the maximum number of files and/or directories to return. If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+
+          Setting maxresults to a value less than or equal to zero results in error response code 400 (Bad Request).
+        required: false
+      timeout:
+        description: |
+          The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Blob Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179431.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+    responses:
+      200:
+        headers:
+          Content-Type:
+            description: Specifies the format in which the results are returned. Currently this value is application/xml.
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the File service used to execute the request.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+        body:
+          application/xml:
+            examples:
+              List_directories_and_files: |
+                <?xml version="1.0" encoding="utf-8"?>
+                <EnumerationResults ServiceEndpoint="https://myaccount.file.core.windows.net/” ShareName="myshare" DirectoryPath="directory-path">
+                  <Marker>string-value</Marker>
+                  <MaxResults>int-value</MaxResults>
+                  <Entries>
+                    <File>
+                      <Name>file-name</Name>
+                      <Properties>
+                        <Content-Length>size-in-bytes</Content-Length>
+                      </Properties>
+                    </File>
+                    <Directory>
+                      <Name>directory-name</Name>
+                    </Directory>
+                  </Entries>
+                  <NextMarker />
+                </EnumerationResults>
+/{share}/{parent-directory-path}/{file-or-directory}:
+  put:
+    description: |
+      Does the following based on the value of **comp** query parameter:
+      * **no query param**: creates a new file or replaces a file. Note that calling **Create File** only initializes the file. To add content to a file, call the **Put Range** operation. When **no query param** provided you can use this opeartion also for copying a blob or a file within the storage account by speficying **x-ms-copy-source** header with request.
+      * **comp==properties**: sets system proeprties on the file.
+      * **comp==range**: writes a range of bytes to a file.
+      * **comp==metadata**: updates user-defined metadata for the specified file.
+      * **comp==copy**: abort a **Copy File** operation.
+      * **comp not provided** and **restype==directory**: creates a new directory under the specified share or parent directory.
+      * **comp==metadata** and **restype==directory**: updates user defined metadata for the specified directory. This operation is available in version 2015-02-21 and newer.
+    queryParameters:
+      restype:
+        enum: [directory]
+        default: directory
+        required: true
+      comp:
+        enum: [propertie, range, metadata, copy]
+        required: false
+      copyid:
+        description: Required when aborting a **Copy File** operation. The id of the copy operation to abort.
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Required. Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+      Content-Length:
+        description: Must be zero if present.
+        required: false
+      x-ms-content-length:
+        description: This header specifies the maximum size for the file, up to 1 TB.
+        required: true
+      Content-Type:
+        description: The MIME content type of the file. The default type is application/octet-stream. Mutually exclusive with "x-ms-content-type".
+        required: false
+      x-ms-content-type:
+        description: The MIME content type of the file. The default type is application/octet-stream. Mutually exclusive with "Content-Type".
+        required: false
+      Content-Encoding:
+        description: Specifies which content encodings have been applied to the file. This value is returned to the client when the [Get File](https://msdn.microsoft.com/en-us/library/azure/dn194274.aspx) operation is performed on the file resource and can be used to decode file content. Mutually exclusive with "x-ms-content-encoding".
+        required: false
+      x-ms-content-encoding:
+        description: Specifies which content encodings have been applied to the file. This value is returned to the client when the [Get File](https://msdn.microsoft.com/en-us/library/azure/dn194274.aspx) operation is performed on the file resource and can be used to decode file content. Mutually exclusive with "Content-Encoding".
+        required: false
+      Content-Language:
+        description: Specifies the natural languages used by this resource. Mutually exclusive with "x-ms-content-language".
+        required: false
+      x-ms-content-language:
+        description: Specifies the natural languages used by this resource. Mutually exclusive with "Content-Language".
+      Cache-Control:
+        description: The File service stores this value but does not use or modify it. Mutually exclusive with "x-ms-cache-control".
+        required: false
+      x-ms-cache-control:
+        description: The File service stores this value but does not use or modify it. Mutually exclusive with "Cache-Control".
+        required: false
+      x-ms-content-md5:
+        description: Sets the file's MD5 hash.
+        required: false
+      x-ms-content-disposition:
+        description: Sets the file’s Content-Disposition header.
+        required: false
+      x-ms-type:
+        description: Set this header to file.
+        default: file
+        required: true
+      "x-ms-meta-name:value":
+        description: |
+          Name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules for [C# identifiers](https://msdn.microsoft.com/library/aa664670(vs.71).aspx).
+
+          Note that file metadata specified via the File service is not accessible from an SMB client.
+        required: false
+      x-ms-write:
+        description: |
+          Required by **Put Range** operation. You may specify one of the following options:
+          * *Update*: Writes the bytes specified by the request body into the specified range. The Range and Content-Length headers must match to perform the update.
+          * *Clear*: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero, and set the Range header to a value that indicates the range to clear, up to maximum file size.
+        enum: [update, clear]
+        required: false
+      x-ms-copy-source:
+        description: |
+          Required for copying a file within storage account. Specifies the URL of the source file or blob, up to 2 KB in length.
+
+          To copy a file to another file within the same storage account, you may use Shared Key to authenticate the source file. If you are copying a file from another storage account, or if you are copying a blob from the same storage account or another storage account, then you must authenticate the source file or blob using a shared access signature. If the source is a public blob, no authentication is required to perform the copy operation.
+
+          Here are some examples of source object URLs:
+          * https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
+          * https://myaccount.blob.core.windows.net/mycontainer/myblob?sastoken
+        required: false
+      x-ms-copy-abort:
+        enum: [abort]
+        description: Required when aborting **Copy File** operation.
+        required: false
+    responses:
+      201:
+        headers:
+          ETag:
+            description: The ETag contains a value which represents the version of the file, in quotes.
+          Last-Modified:
+            description: |
+              Returns the date and time the share was last modified. The date format follows RFC 1123. For more information, see [Representation of Date/Time Values in Headers](https://msdn.microsoft.com/en-us/library/azure/dd135714.aspx).
+
+              Any operation that modifies the directory or its properties updates the last modified time. Operations on files do not affect the last modified time of the directory.
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the File service used to execute the request.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+          x-ms-copy-id:
+            description: String identifier for this copy operation. Use with Get File or Get File Properties to check the status of this copy operation, or pass to Abort Copy File to abort a pending copy.
+          x-ms-copy-status:
+            description: |
+              State of the copy operation with these values:
+              * success: the copy completed successfully.
+              * pending: the copy is still in progress.
+      202:
+        headers:
+          ETag:
+            description: The ETag contains a value which represents the version of the directory, in quotes.
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/library/windowsazure/dd573365).
+          x-ms-version:
+            description: Indicates the version of the Azure File service used to execute the request.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+  get:
+    description: |
+      Depending on what values you provide for **comp** and **restype** query params, response is returned as following:
+        * **no query param**: reads or downloads a file from the system, including its metadata and properties.
+        * **comp==rangelist**: the list of valid ranges for a file
+        * **comp==metadata**: all user-defined metadata for the specified file
+        * **comp not provided** and **restype==directory**: all system properties for the specified directory, and can also be used to check the existence of a directory. The data returned does not include the files in the directory or any subdirectories.
+        * **comp==metadata** and **restype==directory**: all user-defined metadata for the specified directory. This operation is supported in version 2015-02-21 and later.
+    queryParameters:
+      restype:
+        enum: [directory]
+        default: directory
+        required: false
+      comp:
+        enum: [rangelist, metadata]
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Required. Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+      Range:
+        description: Return file data only from the specified byte range.
+        required: false
+      x-ms-range:
+        description: Return file data only from the specified byte range. If both Range and x-ms-range are specified, the service uses the value of x-ms-range. If neither are specified, the entire file contents are returned. See [Specifying the Range Header for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689096.aspx) for more information.
+        required: false
+      x-ms-range-get-content-md5:
+        description: |
+          When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+
+          If this header is specified without the Range header, the service returns status code 400 (Bad Request).
+
+          If this header is set to true when the range exceeds 4 MB in size, the service returns status code 400 (Bad Request).
+        required: false
+    responses:
+      200:
+        headers:
+          Last-Modified:
+            description: Returns the date and time the file was last modified. The date format follows RFC 1123. For more information, see [Representation of Date/Time Values in Headers](https://msdn.microsoft.com/en-us/library/azure/dd135714.aspx). Any operation that modifies the file or its properties updates the last modified time.
+          "x-ms-meta-name:value":
+            description: A set of name-value pairs associated with this file as user-defined metadata.
+          x-ms-type:
+            description: Returns *File* and is reserved for future use.
+          Content-Length:
+            description: The number of bytes present in the response body.
+          x-ms-content-length:
+            description: The size of the file in bytes.
+          Content-Type:
+            description: The content type specified for the file. The default content type is application/octet-stream.
+          Content-Range:
+            description: Indicates the range of bytes returned if the client requested a subset of the file by setting the Range request header.
+          ETag:
+            description: The ETag contains a value that you can use to perform operations conditionally, in quotes.
+          Content-MD5:
+            description: |
+              If the file has an MD5 hash and the request is to read the full file, this response header is returned so that the client can check for message content integrity.
+
+              If the request is to read a specified range and the x-ms-range-get-content-md5 is set to true, then the request returns an MD5 hash for the range, as long as the range size is less than or equal to 4 MB.
+
+              If neither of these sets of conditions is true, then no value is returned for the Content-MD5 header.
+
+              If x-ms-range-get-content-md5 is specified without the Range header, the service returns status code 400 (Bad Request).
+
+              If x-ms-range-get-content-md5 is set to true when the range exceeds 4 MB in size, the service returns status code 400 (Bad Request).
+          Content-Encoding:
+            description: This header returns the value that was specified for the Content-Encoding request header.
+          Content-Language:
+            description: This header returns the value that was specified for the Content-Language request header.
+          Cache-Control:
+            description: This header is returned if it was previously specified for the file.
+          Content-Disposition:
+            description: |
+              Returns the value that was specified for the x-ms-content-disposition header and specifies how to process the response.
+
+              The Content-Disposition response header field conveys additional information about how to process the response payload, and also can be used to attach additional metadata. For example, if set to *attachment*, Content-Disposition indicates that the user-agent should not display the response, but instead show a **Save As** dialog.
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the File service used to execute the request.
+          Accept-Ranges:
+            description: Indicates that the service supports requests for partial file content.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+          x-ms-copy-completion-time:
+            description: Version 2015-02-21 and newer. Conclusion time of the last attempted **Copy File** operation where this file was the destination file. This value can specify the time of a completed, aborted, or failed copy attempt. This header does not appear if a copy is pending, if this file has never been the destination in a **Copy File** operation, or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-status-description:
+            description: Version 2015-02-21 and newer. Only appears when x-ms-copy-status is failed or pending. Describes cause of fatal or non-fatal copy operation failure. This header does not appear if this file has never been the destination in a **Copy File** operation, or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-id:
+            description: Version 2015-02-21 and newer. String identifier for the last attempted **Copy File** operation where this file was the destination file. This header does not appear if the file has never been the destination in a **Copy File** operation, or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-progress:
+            description: Version 2015-02-21 and newer. Contains the number of bytes copied and the total bytes in the source in the last attempted **Copy File** operation where this file was the destination file. Can show between 0 and Content-Length bytes copied. This header does not appear if this file has never been the destination in a **Copy File** operation, or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-source:
+            description: Version 2015-02-21 and newer. URL up to 2KB in length that specifies the source file used in the last attempted **Copy File** operation where this file was the destination file. This header does not appear if this file has never been the destination in a **Copy File** operation or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-status:
+            description: |
+              Version 2015-02-21 and newer. State of the copy operation identified by x-ms-copy-id, with these values:
+              * success: Copy completed successfully.
+              * pending: Copy is in progress. Check x-ms-copy-status-description if intermittent, non-fatal errors impede copy progress but don't cause failure.
+              * aborted: Copy was ended by **Abort Copy File**.
+              * failed: Copy failed. See x-ms-copy-status-description for failure details.
+
+              This header does not appear if this file has never been the destination in a **Copy File** operation, or if this file has been modified after a completed **Copy File** operation using **Set File Properties** or **Create File**.
+        body:
+          application/xml:
+            examples:
+              List_Ranges: |
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ranges>
+                  <Range>
+                    <Start>Start Byte</Start>
+                    <End>End Byte</End>
+                  </Range>
+                  <Range>
+                    <Start>Start Byte</Start>
+                    <End>End Byte</End>
+                  </Range>
+                </Ranges>
+  head:
+    description: |
+      Depending on what values you provide for **comp** and **restype** query params, response is returned as following:
+        * **no query param**: all user-defined metadata, standard HTTP properties, and system properties for the file. It does not return the content of the file.
+        * **comp==metadata**: all user-defined metadata for the specified file.
+        * **comp not provided** and **restype==directory**: all system properties for the specified directory, and can also be used to check the existence of a directory. The data returned does not include the files in the directory or any subdirectories.
+        * **comp==metadata** and **restype==directory**: all user-defined metadata for the specified directory. This operation is supported in version 2015-02-21 and later.
+    queryParameters:
+      restype:
+        enum: [directory]
+        required: false
+      comp:
+        enum: [metadata]
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Required. Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+    responses:
+      200:
+        headers:
+          Last-Modified:
+            description: Returns the date and time the file was last modified. The date format follows RFC 1123. For more information, see [Representation of Date/Time Values in Headers](https://msdn.microsoft.com/en-us/library/azure/dd135714.aspx). Any operation that modifies the file or its properties updates the last modified time.
+          "x-ms-meta-name:value":
+            description: A set of name-value pairs associated with this file as user-defined metadata.
+          x-ms-type:
+            description: Returns the type *File*. Reserved for future use.
+          Content-Length:
+            description: The number of bytes present in the response body.
+          Content-Type:
+            description: The content type specified for the file. The default content type is **application/octet-stream**.
+          ETag:
+            description: The ETag contains a value that you can use to perform operations conditionally, in quotes.
+          Content-MD5:
+            description: |
+              If the file has an MD5 hash and the request is to read the full file, this response header is returned so that the client can check for message content integrity.
+          Content-Encoding:
+            description: If the Content-Encoding request header has previously been set for the file, the Content-Encoding value is returned in this header.
+          Content-Language:
+            description: If the Content-Language request header has previously been set for the file, the Content-Language value is returned in this header.
+          Cache-Control:
+            description: If the Cache-Control request header has previously been set for the file, the Cache-Control value is returned in this header.
+          Content-Disposition:
+            description: |
+              Returns the value that was specified for the x-ms-content-disposition header and specifies how to process the response.
+
+              The Content-Disposition response header field conveys additional information about how to process the response payload, and also can be used to attach additional metadata. For example, if set to *attachment*, Content-Disposition indicates that the user-agent should not display the response, but instead show a **Save As** dialog.
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the File service used to execute the request.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+          x-ms-copy-completion-time:
+            description: Version 2015-02-21 and newer. Conclusion time of the last attempted **Copy File** operation where this file was the destination file. This value can specify the time of a completed, aborted, or failed copy attempt. This header does not appear if a copy is pending, if this file has never been the destination in a **Copy File** operation, or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-status-description:
+            description: Version 2015-02-21 and newer. Only appears when x-ms-copy-status is failed or pending. Describes cause of fatal or non-fatal copy operation failure. This header does not appear if this file has never been the destination in a **Copy File** operation, or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-id:
+            description: Version 2015-02-21 and newer. String identifier for the last attempted **Copy File** operation where this file was the destination file. This header does not appear if the file has never been the destination in a **Copy File** operation, or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-progress:
+            description: Version 2015-02-21 and newer. Contains the number of bytes copied and the total bytes in the source in the last attempted **Copy File** operation where this file was the destination file. Can show between 0 and Content-Length bytes copied. This header does not appear if this file has never been the destination in a **Copy File** operation, or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-source:
+            description: Version 2015-02-21 and newer. URL up to 2KB in length that specifies the source file used in the last attempted **Copy File** operation where this file was the destination file. This header does not appear if this file has never been the destination in a **Copy File** operation or if this file has been modified after a concluded **Copy File** operation using **Set File Properties** or **Create File**.
+          x-ms-copy-status:
+            description: |
+              Version 2015-02-21 and newer. State of the copy operation identified by x-ms-copy-id, with these values:
+              * success: Copy completed successfully.
+              * pending: Copy is in progress. Check x-ms-copy-status-description if intermittent, non-fatal errors impede copy progress but don't cause failure.
+              * aborted: Copy was ended by **Abort Copy File**.
+              * failed: Copy failed. See x-ms-copy-status-description for failure details.
+
+              This header does not appear if this file has never been the destination in a **Copy File** operation, or if this file has been modified after a completed **Copy File** operation using **Set File Properties** or **Create File**.
+  delete:
+    description: The **Delete File/Directory** operation immediately removes the file/directory from the storage account.
+    queryParameters:
+      restype:
+        description: Required for deleting a directory.
+        enum: [directory]
+        default: directory
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for File Service Operations](https://msdn.microsoft.com/en-us/library/azure/dn689089.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Required. Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+    responses:
+      202:
+        headers:
+          x-ms-request-id:
+            description: This header uniquely identifies the request that was made and can be used for troubleshooting the request. For more information, see [Troubleshooting API Operations](https://msdn.microsoft.com/en-us/library/azure/dd573365.aspx).
+          x-ms-version:
+            description: Indicates the version of the File service used to execute the request.
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.

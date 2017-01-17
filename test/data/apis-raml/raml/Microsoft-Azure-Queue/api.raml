@@ -1,0 +1,825 @@
+#%RAML 1.0
+title: Microsoft Azure queue REST API
+version: 1.0.0
+baseUri: https://{myaccount}.queue.core.windows.net
+#baseUriParameters:
+#  myaccount:
+#    description: Name of your storage account
+mediaType: application/xml
+protocols:
+  - HTTP
+  - HTTPS
+documentation:
+  - title: Microsoft Azure queue REST API
+    content: |
+      The Queue service stores messages that may be read by any client who has access to the storage account.
+      A queue can contain an unlimited number of messages, each of which can be up to 64KB in size using version 2011-08-18 or newer. For previous versions, the maximum size of a message is 8KB. Messages are generally added to the end of the queue and retrieved from the front of the queue, although first in, first out (FIFO) behavior is not guaranteed.
+      If you need to store messages larger than 64KB, you can store message data as a blob or in a table, and then store a reference to the data as a message in a queue.
+/:
+  put:
+    description: |
+      Sets the properties of the Queue service.
+
+      The **Set Queue Service Properties** operation sets properties for a storage account's Queue service endpoint, including properties for [Storage Analytics](https://msdn.microsoft.com/en-us/library/azure/hh343270.aspx) and CORS (Cross-Origin Resource Sharing) rules. See [Cross-Origin Resource Sharing (CORS) Support for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dn535601.aspx) for more information on CORS rules.
+    queryParameters:
+      resttype:
+        enum: [service]
+        required: true
+      comp:
+        enum: [propertie]
+        required: false
+      timeout:
+        description: The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+      x-client-requiest-id:
+        description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+        required: false
+    body:
+      properties:
+        StorageServiceProperties:
+          required: true
+          properties:
+            HourMetrics:
+              description: |
+                Optional for version 2013-08-15 or later; not applicable for earlier versions. Groups the Azure Analytics **HourMetrics** settings. The **HourMetrics** settings provide a summary of request statistics grouped by API in hourly aggregates for blobs.
+              required: false
+              properties:
+                Version:
+                  description: |
+                    The version of Storage Analytics to configure.
+                  required: true
+                Enabled:
+                  description: |
+                    Indicates whether hour metrics are enabled for the Blob service.
+
+                    If read-access geo-redundant replication is enabled, both primary and secondary metrics are collected. If read-access geo-redundant replication is not enabled, only primary metrics are collected.
+                  type: boolean
+                  required: true
+                IncludeAPIs:
+                  description: |
+                    Required only if hour metrics are enabled. Indicates whether metrics should generate summary statistics for called API operations.
+                  type: boolean
+                  required: false
+                RetentionPolicy:
+                  required: true
+                  properties:
+                    Enabled:
+                      description: Indicates whether a retention policy is enabled for the storage service.
+                      type: boolean
+                      required: true
+                    Days:
+                      description: |
+                       Required only if a retention policy is enabled. Indicates the number of days that metrics or logging data should be retained. All data older than this value will be deleted. The minimum value you can specify is 1; the largest value is 365 (one year).
+                      type: number
+                      required: false
+            MinuteMetrics:
+              description: |
+                Optional for version 2013-08-15 or later; not applicable for earlier versions. Groups the Azure Analytics **MinuteMetrics** settings. The **MinuteMetrics** settings provide request statistics for each minute for blobs. For versions earlier than 2013-08-15, **MinuteMetrics** is not included in the response body.
+              required: false
+              properties:
+                Version:
+                  description: |
+                    The version of Storage Analytics to configure.
+                  required: true
+                Enabled:
+                  description: |
+                    Indicates whether minute metrics are enabled for the Blob service.
+
+                    If read-access geo-redundant replication is enabled, both primary and secondary metrics are collected. If read-access geo-redundant replication is not enabled, only primary metrics are collected.
+                  type: boolean
+                  required: true
+                IncludeAPIs:
+                  description: |
+                    Required only if minute metrics are enabled. Indicates whether metrics should generate summary statistics for called API operations.
+                  type: boolean
+                  required: false
+                RetentionPolicy:
+                  properties:
+                    Enabled:
+                      description: Indicates whether a retention policy is enabled for the storage service.
+                      type: boolean
+                      required: true
+                    Days:
+                      description: |
+                       Required only if a retention policy is enabled. Indicates the number of days that metrics or logging data should be retained. All data older than this value will be deleted. The minimum value you can specify is 1; the largest value is 365 (one year).
+                      type: number
+                      required: false
+            Cors:
+              description: |
+                The **Cors** element is supported for version 2013-08-15 or later. Groups all CORS rules.
+
+                Omitting this element group will not overwrite existing CORS settings.
+              required: false
+              properties:
+                CorsRule:
+                  description: |
+                    Specifies a CORS rule for the Blob service. You can include up to five **CorsRule** elements in the request. If no **CorsRule** elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service.
+                  required: true
+                  properties:
+                    AllowedOrigins:
+                      description: |
+                        A comma-separated list of origin domains that will be allowed via CORS, or "*" to allow all domains. Limited to 64 origin domains. Each allowed origin can have up to 256 characters.
+                      required: true
+                    ExposedHeaders:
+                      description: |
+                        A comma-separated list of response headers to expose to CORS clients. Limited to 64 defined headers and two prefixed headers. Each header can be up to 256 characters.
+                      required: true
+                    MaxAgeInSeconds:
+                      description: |
+                        The number of seconds that the client/browser should cache a preflight response.
+                      type: number
+                      required: true
+                    AllowedHeaders:
+                      description: |
+                        A comma-separated list of headers allowed to be part of the cross-origin request. Limited to 64 defined headers and 2 prefixed headers. Each header can be up to 256 characters.
+                      required: true
+                    AllowedMethods:
+                      description: |
+                        A comma-separated list of HTTP methods that are allowed to be executed by the origin. For Azure Storage, permitted methods are DELETE, GET, HEAD, MERGE, POST, OPTIONS or PUT.
+                      required: true
+    responses:
+      202:
+        headers:
+          x-ms-request-id:
+            description: A value that uniquely identifies a request made against the service.
+          x-ms-version:
+            description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+  get:
+    description: |
+      Depending on what values you provide for **comp** and **resttype** query params, response is returned as following:
+      * **comp==list** and **restype not provided**: a list of queues under specified account
+      * **comp==properties** and **restype==service**: queue service properties
+      * **comp==stats** and **restype==service**: retrieves statistics related to replication for the Queue service. This operation is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the storage account.
+    queryParameters:
+      restype:
+        description: |
+        enum: [service]
+        default: service
+        required: false
+      comp:
+        description: |
+        enum: [propertie, list, stats]
+        required: true
+      prefix:
+        description: |
+          Filters the results to return only containers whose name begins with the specified prefix.
+        required: false
+      marker:
+        description: |
+          A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the **NextMarker** value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items.
+
+          The marker value is opaque to the client.
+        required: false
+      maxresults:
+        description: |
+          Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5,000, the server will return up to 5,000 items. If the parameter is set to a value less than or equal to zero, the server will return status code 400 (Bad Request).
+        required: false
+      include:
+        description: |
+          Include this parameter to specify that the container's metadata be returned as part of the response body.
+
+          Note that metadata requested with this parameter must be stored in accordance with the naming restrictions imposed by the 2009-09-19 version of the Blob service. Beginning with this version, all metadata names must adhere to the naming conventions for [C# identifiers](https://msdn.microsoft.com/library/aa664670(vs.71).aspx).
+        default: metadata
+        enum: [metadata]
+        required: false
+      timeout:
+        description: |
+          The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Blob Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179431.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: true
+      x-client-requiest-id:
+        description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+        required: false
+    responses:
+      200:
+        headers:
+          x-ms-request-id:
+            description: A value that uniquely identifies a request made against the service.
+          x-ms-version:
+            description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+        body:
+          application/xml:
+            examples:
+              Get_queue_properties_version_(2012-02-12_and_earlier):
+                <?xml version="1.0" encoding="utf-8"?>
+                <StorageServiceProperties>
+                    <Logging>
+                        <Version>version-number</Version>
+                        <Delete>true|false</Delete>
+                        <Read>true|false</Read>
+                        <Write>true|false</Write>
+                        <RetentionPolicy>
+                            <Enabled>true|false</Enabled>
+                            <Days>number-of-days</Days>
+                        </RetentionPolicy>
+                    </Logging>
+                    <Metrics>
+                        <Version>version-number</Version>
+                        <Enabled>true|false</Enabled>
+                        <IncludeAPIs>true|false</IncludeAPIs>
+                        <RetentionPolicy>
+                            <Enabled>true|false</Enabled>
+                            <Days>number-of-days</Days>
+                        </RetentionPolicy>
+                    </Metrics>
+                </StorageServiceProperties>
+              Get_queue_properties_Version_(2013-08-15):
+                <?xml version="1.0" encoding="utf-8"?>
+                <StorageServiceProperties>
+                    <Logging>
+                        <Version>version-number</Version>
+                        <Delete>true|false</Delete>
+                        <Read>true|false</Read>
+                        <Write>true|false</Write>
+                        <RetentionPolicy>
+                            <Enabled>true|false</Enabled>
+                            <Days>number-of-days</Days>
+                        </RetentionPolicy>
+                    </Logging>
+                    <HourMetrics>
+                        <Version>version-number</Version>
+                        <Enabled>true|false</Enabled>
+                        <IncludeAPIs>true|false</IncludeAPIs>
+                        <RetentionPolicy>
+                            <Enabled>true|false</Enabled>
+                            <Days>number-of-days</Days>
+                        </RetentionPolicy>
+                    </HourMetrics>
+                    <MinuteMetrics>
+                        <Version>version-number</Version>
+                        <Enabled>true|false</Enabled>
+                        <IncludeAPIs>true|false</IncludeAPIs>
+                        <RetentionPolicy>
+                            <Enabled>true|false</Enabled>
+                            <Days>number-of-days</Days>
+                        </RetentionPolicy>
+                    </MinuteMetrics>
+                    <Cors>
+                        <CorsRule>
+                            <AllowedOrigins>comma-separated-list-of-allowed-origins</AllowedOrigins>
+                            <AllowedMethods>comma-separated-list-of-HTTP-verb</AllowedMethods>
+                            <MaxAgeInSeconds>max-caching-age-in-seconds</MaxAgeInSeconds>
+                            <ExposedHeaders>comma-seperated-list-of-response-headers</ExposedHeaders>
+                            <AllowedHeaders> comma-seperated-list-of-request-headers </AllowedHeaders>
+                        </CorsRule>
+                    </Cors>
+                </StorageServiceProperties>
+              List_queues:
+                <?xml version="1.0" encoding="utf-8"?>
+                <EnumerationResults ServiceEndpoint="https://myaccount.queue.core.windows.net/">
+                  <Prefix>string-value</Prefix>
+                  <Marker>string-value</Marker>
+                  <MaxResults>int-value</MaxResults>
+                  <Queues>
+                    <Queue>
+                      <Name>string-value</Name>
+                      <Metadata>
+                      <metadata-name>value</metadata-name>
+                    <Metadata>
+                    </Queue>
+                  <NextMarker />
+                </EnumerationResults>
+              Get_stats:
+                <?xml version="1.0" encoding="utf-8"?>
+                <StorageServiceStats>
+                  <GeoReplication>
+                      <Status>live|bootstrap|unavailable</Status>
+                      <LastSyncTime>sync-time|<empty></LastSyncTime>
+                  </GeoReplication>
+                </StorageServiceStats>
+/{queue}:
+  uriParameters:
+    queue:
+      description: The name of the queue resource that is to be the target of the actual request.
+  options:
+    description: |
+      Queries the Cross-Origin Resource Sharing (CORS) rules for the Queue service prior to sending the actual request.
+
+      The **Preflight Queue Request** operation queries the Cross-Origin Resource Sharing (CORS) rules for the Queue service prior to sending the actual request. A web browser or another user agent sends a preflight request that includes the origin domain, method, and headers for the actual request that the agent wishes to make. If CORS is enabled for the Queue service, then the Queue service evaluates the preflight request against the CORS rules that the account owner has configured via [Set Queue Service Properties](https://msdn.microsoft.com/en-us/library/azure/hh452232.aspx), and accepts or rejects the request.
+      For more information about CORS and the preflight request, see [the CORS specification](http://www.w3.org/TR/cors/) and [Cross-Origin Resource Sharing (CORS) Support for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dn535601.aspx).
+    headers:
+      Origin:
+        description: |
+          Specifies the origin from which the actual request will be issued. The origin is checked against the service's CORS rules to determine the success or failure of the preflight request.
+        required: true
+      Access-Control-Request-Method:
+        description: |
+          Specifies the method (or HTTP verb) for the actual request. The method is checked against the service's CORS rules to determine the failure or success of the preflight request.
+        required: true
+      Access-Control-Request-Headers:
+        description: |
+          Specifies the headers for the actual request headers that will be sent, then the service assumes no headers are sent with the actual request.
+        required: false
+    responses:
+      200:
+        headers:
+          Access-Control-Allow-Origin:
+            description: |
+              The allowed origin, which matches the origin header in the request if the preflight request succeeded.
+          Access-Control-Allow-Methods:
+            description: |
+              If the preflight requests succeeds, this header is set to the value or values specified for the request header Access-Control-Request-Method.
+          Access-Control-Allow-Headers:
+            description: |
+              If the preflight request succeeds, this header is set to the value or values specified for the request header Access-Control-Request-Headers.
+          Access-Control-Max-Age:
+            description: |
+              Specifies the length of time the user agent is allowed to cache the preflight request for future requests.
+          Access-Control-Allow-Credentials:
+            description: |
+              Indicates whether the actual request can be made using credentials. This header is always set to true.
+  put:
+    description: |
+      Depending on what value you provide for **comp** query param, response is returned as following:
+      * **comp not provided**: create a queue under specified account
+      * **comp==metadata**: sets user-defined metadata on the specified queue. Metadata is associated with the queue as name-value pairs.
+      * **comp==acl**: sets stored access policies for the queue that may be used with Shared Access Signatures. For more information, see [Establishing a Stored Access Policy](https://msdn.microsoft.com/en-us/library/azure/dn140257.aspx).
+    queryParameters:
+      comp:
+        enum: [metadata, acl]
+        required: false
+      timeout:
+        description: |
+          The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: false
+      "x-ms-meta-name:value":
+        description: A name-value pair to associate with the queue as metadata. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers.
+        required: false
+      x-client-requiest-id:
+        description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+        required: false
+    body:
+      required: false
+      properties:
+        SignedIdentifiers:
+          required: true
+          properties:
+            SignedIdentifier:
+              properties:
+                Id:
+                  required: true
+                AccessPolicy:
+                  required: true
+                  properties:
+                    Start:
+                      required: true
+                    Expiry:
+                      required: true
+                    Permission:
+                      required: true
+    responses:
+      201:
+        headers:
+          x-ms-request-id:
+            description: A value that uniquely identifies a request made against the service.
+          x-ms-version:
+            description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+      204:
+        headers:
+          x-ms-request-id:
+            description: A value that uniquely identifies a request made against the service.
+          x-ms-version:
+            description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+  delete:
+    description: The **Delete Queue** operation permanently deletes the specified queue.
+    queryParameters:
+      timeout:
+        description: |
+          The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: false
+      x-client-requiest-id:
+        description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+        required: false
+    responses:
+      204:
+        headers:
+          x-ms-request-id:
+            description: A value that uniquely identifies a request made against the service.
+          x-ms-version:
+            description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+  get:
+    description: |
+      Depending on what value you provide for **comp** query param, response is returned as following:
+      * **comp==metadata**: retrieves user-defined metadata and queue properties on the specified queue.
+      * **comp==acl**: returns details about any stored access policies specified on the queue that may be used with Shared Access Signatures. For more information, see [Establishing a Stored Access Policy](https://msdn.microsoft.com/en-us/library/azure/dn140257.aspx).
+    queryParameters:
+      comp:
+        enum: [metadata, acl]
+        required: true
+      timeout:
+        description: |
+          The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: false
+      x-client-requiest-id:
+        description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+        required: false
+    responses:
+      200:
+        headers:
+          x-ms-approximate-messages-count:
+            description: |
+              The approximate number of messages in the queue. This number is not lower than the actual number of messages in the queue, but could be higher.
+            required: false
+          x-ms-meta-name:
+            description: A user-defined name/value pair.
+            required: false
+          x-ms-request-id:
+            description: A value that uniquely identifies a request made against the service.
+          x-ms-version:
+            description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+        body:
+          application/xml:
+            examples:
+              Get_queue_ACL:
+                <?xml version="1.0" encoding="utf-8"?>
+                <SignedIdentifiers>
+                  <SignedIdentifier>
+                    <Id>unique-value</Id>
+                    <AccessPolicy>
+                      <Start>start-time</Start>
+                      <Expiry>expiry-time</Expiry>
+                      <Permission>abbreviated-permission-list</Permission>
+                    </AccessPolicy>
+                  </SignedIdentifier>
+                </SignedIdentifiers>
+  head:
+    description: |
+      Depending on what value you provide for **comp** query param, response is returned as following:
+      * **comp==metadata**: retrieves user-defined metadata and queue properties on the specified queue.
+      * **comp==acl**: returns details about any stored access policies specified on the queue that may be used with Shared Access Signatures. For more information, see [Establishing a Stored Access Policy](https://msdn.microsoft.com/en-us/library/azure/dn140257.aspx).
+    queryParameters:
+      comp:
+        enum: [metadata, acl]
+        default: metadata
+        required: true
+      timeout:
+        description: |
+          The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+        required: false
+    headers:
+      Authorization:
+        description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+        required: true
+      Date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+        required: false
+      x-ms-date:
+        description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+        required: false
+      x-ms-version:
+        description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+        required: false
+      x-client-requiest-id:
+        description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+        required: false
+    responses:
+      200:
+        headers:
+          x-ms-approximate-messages-count:
+            description: |
+              The approximate number of messages in the queue. This number is not lower than the actual number of messages in the queue, but could be higher.
+            required: false
+          x-ms-meta-name:
+            description: A user-defined name/value pair.
+            required: false
+          x-ms-request-id:
+            description: A value that uniquely identifies a request made against the service.
+          x-ms-version:
+            description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          Date:
+            description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+        body:
+          application/xml:
+            examples:
+              Get_queue_ACL:
+                <?xml version="1.0" encoding="utf-8"?>
+                <SignedIdentifiers>
+                  <SignedIdentifier>
+                    <Id>unique-value</Id>
+                    <AccessPolicy>
+                      <Start>start-time</Start>
+                      <Expiry>expiry-time</Expiry>
+                      <Permission>abbreviated-permission-list</Permission>
+                    </AccessPolicy>
+                  </SignedIdentifier>
+                </SignedIdentifiers>
+  /messages:
+    post:
+      description: Adds a message to the queue and optionally sets a visibility timeout for the message.
+      queryParameters:
+        visibilitytimeout:
+          description: |
+            If specified, the request must be made using an x-ms-version of 2011-08-18 or newer. If not specified, the default value is 0. Specifies the new visibility timeout value, in seconds, relative to server time. The new value must be larger than or equal to 0, and cannot be larger than 7 days. The visibility timeout of a message cannot be set to a value later than the expiry time. visibilitytimeout should be set to a value smaller than the time-to-live value.
+          required: false
+        messagettl:
+          description: |
+            Specifies the time-to-live interval for the message, in seconds. The maximum time-to-live allowed is 7 days. If this parameter is omitted, the default time-to-live is 7 days.
+          required: false
+        timeout:
+          description: |
+            The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+          required: false
+      headers:
+        Authorization:
+          description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+          required: true
+        Date:
+          description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+          required: false
+        x-ms-date:
+          description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+          required: false
+        x-ms-version:
+          description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          required: false
+        x-client-requiest-id:
+          description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+          required: false
+      body:
+        properties:
+          QueueMessage:
+              properties:
+                MessageText:
+                  required: true
+      responses:
+        201:
+          headers:
+            x-ms-request-id:
+              description: A value that uniquely identifies a request made against the service.
+            x-ms-version:
+              description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+            Date:
+              description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+    get:
+      description: |
+        Depending on what value you provide for **peek-only** query param, response is returned as following:
+        * **peek-only==true**: one or more messages from the front of the queue without altering message visibility
+        * **peek-only not provided**: one or more messages from the front of the queue
+      queryParameters:
+        peek-only:
+          type: boolean
+          default: true
+          required: false
+        numofmessages:
+          description: |
+            A nonzero integer value that specifies the number of messages to retrieve from the queue, up to a maximum of 32. If fewer are visible, the visible messages are returned. By default, a single message is retrieved from the queue with this operation.
+          type: number
+          default: 1
+          required: false
+        visibilitytimeout:
+          description: |
+            Specifies the new visibility timeout value, in seconds, relative to server time. The default value is 30 seconds.
+            A specified value must be larger than or equal to 1 second, and cannot be larger than 7 days, or larger than 2 hours on REST protocol versions prior to version 2011-08-18. The visibility timeout of a message can be set to a value later than the expiry time.
+          required: false
+        timeout:
+          description: |
+            The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+          required: false
+      headers:
+        Authorization:
+          description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+          required: true
+        Date:
+          description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+          required: false
+        x-ms-date:
+          description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+          required: false
+        x-ms-version:
+          description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          required: false
+        x-client-requiest-id:
+          description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+          required: false
+      responses:
+        200:
+          headers:
+            x-ms-request-id:
+              description: A value that uniquely identifies a request made against the service.
+            x-ms-version:
+              description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+            Date:
+              description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+          body:
+            application/xml:
+              examples:
+                Get_Message:
+                  <QueueMessagesList>
+                    <QueueMessage>
+                      <MessageId>string-message-id</MessageId>
+                      <InsertionTime>insertion-time</InsertionTime>
+                      <ExpirationTime>expiration-time</ExpirationTime>
+                      <PopReceipt>opaque-string-receipt-data</PopReceipt>
+                      <TimeNextVisible>time-next-visible</TimeNextVisible>
+                      <DequeueCount>integer</DequeueCount>
+                      <MessageText>message-body</MessageText>
+                    </QueueMessage>
+                  </QueueMessagesList>
+                Peek_Message:
+                  <QueueMessagesList>
+                    <QueueMessage>
+                      <MessageId>string-message-id</MessageId>
+                      <InsertionTime>insertion-time</InsertionTime>
+                      <ExpirationTime>expiration-time</ExpirationTime>
+                      <DequeueCount>integer</DequeueCount>
+                      <MessageText>message-body</MessageText>
+                    </QueueMessage>
+                  </QueueMessagesList>
+    delete:
+      description: Clears all messages from the queue.
+      queryParameters:
+        timeout:
+          description: |
+            The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+          required: false
+      headers:
+        Authorization:
+          description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+          required: true
+        Date:
+          description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+          required: false
+        x-ms-date:
+          description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+          required: false
+        x-ms-version:
+          description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+          required: false
+        x-client-requiest-id:
+          description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+          required: false
+      responses:
+        204:
+          headers:
+            x-ms-request-id:
+              description: A value that uniquely identifies a request made against the service.
+            x-ms-version:
+              description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+            Date:
+              description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+    /{messageId}:
+      uriParameters:
+        messageId:
+          description: Message Id
+      delete:
+        description: Deletes a specified message from the queue.
+        queryParameters:
+          popreceipt:
+            description: |
+              A valid pop receipt value returned from an earlier call to the [Get Messages](https://msdn.microsoft.com/en-us/library/azure/dd179474.aspx) or [Update Message](https://msdn.microsoft.com/en-us/library/azure/hh452234.aspx) operation.
+            required: true
+          timeout:
+            description: |
+              The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+            required: false
+        headers:
+          Authorization:
+            description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+            required: true
+          Date:
+            description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+            required: false
+          x-ms-date:
+            description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+            required: false
+          x-ms-version:
+            description: Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+            required: false
+          x-client-requiest-id:
+            description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+            required: false
+        responses:
+          204:
+            headers:
+              x-ms-request-id:
+                description: A value that uniquely identifies a request made against the service.
+              x-ms-version:
+                description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+              Date:
+                description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+      put:
+        description: |
+          Updates the visibility timeout of a message and/or the message contents.
+
+          This operation was introduced with version 2011-08-18 of the Queue service API. The Update Message operation updates the visibility timeout of a message. You can also use this operation to update the contents of a message. A message must be in a format that can be included in an XML request with UTF-8 encoding, and the encoded message can be up to 64KB in size.
+        queryParameters:
+          popreceipt:
+            description: |
+              A valid pop receipt value returned from an earlier call to the [Get Messages](https://msdn.microsoft.com/en-us/library/azure/dd179474.aspx) or [Update Message](https://msdn.microsoft.com/en-us/library/azure/hh452234.aspx) operation.
+            required: true
+          visibilitytimeout:
+            description: |
+              Specifies the new visibility timeout value, in seconds, relative to server time. The new value must be larger than or equal to 0, and cannot be larger than 7 days. The visibility timeout of a message cannot be set to a value later than the expiry time. A message can be updated until it has been deleted or has expired.
+            required: true
+          timeout:
+            description: |
+              The timeout parameter is expressed in seconds. For more information, see [Setting Timeouts for Queue Service Operations](https://msdn.microsoft.com/en-us/library/azure/dd179396.aspx).
+            required: false
+        headers:
+          Authorization:
+            description: Specifies the authentication scheme, account name, and signature. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx).
+            required: true
+          Date:
+            description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **x-ms-date** but one or another is required.
+            required: false
+          x-ms-date:
+            description: Specifies the Coordinated Universal Time (UTC) for the request. For more information, see [Authentication for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd179428.aspx). Mutually exclusive with **Date** but one or another is required.
+            required: false
+          x-ms-version:
+            description: Requires 2011-08-18 or newer. Specifies the version of the operation to use for this request. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+            required: false
+          x-client-requiest-id:
+            description: Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled. Using this header is highly recommended for correlating client-side activities with requests received by the server. For more information, see [About Storage Analytics Logging](https://msdn.microsoft.com/en-us/library/azure/hh343262.aspx) and [Azure Logging Using Logs to Track Storage Requests](http://blogs.msdn.com/b/windowsazurestorage/archive/2011/08/03/windows-azure-storage-logging-using-logs-to-track-storage-requests.aspx).
+            required: false
+        body:
+          properties:
+            QueueMessage:
+                properties:
+                  MessageText:
+                    required: true
+        responses:
+          204:
+            headers:
+              x-ms-request-id:
+                description: A value that uniquely identifies a request made against the service.
+              x-ms-version:
+                description: Specifies the version of the operation used for the response. For more information, see [Versioning for the Azure Storage Services](https://msdn.microsoft.com/en-us/library/azure/dd894041.aspx).
+              Date:
+                description: A UTC date/time value generated by the service that indicates the time at which the response was initiated.
+              x-ms-popreceipt:
+                description: The pop receipt of the queue message.
+              x-ms-time-next-visible:
+                description: A UTC date/time value that represents when the message will be visible on the queue.

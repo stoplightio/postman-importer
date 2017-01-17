@@ -3,8 +3,11 @@ import '../App.css'
 import {DropdownButton, MenuItem, Col, Button, Row} from 'react-bootstrap'
 import supportedFormats from './../../../lib/formats'
 
-const importOptions = Object.values(supportedFormats).filter(f => f.import)
-const exportOptions = Object.values(supportedFormats).filter(f => f.export)
+const importOptions = Object.keys(supportedFormats).map(k => supportedFormats[k]).filter(v => v.import)
+const exportOptions = Object.keys(supportedFormats).map(k => supportedFormats[k]).filter(v => v.export)
+
+console.log(importOptions)
+console.log(exportOptions)
 
 
 class Toolbar extends Component {

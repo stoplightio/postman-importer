@@ -432,8 +432,8 @@ describe('from raml to swagger', function () {
 });
 
 describe.skip('from swagger to raml: apis-guru', function () {
-	let baseDir = __dirname + '/../data/apis-guru/swagger';
-	let testFiles = fs.readdirSync(baseDir);
+	const baseDir = __dirname + '/../data/apis-guru/swagger';
+  const testFiles = fs.readdirSync(baseDir);
 	
 	const excluded = [
 		'watchful.li1.0.0swagger.json',
@@ -441,58 +441,51 @@ describe.skip('from swagger to raml: apis-guru', function () {
 		'uploady.comv1-betaswagger.json'
 	]
 	const excludedValidation = [
-		'azure.com/arm-insights/2015-04-01/swagger.json',
-		'azure.com/arm-insights/2015-07-01/swagger.json',
-		'azure.com/arm-insights/2016-03-01/swagger.json',
 		'azure.comarm-insights2015-07-01swagger.json',
 		'azure.comarm-insights2016-03-01swagger.json'
 	]
 	
-	let testWithData = function (sourceFile, targetFile, validate) {
-		
-		return function (done) {
-			let converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
-			let validateOptions = {
-				validate: validate,
-				fsResolver: myFsResolver
-			};
-			converter.convertFile(sourceFile, validateOptions).then((convertedRAML) => {
-				let notExistsTarget = !fs.existsSync(targetFile);
-				
-				if (notExistsTarget) {
-					fs.writeFileSync(targetFile, convertedRAML);
-					// console.log('Content for non existing target file ' + targetFile + '\n.');
-					// console.log('********** Begin file **********\n');
-					// console.log(convertedRAML);
-					// console.log('********** Finish file **********\n');
-					// done('Error');
-				}
-				
-				try {
-					expect(YAML.safeLoad(convertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
-					console.log('********** Begin file **********\n');
-					console.log(convertedRAML);
-					console.log('********** Finish file **********\n');
-					done();
-				} catch (e) {
-					done(e);
-				}
-			}).catch((err) => {
-				console.log(`Invalid export for file ${sourceFile}`);
-				console.log('********** Begin file **********\n');
-				console.log(err.exportedData);
-				console.log('********** Finish file **********\n');
-				done(err);
-				console.log(err);
-			});
-		};
-	};
+	let testWithData = (sourceFile, targetFile, validate) => done =>{
+    const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
+    const validateOptions = {
+      validate: validate,
+      fsResolver: myFsResolver
+    };
+    converter.convertFile(sourceFile, validateOptions).then((convertedRAML) => {
+      let notExistsTarget = !fs.existsSync(targetFile);
+
+      if (notExistsTarget) {
+        fs.writeFileSync(targetFile, convertedRAML);
+        // console.log('Content for non existing target file ' + targetFile + '\n.');
+        // console.log('********** Begin file **********\n');
+        // console.log(convertedRAML);
+        // console.log('********** Finish file **********\n');
+        // done('Error');
+      }
+
+      try {
+        expect(YAML.safeLoad(convertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+        console.log('********** Begin file **********\n');
+        console.log(convertedRAML);
+        console.log('********** Finish file **********\n');
+        done();
+      } catch (e) {
+        done(e);
+      }
+    }).catch((err) => {
+      console.log(`Invalid export for file ${sourceFile}`);
+      console.log('********** Begin file **********\n');
+      console.log(err.exportedData);
+      console.log('********** Finish file **********\n');
+      done(err);
+    });
+  };
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.')) {
-			let sourceFile = baseDir + '/' + testFile;
-			let targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'raml');
-			let validate = !excluded.includes(testFile) && !excludedValidation.includes(testFile);
+		if (!_.startsWith(testFile, '.') && !excluded.includes(testFile)) {
+      const sourceFile = baseDir + '/' + testFile;
+      const targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'raml');
+      const validate = !excludedValidation.includes(testFile);
 			
 			if (process.env.fileToTest) {
 				if (_.endsWith(sourceFile, process.env.fileToTest)) {
@@ -504,4 +497,62 @@ describe.skip('from swagger to raml: apis-guru', function () {
 			}
 		}
 	});
+});
+
+
+describe.skip('from raml to swagger: platform + examples', function () {
+  const baseDir = __dirname + '/../data/apis-raml/raml';
+  const testFiles = fs.readdirSync(baseDir);
+
+  const excludedValidation = []
+
+  let testWithData = (sourceFile, targetFile, validate) => done =>{
+    const converter = new specConverter.Converter(specConverter.Formats.RAML10, specConverter.Formats.SWAGGER);
+    const validateOptions = {
+      validate: validate
+    };
+    converter.convertFile(sourceFile, validateOptions).then((resultSwagger) => {
+      try {
+        const targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
+        const notExistsTarget = !fs.existsSync(targetFile);
+        if (notExistsTarget) {
+          const data = JSON.stringify(resultSwagger);
+          fs.writeFileSync(targetFile, data);
+          // console.log('Content for non existing target file ' + targetFile + '\n.');
+          // console.log('********** Begin file **********\n');
+          // console.log(data);
+          // console.log('********** Finish file **********\n');
+          // return done(data);
+        }
+
+        expect(resultSwagger).to.deep.equal(require(targetFile));
+        done();
+      } catch (e) {
+        done(e);
+      }
+    }).catch((err) => {
+      console.log(`Invalid export for file ${sourceFile}`);
+      console.log('********** Begin file **********\n');
+      console.log(err.exportedData);
+      console.log('********** Finish file **********\n');
+      done(err);
+    });
+  };
+
+  testFiles.forEach(function (testFile) {
+    if (!_.startsWith(testFile, '.')) {
+      const sourceFile = baseDir + '/' + testFile + '/api.raml';
+      const targetFile = baseDir + '/../swagger/api.json';
+      const validate = !excludedValidation.includes(testFile);
+
+      if (process.env.fileToTest) {
+        if (_.endsWith(sourceFile, process.env.fileToTest)) {
+          xit('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
+        }
+      }
+      else {
+        xit('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
+      }
+    }
+  });
 });

@@ -1,0 +1,240 @@
+#%RAML 0.8
+title: Pega API
+version: v1
+documentation:
+- title: Pega API
+  content: The Pega API provides a set of built-in REST services for Pega 7 applications. All APIs require authentication. Provide the credentials for a Pega operator in the Authorization header for each request. Pega recommends accessing APIs using TLS 1.2.
+baseUri: https://myorg.com/prweb/api/v1
+schemas:
+- AssignmentResponse: !include schemas/AssignmentResponse.json
+- AssignmentActionRequest: !include schemas/AssignmentActionRequest.json
+- AssignmentsResponse: !include schemas/AssignmentsResponse.json
+- CaseResponse: !include schemas/CaseResponse.json
+- UpdateCaseRequest: !include schemas/UpdateCaseRequest.json
+- CasesResponse: !include schemas/CasesResponse.json
+- CreateCaseRequest: !include schemas/CreateCaseRequest.json
+- CreateCaseResponse: !include schemas/CreateCaseResponse.json
+- CaseTypesResponse: !include schemas/CaseTypesResponse.json
+- DataPageMetadata: !include schemas/DataPageMetadata.json
+- UserSessionTerminationRequest: !include schemas/UserSessionTerminationRequest.json
+- UserSessionTerminationResponse: !include schemas/UserSessionTerminationResponse.json
+
+/assignments:
+  /{ID}:
+    uriParameters:
+      ID:
+        description: Assignment ID/'next'
+        type: string
+        required: true
+        displayName: ID
+    get:
+      description: Get assignment details - Returns a single assignment's details given its ID (or) Returns the next available assignment for the requestor if 'next' is passed.
+      responses:
+        200:
+          description: OK
+          body:
+            application/json:
+              schema: AssignmentResponse
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: No assignment found or available
+    post:
+      body:
+        application/json:
+          schema: AssignmentActionRequest
+      description: Perform assignment action - Performs an action on an assignment given its ID and an optional content in the request body.
+      responses:
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not found
+      queryParameters:
+        actionID:
+          description: Assignment action to perform
+          type: string
+          required: true
+          displayName: actionID
+  get:
+    description: Get assignments - Returns the authenticated user's list of assignments.
+    responses:
+      200:
+        description: OK
+        body:
+          application/json:
+            schema: AssignmentsResponse
+      401:
+        description: Unauthorized
+      403:
+        description: Forbidden
+/authenticate:
+  get:
+    description: Verify user credentials - Verifies if the credentials provided in Authorization header using *Basic* authentication are valid or not.
+    responses:
+      401:
+        description: Unauthorized
+      403:
+        description: Forbidden
+/cases:
+  /{ID}:
+    uriParameters:
+      ID:
+        description: Case ID
+        type: string
+        required: true
+        displayName: ID
+    get:
+      description: Get case details - Gets the details of a case given its ID.
+      responses:
+        200:
+          description: OK
+          body:
+            application/json:
+              schema: CaseResponse
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not found
+    put:
+      body:
+        application/json:
+          schema: UpdateCaseRequest
+      description: Update a case - Performs an action given a case ID and an optional content in the request body.
+      responses:
+        200:
+          description: No content
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not found
+        412:
+          description: Precondition failed
+      headers:
+        If-Match:
+          description: Value of the entity tag that is received as ETag header in responses to create case and get case details APIs
+          type: string
+          required: true
+          displayName: If-Match
+      queryParameters:
+        actionID:
+          description: Local action or a stage local action to perform
+          type: string
+          required: false
+          displayName: actionID
+  get:
+    description: Get cases - Gets all cases that the authenticated user has created in the default work pool.
+    responses:
+      200:
+        description: OK
+        body:
+          application/json:
+            schema: CasesResponse
+      401:
+        description: Unauthorized
+      403:
+        description: Forbidden
+  post:
+    body:
+      application/json:
+        schema: CreateCaseRequest
+    description: Create a new case - Creates a new case of the given type.
+    responses:
+      200:
+        description: Created
+        body:
+          application/json:
+            schema: CreateCaseResponse
+      400:
+        description: Bad request
+      401:
+        description: Unauthorized
+      403:
+        description: Forbidden
+/casetypes:
+  get:
+    description: Get case types - Gets the case types from the authenticated user's application.
+    responses:
+      200:
+        description: OK
+        body:
+          application/json:
+            schema: CaseTypesResponse
+      401:
+        description: Unauthorized
+      403:
+        description: Forbidden
+/data/{ID}:
+  uriParameters:
+    ID:
+      description: Data page identifier
+      type: string
+      required: true
+      displayName: ID
+  /metadata:
+    uriParameters:
+      ID:
+        description: Data page identifier
+        type: string
+        required: true
+        displayName: ID
+    get:
+      description: Get data page metadata - Gets the metadata of a data page given its name.
+      responses:
+        200:
+          description: OK
+          body:
+            application/json:
+              schema: DataPageMetadata
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not found
+  get:
+    description: Get data page contents - Gets the contents of a data page given its name and parameters.
+    responses:
+      401:
+        description: Unauthorized
+      403:
+        description: Forbidden
+      404:
+        description: Not found
+/docs:
+  get:
+    description: Get the complete documentation for Pega API.
+    responses:
+      401:
+        description: Unauthorized
+      403:
+        description: Forbidden
+/users/logout:
+  post:
+    body:
+      application/json:
+        schema: UserSessionTerminationRequest
+    description: Terminates all existing sessions in all nodes of the cluster for the given set of users.
+    responses:
+      200:
+        description: Request Received Succesfully
+        body:
+          application/json:
+            schema: UserSessionTerminationResponse
+      400:
+        description: Bad request
+      401:
+        description: Unauthorized
+      403:
+        description: Forbidden
