@@ -436,13 +436,14 @@ types:
         type: string
         required: false
       labels:
-        additionalProperties:
-          type: string
         description: |-
           A set of user-defined (key, value) data that provides additional
           information about the log entry.
         type: object
         required: false
+        properties:
+          //:
+            type: string
       name:
         description: |-
           Required. The log to which this log entry belongs. Examples: `"syslog"`,
@@ -450,14 +451,15 @@ types:
         type: string
         required: false
       protoPayload:
-        additionalProperties:
-          description: Properties of the object. Contains field @type with type URL.
         description: |-
           The log entry payload, represented as a protocol buffer that is
           expressed as a JSON object. You can only pass `protoPayload`
           values that belong to a set of approved types.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object. Contains field @type with type URL.
       severity:
         description: |-
           The severity of the log entry. The default value is
@@ -475,13 +477,14 @@ types:
         type: string
         required: false
       structPayload:
-        additionalProperties:
-          description: Properties of the object.
         description: |-
           The log entry payload, represented as a structure that
           is expressed as a JSON object.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       textPayload:
         description: 'The log entry payload, represented as a Unicode string (UTF-8).'
         type: string
@@ -528,14 +531,15 @@ types:
           format: string
         required: false
       labels:
-        additionalProperties:
-          type: string
         description: |-
           The labels describing the metric value.
           See comments on google.api.servicecontrol.v1.Operation.labels for
           the overriding relationship.
         type: object
         required: false
+        properties:
+          //:
+            type: string
       startTime:
         description: |-
           The start of the time period over which this metric value's measurement
@@ -601,8 +605,6 @@ types:
         type: string
         required: false
       labels:
-        additionalProperties:
-          type: string
         description: |-
           Labels describing the operation. Only the following labels are allowed:
 
@@ -621,6 +623,9 @@ types:
                  where the API is served (e.g. GAE, GCE, GKE).
         type: object
         required: false
+        properties:
+          //:
+            type: string
       logEntries:
         description: Represents information to be logged.
         items:
@@ -798,9 +803,10 @@ types:
           A list of messages that carry the error details.  There will be a
           common set of message types for APIs to use.
         items:
-          additionalProperties:
-            description: Properties of the object. Contains field @type with type URL.
           type: object
+          properties:
+            //:
+              description: Properties of the object. Contains field @type with type URL.
         type: array
         required: false
       message:

@@ -1158,14 +1158,15 @@ types:
     description: The default filter associated with a sheet.
     properties:
       criteria:
-        additionalProperties:
-          type: FilterCriteria
         description: |-
           The criteria for showing/hiding values per column.
           The map's key is the column index, and the value is the criteria for
           that column.
         type: object
         required: false
+        properties:
+          //:
+            type: FilterCriteria
       range:
         description: The range the filter covers.
         type: GridRange
@@ -2305,14 +2306,15 @@ types:
     description: A filter view.
     properties:
       criteria:
-        additionalProperties:
-          type: FilterCriteria
         description: |-
           The criteria for showing/hiding values per column.
           The map's key is the column index, and the value is the criteria for
           that column.
         type: object
         required: false
+        properties:
+          //:
+            type: FilterCriteria
       filterViewId:
         description: The ID of the filter view.
         format: int32
@@ -2935,8 +2937,6 @@ types:
         type: array
         required: false
       criteria:
-        additionalProperties:
-          type: PivotFilterCriteria
         description: |-
           An optional mapping of filters per source column offset.
 
@@ -2948,6 +2948,9 @@ types:
           for column `C`, whereas the key `1` is for column `D`.
         type: object
         required: false
+        properties:
+          //:
+            type: PivotFilterCriteria
       rows:
         description: Each row grouping in the pivot table.
         items:

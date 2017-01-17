@@ -913,11 +913,12 @@ types:
         type: ContainerInfo
         required: false
       files:
-        additionalProperties:
-          type: FileInfo
         description: Manifest of the files stored in Google Cloud Storage that are included as part of this version. All files must be readable using the credentials supplied with this call.
         type: object
         required: false
+        properties:
+          //:
+            type: FileInfo
       sourceReferences:
         description: Origin of the source code for this deployment. There can be more than one source reference per version if source code is distributed among multiple repositories.
         items:
@@ -1171,21 +1172,23 @@ types:
     description: A resource that represents Google Cloud Platform location.
     properties:
       labels:
-        additionalProperties:
-          type: string
         description: 'Cross-service attributes for the location. For example {"cloud.googleapis.com/region": "us-east1"}'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       locationId:
         description: 'The canonical id for this location. For example: `"us-east1"`.'
         type: string
         required: false
       metadata:
-        additionalProperties:
-          description: Properties of the object. Contains field @type with type URL.
         description: Service-specific metadata. For example the available capacity at the given location.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object. Contains field @type with type URL.
       name:
         description: 'Resource name for the location, which may vary between implementations. For example: `"projects/example-project/locations/us-east1"`'
         type: string
@@ -1261,21 +1264,23 @@ types:
         type: Status
         required: false
       metadata:
-        additionalProperties:
-          description: Properties of the object. Contains field @type with type URL.
         description: 'Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata. Any method that returns a long-running operation should document the metadata type, if any.'
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object. Contains field @type with type URL.
       name:
         description: 'The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should have the format of `operations/some/unique/name`.'
         type: string
         required: false
       response:
-        additionalProperties:
-          description: Properties of the object. Contains field @type with type URL.
         description: 'The normal response of the operation in case of success. If the original method returns no data on success, such as `Delete`, the response is `google.protobuf.Empty`. If the original method is standard `Get`/`Create`/`Update`, the response should be the resource. For other methods, the response should have the type `XxxResponse`, where `Xxx` is the original method name. For example, if the original method name is `TakeSnapshot()`, the inferred response type is `TakeSnapshotResponse`.'
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object. Contains field @type with type URL.
   OperationMetadata:
     description: Metadata for the given google.longrunning.Operation.
     properties:
@@ -1454,11 +1459,12 @@ types:
         type: string
         required: false
       httpHeaders:
-        additionalProperties:
-          type: string
         description: HTTP headers to use for all responses from these URLs.
         type: object
         required: false
+        properties:
+          //:
+            type: string
       mimeType:
         description: 'MIME type used to serve all files served by this handler. Defaults to file-specific MIME types, which are derived from each file''s filename extension.'
         type: string
@@ -1486,9 +1492,10 @@ types:
       details:
         description: A list of messages that carry the error details. There will be a common set of message types for APIs to use.
         items:
-          additionalProperties:
-            description: Properties of the object. Contains field @type with type URL.
           type: object
+          properties:
+            //:
+              description: Properties of the object. Contains field @type with type URL.
         type: array
         required: false
       message:
@@ -1499,12 +1506,13 @@ types:
     description: Traffic routing configuration for versions within a single service. Traffic splits define how traffic directed to the service is assigned to versions.
     properties:
       allocations:
-        additionalProperties:
-          format: double
-          type: number
         description: 'Mapping from version IDs within the service to fractional (0.000, 1] allocations of traffic for that version. Each version can be specified only once, but some versions in the service may not have any traffic allocation. Services that have traffic allocated cannot be deleted until either the service is deleted or their traffic allocation is removed. Allocations must sum to 1. Up to two decimal place precision is supported for IP-based splits and up to three decimal places is supported for cookie-based splits.'
         type: object
         required: false
+        properties:
+          //:
+            format: double
+            type: number
       shardBy:
         description: Mechanism used to determine which version a request is sent to. The traffic selection algorithm will be stable for either type until allocations are changed.
         enum:
@@ -1600,11 +1608,12 @@ types:
         type: BasicScaling
         required: false
       betaSettings:
-        additionalProperties:
-          type: string
         description: Metadata settings that are supplied to this version to enable beta runtime features.
         type: object
         required: false
+        properties:
+          //:
+            type: string
       creationTime:
         description: Time that this version was created. @OutputOnly
         type: string
@@ -1633,11 +1642,12 @@ types:
         type: string
         required: false
       envVariables:
-        additionalProperties:
-          type: string
         description: Environment variables made available to the application. Only returned in `GET` requests if `view=FULL` is set.
         type: object
         required: false
+        properties:
+          //:
+            type: string
       errorHandlers:
         description: Custom static error pages. Limited to 10KB per page. Only returned in `GET` requests if `view=FULL` is set.
         items:

@@ -208,29 +208,32 @@ types:
         type: string
         required: false
       inputPorts:
-        additionalProperties:
-          type: InputPort
         description: Information about the asset's input ports.
         type: object
         required: false
+        properties:
+          //:
+            type: InputPort
       locationInfo:
         description: Access information for the asset.
         type: AssetLocation
       metadata:
-        additionalProperties:
-          type: string
         description: 'If the asset is a custom module, this holds the module''s metadata.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       name:
         description: Asset's friendly name.
         type: string
       outputPorts:
-        additionalProperties:
-          type: OutputPort
         description: Information about the asset's output ports.
         type: object
         required: false
+        properties:
+          //:
+            type: OutputPort
       parameters:
         description: 'If the asset is a custom module, this holds the module''s parameters.'
         items:
@@ -340,21 +343,23 @@ types:
     description: Sample input data for the service's input(s).
     properties:
       globalParameters:
-        additionalProperties:
-          type: object
         description: Sample input data for the web service's global parameters
         type: object
         required: false
+        properties:
+          //:
+            type: object
       inputs:
-        additionalProperties:
-          items:
-            items:
-              type: object
-            type: array
-          type: array
         description: Sample input data for the web service's input(s) given as an input name to sample input values matrix map.
         type: object
         required: false
+        properties:
+          //:
+            items:
+              items:
+                type: object
+              type: array
+            type: array
   GraphEdge:
     description: Defines an edge within the web service's graph.
     properties:
@@ -390,11 +395,12 @@ types:
         type: string
         required: false
       parameters:
-        additionalProperties:
-          type: string
         description: 'If applicable, parameters of the node. Global graph parameters map into these, with values set at runtime.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
   GraphPackage:
     description: Defines the graph of modules making up the machine learning solution.
     properties:
@@ -405,17 +411,19 @@ types:
         type: array
         required: false
       graphParameters:
-        additionalProperties:
-          type: GraphParameter
         description: 'The collection of global parameters for the graph, given as a global parameter name to GraphParameter map. Each parameter here has a 1:1 match with the global parameters values map declared at the WebServiceProperties level.'
         type: object
         required: false
+        properties:
+          //:
+            type: GraphParameter
       nodes:
-        additionalProperties:
-          type: GraphNode
         description: 'The set of nodes making up the graph, provided as a nodeId to GraphNode map'
         type: object
         required: false
+        properties:
+          //:
+            type: GraphNode
   GraphParameter:
     description: Defines a global parameter in the graph.
     properties:
@@ -492,11 +500,12 @@ types:
     description: Parameter definition for a module asset.
     properties:
       modeValuesInfo:
-        additionalProperties:
-          type: ModeValueInfo
         description: Definitions for nested interface parameters if this is a complex module parameter.
         type: object
         required: false
+        properties:
+          //:
+            type: ModeValueInfo
       name:
         description: Parameter name.
         type: string
@@ -557,11 +566,12 @@ types:
         type: string
         required: false
       tags:
-        additionalProperties:
-          type: string
         description: Contains resource tags defined as key/value pairs.
         type: object
         required: false
+        properties:
+          //:
+            type: string
       type:
         description: Specifies the type of the resource.
         readOnly: true
@@ -577,10 +587,11 @@ types:
         type: string
         required: false
       properties:
-        additionalProperties:
-          type: TableSpecification
         description: 'Specifies a collection that contains the column schema for each input or output of the web service. For more information, see the Swagger specification.'
         type: object
+        properties:
+          //:
+            type: TableSpecification
       title:
         description: The title of your Swagger schema.
         type: string
@@ -612,11 +623,12 @@ types:
         type: string
         required: false
       properties:
-        additionalProperties:
-          type: ColumnSpecification
         description: The set of columns within the data table.
         type: object
         required: false
+        properties:
+          //:
+            type: ColumnSpecification
       title:
         description: Swagger schema title.
         type: string
@@ -643,11 +655,12 @@ types:
     discriminator: packageType
     properties:
       assets:
-        additionalProperties:
-          type: AssetItem
         description: Contains user defined properties describing web service assets. Properties are expressed as Key/Value pairs.
         type: object
         required: false
+        properties:
+          //:
+            type: AssetItem
       commitmentPlan:
         description: 'Contains the commitment plan associated with this web service. Set at creation time. Once set, this value cannot be changed. Note: The commitment plan is not returned from calls to GET operations.'
         type: CommitmentPlan
@@ -706,11 +719,12 @@ types:
           - Graph
         type: string
       parameters:
-        additionalProperties:
-          type: string
         description: 'The set of global parameters values defined for the web service, given as a global parameter name to default value map. If no default value is specified, the parameter is considered to be required.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       provisioningState:
         description: 'Read Only: The provision state of the web service. Valid values are Unknown, Provisioning, Succeeded, and Failed.'
         enum:

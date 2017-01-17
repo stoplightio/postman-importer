@@ -670,11 +670,12 @@ types:
         type: string
         required: false
       metadata:
-        additionalProperties:
-          type: string
         description: 'The metadata key/value pairs assigned to instances in the cluster. Keys must conform to the regexp [a-zA-Z0-9-_]+ and be less than 128 bytes in length. These are reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project or be one of the four reserved keys: "instance-template", "kube-env", "startup-script", and "user-data" Values are free-form strings, and only have meaning as interpreted by the image running in the instance. The only restriction placed on them is that each value''s size must be less than or equal to 32 KB. The total size of all keys and values must be less than 512 KB.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       oauthScopes:
         description: 'The set of Google API scopes to be made available on all of the node VMs under the "default" service account. The following scopes are recommended, but not required, and by default are not included: * `https://www.googleapis.com/auth/compute` is required for mounting persistent storage on your nodes. * `https://www.googleapis.com/auth/devstorage.read_only` is required for communicating with **gcr.io** (the [Google Container Registry](/container-registry/)). If unspecified, no scopes are added, unless Cloud Logging or Cloud Monitoring are enabled, in which case their required scopes will be added.'
         items:

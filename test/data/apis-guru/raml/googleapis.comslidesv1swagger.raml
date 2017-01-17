@@ -1072,8 +1072,6 @@ types:
         type: string
         required: false
       objectIds:
-        additionalProperties:
-          type: string
         description: |-
           The object being duplicated may contain other objects, for example when
           duplicating a slide or a group page element. This map defines how the IDs
@@ -1095,6 +1093,9 @@ types:
           receive a new random ID.
         type: object
         required: false
+        properties:
+          //:
+            type: string
   DuplicateObjectResponse:
     description: The response of duplicating an object.
     properties:
@@ -1457,14 +1458,15 @@ types:
         type: string
         required: false
       nestingLevel:
-        additionalProperties:
-          type: NestingLevel
         description: |-
           A map of nesting levels to the properties of bullets at the associated
           level. A list has at most nine levels of nesting, so the possible values
           for the keys of this map are 0 through 8, inclusive.
         type: object
         required: false
+        properties:
+          //:
+            type: NestingLevel
   NestingLevel:
     description: |-
       Contains properties describing the look and feel of a list bullet at a given
@@ -2783,11 +2785,12 @@ types:
       text box or rectangle) or a table cell in a page.
     properties:
       lists:
-        additionalProperties:
-          type: List
         description: 'The bulleted lists contained in this text, keyed by list ID.'
         type: object
         required: false
+        properties:
+          //:
+            type: List
       textElements:
         description: |-
           The text contents broken down into its component parts, including styling

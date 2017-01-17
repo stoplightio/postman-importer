@@ -1138,11 +1138,12 @@ types:
         type: string
         required: false
       parameters:
-        additionalProperties:
-          type: string
         description: Dynamic parameterization of the job's runtime environment.
         type: object
         required: false
+        properties:
+          //:
+            type: string
   CustomSourceLocation:
     description: Identifies the location of a custom souce.
     properties:
@@ -1226,17 +1227,19 @@ types:
         type: array
         required: false
       internalExperiments:
-        additionalProperties:
-          description: Properties of the object. Contains field @type with type URL.
         description: Experimental settings.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object. Contains field @type with type URL.
       sdkPipelineOptions:
-        additionalProperties:
-          description: Properties of the object.
         description: The Dataflow SDK pipeline options specified by the user. These options are passed through the service and are used to recreate the SDK pipeline options on the worker in a language agnostic and platform independent way.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       serviceAccountEmail:
         description: Identity to run virtual machines as. Defaults to the default account.
         type: string
@@ -1246,17 +1249,19 @@ types:
         type: string
         required: false
       userAgent:
-        additionalProperties:
-          description: Properties of the object.
         description: A description of the process that generated the request.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       version:
-        additionalProperties:
-          description: Properties of the object.
         description: A structure describing which components and their versions of the service are required in order to run the job.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       workerPools:
         description: Worker pools. At least one "harness" worker pool must be specified in order for the job to have workers.
         items:
@@ -1336,11 +1341,12 @@ types:
     description: An output of an instruction.
     properties:
       codec:
-        additionalProperties:
-          description: Properties of the object.
         description: The codec to use to encode data being written via this output.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       name:
         description: The user-provided name of this output.
         type: string
@@ -1423,11 +1429,12 @@ types:
         type: string
         required: false
       labels:
-        additionalProperties:
-          type: string
         description: 'User-defined labels for this job. The labels map can contain no more than 64 entries. Entries of the labels map are UTF8 strings that comply with the following restrictions: * Keys must conform to regexp: \p{Ll}\p{Lo}{0,62} * Values must conform to regexp: [\p{Ll}\p{Lo}\p{N}_-]{0,63} * Both keys and values are additionally constrained to be <= 128 bytes in size.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       location:
         description: The location which contains this job.
         type: string
@@ -1475,11 +1482,12 @@ types:
         type: array
         required: false
       transformNameMapping:
-        additionalProperties:
-          type: string
         description: Map of transform name prefixes of the job to be replaced to the corresponding name prefixes of the new job.
         type: object
         required: false
+        properties:
+          //:
+            type: string
       type:
         description: The type of dataflow job.
         enum:
@@ -1492,11 +1500,12 @@ types:
     description: Additional information about how a Dataflow job will be executed which isn’t contained in the submitted job.
     properties:
       stages:
-        additionalProperties:
-          type: JobExecutionStageInfo
         description: A mapping from each stage to the information about that stage.
         type: object
         required: false
+        properties:
+          //:
+            type: JobExecutionStageInfo
   JobExecutionStageInfo:
     description: Contains information about how a particular google.dataflow.v1beta3.Step will be executed.
     properties:
@@ -1691,13 +1700,14 @@ types:
     description: 'Identifies a metric, by describing the source which generated the metric.'
     properties:
       context:
-        additionalProperties:
-          type: string
         description: |-
           Zero or more labeled fields which identify the part of the job this metric is associated with, such as the name of a step or collection. For example, built-in counters associated with steps will have context['step'] = . Counters associated with PCollections in the SDK will have context['pcollection'] =
           .
         type: object
         required: false
+        properties:
+          //:
+            type: string
       name:
         description: Worker-defined metric name.
         type: string
@@ -1810,11 +1820,12 @@ types:
         type: array
         required: false
       userFn:
-        additionalProperties:
-          description: Properties of the object.
         description: The user function to invoke.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
   ParallelInstruction:
     description: Describes a particular operation comprising a MapTask.
     properties:
@@ -1864,11 +1875,12 @@ types:
         type: InstructionInput
         required: false
       inputElementCodec:
-        additionalProperties:
-          description: Properties of the object.
         description: The codec to use for interpreting an element in the input PTable.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       originalCombineValuesInputStoreName:
         description: If this instruction includes a combining function this is the name of the intermediate store between the GBK and the CombineValues.
         type: string
@@ -1884,11 +1896,12 @@ types:
         type: array
         required: false
       valueCombiningFn:
-        additionalProperties:
-          description: Properties of the object.
         description: The value combining function to invoke.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
   Position:
     description: 'Position defines a position within a collection of data. The value can be either the end position, a key (used with ordered collections), a byte offset, or a record index.'
     properties:
@@ -2070,11 +2083,12 @@ types:
         type: string
         required: false
       userFn:
-        additionalProperties:
-          description: Properties of the object.
         description: The user function to invoke.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
   SeqMapTaskOutputInfo:
     description: Information about an output of a SeqMapTask.
     properties:
@@ -2102,11 +2116,12 @@ types:
     description: Information about a side input of a DoFn or an input of a SeqDoFn.
     properties:
       kind:
-        additionalProperties:
-          description: Properties of the object.
         description: How to interpret the source element(s) as a side input value.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       sources:
         description: 'The source(s) to read element(s) from to get the value of this side input. If more than one source, then the elements are taken from the sources, in the specified order if order matters. At least one source is required.'
         items:
@@ -2121,34 +2136,38 @@ types:
     description: A sink that records can be encoded and written to.
     properties:
       codec:
-        additionalProperties:
-          description: Properties of the object.
         description: The codec to use to encode data written to the sink.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       spec:
-        additionalProperties:
-          description: Properties of the object.
         description: 'The sink to write to, plus its parameters.'
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
   Source:
     description: A source that records can be read and decoded from.
     properties:
       baseSpecs:
         description: 'While splitting, sources may specify the produced bundles as differences against another source, in order to save backend-side memory and allow bigger jobs. For details, see SourceSplitRequest. To support this use case, the full set of parameters of the source is logically obtained by taking the latest explicitly specified value of each parameter in the order: base_specs (later items win), spec (overrides anything in base_specs).'
         items:
-          additionalProperties:
-            description: Properties of the object.
           type: object
+          properties:
+            //:
+              description: Properties of the object.
         type: array
         required: false
       codec:
-        additionalProperties:
-          description: Properties of the object.
         description: The codec to use to decode data read from the source.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       doesNotNeedSplitting:
         description: 'Setting this value to true hints to the framework that the source doesn''t need splitting, and using SourceSplitRequest on it would yield SOURCE_SPLIT_OUTCOME_USE_CURRENT. E.g. a file splitter may set this to true when splitting a single file into a set of byte ranges of appropriate size, and set this to false when splitting a filepattern into individual files. However, for efficiency, a file splitter may decide to produce file subranges directly from the filepattern to avoid a splitting round-trip. See SourceSplitRequest for an overview of the splitting process. This field is meaningful only in the Source objects populated by the user (e.g. when filling in a DerivedSource). Source objects supplied by the framework to the user don''t have this field populated.'
         type: boolean
@@ -2158,11 +2177,12 @@ types:
         type: SourceMetadata
         required: false
       spec:
-        additionalProperties:
-          description: Properties of the object.
         description: 'The source to read from, plus its parameters.'
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
   SourceFork:
     description: DEPRECATED in favor of DynamicSourceSplit.
     properties:
@@ -2337,9 +2357,10 @@ types:
       details:
         description: A list of messages that carry the error details. There will be a common set of message types for APIs to use.
         items:
-          additionalProperties:
-            description: Properties of the object. Contains field @type with type URL.
           type: object
+          properties:
+            //:
+              description: Properties of the object. Contains field @type with type URL.
         type: array
         required: false
       message:
@@ -2358,11 +2379,12 @@ types:
         type: string
         required: false
       properties:
-        additionalProperties:
-          description: Properties of the object.
         description: Named properties associated with the step. Each kind of predefined step has its own required set of properties.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
   StreamLocation:
     description: 'Describes a stream of data, either as input to be processed or as output of a streaming Dataflow job.'
     properties:
@@ -2449,11 +2471,12 @@ types:
         type: array
         required: false
       userStepToStateFamilyNameMap:
-        additionalProperties:
-          type: string
         description: Map from user step names to state families.
         type: object
         required: false
+        properties:
+          //:
+            type: string
   StreamingSetupTask:
     description: A task which initializes part of a streaming Dataflow job.
     properties:
@@ -2609,11 +2632,12 @@ types:
         type: integer
         required: false
       userStageToComputationNameMap:
-        additionalProperties:
-          type: string
         description: Maps user stage names to stable computation names.
         type: object
         required: false
+        properties:
+          //:
+            type: string
   WorkItem:
     description: WorkItem represents basic information about a WorkItem to be executed in the cloud.
     properties:
@@ -2689,11 +2713,12 @@ types:
     description: The Dataflow service's idea of the current state of a WorkItem being processed by a worker.
     properties:
       harnessData:
-        additionalProperties:
-          description: Properties of the object.
         description: 'Other data returned by the service, specific to the particular worker harness.'
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
       leaseExpireTime:
         description: Time at which the current lease will expire.
         type: string
@@ -2797,9 +2822,10 @@ types:
       pods:
         description: 'The pods running on the worker. See: http://kubernetes.io/v1.1/docs/api-reference/v1/definitions.html#_v1_pod This field is used by the worker to send the status of the indvidual containers running on each worker.'
         items:
-          additionalProperties:
-            description: Properties of the object.
           type: object
+          properties:
+            //:
+              description: Properties of the object.
         type: array
         required: false
       reportInterval:
@@ -2825,11 +2851,12 @@ types:
     description: WorkerMessage provides information to the backend about a worker.
     properties:
       labels:
-        additionalProperties:
-          type: string
         description: 'Labels are used to group WorkerMessages. For example, a worker_message about a particular container might have the labels: { "JOB_ID": "2015-04-22", "WORKER_ID": "wordcount-vm-2015…" "CONTAINER_TYPE": "worker", "CONTAINER_ID": "ac1234def"} Label tags typically correspond to Label enum values. However, for ease of development other strings can be used as tags. LABEL_UNSPECIFIED should not be used here.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       time:
         description: The timestamp of the worker_message.
         type: string
@@ -2850,11 +2877,12 @@ types:
         type: string
         required: false
       parameters:
-        additionalProperties:
-          description: Properties of the object.
         description: 'Parameters contains specific information about the code. This is a struct to allow parameters of different types. Examples: 1. For a "HARNESS_STARTED" message parameters might provide the name of the worker and additional data like timing information. 2. For a "GCS_DOWNLOAD_ERROR" parameters might contain fields listing the GCS objects being downloaded and fields containing errors. In general complex data structures should be avoided. If a worker needs to send a specific and complicated data structure then please consider defining a new proto and adding it to the data oneof in WorkerMessageResponse. Conventions: Parameters should only be used for information that isn''t typically passed as a label. hostname and other worker identifiers should almost always be passed as labels since they will be included on most messages.'
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object.
   WorkerMessageResponse:
     description: A worker_message response allows the server to pass information to the sender.
     properties:
@@ -2914,11 +2942,12 @@ types:
         type: string
         required: false
       metadata:
-        additionalProperties:
-          type: string
         description: Metadata to set on the Google Compute Engine VMs.
         type: object
         required: false
+        properties:
+          //:
+            type: string
       network:
         description: 'Network to which VMs will be assigned. If empty or unspecified, the service will use the network "default".'
         type: string
@@ -2944,11 +2973,12 @@ types:
         type: array
         required: false
       poolArgs:
-        additionalProperties:
-          description: Properties of the object. Contains field @type with type URL.
         description: Extra arguments for this worker pool.
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object. Contains field @type with type URL.
       subnetwork:
         description: 'Subnetwork to which VMs will be assigned, if desired. Expected to be of the form "regions/REGION/subnetworks/SUBNETWORK".'
         type: string

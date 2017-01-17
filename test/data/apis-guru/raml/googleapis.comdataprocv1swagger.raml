@@ -548,11 +548,12 @@ types:
         type: ClusterConfig
         required: false
       labels:
-        additionalProperties:
-          type: string
         description: '[Optional] The labels to associate with this cluster. Label **keys** must contain 1 to 63 characters, and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt). Label **values** may be empty, but, if present, must contain 1 to 63 characters, and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be associated with a cluster.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       metrics:
         description: 'Contains cluster daemon metrics such as HDFS and YARN stats. **Beta Feature**: This report is available for testing purposes only. It may be changed before final release.'
         type: ClusterMetrics
@@ -608,23 +609,25 @@ types:
     description: 'Contains cluster daemon metrics, such as HDFS and YARN stats. **Beta Feature**: This report is available for testing purposes only. It may be changed before final release.'
     properties:
       hdfsMetrics:
-        additionalProperties:
-          format: int64
-          type: string
-          facets:
-            format: string
         description: The HDFS metrics.
         type: object
         required: false
+        properties:
+          //:
+            format: int64
+            type: string
+            facets:
+              format: string
       yarnMetrics:
-        additionalProperties:
-          format: int64
-          type: string
-          facets:
-            format: string
         description: The YARN metrics.
         type: object
         required: false
+        properties:
+          //:
+            format: int64
+            type: string
+            facets:
+              format: string
   ClusterOperationMetadata:
     description: Metadata describing the operation.
     properties:
@@ -641,11 +644,12 @@ types:
         type: string
         required: false
       labels:
-        additionalProperties:
-          type: string
         description: '[Output-only] labels associated with the operation'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       operationType:
         description: '[Output-only] The operation type.'
         type: string
@@ -747,11 +751,12 @@ types:
         type: boolean
         required: false
       metadata:
-        additionalProperties:
-          type: string
         description: 'The Google Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       networkUri:
         description: '[Optional] The Google Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the "default" network of the project is used, if it exists. Cannot be a "Custom Subnet Network" (see [Using Subnetworks](/compute/docs/subnetworks) for more information). Example: `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default`.'
         type: string
@@ -816,11 +821,12 @@ types:
         type: string
         required: false
       properties:
-        additionalProperties:
-          type: string
         description: '[Optional] A mapping of property names to values, used to configure Hadoop. Properties that conflict with values set by the Cloud Dataproc API may be overwritten. Can include properties set in /etc/hadoop/conf/*-site and classes in user code.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
   HiveJob:
     description: 'A Cloud Dataproc job for running [Apache Hive](https://hive.apache.org/) queries on YARN.'
     properties:
@@ -835,11 +841,12 @@ types:
         type: array
         required: false
       properties:
-        additionalProperties:
-          type: string
         description: '[Optional] A mapping of property names and values, used to configure Hive. Properties that conflict with values set by the Cloud Dataproc API may be overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml, /etc/hive/conf/hive-site.xml, and classes in user code.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       queryFileUri:
         description: The HCFS URI of the script that contains Hive queries.
         type: string
@@ -849,11 +856,12 @@ types:
         type: QueryList
         required: false
       scriptVariables:
-        additionalProperties:
-          type: string
         description: '[Optional] Mapping of query variable names to values (equivalent to the Hive command: `SET name="value";`).'
         type: object
         required: false
+        properties:
+          //:
+            type: string
   InstanceGroupConfig:
     description: '[Optional] The config settings for Google Compute Engine resources in an instance group, such as a master or worker group.'
     properties:
@@ -908,11 +916,12 @@ types:
         type: HiveJob
         required: false
       labels:
-        additionalProperties:
-          type: string
         description: '[Optional] The labels to associate with this job. Label **keys** must contain 1 to 63 characters, and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt). Label **values** may be empty, but, if present, must contain 1 to 63 characters, and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be associated with a job.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       pigJob:
         description: Job is a Pig job.
         type: PigJob
@@ -1043,21 +1052,22 @@ types:
     description: The runtime logging config of the job.
     properties:
       driverLogLevels:
-        additionalProperties:
-          enum:
-            - LEVEL_UNSPECIFIED
-            - ALL
-            - TRACE
-            - DEBUG
-            - INFO
-            - WARN
-            - ERROR
-            - FATAL
-            - 'OFF'
-          type: string
         description: 'The per-package log levels for the driver. This may include "root" package name to configure rootLogger. Examples: ''com.google = FATAL'', ''root = INFO'', ''org.apache = DEBUG'''
         type: object
         required: false
+        properties:
+          //:
+            enum:
+              - LEVEL_UNSPECIFIED
+              - ALL
+              - TRACE
+              - DEBUG
+              - INFO
+              - WARN
+              - ERROR
+              - FATAL
+              - 'OFF'
+            type: string
   ManagedGroupConfig:
     description: Specifies the resources used to actively manage an instance group.
     properties:
@@ -1092,21 +1102,23 @@ types:
         type: Status
         required: false
       metadata:
-        additionalProperties:
-          description: Properties of the object. Contains field @type with type URL.
         description: 'Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata. Any method that returns a long-running operation should document the metadata type, if any.'
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object. Contains field @type with type URL.
       name:
         description: 'The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should have the format of `operations/some/unique/name`.'
         type: string
         required: false
       response:
-        additionalProperties:
-          description: Properties of the object. Contains field @type with type URL.
         description: 'The normal response of the operation in case of success. If the original method returns no data on success, such as `Delete`, the response is `google.protobuf.Empty`. If the original method is standard `Get`/`Create`/`Update`, the response should be the resource. For other methods, the response should have the type `XxxResponse`, where `Xxx` is the original method name. For example, if the original method name is `TakeSnapshot()`, the inferred response type is `TakeSnapshotResponse`.'
         type: object
         required: false
+        properties:
+          //:
+            description: Properties of the object. Contains field @type with type URL.
   OperationMetadata:
     description: Metadata describing the operation.
     properties:
@@ -1207,11 +1219,12 @@ types:
         type: LoggingConfig
         required: false
       properties:
-        additionalProperties:
-          type: string
         description: '[Optional] A mapping of property names to values, used to configure Pig. Properties that conflict with values set by the Cloud Dataproc API may be overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml, /etc/pig/conf/pig.properties, and classes in user code.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       queryFileUri:
         description: The HCFS URI of the script that contains the Pig queries.
         type: string
@@ -1221,11 +1234,12 @@ types:
         type: QueryList
         required: false
       scriptVariables:
-        additionalProperties:
-          type: string
         description: '[Optional] Mapping of query variable names to values (equivalent to the Pig command: `name=[value]`).'
         type: object
         required: false
+        properties:
+          //:
+            type: string
   PySparkJob:
     description: 'A Cloud Dataproc job for running [Apache PySpark](https://spark.apache.org/docs/0.9.0/python-programming-guide.html) applications on YARN.'
     properties:
@@ -1262,11 +1276,12 @@ types:
         type: string
         required: false
       properties:
-        additionalProperties:
-          type: string
         description: '[Optional] A mapping of property names to values, used to configure PySpark. Properties that conflict with values set by the Cloud Dataproc API may be overwritten. Can include properties set in /etc/spark/conf/spark-defaults.conf and classes in user code.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       pythonFileUris:
         description: '[Optional] HCFS file URIs of Python files to pass to the PySpark framework. Supported file types: .py, .egg, and .zip.'
         items:
@@ -1290,11 +1305,12 @@ types:
         type: string
         required: false
       properties:
-        additionalProperties:
-          type: string
         description: '[Optional] The properties to set on daemon config files. Property keys are specified in `prefix:property` format, such as `core:fs.defaultFS`. The following are supported prefixes and their mappings: * core: `core-site.xml` * hdfs: `hdfs-site.xml` * mapred: `mapred-site.xml` * yarn: `yarn-site.xml` * hive: `hive-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf`'
         type: object
         required: false
+        properties:
+          //:
+            type: string
   SparkJob:
     description: 'A Cloud Dataproc job for running [Apache Spark](http://spark.apache.org/) applications on YARN.'
     properties:
@@ -1335,11 +1351,12 @@ types:
         type: string
         required: false
       properties:
-        additionalProperties:
-          type: string
         description: '[Optional] A mapping of property names to values, used to configure Spark. Properties that conflict with values set by the Cloud Dataproc API may be overwritten. Can include properties set in /etc/spark/conf/spark-defaults.conf and classes in user code.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
   SparkSqlJob:
     description: 'A Cloud Dataproc job for running [Apache Spark SQL](http://spark.apache.org/sql/) queries.'
     properties:
@@ -1354,11 +1371,12 @@ types:
         type: LoggingConfig
         required: false
       properties:
-        additionalProperties:
-          type: string
         description: '[Optional] A mapping of property names to values, used to configure Spark SQL''s SparkConf. Properties that conflict with values set by the Cloud Dataproc API may be overwritten.'
         type: object
         required: false
+        properties:
+          //:
+            type: string
       queryFileUri:
         description: The HCFS URI of the script that contains SQL queries.
         type: string
@@ -1368,11 +1386,12 @@ types:
         type: QueryList
         required: false
       scriptVariables:
-        additionalProperties:
-          type: string
         description: '[Optional] Mapping of query variable names to values (equivalent to the Spark SQL command: SET `name="value";`).'
         type: object
         required: false
+        properties:
+          //:
+            type: string
   Status:
     description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). The error model is designed to be: - Simple to use and understand for most users - Flexible enough to meet unexpected needs # Overview The `Status` message contains three pieces of data: error code, error message, and error details. The error code should be an enum value of google.rpc.Code, but it may accept additional error codes if needed. The error message should be a developer-facing English message that helps developers *understand* and *resolve* the error. If a localized user-facing error message is needed, put the localized message in the error details or localize it in the client. The optional error details may contain arbitrary information about the error. There is a predefined set of error detail types in the package `google.rpc` which can be used for common error conditions. # Language mapping The `Status` message is the logical representation of the error model, but it is not necessarily the actual wire format. When the `Status` message is exposed in different client libraries and different wire protocols, it can be mapped differently. For example, it will likely be mapped to some exceptions in Java, but more likely mapped to some error codes in C. # Other uses The error model and the `Status` message can be used in a variety of environments, either with or without APIs, to provide a consistent developer experience across different environments. Example uses of this error model include: - Partial errors. If a service needs to return partial errors to the client, it may embed the `Status` in the normal response to indicate the partial errors. - Workflow errors. A typical workflow has multiple steps. Each step may have a `Status` message for error reporting purpose. - Batch operations. If a client uses batch request and batch response, the `Status` message should be used directly inside batch response, one for each error sub-response. - Asynchronous operations. If an API call embeds asynchronous operation results in its response, the status of those operations should be represented directly using the `Status` message. - Logging. If some API errors are stored in logs, the message `Status` could be used directly after any stripping needed for security/privacy reasons.'
     properties:
@@ -1384,9 +1403,10 @@ types:
       details:
         description: A list of messages that carry the error details. There will be a common set of message types for APIs to use.
         items:
-          additionalProperties:
-            description: Properties of the object. Contains field @type with type URL.
           type: object
+          properties:
+            //:
+              description: Properties of the object. Contains field @type with type URL.
         type: array
         required: false
       message:

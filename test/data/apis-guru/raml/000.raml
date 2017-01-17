@@ -1,0 +1,2773 @@
+#%RAML 1.0
+title: Chargeback & Temp Invoice Api
+version: v1
+baseUri: 'http://localhost/SupplierPortalAPI'
+protocols:
+  - HTTP
+/api:
+  displayName: api
+  /chargeback:
+    displayName: chargeback
+    /adjustment:
+      displayName: adjustment
+      '/{id}':
+        displayName: '{id}'
+        /lines:
+          displayName: lines
+          post:
+            displayName: AdjustmentLine_PostMultiple
+            body:
+              application/json:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    //:
+                      type: string
+                (oas-body-name): lines
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: AdjustmentLine
+                description: OK
+            (oas-tags):
+              - adjustment
+          /CreateUpdate:
+            displayName: CreateUpdate
+            post:
+              displayName: AdjustmentLine_PostMultiLines
+              body:
+                application/json:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      //:
+                        type: string
+                  (oas-body-name): lines
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: array
+                      items:
+                        type: AdjustmentLine
+                  description: OK
+              (oas-tags):
+                - adjustment
+          put:
+            displayName: AdjustmentLine_PutMultiple
+            body:
+              application/json:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    //:
+                      type: string
+                (oas-body-name): lines
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: AdjustmentLine
+                description: OK
+            (oas-tags):
+              - adjustment
+          get:
+            displayName: AdjustmentLine_GetAllForAdjustment
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        //:
+                          type: string
+                description: OK
+            (oas-tags):
+              - adjustment
+        /line:
+          displayName: line
+          '/{lineId}':
+            displayName: '{lineId}'
+            uriParameters:
+              lineId:
+                required: true
+                type: integer
+                format: int64
+            get:
+              displayName: AdjustmentLine_Get
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: object
+                      properties:
+                        //:
+                          type: string
+                  description: OK
+              (oas-tags):
+                - adjustment
+            put:
+              displayName: AdjustmentLine_Put
+              body:
+                application/json:
+                  type: object
+                  properties:
+                    //:
+                      type: string
+                  (oas-body-name): line
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentLine
+                  description: OK
+              (oas-tags):
+                - adjustment
+            delete:
+              displayName: AdjustmentLine_Delete
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentLine
+                  description: OK
+              (oas-tags):
+                - adjustment
+          post:
+            displayName: AdjustmentLine_Post
+            body:
+              application/json:
+                type: object
+                properties:
+                  //:
+                    type: string
+                (oas-body-name): line
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AdjustmentLine
+                description: OK
+            (oas-tags):
+              - adjustment
+        uriParameters:
+          id:
+            required: true
+            type: integer
+            format: int64
+        get:
+          displayName: Adjustment_Get
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Adjustment
+              description: OK
+          (oas-tags):
+            - adjustment
+        delete:
+          displayName: Adjustment_Delete
+          headers:
+            authSystem:
+              type: string
+              required: true
+            authUser:
+              type: string
+              required: true
+          responses:
+            '204':
+              description: No Content
+          (oas-tags):
+            - adjustment
+        /actions:
+          displayName: actions
+          get:
+            displayName: AdjustmentAction_adjustment
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: AdjustmentAction
+                description: OK
+            (oas-tags):
+              - adjustment
+          '/{actionId}':
+            displayName: '{actionId}'
+            uriParameters:
+              actionId:
+                required: true
+                type: integer
+                format: int64
+            get:
+              displayName: AdjustmentAction_Get
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentAction
+                  description: OK
+              (oas-tags):
+                - adjustment
+            delete:
+              displayName: AdjustmentAction_Delete
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '204':
+                  description: No Content
+              (oas-tags):
+                - adjustment
+            put:
+              displayName: AdjustmentAction_Put
+              body:
+                application/json:
+                  type: AdjustmentActionWrite
+                  (oas-body-name): action
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentAction
+                  description: OK
+              (oas-tags):
+                - adjustment
+          post:
+            displayName: AdjustmentAction_Post
+            body:
+              application/json:
+                type: AdjustmentActionWrite
+                (oas-body-name): action
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AdjustmentAction
+                description: OK
+            (oas-tags):
+              - adjustment
+        /attachments:
+          displayName: attachments
+          post:
+            displayName: AdjustmentAttachment_Post
+            body:
+              application/json:
+                type: AdjustmentAttachmentWrite
+                (oas-body-name): attachment
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AdjustmentAttachment
+                description: OK
+            (oas-tags):
+              - adjustment
+          '/{attachmentId}':
+            displayName: '{attachmentId}'
+            uriParameters:
+              attachmentId:
+                required: true
+                type: integer
+                format: int64
+            delete:
+              displayName: AdjustmentAttachment_Delete
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '204':
+                  description: No Content
+              (oas-tags):
+                - adjustment
+            /DownLoad:
+              displayName: DownLoad
+              get:
+                displayName: AdjustmentAttachment_GetDownload
+                responses:
+                  '200':
+                    body:
+                      application/json:
+                        type: object
+                    description: OK
+                (oas-tags):
+                  - adjustment
+            /Upload:
+              displayName: Upload
+              post:
+                displayName: AdjustmentAttachment_Upload
+                body:
+                  multipart/form-data:
+                    properties:
+                      file:
+                        required: true
+                        type: file
+                headers:
+                  authSystem:
+                    type: string
+                    required: true
+                  authUser:
+                    type: string
+                    required: true
+                responses:
+                  '204':
+                    description: No Content
+                (oas-tags):
+                  - adjustment
+            get:
+              displayName: AdjustmentAttachment_Get
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentAttachment
+                  description: OK
+              (oas-tags):
+                - adjustment
+          get:
+            displayName: AdjustmentAttachment_GetAllForAdjustment
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: AdjustmentAttachment
+                description: OK
+            (oas-tags):
+              - adjustment
+        /comments:
+          displayName: comments
+          get:
+            displayName: AdjustmentComment_GetAllForAdjustment
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: AdjustmentComment
+                description: OK
+            (oas-tags):
+              - adjustment
+          '/{commentId}':
+            displayName: '{commentId}'
+            uriParameters:
+              commentId:
+                required: true
+                type: integer
+                format: int64
+            get:
+              displayName: AdjustmentComment_Get
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentComment
+                  description: OK
+              (oas-tags):
+                - adjustment
+            delete:
+              displayName: AdjustmentComment_Delete
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '204':
+                  description: No Content
+              (oas-tags):
+                - adjustment
+            put:
+              displayName: AdjustmentComment_Put
+              body:
+                application/json:
+                  type: AdjustmentCommentWrite
+                  (oas-body-name): comment
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentComment
+                  description: OK
+              (oas-tags):
+                - adjustment
+          post:
+            displayName: AdjustmentComment_Post
+            body:
+              application/json:
+                type: AdjustmentCommentWrite
+                (oas-body-name): comment
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AdjustmentComment
+                description: OK
+            (oas-tags):
+              - adjustment
+        put:
+          displayName: Adjustment_Put
+          body:
+            application/json:
+              type: AdjustmentWrite
+              (oas-body-name): adjustment
+          headers:
+            authSystem:
+              type: string
+              required: true
+            authUser:
+              type: string
+              required: true
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Adjustment
+              description: OK
+          (oas-tags):
+            - adjustment
+      get:
+        displayName: Adjustment_GetByFilter
+        responses:
+          '200':
+            body:
+              application/json:
+                type: AdjustmentGetResponse
+            description: OK
+        queryParameters:
+          supplierCode:
+            required: false
+            type: integer
+            format: int64
+          startDate:
+            required: false
+            type: datetime
+            format: rfc3339
+          endDate:
+            required: false
+            type: datetime
+            format: rfc3339
+          offset:
+            required: false
+            type: integer
+            format: int32
+          limit:
+            required: false
+            type: integer
+            format: int32
+          scarNumber:
+            required: false
+            type: string
+          supplierName:
+            required: false
+            type: string
+          chargebackOwner:
+            required: false
+            type: string
+          rmaNumber:
+            required: false
+            type: string
+        (oas-tags):
+          - adjustment
+      /adjustmentWithFilter:
+        displayName: adjustmentWithFilter
+        get:
+          displayName: Adjustment_GetByfilterexpression
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: AdjustmentGetResponse
+              description: OK
+          queryParameters:
+            supplierCode:
+              required: false
+              type: integer
+              format: int64
+            searchValue:
+              required: false
+              type: string
+            filterExpression:
+              required: false
+              type: string
+            offset:
+              required: false
+              type: integer
+              format: int32
+            limit:
+              required: false
+              type: integer
+              format: int32
+          (oas-tags):
+            - adjustment
+      post:
+        displayName: Adjustment_Post
+        body:
+          application/json:
+            type: AdjustmentWrite
+            (oas-body-name): adjustment
+        headers:
+          authSystem:
+            type: string
+            required: true
+          authUser:
+            type: string
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Adjustment
+            description: OK
+        (oas-tags):
+          - adjustment
+    /Supplier:
+      displayName: Supplier
+      /PartsbySupplier:
+        displayName: PartsbySupplier
+        get:
+          displayName: Supplier_GetPartsBySupplierCode
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: array
+                  items:
+                    type: object
+              description: OK
+          queryParameters:
+            suppierCode:
+              required: true
+              type: string
+            entityid:
+              required: false
+              type: integer
+              format: int32
+            Delimeter:
+              required: false
+              type: string
+          (oas-tags):
+            - supplier
+      /Suppliers:
+        displayName: Suppliers
+        get:
+          displayName: Supplier_GetSuppliers
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: array
+                  items:
+                    type: Supplier
+              description: OK
+          queryParameters:
+            suppierCode:
+              required: true
+              type: string
+            entityid:
+              required: true
+              type: integer
+              format: int32
+          (oas-tags):
+            - supplier
+      '/{suppierCode}':
+        displayName: '{suppierCode}'
+        '/{entityid}':
+          displayName: '{entityid}'
+          uriParameters:
+            entityid:
+              required: true
+              type: integer
+              format: int32
+          get:
+            displayName: Supplier_GetBySupplier
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: Supplier
+                description: OK
+            (oas-tags):
+              - supplier
+      '/{id}':
+        displayName: '{id}'
+        uriParameters:
+          id:
+            required: true
+            type: integer
+            format: int32
+        get:
+          displayName: Supplier_GetById
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Supplier
+              description: OK
+          (oas-tags):
+            - supplier
+    /admin:
+      displayName: admin
+      /adjustment:
+        displayName: adjustment
+        /status:
+          displayName: status
+          get:
+            displayName: AdjustmentStatus_GetAll
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: AdjustmentStatus
+                description: OK
+            (oas-tags):
+              - admin
+          post:
+            displayName: AdjustmentStatus_Post
+            body:
+              application/json:
+                type: AdjustmentStatusWrite
+                (oas-body-name): request
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AdjustmentStatus
+                description: OK
+            (oas-tags):
+              - admin
+          '/{name}':
+            displayName: '{name}'
+            uriParameters:
+              name:
+                required: true
+                type: string
+            get:
+              displayName: AdjustmentStatus_Get
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentStatus
+                  description: OK
+              (oas-tags):
+                - admin
+            put:
+              displayName: AdjustmentStatus_Put
+              body:
+                application/json:
+                  type: AdjustmentStatusWrite
+                  (oas-body-name): request
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentStatus
+                  description: OK
+              (oas-tags):
+                - admin
+            delete:
+              displayName: AdjustmentStatus_Delete
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '204':
+                  description: No Content
+              (oas-tags):
+                - admin
+        /category:
+          displayName: category
+          post:
+            displayName: AdjustmentCategory_Post
+            body:
+              application/json:
+                type: AdjustmentCategoryWrite
+                (oas-body-name): category
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AdjustmentCategory
+                description: OK
+            (oas-tags):
+              - admin
+          '/{name}':
+            displayName: '{name}'
+            uriParameters:
+              name:
+                required: true
+                type: string
+            put:
+              displayName: AdjustmentCategory_Put
+              body:
+                application/json:
+                  type: AdjustmentCategoryWrite
+                  (oas-body-name): category
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentCategory
+                  description: OK
+              (oas-tags):
+                - admin
+            get:
+              displayName: AdjustmentCategory_Get
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentCategory
+                  description: OK
+              (oas-tags):
+                - admin
+            delete:
+              displayName: AdjustmentCategory_Delete
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '204':
+                  description: No Content
+              (oas-tags):
+                - admin
+          get:
+            displayName: AdjustmentCategory_GetAll
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: AdjustmentCategory
+                description: OK
+            (oas-tags):
+              - admin
+        /type:
+          displayName: type
+          get:
+            displayName: AdjustmentType_GetAll
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: AdjustmentType
+                description: OK
+            (oas-tags):
+              - admin
+          post:
+            displayName: AdjustmentType_Post
+            body:
+              application/json:
+                type: AdjustmentTypeWrite
+                (oas-body-name): request
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: AdjustmentType
+                description: OK
+            (oas-tags):
+              - admin
+          '/{name}':
+            displayName: '{name}'
+            uriParameters:
+              name:
+                required: true
+                type: string
+            get:
+              displayName: AdjustmentType_Get
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentType
+                  description: OK
+              (oas-tags):
+                - admin
+            put:
+              displayName: AdjustmentType_Put
+              body:
+                application/json:
+                  type: AdjustmentTypeWrite
+                  (oas-body-name): request
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: AdjustmentType
+                  description: OK
+              (oas-tags):
+                - admin
+            delete:
+              displayName: AdjustmentType_Delete
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '204':
+                  description: No Content
+              (oas-tags):
+                - admin
+  /invoice:
+    displayName: invoice
+    /header:
+      displayName: header
+      '/{id}':
+        displayName: '{id}'
+        uriParameters:
+          id:
+            required: true
+            type: integer
+            format: int32
+        get:
+          displayName: InvoiceHeader_Get
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: InvoiceHeader
+              description: OK
+          (oas-tags):
+            - invoice
+        put:
+          displayName: InvoiceHeader_Put
+          body:
+            application/json:
+              type: InvoiceHeaderWrite
+              (oas-body-name): InvoiceHeader
+          headers:
+            authSystem:
+              type: string
+              required: true
+            authUser:
+              type: string
+              required: true
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: InvoiceHeader
+              description: OK
+          (oas-tags):
+            - invoice
+        /lines:
+          displayName: lines
+          get:
+            displayName: InvoiceLine_GetAllForInvoiceHeader
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: array
+                    items:
+                      type: InvoiceLine
+                description: OK
+            (oas-tags):
+              - invoice
+          post:
+            displayName: InvoiceLine_Post
+            body:
+              application/json:
+                type: InvoiceLineWrite
+                (oas-body-name): line
+            headers:
+              authSystem:
+                type: string
+                required: true
+              authUser:
+                type: string
+                required: true
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: InvoiceLine
+                description: OK
+            (oas-tags):
+              - invoice
+          '/{lineId}':
+            displayName: '{lineId}'
+            uriParameters:
+              lineId:
+                required: true
+                type: integer
+                format: int32
+            get:
+              displayName: InvoiceLine_Get
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: InvoiceLine
+                  description: OK
+              (oas-tags):
+                - invoice
+            put:
+              displayName: InvoiceLine_Put
+              body:
+                application/json:
+                  type: InvoiceLineWrite
+                  (oas-body-name): line
+              headers:
+                authSystem:
+                  type: string
+                  required: true
+                authUser:
+                  type: string
+                  required: true
+              responses:
+                '200':
+                  body:
+                    application/json:
+                      type: InvoiceLine
+                  description: OK
+              (oas-tags):
+                - invoice
+      post:
+        displayName: InvoiceHeader_Post
+        body:
+          application/json:
+            type: InvoiceHeaderWrite
+            (oas-body-name): InvoiceHeader
+        headers:
+          authSystem:
+            type: string
+            required: true
+          authUser:
+            type: string
+            required: true
+        responses:
+          '200':
+            body:
+              application/json:
+                type: InvoiceHeader
+            description: OK
+        (oas-tags):
+          - invoice
+      /Invoiceheaderbycb:
+        displayName: Invoiceheaderbycb
+        '/{cbNumber}':
+          displayName: '{cbNumber}'
+          uriParameters:
+            cbNumber:
+              required: true
+              type: string
+          get:
+            displayName: InvoiceHeader_GetInvoiceHeader
+            responses:
+              '200':
+                body:
+                  application/json:
+                    type: InvoiceHeader
+                description: OK
+            (oas-tags):
+              - invoice
+      /CreateHeaderandLines:
+        displayName: CreateHeaderandLines
+        post:
+          displayName: InvoiceHeader_PostHeaderandLines
+          body:
+            application/json:
+              type: InvoiceHeaderWrite
+              (oas-body-name): InvoiceHeader
+          headers:
+            authSystem:
+              type: string
+              required: true
+            authUser:
+              type: string
+              required: true
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: InvoiceHeader
+              description: OK
+          (oas-tags):
+            - invoice
+types:
+  AdjustmentGetResponse:
+    properties:
+      Offset:
+        format: int32
+        type: integer
+        required: false
+      Limit:
+        format: int32
+        type: integer
+        required: false
+      Count:
+        format: int32
+        type: integer
+        required: false
+      Adjustments:
+        type: array
+        items:
+          type: Adjustment
+        required: false
+  Adjustment:
+    properties:
+      Id:
+        format: int64
+        type: integer
+        required: false
+      SupplierCode:
+        format: int64
+        type: integer
+        required: false
+      Type:
+        type: string
+        required: false
+      Category:
+        type: string
+        required: false
+      Status:
+        type: string
+        required: false
+      Description:
+        type: string
+        required: false
+      PartNumber:
+        type: string
+        required: false
+      Amount:
+        format: double
+        type: number
+        required: false
+      CurrencyCode:
+        type: string
+        required: false
+      ScarNumber:
+        type: string
+        required: false
+      SupplierName:
+        type: string
+        required: false
+      ChargebackOwner:
+        type: string
+        required: false
+      RMANumber:
+        type: string
+        required: false
+      CBNumber:
+        type: string
+        required: false
+      SIOCode:
+        type: string
+        required: false
+      CreatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreatedBy:
+        type: string
+        required: false
+      UpdatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      UpdatedBy:
+        type: string
+        required: false
+      Deleted:
+        type: boolean
+        required: false
+  AdjustmentAction:
+    properties:
+      Id:
+        format: int64
+        type: integer
+        required: false
+      AdjustmentId:
+        format: int64
+        type: integer
+        required: false
+      FromStatus:
+        type: string
+        required: false
+      ToStatus:
+        type: string
+        required: false
+      PostUrl:
+        type: string
+        required: false
+      CreatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreatedBy:
+        type: string
+        required: false
+      UpdatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      UpdatedBy:
+        type: string
+        required: false
+      Deleted:
+        type: boolean
+        required: false
+  AdjustmentAttachment:
+    properties:
+      Id:
+        format: int64
+        type: integer
+        required: false
+      AdjustmentId:
+        format: int64
+        type: integer
+        required: false
+      Description:
+        type: string
+        required: false
+      FileLocation:
+        type: string
+        required: false
+      FileName:
+        type: string
+        required: false
+      CreatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreatedBy:
+        type: string
+        required: false
+      UpdatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      UpdatedBy:
+        type: string
+        required: false
+      Deleted:
+        type: boolean
+        required: false
+  AdjustmentCategory:
+    properties:
+      Name:
+        type: string
+        required: false
+      Description:
+        type: string
+        required: false
+      CreatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreatedBy:
+        type: string
+        required: false
+      UpdatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      UpdatedBy:
+        type: string
+        required: false
+      Deleted:
+        type: boolean
+        required: false
+  AdjustmentComment:
+    properties:
+      Id:
+        format: int64
+        type: integer
+        required: false
+      AdjustmentId:
+        format: int64
+        type: integer
+        required: false
+      ParentAdjustmentCommentId:
+        format: int64
+        type: integer
+        required: false
+      Comment:
+        type: string
+        required: false
+      CreatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreatedBy:
+        type: string
+        required: false
+      UpdatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      UpdatedBy:
+        type: string
+        required: false
+      Deleted:
+        type: boolean
+        required: false
+  AdjustmentLine:
+    properties:
+      Id:
+        format: int64
+        type: integer
+        required: false
+      AdjustmentId:
+        format: int64
+        type: integer
+        required: false
+      Data:
+        type: object
+        required: false
+      CreatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreatedBy:
+        type: string
+        required: false
+      UpdatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      UpdatedBy:
+        type: string
+        required: false
+      Deleted:
+        type: boolean
+        required: false
+  AdjustmentStatus:
+    properties:
+      Name:
+        type: string
+        required: false
+      Description:
+        type: string
+        required: false
+      LockUpdates:
+        type: boolean
+        required: false
+      CreatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreatedBy:
+        type: string
+        required: false
+      UpdatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      UpdatedBy:
+        type: string
+        required: false
+      Deleted:
+        type: boolean
+        required: false
+  AdjustmentType:
+    properties:
+      Name:
+        type: string
+        required: false
+      Description:
+        type: string
+        required: false
+      CreatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreatedBy:
+        type: string
+        required: false
+      UpdatedAt:
+        format: rfc3339
+        type: datetime
+        required: false
+      UpdatedBy:
+        type: string
+        required: false
+      Deleted:
+        type: boolean
+        required: false
+  InvoiceHeader:
+    properties:
+      InvoiceHeaderID:
+        format: int32
+        type: integer
+        required: false
+      DocTypeID:
+        format: int32
+        type: integer
+        required: false
+      InvoiceStatusID:
+        format: int32
+        type: integer
+        required: false
+      EntityID:
+        format: int32
+        type: integer
+        required: false
+      InvoiceDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      PostingDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      CurrencyID:
+        format: int32
+        type: integer
+        required: false
+      Reference:
+        type: string
+        required: false
+      Amount:
+        format: double
+        type: number
+        required: false
+      Text:
+        type: string
+        required: false
+      PaymentTerms:
+        format: int32
+        type: integer
+        required: false
+      VendorBank:
+        type: string
+        required: false
+      TeslaBank:
+        type: string
+        required: false
+      PaymentRefernce:
+        type: string
+        required: false
+      VendorID:
+        type: string
+        required: false
+      SAPPONumber:
+        type: string
+        required: false
+      Tax1099Box:
+        type: string
+        required: false
+      Jurisdiction:
+        type: string
+        required: false
+      INOWDocumentID:
+        type: string
+        required: false
+      CreateDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreateByUserID:
+        format: int32
+        type: integer
+        required: false
+      CreateByProg:
+        type: string
+        required: false
+      ModifyDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      ModifyByUserID:
+        format: int32
+        type: integer
+        required: false
+      ModifyByProg:
+        type: string
+        required: false
+      RowVersion:
+        type: string
+        required: false
+      ParkReasonID:
+        format: int32
+        type: integer
+        required: false
+      PostingError:
+        type: string
+        required: false
+      AXJournalNumber:
+        type: string
+        required: false
+      TaxCodeID:
+        format: int32
+        type: integer
+        required: false
+      TaxAmount:
+        format: double
+        type: number
+        required: false
+      TaxCode:
+        type: string
+        required: false
+      IsRouted:
+        type: boolean
+        required: false
+      ApproverUserName:
+        type: string
+        required: false
+      MethodOfPaymentId:
+        format: int32
+        type: integer
+        required: false
+      AppliedDownPayment:
+        format: double
+        type: number
+        required: false
+      SupplierBankAccountID:
+        format: int32
+        type: integer
+        required: false
+      LoggedInUser:
+        format: int32
+        type: integer
+        required: false
+      LoggedInDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      IsReversed:
+        type: boolean
+        required: false
+      OriginalInvoiceHeaderId:
+        format: int32
+        type: integer
+        required: false
+      InvoiceNumber:
+        format: int32
+        type: integer
+        required: false
+      ParkedByUserID:
+        format: int32
+        type: integer
+        required: false
+      PostedBYUserID:
+        format: int32
+        type: integer
+        required: false
+      PackagingSlipNumber:
+        type: string
+        required: false
+      InvoiceWorkFlowQueueID:
+        format: int32
+        type: integer
+        required: false
+      InvoiceLines:
+        type: array
+        items:
+          type: InvoiceLine
+        required: false
+  InvoiceLine:
+    properties:
+      InvoiceLineID:
+        format: int32
+        type: integer
+        required: false
+      InvoiceHeaderID:
+        format: int32
+        type: integer
+        required: false
+      Amount:
+        format: double
+        type: number
+        required: false
+      Quantity:
+        format: double
+        type: number
+        required: false
+      ExtendedAmount:
+        format: double
+        type: number
+        required: false
+      UOM:
+        type: string
+        required: false
+      PONumber:
+        type: string
+        required: false
+      PurchaseOrderID:
+        format: int32
+        type: integer
+        required: false
+      PurchaseOrderLineID:
+        format: int32
+        type: integer
+        required: false
+      ReceiverLineID:
+        format: int32
+        type: integer
+        required: false
+      ReceiverLineDeliveryID:
+        format: int32
+        type: integer
+        required: false
+      PartID:
+        format: int32
+        type: integer
+        required: false
+      SAPPOLineNo:
+        format: int32
+        type: integer
+        required: false
+      TeslaPartNumber:
+        type: string
+        required: false
+      Text:
+        type: string
+        required: false
+      TaxCodeID:
+        format: int32
+        type: integer
+        required: false
+      Jurisdiction:
+        type: string
+        required: false
+      AccountAssignment:
+        type: string
+        required: false
+      VINNumber:
+        type: string
+        required: false
+      ReservationNumber:
+        type: string
+        required: false
+      TaxAmount:
+        format: double
+        type: number
+        required: false
+      Tax1099Box:
+        type: string
+        required: false
+      AccountID:
+        format: int32
+        type: integer
+        required: false
+      CostCenterID:
+        format: int32
+        type: integer
+        required: false
+      InternalOrderID:
+        format: int32
+        type: integer
+        required: false
+      AssetID:
+        format: int32
+        type: integer
+        required: false
+      EntityID:
+        format: int32
+        type: integer
+        required: false
+      BudgetCodeId:
+        format: int32
+        type: integer
+        required: false
+      LocationID:
+        format: int32
+        type: integer
+        required: false
+      CreateDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreateByUserID:
+        format: int32
+        type: integer
+        required: false
+      CreateByProg:
+        type: string
+        required: false
+      ModifyDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      ModifyByUserID:
+        format: int32
+        type: integer
+        required: false
+      ModifyByProg:
+        type: string
+        required: false
+      RowVersion:
+        type: string
+        required: false
+      RowNumber:
+        format: int32
+        type: integer
+        required: false
+      InvoiceLineGUID:
+        format: uuid
+        type: string
+        facets:
+          format: string
+        required: false
+      ManualTax:
+        type: boolean
+        required: false
+  Supplier:
+    properties:
+      SupplierID:
+        format: int32
+        type: integer
+        required: false
+      SupplierCode:
+        type: string
+        required: false
+      Name:
+        type: string
+        required: false
+      FreeOnBoard:
+        type: string
+        required: false
+      ShipViaID:
+        format: int32
+        type: integer
+        required: false
+      BuyerUserID:
+        format: int32
+        type: integer
+        required: false
+      Report1099MiscFlag:
+        type: boolean
+        required: false
+      TermsNetType:
+        type: string
+        required: false
+      TermsNetDays:
+        format: int32
+        type: integer
+        required: false
+      TermsDiscType:
+        type: string
+        required: false
+      TermsDiscDays:
+        format: int32
+        type: integer
+        required: false
+      TermsDiscPercent:
+        format: double
+        type: number
+        required: false
+      TermsCode:
+        type: string
+        required: false
+      TermsDescription:
+        type: string
+        required: false
+      TaxIDNumber:
+        type: string
+        required: false
+      DefExpGLAccountID:
+        format: int32
+        type: integer
+        required: false
+      DefSlsTaxGroupID:
+        type: string
+        required: false
+      MatchType:
+        type: string
+        required: false
+      LastOrderDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      OpenDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      TotalOpenOrders:
+        format: double
+        type: number
+        required: false
+      TotalOpenPayB:
+        format: double
+        type: number
+        required: false
+      OpenOrderCount:
+        format: int32
+        type: integer
+        required: false
+      OpenPayBCount:
+        format: int32
+        type: integer
+        required: false
+      ApprovalStatus:
+        type: string
+        required: false
+      SupplierCustomerNumber:
+        type: string
+        required: false
+      ScopeOfApproval:
+        type: string
+        required: false
+      DefPayBAccountID:
+        format: int32
+        type: integer
+        required: false
+      Criteria:
+        type: string
+        required: false
+      Selection1:
+        type: string
+        required: false
+      Selection2:
+        type: string
+        required: false
+      Selection3:
+        type: string
+        required: false
+      Selection4:
+        type: string
+        required: false
+      Product:
+        type: string
+        required: false
+      Commodity:
+        type: string
+        required: false
+      ActiveFlag:
+        type: boolean
+        required: false
+      TaxIDType:
+        type: string
+        required: false
+      AccountingNote:
+        type: string
+        required: false
+      W9OnFile:
+        type: string
+        required: false
+      EmployeeRecruitFlag:
+        type: boolean
+        required: false
+      EntityID:
+        format: int32
+        type: integer
+        required: false
+      CurrencyID:
+        format: int32
+        type: integer
+        required: false
+      CreateDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreateByUserID:
+        format: int32
+        type: integer
+        required: false
+      ModifyDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      ModifyByUserID:
+        format: int32
+        type: integer
+        required: false
+      PrimarySupplierID:
+        format: int32
+        type: integer
+        required: false
+      DefaultIncoTermID:
+        format: int32
+        type: integer
+        required: false
+      SubContractorFlag:
+        type: boolean
+        required: false
+      SupplierStatusID:
+        format: int32
+        type: integer
+        required: false
+      SupplierPrototypeStatusID:
+        format: int32
+        type: integer
+        required: false
+      SupplierGroupID:
+        format: int32
+        type: integer
+        required: false
+      DynamicsError:
+        type: string
+        required: false
+      DynamicsUpdatedFlag:
+        type: boolean
+        required: false
+      IsCorporate:
+        type: boolean
+        required: false
+      IsForiegnentity:
+        type: boolean
+        required: false
+      DBA:
+        type: string
+        required: false
+      NDA:
+        type: boolean
+        required: false
+      GTC:
+        type: boolean
+        required: false
+      PA:
+        type: boolean
+        required: false
+      AlternativePayeeID:
+        format: int32
+        type: integer
+        required: false
+      EffectiveDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      SupplierEnabled:
+        type: boolean
+        required: false
+      IsMaster:
+        type: boolean
+        required: false
+      SupplierEntityTaxInfoID:
+        format: int32
+        type: integer
+        required: false
+      SupplierEntityMasterContactID:
+        format: int32
+        type: integer
+        required: false
+      SupplierEntityBankAccountID:
+        format: int32
+        type: integer
+        required: false
+      EntityMethodOfPaymentID:
+        format: int32
+        type: integer
+        required: false
+      SupplierEntityMasterAddressID:
+        format: int32
+        type: integer
+        required: false
+      LocalName:
+        type: string
+        required: false
+      ShortName:
+        type: string
+        required: false
+      PreferredBuyerID:
+        format: int32
+        type: integer
+        required: false
+      SystemOfMeasurementTypeID:
+        format: int32
+        type: integer
+        required: false
+      SupplierRequestID:
+        format: int32
+        type: integer
+        required: false
+      SupplierOwner:
+        format: int32
+        type: integer
+        required: false
+      SupplierStartDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      SerializationCode:
+        type: string
+        required: false
+      IsEDIEnabled:
+        type: boolean
+        required: false
+  AdjustmentGetResponseWrite:
+    properties:
+      Offset:
+        format: int32
+        type: integer
+        required: false
+      Limit:
+        format: int32
+        type: integer
+        required: false
+      Count:
+        format: int32
+        type: integer
+        required: false
+      Adjustments:
+        type: array
+        items: {}
+        required: false
+  AdjustmentWrite:
+    properties:
+      SupplierCode:
+        format: int64
+        type: integer
+        required: false
+      Type:
+        type: string
+        required: false
+      Category:
+        type: string
+        required: false
+      Status:
+        type: string
+        required: false
+      Description:
+        type: string
+        required: false
+      PartNumber:
+        type: string
+        required: false
+      Amount:
+        format: double
+        type: number
+        required: false
+      CurrencyCode:
+        type: string
+        required: false
+      ScarNumber:
+        type: string
+        required: false
+      SupplierName:
+        type: string
+        required: false
+      ChargebackOwner:
+        type: string
+        required: false
+      RMANumber:
+        type: string
+        required: false
+      CBNumber:
+        type: string
+        required: false
+      SIOCode:
+        type: string
+        required: false
+  AdjustmentActionWrite:
+    properties:
+      FromStatus:
+        type: string
+        required: false
+      ToStatus:
+        type: string
+        required: false
+      PostUrl:
+        type: string
+        required: false
+  AdjustmentAttachmentWrite:
+    properties:
+      Description:
+        type: string
+        required: false
+      FileLocation:
+        type: string
+        required: false
+      FileName:
+        type: string
+        required: false
+  AdjustmentCategoryWrite:
+    properties:
+      Name:
+        type: string
+        required: false
+      Description:
+        type: string
+        required: false
+  AdjustmentCommentWrite:
+    properties:
+      ParentAdjustmentCommentId:
+        format: int64
+        type: integer
+        required: false
+      Comment:
+        type: string
+        required: false
+  AdjustmentLineWrite:
+    properties:
+      Data:
+        type: object
+        required: false
+        properties:
+          //:
+            type: string
+  AdjustmentStatusWrite:
+    properties:
+      Name:
+        type: string
+        required: false
+      Description:
+        type: string
+        required: false
+      LockUpdates:
+        type: boolean
+        required: false
+  AdjustmentTypeWrite:
+    properties:
+      Name:
+        type: string
+        required: false
+      Description:
+        type: string
+        required: false
+  InvoiceHeaderWrite:
+    properties:
+      InvoiceHeaderID:
+        format: int32
+        type: integer
+        required: false
+      DocTypeID:
+        format: int32
+        type: integer
+        required: false
+      InvoiceStatusID:
+        format: int32
+        type: integer
+        required: false
+      EntityID:
+        format: int32
+        type: integer
+        required: false
+      InvoiceDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      PostingDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      CurrencyID:
+        format: int32
+        type: integer
+        required: false
+      Reference:
+        type: string
+        required: false
+      Amount:
+        format: double
+        type: number
+        required: false
+      Text:
+        type: string
+        required: false
+      PaymentTerms:
+        format: int32
+        type: integer
+        required: false
+      VendorBank:
+        type: string
+        required: false
+      TeslaBank:
+        type: string
+        required: false
+      PaymentRefernce:
+        type: string
+        required: false
+      VendorID:
+        type: string
+        required: false
+      SAPPONumber:
+        type: string
+        required: false
+      Tax1099Box:
+        type: string
+        required: false
+      Jurisdiction:
+        type: string
+        required: false
+      INOWDocumentID:
+        type: string
+        required: false
+      CreateDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreateByUserID:
+        format: int32
+        type: integer
+        required: false
+      CreateByProg:
+        type: string
+        required: false
+      ModifyDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      ModifyByUserID:
+        format: int32
+        type: integer
+        required: false
+      ModifyByProg:
+        type: string
+        required: false
+      RowVersion:
+        type: string
+        required: false
+      ParkReasonID:
+        format: int32
+        type: integer
+        required: false
+      PostingError:
+        type: string
+        required: false
+      AXJournalNumber:
+        type: string
+        required: false
+      TaxCodeID:
+        format: int32
+        type: integer
+        required: false
+      TaxAmount:
+        format: double
+        type: number
+        required: false
+      TaxCode:
+        type: string
+        required: false
+      IsRouted:
+        type: boolean
+        required: false
+      ApproverUserName:
+        type: string
+        required: false
+      MethodOfPaymentId:
+        format: int32
+        type: integer
+        required: false
+      AppliedDownPayment:
+        format: double
+        type: number
+        required: false
+      SupplierBankAccountID:
+        format: int32
+        type: integer
+        required: false
+      LoggedInUser:
+        format: int32
+        type: integer
+        required: false
+      LoggedInDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      IsReversed:
+        type: boolean
+        required: false
+      OriginalInvoiceHeaderId:
+        format: int32
+        type: integer
+        required: false
+      InvoiceNumber:
+        format: int32
+        type: integer
+        required: false
+      ParkedByUserID:
+        format: int32
+        type: integer
+        required: false
+      PostedBYUserID:
+        format: int32
+        type: integer
+        required: false
+      PackagingSlipNumber:
+        type: string
+        required: false
+      InvoiceWorkFlowQueueID:
+        format: int32
+        type: integer
+        required: false
+      InvoiceLines:
+        type: array
+        items: {}
+        required: false
+  InvoiceLineWrite:
+    properties:
+      InvoiceLineID:
+        format: int32
+        type: integer
+        required: false
+      InvoiceHeaderID:
+        format: int32
+        type: integer
+        required: false
+      Amount:
+        format: double
+        type: number
+        required: false
+      Quantity:
+        format: double
+        type: number
+        required: false
+      ExtendedAmount:
+        format: double
+        type: number
+        required: false
+      UOM:
+        type: string
+        required: false
+      PONumber:
+        type: string
+        required: false
+      PurchaseOrderID:
+        format: int32
+        type: integer
+        required: false
+      PurchaseOrderLineID:
+        format: int32
+        type: integer
+        required: false
+      ReceiverLineID:
+        format: int32
+        type: integer
+        required: false
+      ReceiverLineDeliveryID:
+        format: int32
+        type: integer
+        required: false
+      PartID:
+        format: int32
+        type: integer
+        required: false
+      SAPPOLineNo:
+        format: int32
+        type: integer
+        required: false
+      TeslaPartNumber:
+        type: string
+        required: false
+      Text:
+        type: string
+        required: false
+      TaxCodeID:
+        format: int32
+        type: integer
+        required: false
+      Jurisdiction:
+        type: string
+        required: false
+      AccountAssignment:
+        type: string
+        required: false
+      VINNumber:
+        type: string
+        required: false
+      ReservationNumber:
+        type: string
+        required: false
+      TaxAmount:
+        format: double
+        type: number
+        required: false
+      Tax1099Box:
+        type: string
+        required: false
+      AccountID:
+        format: int32
+        type: integer
+        required: false
+      CostCenterID:
+        format: int32
+        type: integer
+        required: false
+      InternalOrderID:
+        format: int32
+        type: integer
+        required: false
+      AssetID:
+        format: int32
+        type: integer
+        required: false
+      EntityID:
+        format: int32
+        type: integer
+        required: false
+      BudgetCodeId:
+        format: int32
+        type: integer
+        required: false
+      LocationID:
+        format: int32
+        type: integer
+        required: false
+      CreateDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreateByUserID:
+        format: int32
+        type: integer
+        required: false
+      CreateByProg:
+        type: string
+        required: false
+      ModifyDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      ModifyByUserID:
+        format: int32
+        type: integer
+        required: false
+      ModifyByProg:
+        type: string
+        required: false
+      RowVersion:
+        type: string
+        required: false
+      RowNumber:
+        format: int32
+        type: integer
+        required: false
+      InvoiceLineGUID:
+        format: uuid
+        type: string
+        facets:
+          format: string
+        required: false
+      ManualTax:
+        type: boolean
+        required: false
+  SupplierWrite:
+    properties:
+      SupplierID:
+        format: int32
+        type: integer
+        required: false
+      SupplierCode:
+        type: string
+        required: false
+      Name:
+        type: string
+        required: false
+      FreeOnBoard:
+        type: string
+        required: false
+      ShipViaID:
+        format: int32
+        type: integer
+        required: false
+      BuyerUserID:
+        format: int32
+        type: integer
+        required: false
+      Report1099MiscFlag:
+        type: boolean
+        required: false
+      TermsNetType:
+        type: string
+        required: false
+      TermsNetDays:
+        format: int32
+        type: integer
+        required: false
+      TermsDiscType:
+        type: string
+        required: false
+      TermsDiscDays:
+        format: int32
+        type: integer
+        required: false
+      TermsDiscPercent:
+        format: double
+        type: number
+        required: false
+      TermsCode:
+        type: string
+        required: false
+      TermsDescription:
+        type: string
+        required: false
+      TaxIDNumber:
+        type: string
+        required: false
+      DefExpGLAccountID:
+        format: int32
+        type: integer
+        required: false
+      DefSlsTaxGroupID:
+        type: string
+        required: false
+      MatchType:
+        type: string
+        required: false
+      LastOrderDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      OpenDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      TotalOpenOrders:
+        format: double
+        type: number
+        required: false
+      TotalOpenPayB:
+        format: double
+        type: number
+        required: false
+      OpenOrderCount:
+        format: int32
+        type: integer
+        required: false
+      OpenPayBCount:
+        format: int32
+        type: integer
+        required: false
+      ApprovalStatus:
+        type: string
+        required: false
+      SupplierCustomerNumber:
+        type: string
+        required: false
+      ScopeOfApproval:
+        type: string
+        required: false
+      DefPayBAccountID:
+        format: int32
+        type: integer
+        required: false
+      Criteria:
+        type: string
+        required: false
+      Selection1:
+        type: string
+        required: false
+      Selection2:
+        type: string
+        required: false
+      Selection3:
+        type: string
+        required: false
+      Selection4:
+        type: string
+        required: false
+      Product:
+        type: string
+        required: false
+      Commodity:
+        type: string
+        required: false
+      ActiveFlag:
+        type: boolean
+        required: false
+      TaxIDType:
+        type: string
+        required: false
+      AccountingNote:
+        type: string
+        required: false
+      W9OnFile:
+        type: string
+        required: false
+      EmployeeRecruitFlag:
+        type: boolean
+        required: false
+      EntityID:
+        format: int32
+        type: integer
+        required: false
+      CurrencyID:
+        format: int32
+        type: integer
+        required: false
+      CreateDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      CreateByUserID:
+        format: int32
+        type: integer
+        required: false
+      ModifyDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      ModifyByUserID:
+        format: int32
+        type: integer
+        required: false
+      PrimarySupplierID:
+        format: int32
+        type: integer
+        required: false
+      DefaultIncoTermID:
+        format: int32
+        type: integer
+        required: false
+      SubContractorFlag:
+        type: boolean
+        required: false
+      SupplierStatusID:
+        format: int32
+        type: integer
+        required: false
+      SupplierPrototypeStatusID:
+        format: int32
+        type: integer
+        required: false
+      SupplierGroupID:
+        format: int32
+        type: integer
+        required: false
+      DynamicsError:
+        type: string
+        required: false
+      DynamicsUpdatedFlag:
+        type: boolean
+        required: false
+      IsCorporate:
+        type: boolean
+        required: false
+      IsForiegnentity:
+        type: boolean
+        required: false
+      DBA:
+        type: string
+        required: false
+      NDA:
+        type: boolean
+        required: false
+      GTC:
+        type: boolean
+        required: false
+      PA:
+        type: boolean
+        required: false
+      AlternativePayeeID:
+        format: int32
+        type: integer
+        required: false
+      EffectiveDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      SupplierEnabled:
+        type: boolean
+        required: false
+      IsMaster:
+        type: boolean
+        required: false
+      SupplierEntityTaxInfoID:
+        format: int32
+        type: integer
+        required: false
+      SupplierEntityMasterContactID:
+        format: int32
+        type: integer
+        required: false
+      SupplierEntityBankAccountID:
+        format: int32
+        type: integer
+        required: false
+      EntityMethodOfPaymentID:
+        format: int32
+        type: integer
+        required: false
+      SupplierEntityMasterAddressID:
+        format: int32
+        type: integer
+        required: false
+      LocalName:
+        type: string
+        required: false
+      ShortName:
+        type: string
+        required: false
+      PreferredBuyerID:
+        format: int32
+        type: integer
+        required: false
+      SystemOfMeasurementTypeID:
+        format: int32
+        type: integer
+        required: false
+      SupplierRequestID:
+        format: int32
+        type: integer
+        required: false
+      SupplierOwner:
+        format: int32
+        type: integer
+        required: false
+      SupplierStartDate:
+        format: rfc3339
+        type: datetime
+        required: false
+      SerializationCode:
+        type: string
+        required: false
+      IsEDIEnabled:
+        type: boolean
+        required: false
+annotationTypes:
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
