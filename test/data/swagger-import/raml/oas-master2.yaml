@@ -293,13 +293,10 @@ traits:
         description: Number of persons returned
         format: int32
         minimum: 0
-        exclusiveMinimum: true
+        (oas-exclusiveMinimum): true
         maximum: 100
-        exclusiveMaximum: false
+        (oas-exclusiveMaximum): false
         default: 20
-        facets:
-          exclusiveMinimum: boolean
-          exclusiveMaximum: boolean
   pageNumber:
     queryParameters:
       pageNumber:
@@ -312,9 +309,7 @@ traits:
         type: boolean
         description: Result will not include non verified user by default if this parameter is not provided
         default: false
-        allowEmptyValue: true
-        facets:
-          allowEmptyValue: boolean
+        (oas-allowEmptyValue): true
   sortPersons:
     queryParameters:
       sort:
@@ -323,12 +318,10 @@ traits:
         uniqueItems: true
         minItems: 1
         maxItems: 3
-        collectionFormat: pipes
+        (oas-collectionFormat): pipes
         default:
           - '-lastTimeOnline'
           - +username
-        facets:
-          collectionFormat: string
         items:
           type: string
           pattern: '[-+](username|lastTimeOnline|firstname|lastname)'
@@ -372,6 +365,14 @@ traits:
         description: When rate limit will be reset
         format: rfc3339
 annotationTypes:
+  oas-allowEmptyValue:
+    type: boolean
+  oas-collectionFormat:
+    type: string
+  oas-exclusiveMaximum:
+    type: boolean
+  oas-exclusiveMinimum:
+    type: boolean
   oas-responses: any
   oas-tags:
     type: 'string[]'
