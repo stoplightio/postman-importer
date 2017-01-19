@@ -513,10 +513,9 @@ describe.skip('from raml to swagger: platform + examples', function () {
     };
     converter.convertFile(sourceFile, validateOptions).then((resultSwagger) => {
       try {
-        const targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
         const notExistsTarget = !fs.existsSync(targetFile);
         if (notExistsTarget) {
-          const data = JSON.stringify(resultSwagger);
+          const data = JSON.stringify(resultSwagger, null, 2);
           fs.writeFileSync(targetFile, data);
           // console.log('Content for non existing target file ' + targetFile + '\n.');
           // console.log('********** Begin file **********\n');
@@ -533,7 +532,7 @@ describe.skip('from raml to swagger: platform + examples', function () {
     }).catch((err) => {
       console.log(`Invalid export for file ${sourceFile}`);
       console.log('********** Begin file **********\n');
-      console.log(err.exportedData);
+      console.log(JSON.stringify(err.exportedData, null, 2));
       console.log('********** Finish file **********\n');
       done(err);
     });
@@ -547,11 +546,11 @@ describe.skip('from raml to swagger: platform + examples', function () {
 
       if (process.env.fileToTest) {
         if (_.endsWith(sourceFile, process.env.fileToTest)) {
-          xit('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
+          it('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
         }
       }
       else {
-        xit('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
+        it('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
       }
     }
   });
