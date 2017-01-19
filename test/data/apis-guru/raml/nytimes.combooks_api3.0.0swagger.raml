@@ -1,0 +1,986 @@
+#%RAML 1.0
+title: Books
+version: 3.0.0
+baseUri: 'https://api.nytimes.com/svc/books/v3'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: The Books API provides information about book reviews and The New York Times bestsellers lists.
+(oas-info):
+  (oas-x-apiClientRegistration):
+    url: 'http://developer.nytimes.com/signup'
+  (oas-x-apisguru-categories):
+    - media
+    - open_data
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_static01.nyt.com_images_icons_t_logo_291_black.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://raw.githubusercontent.com/NYTimes/public_api_specs/master/books_api/books_api.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): nytimes.com
+  (oas-x-serviceName): books_api
+  termsOfService: 'http://developer.nytimes.com/tou'
+annotationTypes:
+  oas-x-apiClientRegistration: any
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-serviceName: any
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+(oas-externalDocs):
+  url: 'http://developer.nytimes.com/'
+securitySchemes:
+  api-key:
+    type: Pass Through
+    describedBy:
+      queryParameters:
+        api-key:
+          type: string
+'/reviews.{format}':
+  displayName: 'reviews.{format}'
+  uriParameters:
+    format:
+      enum:
+        - json
+        - jsonp
+      required: true
+      type: string
+  get:
+    displayName: GET_reviews-format
+    (oas-summary): Reviews
+    responses:
+      '200':
+        body:
+          application/json:
+            properties:
+              copyright:
+                type: string
+                required: false
+              num_results:
+                type: integer
+                required: false
+              results:
+                items:
+                  properties:
+                    book_author:
+                      type: string
+                      required: false
+                    book_title:
+                      type: string
+                      required: false
+                    byline:
+                      type: string
+                      required: false
+                    isbn13:
+                      items:
+                        type: string
+                      type: array
+                      required: false
+                    publication_dt:
+                      type: string
+                      required: false
+                    summary:
+                      type: string
+                      required: false
+                    url:
+                      type: string
+                      required: false
+                  type: object
+                type: array
+                required: false
+              status:
+                type: string
+                required: false
+            type: object
+            example:
+              copyright: Copyright (c) 2016 The New York Times Company.  All Rights Reserved.
+              num_results: 2
+              results:
+                - book_author: Haruki Murakami
+                  book_title: 1Q84
+                  byline: JANET MASLIN
+                  isbn13:
+                    - '9780307476463'
+                  publication_dt: '2011-11-10'
+                  summary: 'In “1Q84,” the Japanese novelist Haruki Murakami writes about characters in a Tokyo with two moons.'
+                  url: 'http://www.nytimes.com/2011/11/10/books/1q84-by-haruki-murakami-review.html'
+              status: OK
+    queryParameters:
+      isbn:
+        description: Searching by ISBN is the recommended method. You can enter 10- or 13-digit ISBNs.
+        type: integer
+      title:
+        description: You’ll need to enter the full title of the book. Spaces in the title will be converted into the characters %20.
+        type: string
+      author:
+        description: 'You’ll need to enter the author’s first and last name, separated by a space. This space will be converted into the characters %20.'
+        type: string
+      api-key:
+        type: string
+    securedBy:
+      - api-key
+/lists:
+  displayName: lists
+  '/{date}':
+    displayName: '{date}'
+    '/{list}.json':
+      displayName: '{list}.json'
+      uriParameters:
+        list:
+          description: Name of the Best Sellers List. You can get the full list from /lists/names.json
+          required: true
+          type: string
+      get:
+        displayName: GET_lists-date-list-json
+        (oas-summary): Best Seller List by Date
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  copyright:
+                    type: string
+                    required: false
+                  last_modified:
+                    type: string
+                    required: false
+                  num_results:
+                    type: integer
+                    required: false
+                  results:
+                    properties:
+                      bestsellers_date:
+                        type: string
+                        required: false
+                      books:
+                        items:
+                          properties:
+                            age_group:
+                              type: string
+                              required: false
+                            amazon_product_url:
+                              type: string
+                              required: false
+                            article_chapter_link:
+                              type: string
+                              required: false
+                            asterisk:
+                              type: integer
+                              required: false
+                            author:
+                              type: string
+                              required: false
+                            book_image:
+                              type: string
+                              required: false
+                            book_review_link:
+                              type: string
+                              required: false
+                            contributor:
+                              type: string
+                              required: false
+                            contributor_note:
+                              type: string
+                              required: false
+                            dagger:
+                              type: integer
+                              required: false
+                            description:
+                              type: string
+                              required: false
+                            first_chapter_link:
+                              type: string
+                              required: false
+                            isbns:
+                              items:
+                                properties:
+                                  isbn10:
+                                    type: string
+                                    required: false
+                                  isbn13:
+                                    type: string
+                                    required: false
+                                type: object
+                              type: array
+                              required: false
+                            price:
+                              type: integer
+                              required: false
+                            primary_isbn10:
+                              type: string
+                              required: false
+                            primary_isbn13:
+                              type: string
+                              required: false
+                            publisher:
+                              type: string
+                              required: false
+                            rank:
+                              type: integer
+                              required: false
+                            rank_last_week:
+                              type: integer
+                              required: false
+                            sunday_review_link:
+                              type: string
+                              required: false
+                            title:
+                              type: string
+                              required: false
+                            weeks_on_list:
+                              type: integer
+                              required: false
+                          type: object
+                        type: array
+                        required: false
+                      corrections:
+                        items:
+                          properties: {}
+                          type: object
+                        type: array
+                        required: false
+                      display_name:
+                        type: string
+                        required: false
+                      list_name:
+                        type: string
+                        required: false
+                      normal_list_ends_at:
+                        type: integer
+                        required: false
+                      published_date:
+                        type: string
+                        required: false
+                      updated:
+                        type: string
+                        required: false
+                    type: object
+                    required: false
+                  status:
+                    type: string
+                    required: false
+                type: object
+                example:
+                  copyright: Copyright (c) 2016 The New York Times Company.  All Rights Reserved.
+                  last_modified: '2015-12-25T13:05:20-05:00'
+                  num_results: 15
+                  results:
+                    bestsellers_date: '2015-12-19'
+                    books:
+                      - age_group: ''
+                        amazon_product_url: 'http://www.amazon.com/The-Martian-Novel-Andy-Weir-ebook/dp/B00EMXBDMA?tag=thenewyorktim-20'
+                        article_chapter_link: ''
+                        asterisk: 0
+                        author: Andy Weir
+                        book_image: 'http://du.ec2.nytimes.com.s3.amazonaws.com/prd/books/9780804139038.jpg'
+                        book_review_link: ''
+                        contributor: by Andy Weir
+                        contributor_note: ''
+                        dagger: 0
+                        description: 'Separated from his crew, an astronaut embarks on a quest to stay alive on Mars. The basis of the movie.'
+                        first_chapter_link: ''
+                        isbns:
+                          - isbn10: 0804139024
+                            isbn13: '9780804139021'
+                        price: 0
+                        primary_isbn10: 0553418025
+                        primary_isbn13: '9780553418026'
+                        publisher: Broadway
+                        rank: 1
+                        rank_last_week: 0
+                        sunday_review_link: ''
+                        title: THE MARTIAN
+                        weeks_on_list: 60
+                    corrections: []
+                    display_name: Paperback Trade Fiction
+                    list_name: Trade Fiction Paperback
+                    normal_list_ends_at: 10
+                    published_date: '2016-01-03'
+                    updated: WEEKLY
+                  status: OK
+        queryParameters:
+          isbn:
+            description: 'International Standard Book Number, 10 or 13 digits'
+            type: integer
+          list-name:
+            description: |-
+              The name of the Times best-seller list. To get valid values, use a list names request.
+
+              Be sure to replace spaces with hyphens (e.g., e-book-fiction or hardcover-fiction, not E-Book Fiction or Hardcover Fiction). (The parameter is not case sensitive.)
+            type: string
+          published-date:
+            description: |-
+              YYYY-MM-DD
+
+              The date the best-seller list was published on NYTimes.com (compare bestsellers-date)
+            format: rfc3339
+            type: datetime
+          bestsellers-date:
+            description: |-
+              YYYY-MM-DD
+
+              The week-ending date for the sales reflected on list-name. Times best-seller lists are compiled using available book sale data. The bestsellers-date may be significantly earlier than published-date. For additional information, see the explanation at the bottom of any best-seller list page on NYTimes.com (example: Hardcover Fiction, published Dec. 5 but reflecting sales to Nov. 29).
+            type: string
+          weeks-on-list:
+            description: 'The number of weeks that the best seller has been on list-name, as of bestsellers-date'
+            type: integer
+          rank:
+            description: The rank of the best seller on list-name as of bestsellers-date
+            type: string
+          rank-last-week:
+            description: The rank of the best seller on list-name one week prior to bestsellers-date
+            type: integer
+          offset:
+            description: Sets the starting point of the result set
+            type: integer
+          sort-order:
+            description: 'The default is ASC (ascending). The sort-order parameter is used with the sort-by parameter — for details, see each request type.'
+            enum:
+              - ASC
+              - DESC
+            type: string
+        securedBy:
+          - api-key
+  '/overview.{format}':
+    displayName: 'overview.{format}'
+    uriParameters:
+      format:
+        enum:
+          - json
+          - jsonp
+        required: true
+        type: string
+    get:
+      displayName: GET_lists-overview-format
+      (oas-summary): Best Seller List Overview
+      responses:
+        '200':
+          body:
+            application/json:
+              properties:
+                copyright:
+                  type: string
+                  required: false
+                num_results:
+                  type: integer
+                  required: false
+                results:
+                  properties:
+                    bestsellers_date:
+                      type: string
+                      required: false
+                    lists:
+                      items:
+                        properties:
+                          books:
+                            items:
+                              properties:
+                                age_group:
+                                  type: string
+                                  required: false
+                                author:
+                                  type: string
+                                  required: false
+                                contributor:
+                                  type: string
+                                  required: false
+                                contributor_note:
+                                  type: string
+                                  required: false
+                                created_date:
+                                  type: string
+                                  required: false
+                                description:
+                                  type: string
+                                  required: false
+                                price:
+                                  type: integer
+                                  required: false
+                                primary_isbn10:
+                                  type: string
+                                  required: false
+                                primary_isbn13:
+                                  type: string
+                                  required: false
+                                publisher:
+                                  type: string
+                                  required: false
+                                rank:
+                                  type: integer
+                                  required: false
+                                title:
+                                  type: string
+                                  required: false
+                                updated_date:
+                                  type: string
+                                  required: false
+                              type: object
+                            type: array
+                            required: false
+                          display_name:
+                            type: string
+                            required: false
+                          list_id:
+                            type: integer
+                            required: false
+                          list_image:
+                            type: string
+                            required: false
+                          list_name:
+                            type: string
+                            required: false
+                          updated:
+                            type: string
+                            required: false
+                        type: object
+                      type: array
+                      required: false
+                    published_date:
+                      type: string
+                      required: false
+                  type: object
+                  required: false
+                status:
+                  type: string
+                  required: false
+              type: object
+              example:
+                copyright: Copyright (c) 2016 The New York Times Company.  All Rights Reserved.
+                num_results: 210
+                results:
+                  bestsellers_date: '2016-03-05'
+                  lists:
+                    - books:
+                        - age_group: ''
+                          author: Clive Cussler and Justin Scott
+                          contributor: by Clive Cussler and Justin Scott
+                          contributor_note: ''
+                          created_date: '2016-03-10 12:00:22'
+                          description: 'In the ninth book in this series, set in 1906, the New York detective Isaac Bell contends with a crime boss passing as a respectable businessman and a tycoon’s plot against President Theodore Roosevelt.'
+                          price: 0
+                          primary_isbn10: 0698406427
+                          primary_isbn13: '9780698406421'
+                          publisher: Putnam
+                          rank: 1
+                          title: THE GANGSTER
+                          updated_date: '2016-03-10 17:00:21'
+                      display_name: Combined Print & E-Book Fiction
+                      list_id: 704
+                      list_image: 'http://du.ec2.nytimes.com.s3.amazonaws.com/prd/books/9780399175954.jpg'
+                      list_name: Combined Print and E-Book Fiction
+                      updated: WEEKLY
+                  published_date: '2016-03-20'
+                status: OK
+      queryParameters:
+        published_date:
+          description: |-
+            The best-seller list publication date. YYYY-MM-DD
+
+            You do not have to specify the exact date the list was published. The service will search forward (into the future) for the closest publication date to the date you specify. For example, a request for lists/overview/2013-05-22 will retrieve the list that was published on 05-26.
+
+            If you do not include a published_date, the current week's best-sellers lists will be returned.
+          type: string
+        api-key:
+          type: string
+      securedBy:
+        - api-key
+  '/names.{format}':
+    displayName: 'names.{format}'
+    uriParameters:
+      format:
+        enum:
+          - json
+          - jsonp
+        required: true
+        type: string
+    get:
+      displayName: GET_lists-names-format
+      (oas-summary): Best Seller List Names
+      responses:
+        '200':
+          body:
+            application/json:
+              properties:
+                copyright:
+                  type: string
+                  required: false
+                num_results:
+                  type: integer
+                  required: false
+                results:
+                  items:
+                    properties:
+                      display_name:
+                        type: string
+                        required: false
+                      list_name:
+                        type: string
+                        required: false
+                      list_name_encoded:
+                        type: string
+                        required: false
+                      newest_published_date:
+                        type: string
+                        required: false
+                      oldest_published_date:
+                        type: string
+                        required: false
+                      updated:
+                        type: string
+                        required: false
+                    type: object
+                  type: array
+                  required: false
+                status:
+                  type: string
+                  required: false
+              type: object
+              example:
+                copyright: Copyright (c) 2016 The New York Times Company.  All Rights Reserved.
+                num_results: 53
+                results:
+                  - display_name: Combined Print & E-Book Fiction
+                    list_name: Combined Print and E-Book Fiction
+                    list_name_encoded: combined-print-and-e-book-fiction
+                    newest_published_date: '2016-03-20'
+                    oldest_published_date: '2011-02-13'
+                    updated: WEEKLY
+                status: OK
+      queryParameters:
+        api-key:
+          type: string
+      securedBy:
+        - api-key
+  /best-sellers:
+    displayName: best-sellers
+    /history.json:
+      displayName: history.json
+      get:
+        displayName: GET_lists-best-sellers-history-json
+        (oas-summary): Best Seller History List
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  copyright:
+                    type: string
+                    required: false
+                  num_results:
+                    type: integer
+                    required: false
+                  results:
+                    items:
+                      properties:
+                        age_group:
+                          type: string
+                          required: false
+                        author:
+                          type: string
+                          required: false
+                        contributor:
+                          type: string
+                          required: false
+                        contributor_note:
+                          type: string
+                          required: false
+                        description:
+                          type: string
+                          required: false
+                        isbns:
+                          items:
+                            properties:
+                              isbn10:
+                                type: string
+                                required: false
+                              isbn13:
+                                type: string
+                                required: false
+                            type: object
+                          type: array
+                          required: false
+                        price:
+                          type: integer
+                          required: false
+                        publisher:
+                          type: string
+                          required: false
+                        ranks_history:
+                          items:
+                            properties:
+                              asterisk:
+                                type: integer
+                                required: false
+                              bestsellers_date:
+                                type: string
+                                required: false
+                              dagger:
+                                type: integer
+                                required: false
+                              display_name:
+                                type: string
+                                required: false
+                              list_name:
+                                type: string
+                                required: false
+                              primary_isbn10:
+                                type: string
+                                required: false
+                              primary_isbn13:
+                                type: string
+                                required: false
+                              published_date:
+                                type: string
+                                required: false
+                              rank:
+                                type: integer
+                                required: false
+                              ranks_last_week:
+                                type: nil
+                                required: false
+                              weeks_on_list:
+                                type: integer
+                                required: false
+                            type: object
+                          type: array
+                          required: false
+                        reviews:
+                          items:
+                            properties:
+                              article_chapter_link:
+                                type: string
+                                required: false
+                              book_review_link:
+                                type: string
+                                required: false
+                              first_chapter_link:
+                                type: string
+                                required: false
+                              sunday_review_link:
+                                type: string
+                                required: false
+                            type: object
+                          type: array
+                          required: false
+                        title:
+                          type: string
+                          required: false
+                      type: object
+                    type: array
+                    required: false
+                  status:
+                    type: string
+                    required: false
+                type: object
+                example:
+                  copyright: Copyright (c) 2016 The New York Times Company.  All Rights Reserved.
+                  num_results: 28970
+                  results:
+                    - age_group: ''
+                      author: Sophia Amoruso
+                      contributor: by Sophia Amoruso
+                      contributor_note: ''
+                      description: An online fashion retailer traces her path to success.
+                      isbns:
+                        - isbn10: 039916927X
+                          isbn13: '9780399169274'
+                      price: 0
+                      publisher: Portfolio/Penguin/Putnam
+                      ranks_history:
+                        - asterisk: 0
+                          bestsellers_date: '2016-02-27'
+                          dagger: 0
+                          display_name: Business
+                          list_name: Business Books
+                          primary_isbn10: '1591847931'
+                          primary_isbn13: '9781591847939'
+                          published_date: '2016-03-13'
+                          rank: 8
+                          weeks_on_list: 0
+                      reviews:
+                        - article_chapter_link: ''
+                          book_review_link: ''
+                          first_chapter_link: ''
+                          sunday_review_link: ''
+                      title: '#GIRLBOSS'
+                  status: OK
+        queryParameters:
+          age-group:
+            description: The target age group for the best seller.
+            type: string
+          author:
+            description: |-
+              The author of the best seller. The author field does not include additional contributors (see Data Structure for more details about the author and contributor fields).
+
+              When searching the author field, you can specify any combination of first, middle and last names.
+
+              When sort-by is set to author, the results will be sorted by author's first name. 
+            type: string
+          contributor:
+            description: |-
+              The author of the best seller, as well as other contributors such as the illustrator (to search or sort by author name only, use author instead).
+
+              When searching, you can specify any combination of first, middle and last names of any of the contributors.
+
+              When sort-by is set to contributor, the results will be sorted by the first name of the first contributor listed. 
+            type: string
+          isbn:
+            description: |-
+              International Standard Book Number, 10 or 13 digits
+
+              A best seller may have both 10-digit and 13-digit ISBNs, and may have multiple ISBNs of each type. To search on multiple ISBNs, separate the ISBNs with semicolons (example: 9780446579933;0061374229).
+            type: string
+          price:
+            description: 'The publisher''s list price of the best seller, including decimal point'
+            type: string
+          publisher:
+            description: The standardized name of the publisher
+            type: string
+          title:
+            description: |-
+              The title of the best seller
+
+              When searching, you can specify a portion of a title or a full title.
+            type: string
+        securedBy:
+          - api-key
+'/lists.{format}':
+  displayName: 'lists.{format}'
+  uriParameters:
+    format:
+      enum:
+        - json
+        - jsonp
+      required: true
+      type: string
+  get:
+    displayName: GET_lists-format
+    (oas-summary): Best Seller List
+    responses:
+      '200':
+        body:
+          application/json:
+            properties:
+              copyright:
+                type: string
+                required: false
+              last_modified:
+                type: string
+                required: false
+              num_results:
+                type: integer
+                required: false
+              results:
+                items:
+                  properties:
+                    amazon_product_url:
+                      type: string
+                      required: false
+                    asterisk:
+                      type: integer
+                      required: false
+                    bestsellers_date:
+                      type: string
+                      required: false
+                    book_details:
+                      items:
+                        properties:
+                          age_group:
+                            type: string
+                            required: false
+                          author:
+                            type: string
+                            required: false
+                          contributor:
+                            type: string
+                            required: false
+                          contributor_note:
+                            type: string
+                            required: false
+                          description:
+                            type: string
+                            required: false
+                          price:
+                            type: integer
+                            required: false
+                          primary_isbn10:
+                            type: string
+                            required: false
+                          primary_isbn13:
+                            type: string
+                            required: false
+                          publisher:
+                            type: string
+                            required: false
+                          title:
+                            type: string
+                            required: false
+                        type: object
+                      type: array
+                      required: false
+                    dagger:
+                      type: integer
+                      required: false
+                    display_name:
+                      type: string
+                      required: false
+                    isbns:
+                      items:
+                        properties:
+                          isbn10:
+                            type: string
+                            required: false
+                          isbn13:
+                            type: string
+                            required: false
+                        type: object
+                      type: array
+                      required: false
+                    list_name:
+                      type: string
+                      required: false
+                    published_date:
+                      type: string
+                      required: false
+                    rank:
+                      type: integer
+                      required: false
+                    rank_last_week:
+                      type: integer
+                      required: false
+                    reviews:
+                      items:
+                        properties:
+                          article_chapter_link:
+                            type: string
+                            required: false
+                          book_review_link:
+                            type: string
+                            required: false
+                          first_chapter_link:
+                            type: string
+                            required: false
+                          sunday_review_link:
+                            type: string
+                            required: false
+                        type: object
+                      type: array
+                      required: false
+                    weeks_on_list:
+                      type: integer
+                      required: false
+                  type: object
+                type: array
+                required: false
+              status:
+                type: string
+                required: false
+            type: object
+            example:
+              copyright: Copyright (c) 2016 The New York Times Company.  All Rights Reserved.
+              last_modified: '2016-03-11T13:09:01-05:00'
+              num_results: 1
+              results:
+                - amazon_product_url: 'http://www.amazon.com/Girls-Guide-Moving-On-Novel-ebook/dp/B00ZNE17B4?tag=thenewyorktim-20'
+                  asterisk: 0
+                  bestsellers_date: '2016-03-05'
+                  book_details:
+                    - age_group: ''
+                      author: Debbie Macomber
+                      contributor: by Debbie Macomber
+                      contributor_note: ''
+                      description: A mother and her daughter-in-law both leave unhappy marriages and take up with new men.
+                      price: 0
+                      primary_isbn10: 0553391925
+                      primary_isbn13: '9780553391923'
+                      publisher: Ballantine
+                      title: A GIRL'S GUIDE TO MOVING ON
+                  dagger: 0
+                  display_name: Hardcover Fiction
+                  isbns:
+                    - isbn10: 0553391925
+                      isbn13: '9780553391923'
+                  list_name: Hardcover Fiction
+                  published_date: '2016-03-20'
+                  rank: 5
+                  rank_last_week: 2
+                  reviews:
+                    - article_chapter_link: ''
+                      book_review_link: ''
+                      first_chapter_link: ''
+                      sunday_review_link: ''
+                  weeks_on_list: 2
+              status: OK
+    queryParameters:
+      list:
+        description: |-
+          The name of the Times best-seller list. To get valid values, use a list names request.
+
+          Be sure to replace spaces with hyphens (e.g., e-book-fiction or hardcover-fiction, not E-Book Fiction or Hardcover Fiction). (The parameter is not case sensitive.)
+        type: string
+      weeks-on-list:
+        description: 'The number of weeks that the best seller has been on list-name, as of bestsellers-date'
+        type: integer
+      bestsellers-date:
+        description: |-
+          YYYY-MM-DD
+
+          The week-ending date for the sales reflected on list-name. Times best-seller lists are compiled using available book sale data. The bestsellers-date may be significantly earlier than published-date. For additional information, see the explanation at the bottom of any best-seller list page on NYTimes.com (example: Hardcover Fiction, published Dec. 5 but reflecting sales to Nov. 29).
+        format: rfc3339
+        type: datetime
+      date:
+        description: YYYY-MM-DD  The date the best-seller list was published on NYTimes.com (compare bestsellers-date)
+        type: string
+      isbn:
+        description: 'International Standard Book Number, 10 or 13 digits'
+        type: string
+      published-date:
+        description: |-
+          YYYY-MM-DD
+
+          The date the best-seller list was published on NYTimes.com (compare bestsellers-date)
+        type: string
+      rank:
+        description: The rank of the best seller on list-name as of bestsellers-date
+        type: integer
+      rank-last-week:
+        description: The rank of the best seller on list-name one week prior to bestsellers-date
+        type: integer
+      offset:
+        description: Sets the starting point of the result set
+        type: integer
+      sort-order:
+        description: Sets the sort order of the result set
+        enum:
+          - ASC
+          - DESC
+        type: string
+    securedBy:
+      - api-key

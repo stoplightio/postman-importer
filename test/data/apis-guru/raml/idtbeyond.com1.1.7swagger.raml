@@ -1,0 +1,582 @@
+#%RAML 1.0
+title: Active Documentation for /v1
+version: 1.1.7
+baseUri: 'https://api.idtbeyond.com/v1'
+mediaType: application/json
+protocols:
+  - HTTPS
+description: 'Our active docs provide the ability to test out your account and to see the responses to your queries. The services are RESTful, and are accessed using standard HTTP methods over a secure HTTPS channel. Requests and responses are currently sent in JSON format, and have a base URL of /v1.'
+(oas-info):
+  (oas-x-logo):
+    backgroundColor: '#222222'
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.idtbeyond.com_images_logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://app.idtbeyond.com/swagger/spec-08ef3dc298.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): idtbeyond.com
+  termsOfService: 'https://app.idtbeyond.com/terms/'
+annotationTypes:
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-idt-beyond-app-id: any
+  oas-x-idt-beyond-app-key: any
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/iatu:
+  displayName: iatu
+  /products:
+    displayName: products
+    /reports:
+      displayName: reports
+      /local-value:
+        displayName: local-value
+        get:
+          displayName: GET_iatu-products-reports-local-value
+          description: 'Returns a CSV of products, ranges, and their commissions percentages.'
+          (oas-summary): Get the estimated Local Value of a product
+          headers:
+            (oas-x-idt-beyond-app-id):
+              type: string
+              description: Application ID you would like to use
+              default: APP_ID
+              required: true
+            (oas-x-idt-beyond-app-key):
+              type: string
+              description: Application KEY you would like to use
+              default: APP_KEY
+              required: true
+          responses:
+            '200':
+              description: Local value response
+          queryParameters:
+            country_code:
+              default: GT
+              description: 2-digit code of the country in ISO 3166 format. 'GT'
+              required: true
+              type: string
+            carrier_code:
+              default: Claro
+              description: Name of the mobile carrier. 'Claro'
+              required: true
+              type: string
+            amount:
+              default: 500
+              description: 'This is the amount, in cents, of the product you are purchasing. ''500'' = $5.00'
+              required: true
+              type: integer
+            currency_code:
+              default: USD
+              description: The currency code (ISO 4217) on the product you are querying. 'USD'
+              required: true
+              type: string
+          (oas-tags):
+            - products
+      /all:
+        displayName: all
+        get:
+          displayName: GET_iatu-products-reports-all
+          description: 'Returns a JSON list of products, ranges, and their commissions percentages.'
+          (oas-summary): Get a list of products in JSON format
+          headers:
+            (oas-x-idt-beyond-app-id):
+              type: string
+              description: Application ID you would like to use
+              default: APP_ID
+              required: true
+            (oas-x-idt-beyond-app-key):
+              type: string
+              description: Application KEY you would like to use
+              default: APP_KEY
+              required: true
+          responses:
+            '200':
+              description: Products JSON response
+          (oas-tags):
+            - products
+      /all.csv:
+        displayName: all.csv
+        get:
+          displayName: GET_iatu-products-reports-all-csv
+          description: 'Returns a CSV of products, ranges, and their commissions percentages.'
+          (oas-summary): Get a list of products in CSV format
+          headers:
+            (oas-x-idt-beyond-app-id):
+              type: string
+              description: Application ID you would like to use
+              default: APP_ID
+              required: true
+            (oas-x-idt-beyond-app-key):
+              type: string
+              description: Application KEY you would like to use
+              default: APP_KEY
+              required: true
+          responses:
+            '200':
+              description: Products CSV response
+          (oas-tags):
+            - products
+    /promotions:
+      displayName: promotions
+      get:
+        displayName: GET_iatu-products-promotions
+        description: Returns a JSON of the current promotions.
+        (oas-summary): Current promotions
+        headers:
+          (oas-x-idt-beyond-app-id):
+            type: string
+            description: Application ID you would like to use
+            default: APP_ID
+            required: true
+          (oas-x-idt-beyond-app-key):
+            type: string
+            description: Application KEY you would like to use
+            default: APP_KEY
+            required: true
+        responses:
+          '200':
+            description: Successful Promotions JSON response
+        (oas-tags):
+          - utilities
+  /topups:
+    displayName: topups
+    post:
+      displayName: POST_iatu-topups
+      description: Submits an IATU transaction request.
+      (oas-summary): Topup a mobile phone
+      body:
+        application/json:
+          type: Topups
+          (oas-body-name): body
+          description: Topups details
+      headers:
+        (oas-x-idt-beyond-app-id):
+          type: string
+          description: Application ID you would like to use
+          default: APP_ID
+          required: true
+        (oas-x-idt-beyond-app-key):
+          type: string
+          description: Application KEY you would like to use
+          default: APP_KEY
+          required: true
+      responses:
+        '201':
+          description: The transaction has been completed successfully.
+        '202':
+          description: 'The transaction has been received, but the final status is unknown. Please query by the client_transaction_id to get the current status of the transaction.'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: X not found
+        '405':
+          description: Validation exception
+        '500':
+          description: There is an error in your transaction. Please check the error code contained in the result for more information.
+      (oas-tags):
+        - topups
+    /reports:
+      displayName: reports
+      post:
+        displayName: POST_iatu-topups-reports
+        description: 'Search topups transactions, by date, with client_transaction_id or to_service_number. Use ''client_transaction_id'' to search by transaction number, or ''to_service_number'' to get transaction status.'
+        (oas-summary): Search topups transactions
+        body:
+          application/json:
+            type: TopupsReports
+            (oas-body-name): body
+            description: Topups reports request details
+        headers:
+          (oas-x-idt-beyond-app-id):
+            type: string
+            description: Application ID you would like to use
+            default: APP_ID
+            required: true
+          (oas-x-idt-beyond-app-key):
+            type: string
+            description: Application KEY you would like to use
+            default: APP_KEY
+            required: true
+        responses:
+          '200':
+            description: Successful topups JSON response
+        (oas-tags):
+          - topups
+      /totals:
+        displayName: totals
+        get:
+          displayName: GET_iatu-topups-reports-totals
+          description: Returns topups totals by date range.
+          (oas-summary): Summary of account topups in JSON
+          headers:
+            (oas-x-idt-beyond-app-id):
+              type: string
+              description: Application ID you would like to use
+              default: APP_ID
+              required: true
+            (oas-x-idt-beyond-app-key):
+              type: string
+              description: Application KEY you would like to use
+              default: APP_KEY
+              required: true
+          responses:
+            '200':
+              description: Successful topups JSON response
+          queryParameters:
+            date_from:
+              default: '2016-01-28'
+              description: The beginning date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+            date_to:
+              default: '2016-01-28'
+              description: The ending date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+          (oas-tags):
+            - topups
+      /all.csv:
+        displayName: all.csv
+        get:
+          displayName: GET_iatu-topups-reports-all-csv
+          description: Returns topups by date range in CSV.
+          (oas-summary): List of account topups in CSV
+          headers:
+            (oas-x-idt-beyond-app-id):
+              type: string
+              description: Application ID you would like to use
+              default: APP_ID
+              required: true
+            (oas-x-idt-beyond-app-key):
+              type: string
+              description: Application KEY you would like to use
+              default: APP_KEY
+              required: true
+          responses:
+            '200':
+              description: Successful topups CSV response
+          queryParameters:
+            date_from:
+              default: '2016-01-28'
+              description: The beginning date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+            date_to:
+              default: '2016-01-28'
+              description: The ending date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+          (oas-tags):
+            - topups
+      /all:
+        displayName: all
+        get:
+          displayName: GET_iatu-topups-reports-all
+          description: Returns topups by date range.
+          (oas-summary): List of account topups in JSON
+          headers:
+            (oas-x-idt-beyond-app-id):
+              type: string
+              description: Application ID you would like to use
+              default: APP_ID
+              required: true
+            (oas-x-idt-beyond-app-key):
+              type: string
+              description: Application KEY you would like to use
+              default: APP_KEY
+              required: true
+          responses:
+            '200':
+              description: Successful topups JSON response
+          queryParameters:
+            date_from:
+              default: '2016-01-28'
+              description: The beginning date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+            date_to:
+              default: '2016-01-28'
+              description: The ending date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+          (oas-tags):
+            - topups
+    /reverse:
+      displayName: reverse
+      post:
+        displayName: POST_iatu-topups-reverse
+        description: 'Occasionally, a carrier will not be able to successfully complete a topup request. In this case, we will attempt to automatically reverse the transaction for you, and return the money into your account. In the case when this is not possible, you may need to request a reverse on the transaction that has a status of ''transaction_status'' ''notredeemed''.'
+        (oas-summary): Reversal of a Topup
+        body:
+          application/json:
+            type: TopupsReversal
+            (oas-body-name): body
+            description: Topups details
+        headers:
+          (oas-x-idt-beyond-app-id):
+            type: string
+            description: Application ID you would like to use
+            default: APP_ID
+            required: true
+          (oas-x-idt-beyond-app-key):
+            type: string
+            description: Application KEY you would like to use
+            default: APP_KEY
+            required: true
+        responses:
+          '200':
+            description: Successful charges JSON response
+        (oas-tags):
+          - topups
+  /balance:
+    displayName: balance
+    get:
+      displayName: GET_iatu-balance
+      description: Returns a JSON of the account balance.
+      (oas-summary): Account balance
+      headers:
+        (oas-x-idt-beyond-app-id):
+          type: string
+          description: Application ID you would like to use
+          default: APP_ID
+          required: true
+        (oas-x-idt-beyond-app-key):
+          type: string
+          description: Application KEY you would like to use
+          default: APP_KEY
+          required: true
+      responses:
+        '200':
+          description: Successful balance JSON response
+      (oas-tags):
+        - account
+  /charges:
+    displayName: charges
+    /reports:
+      displayName: reports
+      /all.csv:
+        displayName: all.csv
+        get:
+          displayName: GET_iatu-charges-reports-all-csv
+          description: Returns charges by date range in CSV.
+          (oas-summary): List of account charges in CSV
+          headers:
+            (oas-x-idt-beyond-app-id):
+              type: string
+              description: Application ID you would like to use
+              default: APP_ID
+              required: true
+            (oas-x-idt-beyond-app-key):
+              type: string
+              description: Application KEY you would like to use
+              default: APP_KEY
+              required: true
+          responses:
+            '200':
+              description: Successful charges CSV response
+          queryParameters:
+            date_from:
+              default: '2016-01-28'
+              description: The beginning date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+            date_to:
+              default: '2016-01-28'
+              description: The ending date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+          (oas-tags):
+            - charges
+      /all:
+        displayName: all
+        get:
+          displayName: GET_iatu-charges-reports-all
+          description: Returns charges by date range.
+          (oas-summary): List of account charges in JSON
+          headers:
+            (oas-x-idt-beyond-app-id):
+              type: string
+              description: Application ID you would like to use
+              default: APP_ID
+              required: true
+            (oas-x-idt-beyond-app-key):
+              type: string
+              description: Application KEY you would like to use
+              default: APP_KEY
+              required: true
+          responses:
+            '200':
+              description: Successful charges JSON response
+          queryParameters:
+            date_from:
+              default: '2016-01-28'
+              description: The beginning date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+            date_to:
+              default: '2016-01-28'
+              description: The ending date of the search IN YYYY-MM-DD format (America/New_York timezone). '2016-01-28'
+              required: true
+              type: string
+          (oas-tags):
+            - charges
+  /number-validator:
+    displayName: number-validator
+    get:
+      displayName: GET_iatu-number-validator
+      description: Checks to verify if the phone number is valid for the country supplied.
+      (oas-summary): Mobile number validation
+      headers:
+        (oas-x-idt-beyond-app-id):
+          type: string
+          description: Application ID you would like to use
+          default: APP_ID
+          required: true
+        (oas-x-idt-beyond-app-key):
+          type: string
+          description: Application KEY you would like to use
+          default: APP_KEY
+          required: true
+      responses:
+        '200':
+          description: Local value response
+      queryParameters:
+        country_code:
+          default: BR
+          description: 2-digit code of the country in ISO 3166 format. 'BR'
+          required: true
+          type: string
+        mobile_number:
+          default: '5521983115555'
+          description: The mobile number you would like to validate. '5521983115555'
+          required: true
+          type: string
+      (oas-tags):
+        - utilities
+/status:
+  displayName: status
+  get:
+    displayName: GET_status
+    description: Returns a JSON of the API status.
+    (oas-summary): Status check
+    headers:
+      (oas-x-idt-beyond-app-id):
+        type: string
+        description: Application ID you would like to use
+        default: APP_ID
+        required: true
+      (oas-x-idt-beyond-app-key):
+        type: string
+        description: Application KEY you would like to use
+        default: APP_KEY
+        required: true
+    responses:
+      '200':
+        description: Successful status JSON response
+    (oas-tags):
+      - utilities
+types:
+  Topups:
+    properties:
+      amount:
+        default: 500
+        description: 'The amount, in cents, of the product you are purchasing. ''500'' = $5.00'
+        type: integer
+        required: false
+      carrier_code:
+        default: Claro
+        description: Name of the mobile carrier. 'Claro'
+        type: string
+        required: false
+      client_transaction_id:
+        default: ''
+        description: UNIQUE 15 char ID you use to track topups. 'trans0123456789'
+        type: string
+        required: false
+      country_code:
+        default: GT
+        description: 2-digit code of the country in ISO 3166 format. 'GT'
+        type: string
+        required: false
+      mobile_number:
+        default: '50231234567'
+        description: Mobile number to topup. VALIDATE prior to submission. '50231234567'
+        type: string
+        required: false
+      plan:
+        default: Sandbox
+        description: The Application plan being used. Case-sensitive. 'Sandbox' or 'Production'
+        type: string
+        required: false
+      product_code:
+        default: ''
+        description: Optional code to distinguish one particular product from another. '76560'
+        type: string
+        required: false
+      terminal_id:
+        default: Kiosk 5
+        description: ID for the Terminal used to perform the topup. 'Kiosk 5'
+        type: string
+        required: false
+  TopupsReports:
+    properties:
+      client_transaction_id:
+        default: trans0123456789
+        description: The UNIQUE 15 char ID used to track topups. 'trans0123456789'
+        type: string
+        required: false
+      date_from:
+        default: '2016-01-28'
+        description: The beginning date of the search IN YYYY-MM-DD format (America/New_York timezone). Not used in query by to_service_number. '2016-01-28'
+        type: string
+        required: false
+      date_to:
+        default: '2016-01-28'
+        description: The ending date of the search IN YYYY-MM-DD format (America/New_York timezone). Not used in query by to_service_number. '2016-01-28'
+        type: string
+        required: false
+      to_service_number:
+        default: 0123456789
+        description: Enter the to_service_number returned in the response to track the current transaction status. '0123456789'
+        type: string
+        required: false
+      type_of_report:
+        default: client_transaction_id or to_service_number
+        description: The type of query you would like to search by.
+        type: string
+        required: false
+  TopupsReversal:
+    properties:
+      client_transaction_id:
+        default: trans0123456789
+        description: UNIQUE 15 char ID you use to track topups. 'trans0123456789'
+        type: string
+        required: false
+      to_service_number:
+        default: 0123456789
+        description: UNIQUE IDT transaction number found in the response of a successful topup request. '0123456789'
+        type: string
+        required: false
