@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Mobile Order API",
+    "description": ""
+  },
+  "host": "localhost:8081",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/orders": {
+      "get": {
+        "operationId": "GET_orders",
+        "description": "lists all orders of a specific user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "use to query all orders of a user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "the amount of elements of each result page",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "the page number",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/assets.Orders"
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Orders",
+      "x-raml-resource-description": "Orders collection resource used to create new orders."
+    }
+  },
+  "parameters": {
+    "trait:assetsPaging:size": {
+      "name": "size",
+      "in": "query",
+      "description": "the amount of elements of each result page",
+      "required": false,
+      "type": "integer"
+    },
+    "trait:assetsPaging:page": {
+      "name": "page",
+      "in": "query",
+      "description": "the page number",
+      "required": false,
+      "type": "integer"
+    }
+  },
+  "definitions": {
+    "assets.ProductItem": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product_id",
+        "quantity"
+      ]
+    },
+    "assets.Order": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string"
+        },
+        "creation_date": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/assets.ProductItem"
+          }
+        }
+      },
+      "required": [
+        "order_id",
+        "creation_date",
+        "items"
+      ]
+    },
+    "assets.Orders": {
+      "type": "object",
+      "properties": {
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/assets.Order"
+          }
+        }
+      },
+      "required": [
+        "orders"
+      ]
+    }
+  }
+}

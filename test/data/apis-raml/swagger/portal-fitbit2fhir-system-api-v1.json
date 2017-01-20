@@ -1,0 +1,245 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "portal-fitbit2fhir-system-api",
+    "description": ""
+  },
+  "host": "portal-fitbit2fhir-system-api.cloudhub.io",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/patients/{patientIDType}/{patientID}/authorize": {
+      "parameters": [
+        {
+          "name": "patientIDType",
+          "in": "path",
+          "description": "ID Type like MRN",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "patientID",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_patients-patientIDType-patientID-authorize",
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "location": "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=client_id&redirect_uri=https%3A%2F%2Fhost%2Ffitbit%2Fcallback&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&prompt=login"
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Authorize Fitbit user"
+    },
+    "/patients/{patientIDType}/{patientID}/unauthorize": {
+      "parameters": [
+        {
+          "name": "patientIDType",
+          "in": "path",
+          "description": "ID Type like MRN",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "patientID",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_patients-patientIDType-patientID-unauthorize",
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "message": "Patient was unauthorized"
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Unauthorize Fitbit user"
+    },
+    "/patients/{patientIDType}/{patientID}/observations": {
+      "parameters": [
+        {
+          "name": "patientIDType",
+          "in": "path",
+          "description": "ID Type like MRN",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "patientID",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_patients-patientIDType-patientID-observations",
+        "description": "Get fitbit activity and sleep observations for given patient in FHIR structure",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Effective date of Observations (if starting with \"eq\" match exact date, if starting with \"ge\" match range sice specified date until today)",
+            "required": true,
+            "type": "string",
+            "pattern": "^(eq|ge)(((19|20)\\d\\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]))$"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": [
+                {
+                  "resourceType": "Observation",
+                  "subject": {
+                    "reference": "patients/mrn/12345"
+                  },
+                  "device": {
+                    "reference": "Device/123456789"
+                  },
+                  "effectiveDateTime": "2016-07-18",
+                  "code": {
+                    "coding": [
+                      {
+                        "system": "https://rtmms.nist.gov",
+                        "code": "8454247",
+                        "display": "MDC_HF_DISTANCE"
+                      }
+                    ]
+                  },
+                  "valueQuantity": {
+                    "value": "12450",
+                    "unit": "MDC_DIM_STEP"
+                  }
+                },
+                {
+                  "resourceType": "Observation",
+                  "subject": {
+                    "reference": "patients/mrn/12345"
+                  },
+                  "device": {
+                    "reference": "Device/123456789"
+                  },
+                  "effectiveDateTime": "2016-07-18",
+                  "code": {
+                    "coding": [
+                      {
+                        "system": "http://browser.ihtsdotools.org/",
+                        "code": "248263006",
+                        "display": "Duration of sleep"
+                      }
+                    ]
+                  },
+                  "valueQuantity": {
+                    "value": "473",
+                    "unit": "min"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Fitbit observations in FHIR structure"
+    },
+    "/patients/{patientIDType}/{patientID}/devices": {
+      "parameters": [
+        {
+          "name": "patientIDType",
+          "in": "path",
+          "description": "ID Type like MRN",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "patientID",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_patients-patientIDType-patientID-devices",
+        "description": "Get fitbit devices for given patient in FHIR structure",
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": [
+                {
+                  "resourceType": "Device",
+                  "id": "123456789",
+                  "patient": {
+                    "reference": "patients/mrn/12345"
+                  },
+                  "manufacturer": "Fitbit, Inc.",
+                  "model": "Charge HR",
+                  "type": {
+                    "text": "TRACKER"
+                  },
+                  "contact": [
+                    {
+                      "system": "other",
+                      "value": "https://www.fitbit.com/"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Fitbit devices in FHIR structure"
+    },
+    "/patients": {
+      "get": {
+        "operationId": "GET_patients",
+        "description": "Get list of patient IDs",
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "patients": [
+                  "12345",
+                  "12346",
+                  "12347"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Patients authorized to Fitbit"
+    }
+  },
+  "definitions": {}
+}

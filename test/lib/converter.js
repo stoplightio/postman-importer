@@ -540,8 +540,8 @@ describe.skip('from raml to swagger: platform + examples', function () {
 
   testFiles.forEach(function (testFile) {
     if (!_.startsWith(testFile, '.')) {
-      const sourceFile = baseDir + '/' + testFile + '/api.raml';
-      const targetFile = baseDir + '/../swagger/api.json';
+      const sourceFile = `${baseDir}/${testFile}/api.raml`;
+      const targetFile = `${baseDir}/../swagger/${testFile}.json`;
       const validate = !excludedValidation.includes(testFile);
 
       if (process.env.fileToTest) {

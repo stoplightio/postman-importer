@@ -1,0 +1,810 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "healthcare-portal2fhir-ehr-experience-api",
+    "description": ""
+  },
+  "host": "healthcare-portal2fhir-ehr-experience-api.cloudhub.io",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/signin": {
+      "post": {
+        "operationId": "POST_signin",
+        "description": "Signs in user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "example": {
+                "login": "login",
+                "password": "password"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "patientId": "12345"
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "message": "Incorrect credentials"
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "User Signin"
+    },
+    "/signout": {
+      "post": {
+        "operationId": "POST_signout",
+        "description": "Signs out user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "example": {
+                "login": "login"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "message": "User signed out"
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "User Signout"
+    },
+    "/signup": {
+      "post": {
+        "operationId": "POST_signup",
+        "description": "Signs up user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "example": {
+                "login": "login",
+                "password": "password",
+                "name": {
+                  "family": "Radonctest",
+                  "given": "Veera",
+                  "prefix": "",
+                  "suffix": ""
+                },
+                "phone": "608-999-9654",
+                "careProvider": "10",
+                "address": {
+                  "line": "1855 Folsom Street",
+                  "city": "San Francisco",
+                  "district": "DANE",
+                  "state": "Wisconsin",
+                  "postalCode": "53703",
+                  "country": "United States of America"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "message": "Signup completed successfully. You can log in with your credentials."
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "message": "Login you are trying to set is already in use. Please, choose another one."
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "User Signup"
+    },
+    "/patient/{id}/info": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "put": {
+        "operationId": "PUT_patient-id-info",
+        "description": "PUT patient info from Portal to SFDC Health Cloud",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "example": {
+                "name": {
+                  "family": "Radonctest",
+                  "given": "Veera",
+                  "prefix": "",
+                  "suffix": ""
+                },
+                "phone": "608-999-9654",
+                "careProvider": "10",
+                "address": {
+                  "line": "1855 Folsom Street",
+                  "city": "San Francisco",
+                  "district": "DANE",
+                  "state": "Wisconsin",
+                  "postalCode": "53703",
+                  "country": "United States of America"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "get": {
+        "operationId": "GET_patient-id-info",
+        "description": "GET patient info from EHR system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "mock",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "on",
+              "off"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "name": {
+                  "family": "Radonctest",
+                  "given": "Veera",
+                  "prefix": "",
+                  "suffix": ""
+                },
+                "phone": "608-999-9654",
+                "careProvider": "10",
+                "address": {
+                  "line": "1855 Folsom Street",
+                  "city": "San Francisco",
+                  "district": "DANE",
+                  "state": "Wisconsin",
+                  "postalCode": "53703",
+                  "country": "United States of America"
+                }
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Patient info"
+    },
+    "/patient/{id}/health": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "put": {
+        "operationId": "PUT_patient-id-health",
+        "description": "PUT patient health info from Portal to SFDC Health Cloud and EHR",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "example": {
+                "conditions": [
+                  {
+                    "onsetDate": "2016-05-10",
+                    "code": "195967001",
+                    "system": "http://snomed.info/sct",
+                    "name": "Asthma",
+                    "status": "true"
+                  },
+                  {
+                    "code": "73211009",
+                    "system": "http://snomed.info/sct",
+                    "name": "Diabetes mellitus",
+                    "status": "false"
+                  },
+                  {
+                    "code": "38341003",
+                    "system": "http://snomed.info/sct",
+                    "name": "High Blood Pressure",
+                    "status": "NA"
+                  },
+                  {
+                    "code": "13644009",
+                    "system": "http://snomed.info/sct",
+                    "name": "High Cholesterol",
+                    "status": "NA"
+                  },
+                  {
+                    "code": "22298006",
+                    "system": "http://snomed.info/sct",
+                    "name": "Heart Attack",
+                    "status": "NA"
+                  }
+                ],
+                "allergies": [
+                  {
+                    "onsetDate": "2016-05-11",
+                    "name": "Peanuts",
+                    "status": "true"
+                  },
+                  {
+                    "name": "Aspirin",
+                    "status": "false"
+                  },
+                  {
+                    "name": "Penicillin",
+                    "status": "NA"
+                  },
+                  {
+                    "name": "Gluten",
+                    "status": "NA"
+                  },
+                  {
+                    "name": "Dairy products",
+                    "status": "NA"
+                  },
+                  {
+                    "name": "Morphine",
+                    "status": "NA"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "get": {
+        "operationId": "GET_patient-id-health",
+        "description": "GET patient health info from EHR",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "mock",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "on",
+              "off"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "name": {
+                  "family": "Radonctest",
+                  "given": "Veera",
+                  "prefix": "",
+                  "suffix": ""
+                },
+                "phone": "608-999-9654",
+                "careProvider": "10",
+                "address": {
+                  "line": "1855 Folsom Street",
+                  "city": "San Francisco",
+                  "district": "DANE",
+                  "state": "Wisconsin",
+                  "postalCode": "53703",
+                  "country": "United States of America"
+                }
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Patient health info"
+    },
+    "/patient/{id}/appointments": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "post": {
+        "operationId": "POST_patient-id-appointments",
+        "description": "POST new appointment for patient",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "example": {
+                "practitionerID": "11",
+                "scheduleID": "2",
+                "slotID": "5"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/patient/{id}/appointments/upcomming": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_patient-id-appointments-upcomming",
+        "description": "GET upcoming appointments for specific patient",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": [
+                {
+                  "start": "Fri 07/29/16 at 2:00 PM",
+                  "end": "Fri 07/29/16 at 3:00 PM",
+                  "actor": "Mark Kingston"
+                },
+                {
+                  "start": "Mon 01/08/16 at 3:00 PM",
+                  "end": "Mon 01/08/16 at 4:00 PM",
+                  "actor": "Jamie Fletcher"
+                },
+                {
+                  "start": "Fri 08/26/16 at 5:00 PM",
+                  "end": "Fri 08/26/16 at 6:00 PM",
+                  "actor": "Dr. John Smith"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Upcoming Appointments for Patient"
+    },
+    "/patient/{id}/appointments/history": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Patient ID",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_patient-id-appointments-history",
+        "description": "GET past appointments for specific patient",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": [
+                {
+                  "start": "Tue 05/24/16 at 2:00 PM",
+                  "end": "Tue 05/24/16 at 3:00 PM",
+                  "actor": "Mark Kingston",
+                  "status": "cancelled"
+                },
+                {
+                  "start": "Fri 06/24/16 at 3:00 PM",
+                  "end": "Fri 06/24/16 at 4:00 PM",
+                  "actor": "Jamie Fletcher",
+                  "status": "cancelled"
+                },
+                {
+                  "start": "Fri 06/03/16 at 4:00 PM",
+                  "end": "Fri 06/03/16 at 5:00 PM",
+                  "actor": "Dr. John Smith",
+                  "status": "fulfilled"
+                },
+                {
+                  "start": "Mon 06/20/16 at 1:00 PM",
+                  "end": "Mon 06/20/16 at 2:00 PM",
+                  "actor": "Dr. John Smith",
+                  "status": "fulfilled"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Past Appointments for Patient"
+    },
+    "/practitioners": {
+      "get": {
+        "operationId": "GET_practitioners",
+        "description": "Get all information about practitioners in the FHIR format",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "mock",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "on",
+              "off"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": [
+                {
+                  "id": "55555",
+                  "name": {
+                    "family": "Briet",
+                    "given": "Ronald",
+                    "prefix": "Dr.",
+                    "suffix": "MD"
+                  },
+                  "phone": "608-999-9654",
+                  "fax": "0205664440",
+                  "email": "r.briet@bmc.nl",
+                  "address": {
+                    "line": "1855 Folsom Street",
+                    "city": "San Francisco",
+                    "district": "DANE",
+                    "state": "Wisconsin",
+                    "postalCode": "53703",
+                    "country": "United States of America"
+                  },
+                  "gender": "male",
+                  "birthDate": "1975-12-07"
+                },
+                {
+                  "id": "222222",
+                  "name": {
+                    "family": "Briet2",
+                    "given": "Ronald2",
+                    "prefix": "Dr.",
+                    "suffix": "MD"
+                  },
+                  "phone": "608-999-9654",
+                  "fax": "0205664440",
+                  "email": "r.briet@bmc.nl",
+                  "address": {
+                    "line": "1855 Folsom Street",
+                    "city": "San Francisco",
+                    "district": "DANE",
+                    "state": "Wisconsin",
+                    "postalCode": "53703",
+                    "country": "United States of America"
+                  },
+                  "gender": "male",
+                  "birthDate": "1975-12-07"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "x-raml-resource-displayName": "Practitioners"
+    },
+    "/practitioners/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_practitioners-id",
+        "description": "Get all information about practitioners with specificID in the FHIR format",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "mock",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "on",
+              "off"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "id": "55555",
+                "name": {
+                  "family": "Briet",
+                  "given": "Ronald",
+                  "prefix": "Dr.",
+                  "suffix": "MD"
+                },
+                "phone": "608-999-9654",
+                "fax": "0205664440",
+                "email": "r.briet@bmc.nl",
+                "address": {
+                  "line": "1855 Folsom Street",
+                  "city": "San Francisco",
+                  "district": "DANE",
+                  "state": "Wisconsin",
+                  "postalCode": "53703",
+                  "country": "United States of America"
+                },
+                "gender": "male",
+                "birthDate": "1975-12-07"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practitioners/{id}/schedule": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_practitioners-id-schedule",
+        "description": "Get all information about practitioners with specificID in the FHIR format",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "practitionerId": "11",
+                "datesWithFreeSlots": [
+                  {
+                    "date": "2016-07-29",
+                    "slots": [
+                      {
+                        "scheduleID": "scheduleId2",
+                        "id": "slotID1",
+                        "start": "10:15 AM",
+                        "end": "11:15 AM"
+                      },
+                      {
+                        "scheduleID": "scheduleId1",
+                        "id": "slotID2",
+                        "start": "09:15 AM",
+                        "end": "10:15 AM"
+                      }
+                    ]
+                  },
+                  {
+                    "date": "2016-08-01",
+                    "slots": [
+                      {
+                        "scheduleID": "scheduleId2",
+                        "id": "slotID1",
+                        "start": "10:15 AM",
+                        "end": "11:15 AM"
+                      },
+                      {
+                        "scheduleID": "scheduleId1",
+                        "id": "slotID2",
+                        "start": "09:15 AM",
+                        "end": "10:15 AM"
+                      }
+                    ]
+                  },
+                  {
+                    "date": "2016-08-02",
+                    "slots": [
+                      {
+                        "scheduleID": "scheduleId2",
+                        "id": "slotID1",
+                        "start": "10:15 AM",
+                        "end": "11:15 AM"
+                      },
+                      {
+                        "scheduleID": "scheduleId1",
+                        "id": "slotID2",
+                        "start": "09:15 AM",
+                        "end": "10:15 AM"
+                      }
+                    ]
+                  },
+                  {
+                    "date": "2016-08-05",
+                    "slots": [
+                      {
+                        "scheduleID": "scheduleId2",
+                        "id": "slotID1",
+                        "start": "10:15 AM",
+                        "end": "11:15 AM"
+                      },
+                      {
+                        "scheduleID": "scheduleId1",
+                        "id": "slotID2",
+                        "start": "09:15 AM",
+                        "end": "10:15 AM"
+                      }
+                    ]
+                  },
+                  {
+                    "date": "2016-08-07",
+                    "slots": [
+                      {
+                        "scheduleID": "scheduleId2",
+                        "id": "slotID1",
+                        "start": "10:15 AM",
+                        "end": "11:15 AM"
+                      },
+                      {
+                        "scheduleID": "scheduleId1",
+                        "id": "slotID2",
+                        "start": "09:15 AM",
+                        "end": "10:15 AM"
+                      }
+                    ]
+                  },
+                  {
+                    "date": "2016-08-08",
+                    "slots": [
+                      {
+                        "scheduleID": "scheduleId2",
+                        "id": "slotID1",
+                        "start": "10:15 AM",
+                        "end": "11:15 AM"
+                      },
+                      {
+                        "scheduleID": "scheduleId1",
+                        "id": "slotID2",
+                        "start": "09:15 AM",
+                        "end": "10:15 AM"
+                      }
+                    ]
+                  },
+                  {
+                    "date": "2016-08-10",
+                    "slots": [
+                      {
+                        "scheduleID": "scheduleId2",
+                        "id": "slotID1",
+                        "start": "10:15 AM",
+                        "end": "11:15 AM"
+                      },
+                      {
+                        "scheduleID": "scheduleId1",
+                        "id": "slotID2",
+                        "start": "09:15 AM",
+                        "end": "10:15 AM"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {}
+}
