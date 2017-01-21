@@ -86,7 +86,9 @@ swaggerToRaml.convertData(mySwaggerString).then(function(raml) {
 
 ```js
 var options = {
-    validate: false, // Parse the output to check that its a valid document
+    validate: false, // Parse both input and output to check that its a valid document
+    validateImport: false, // Only validate input
+    validateExport: false, // Only validate output
     format: 'yaml', // Output format: json (default for OAS) or yaml (default for RAML)
     fs: { ... } // Use a custom file system solver (not yet available)
 };
