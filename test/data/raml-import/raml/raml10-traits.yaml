@@ -1,0 +1,45 @@
+#%RAML 1.0
+title: OpenWeather
+version: 2.5
+baseUri: http://api.openweathermap.org/data/2.5/
+
+traits:
+  isSearchableByCity:
+    queryParameters:
+      q:
+        description: city name
+        type: string
+        required: true
+  isMetric:
+    queryParameters:
+     units:
+      description: Metric or Imperial
+      enum: [metric,imperial]
+      example: metric
+  isAPIKey:
+    queryParameters:
+     APPID:
+      description: API Key
+      example: 938ffc1ccc85558966b89eaa29a2ddc0
+
+/weather:
+   displayName: Weather
+   is: [isSearchableByCity,isMetric,isAPIKey]
+   get:
+     description: |
+      Search weather by city name
+     responses:
+      200:
+       body:
+        application/json:
+
+/forecast:
+  displayName: Forecast
+  is: [isSearchableByCity,isMetric,isAPIKey]
+  get:
+    description: |
+      seach weather forecast for 5 days with data every 3 hours by city name.
+    responses:
+     200:
+      body:
+        application/json:
