@@ -1,4 +1,4 @@
-let expect   = require('chai').expect,
+const expect   = require('chai').expect,
     specConverter = require('../index');
 
 describe('index', function() {
@@ -28,34 +28,34 @@ describe('index', function() {
 
     describe('exporters', function(){
       it('should expose raml 08 and 10 exporter api', function(){
-        let exporter08Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML08);
+        const exporter08Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML08);
         expect(exporter08Instance).to.be.an.instanceof(require('../lib/exporters/raml08'));
-        let exporter10Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML10);
+        const exporter10Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML10);
         expect(exporter10Instance).to.be.an.instanceof(require('../lib/exporters/raml10'));
       });
       it('should expose swagger exporter api', function(){
-        let exporterInstance = new specConverter.Exporter.factory(specConverter.Formats.SWAGGER);
+        const exporterInstance = new specConverter.Exporter.factory(specConverter.Formats.SWAGGER);
         expect(exporterInstance).to.be.an.instanceof(require('../lib/exporters/swagger'));
       });
     });
 
     describe('importers', function(){
       it('should expose raml importer api', function(){
-        let importer08Instance = specConverter.Importer.factory(specConverter.Formats.RAML08);
+        const importer08Instance = specConverter.Importer.factory(specConverter.Formats.RAML08);
         expect(importer08Instance).to.be.an.instanceof(require('../lib/importers/raml08'));
-        let importer10Instance = specConverter.Importer.factory(specConverter.Formats.RAML10);
+        const importer10Instance = specConverter.Importer.factory(specConverter.Formats.RAML10);
         expect(importer10Instance).to.be.an.instanceof(require('../lib/importers/raml10'));
       });
       it('should expose swagger importer api', function(){
-        let importerInstance = specConverter.Importer.factory(specConverter.Formats.SWAGGER);
+        const importerInstance = specConverter.Importer.factory(specConverter.Formats.SWAGGER);
         expect(importerInstance).to.be.an.instanceof(require('../lib/importers/swagger'));
       });
       it('should expose postman importer api', function(){
-        let importerInstance = specConverter.Importer.factory(specConverter.Formats.POSTMAN);
+        const importerInstance = specConverter.Importer.factory(specConverter.Formats.POSTMAN);
         expect(importerInstance).to.be.an.instanceof(require('../lib/importers/postman'));
       });
       it('should expose stoplight importer api', function(){
-        let importerInstance = specConverter.Importer.factory(specConverter.Formats.STOPLIGHT);
+        const importerInstance = specConverter.Importer.factory(specConverter.Formats.STOPLIGHT);
         expect(importerInstance).to.be.an.instanceof(require('../lib/importers/stoplight'));
       });
     });

@@ -14,7 +14,7 @@ describe('Exporter', function () {
 	});
 	describe('loadSLData', function () {
 		it('should load Stoplight data successfully', function (done) {
-			let slData = require(__dirname + '/../../data/stoplight');
+			const slData = require(__dirname + '/../../data/stoplight');
 			try {
 				expect(exporter.project).to.equal(null);
 				exporter.loadSLData(slData)

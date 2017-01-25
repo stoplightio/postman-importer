@@ -5,7 +5,8 @@ const expect = require('chai').expect,
 	fs = require('fs');
 
 describe('RAML 0.8 Importer', function () {
-	let ramlImporter, filePath = __dirname + '/../../data/raml-import/raml/raml08.yaml';
+	let ramlImporter;
+	const filePath = __dirname + '/../../data/raml-import/raml/raml08.yaml';
 	beforeEach(function () {
 		ramlImporter = new RAML08();
 	});
@@ -39,7 +40,7 @@ describe('RAML 0.8 Importer', function () {
 		it('should perform import operation on loaded data', function (done) {
 			ramlImporter.loadFile(filePath).then(() => {
 				try {
-					let slProject = ramlImporter.import();
+					const slProject = ramlImporter.import();
 					expect(slProject).to.be.instanceOf(Project);
 					expect(slProject.Resources.length).to.gt(0);
 					done();
@@ -54,7 +55,7 @@ describe('RAML 0.8 Importer', function () {
 	//TODO write test for internal functions
 	describe('_mapHost', function () {
 		it('should map empty host as null', function () {
-			let importer = new RAML08();
+			const importer = new RAML08();
 			importer.project = new Project('test');
 			importer.data = {
 				baseUri: undefined
@@ -93,7 +94,8 @@ describe('RAML 0.8 Importer', function () {
 
 
 describe('RAML 1.0 Importer', function () {
-	let ramlImporter, filePath = __dirname + '/../../data/raml-import/raml/raml10-json-type.yaml';
+	let ramlImporter;
+	const filePath = __dirname + '/../../data/raml-import/raml/raml10-json-type.yaml';
 	beforeEach(function () {
 		ramlImporter = new RAML10();
 	});
@@ -124,7 +126,7 @@ describe('RAML 1.0 Importer', function () {
 		});
 		
 		it('should be able to load a valid yaml file including external type definiton', function (done) {
-			let myFsResolver = {
+			const myFsResolver = {
 				content: function () {
 				},
 				contentAsync: function (path) {
@@ -145,14 +147,14 @@ describe('RAML 1.0 Importer', function () {
 				}
 			};
 			
-			let myOptions = {
+			const myOptions = {
 				fsResolver: myFsResolver
 			};
 			
 			ramlImporter.loadFile(__dirname + '/../../data/raml-import/raml/raml10-include-type.yaml', myOptions)
 				.then(() => {
 					try {
-						let slProject = ramlImporter.import();
+						const slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
 						expect(slProject.Schemas.length).to.eq(2);
 						done();
@@ -167,7 +169,7 @@ describe('RAML 1.0 Importer', function () {
 		});
 		
 		it('should be able to load a valid yaml file including external type definiton using fsResolver', function (done) {
-			let myFsResolver = {
+			const myFsResolver = {
 				content: function () {
 				},
 				contentAsync: function (path) {
@@ -185,14 +187,14 @@ describe('RAML 1.0 Importer', function () {
 				}
 			};
 			
-			let myOptions = {
+			const myOptions = {
 				fsResolver: myFsResolver
 			};
 			
 			ramlImporter.loadFile(__dirname + '/../../data/raml-import/raml/raml10-include-fsresolver-type.yaml', myOptions)
 				.then(() => {
 					try {
-						let slProject = ramlImporter.import();
+						const slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
 						expect(slProject.Schemas[1].definition.description).to.eq('Foo details');
 						expect(slProject.Schemas[2].definition.description).to.eq('Error details');
@@ -211,7 +213,7 @@ describe('RAML 1.0 Importer', function () {
 			ramlImporter.loadFile(__dirname + '/../../data/raml-import/raml/raml10-y-type.yaml')
 				.then(() => {
 					try {
-						let slProject = ramlImporter.import();
+						const slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
 						expect(slProject.Schemas.length).to.eq(2);
 						done();
@@ -251,7 +253,7 @@ describe('RAML 1.0 Importer', function () {
 			ramlImporter.loadFile(filePath)
 				.then(() => {
 					try {
-						let slProject = ramlImporter.import();
+						const slProject = ramlImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
 						expect(slProject.Resources.length).to.gt(0);
 						done();
@@ -271,7 +273,7 @@ describe('RAML 1.0 Importer', function () {
 	//TODO write test for internal functions
 	describe('_mapHost', function () {
 		it('should map empty host as null', function () {
-			let importer = new RAML10();
+			const importer = new RAML10();
 			importer.project = new Project('test');
 			importer.data = {
 				baseUri: undefined

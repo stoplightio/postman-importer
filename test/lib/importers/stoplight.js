@@ -2,8 +2,9 @@ const expect = require('chai').expect,
 	Stoplight = require('../../../lib/importers/stoplight');
 
 describe('Stoplight Importer', function () {
-	let importer, filePath = __dirname + '/../../data/stoplight.json';
-	let slData = require(filePath);
+	let importer;
+	const filePath = __dirname + '/../../data/stoplight.json';
+	const slData = require(filePath);
 	beforeEach(function () {
 		importer = new Stoplight();
 	});

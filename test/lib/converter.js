@@ -24,16 +24,16 @@ const filePathMap = {
 
 const myFsResolver = {
 	content: function (filePath) {
-		let path = __dirname + '/..' + filePathMap[filePath]; ///Users/gaston/mulesoft/api-spec-converter/test/lib
+		const path = __dirname + '/..' + filePathMap[filePath]; ///Users/gaston/mulesoft/api-spec-converter/test/lib
 		return fs.readFileSync(path, 'UTF8');
 	},
 	contentAsync: function (filePath) {
 		return new Promise(function (resolve, reject) {
 			try {
-				let p = path.parse(filePath);
+				const p = path.parse(filePath);
 				
 				if (p.dir.indexOf('types') > 0) {
-					let fileName = p.base === 'Person.xyz' ? 'Person.json' : p.base;
+					const fileName = p.base === 'Person.xyz' ? 'Person.json' : p.base;
 					resolve(fs.readFileSync(p.dir + '/' + fileName, 'UTF8'));
 				} else {
 					resolve(fs.readFileSync(filePath, 'UTF8'));
@@ -67,7 +67,7 @@ describe('Converter', function () {
 				};
 				
 				//doesn't support export/convert from abcd format
-				let newConverterInstance = new specConverter.Converter(specConverter.Formats.ABCD, specConverter.Formats.POSTMAN);
+				const newConverterInstance = new specConverter.Converter(specConverter.Formats.ABCD, specConverter.Formats.POSTMAN);
 				expect(newConverterInstance).to.be.an.instanceof(specConverter.Converter);
 			} catch (e) {
 				expect(e.message).to.equal('from format ABCD not supported');
@@ -77,7 +77,7 @@ describe('Converter', function () {
 		it('should validate to format, throw error otherwise', function (done) {
 			try {
 				//doesn't support export/convert to postman format
-				let newConverterInstance = new specConverter.Converter(specConverter.Formats.RAML08, specConverter.Formats.POSTMAN);
+				const newConverterInstance = new specConverter.Converter(specConverter.Formats.RAML08, specConverter.Formats.POSTMAN);
 				expect(newConverterInstance).to.be.an.instanceof(specConverter.Converter);
 			} catch (e) {
 				expect(e.message).to.equal('to format Postman not supported');
@@ -126,9 +126,9 @@ describe('Converter', function () {
 				});
 		});
 		it('converting from stoplightx to stoplightx format should be identical', function (done) {
-			let path = __dirname + '/../data/stoplightx.json';
-			let originalData = require(path);
-			let newConverterInstance = new specConverter.Converter(specConverter.Formats.STOPLIGHTX, specConverter.Formats.STOPLIGHTX);
+			const path = __dirname + '/../data/stoplightx.json';
+			const originalData = require(path);
+			const newConverterInstance = new specConverter.Converter(specConverter.Formats.STOPLIGHTX, specConverter.Formats.STOPLIGHTX);
 			newConverterInstance.loadFile(path)
 				.then(() => {
 					newConverterInstance.convert('json')
@@ -154,9 +154,9 @@ describe('Converter', function () {
 		//   //Of course, for some specific properties, librart usually skips and won't import, these
 		//   //will be documented/listed on library docs
 		
-		//   let path = __dirname + '/../data/raml.yaml';
-		//   let originalData = fs.readFileSync(path, 'utf8');
-		//   let newConverterInstance = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML);
+		//   const path = __dirname + '/../data/raml.yaml';
+		//   const originalData = fs.readFileSync(path, 'utf8');
+		//   const newConverterInstance = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML);
 		//   newConverterInstance.loadData(originalData)
 		//   .then(function(){
 		//     try {
@@ -175,13 +175,13 @@ describe('Converter', function () {
 		
 		// This test has an issue because RAML does not support operationIds
 		// it('should convert reversly from raml to swagger without loss', function(done){
-		//   let converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.SWAGGER);
-		//   let ramlPath = __dirname + '/../data/swagger-compatible-raml.yaml';
+		//   const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.SWAGGER);
+		//   const ramlPath = __dirname + '/../data/swagger-compatible-raml.yaml';
 		//   converter.loadFile(ramlPath, function(){
 		//     try{
 		//       converter.convert('yaml', function(err, convertedSwagger){
 		//         if(err)return done(err);
-		//         let converter2 = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML);
+		//         const converter2 = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML);
 		//         converter2.loadData(convertedSwagger)
 		//         .then(function(){
 		//           try{
@@ -208,19 +208,19 @@ describe('Converter', function () {
 
 
 describe('reversable - from swagger 2 raml 2 swagger', function () {
-	let baseDir = __dirname + '/../data/reversable/swagger';
-	let testFiles = fs.readdirSync(baseDir);
-	let options = {
+	const baseDir = __dirname + '/../data/reversable/swagger';
+	const testFiles = fs.readdirSync(baseDir);
+	const options = {
 		expand: false
 	};
 	
-	let testWithData = function (testFile) {
+	const testWithData = function (testFile) {
 		return function (done) {
-			let testFilePath = baseDir + '/' + testFile;
+			const testFilePath = baseDir + '/' + testFile;
 			
-			let ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
-			let swaggerToRamlConverter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
-			let ramlToSwaggerConverter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
+			const ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
+			const swaggerToRamlConverter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
+			const ramlToSwaggerConverter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
 			
 			swaggerToRamlConverter.loadFile(testFilePath)
 				.then(() => {
@@ -260,16 +260,16 @@ describe('reversable - from swagger 2 raml 2 swagger', function () {
 
 
 describe('reversable - from raml 2 swagger 2 raml', function () {
-	let baseDir = __dirname + '/../data/reversable/raml';
-	let testFiles = fs.readdirSync(baseDir);
+	const baseDir = __dirname + '/../data/reversable/raml';
+	const testFiles = fs.readdirSync(baseDir);
 	
-	let testWithData = function (testFile) {
+	const testWithData = function (testFile) {
 		return function (done) {
-			let testFilePath = baseDir + '/' + testFile;
+			const testFilePath = baseDir + '/' + testFile;
 			
-			let ramlVersion = _.includes(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
-			let ramlToSwaggerConverter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
-			let swaggerToRamlConverter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
+			const ramlVersion = _.includes(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
+			const ramlToSwaggerConverter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
+			const swaggerToRamlConverter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
 			
 			ramlToSwaggerConverter.loadFile(testFilePath)
 				.then(() => {
@@ -308,20 +308,20 @@ describe('reversable - from raml 2 swagger 2 raml', function () {
 });
 
 describe('from swagger to raml', function () {
-	let baseDir = __dirname + '/../data/swagger-import/swagger';
-	let testFiles = fs.readdirSync(baseDir);
+	const baseDir = __dirname + '/../data/swagger-import/swagger';
+	const testFiles = fs.readdirSync(baseDir);
 	
-	let testWithData = function (sourceFile, targetFile, stringCompare, validate) {
+	const testWithData = function (sourceFile, targetFile, stringCompare, validate) {
 		
 		return function (done) {
-			let ramlVersion = _.includes(sourceFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
-			let converter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
-			let validateOptions = {
+			const ramlVersion = _.includes(sourceFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
+			const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
+			const validateOptions = {
 				validate: validate,
 				fsResolver: myFsResolver
 			};
 			converter.convertFile(sourceFile, validateOptions).then((convertedRAML) => {
-				let notExistsTarget = !fs.existsSync(targetFile);
+				const notExistsTarget = !fs.existsSync(targetFile);
 
 				if (notExistsTarget) {
 					console.log('Content for non existing target file ' + targetFile + '\n.');
@@ -351,10 +351,10 @@ describe('from swagger to raml', function () {
 	
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			let sourceFile = baseDir + '/' + testFile;
-			let targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'yaml');
-			let stringCompare = _.includes(testFile, 'stringcompare');
-			let validate = !_.includes(testFile, 'novalidate');
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'yaml');
+			const stringCompare = _.includes(testFile, 'stringcompare');
+			const validate = !_.includes(testFile, 'novalidate');
 			
 			if (process.env.fileToTest) {
 				if (_.endsWith(sourceFile, process.env.fileToTest)) {
@@ -374,28 +374,28 @@ describe('from swagger to raml', function () {
 });
 
 describe('from raml to swagger', function () {
-	let baseDir = __dirname + '/../data/raml-import/raml';
-	let testFiles = fs.readdirSync(baseDir);
+	const baseDir = __dirname + '/../data/raml-import/raml';
+	const testFiles = fs.readdirSync(baseDir);
 	
-	let testWithData = function (testFile, validate) {
-		let validateOptions = {
+	const testWithData = function (testFile, validate) {
+		const validateOptions = {
 			validate: validate,
 			fsResolver: myFsResolver
 		};
 		
 		return function (done) {
-			let testFilePath = baseDir + '/' + testFile;
-			let ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
-			let converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
+			const testFilePath = baseDir + '/' + testFile;
+			const ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
+			const converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
 			converter.convertFile(testFilePath, validateOptions)
 				.then(resultSwagger => {
 
 					try {
-						let targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
+						const targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
 
-						let notExistsTarget = !fs.existsSync(targetFile);
+						const notExistsTarget = !fs.existsSync(targetFile);
 						if (notExistsTarget) {
-							let data = JSON.stringify(resultSwagger);
+							const data = JSON.stringify(resultSwagger);
 							console.log('Content for non existing target file ' + targetFile + '\n.');
 							console.log('********** Begin file **********\n');
 							console.log(data);
@@ -417,8 +417,8 @@ describe('from raml to swagger', function () {
 	
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			let validate = !_.includes(testFile, 'novalidate');
-			let skip = _.includes(testFile, 'skip');
+			const validate = !_.includes(testFile, 'novalidate');
+			const skip = _.includes(testFile, 'skip');
 			if (skip) return ;
 			if (process.env.fileToTest) {
 				if (_.endsWith(testFile, process.env.fileToTest)) {
@@ -445,14 +445,14 @@ describe.skip('from swagger to raml: apis-guru', function () {
 		'azure.comarm-insights2016-03-01swagger.json'
 	]
 	
-	let testWithData = (sourceFile, targetFile, validate) => done =>{
+	const testWithData = (sourceFile, targetFile, validate) => done =>{
     const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
     const validateOptions = {
       validate: validate,
       fsResolver: myFsResolver
     };
     converter.convertFile(sourceFile, validateOptions).then((convertedRAML) => {
-      let notExistsTarget = !fs.existsSync(targetFile);
+      const notExistsTarget = !fs.existsSync(targetFile);
 
       if (notExistsTarget) {
         fs.writeFileSync(targetFile, convertedRAML);
@@ -506,7 +506,7 @@ describe.skip('from raml to swagger: platform + examples', function () {
 
   const excludedValidation = []
 
-  let testWithData = (sourceFile, targetFile, validate) => done =>{
+  const testWithData = (sourceFile, targetFile, validate) => done =>{
     const converter = new specConverter.Converter(specConverter.Formats.RAML10, specConverter.Formats.SWAGGER);
     const validateOptions = {
       validate: validate

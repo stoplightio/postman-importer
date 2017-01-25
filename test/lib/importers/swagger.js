@@ -6,8 +6,8 @@ const expect = require('chai').expect,
 	Endpoint = require('../../../lib/entities/endpoint');
 
 describe('Swagger Importer', function () {
-	let swaggerImporter,
-		filePath = __dirname + '/../../data/swagger.yaml';
+	let swaggerImporter;
+	const filePath = __dirname + '/../../data/swagger.yaml';
 	
 	beforeEach(function () {
 		swaggerImporter = new Swagger();
@@ -52,7 +52,7 @@ describe('Swagger Importer', function () {
 		});
 		
 		it('should return error for invalid Swagger syntax', function (done) {
-			let invalidPath = __dirname + '/../../data/invalid/swagger.json';
+			const invalidPath = __dirname + '/../../data/invalid/swagger.json';
 			swaggerImporter.loadFile(invalidPath)
 				.catch((err) => {
 					expect(err).to.be.an('error').and.to.have.property('message', invalidPath + ' is not a valid Swagger API definition');
@@ -61,7 +61,7 @@ describe('Swagger Importer', function () {
 		});
 		
 		it('should return error for invalid file', function (done) {
-			let invalidPath = __dirname + '/../../data/invalid/missing-comma-swagger.json';
+			const invalidPath = __dirname + '/../../data/invalid/missing-comma-swagger.json';
 			swaggerImporter.loadFile(invalidPath)
 				.catch((err) => {
 					expect(err).to.be.an('error').and.to.have.property('reason', 'missed comma between flow collection entries');
@@ -75,7 +75,7 @@ describe('Swagger Importer', function () {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
 					try {
-						let slProject = swaggerImporter.import();
+						const slProject = swaggerImporter.import();
 						expect(slProject).to.be.instanceOf(Project);
 						expect(slProject.Endpoints.length).to.gt(0);
 						done();
@@ -95,7 +95,7 @@ describe('Swagger Importer', function () {
 	//TODO write test for internal functions
 	describe('_mapSchema', function () {
 		it('should map schema data successfully', function () {
-			let schemaData = {
+			const schemaData = {
 				address: {
 					properties: {
 						street: {
@@ -106,13 +106,13 @@ describe('Swagger Importer', function () {
 				}
 			};
 			
-			let schemas = swaggerImporter._mapSchema(schemaData);
+			const schemas = swaggerImporter._mapSchema(schemaData);
 			expect(schemas).to.not.be.undefined;
 			expect(schemas.length).to.be.equal(1);
 			expect(schemas[0]).to.be.instanceOf(Schema);
 		});
 		it('should avoid extensions properties', function () {
-			let schemaData = {
+			const schemaData = {
 				address: {
 					properties: {
 						street: {
@@ -130,7 +130,7 @@ describe('Swagger Importer', function () {
 				}
 			};
 			
-			let schemas = swaggerImporter._mapSchema(schemaData);
+			const schemas = swaggerImporter._mapSchema(schemaData);
 			expect(schemas).to.not.be.undefined;
 			expect(schemas.length).to.be.equal(1);
 			expect(schemas[0]).to.be.instanceOf(Schema);
@@ -159,7 +159,7 @@ describe('Swagger Importer', function () {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
 					swaggerImporter.import();
-					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
+					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
 					
 					expect(endpoint.request.bodies).to.be.empty;
 					done();
@@ -175,7 +175,7 @@ describe('Swagger Importer', function () {
 			swaggerImporter.loadFile(filePath)
 				.then(() =>  {
 					swaggerImporter.import();
-					let endpoint = _.find(swaggerImporter.project.Endpoints, {description: 'Updates a pet by name'});
+					const endpoint = _.find(swaggerImporter.project.Endpoints, {description: 'Updates a pet by name'});
 					
 					expect(swaggerImporter.project.Environment.Consumes[0]).to.be.eq('application/json');
 					expect(endpoint.Consumes).to.be.undefined;
@@ -192,7 +192,7 @@ describe('Swagger Importer', function () {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
 					swaggerImporter.import();
-					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
+					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
 					
 					expect(swaggerImporter.project.Environment.Consumes[0]).to.be.eq('application/json');
 					expect(endpoint.Consumes[0]).to.be.eq('multipart/form-data');
@@ -209,7 +209,7 @@ describe('Swagger Importer', function () {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
 					swaggerImporter.import();
-					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
+					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
 					
 					expect(swaggerImporter.project.Environment.Produces[0]).to.be.eq('application/json');
 					expect(endpoint.produces).to.be.undefined;
@@ -226,7 +226,7 @@ describe('Swagger Importer', function () {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
 					swaggerImporter.import();
-					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
+					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
 					
 					expect(endpoint.Produces).to.be.empty;
 					done();
@@ -269,7 +269,7 @@ describe('Swagger Importer', function () {
 				.then(() => {
 					swaggerImporter.import();
 					
-					let endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'addPet'});
+					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'addPet'});
 					
 					expect(endpoint.securedBy.apiKey.name).to.be.eq('api_key');
 					done();

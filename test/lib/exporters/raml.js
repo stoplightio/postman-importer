@@ -3,7 +3,8 @@ const expect = require('chai').expect,
 
 describe('RAML Exporter', function () {
 	
-	let ramlExporter, slData;
+	let ramlExporter;
+	let slData;
 	beforeEach(function () {
 		ramlExporter = new RAML10();
 		slData = require(__dirname + '/../../data/stoplight.json');

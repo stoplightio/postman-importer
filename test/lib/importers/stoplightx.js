@@ -4,7 +4,7 @@ const expect = require('chai').expect,
 
 describe('StoplightX Importer', function () {
 	let importer;
-	let filePath = __dirname + '/../../data/stoplightx.json';
+	const filePath = __dirname + '/../../data/stoplightx.json';
 	
 	beforeEach(function () {
 		importer = new StoplightX();
@@ -73,7 +73,7 @@ describe('StoplightX Importer', function () {
 			importer.loadFile(filePath)
 				.then(() => {
 					importer.import();
-					let endpoint = _.find(importer.project.Endpoints, {operationId: 'deletePetPhoto'});
+					const endpoint = _.find(importer.project.Endpoints, {operationId: 'deletePetPhoto'});
 					expect(endpoint.tags).to.have.lengthOf(1).and.to.include('Group1');
 					done();
 				})
@@ -115,7 +115,7 @@ describe('StoplightX Importer', function () {
 			importer.loadFile(filePath)
 				.then(() => {
 					importer.import();
-					let test = importer.project.Tests[4];
+					const test = importer.project.Tests[4];
 					
 					expect(test.steps).to.have.lengthOf(2);
 					expect(test.steps[0]).to.have.property('name', 'Create Uncaptured Charge');

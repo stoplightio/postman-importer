@@ -2,7 +2,8 @@ const expect = require('chai').expect,
 	Importer = require('../../../lib/importers/importer');
 
 describe('Importer', function () {
-	let importer, filePath = __dirname + '/../../data/stoplight.json';
+	let importer;
+	const filePath = __dirname + '/../../data/stoplight.json';
 	beforeEach(function () {
 		importer = new Importer();
 	});
