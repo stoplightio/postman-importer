@@ -1,0 +1,29 @@
+#%RAML 1.0
+title: complex types example
+version: 1
+
+types:
+  Cat:
+    type: object
+    description: a cat
+    properties:
+      name: string?
+      race: nil | string
+  Dog:
+    type: object
+    description: a dog
+    properties:
+      name:
+        type: object
+        properties:
+          intValue: integer?
+          boolValue: nil | boolean
+      race:
+        type: nil | string
+      intProp: integer[]
+      strProp:
+        type: array
+        items: string?
+  CatDog: [Cat , Dog]
+  Pet: (Cat | Dog)
+  PetCatDog: [ Pet, Cat | Dog ]
