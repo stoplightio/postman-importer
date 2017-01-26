@@ -442,7 +442,11 @@ describe.skip('from swagger to raml: apis-guru', function () {
 	]
 	const excludedValidation = [
 		'azure.comarm-insights2015-07-01swagger.json',
-		'azure.comarm-insights2016-03-01swagger.json'
+		'azure.comarm-insights2016-03-01swagger.json',
+		'rottentomatoes.com1.0swagger.json',
+		'nytimes.combooks_api3.0.0swagger.json',
+		'idtbeyond.com1.1.7swagger.json',
+		'firebrowse.org1.1.35-(2016-09-27-101223-6a47e74011281b2aae7dc415)swagger.json'
 	]
 	
 	const testWithData = (sourceFile, targetFile, validate) => done =>{
