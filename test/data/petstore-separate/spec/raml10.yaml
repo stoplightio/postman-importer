@@ -6,6 +6,28 @@ mediaType: application/json
 protocols:
   - HTTP
 description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-collectionFormat:
+    type: string
 (oas-info):
   contact:
     name: Wordnik API Team
@@ -94,33 +116,11 @@ description: A sample API that uses a petstore as an example to demonstrate feat
         description: tags to filter by
         required: false
         type: array
-        collectionFormat: csv
         items:
           type: string
-        facets:
-          collectionFormat: string
+        (oas-collectionFormat): csv
       limit:
         description: maximum number of results to return
         required: false
         type: integer
         format: int32
-annotationTypes:
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-responses-default:
-    type: any
-    allowedTargets: Method

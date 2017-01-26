@@ -7,6 +7,17 @@ version: 0.0.0
     responses:
       '200':
         description: OK
+annotationTypes:
+  oas-exclusiveMaximum:
+    type: boolean
+  oas-exclusiveMinimum:
+    type: boolean
+  oas-format:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-readOnly:
+    allowedTargets: TypeDeclaration
+    type: boolean
 types:
   Person:
     properties:
@@ -27,15 +38,11 @@ types:
       lastTimeOnline:
         type: datetime
         format: rfc3339
-        readOnly: true
-        facets:
-          readOnly?: boolean
+        (oas-readOnly): true
         required: false
       avatarBase64PNG:
         type: string
-        format: byte
-        facets:
-          format: string
+        (oas-format): byte
         required: false
       shortProp:
         type: integer
@@ -58,15 +65,11 @@ types:
         required: false
       byteProp:
         type: string
-        format: byte
-        facets:
-          format: string
+        (oas-format): byte
         required: false
       binaryProp:
         type: string
-        format: binary
-        facets:
-          format: string
+        (oas-format): binary
         required: false
       boolProp:
         type: boolean
@@ -80,9 +83,7 @@ types:
         required: false
       passwordProp:
         type: string
-        format: password
-        facets:
-          format: string
+        (oas-format): password
         required: false
       spokenLanguages:
         type: SpokenLanguages
@@ -143,11 +144,8 @@ types:
         minimum: 0
         maximum: 10000
         required: false
-        facets:
-          exclusiveMinimum: boolean
-          exclusiveMaximum: boolean
-        exclusiveMinimum: true
-        exclusiveMaximum: false
+        (oas-exclusiveMinimum): true
+        (oas-exclusiveMaximum): false
   Vinyl:
     properties:
       albumName:

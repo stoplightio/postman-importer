@@ -48,6 +48,14 @@ annotationTypes:
   oas-summary:
     type: string
     allowedTargets: Method
+  oas-allowEmptyValue:
+    type: boolean
+  oas-collectionFormat:
+    type: string
+  oas-exclusiveMaximum:
+    type: boolean
+  oas-exclusiveMinimum:
+    type: boolean
   oas-externalDocs:
     properties:
       description?: string
@@ -323,13 +331,9 @@ securitySchemes:
           description: The password for login in clear text
           required: true
           type: string
-          facets:
-            allowEmptyValue: boolean
-            exclusiveMaximum: boolean
-            exclusiveMinimum: boolean
-          allowEmptyValue: true
-          exclusiveMaximum: true
-          exclusiveMinimum: false
+          (oas-allowEmptyValue): true
+          (oas-exclusiveMaximum): true
+          (oas-exclusiveMinimum): false
       (oas-tags):
         - user
 /pet:
@@ -383,9 +387,7 @@ securitySchemes:
               - pending
               - sold
             default: available
-          facets:
-            collectionFormat: string
-          collectionFormat: multi
+          (oas-collectionFormat): multi
       securedBy:
         - petstore_auth:
             scopes:
@@ -481,13 +483,9 @@ securitySchemes:
               description: Updated status of the pet
               required: false
               type: string
-              facets:
-                allowEmptyValue: boolean
-                exclusiveMaximum: boolean
-                exclusiveMinimum: boolean
-              allowEmptyValue: true
-              exclusiveMaximum: true
-              exclusiveMinimum: false
+              (oas-allowEmptyValue): true
+              (oas-exclusiveMaximum): true
+              (oas-exclusiveMinimum): false
       responses:
         '405':
           description: Invalid input
@@ -521,9 +519,7 @@ securitySchemes:
           type: array
           items:
             type: string
-          facets:
-            collectionFormat: string
-          collectionFormat: multi
+          (oas-collectionFormat): multi
       securedBy:
         - petstore_auth:
             scopes:
