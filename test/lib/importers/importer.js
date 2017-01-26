@@ -3,7 +3,7 @@ const expect = require('chai').expect,
 
 describe('Importer', function () {
 	let importer;
-	const filePath = __dirname + '/../../data/stoplight.json';
+	const filePath = __dirname + '/../../data/swagger.json';
 	beforeEach(function () {
 		importer = new Importer();
 	});

@@ -4,8 +4,7 @@ const chai = require('chai'),
 	fs = require('fs'),
 	YAML = require('js-yaml'),
 	_ = require('lodash'),
-	path = require('path'),
-    urlHelper = require('../../lib/utils/url');
+	path = require('path');
 const beforeEach = require("mocha/lib/mocha.js").beforeEach;
 const afterEach = require("mocha/lib/mocha.js").afterEach;
 const it = require("mocha/lib/mocha.js").it;
@@ -58,43 +57,10 @@ describe('Converter', function () {
 		it('should successfully create new converter instance', function () {
 			expect(converterInstance).to.be.an.instanceof(specConverter.Converter);
 		});
-		it('should validate from format, throw error otherwise', function (done) {
-			try {
-				//set up a fake format
-				specConverter.Formats.ABCD = {
-					name: 'ABCD',
-					className: 'ABCD'
-				};
-				
-				//doesn't support export/convert from abcd format
-				const newConverterInstance = new specConverter.Converter(specConverter.Formats.ABCD, specConverter.Formats.POSTMAN);
-				expect(newConverterInstance).to.be.an.instanceof(specConverter.Converter);
-			} catch (e) {
-				expect(e.message).to.equal('from format ABCD not supported');
-				done();
-			}
-		});
-		it('should validate to format, throw error otherwise', function (done) {
-			try {
-				//doesn't support export/convert to postman format
-				const newConverterInstance = new specConverter.Converter(specConverter.Formats.RAML08, specConverter.Formats.POSTMAN);
-				expect(newConverterInstance).to.be.an.instanceof(specConverter.Converter);
-			} catch (e) {
-				expect(e.message).to.equal('to format Postman not supported');
-				done();
-			}
-		});
 	});
 	describe('loadFile', function () {
 		it('should successfully load "from"/"importer" compatible file', function (done) {
 			converterInstance.loadFile(fullPath).then(() => {
-				done();
-			});
-		});
-		it('should throw error for format incompatible file', function (done) {
-			converterInstance.loadFile(__dirname + '/../data/postman.json').catch((err) => {
-				expect(err).to.not.be.undefined;
-				expect(err).to.be.instanceof(Error);
 				done();
 			});
 		});
@@ -125,84 +91,6 @@ describe('Converter', function () {
 					done(err)
 				});
 		});
-		it('converting from stoplightx to stoplightx format should be identical', function (done) {
-			const path = __dirname + '/../data/stoplightx.json';
-			const originalData = require(path);
-			const newConverterInstance = new specConverter.Converter(specConverter.Formats.STOPLIGHTX, specConverter.Formats.STOPLIGHTX);
-			newConverterInstance.loadFile(path)
-				.then(() => {
-					newConverterInstance.convert('json')
-						.then((convertedData) => {
-							expect(JSON.parse(JSON.stringify(convertedData))).to.deep.equal(originalData);
-							done();
-						})
-						.catch((err) => {
-							done(err);
-						})
-				})
-				.catch((err) => {
-					done(err);
-				});
-		});
-		
-		// This test has an issue because RAML does not support operationIds
-		// It performs importing from raml to stoplight and exporting from stoplight to raml
-		// and thus verifies in both ways
-		// it('converting from raml to raml format should be identical', function(done){
-		
-		//   //This test include swagger file that is fully compatible with sl spec.
-		//   //Of course, for some specific properties, librart usually skips and won't import, these
-		//   //will be documented/listed on library docs
-		
-		//   const path = __dirname + '/../data/raml.yaml';
-		//   const originalData = fs.readFileSync(path, 'utf8');
-		//   const newConverterInstance = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML);
-		//   newConverterInstance.loadData(originalData)
-		//   .then(function(){
-		//     try {
-		//       newConverterInstance.convert('yaml', function(err, convertedData){
-		//         if(err)return done(err);
-		//         expect(YAML.safeLoad(originalData)).to.deep.equal(YAML.safeLoad(convertedData));
-		//         done();
-		//       });
-		//     }
-		//     catch(err) {
-		//       done(err);
-		//     }
-		//   })
-		//   .catch(done);
-		// });
-		
-		// This test has an issue because RAML does not support operationIds
-		// it('should convert reversly from raml to swagger without loss', function(done){
-		//   const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.SWAGGER);
-		//   const ramlPath = __dirname + '/../data/swagger-compatible-raml.yaml';
-		//   converter.loadFile(ramlPath, function(){
-		//     try{
-		//       converter.convert('yaml', function(err, convertedSwagger){
-		//         if(err)return done(err);
-		//         const converter2 = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML);
-		//         converter2.loadData(convertedSwagger)
-		//         .then(function(){
-		//           try{
-		//             converter2.convert('yaml', function(err, resultRAML){
-		//               if(err)return done(err);
-		//               expect(YAML.safeLoad(resultRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(ramlPath, 'utf8')));
-		//               done();
-		//             });
-		//           }
-		//           catch(err) {
-		//             done(err);
-		//           }
-		//         })
-		//         .catch(done);
-		//       });
-		//     }
-		//     catch(err) {
-		//       done(err);
-		//     }
-		//   });
-		// });
 	});
 });
 

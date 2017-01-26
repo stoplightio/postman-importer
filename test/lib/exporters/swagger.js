@@ -5,7 +5,6 @@ const expect = require('chai').expect,
 	Project = require('../../../lib/entities/project'),
 	Environment = require('../../../lib/entities/environment'),
 	SwaggerDefinition = require('../../../lib/entities/swagger/definition'),
-	parser = require('swagger-parser'),
 	fs = require('fs');
 
 describe('Swagger Exporter', function () {
@@ -19,7 +18,6 @@ describe('Swagger Exporter', function () {
 			expect(swaggerExporter).to.be.instanceof(Swagger);
 		});
 		it('should posess generic exporter prototype', function () {
-			expect(swaggerExporter).to.respondTo('loadSLData');
 			expect(swaggerExporter).to.respondTo('loadProject');
 			expect(swaggerExporter).to.respondTo('_export');
 			expect(swaggerExporter).to.respondTo('export');
@@ -503,29 +501,6 @@ describe('Swagger Exporter', function () {
 	describe('_export', function () {
 		afterEach(function () {
 			fs.unlinkSync('temp.yaml');
-		});
-		it('should perform export for loaded data', function (done) {
-			swaggerExporter.loadSLData(require(__dirname + '/../../data/stoplight.json'))
-				.then(() => {
-					swaggerExporter.export('yaml')
-						.then((exportedData) => {
-							fs.writeFileSync('temp.yaml', exportedData, 'utf8');
-							parser.parse('temp.yaml')
-								.then(() => {
-									done();
-								})
-								.catch((err) => {
-									expect(err).to.equal(undefined);
-									done();
-								});
-						})
-						.catch((err) => {
-							done(err);
-						});
-				})
-				.catch((err) => {
-					return done(err);
-				});
 		});
 	});
 	it('shouldn\'t contain duplicate produces values');

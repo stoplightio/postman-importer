@@ -18,12 +18,6 @@ describe('index', function() {
       it('should be swagger supported', function(){
         expect(specConverter.Formats.SWAGGER).to.be.a('Object');
       });
-      it('should be postman supported', function(){
-        expect(specConverter.Formats.POSTMAN).to.be.a('Object');
-      });
-      it('should be stoplight supported', function(){
-        expect(specConverter.Formats.STOPLIGHT).to.be.a('Object');
-      });
     });
 
     describe('exporters', function(){
@@ -49,14 +43,6 @@ describe('index', function() {
       it('should expose swagger importer api', function(){
         const importerInstance = specConverter.Importer.factory(specConverter.Formats.SWAGGER);
         expect(importerInstance).to.be.an.instanceof(require('../lib/importers/swagger'));
-      });
-      it('should expose postman importer api', function(){
-        const importerInstance = specConverter.Importer.factory(specConverter.Formats.POSTMAN);
-        expect(importerInstance).to.be.an.instanceof(require('../lib/importers/postman'));
-      });
-      it('should expose stoplight importer api', function(){
-        const importerInstance = specConverter.Importer.factory(specConverter.Formats.STOPLIGHT);
-        expect(importerInstance).to.be.an.instanceof(require('../lib/importers/stoplight'));
       });
     });
 });
