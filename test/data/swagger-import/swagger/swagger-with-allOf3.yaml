@@ -1,0 +1,49 @@
+swagger: '2.0'
+info:
+  version: 0.0.0
+  title: Simple API
+paths:
+  /:
+    get:
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - properties:
+                items:
+                  type: array
+                  minItems: 10
+                  maxItems: 100
+                  uniqueItems: true
+                  items:
+                    $ref: '#/definitions/CollectingItem'
+            - $ref: '#/definitions/Paging'
+definitions:
+  CollectingItem:
+    discriminator: itemType
+    required:
+      - itemType
+    properties:
+      itemType:
+        type: string
+        enum:
+          - Vinyl
+          - VHS
+      imageId:
+        type: string
+      maxPrice:
+        type: number
+        format: double
+        minimum: 0
+        maximum: 10000
+  Paging:
+    properties:
+      totalItems:
+        type: integer
+      totalPages:
+        type: integer
+      pageSize:
+        type: integer
+      currentPage:
+        type: integer
