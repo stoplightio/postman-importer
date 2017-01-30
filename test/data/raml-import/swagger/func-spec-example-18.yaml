@@ -1,0 +1,27 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: My API With Types
+paths: {}
+definitions:
+  ErrorModel:
+    type: object
+    properties:
+      message:
+        type: string
+      code:
+        type: integer
+        minimum: 100
+        maximum: 600
+    required:
+      - message
+      - code
+  ExtendedErrorModel:
+    allOf:
+      - $ref: '#/definitions/ErrorModel'
+      - type: object
+        properties:
+          rootCause:
+            type: string
+        required:
+          - rootCause

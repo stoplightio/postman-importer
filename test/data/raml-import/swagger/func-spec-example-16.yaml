@@ -1,0 +1,38 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: My API With Types
+paths: {}
+definitions:
+  HasHome:
+    type: object
+    properties:
+      homeAddress:
+        type: string
+    required:
+      - homeAddress
+  Cat:
+    type: object
+    properties:
+      name:
+        type: string
+      color:
+        type: string
+    required:
+      - name
+      - color
+  Dog:
+    type: object
+    properties:
+      name:
+        type: string
+      fangs:
+        type: string
+    required:
+      - name
+      - fangs
+  HomeAnimal:
+    x-raml-union-type-definition: '[HasHome,Dog | Cat]'
+    allOf:
+      - $ref: '#/definitions/HasHome'
+      - type: object

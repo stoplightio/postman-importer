@@ -1,0 +1,305 @@
+swagger: '2.0'
+info:
+  version: v0.1
+  title: Products API
+host: mocksvc.mulesoft.com
+basePath: /mocks/a86239e0-d3af-48c6-9fd5-f8edc7c35d69
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /custom:
+    post:
+      operationId: POST_custom
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: AWSAccessKeyId
+          in: formData
+          description: The AWS Access Key ID of the owner of the bucket who grants an Anonymous user access for a request that satisfies the set of constraints in the Policy.
+          type: string
+        - name: acl
+          in: formData
+          description: 'Specifies an Amazon S3 access control list. If an invalid access control list is specified, an error is generated.'
+          type: string
+      responses:
+        default:
+          description: ''
+          schema: {}
+    x-raml-resource-displayName: custom
+  /products:
+    get:
+      operationId: GET_products
+      description: Get a list of products
+      parameters:
+        - name: q
+          in: query
+          description: Search phrase to look for products
+          required: false
+          type: string
+      responses:
+        '200':
+          description: ''
+    post:
+      operationId: POST_products
+      description: Create a product
+      parameters:
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              product:
+                type: object
+                required:
+                  - name
+                  - description
+                  - url
+                  - image
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  url:
+                    type: string
+                  image:
+                    type: string
+                  thumbnailUrl:
+                    type: string
+                  keywords:
+                    type: string
+                  brand:
+                    type: string
+                  color:
+                    type: string
+                  itemCondition:
+                    type: string
+                  manufacturer:
+                    type: string
+                  model:
+                    type: string
+                  sku:
+                    type: string
+                  weight:
+                    type: string
+                  width:
+                    type: string
+                  height:
+                    type: string
+                  depth:
+                    type: string
+            required:
+              - product
+            example:
+              product:
+                id: '1'
+                name: Product One
+                description: This is the full description of the product.
+                url: 'http://example.com'
+                image: 'http://example.com/image.jpg'
+                thumbnailUrl: 'http://example.com/image-thumb.jpg'
+                keywords: 'western, cowboy'
+                brand: Brand Name
+                color: Black
+                itemCondition: New
+                manufacturer: Manufacturer Name
+                model: Black
+                sku: 'SKU #'
+                weight: 12 pounds
+                width: 12 inches
+                height: 12 inches
+                depth: 12 inches
+        - name: X-Tracking-Example
+          in: header
+          description: You can specify request headers like this
+          required: false
+          type: string
+          enum:
+            - accounting
+            - payroll
+            - finance
+      responses:
+        default:
+          description: ''
+          schema: {}
+    x-raml-resource-displayName: products
+  '/products/{productId}':
+    parameters:
+      - name: productId
+        in: path
+        description: productId
+        required: true
+        type: string
+    delete:
+      operationId: DELETE_products-productId
+      description: Delete a single product
+      parameters:
+        - name: productId
+          in: query
+          description: The ID of the product
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: ''
+    put:
+      operationId: PUT_products-productId
+      description: Updates a single product
+      parameters:
+        - name: productId
+          in: query
+          description: The ID of the product
+          required: true
+          type: integer
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              product:
+                type: object
+                required:
+                  - name
+                  - description
+                  - url
+                  - image
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  url:
+                    type: string
+                  image:
+                    type: string
+                  thumbnailUrl:
+                    type: string
+                  keywords:
+                    type: string
+                  brand:
+                    type: string
+                  color:
+                    type: string
+                  itemCondition:
+                    type: string
+                  manufacturer:
+                    type: string
+                  model:
+                    type: string
+                  sku:
+                    type: string
+                  weight:
+                    type: string
+                  width:
+                    type: string
+                  height:
+                    type: string
+                  depth:
+                    type: string
+            required:
+              - product
+            example:
+              product:
+                id: '1'
+                name: Product One
+                description: This is the full description of the product.
+                url: 'http://example.com'
+                image: 'http://example.com/image.jpg'
+                thumbnailUrl: 'http://example.com/image-thumb.jpg'
+                keywords: 'western, cowboy'
+                brand: Brand Name
+                color: Black
+                itemCondition: New
+                manufacturer: Manufacturer Name
+                model: Black
+                sku: 'SKU #'
+                weight: 12 pounds
+                width: 12 inches
+                height: 12 inches
+                depth: 12 inches
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: object
+            properties:
+              product:
+                type: object
+                required:
+                  - name
+                  - description
+                  - url
+                  - image
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  url:
+                    type: string
+                  image:
+                    type: string
+                  thumbnailUrl:
+                    type: string
+                  keywords:
+                    type: string
+                  brand:
+                    type: string
+                  color:
+                    type: string
+                  itemCondition:
+                    type: string
+                  manufacturer:
+                    type: string
+                  model:
+                    type: string
+                  sku:
+                    type: string
+                  weight:
+                    type: string
+                  width:
+                    type: string
+                  height:
+                    type: string
+                  depth:
+                    type: string
+            required:
+              - product
+          examples:
+            application/json:
+              product:
+                id: '1'
+                name: Product One
+                description: This is the full description of the product.
+                url: 'http://example.com'
+                image: 'http://example.com/image.jpg'
+                thumbnailUrl: 'http://example.com/image-thumb.jpg'
+                keywords: 'western, cowboy'
+                brand: Brand Name
+                color: Black
+                itemCondition: New
+                manufacturer: Manufacturer Name
+                model: Black
+                sku: 'SKU #'
+                weight: 12 pounds
+                width: 12 inches
+                height: 12 inches
+                depth: 12 inches
+    get:
+      operationId: GET_products-productId
+      description: Get a single product
+      parameters:
+        - name: productId
+          in: query
+          description: The ID of the product
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: ''
+    x-raml-resource-displayName: '{productId}'

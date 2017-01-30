@@ -1,0 +1,167 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: Baeldung Foo REST Services API
+host: rest-api.baeldung.com
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: Each request must contain the headers necessary for basic authentication
+paths:
+  /foos:
+    post:
+      operationId: POST_foos
+      description: Create a new Foo
+      parameters:
+        - name: body
+          in: body
+          schema:
+            example:
+              id: first
+              name: last
+            $ref: '#/definitions/Foo'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Foo'
+          examples:
+            application/json:
+              id: first
+              name: last
+    get:
+      operationId: GET_foos
+      description: 'List all Foos matching query criteria, if provided; otherwise list all Foos'
+      parameters:
+        - name: name
+          in: query
+          required: false
+          type: string
+        - name: ownerName
+          in: query
+          required: false
+          type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Foo'
+          examples:
+            application/json:
+              - id: first1
+                name: last1
+              - id: first2
+                name: last2
+  '/foos/{id}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+    delete:
+      operationId: DELETE_foos-id
+      description: Delete a Foo by id
+      responses:
+        '204':
+          description: ''
+        '404':
+          description: ''
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              description: error
+    put:
+      operationId: PUT_foos-id
+      description: Update a Foo by id
+      parameters:
+        - name: body
+          in: body
+          schema:
+            example:
+              id: first
+              name: last
+            $ref: '#/definitions/Foo'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Foo'
+          examples:
+            application/json:
+              id: first
+              name: last
+        '404':
+          description: ''
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              description: error
+    get:
+      operationId: GET_foos-id
+      description: Get a Foo by id
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Foo'
+          examples:
+            application/json:
+              id: first
+              name: last
+        '404':
+          description: ''
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              description: error
+  '/foos/name/{name}':
+    parameters:
+      - name: name
+        in: path
+        required: true
+        type: string
+    get:
+      operationId: GET_foos-name-name
+      description: List all Foos with a certain name
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Foo'
+          examples:
+            application/json:
+              - id: first1
+                name: last1
+              - id: first2
+                name: last2
+x-basePath: '/api/{version}'
+definitions:
+  Foo:
+    type: object
+    description: Foo details
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      ownerName:
+        type: string
+    required:
+      - id
+      - name
+  Error:
+    type: object
+    description: Error details

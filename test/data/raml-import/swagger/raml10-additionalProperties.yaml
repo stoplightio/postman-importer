@@ -1,0 +1,53 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+host: 'localhost:3000'
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /users:
+    post:
+      operationId: POST_users
+      parameters:
+        - name: body
+          in: body
+          schema:
+            properties:
+              data:
+                $ref: '#/definitions/Person'
+            type: object
+            required:
+              - data
+            additionalProperties:
+              type: boolean
+      responses:
+        '200':
+          description: The user object
+          schema:
+            properties:
+              data:
+                $ref: '#/definitions/Person'
+            type: object
+            required:
+              - data
+            additionalProperties:
+              type: string
+    x-raml-resource-displayName: users
+definitions:
+  Person:
+    properties:
+      name:
+        type: string
+      age:
+        type: number
+    type: object
+    required:
+      - name
+    additionalProperties:
+      type: string

@@ -1,0 +1,137 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  description: This is a sample server Petstore server.
+host: petstore.swagger.io
+basePath: /v2
+schemes:
+  - http
+paths:
+  /pet:
+    patch:
+      operationId: patchPet
+      description: Add a new pet to the store
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Pet object that needs to be added to the store
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+      responses:
+        '200':
+          description: ok
+    post:
+      operationId: addPet
+      description: Add a new pet to the store
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Pet object that needs to be added to the store
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+      responses:
+        '200':
+          description: ok
+    x-raml-resource-displayName: pet
+  '/pet/{petId}':
+    parameters:
+      - name: petId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: string
+    get:
+      operationId: getPetById
+      description: Returns a single pet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+    x-raml-resource-displayName: '{petId}'
+  '/pet/{petId}2':
+    parameters:
+      - name: petId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: string
+    get:
+      operationId: getPetById2
+      description: Returns a single pet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Pet1'
+    x-raml-resource-displayName: '{petId}'
+  '/pet/{petId}3':
+    parameters:
+      - name: petId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: string
+    get:
+      operationId: getPetById3
+      description: Returns a single pet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Pet2'
+    x-raml-resource-displayName: '{petId}'
+definitions:
+  Category:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  Pet1:
+    type: array
+    items:
+      $ref: '#/definitions/Category'
+  Pet2:
+    type: array
+    items:
+      $ref: '#/definitions/Category'
+  Pet3:
+    properties:
+      ids:
+        type: array
+        items:
+          $ref: '#/definitions/Category'
+      name:
+        type: array
+        items:
+          $ref: '#/definitions/Category'
+      home:
+        type: boolean
+    type: object
+    required:
+      - ids
+      - name
+      - home
+  Pet4:
+    type: array
+    items:
+      $ref: '#/definitions/Category'

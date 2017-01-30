@@ -268,7 +268,8 @@ describe('from raml to swagger', function () {
 	const testWithData = function (testFile, validate) {
 		const validateOptions = {
 			validate: validate,
-			fsResolver: myFsResolver
+			fsResolver: myFsResolver,
+			format: 'yaml'
 		};
 		
 		return function (done) {
@@ -279,18 +280,18 @@ describe('from raml to swagger', function () {
 				.then(resultSwagger => {
 
 					try {
-						const targetFile = baseDir + '/../swagger/' + _.replace(testFile, 'yaml', 'json');
+						const targetFile = baseDir + '/../swagger/' + testFile;
 
 						const notExistsTarget = !fs.existsSync(targetFile);
 						if (notExistsTarget) {
-							const data = JSON.stringify(resultSwagger);
+							const data = resultSwagger;
 							console.log('Content for non existing target file ' + targetFile + '\n.');
 							console.log('********** Begin file **********\n');
 							console.log(data);
 							console.log('********** Finish file **********\n');
 							return done(data);
 						} else {
-							expect(resultSwagger).to.deep.equal(require(targetFile));
+							expect(YAML.safeLoad(resultSwagger)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
 							done();
 						}
 					} catch (e) {

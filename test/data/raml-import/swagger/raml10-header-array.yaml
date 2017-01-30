@@ -1,0 +1,37 @@
+swagger: '2.0'
+info:
+  version: '1'
+  title: headers example
+paths:
+  /jobs:
+    post:
+      operationId: POST_jobs
+      description: Create a job
+      parameters:
+        - name: Zencoder-Api-Key
+          in: header
+          description: The API key needed to create a new job
+          required: true
+          type: string
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /jobs2:
+    get:
+      operationId: GET_jobs2
+      parameters:
+        - name: X-Dept
+          in: header
+          description: |
+            A department code to be charged.
+            Multiple of such headers are allowed.
+          required: true
+          type: array
+          items:
+            x-raml-example: 230-OCTO
+            x-raml-pattern: ^\d+\-\w+$
+      responses:
+        default:
+          description: ''
+          schema: {}

@@ -1,0 +1,54 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  description: This is a sample server Petstore server.
+host: petstore.swagger.io
+basePath: /v2
+schemes:
+  - http
+paths:
+  /pet:
+    x-raml-resource-displayName: pet
+  '/pet/{petId}':
+    parameters:
+      - name: petId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: string
+        x-raml-annotation-testHarness: parameter description
+    get:
+      operationId: getPetById
+      description: Returns a single pet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Pet'
+      x-raml-annotation-testHarness: method description
+    x-raml-resource-displayName: '{petId}'
+definitions:
+  Category:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+        x-raml-annotation-testHarness: property type description
+    type: object
+    x-raml-annotation-testHarness: type description
+  Pet:
+    properties:
+      category:
+        $ref: '#/definitions/Category'
+      id:
+        type: string
+      name:
+        type: string
+        example: doggie
+    type: object
+    required:
+      - name

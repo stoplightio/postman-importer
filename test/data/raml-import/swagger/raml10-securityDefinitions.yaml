@@ -1,0 +1,103 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Security tryout
+host: mazimi-prod.apigee.net
+basePath: /security
+schemes:
+  - http
+securityDefinitions:
+  oauth2:
+    type: oauth2
+    flow: application
+    scopes:
+      'write:pets': ''
+      'read:pets': ''
+    description: my oauth 2.0 security scheme.
+    tokenUrl: 'https://api.dropbox.com/1/oauth2/token'
+  oauth22:
+    type: oauth2
+    flow: implicit
+    scopes: {}
+    description: my oauth 2.0 security scheme. Version 2.
+    authorizationUrl: 'http://swagger2.io/api/oauth/dialog'
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+  basicAuth2:
+    type: basic
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2.
+  internalApiKey:
+    name: api_key
+    type: apiKey
+    in: header
+    description: Api Key Authentication
+  internalApiKey2:
+    name: api_key2
+    type: apiKey
+    in: header
+    description: Api Key Authentication. Version 2.
+  internalApiKey3:
+    name: api_key3
+    type: apiKey
+    in: query
+    description: Api Key Authentication. Version 3.
+  internalApiKey4:
+    name: api_key4
+    type: apiKey
+    in: query
+    description: Api Key Authentication. Version 4.
+paths:
+  /getApiKey:
+    get:
+      operationId: GET_getApiKey
+      responses:
+        '200':
+          description: 'InternalApiKey. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+      security:
+        - oauth22: []
+        - internalApiKey: []
+    x-raml-resource-displayName: getApiKey
+  /getBasicAuth:
+    get:
+      operationId: GET_getBasicAuth
+      responses:
+        '200':
+          description: 'Basic Auth. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+      security:
+        - basicAuth: []
+        - internalApiKey2: []
+    x-raml-resource-displayName: getBasicAuth
+  /getOauth2Auth:
+    get:
+      operationId: GET_getOauth2Auth
+      responses:
+        '200':
+          description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+      security:
+        - oauth2:
+            - 'read:pets'
+        - basicAuth2: []
+    x-raml-resource-displayName: getOauth2Auth
+  /getMixed:
+    get:
+      operationId: GET_getMixed
+      responses:
+        '200':
+          description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+      security:
+        - oauth2:
+            - 'read:pets'
+        - internalApiKey3: []
+    x-raml-resource-displayName: getMixed
+  /getMixed2:
+    get:
+      operationId: GET_getMixed2
+      responses:
+        '200':
+          description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+      security:
+        - oauth2:
+            - 'read:pets'
+        - internalApiKey4: []
+    x-raml-resource-displayName: getMixed2

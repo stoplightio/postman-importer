@@ -1,0 +1,78 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: API with Examples
+paths:
+  /organization:
+    get:
+      operationId: GET_organization
+      description: Returns an organization entity.
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: ''
+          schema:
+            example:
+              name: Acme
+              x-raml-example-name: acme
+            x-raml-additional-examples:
+              - value: |-
+                  {
+                    "name": "Software Corp",
+                    "address": "35 Central Street",
+                    "value": "Gold"
+                  }
+                strict: true
+                structuredValue:
+                  name: Software Corp
+                  address: 35 Central Street
+                  value: Gold
+                x-raml-example-name: softwareCorp
+            $ref: '#/definitions/Org'
+    post:
+      operationId: POST_organization
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            example:
+              name: Doe Enterprise
+              value: Silver
+            $ref: '#/definitions/Org'
+        - name: UserID
+          in: header
+          description: the identifier for the user who posts a new organization
+          required: true
+          type: string
+      responses:
+        default:
+          description: ''
+          schema: {}
+definitions:
+  User:
+    type: object
+    example:
+      name: Bob
+      lastname: Marley
+    properties:
+      name:
+        type: string
+      lastname:
+        type: string
+    required:
+      - name
+      - lastname
+  Org:
+    type: object
+    properties:
+      name:
+        type: string
+      address:
+        type: string
+      value:
+        type: string
+    required:
+      - name

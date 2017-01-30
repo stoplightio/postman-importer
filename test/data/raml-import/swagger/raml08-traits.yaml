@@ -1,0 +1,79 @@
+swagger: '2.0'
+info:
+  version: '2.5'
+  title: OpenWeather
+host: api.openweathermap.org
+basePath: /data/2.5/
+schemes:
+  - http
+paths:
+  /weather:
+    get:
+      operationId: GET_weather
+      description: |
+        Search weather by city name
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/trait:isSearchableByCity:q'
+        - $ref: '#/parameters/trait:isMetric:units'
+        - $ref: '#/parameters/trait:isApiKey:APPID'
+        - $ref: '#/parameters/trait:userAgent:User-Agent'
+      responses:
+        '200':
+          description: ''
+    x-raml-is:
+      - isSearchableByCity
+      - isMetric
+      - isAPIKey
+      - userAgent
+    x-raml-resource-displayName: Weather
+  /forecast:
+    get:
+      operationId: GET_forecast
+      description: |
+        seach weather forecast for 5 days with data every 3 hours by city name.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/trait:isSearchableByCity:q'
+        - $ref: '#/parameters/trait:isMetric:units'
+        - $ref: '#/parameters/trait:isApiKey:APPID'
+        - $ref: '#/parameters/trait:userAgent:User-Agent'
+      responses:
+        '200':
+          description: ''
+    x-raml-is:
+      - isSearchableByCity
+      - isMetric
+      - isAPIKey
+      - userAgent
+    x-raml-resource-displayName: Forecast
+parameters:
+  'trait:isSearchableByCity:q':
+    name: q
+    in: query
+    description: city name
+    required: true
+    type: string
+  'trait:isMetric:units':
+    name: units
+    in: query
+    description: Metric or Imperial
+    required: true
+    enum:
+      - metric
+      - imperial
+    type: string
+  'trait:isApiKey:APPID':
+    name: APPID
+    in: query
+    description: API Key
+    required: true
+    type: string
+  'trait:userAgent:User-Agent':
+    name: User-Agent
+    in: header
+    description: All API consumers MUST provide a user agent
+    required: true
+    type: string

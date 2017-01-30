@@ -1,0 +1,71 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  description: This is a sample server Petstore server.
+host: petstore.swagger.io
+basePath: /v2
+schemes:
+  - http
+paths:
+  /pet:
+    post:
+      operationId: addPet
+      description: Add a new pet to the store
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: Pet object that needs to be added to the store
+          schema:
+            $ref: '#/definitions/Pet'
+      responses:
+        '405':
+          description: Invalid input
+    x-raml-resource-displayName: pet
+  '/pet/{petId}':
+    parameters:
+      - name: petId
+        in: path
+        description: ID of pet to return
+        required: true
+        type: string
+    get:
+      operationId: getPetById
+      description: Returns a single pet
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Pet'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    x-raml-resource-displayName: '{petId}'
+definitions:
+  Category:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  Pet:
+    properties:
+      category:
+        $ref: '#/definitions/Category'
+      id:
+        type: string
+      name:
+        type: string
+        example: doggie
+    type: object
+    required:
+      - name
+x-raml-uses:
+  - key: files
+    value: raml10-library2-skip.yaml
