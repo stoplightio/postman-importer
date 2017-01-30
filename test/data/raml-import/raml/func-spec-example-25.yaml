@@ -1,0 +1,22 @@
+#%RAML 1.0
+title: API with types
+types:
+  StringArray: # normal array of strings type declaration
+    type: array
+    items: string
+  IntegerArray: # array of integer type declaration
+    type: integer[]
+    minItems: 1
+    uniqueItems: true
+  DateArray: # array type declaration using type expression shortcut
+    type: date-only[]
+    example:
+      - 2015-05-23
+      - 2015-05-19
+/mail:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: DateArray

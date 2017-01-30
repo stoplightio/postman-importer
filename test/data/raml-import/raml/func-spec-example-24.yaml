@@ -1,0 +1,24 @@
+#%RAML 1.0
+title: API with types
+types:
+  Email:
+    type: object
+    properties:
+      subject: string
+      body: string
+  EmailsLong:
+    type: array
+    items: Email
+    minItems: 1
+    uniqueItems: true
+  EmailsShort:
+    type: Email[]
+    minItems: 1
+    uniqueItems: true
+/mail:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: EmailsShort

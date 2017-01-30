@@ -1,0 +1,38 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: API with types
+paths:
+  /mail:
+    get:
+      operationId: GET_mail
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/EmailsShort'
+definitions:
+  Email:
+    type: object
+    properties:
+      subject:
+        type: string
+      body:
+        type: string
+    required:
+      - subject
+      - body
+  EmailsLong:
+    type: array
+    uniqueItems: true
+    items:
+      $ref: '#/definitions/Email'
+    minItems: 1
+  EmailsShort:
+    type: array
+    uniqueItems: true
+    minItems: 1
+    items:
+      $ref: '#/definitions/Email'
