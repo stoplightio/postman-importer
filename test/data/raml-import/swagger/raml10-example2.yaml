@@ -2,7 +2,73 @@ swagger: '2.0'
 info:
   version: '1'
   title: complex types example
-paths: {}
+paths:
+  /else:
+    post:
+      consumes:
+        - application/json
+      operationId: POST_else
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/FourthType"
+            example:
+              n: 40
+              title: else title
+        - in: header
+          description: else id
+          name: elseId
+          required: true
+          type: string
+          x-raml-example:
+            - strict: false
+              structuredValue:
+                n: 30
+                title: else other title
+              value: "{\n  \"title\": \"else other title\",\n  \"n\": 30\n}"
+            - strict: true
+              structuredValue:
+                n: 300
+                title: else other titles
+              value: "{\n  \"title\": \"else other titles\",\n  \"n\": 300\n}"
+      responses:
+        default:
+          description: ""
+          schema: {}
+  /something:
+    post:
+      consumes:
+        - application/json
+      operationId: POST_something
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/SecondType"
+            example:
+              n: 20
+              title: some other title
+              x-raml-example-name: aaa
+            x-raml-additional-examples:
+              - strict: true
+                structuredValue:
+                  n: 200
+                  title: some other titles
+                value: "{\n  \"title\": \"some other titles\",\n  \"n\": 200\n}"
+                x-raml-example-name: bbb
+        - description: some id
+          in: header
+          name: someId
+          required: true
+          type: string
+          x-raml-example:
+            n: 10
+            title: some title
+      responses:
+        default:
+          description: ""
+          schema: {}
 definitions:
   FirstType:
     type: object
