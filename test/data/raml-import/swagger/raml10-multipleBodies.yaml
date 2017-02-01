@@ -1,0 +1,51 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: Hello
+host: example.org
+basePath: /dd
+schemes:
+  - http
+paths:
+  /q:
+    post:
+      operationId: POST_q
+      consumes:
+        - application/json
+        - text/xml
+        - application/xml
+      parameters:
+        - name: body
+          in: body
+          schema:
+            type: object
+      responses:
+        default:
+          description: ''
+          schema: {}
+      x-raml-body-application/json:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Point'
+      x-raml-body-text/xml:
+        - name: body
+          in: body
+          schema:
+            type: boolean
+      x-raml-body-application/xml:
+        - name: body
+          in: body
+          schema:
+            type: string
+definitions:
+  Point:
+    properties:
+      x:
+        type: number
+      'y':
+        type: number
+    type: object
+    required:
+      - x
+      - 'y'
