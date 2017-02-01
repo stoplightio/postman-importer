@@ -23,7 +23,8 @@
             "in": "query",
             "description": "use to query all orders of a user",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "x-raml-example": "1964401a-a8b3-40c1-b86e-d8b9f75b5842"
           },
           {
             "$ref": "#/parameters/trait:assetsPaging:size"
@@ -36,7 +37,61 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/assets.Orders"
+              "$ref": "#/definitions/assets.Orders",
+              "example": {
+                "orders": [
+                  {
+                    "creation_date": "2016-03-30",
+                    "items": [
+                      {
+                        "product_id": "PRODUCT-1",
+                        "quantity": 5
+                      },
+                      {
+                        "product_id": "PRODUCT-2",
+                        "quantity": 2
+                      }
+                    ],
+                    "order_id": "ORDER-437563756"
+                  }
+                ],
+                "x-raml-example-name": "single-order"
+              },
+              "x-raml-additional-examples": [
+                {
+                  "strict": true,
+                  "structuredValue": {
+                    "orders": [
+                      {
+                        "creation_date": "2016-03-30",
+                        "items": [
+                          {
+                            "product_id": "PRODUCT-1",
+                            "quantity": 5
+                          },
+                          {
+                            "product_id": "PRODUCT-2",
+                            "quantity": 2
+                          }
+                        ],
+                        "order_id": "ORDER-437563756"
+                      },
+                      {
+                        "creation_date": "2016-03-30",
+                        "items": [
+                          {
+                            "product_id": "PRODUCT-7",
+                            "quantity": 6
+                          }
+                        ],
+                        "order_id": "ORDER-437542111"
+                      }
+                    ]
+                  },
+                  "value": "{\n  \"orders\": [\n    {\n      \"order_id\": \"ORDER-437563756\",\n      \"creation_date\": \"2016-03-30\",\n      \"items\": [\n        {\n          \"product_id\": \"PRODUCT-1\",\n          \"quantity\": 5\n        },\n        {\n          \"product_id\": \"PRODUCT-2\",\n          \"quantity\": 2\n        }\n      ]\n    },\n    {\n      \"order_id\": \"ORDER-437542111\",\n      \"creation_date\": \"2016-03-30\",\n      \"items\": [\n        {\n          \"product_id\": \"PRODUCT-7\",\n          \"quantity\": 6\n        }\n      ]\n    }\n  ]\n}",
+                  "x-raml-example-name": "multiple-orders"
+                }
+              ]
             }
           }
         }
@@ -51,14 +106,16 @@
       "in": "query",
       "description": "the amount of elements of each result page",
       "required": false,
-      "type": "integer"
+      "type": "integer",
+      "x-raml-example": 10
     },
     "trait:assetsPaging:page": {
       "name": "page",
       "in": "query",
       "description": "the page number",
       "required": false,
-      "type": "integer"
+      "type": "integer",
+      "x-raml-example": 0
     }
   },
   "definitions": {
