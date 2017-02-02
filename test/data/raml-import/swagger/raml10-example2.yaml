@@ -13,7 +13,8 @@ paths:
           name: body
           schema:
             $ref: "#/definitions/FourthType"
-            example:
+            x-raml-example:
+              strict: false
               n: 40
               title: else title
         - in: header
@@ -22,21 +23,37 @@ paths:
           required: true
           type: string
           x-raml-example:
-            - strict: false
-              structuredValue:
-                n: 30
-                title: else other title
-              value: "{\n  \"title\": \"else other title\",\n  \"n\": 30\n}"
-            - strict: true
-              structuredValue:
-                n: 300
-                title: else other titles
-              value: "{\n  \"title\": \"else other titles\",\n  \"n\": 300\n}"
+            - n: 30
+              title: else other title
+              strict: false
+              x-raml-example-name: aaa
+            - n: 300
+              title: else other titles
+              x-raml-example-name: bbb
       responses:
         default:
           description: ""
           schema: {}
   /something:
+    get:
+      description: get something
+      operationId: GET_something
+      parameters:
+        - in: query
+          name: param
+          required: true
+          type: string
+          x-raml-example: param example
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/FirstType"
+            x-raml-example:
+              n: 500
+              title: get example
     post:
       consumes:
         - application/json
@@ -46,16 +63,12 @@ paths:
           name: body
           schema:
             $ref: "#/definitions/SecondType"
-            example:
-              n: 20
-              title: some other title
-              x-raml-example-name: aaa
-            x-raml-additional-examples:
-              - strict: true
-                structuredValue:
-                  n: 200
-                  title: some other titles
-                value: "{\n  \"title\": \"some other titles\",\n  \"n\": 200\n}"
+            x-raml-example:
+              - n: 20
+                title: some other title
+                x-raml-example-name: aaa
+              - n: 200
+                title: some other titles
                 x-raml-example-name: bbb
         - description: some id
           in: header
@@ -87,6 +100,7 @@ definitions:
   SecondType:
     type: object
     example:
+      strict: false
       title: Second
       'n': 2
     description: something
@@ -114,15 +128,8 @@ definitions:
       'n': 3
       x-raml-example-name: a
     x-raml-additional-examples:
-      - value: |-
-          {
-            "title": "Third b",
-            "n": 3
-          }
-        strict: true
-        structuredValue:
-          title: Third b
-          'n': 3
+      - title: Third b
+        n: 3
         x-raml-example-name: b
   FourthType:
     type: object
@@ -141,13 +148,43 @@ definitions:
       strict: false
       x-raml-example-name: a
     x-raml-additional-examples:
-      - value: |-
-          {
-            "title": "Fourth b",
-            "n": 4
-          }
-        strict: true
-        structuredValue:
-          title: Fourth b
-          'n': 4
+      - title: Fourth b
+        n: 4
         x-raml-example-name: b
+parameters:
+  trait:colors:blue:
+    description: blue
+    in: header
+    name: blue
+    required: true
+    type: string
+    x-raml-example: this is a blue example
+  trait:colors:green:
+    description: green
+    in: header
+    name: green
+    required: true
+    type: string
+    x-raml-example:
+      - n: 1000
+        x-raml-example-name: g1
+        title: green 1
+      - n: 2000
+        x-raml-example-name: g2
+        title: green 2
+  trait:colors:red:
+    description: red
+    in: query
+    name: red
+    required: false
+    type: string
+    x-raml-example: this is a red example
+  trait:colors:yellow:
+    description: yellow
+    in: query
+    name: yellow
+    required: false
+    type: string
+    x-raml-example:
+      n: 3000
+      title: Yellow

@@ -54,6 +54,20 @@ types:
           title: "Fourth b"
           n: 4
 /something:
+  get:
+    description: get something
+    responses:
+      200:
+        body:
+          application/json:
+            type: FirstType
+            example:
+              title: get example
+              n: 500
+    queryParameters:
+      param:
+        type: string
+        example: param example
   post:
     headers:
       someId:
@@ -97,3 +111,33 @@ types:
           value:
             title: else title
             n: 40
+traits:
+  colors:
+    queryParameters:
+      red:
+        description: red
+        type: string
+        required: false
+        example: this is a red example
+      yellow:
+        description: yellow
+        type: FirstType
+        required: false
+        example:
+          title: Yellow
+          n: 3000
+    headers:
+      blue:
+        description: blue
+        type: string
+        example: this is a blue example
+      green:
+        description: green
+        type: FirstType
+        examples:
+          g1:
+            title: green 1
+            n: 1000
+          g2:
+            title: green 2
+            n: 2000
