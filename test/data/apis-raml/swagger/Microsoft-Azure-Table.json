@@ -399,10 +399,9 @@
           {
             "name": "body",
             "in": "body",
-            "description": "versions prior to 2015-12-11",
+            "description": "versions 2013-08-15 and later",
             "schema": {
-              "type": "string",
-              "example": "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?> <entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>2009-03-18T11:48:34.9840639-07:00</updated> <author> <name/> </author> <id/> <content type=\"application/xml\"> <m:properties> <d:TableName>mytable</d:TableName> </m:properties> </content> </entry>"
+              "type": "object"
             }
           },
           {
@@ -520,7 +519,39 @@
               }
             }
           }
-        }
+        },
+        "x-raml-body-application/json": [
+          {
+            "description": "versions 2013-08-15 and later",
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "properties": {
+                "TableName": {
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "required": [
+                "TableName"
+              ],
+              "x-raml-example": {
+                "TableName": "mytable"
+              }
+            }
+          }
+        ],
+        "x-raml-body-application/xml": [
+          {
+            "description": "versions prior to 2015-12-11",
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "example": "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?> <entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>2009-03-18T11:48:34.9840639-07:00</updated> <author> <name/> </author> <id/> <content type=\"application/xml\"> <m:properties> <d:TableName>mytable</d:TableName> </m:properties> </content> </entry>",
+              "type": "string"
+            }
+          }
+        ]
       },
       "get": {
         "operationId": "GET_Tables",
@@ -707,8 +738,7 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "string",
-              "example": "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?> <entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>2013-09-18T23:46:19.3857256Z</updated> <author> <name /> </author> <id /> <content type=\"application/xml\"> <m:properties> <d:Address>Mountain View</d:Address> <d:Age m:type=\"Edm.Int32\">23</d:Age> <d:AmountDue m:type=\"Edm.Double\">200.23</d:AmountDue> <d:BinaryData m:type=\"Edm.Binary\" m:null=\"true\" /> <d:CustomerCode m:type=\"Edm.Guid\">c9da6455-213d-42c9-9a79-3e9149a57833</d:CustomerCode> <d:CustomerSince m:type=\"Edm.DateTime\">2008-07-10T00:00:00</d:CustomerSince> <d:IsActive m:type=\"Edm.Boolean\">true</d:IsActive> <d:NumOfOrders m:type=\"Edm.Int64\">255</d:NumOfOrders> <d:PartitionKey>mypartitionkey</d:PartitionKey> <d:RowKey>myrowkey1</d:RowKey> </m:properties> </content> </entry>"
+              "type": "object"
             }
           },
           {
@@ -834,7 +864,78 @@
               }
             }
           }
-        }
+        },
+        "x-raml-body-application/json": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Address": {
+                  "type": "string"
+                },
+                "Age": {
+                  "type": "string"
+                },
+                "AmountDue": {
+                  "type": "string"
+                },
+                "CustomerCode@odata.type": {
+                  "type": "string"
+                },
+                "CustomerCode": {
+                  "type": "string"
+                },
+                "CustomerSince@odata.type": {
+                  "type": "string"
+                },
+                "CustomerSince": {
+                  "type": "string"
+                },
+                "IsActive": {
+                  "type": "string"
+                },
+                "NumberOfOrders@odata.type": {
+                  "type": "string"
+                },
+                "NumberOfOrders": {
+                  "type": "string"
+                },
+                "PartitionKey": {
+                  "type": "string"
+                },
+                "RowKey": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Address",
+                "Age",
+                "AmountDue",
+                "CustomerCode@odata.type",
+                "CustomerCode",
+                "CustomerSince@odata.type",
+                "CustomerSince",
+                "IsActive",
+                "NumberOfOrders@odata.type",
+                "NumberOfOrders",
+                "PartitionKey",
+                "RowKey"
+              ]
+            }
+          }
+        ],
+        "x-raml-body-application/xml": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "example": "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?> <entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>2013-09-18T23:46:19.3857256Z</updated> <author> <name /> </author> <id /> <content type=\"application/xml\"> <m:properties> <d:Address>Mountain View</d:Address> <d:Age m:type=\"Edm.Int32\">23</d:Age> <d:AmountDue m:type=\"Edm.Double\">200.23</d:AmountDue> <d:BinaryData m:type=\"Edm.Binary\" m:null=\"true\" /> <d:CustomerCode m:type=\"Edm.Guid\">c9da6455-213d-42c9-9a79-3e9149a57833</d:CustomerCode> <d:CustomerSince m:type=\"Edm.DateTime\">2008-07-10T00:00:00</d:CustomerSince> <d:IsActive m:type=\"Edm.Boolean\">true</d:IsActive> <d:NumOfOrders m:type=\"Edm.Int64\">255</d:NumOfOrders> <d:PartitionKey>mypartitionkey</d:PartitionKey> <d:RowKey>myrowkey1</d:RowKey> </m:properties> </content> </entry>",
+              "type": "string"
+            }
+          }
+        ]
       },
       "put": {
         "operationId": "PUT_mytable",
@@ -1027,9 +1128,6 @@
         "responses": {
           "200": {
             "description": "",
-            "examples": {
-              "application/xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?> <SignedIdentifiers> <SignedIdentifier> <Id>unique-value</Id> <AccessPolicy> <Start>start-time</Start> <Expiry>expiry-time</Expiry> <Permission>abbreviated-permission-list</Permission> </AccessPolicy> </SignedIdentifier> </SignedIdentifiers>"
-            },
             "headers": {
               "x-ms-request-id": {
                 "description": "A value that uniquely identifies a request made against the service.",
@@ -1110,9 +1208,6 @@
         "responses": {
           "200": {
             "description": "",
-            "examples": {
-              "application/xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?> <SignedIdentifiers> <SignedIdentifier> <Id>unique-value</Id> <AccessPolicy> <Start>start-time</Start> <Expiry>expiry-time</Expiry> <Permission>abbreviated-permission-list</Permission> </AccessPolicy> </SignedIdentifier> </SignedIdentifiers>"
-            },
             "headers": {
               "x-ms-request-id": {
                 "description": "A value that uniquely identifies a request made against the service.",
@@ -1287,8 +1382,7 @@
             "in": "body",
             "description": "The Insert Or Replace Entity operation sends the entity to be inserted as an OData entity set, which may be either an Atom or JSON payload. For more information, see [Inserting and Updating Entities](https://msdn.microsoft.com/en-us/library/azure/dd894033.aspx).\n",
             "schema": {
-              "type": "string",
-              "example": "<?xml version=\"1.0\" encoding=\"utf-8\"?> <entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>2008-09-18T23:46:37.168836Z</updated> <author> <name /> </author> <id>https://myaccount.table.core.windows.net/mytable(PartitionKey='mypartitionkey',RowKey='myrowkey')</id> <content type=\"application/xml\"> <m:properties> <d:Address>Santa Clara</d:Address> <d:Age m:type=\"Edm.Int32\">23</d:Age> <d:AmountDue m:type=\"Edm.Double\">200.23</d:AmountDue> <d:CustomerCode m:type=\"Edm.Guid\">c9da6455-213d-42c9-9a79-3e9149a57833</d:CustomerCode> <d:CustomerSince m:type=\"Edm.DateTime\">2008-07-10T00:00:00Z</d:CustomerSince> <d:IsActive m:type=\"Edm.Boolean\">false</d:IsActive> <d:NumOfOrders m:type=\"Edm.Int64\">255</d:NumOfOrders> <d:PartitionKey>mypartitionkey</d:PartitionKey> <d:RowKey>myrowkey</d:RowKey> </m:properties> </content> </entry>"
+              "type": "object"
             }
           },
           {
@@ -1370,7 +1464,80 @@
               }
             }
           }
-        }
+        },
+        "x-raml-body-application/json": [
+          {
+            "description": "The Insert Or Replace Entity operation sends the entity to be inserted as an OData entity set, which may be either an Atom or JSON payload. For more information, see [Inserting and Updating Entities](https://msdn.microsoft.com/en-us/library/azure/dd894033.aspx).\n",
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "properties": {
+                "Address": {
+                  "type": "string"
+                },
+                "Age": {
+                  "type": "string"
+                },
+                "AmountDue": {
+                  "type": "string"
+                },
+                "CustomerCode@odata.type": {
+                  "type": "string"
+                },
+                "CustomerCode": {
+                  "type": "string"
+                },
+                "CustomerSince@odata.type": {
+                  "type": "string"
+                },
+                "CustomerSince": {
+                  "type": "string"
+                },
+                "IsActive": {
+                  "type": "string"
+                },
+                "NumberOfOrders@odata.type": {
+                  "type": "string"
+                },
+                "NumberOfOrders": {
+                  "type": "string"
+                },
+                "PartitionKey": {
+                  "type": "string"
+                },
+                "RowKey": {
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "required": [
+                "Address",
+                "Age",
+                "AmountDue",
+                "CustomerCode@odata.type",
+                "CustomerCode",
+                "CustomerSince@odata.type",
+                "CustomerSince",
+                "IsActive",
+                "NumberOfOrders@odata.type",
+                "NumberOfOrders",
+                "PartitionKey",
+                "RowKey"
+              ]
+            }
+          }
+        ],
+        "x-raml-body-application/xml": [
+          {
+            "description": "The Insert Or Replace Entity operation sends the entity to be inserted as an OData entity set, which may be either an Atom or JSON payload. For more information, see [Inserting and Updating Entities](https://msdn.microsoft.com/en-us/library/azure/dd894033.aspx).\n",
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "example": "<?xml version=\"1.0\" encoding=\"utf-8\"?> <entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>2008-09-18T23:46:37.168836Z</updated> <author> <name /> </author> <id>https://myaccount.table.core.windows.net/mytable(PartitionKey='mypartitionkey',RowKey='myrowkey')</id> <content type=\"application/xml\"> <m:properties> <d:Address>Santa Clara</d:Address> <d:Age m:type=\"Edm.Int32\">23</d:Age> <d:AmountDue m:type=\"Edm.Double\">200.23</d:AmountDue> <d:CustomerCode m:type=\"Edm.Guid\">c9da6455-213d-42c9-9a79-3e9149a57833</d:CustomerCode> <d:CustomerSince m:type=\"Edm.DateTime\">2008-07-10T00:00:00Z</d:CustomerSince> <d:IsActive m:type=\"Edm.Boolean\">false</d:IsActive> <d:NumOfOrders m:type=\"Edm.Int64\">255</d:NumOfOrders> <d:PartitionKey>mypartitionkey</d:PartitionKey> <d:RowKey>myrowkey</d:RowKey> </m:properties> </content> </entry>",
+              "type": "string"
+            }
+          }
+        ]
       },
       "patch": {
         "operationId": "PATCH_mytable(PartitionKey='partition-key',RowKey='row-key')",
@@ -1384,8 +1551,7 @@
             "in": "body",
             "description": "The Insert Or Replace Entity operation sends the entity to be inserted as an OData entity set, which may be either an Atom or JSON payload. For more information, see [Inserting and Updating Entities](https://msdn.microsoft.com/en-us/library/azure/dd894033.aspx).\n",
             "schema": {
-              "type": "string",
-              "example": "<?xml version=\"1.0\" encoding=\"utf-8\"?> <entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>2008-09-18T23:46:37.168836Z</updated> <author> <name /> </author> <id>https://myaccount.table.core.windows.net/mytable(PartitionKey='mypartitionkey',RowKey='myrowkey')</id> <content type=\"application/xml\"> <m:properties> <d:Address>Santa Clara</d:Address> <d:Age m:type=\"Edm.Int32\">23</d:Age> <d:AmountDue m:type=\"Edm.Double\">200.23</d:AmountDue> <d:CustomerCode m:type=\"Edm.Guid\">c9da6455-213d-42c9-9a79-3e9149a57833</d:CustomerCode> <d:CustomerSince m:type=\"Edm.DateTime\">2008-07-10T00:00:00Z</d:CustomerSince> <d:IsActive m:type=\"Edm.Boolean\">false</d:IsActive> <d:NumOfOrders m:type=\"Edm.Int64\">255</d:NumOfOrders> <d:PartitionKey>mypartitionkey</d:PartitionKey> <d:RowKey>myrowkey</d:RowKey> </m:properties> </content> </entry>"
+              "type": "object"
             }
           },
           {
@@ -1467,7 +1633,80 @@
               }
             }
           }
-        }
+        },
+        "x-raml-body-application/json": [
+          {
+            "description": "The Insert Or Replace Entity operation sends the entity to be inserted as an OData entity set, which may be either an Atom or JSON payload. For more information, see [Inserting and Updating Entities](https://msdn.microsoft.com/en-us/library/azure/dd894033.aspx).\n",
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "properties": {
+                "Address": {
+                  "type": "string"
+                },
+                "Age": {
+                  "type": "string"
+                },
+                "AmountDue": {
+                  "type": "string"
+                },
+                "CustomerCode@odata.type": {
+                  "type": "string"
+                },
+                "CustomerCode": {
+                  "type": "string"
+                },
+                "CustomerSince@odata.type": {
+                  "type": "string"
+                },
+                "CustomerSince": {
+                  "type": "string"
+                },
+                "IsActive": {
+                  "type": "string"
+                },
+                "NumberOfOrders@odata.type": {
+                  "type": "string"
+                },
+                "NumberOfOrders": {
+                  "type": "string"
+                },
+                "PartitionKey": {
+                  "type": "string"
+                },
+                "RowKey": {
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "required": [
+                "Address",
+                "Age",
+                "AmountDue",
+                "CustomerCode@odata.type",
+                "CustomerCode",
+                "CustomerSince@odata.type",
+                "CustomerSince",
+                "IsActive",
+                "NumberOfOrders@odata.type",
+                "NumberOfOrders",
+                "PartitionKey",
+                "RowKey"
+              ]
+            }
+          }
+        ],
+        "x-raml-body-application/xml": [
+          {
+            "description": "The Insert Or Replace Entity operation sends the entity to be inserted as an OData entity set, which may be either an Atom or JSON payload. For more information, see [Inserting and Updating Entities](https://msdn.microsoft.com/en-us/library/azure/dd894033.aspx).\n",
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "example": "<?xml version=\"1.0\" encoding=\"utf-8\"?> <entry xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" xmlns=\"http://www.w3.org/2005/Atom\"> <title /> <updated>2008-09-18T23:46:37.168836Z</updated> <author> <name /> </author> <id>https://myaccount.table.core.windows.net/mytable(PartitionKey='mypartitionkey',RowKey='myrowkey')</id> <content type=\"application/xml\"> <m:properties> <d:Address>Santa Clara</d:Address> <d:Age m:type=\"Edm.Int32\">23</d:Age> <d:AmountDue m:type=\"Edm.Double\">200.23</d:AmountDue> <d:CustomerCode m:type=\"Edm.Guid\">c9da6455-213d-42c9-9a79-3e9149a57833</d:CustomerCode> <d:CustomerSince m:type=\"Edm.DateTime\">2008-07-10T00:00:00Z</d:CustomerSince> <d:IsActive m:type=\"Edm.Boolean\">false</d:IsActive> <d:NumOfOrders m:type=\"Edm.Int64\">255</d:NumOfOrders> <d:PartitionKey>mypartitionkey</d:PartitionKey> <d:RowKey>myrowkey</d:RowKey> </m:properties> </content> </entry>",
+              "type": "string"
+            }
+          }
+        ]
       },
       "get": {
         "operationId": "GET_mytable(PartitionKey='partition-key',RowKey='row-key')",

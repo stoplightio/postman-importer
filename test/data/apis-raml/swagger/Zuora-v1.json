@@ -1,0 +1,5206 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Zuora",
+    "description": "Zuora offers online billing solutions for businesses looking for subscription commerce as a service, delivered all on one killer platform."
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "basic": {
+      "type": "basic",
+      "description": "Include the apiAccessKeyId and apiSecretAccessKey in the request header, which re-authenticates the user with each request."
+    }
+  },
+  "paths": {
+    "/accounts": {
+      "post": {
+        "operationId": "POST_accounts",
+        "description": "Creates a customer account.\nThis call creates a customer account with a credit-card payment method, a bill-to contact, and an optional sold-to contact. In the same operation, it can optionally create a subscription, invoice for that subscription, and collect payment through the default payment method. The transaction is atomic; if any part fails for any reason, the entire transaction is rolled back.\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/accounts",
+              "example": {
+                "creditCard": {
+                  "cardType": "Visa",
+                  "expirationMonth": 2,
+                  "securityCode": "111",
+                  "cardNumber": "4856200223544175",
+                  "expirationYear": 2014
+                },
+                "invoiceTargetDate": "2013-12-31",
+                "name": "Soho",
+                "billCycleDay": "15",
+                "soldToContact": {
+                  "country": "USA",
+                  "lastName": "Doe",
+                  "workEmail": "john.doe@zoura.com",
+                  "address1": "address1",
+                  "address2": "address2",
+                  "firstName": "John",
+                  "state": "California",
+                  "city": "San Francisco",
+                  "mobilePhone": "14156789012"
+                },
+                "billToContact": {
+                  "country": "USA",
+                  "lastName": "Doe",
+                  "workEmail": "jane.doe@zoura.com",
+                  "address1": "address1",
+                  "address2": "address2",
+                  "state": "California",
+                  "firstName": "Jane",
+                  "city": "San Francisco",
+                  "mobilePhone": "14156789012"
+                },
+                "invoiceCollect": true,
+                "notes": "Soho Networks",
+                "subscription": {
+                  "subscribeToRatePlans": [
+                    {
+                      "productRatePlanId": "4028e48735bd88440135c007d07e3169",
+                      "chargeOverrides": [
+                        {
+                          "productRatePlanChargeId": "4028e48835a944f50135c00862171ab3",
+                          "quantity": 10
+                        }
+                      ]
+                    }
+                  ],
+                  "contractEffectiveDate": "2013-02-1",
+                  "initialTerm": "12",
+                  "autoRenew": true,
+                  "termType": "TERMED",
+                  "renewalTerm": "3",
+                  "myCustomField__c": "test"
+                },
+                "paymentTerm": "Net 30",
+                "currency": "USD",
+                "myCustomField__c": "Sally"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/accountCreated"
+            },
+            "examples": {
+              "application/json": {
+                "paymentMethodId": "2c92c8f83dcbd8b1013dcce096b0000b",
+                "paymentId": "2c92c8f83dcbd8b1013dcce09f420032",
+                "paidAmount": 599.55,
+                "subscriptionNumber": "A-S00001083",
+                "subscriptionId": "2c92c8f83dcbd8b1013dcce0983b0015",
+                "accountId": "2c92c8f83dcbd8b1013dcce096790008",
+                "success": true,
+                "accountNumber": "A00030968",
+                "invoiceId": "2c92c8f83dcbd8b1013dcce09d110025"
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-description": "The Accounts REST API provides direct access to customer account information."
+    },
+    "/accounts/{accountKey}": {
+      "parameters": [
+        {
+          "name": "accountKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "put": {
+        "operationId": "PUT_accounts-accountKey",
+        "description": "Updates the specified customer account.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/accountPutBody",
+              "example": {
+                "billToContact": {
+                  "zipCode": "94549",
+                  "homePhone": "9255559259"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseSuccess"
+            },
+            "examples": {
+              "application/json": {
+                "success": true
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GET_accounts-accountKey",
+        "description": "Retrieves basic information about a specified customer account.\n\nThis is a quick retrieval that doesn't include the account's subscriptions, invoices, payments, or usage details. For more detailed information about an account, use the \"Get account summary\" call.\n",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/account"
+            },
+            "examples": {
+              "application/json": {
+                "metrics": {
+                  "totalInvoiceBalance": 0,
+                  "contractedMrr": 15983.17,
+                  "creditBalance": 0,
+                  "balance": 0
+                },
+                "basicInfo": {
+                  "communicationProfileId": "c4ebdd8098bc102dac4f001517641b94",
+                  "status": "Active",
+                  "invoiceTemplateId": null,
+                  "crmId": "",
+                  "name": "subscribeCallYan_1",
+                  "notes": "",
+                  "accountNumber": "A00001115",
+                  "id": "2c92a0f9391832b10139183e277a0042",
+                  "dfadsf__c": null
+                },
+                "soldToContact": {
+                  "zipCode": "95135",
+                  "taxRegion": "",
+                  "fax": "",
+                  "country": "United States",
+                  "county": "",
+                  "personalEmail": "personal_email@zbcloud.com",
+                  "nickname": "",
+                  "otherPhone": "",
+                  "otherPhoneType": "Work",
+                  "lastName": "Zou",
+                  "workEmail": "work_email@zbcloud.com",
+                  "homePhone": "",
+                  "state": "California",
+                  "firstName": "Cheng",
+                  "address2": "",
+                  "address1": "1400 Bridge Pkwy",
+                  "workPhone": "5555551212",
+                  "city": "San Jose",
+                  "mobilePhone": ""
+                },
+                "success": true,
+                "billToContact": {
+                  "zipCode": "95135",
+                  "taxRegion": "",
+                  "fax": "",
+                  "country": "United States",
+                  "county": "",
+                  "personalEmail": "personal_email@zbcloud.com",
+                  "nickname": "",
+                  "otherPhone": "",
+                  "otherPhoneType": "Work",
+                  "lastName": "Zou",
+                  "workEmail": "work_email@zbcloud.com",
+                  "homePhone": "",
+                  "state": "California",
+                  "firstName": "Cheng",
+                  "address2": "",
+                  "address1": "1400 Bridge Pkwy",
+                  "workPhone": "5555551212",
+                  "city": "San Jose",
+                  "mobilePhone": ""
+                },
+                "billingAndPayment": {
+                  "billCycleDay": 1,
+                  "paymentTerm": "Due Upon Receipt",
+                  "currency": "USD"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{accountKey}/summary": {
+      "parameters": [
+        {
+          "name": "accountKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_accounts-accountKey-summary",
+        "description": "Retrieves detailed information about the specified customer account.\n\nThe response includes everything retrieved with the \"Get basic account information\" call, plus a summary of the account's subscriptions, invoices, payments, and usage for the last six months.\n",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/accountSummary"
+            },
+            "examples": {
+              "application/json": {
+                "payments": [
+                  {
+                    "paidInvoices": [
+                      {
+                        "invoiceNumber": "INV00000159",
+                        "appliedPaymentAmount": 5,
+                        "invoiceId": "2c92a09539190dbe0139190f42780012"
+                      },
+                      {
+                        "invoiceNumber": "INV00000323",
+                        "appliedPaymentAmount": 139722.1,
+                        "invoiceId": "2c92a0953a3fa95d013a407c10a60100"
+                      },
+                      {
+                        "invoiceNumber": "INV00000160",
+                        "appliedPaymentAmount": 10521,
+                        "invoiceId": "2c92a09739190dc60139194bcf1b0098"
+                      }
+                    ],
+                    "paymentNumber": "P-00000075",
+                    "status": "Processed",
+                    "effectiveDate": "2013-03-27",
+                    "id": "2c92c8f83dabf9cf013daf3bfa0305a6",
+                    "paymentType": "Electronic"
+                  },
+                  {
+                    "paidInvoices": [
+                      {
+                        "invoiceNumber": "INV00000159",
+                        "appliedPaymentAmount": 5,
+                        "invoiceId": "2c92a09539190dbe0139190f42780012"
+                      }
+                    ],
+                    "paymentNumber": "P-00000056",
+                    "status": "Processed",
+                    "effectiveDate": "2012-08-11",
+                    "id": "2c92a0f9391832b101391922ad5f049d",
+                    "paymentType": "Electronic"
+                  }
+                ],
+                "invoices": [
+                  {
+                    "amount": 139722.1,
+                    "status": "Posted",
+                    "invoiceNumber": "INV00000323",
+                    "invoiceDate": "2013-02-11",
+                    "balance": 0,
+                    "id": "2c92a0953a3fa95d013a407c10a60100",
+                    "dueDate": "2013-02-11"
+                  },
+                  {
+                    "amount": 10521,
+                    "status": "Posted",
+                    "invoiceNumber": "INV00000160",
+                    "invoiceDate": "2012-08-11",
+                    "balance": 0,
+                    "id": "2c92a09739190dc60139194bcf1b0098",
+                    "dueDate": "2012-08-11"
+                  },
+                  {
+                    "amount": 10,
+                    "status": "Posted",
+                    "invoiceNumber": "INV00000159",
+                    "invoiceDate": "2012-08-11",
+                    "balance": 0,
+                    "id": "2c92a09539190dbe0139190f42780012",
+                    "dueDate": "2012-08-11"
+                  }
+                ],
+                "usage": [
+                  {
+                    "unitOfMeasure": "UOM",
+                    "quantity": 10,
+                    "startDate": "2012-02"
+                  },
+                  {
+                    "unitOfMeasure": "UOM",
+                    "quantity": 10,
+                    "startDate": "2012-01"
+                  }
+                ],
+                "basicInfo": {
+                  "defaultPaymentMethod": {
+                    "creditCardNumber": "************1111",
+                    "paymentMethodType": "CreditCard",
+                    "creditCardExpirationMonth": 10,
+                    "creditCardExpirationYear": 2020,
+                    "creditCardType": "Visa",
+                    "id": "2c92c8f83dabf9cf013daef12dd303b0"
+                  },
+                  "status": "Active",
+                  "lastInvoiceDate": "2013-02-11",
+                  "lastPaymentAmount": 150248.1,
+                  "billCycleDay": 1,
+                  "name": "subscribeCallYan_1",
+                  "balance": 0,
+                  "accountNumber": "A00001115",
+                  "id": "2c92a0f9391832b10139183e277a0042",
+                  "dfadsf__c": null,
+                  "currency": "USD",
+                  "lastPaymentDate": "2013-03-27"
+                },
+                "soldToContact": {
+                  "fax": "",
+                  "taxRegion": "",
+                  "country": "United States",
+                  "zipCode": "95135",
+                  "county": "",
+                  "lastName": "Cho",
+                  "workEmail": "work_email@zbcloud.com",
+                  "state": "California",
+                  "address2": "",
+                  "address1": "278 Bridgeton Circle",
+                  "firstName": "Bill",
+                  "id": "2c92a0f9391832b10139183e27940043",
+                  "workPhone": "5555551212",
+                  "city": "San Jose"
+                },
+                "success": true,
+                "subscriptions": [
+                  {
+                    "termEndDate": "2014-02-01",
+                    "termStartDate": "2013-02-01",
+                    "status": "Active",
+                    "initialTerm": 12,
+                    "autoRenew": true,
+                    "subscriptionNumber": "A-S00001081",
+                    "subscriptionStartDate": "2013-02-01",
+                    "id": "2c92c8f83dc4f752013dc72c24ee016d",
+                    "ratePlans": [
+                      {
+                        "productName": "Recurring Charge",
+                        "ratePlanName": "QSF_Tier"
+                      }
+                    ],
+                    "termType": "TERMED",
+                    "renewalTerm": 3
+                  },
+                  {
+                    "termEndDate": "2014-02-01",
+                    "termStartDate": "2013-02-01",
+                    "status": "Active",
+                    "initialTerm": 12,
+                    "autoRenew": true,
+                    "subscriptionNumber": "A-S00001080",
+                    "subscriptionStartDate": "2013-02-01",
+                    "id": "2c92c8f83dc4f752013dc72bb85c0127",
+                    "ratePlans": [
+                      {
+                        "productName": "Recurring Charge",
+                        "ratePlanName": "QSF_Tier"
+                      }
+                    ],
+                    "termType": "TERMED",
+                    "renewalTerm": 3
+                  },
+                  {
+                    "termEndDate": "2014-04-01",
+                    "termStartDate": "2013-12-01",
+                    "status": "Cancelled",
+                    "initialTerm": 10,
+                    "autoRenew": false,
+                    "subscriptionNumber": "A-S00001079",
+                    "subscriptionStartDate": "2013-02-01",
+                    "id": "2c92c8f83dc4f752013dc723fdab00d4",
+                    "ratePlans": [
+                      {
+                        "productName": "Recurring Charge",
+                        "ratePlanName": "QSF_Tier"
+                      }
+                    ],
+                    "termType": "TERMED",
+                    "renewalTerm": 4
+                  },
+                  {
+                    "termEndDate": "2012-02-11",
+                    "termStartDate": "2011-02-11",
+                    "status": "Active",
+                    "initialTerm": 12,
+                    "autoRenew": false,
+                    "subscriptionNumber": "A-S00001076",
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db4717ad000ec",
+                    "ratePlans": [
+                      {
+                        "productName": "Recurring Charge",
+                        "ratePlanName": "Month_PerUnit"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "ratePlanName": "Month_PerUnit"
+                      }
+                    ],
+                    "termType": "TERMED",
+                    "renewalTerm": 3
+                  },
+                  {
+                    "termEndDate": "2012-02-11",
+                    "termStartDate": "2011-02-11",
+                    "status": "Active",
+                    "initialTerm": 12,
+                    "autoRenew": false,
+                    "subscriptionNumber": "A-S00001075",
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db3ab6a4d00bc",
+                    "ratePlans": [
+                      {
+                        "productName": "Recurring Charge",
+                        "ratePlanName": "Month_PerUnit"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "ratePlanName": "Month_PerUnit"
+                      }
+                    ],
+                    "termType": "TERMED",
+                    "renewalTerm": 3
+                  },
+                  {
+                    "termEndDate": "2012-02-11",
+                    "termStartDate": "2011-02-11",
+                    "status": "Active",
+                    "initialTerm": 12,
+                    "autoRenew": false,
+                    "subscriptionNumber": "A-S00001074",
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db3aa9fbd0090",
+                    "ratePlans": [
+                      {
+                        "productName": "Recurring Charge",
+                        "ratePlanName": "Month_PerUnit"
+                      }
+                    ],
+                    "termType": "TERMED",
+                    "renewalTerm": 3
+                  }
+                ],
+                "billToContact": {
+                  "fax": "",
+                  "taxRegion": "",
+                  "country": "United States",
+                  "zipCode": "95135",
+                  "county": "",
+                  "lastName": "Zou",
+                  "workEmail": "work_email@zbcloud.com",
+                  "state": "California",
+                  "address2": "",
+                  "address1": "1400 Bridge Pkwy",
+                  "firstName": "Cheng",
+                  "id": "2c92a0f9391832b10139183e27940043",
+                  "workPhone": "5555551212",
+                  "city": "San Jose"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/catalog/products": {
+      "get": {
+        "operationId": "GET_catalog-products",
+        "description": "Retrieves the entire product catalog, including all products and their corresponding rate plans and charges.\n\nProducts are returned in reverse chronological order on UpdatedDate. Information for each product includes rate plans and, within those, rate plan charges.\n\nThe REST API does not support the creation or updating of products, product rate plans and charges; these tasks can only be performed in the web-based UI or via the SOAP API.\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/trait:allowsPagination:pageSize"
+          },
+          {
+            "$ref": "#/parameters/trait:allowsPagination:page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/catalog"
+            },
+            "examples": {
+              "application/json": {
+                "nextPage": "https://api.zuora.com/rest/v1/catalog/products?page=2&pageSize=10",
+                "success": true,
+                "products": [
+                  {
+                    "sku": "SKU-00000443",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2020-01-01",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-01-01",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD25/1GB"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93d2880f8013d294e7c2d019b",
+                            "type": "Usage",
+                            "name": "Usage"
+                          },
+                          {
+                            "pricingSummary": [
+                              "USD450/UOM"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93d2880f8013d294cafb6018f",
+                            "type": "Recurring",
+                            "name": "Monthly"
+                          },
+                          {
+                            "pricingSummary": [
+                              "USD500"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": null,
+                            "billingDay": null,
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93d2880f8013d294bd8fc0183",
+                            "type": "OneTime",
+                            "name": "once"
+                          }
+                        ],
+                        "description": "",
+                        "id": "2c92a0f93d2880f8013d294b0ada0181",
+                        "name": "RP"
+                      }
+                    ],
+                    "name": "Kate1"
+                  },
+                  {
+                    "sku": "SKU-00000442",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2050-12-31",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-01-01",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD2/1GB"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93d2880f8013d29160d24012c",
+                            "type": "Usage",
+                            "name": "RPCU1"
+                          }
+                        ],
+                        "description": "",
+                        "id": "2c92a0f93d2880f8013d29155a8f012a",
+                        "name": "RP2"
+                      },
+                      {
+                        "effectiveEndDate": "2050-12-31",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-01-01",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD100"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93d2880f8013d28994301003e",
+                            "type": "Recurring",
+                            "name": "RPC3"
+                          },
+                          {
+                            "pricingSummary": [
+                              "USD250"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": null,
+                            "billingDay": null,
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93d2880f8013d28928bba001a",
+                            "type": "OneTime",
+                            "name": "RPC2"
+                          },
+                          {
+                            "pricingSummary": [
+                              "USD500"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Quarter",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93d2880f8013d28923ecb000e",
+                            "type": "Recurring",
+                            "name": "RPC1"
+                          }
+                        ],
+                        "description": "",
+                        "id": "2c92a0f93d2880f8013d2891c3b5000c",
+                        "name": "RP1"
+                      }
+                    ],
+                    "name": "P1"
+                  },
+                  {
+                    "sku": "SKU-00000378",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD100"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93cae3a81013cb0b971ee720f",
+                            "type": "Recurring",
+                            "name": "recurring"
+                          },
+                          {
+                            "pricingSummary": [
+                              "USD10/MMPV"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0fb3b73fa9b013b954a543d37a3",
+                            "type": "Usage",
+                            "name": "PerUnit"
+                          }
+                        ],
+                        "description": "",
+                        "id": "2c92a0fb3b73fa9b013b95497553329a",
+                        "name": "OnDemand"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD199.99"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": true,
+                            "taxMode": "TaxInclusive",
+                            "taxCode": "dfhgdfg",
+                            "id": "2c92a0fb3a14f7d2013a226807eb63bc",
+                            "type": "Recurring",
+                            "name": "TAx"
+                          },
+                          {
+                            "pricingSummary": [
+                              "0 to 10 DOWN: USD100 flat fee;  10.01 DOWN or more: USD2/DOWN"
+                            ],
+                            "model": "Tiered",
+                            "billingPeriod": null,
+                            "billingDay": null,
+                            "taxable": true,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "dfhgdfg",
+                            "id": "4028e48835a944f50135c00862171ab3",
+                            "type": "OneTime",
+                            "name": "Tier"
+                          }
+                        ],
+                        "description": "",
+                        "id": "4028e48735bd88440135c007d07e3169",
+                        "name": "OneTime"
+                      },
+                      {
+                        "effectiveEndDate": "2011-10-25",
+                        "status": "Expired",
+                        "effectiveStartDate": "2011-10-24",
+                        "productRatePlanCharges": [],
+                        "description": "",
+                        "id": "4028e487331aaf8a013339bb2fff543b",
+                        "name": "New Rate Plan12345"
+                      },
+                      {
+                        "effectiveEndDate": "2012-09-28",
+                        "status": "Expired",
+                        "effectiveStartDate": "2011-09-28",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD10"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Annual",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": "",
+                            "id": "4028e48832ae68d00132b13113dc4367",
+                            "type": "Usage",
+                            "name": "Usage"
+                          }
+                        ],
+                        "description": "Usage",
+                        "id": "4028e48832ae68d00132b13047c04278",
+                        "name": "Monthly Overage"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD2000"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Annual",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": "",
+                            "id": "4028e4852f7674f3012f9d83b29c1c9b",
+                            "type": "Recurring",
+                            "name": "Test 12mos"
+                          }
+                        ],
+                        "description": "",
+                        "id": "4028e4852f7674f3012f9d83b2751c99",
+                        "name": "Test 12mos"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD2000"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Specific_Months",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": "",
+                            "id": "4028e4852f7674f3012f9d82b57e1a36",
+                            "type": "Recurring",
+                            "name": "Test 15mos"
+                          }
+                        ],
+                        "description": "",
+                        "id": "4028e4852f7674f3012f9d8208fd1989",
+                        "name": "Test 15mos"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD100"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Annual",
+                            "billingDay": "ChargeTriggerDay",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "4028e4862e37fcd9012e380e18af0628",
+                            "type": "Recurring",
+                            "name": "Recurring"
+                          }
+                        ],
+                        "description": "",
+                        "id": "4028e4862e37fcd9012e380db00405fc",
+                        "name": "Recurring"
+                      },
+                      {
+                        "effectiveEndDate": "2020-01-01",
+                        "status": "Active",
+                        "effectiveStartDate": "2010-01-01",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "100%  discount"
+                            ],
+                            "model": "DiscountPercentage",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": null,
+                            "id": "4028e4852ddfd341012e27099fc86fe3",
+                            "type": "Recurring",
+                            "name": "Discount_percentage"
+                          },
+                          {
+                            "pricingSummary": [
+                              "USD100"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "4028e4852ddfd341012e2706ca556f1f",
+                            "type": "Recurring",
+                            "name": "recurring"
+                          }
+                        ],
+                        "description": "",
+                        "id": "4028e4852ddfd341012e270633ba6ee0",
+                        "name": "Discount"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "0 to 10 ONE_DOWN: USD10/ONE_DOWN;  10.1 to 20 ONE_DOWN: USD20/ONE_DOWN;  20.1 to 30 ONE_DOWN: USD30/ONE_DOWN;  30.1 to 40 ONE_DOWN: USD40/ONE_DOWN;  40.1 ONE_DOWN or more: USD50/ONE_DOWN"
+                            ],
+                            "model": "Tiered",
+                            "billingPeriod": "Quarter",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811ca15d19011cddad8c953b53",
+                            "type": "Recurring",
+                            "name": "TieredPrice"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811ca15d19011cdda9b0ad3b51",
+                        "name": "QSF_Tier"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "Up to 10 UOM: USD10/UOM;  Up to 20 UOM: USD15/UOM;  Up to 30 UOM: USD20/UOM;  USD25/UOM for 30.01 UOM or more"
+                            ],
+                            "model": "Volume",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811ca15d19011cd4a7298d1fb6",
+                            "type": "Recurring",
+                            "name": "Volume"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811ca15d19011cd4a3ec0f1fa8",
+                        "name": "Month_Volume"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD20/MMPV"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": "",
+                            "id": "ff8080811bed3caf011bfb1847420846",
+                            "type": "Recurring",
+                            "name": "Flat"
+                          },
+                          {
+                            "pricingSummary": [
+                              "USD10/DOWN"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": "",
+                            "id": "4028e4852a881072012aa169fa281215",
+                            "type": "Recurring",
+                            "name": "New Component"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811bed3caf011bfb17e2ce0844",
+                        "name": "Month_Flat"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD50/UOM"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811bed3caf011bfac61917061f",
+                            "type": "Recurring",
+                            "name": "Per Unit"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811bed3caf011bfac540ed061c",
+                        "name": "Month_PerUnit"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD30/UOM"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Quarter",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811bc92097011bdd7c45a90d06",
+                            "type": "Recurring",
+                            "name": "PerUnit"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811bc92097011bdd7b883f0d04",
+                        "name": "QSF_PerUnit"
+                      }
+                    ],
+                    "name": "Recurring Charge"
+                  },
+                  {
+                    "sku": "SKU-00000441",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2050-12-31",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-01-01",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD3000"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Quarter",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0f93aaaea92013adc722f481cb8",
+                            "type": "Recurring",
+                            "name": "rpc11"
+                          }
+                        ],
+                        "description": "",
+                        "id": "2c92a0fb3aaaead3013adc719856117d",
+                        "name": "rp11"
+                      }
+                    ],
+                    "name": "np1"
+                  },
+                  {
+                    "sku": "SKU-00000438",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2020-12-31",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-01-01",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD1000"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Quarter",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0fb3a6d39a7013a754f09a173bb",
+                            "type": "Recurring",
+                            "name": "testl1_rpc1"
+                          }
+                        ],
+                        "description": "",
+                        "id": "2c92a0fb3a6d39a7013a754e79587202",
+                        "name": "testl1_rp1"
+                      }
+                    ],
+                    "name": "test_l1"
+                  },
+                  {
+                    "sku": "SKU-00000437",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2020-12-31",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-01-01",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD500"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Quarter",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": "TaxExclusive",
+                            "taxCode": "",
+                            "id": "2c92a0fb3a4c1891013a4c21038045b1",
+                            "type": "Recurring",
+                            "name": "test_1571_rpc1"
+                          }
+                        ],
+                        "description": "",
+                        "id": "2c92a0f93a4c138d013a4c208a4744ba",
+                        "name": "test_1571_rp1"
+                      }
+                    ],
+                    "name": "test1571"
+                  },
+                  {
+                    "sku": "SKU-00000380",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD10/MMPV"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Specific_Months",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": "",
+                            "id": "4028e4873874747701387d4b6ed16788",
+                            "type": "Usage",
+                            "name": "SpecificMonth"
+                          }
+                        ],
+                        "description": "",
+                        "id": "4028e4883874747901387d4ad2a862ad",
+                        "name": "SpecificMonth"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "Free for first 10 ZERO_UP, thereafter USD300/ZERO_UP"
+                            ],
+                            "model": "Overage",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c7b80504f0d4c",
+                            "type": "Usage",
+                            "name": "Overage Pricing_ZERO_UP"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c7b80504a0d4a",
+                        "name": "Overage Pricing_ZERO_UP"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "Free for first 10 ZERO_DOWN, thereafter USD300/ZERO_DOWN"
+                            ],
+                            "model": "Overage",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c72bff0e109a1",
+                            "type": "Usage",
+                            "name": "Overage Pricing_ZERO_DOWN"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c72bff0dd099f",
+                        "name": "Overage Pricing_ZERO_DOWN"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD30/ZERO_UP"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c7b7ddc810d3e",
+                            "type": "Usage",
+                            "name": "Per Unit Pricing_ZERO_UP"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c7b7ddc7e0d3c",
+                        "name": "Per Unit Pricing_ZERO_UP"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD30/ZERO_DOWN"
+                            ],
+                            "model": "PerUnit",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c72bff0c10993",
+                            "type": "Usage",
+                            "name": "Per Unit Pricing_ZERO_DOWN"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c72bff0bd0991",
+                        "name": "Per Unit Pricing_ZERO_DOWN"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "Up to 5 ZERO_UP: USD1000 flat fee;  Up to 7 ZERO_UP: USD1400 flat fee;  Up to 9 ZERO_UP: USD1900 flat fee;  USD400/ZERO_UP for 10 ZERO_UP or more"
+                            ],
+                            "model": "Volume",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c72ccadef0a4f",
+                            "type": "Usage",
+                            "name": "Volume Pricing_ZERO_UP"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c72ccadec0a4d",
+                        "name": "Volume Pricing_ZERO_UP"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "Up to 5 ZERO_DOWN: USD100 flat fee;  Up to 7 ZERO_DOWN: USD250/ZERO_DOWN;  Up to 9 ZERO_DOWN: USD300/ZERO_DOWN;  USD400/ZERO_DOWN for 10 ZERO_DOWN or more"
+                            ],
+                            "model": "Volume",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c72bff0a30985",
+                            "type": "Usage",
+                            "name": "Volume Pricing_ZERO_DOWN"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c72bff09f0983",
+                        "name": "Volume Pricing_ZERO_DOWN"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "0 to 5 ZERO_DOWN: USD0 flat fee;  6 to 7 ZERO_DOWN: USD200/ZERO_DOWN;  8 to 9 ZERO_DOWN: USD200/ZERO_DOWN;  10 to 11 ZERO_DOWN: USD250/ZERO_DOWN"
+                            ],
+                            "model": "Tiered",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c72c705ba09ff",
+                            "type": "Usage",
+                            "name": "Tiered Pricing_ZERO_DOWN"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c72c705b809fd",
+                        "name": "Tiered Pricing_ZERO_DOWN"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "0 to 5 ZERO_UP: USD0 flat fee;  6 to 7 ZERO_UP: USD400 flat fee;  8 to 9 ZERO_UP: USD400 flat fee;  10 to 11 ZERO_UP: USD500 flat fee"
+                            ],
+                            "model": "Tiered",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c72bff0860977",
+                            "type": "Usage",
+                            "name": "Tiered Pricing_ZERO_UP"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c72bff0820975",
+                        "name": "Tiered Pricing_ZERO_UP"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "0 to 5 ZERO_UP: USD0 flat fee;  6 to 7 ZERO_UP: USD200/ZERO_UP;  8 to 9 ZERO_UP: USD200/ZERO_UP, thereafter USD300 per exceeding unit"
+                            ],
+                            "model": "TieredWithOverage",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c72c10f2909ba",
+                            "type": "Usage",
+                            "name": "Tiered with Overage Pricing_ZERO_UP"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c72c10f2609b8",
+                        "name": "Tiered with Overage Pricing_ZERO_UP"
+                      },
+                      {
+                        "effectiveEndDate": "2020-05-15",
+                        "status": "Active",
+                        "effectiveStartDate": "2000-05-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "0 to 5 ZERO_DOWN: USD0 flat fee;  6 to 7 ZERO_DOWN: USD400 flat fee;  8 to 9 ZERO_DOWN: USD400 flat fee, thereafter USD300 per exceeding unit"
+                            ],
+                            "model": "TieredWithOverage",
+                            "billingPeriod": "Month",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": null,
+                            "id": "ff8080811c594b30011c72bff05f095e",
+                            "type": "Usage",
+                            "name": "Tiered with Overage Pricing_ZERO_DOWN"
+                          }
+                        ],
+                        "description": "",
+                        "id": "ff8080811c594b30011c72bff05c095c",
+                        "name": "Tiered with Overage Pricing_ZERO_DOWN"
+                      }
+                    ],
+                    "name": "Month Usage Charge_ZERO"
+                  },
+                  {
+                    "sku": "SKU-00000406",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2013-04-01",
+                        "status": "Expired",
+                        "effectiveStartDate": "2012-04-02",
+                        "productRatePlanCharges": [],
+                        "description": "",
+                        "id": "4028e4883661fee301366fd2a4ef7c7c",
+                        "name": "New Rate Plan"
+                      }
+                    ],
+                    "name": "teeee"
+                  },
+                  {
+                    "sku": "SKU-00000405",
+                    "description": "",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2012-03-23",
+                        "status": "Expired",
+                        "effectiveStartDate": "2012-03-15",
+                        "productRatePlanCharges": [],
+                        "description": "",
+                        "id": "4028e4873616457101361810b64a5bc4",
+                        "name": "New Rate Plan"
+                      }
+                    ],
+                    "name": "ttt"
+                  },
+                  {
+                    "sku": "SKU-00000404",
+                    "description": "est",
+                    "productRatePlans": [
+                      {
+                        "effectiveEndDate": "2011-12-20",
+                        "status": "Expired",
+                        "effectiveStartDate": "2011-12-15",
+                        "productRatePlanCharges": [
+                          {
+                            "pricingSummary": [
+                              "USD50"
+                            ],
+                            "model": "FlatFee",
+                            "billingPeriod": "Semi_Annual",
+                            "billingDay": "DefaultFromCustomer",
+                            "taxable": false,
+                            "taxMode": null,
+                            "taxCode": "",
+                            "id": "4028e48734457f1001345f6f20781305",
+                            "type": "Usage",
+                            "name": "New Component"
+                          }
+                        ],
+                        "description": "",
+                        "id": "4028e48734457f1001345f6e84cf12be",
+                        "name": "New Rate Plan"
+                      }
+                    ],
+                    "name": "testt"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connections": {
+      "post": {
+        "operationId": "POST_connections",
+        "description": "Establishes a connection to the Zuora REST API service based on a valid user credentials.\nThis call authenticates the user and returns an API session cookie that's used to authorize subsequent calls to the REST API. A call to connections is a required first step before using the Zuora REST API to access data.\nThe credentials must belong to a user account that has permission to access the API service.\n",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/hmac-signatures": {
+      "post": {
+        "operationId": "POST_hmac-signatures",
+        "description": "Returns unique signature and token values, facilitating a CORS enabled API call.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/hmacSignaturePostBody",
+              "example": {
+                "uri": "https://api.zuora.com/rest/v1/payment-methods/credit-cards",
+                "method": "POST",
+                "accountKey": "A00000001"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/hamcSignaturePostResponse"
+            },
+            "examples": {
+              "application/json": {
+                "signature": "ZmI0ZjE2ZTMxMWY1YjA0ZTc4MTg1ZDhlYWRkMTEwNDE3M2RiMzNiNQ==",
+                "token": "gCH6gYqQffQCsFKSLuxyagXsuXcIK0uf",
+                "success": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions": {
+      "post": {
+        "operationId": "POST_subscriptions",
+        "description": "Creates a new subscription for an existing customer account.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/subscriptionPostBody",
+              "example": {
+                "renewalTerm": "3",
+                "termType": "TERMED",
+                "autoRenew": true,
+                "invoiceTargetDate": "2013-12-31",
+                "accountKey": "A00001115",
+                "contractEffectiveDate": "2013-02-1",
+                "subscribeToRatePlans": [
+                  {
+                    "chargeOverrides": [
+                      {
+                        "productRatePlanChargeId": "ff8080811ca15d19011cddad8c953b53",
+                        "quantity": 10
+                      }
+                    ],
+                    "productRatePlanId": "ff8080811ca15d19011cdda9b0ad3b51"
+                  }
+                ],
+                "invoiceCollect": false,
+                "initialTerm": "12",
+                "notes": "Test POST subscription from z-ruby-sdk",
+                "myCustomField__c": "test"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/subscriptionPostResponse"
+            },
+            "examples": {
+              "application/json": {
+                "subscriptionNumber": "A-S00001084",
+                "success": true,
+                "subscriptionId": "2c92c8f83dcbd8b1013dcce0ead40071"
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-description": "The REST API allows you to preview, create, view, and modify subscriptions."
+    },
+    "/subscriptions/accounts/{accountKey}": {
+      "parameters": [
+        {
+          "name": "accountKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_subscriptions-accounts-accountKey",
+        "description": "Retrieves all subscriptions associated with the specified account.\nSubscription data is returned in reverse chronological order based on updatedDate.\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/trait:allowsPagination:pageSize"
+          },
+          {
+            "$ref": "#/parameters/trait:allowsPagination:page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/subscriptions"
+            },
+            "examples": {
+              "application/json": {
+                "success": true,
+                "nextPage": "https://api.zuora.com/rest/v1/subscriptions/accounts/A00001115?page=2&pageSize=10",
+                "subscriptions": [
+                  {
+                    "contractedMrr": 33.33,
+                    "termStartDate": "2013-02-01",
+                    "subscriptionNumber": "A-S00001081",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 400,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "QSF_Tier",
+                        "productName": "Recurring Charge",
+                        "ratePlanCharges": [
+                          {
+                            "name": "TieredPrice",
+                            "billingPeriod": "Quarter",
+                            "model": "Tiered",
+                            "type": "Recurring",
+                            "pricingSummary": "0 to 10 ONE_DOWN: USD10/ONE_DOWN;  10.1 to 20 ONE_DOWN: USD20/ONE_DOWN;  20.1 to 30 ONE_DOWN: USD30/ONE_DOWN;  30.1 to 40 ONE_DOWN: USD40/ONE_DOWN;  40.1 ONE_DOWN or more: USD50/ONE_DOWN",
+                            "quantity": 10,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83dc4f752013dc72c24d9016c"
+                          },
+                          {
+                            "name": "TieredPrice Prepayment Charge",
+                            "billingPeriod": null,
+                            "model": "FlatFee",
+                            "type": "OneTime",
+                            "pricingSummary": "USD200",
+                            "quantity": null,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83dc4f752013dc72c252f0171"
+                          }
+                        ],
+                        "id": "2c92c8f83dc4f752013dc72c24d9016b"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 3,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": true,
+                    "termType": "TERMED",
+                    "termEndDate": "2014-02-01",
+                    "contractEffectiveDate": "2013-02-01",
+                    "notes": "Test POST subscription from z-ruby-sdk",
+                    "initialTerm": 12,
+                    "subscriptionStartDate": "2013-02-01",
+                    "id": "2c92c8f83dc4f752013dc72c24ee016d"
+                  },
+                  {
+                    "contractedMrr": 33.33,
+                    "termStartDate": "2013-02-01",
+                    "subscriptionNumber": "A-S00001080",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 400,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "QSF_Tier",
+                        "productName": "Recurring Charge",
+                        "ratePlanCharges": [
+                          {
+                            "name": "TieredPrice",
+                            "billingPeriod": "Quarter",
+                            "model": "Tiered",
+                            "type": "Recurring",
+                            "pricingSummary": "0 to 10 ONE_DOWN: USD10/ONE_DOWN;  10.1 to 20 ONE_DOWN: USD20/ONE_DOWN;  20.1 to 30 ONE_DOWN: USD30/ONE_DOWN;  30.1 to 40 ONE_DOWN: USD40/ONE_DOWN;  40.1 ONE_DOWN or more: USD50/ONE_DOWN",
+                            "quantity": 10,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83dc4f752013dc72bb83f0126"
+                          },
+                          {
+                            "name": "TieredPrice Prepayment Charge",
+                            "billingPeriod": null,
+                            "model": "FlatFee",
+                            "type": "OneTime",
+                            "pricingSummary": "USD200",
+                            "quantity": null,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83dc4f752013dc72bb896012b"
+                          }
+                        ],
+                        "id": "2c92c8f83dc4f752013dc72bb83e0125"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 3,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": true,
+                    "termType": "TERMED",
+                    "termEndDate": "2014-02-01",
+                    "contractEffectiveDate": "2013-02-01",
+                    "notes": "Test POST subscription from z-ruby-sdk",
+                    "initialTerm": 12,
+                    "subscriptionStartDate": "2013-02-01",
+                    "id": "2c92c8f83dc4f752013dc72bb85c0127"
+                  },
+                  {
+                    "contractedMrr": 46.67,
+                    "termStartDate": "2013-12-01",
+                    "subscriptionNumber": "A-S00001079",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 614.67,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "QSF_Tier",
+                        "productName": "Recurring Charge",
+                        "lastChangeType": "Update",
+                        "ratePlanCharges": [
+                          {
+                            "name": "TieredPrice",
+                            "billingPeriod": "Quarter",
+                            "model": "Tiered",
+                            "type": "Recurring",
+                            "pricingSummary": "0 to 10 ONE_DOWN: USD10/ONE_DOWN;  10.1 to 20 ONE_DOWN: USD20/ONE_DOWN;  20.1 to 30 ONE_DOWN: USD30/ONE_DOWN;  30.1 to 40 ONE_DOWN: USD40/ONE_DOWN;  40.1 ONE_DOWN or more: USD50/ONE_DOWN",
+                            "quantity": 12,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83dc4f752013dc723fe0000e6"
+                          },
+                          {
+                            "name": "TieredPrice Prepayment Charge",
+                            "billingPeriod": null,
+                            "model": "FlatFee",
+                            "type": "OneTime",
+                            "pricingSummary": "USD200",
+                            "quantity": null,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83dc4f752013dc723fe0000e7"
+                          }
+                        ],
+                        "id": "2c92c8f83dc4f752013dc723fdff00e4"
+                      }
+                    ],
+                    "status": "Cancelled",
+                    "renewalTerm": 4,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": false,
+                    "termType": "TERMED",
+                    "termEndDate": "2014-04-01",
+                    "contractEffectiveDate": "2013-02-01",
+                    "notes": "Test UPDATE subscription from z-ruby-sdk",
+                    "initialTerm": 10,
+                    "subscriptionStartDate": "2013-02-01",
+                    "id": "2c92c8f83dc4f752013dc723fdab00d4"
+                  },
+                  {
+                    "contractedMrr": 1250,
+                    "termStartDate": "2011-02-11",
+                    "subscriptionNumber": "A-S00001076",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 13900,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "lastChangeType": "Remove",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 15,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83db0b4b4013db4717a4800e6"
+                          }
+                        ],
+                        "id": "2c92c8f83db0b4b4013db4717a4800e5"
+                      },
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "lastChangeType": "Add",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 25,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83db0b4b4013db4717ae800f1"
+                          }
+                        ],
+                        "id": "2c92c8f83db0b4b4013db4717ae800f0"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 3,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": false,
+                    "termType": "TERMED",
+                    "termEndDate": "2012-02-11",
+                    "contractEffectiveDate": "2011-02-11",
+                    "notes": "restAPI this is test",
+                    "initialTerm": 12,
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db4717ad000ec"
+                  },
+                  {
+                    "contractedMrr": 1250,
+                    "termStartDate": "2011-02-11",
+                    "subscriptionNumber": "A-S00001075",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 13900,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "lastChangeType": "Remove",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 15,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83db0b4b4013db3ab69c200b6"
+                          }
+                        ],
+                        "id": "2c92c8f83db0b4b4013db3ab69c200b5"
+                      },
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "lastChangeType": "Add",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 25,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83db0b4b4013db3ab6a6500c1"
+                          }
+                        ],
+                        "id": "2c92c8f83db0b4b4013db3ab6a6500c0"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 3,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": false,
+                    "termType": "TERMED",
+                    "termEndDate": "2012-02-11",
+                    "contractEffectiveDate": "2011-02-11",
+                    "notes": "restAPI this is test",
+                    "initialTerm": 12,
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db3ab6a4d00bc"
+                  },
+                  {
+                    "contractedMrr": 750,
+                    "termStartDate": "2011-02-11",
+                    "subscriptionNumber": "A-S00001074",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 9000,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 15,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83db0b4b4013db3aa9fa1008f"
+                          }
+                        ],
+                        "id": "2c92c8f83db0b4b4013db3aa9fa1008e"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 3,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": false,
+                    "termType": "TERMED",
+                    "termEndDate": "2012-02-11",
+                    "contractEffectiveDate": "2011-02-11",
+                    "notes": "restAPI this is test",
+                    "initialTerm": 12,
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db3aa9fbd0090"
+                  },
+                  {
+                    "contractedMrr": 750,
+                    "termStartDate": "2011-02-11",
+                    "subscriptionNumber": "A-S00001073",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 9000,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 15,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83db0b4b4013db3a9f7d40085"
+                          }
+                        ],
+                        "id": "2c92c8f83db0b4b4013db3a9f7d20084"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 3,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": false,
+                    "termType": "TERMED",
+                    "termEndDate": "2012-02-11",
+                    "contractEffectiveDate": "2011-02-11",
+                    "notes": "restAPI this is test",
+                    "initialTerm": 12,
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db3a9f7f60086"
+                  },
+                  {
+                    "contractedMrr": 750,
+                    "termStartDate": "2011-02-11",
+                    "subscriptionNumber": "A-S00001072",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 9000,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 15,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83db0b4b4013db3a8276e007b"
+                          }
+                        ],
+                        "id": "2c92c8f83db0b4b4013db3a8276e007a"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 3,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": false,
+                    "termType": "TERMED",
+                    "termEndDate": "2012-02-11",
+                    "contractEffectiveDate": "2011-02-11",
+                    "notes": "restAPI this is test",
+                    "initialTerm": 12,
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db3a82787007c"
+                  },
+                  {
+                    "contractedMrr": 750,
+                    "termStartDate": "2011-02-11",
+                    "subscriptionNumber": "A-S00001071",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 9000,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 15,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8f83db0b4b4013db39fe946005d"
+                          }
+                        ],
+                        "id": "2c92c8f83db0b4b4013db39fe946005c"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 3,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": false,
+                    "termType": "TERMED",
+                    "termEndDate": "2012-02-11",
+                    "contractEffectiveDate": "2011-02-11",
+                    "notes": "restAPI this is test",
+                    "initialTerm": 12,
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8f83db0b4b4013db39fe96a005e"
+                  },
+                  {
+                    "contractedMrr": 750,
+                    "termStartDate": "2013-01-11",
+                    "subscriptionNumber": "A-S00001064",
+                    "accountNumber": "A00001115",
+                    "totalContractedValue": 21000,
+                    "accountName": "subscribeCallYan_1",
+                    "ratePlans": [
+                      {
+                        "ratePlanName": "Month_PerUnit",
+                        "productName": "Recurring Charge",
+                        "ratePlanCharges": [
+                          {
+                            "name": "Per Unit",
+                            "billingPeriod": "Month",
+                            "model": "PerUnit",
+                            "type": "Recurring",
+                            "pricingSummary": "USD50/UOM",
+                            "quantity": 15,
+                            "billingDay": "DefaultFromCustomer",
+                            "id": "2c92c8953daf3d6f013db0564d50169d"
+                          }
+                        ],
+                        "id": "2c92c8953daf3d6f013db0564d50169b"
+                      }
+                    ],
+                    "status": "Active",
+                    "renewalTerm": 5,
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "autoRenew": true,
+                    "termType": "TERMED",
+                    "termEndDate": "2013-06-11",
+                    "contractEffectiveDate": "2011-02-11",
+                    "notes": "Rest API",
+                    "initialTerm": 13,
+                    "subscriptionStartDate": "2011-02-11",
+                    "id": "2c92c8953daf3d6f013db0564d451695"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/preview": {
+      "post": {
+        "operationId": "POST_subscriptions-preview",
+        "description": "Creates a new subscription in preview mode.\nThis call does not require a valid customer account. It can be used to show potential new customers a preview of a subscription with complete details and charges before creating an account, or to let existing customers preview a subscription with all charges before committing.\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/subscriptionsPreviewBody",
+              "example": {
+                "termType": "TERMED",
+                "invoiceTargetDate": "2013-12-31",
+                "contractEffectiveDate": "2013-1-15",
+                "previewAccountInfo": {
+                  "currency": "USD",
+                  "billToContact": {
+                    "zipCode": "94549",
+                    "country": "United States",
+                    "city": "Walnut Creek",
+                    "county": "Contra Consta",
+                    "state": "California"
+                  },
+                  "billCycleDay": 31
+                },
+                "subscribeToRatePlans": [
+                  {
+                    "chargeOverrides": [
+                      {
+                        "productRatePlanChargeId": "ff8080811ca15d19011cddad8c953b53",
+                        "quantity": 100
+                      }
+                    ],
+                    "productRatePlanId": "ff8080811ca15d19011cdda9b0ad3b51"
+                  }
+                ],
+                "initialTerm": 12
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/subscriptionsPreviewResponse"
+            },
+            "examples": {
+              "application/json": {
+                "success": true,
+                "amountWithoutTax": 16695.65,
+                "amount": 16695.65,
+                "invoiceTargetDate": "2013-12-31",
+                "taxAmount": 0,
+                "invoiceItems": [
+                  {
+                    "unitOfMeasure": "ONE_DOWN",
+                    "serviceStartDate": "2013-01-15",
+                    "chargeName": "TieredPrice",
+                    "chargeDescription": "",
+                    "chargeAmount": 695.65,
+                    "serviceEndDate": "2013-01-30",
+                    "productName": "Recurring Charge",
+                    "quantity": 100
+                  },
+                  {
+                    "unitOfMeasure": "",
+                    "serviceStartDate": "2013-01-15",
+                    "chargeName": "TieredPrice Prepayment Charge",
+                    "chargeDescription": null,
+                    "chargeAmount": 8000,
+                    "serviceEndDate": "2013-01-15",
+                    "productName": null,
+                    "quantity": 1
+                  },
+                  {
+                    "unitOfMeasure": "ONE_DOWN",
+                    "serviceStartDate": "2013-01-31",
+                    "chargeName": "TieredPrice",
+                    "chargeDescription": "",
+                    "chargeAmount": 4000,
+                    "serviceEndDate": "2013-04-29",
+                    "productName": "Recurring Charge",
+                    "quantity": 100
+                  },
+                  {
+                    "unitOfMeasure": "ONE_DOWN",
+                    "serviceStartDate": "2013-04-30",
+                    "chargeName": "TieredPrice",
+                    "chargeDescription": "",
+                    "chargeAmount": 4000,
+                    "serviceEndDate": "2013-07-30",
+                    "productName": "Recurring Charge",
+                    "quantity": 100
+                  },
+                  {
+                    "unitOfMeasure": "ONE_DOWN",
+                    "serviceStartDate": "2013-07-31",
+                    "chargeName": "TieredPrice",
+                    "chargeDescription": "",
+                    "chargeAmount": 4000,
+                    "serviceEndDate": "2013-10-30",
+                    "productName": "Recurring Charge",
+                    "quantity": 100
+                  },
+                  {
+                    "unitOfMeasure": "ONE_DOWN",
+                    "serviceStartDate": "2013-10-31",
+                    "chargeName": "TieredPrice",
+                    "chargeDescription": "",
+                    "chargeAmount": 4000,
+                    "serviceEndDate": "2014-01-30",
+                    "productName": "Recurring Charge",
+                    "quantity": 100
+                  },
+                  {
+                    "unitOfMeasure": "ONE_DOWN",
+                    "serviceStartDate": "2013-04-30",
+                    "chargeName": "TieredPrice",
+                    "chargeDescription": "",
+                    "chargeAmount": -3304.35,
+                    "serviceEndDate": "2013-07-30",
+                    "productName": "Recurring Charge",
+                    "quantity": 1
+                  },
+                  {
+                    "unitOfMeasure": "ONE_DOWN",
+                    "serviceStartDate": "2013-01-31",
+                    "chargeName": "TieredPrice",
+                    "chargeDescription": "",
+                    "chargeAmount": -4000,
+                    "serviceEndDate": "2013-04-29",
+                    "productName": "Recurring Charge",
+                    "quantity": 1
+                  },
+                  {
+                    "unitOfMeasure": "ONE_DOWN",
+                    "serviceStartDate": "2013-01-15",
+                    "chargeName": "TieredPrice",
+                    "chargeDescription": "",
+                    "chargeAmount": -695.65,
+                    "serviceEndDate": "2013-01-30",
+                    "productName": "Recurring Charge",
+                    "quantity": 1
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/{subscriptionKey}": {
+      "parameters": [
+        {
+          "name": "subscriptionKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "put": {
+        "operationId": "PUT_subscriptions-subscriptionKey",
+        "description": "Updates a subscription.\nThis call can make the following kinds of changes to a subscription:\n\nAdd a note\n\nChange the renewal term or auto-renewal flag\n\nChange the term length or change between evergreen and termed\n\nAdd a new product rate plan\n\nRemove an existing subscription rate plan\n\nChange the quantity of an existing subscription rate plan\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/subscriptionPutBody",
+              "example": {
+                "renewalTerm": "4",
+                "termType": "TERMED",
+                "autoRenew": false,
+                "currentTerm": "10",
+                "update": [
+                  {
+                    "ratePlanId": "2c92c8f83dcbd8b1013dcce0ea7e006f",
+                    "contractEffectiveDate": "2013-04-28",
+                    "chargeUpdateDetails": [
+                      {
+                        "ratePlanChargeId": "2c92c8f83dcbd8b1013dcce0eb510075",
+                        "quantity": 12
+                      }
+                    ]
+                  }
+                ],
+                "notes": "Test UPDATE subscription from z-ruby-sdk",
+                "myCustomField__c": "test"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseSuccess"
+            },
+            "examples": {
+              "application/json": {
+                "success": true
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GET_subscriptions-subscriptionKey",
+        "description": "Retrieves detailed information about a specified subscription.",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/subscriptionGet"
+            },
+            "examples": {
+              "application/json": {
+                "contractedMrr": 33.33,
+                "termStartDate": "2013-02-01",
+                "subscriptionNumber": "A-S00001084",
+                "accountNumber": "A00001115",
+                "success": true,
+                "totalContractedValue": 400,
+                "accountName": "subscribeCallYan_1",
+                "ratePlans": [
+                  {
+                    "ratePlanName": "QSF_Tier",
+                    "productName": "Recurring Charge",
+                    "ratePlanCharges": [
+                      {
+                        "name": "TieredPrice Prepayment Charge",
+                        "billingPeriod": null,
+                        "model": "FlatFee",
+                        "type": "OneTime",
+                        "pricingSummary": "USD200",
+                        "quantity": null,
+                        "billingDay": "DefaultFromCustomer",
+                        "id": "2c92c8f83dcbd8b1013dcce0eb510075"
+                      },
+                      {
+                        "name": "TieredPrice",
+                        "billingPeriod": "Quarter",
+                        "model": "Tiered",
+                        "type": "Recurring",
+                        "pricingSummary": "0 to 10 ONE_DOWN: USD10/ONE_DOWN;  10.1 to 20 ONE_DOWN: USD20/ONE_DOWN;  20.1 to 30 ONE_DOWN: USD30/ONE_DOWN;  30.1 to 40 ONE_DOWN: USD40/ONE_DOWN;  40.1 ONE_DOWN or more: USD50/ONE_DOWN",
+                        "quantity": 10,
+                        "billingDay": "DefaultFromCustomer",
+                        "id": "2c92c8f83dcbd8b1013dcce0ea7e0070"
+                      }
+                    ],
+                    "id": "2c92c8f83dcbd8b1013dcce0ea7e006f"
+                  }
+                ],
+                "status": "Active",
+                "renewalTerm": 3,
+                "accountId": "2c92a0f9391832b10139183e277a0042",
+                "autoRenew": true,
+                "termType": "TERMED",
+                "termEndDate": "2014-02-01",
+                "contractEffectiveDate": "2013-02-01",
+                "notes": "Test POST subscription from z-ruby-sdk",
+                "initialTerm": 12,
+                "subscriptionStartDate": "2013-02-01",
+                "id": "2c92c8f83dcbd8b1013dcce0ead40071"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/{subscriptionKey}/cancel": {
+      "parameters": [
+        {
+          "name": "subscriptionKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "put": {
+        "operationId": "PUT_subscriptions-subscriptionKey-cancel",
+        "description": "Cancels an active subscription.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/subscriptionCancelBody",
+              "example": {
+                "cancellationPolicy": "EndOfCurrentTerm",
+                "invoiceCollect": false,
+                "cancellationEffectiveDate": "2013-05-31"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/subscriptionCancelResponse"
+            },
+            "examples": {
+              "application/json": {
+                "cancelledDate": "2014-05-01",
+                "success": true,
+                "subscriptionId": "2c92c8f83dcbd8b1013dcce0f23400ba"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/{subscriptionKey}/renew": {
+      "parameters": [
+        {
+          "name": "subscriptionKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "put": {
+        "operationId": "PUT_subscriptions-subscriptionKey-renew",
+        "description": "Renews a termed subscription using existing renewal terms.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/subscriptionRenewBody",
+              "example": {
+                "invoiceCollect": false,
+                "invoiceTargetDate": "2013-04-28"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/subscriptionRenewResponse"
+            },
+            "examples": {
+              "application/json": {
+                "termStartDate": "2014-02-01",
+                "success": true,
+                "termEndDate": "2014-05-01",
+                "subscriptionId": "2c92c8f83dcbd8b1013dcce0f09100a5"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "x-raml-resource-description": "The Transactions API retrieves invoices or payments for a specified account, as well as allowing you to invoice and collect payment from a specific account."
+    },
+    "/transactions/invoices/accounts/{accountKey}": {
+      "parameters": [
+        {
+          "name": "accountKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_transactions-invoices-accounts-accountKey",
+        "description": "Retrieves invoices for a specified account.\nInvoices are returned in reverse chronological order by \"invoiceDate\".\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/trait:allowsPagination:pageSize"
+          },
+          {
+            "$ref": "#/parameters/trait:allowsPagination:page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/invoices"
+            },
+            "examples": {
+              "application/json": {
+                "invoices": [
+                  {
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "accountName": "subscribeCallYan_1",
+                    "dueDate": "2012-08-11",
+                    "id": "2c92a09739190dc60139194bcf1b0098",
+                    "status": "Posted",
+                    "createdBy": "23",
+                    "balance": 0,
+                    "invoiceTargetDate": "2012-08-11",
+                    "invoiceNumber": "INV00000160",
+                    "invoiceDate": "2012-08-11",
+                    "accountNumber": "A00001115",
+                    "invoiceItems": [
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc95a0059",
+                        "unitOfMeasure": "MMPV",
+                        "quantity": 20,
+                        "serviceStartDate": "2012-08-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a09739190dc60139194bd0e800ac",
+                        "chargeName": "Flat",
+                        "chargeAmount": 484,
+                        "serviceEndDate": "2012-08-31"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc91a0052",
+                        "unitOfMeasure": "MMPV",
+                        "quantity": 20,
+                        "serviceStartDate": "2011-01-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a09739190dc60139194bd00f00a3",
+                        "chargeName": "Flat",
+                        "chargeAmount": 400,
+                        "serviceEndDate": "2011-01-31"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc91a0051",
+                        "unitOfMeasure": "DOWN",
+                        "quantity": 10,
+                        "serviceStartDate": "2011-01-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a09739190dc60139194bd16300b1",
+                        "chargeName": "New Component",
+                        "chargeAmount": 100,
+                        "serviceEndDate": "2011-01-31"
+                      }
+                    ],
+                    "amount": 10521
+                  },
+                  {
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "accountName": "subscribeCallYan_1",
+                    "dueDate": "2012-08-11",
+                    "id": "2c92a09539190dbe0139190f42780012",
+                    "status": "Posted",
+                    "createdBy": "23",
+                    "balance": 0,
+                    "invoiceTargetDate": "2012-08-11",
+                    "invoiceNumber": "INV00000159",
+                    "invoiceDate": "2012-08-11",
+                    "accountNumber": "A00001115",
+                    "invoiceItems": [
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a0f9391832b10139183e2aae004b",
+                        "unitOfMeasure": "",
+                        "quantity": 1,
+                        "serviceStartDate": "2011-02-11",
+                        "subscriptionName": "A-S00001008",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a0f9391832b10139183e28780046",
+                        "id": "2c92a09539190dbe0139190f44000015",
+                        "chargeName": "Recurring",
+                        "chargeAmount": 10,
+                        "serviceEndDate": "2012-02-10"
+                      }
+                    ],
+                    "amount": 10
+                  },
+                  {
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "accountName": "subscribeCallYan_1",
+                    "dueDate": "2012-10-08",
+                    "id": "2c92a0953a3fa95d013a401914770aa1",
+                    "status": "Canceled",
+                    "createdBy": "23",
+                    "balance": 2420,
+                    "invoiceTargetDate": "2012-12-08",
+                    "invoiceNumber": "INV00000253",
+                    "invoiceDate": "2012-10-08",
+                    "accountNumber": "A00001115",
+                    "invoiceItems": [
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc979005c",
+                        "unitOfMeasure": "DOWN",
+                        "quantity": 10,
+                        "serviceStartDate": "2012-12-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a0953a3fa95d013a401914b50aa6",
+                        "chargeName": "New Component",
+                        "chargeAmount": 121,
+                        "serviceEndDate": "2012-12-31"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc95a0059",
+                        "unitOfMeasure": "MMPV",
+                        "quantity": 20,
+                        "serviceStartDate": "2012-12-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a0953a3fa95d013a401914ff0aac",
+                        "chargeName": "Flat",
+                        "chargeAmount": 484,
+                        "serviceEndDate": "2012-12-31"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc95a0059",
+                        "unitOfMeasure": "MMPV",
+                        "quantity": 20,
+                        "serviceStartDate": "2012-11-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a0953a3fa95d013a401914da0aa9",
+                        "chargeName": "Flat",
+                        "chargeAmount": 484,
+                        "serviceEndDate": "2012-11-30"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc979005c",
+                        "unitOfMeasure": "DOWN",
+                        "quantity": 10,
+                        "serviceStartDate": "2012-11-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a0953a3fa95d013a401915120aae",
+                        "chargeName": "New Component",
+                        "chargeAmount": 121,
+                        "serviceEndDate": "2012-11-30"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc95a0059",
+                        "unitOfMeasure": "MMPV",
+                        "quantity": 20,
+                        "serviceStartDate": "2012-09-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a0953a3fa95d013a401914a20aa5",
+                        "chargeName": "Flat",
+                        "chargeAmount": 484,
+                        "serviceEndDate": "2012-09-30"
+                      },
+                      {
+                        "productName": "Recurring Charge",
+                        "chargeId": "2c92a09739190dc60139194bc979005c",
+                        "unitOfMeasure": "DOWN",
+                        "quantity": 10,
+                        "serviceStartDate": "2012-09-01",
+                        "subscriptionName": "A-S00001013",
+                        "taxAmount": 0,
+                        "chargeDescription": "",
+                        "subscriptionId": "2c92a09739190dc60139194bc90a0046",
+                        "id": "2c92a0953a3fa95d013a401914c70aa7",
+                        "chargeName": "New Component",
+                        "chargeAmount": 121,
+                        "serviceEndDate": "2012-09-30"
+                      }
+                    ],
+                    "amount": 2420
+                  }
+                ],
+                "success": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/payments/accounts/{accountKey}": {
+      "parameters": [
+        {
+          "name": "accountKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_transactions-payments-accounts-accountKey",
+        "parameters": [
+          {
+            "$ref": "#/parameters/trait:allowsPagination:pageSize"
+          },
+          {
+            "$ref": "#/parameters/trait:allowsPagination:page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/payments"
+            },
+            "examples": {
+              "application/json": {
+                "success": true,
+                "payments": [
+                  {
+                    "paymentMethodId": "2c92c8f83dabf9cf013daef12dd303b0",
+                    "paidInvoices": [
+                      {
+                        "invoiceId": "2c92a09539190dbe0139190f42780012",
+                        "invoiceNumber": "INV00000159",
+                        "appliedPaymentAmount": 5
+                      },
+                      {
+                        "invoiceId": "2c92a0953a3fa95d013a407c10a60100",
+                        "invoiceNumber": "INV00000323",
+                        "appliedPaymentAmount": 139722.1
+                      },
+                      {
+                        "invoiceId": "2c92a09739190dc60139194bcf1b0098",
+                        "invoiceNumber": "INV00000160",
+                        "appliedPaymentAmount": 10521
+                      }
+                    ],
+                    "effectiveDate": "2013-03-27",
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8f83dabf9cf013daf3bfa0305a6",
+                    "status": "Processed",
+                    "paymentNumber": "P-00000075",
+                    "gatewayTransactionNumber": null,
+                    "type": "Electronic",
+                    "accountNumber": "A00001115",
+                    "amount": 150248.1
+                  },
+                  {
+                    "paymentMethodId": "2c92a0f9391832b10139183e279e0044",
+                    "paidInvoices": [
+                      {
+                        "invoiceId": "2c92a09539190dbe0139190f42780012",
+                        "invoiceNumber": "INV00000159",
+                        "appliedPaymentAmount": 5
+                      }
+                    ],
+                    "effectiveDate": "2012-08-11",
+                    "accountId": "2c92a0f9391832b10139183e277a0042",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92a0f9391832b101391922ad5f049d",
+                    "status": "Processed",
+                    "paymentNumber": "P-00000056",
+                    "gatewayTransactionNumber": null,
+                    "type": "Electronic",
+                    "accountNumber": "A00001115",
+                    "amount": 5
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operations/invoice-collect": {
+      "post": {
+        "operationId": "POST_operations-invoice-collect",
+        "description": "Generates invoices and collects payments for a specified account.\nThis method can generate invoices and collect payments on the invoices generated, or else simply collect payment on a specified existing invoice. The customer's default payment method is used, and the full amount due is collected. The operation depends on the parameters you specify:\n\nTo generate one or more new invoices for that customer and collect payment on the generated invoice(s), leave the invoiceId field empty.\n\nTo collect payment on an existing invoice, specify the invoice ID.\n\nThe operation is atomic; if any part is unsuccessful, the entire operation is rolled back.\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/invoiceCollectBody",
+              "example": {
+                "accountKey": "A00000067",
+                "invoiceDate": "2013-01-01",
+                "invoiceTargetDate": "2013-01-01"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/invoiceCollectResponse"
+            },
+            "examples": {
+              "application/json": {
+                "invoices": [
+                  {
+                    "invoiceId": "402892053e100406013e1024aaec00d7",
+                    "invoiceNumber": "INV00000091",
+                    "invoiceAmount": 801.73
+                  }
+                ],
+                "paymentId": "402892053e100406013e1024ab7c00e3",
+                "amountCollected": 801.73,
+                "success": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usage": {
+      "post": {
+        "operationId": "POST_usage",
+        "description": "Imports usage data for one or more accounts in CSV or XLS format.\nThere are no path or query parameters. The data is uploaded using the HTTP multipart/form-data POST method and applied to the user's tenant. See the example below for more information.\nThe content of the upload file must follow the field format used by the UI import tool, as it is documented below and in the KnowledgeCenter.  It must be a comma-separated (CSV) or Excel (XLS) file with a corresponding .csv or .xls extension.  The file size must not exceed 4MB.  Zipped files with .zip extension are acceptable, as long as they are within the size limit and contain only a single acceptable CSV or XLS file.\nAt the completion of the upload, before actually processing the file contents, the API returns a response containing the byte count of the received file and a URL for checking the status of the import process.  Of the five possible results displayed at that URL (Pending, Processing, Completed, Canceled, and Failed) only a Completed status indicates that the import was successful.  The operation is atomic; if any record fails, the file is rejected.  In that case, the entire import is rolled back and all stored data is returned to its original state.\nTo manage the information after a successful upload, use the web-based UI.\n\nUpload file format\n\nThe upload file uses the following headings:\n\n|Heading| Description |\n|---|---|\n|ACCOUNT_ID|  Account ID|\n|UOM|  Units of measure |\n|QTY|  Quantity of units used|\n|STARTDATE|  Start date of usage|\n|ENDDATE|  End date of usage |\n|SUBSCRIPTION_ID|  Subscription ID|\n|CHARGE_ID|  Charge ID|\n|DESCRIPTION|  Description|\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/usagePostRequest",
+              "example": {
+                "filename": "/home/user/NetBeansProjects/zuora.rest.ruby/samples/sample_usage.csv"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/usagePostResponse"
+            },
+            "examples": {
+              "application/json": {
+                "success": true,
+                "checkImportStatus": "https://api.zuora.com/rest/v1/usage/2c92c8f83dcbd8b1013dcce1159900cc/status",
+                "size": 316
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usage/accounts/{accountKey}": {
+      "parameters": [
+        {
+          "name": "accountKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_usage-accounts-accountKey",
+        "description": "Retrieves usage details for an account.\nUsage data is returned in reverse chronological order.\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/trait:allowsPagination:pageSize"
+          },
+          {
+            "$ref": "#/parameters/trait:allowsPagination:page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/usageDetailsAccout"
+            },
+            "examples": {
+              "application/json": {
+                "usage": [
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 4,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8953dac2b1c013dae0a263f35dd",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-02-05 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-03-27 15:48:53",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 4,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8943db2ae51013dcce116b00f4b",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-02-05 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-04-02 15:32:16",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 3,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8953dac2b1c013dae0a263f35dc",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-02-04 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-03-27 15:48:53",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 3,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8943db2ae51013dcce116b00f4a",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-02-04 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-04-02 15:32:16",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 2,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8953dac2b1c013dae0a263e35db",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-02-03 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-03-27 15:48:53",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 2,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8943db2ae51013dcce116af0f49",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-02-03 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-04-02 15:32:16",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 1,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8953dac2b1c013dae0a263e35da",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-02-02 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-03-27 15:48:53",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 1,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8943db2ae51013dcce116af0f48",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-02-02 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-04-02 15:32:16",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 4,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8953dac2b1c013dae0a263e35d9",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-01-05 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-03-27 15:48:53",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  },
+                  {
+                    "chargeNumber": null,
+                    "sourceName": "Import",
+                    "quantity": 4,
+                    "unitOfMeasure": "UOM",
+                    "accountName": "subscribeCallYan_1",
+                    "id": "2c92c8943db2ae51013dcce116af0f47",
+                    "subscriptionNumber": null,
+                    "startDateTime": "2012-01-05 00:00:00",
+                    "accountNumber": "A00001115",
+                    "status": "Pending",
+                    "submissionDateTime": "2013-04-02 15:32:16",
+                    "accountId": "2c92a0f9391832b10139183e277a0042"
+                  }
+                ],
+                "success": true,
+                "nextPage": "https://api.zuora.com/rest/v1/usage/accounts/A00001115?page=2&pageSize=10"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{paymentMethodId}": {
+      "parameters": [
+        {
+          "name": "paymentMethodId",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "delete": {
+        "operationId": "DELETE_payment-methods-paymentMethodId",
+        "description": "Deletes a credit card payment method from the specified customer account.\nIf the specified payment method is the account's default payment method, the request will fail.  In that case, you must first designate a different payment method for that customer to be the default.\n",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseSuccess"
+            },
+            "examples": {
+              "application/json": {
+                "success": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/credit-cards": {
+      "post": {
+        "operationId": "POST_payment-methods-credit-cards",
+        "description": "Creates a new credit card payment method for the specified customer account.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/paymentMethodCreateBody",
+              "example": {
+                "defaultPaymentMethod": false,
+                "cardHolderInfo": {
+                  "addressLine1": "77 Fallon Glen",
+                  "addressLine2": "",
+                  "zipCode": "94020",
+                  "state": "California",
+                  "phone": "4155551234",
+                  "country": "USA",
+                  "cardHolderName": "Bill Thiebault",
+                  "city": "Fremont",
+                  "email": "bill@testaddress.com"
+                },
+                "expirationMonth": "10",
+                "accountKey": "A00001115",
+                "creditCardType": "Discover",
+                "expirationYear": "2015",
+                "creditCardNumber": "1111222233334444",
+                "securityCode": "123"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responsePaymentMethodSuccess"
+            },
+            "examples": {
+              "application/json": {
+                "paymentMethodId": "2c92c8f83dcbd8b1013dcce1d6a60",
+                "success": true
+              }
+            }
+          }
+        }
+      },
+      "x-raml-resource-description": "The Payment Methods REST API provides access to your customers' credit card payment methods. To manage other types of payment methods, such as bank transfers and checks, use the web-based UI or the Zuora SOAP API."
+    },
+    "/payment-methods/credit-cards/accounts/{accountKey}": {
+      "parameters": [
+        {
+          "name": "accountKey",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "operationId": "GET_payment-methods-credit-cards-accounts-accountKey",
+        "description": "Retrieves all credit card information for the specified customer account.\n\nThe response includes details on all the credit or debit cards for the specified customer account. Card numbers are masked, e.g., \"************1234\". Cards are returned in reverse chronological order of last update.\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/trait:allowsPagination:pageSize"
+          },
+          {
+            "$ref": "#/parameters/trait:allowsPagination:page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/paymentMethods"
+            },
+            "examples": {
+              "application/json": {
+                "nextPage": "https://api.zuora.com/rest/v1/payment-methods/credit-cards/accounts/A00001115?page=2&pageSize=2",
+                "creditCards": [
+                  {
+                    "cardHolderInfo": {
+                      "zipCode": null,
+                      "addressLine2": null,
+                      "addressLine1": null,
+                      "phone": "4082021111",
+                      "state": null,
+                      "country": null,
+                      "city": null,
+                      "cardHolderName": "Leo",
+                      "email": "test@zuora.com"
+                    },
+                    "defaultPaymentMethod": true,
+                    "id": "2c92c8f83dabf9cf013daef12dd303b0",
+                    "expirationMonth": 10,
+                    "cardNumber": "************1111",
+                    "expirationYear": 2020,
+                    "cardType": "Visa"
+                  },
+                  {
+                    "cardHolderInfo": {
+                      "zipCode": "95135",
+                      "addressLine2": null,
+                      "addressLine1": "1400 Bridge Pkwy",
+                      "phone": null,
+                      "state": "California",
+                      "country": "United States",
+                      "city": "San Jose",
+                      "cardHolderName": "foo CC name",
+                      "email": null
+                    },
+                    "defaultPaymentMethod": false,
+                    "id": "2c92a0f9391832b10139183e279e0044",
+                    "expirationMonth": 10,
+                    "cardNumber": "*****foo CC #",
+                    "expirationYear": 2012,
+                    "cardType": "Visa"
+                  }
+                ],
+                "success": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/credit-cards/{paymentMethodId}": {
+      "parameters": [
+        {
+          "name": "paymentMethodId",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "put": {
+        "operationId": "PUT_payment-methods-credit-cards-paymentMethodId",
+        "description": "Updates an existing credit card payment method for the specified customer account.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/paymentMethodPutBody",
+              "example": {
+                "expirationMonth": 8,
+                "expirationYear": 2015,
+                "cardHolderName": "Leo",
+                "securityCode": "111"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responsePaymentMethodSuccess"
+            },
+            "examples": {
+              "application/json": {
+                "paymentMethodId": "2c92c8f83dcbd8b1013dcce1d6a60",
+                "success": true
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "trait:allowsPagination:pageSize": {
+      "name": "pageSize",
+      "in": "query",
+      "description": "Number of rows to return.  Maximum is 40; default is 20.",
+      "required": true,
+      "type": "integer"
+    },
+    "trait:allowsPagination:page": {
+      "name": "page",
+      "in": "query",
+      "description": "Page number.",
+      "required": true,
+      "type": "integer"
+    }
+  },
+  "x-basePath": "{partitionName}.zuora.com/rest/{version}",
+  "definitions": {
+    "accounts": {
+      "required": [
+        "name",
+        "billToContact",
+        "currency"
+      ],
+      "type": "object",
+      "properties": {
+        "creditCard": {
+          "type": "object"
+        },
+        "invoiceTargetDate": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "billCycleDay": {
+          "type": "string"
+        },
+        "soldToContact": {
+          "type": "object"
+        },
+        "billToContact": {
+          "type": "object",
+          "properties": {
+            "country": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "workEmail": {
+              "type": "string"
+            },
+            "address1": {
+              "type": "string"
+            },
+            "address2": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "mobilePhone": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "lastName",
+            "firstName"
+          ]
+        },
+        "invoiceCollect": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "subscription": {
+          "type": "object",
+          "properties": {
+            "subscribeToRatePlans": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "productRatePlanId": {
+                    "type": "string"
+                  },
+                  "chargeOverrides": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "productRatePlanChargeId": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "productRatePlanChargeId",
+                        "quantity"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "productRatePlanId"
+                ]
+              }
+            },
+            "contractEffectiveDate": {
+              "type": "string"
+            },
+            "initialTerm": {
+              "type": "string"
+            },
+            "autoRenew": {
+              "type": "boolean"
+            },
+            "termType": {
+              "type": "string"
+            },
+            "renewalTerm": {
+              "type": "string"
+            },
+            "myCustomField__c": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "contractEffectiveDate",
+            "termType"
+          ]
+        },
+        "paymentTerm": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "myCustomField__c": {
+          "type": "string"
+        }
+      }
+    },
+    "accountCreated": {
+      "type": "object",
+      "properties": {
+        "paymentMethodId": {
+          "type": "string"
+        },
+        "paymentId": {
+          "type": "string"
+        },
+        "paidAmount": {
+          "type": "number"
+        },
+        "subscriptionNumber": {
+          "type": "string"
+        },
+        "subscriptionId": {
+          "type": "string"
+        },
+        "accountId": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "accountNumber": {
+          "type": "string"
+        },
+        "invoiceId": {
+          "type": "string"
+        }
+      }
+    },
+    "account": {
+      "type": "object",
+      "properties": {
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "totalInvoiceBalance": {
+              "type": "number"
+            },
+            "contractedMrr": {
+              "type": "number"
+            },
+            "creditBalance": {
+              "type": "number"
+            },
+            "balance": {
+              "type": "number"
+            }
+          }
+        },
+        "basicInfo": {
+          "type": "object",
+          "properties": {
+            "communicationProfileId": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "invoiceTemplateId": {
+              "type": "object"
+            },
+            "crmId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "accountNumber": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "dfadsf__c": {
+              "type": "object"
+            }
+          }
+        },
+        "soldToContact": {
+          "type": "object",
+          "properties": {
+            "zipCode": {
+              "type": "string"
+            },
+            "taxRegion": {
+              "type": "string"
+            },
+            "fax": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "county": {
+              "type": "string"
+            },
+            "personalEmail": {
+              "type": "string"
+            },
+            "nickname": {
+              "type": "string"
+            },
+            "otherPhone": {
+              "type": "string"
+            },
+            "otherPhoneType": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "workEmail": {
+              "type": "string"
+            },
+            "homePhone": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "address2": {
+              "type": "string"
+            },
+            "address1": {
+              "type": "string"
+            },
+            "workPhone": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "mobilePhone": {
+              "type": "string"
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "billToContact": {
+          "type": "object",
+          "properties": {
+            "zipCode": {
+              "type": "string"
+            },
+            "taxRegion": {
+              "type": "string"
+            },
+            "fax": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "county": {
+              "type": "string"
+            },
+            "personalEmail": {
+              "type": "string"
+            },
+            "nickname": {
+              "type": "string"
+            },
+            "otherPhone": {
+              "type": "string"
+            },
+            "otherPhoneType": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "workEmail": {
+              "type": "string"
+            },
+            "homePhone": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "address2": {
+              "type": "string"
+            },
+            "address1": {
+              "type": "string"
+            },
+            "workPhone": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "mobilePhone": {
+              "type": "string"
+            }
+          }
+        },
+        "billingAndPayment": {
+          "type": "object",
+          "properties": {
+            "billCycleDay": {
+              "type": "number"
+            },
+            "paymentTerm": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "accountSummary": {
+      "type": "object",
+      "properties": {
+        "payments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "paidInvoices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "invoiceNumber": {
+                      "type": "string"
+                    },
+                    "appliedPaymentAmount": {
+                      "type": "number"
+                    },
+                    "invoiceId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "paymentNumber": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "effectiveDate": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "paymentType": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "invoices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "status": {
+                "type": "string"
+              },
+              "invoiceNumber": {
+                "type": "string"
+              },
+              "invoiceDate": {
+                "type": "string"
+              },
+              "balance": {
+                "type": "number"
+              },
+              "id": {
+                "type": "string"
+              },
+              "dueDate": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "usage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "unitOfMeasure": {
+                "type": "string"
+              },
+              "quantity": {
+                "type": "number"
+              },
+              "startDate": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "basicInfo": {
+          "type": "object",
+          "properties": {
+            "defaultPaymentMethod": {
+              "type": "object",
+              "properties": {
+                "creditCardNumber": {
+                  "type": "string"
+                },
+                "paymentMethodType": {
+                  "type": "string"
+                },
+                "creditCardExpirationMonth": {
+                  "type": "number"
+                },
+                "creditCardExpirationYear": {
+                  "type": "number"
+                },
+                "creditCardType": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
+            },
+            "status": {
+              "type": "string"
+            },
+            "lastInvoiceDate": {
+              "type": "string"
+            },
+            "lastPaymentAmount": {
+              "type": "number"
+            },
+            "billCycleDay": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "balance": {
+              "type": "number"
+            },
+            "accountNumber": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "dfadsf__c": {
+              "type": "object"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "lastPaymentDate": {
+              "type": "string"
+            }
+          }
+        },
+        "soldToContact": {
+          "type": "object",
+          "properties": {
+            "fax": {
+              "type": "string"
+            },
+            "taxRegion": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "zipCode": {
+              "type": "string"
+            },
+            "county": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "workEmail": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "address2": {
+              "type": "string"
+            },
+            "address1": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "workPhone": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "subscriptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "termEndDate": {
+                "type": "string"
+              },
+              "termStartDate": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "initialTerm": {
+                "type": "number"
+              },
+              "autoRenew": {
+                "type": "boolean"
+              },
+              "subscriptionNumber": {
+                "type": "string"
+              },
+              "subscriptionStartDate": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "ratePlans": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "productName": {
+                      "type": "string"
+                    },
+                    "ratePlanName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "termType": {
+                "type": "string"
+              },
+              "renewalTerm": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "billToContact": {
+          "type": "object",
+          "properties": {
+            "fax": {
+              "type": "string"
+            },
+            "taxRegion": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "zipCode": {
+              "type": "string"
+            },
+            "county": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "workEmail": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "address2": {
+              "type": "string"
+            },
+            "address1": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "workPhone": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "accountPutBody": {
+      "type": "object",
+      "properties": {
+        "billToContact": {
+          "type": "object",
+          "properties": {
+            "zipCode": {
+              "type": "string"
+            },
+            "homePhone": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "properties": {
+        "nextPage": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sku": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "productRatePlans": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "effectiveEndDate": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "effectiveStartDate": {
+                          "type": "string"
+                        },
+                        "productRatePlanCharges": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "pricingSummary": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "model": {
+                                  "type": "string"
+                                },
+                                "billingPeriod": {
+                                  "type": "string"
+                                },
+                                "billingDay": {
+                                  "type": "string"
+                                },
+                                "taxable": {
+                                  "type": "boolean"
+                                },
+                                "taxMode": {
+                                  "type": "string"
+                                },
+                                "taxCode": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "paymentMethodCreateBody": {
+      "type": "object",
+      "properties": {
+        "defaultPaymentMethod": {
+          "type": "boolean"
+        },
+        "cardHolderInfo": {
+          "type": "object",
+          "properties": {
+            "addressLine1": {
+              "type": "string"
+            },
+            "addressLine2": {
+              "type": "string"
+            },
+            "zipCode": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "cardHolderName": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "expirationMonth": {
+          "type": "string"
+        },
+        "accountKey": {
+          "type": "string"
+        },
+        "creditCardType": {
+          "type": "string"
+        },
+        "expirationYear": {
+          "type": "string"
+        },
+        "creditCardNumber": {
+          "type": "string"
+        },
+        "securityCode": {
+          "type": "string"
+        }
+      }
+    },
+    "hmacSignaturePostBody": {
+      "required": [
+        "uri",
+        "method"
+      ],
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "accountKey": {
+          "type": "string"
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "nextPage": {
+          "type": "string"
+        },
+        "creditCards": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cardHolderInfo": {
+                  "type": "object",
+                  "properties": {
+                    "zipCode": {
+                      "type": "object"
+                    },
+                    "addressLine2": {
+                      "type": "object"
+                    },
+                    "addressLine1": {
+                      "type": "object"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "object"
+                    },
+                    "country": {
+                      "type": "object"
+                    },
+                    "city": {
+                      "type": "object"
+                    },
+                    "cardHolderName": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "defaultPaymentMethod": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "expirationMonth": {
+                  "type": "number"
+                },
+                "cardNumber": {
+                  "type": "string"
+                },
+                "expirationYear": {
+                  "type": "number"
+                },
+                "cardType": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "hamcSignaturePostResponse": {
+      "type": "object",
+      "properties": {
+        "signature": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "paymentMethodPostBody": {
+      "type": "object",
+      "properties": {
+        "defaultPaymentMethod": {
+          "type": "boolean"
+        },
+        "cardHolderInfo": {
+          "type": "object",
+          "properties": {
+            "addressLine1": {
+              "type": "string"
+            },
+            "addressLine2": {
+              "type": "string"
+            },
+            "zipCode": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "cardHolderName": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "expirationMonth": {
+          "type": "string"
+        },
+        "accountKey": {
+          "type": "string"
+        },
+        "creditCardType": {
+          "type": "string"
+        },
+        "expirationYear": {
+          "type": "string"
+        },
+        "creditCardNumber": {
+          "type": "string"
+        },
+        "securityCode": {
+          "type": "string"
+        }
+      }
+    },
+    "responsePaymentMethodSuccess": {
+      "type": "object",
+      "properties": {
+        "paymentMethodId": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "responseSuccess": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "paymentMethods": {
+      "type": "object",
+      "properties": {
+        "nextPage": {
+          "type": "string"
+        },
+        "creditCards": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "cardHolderInfo": {
+                  "type": "object",
+                  "properties": {
+                    "zipCode": {
+                      "type": "object"
+                    },
+                    "addressLine2": {
+                      "type": "object"
+                    },
+                    "addressLine1": {
+                      "type": "object"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "object"
+                    },
+                    "country": {
+                      "type": "object"
+                    },
+                    "city": {
+                      "type": "object"
+                    },
+                    "cardHolderName": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "defaultPaymentMethod": {
+                  "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "expirationMonth": {
+                  "type": "number"
+                },
+                "cardNumber": {
+                  "type": "string"
+                },
+                "expirationYear": {
+                  "type": "number"
+                },
+                "cardType": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "paymentMethodPutBody": {
+      "required": [
+        "expirationMonth",
+        "expirationYear",
+        "cardHolderName"
+      ],
+      "type": "object",
+      "properties": {
+        "expirationMonth": {
+          "type": "number"
+        },
+        "expirationYear": {
+          "type": "number"
+        },
+        "cardHolderName": {
+          "type": "string"
+        },
+        "securityCode": {
+          "type": "string"
+        }
+      }
+    },
+    "subscriptionsPreviewBody": {
+      "required": [
+        "termType",
+        "contractEffectiveDate",
+        "subscribeToRatePlans"
+      ],
+      "type": "object",
+      "properties": {
+        "termType": {
+          "type": "string"
+        },
+        "invoiceTargetDate": {
+          "type": "string"
+        },
+        "contractEffectiveDate": {
+          "type": "string"
+        },
+        "previewAccountInfo": {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "type": "string"
+            },
+            "billToContact": {
+              "type": "object",
+              "properties": {
+                "zipCode": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "county": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                }
+              }
+            },
+            "billCycleDay": {
+              "type": "number"
+            }
+          }
+        },
+        "subscribeToRatePlans": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "chargeOverrides": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "productRatePlanChargeId": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "productRatePlanChargeId",
+                    "quantity"
+                  ]
+                }
+              },
+              "productRatePlanId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "productRatePlanId"
+            ]
+          }
+        },
+        "initialTerm": {
+          "type": "number"
+        }
+      }
+    },
+    "subscriptionsPreviewResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "amountWithoutTax": {
+          "type": "number"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "invoiceTargetDate": {
+          "type": "string"
+        },
+        "taxAmount": {
+          "type": "number"
+        },
+        "invoiceItems": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "unitOfMeasure": {
+                  "type": "string"
+                },
+                "serviceStartDate": {
+                  "type": "string"
+                },
+                "chargeName": {
+                  "type": "string"
+                },
+                "chargeDescription": {
+                  "type": "string"
+                },
+                "chargeAmount": {
+                  "type": "number"
+                },
+                "serviceEndDate": {
+                  "type": "string"
+                },
+                "productName": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "subscriptionPostBody": {
+      "required": [
+        "termType",
+        "accountKey",
+        "contractEffectiveDate",
+        "subscribeToRatePlans"
+      ],
+      "type": "object",
+      "properties": {
+        "renewalTerm": {
+          "type": "string"
+        },
+        "termType": {
+          "type": "string"
+        },
+        "autoRenew": {
+          "type": "boolean"
+        },
+        "invoiceTargetDate": {
+          "type": "string"
+        },
+        "accountKey": {
+          "type": "string"
+        },
+        "contractEffectiveDate": {
+          "type": "string"
+        },
+        "subscribeToRatePlans": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "chargeOverrides": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "productRatePlanChargeId": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "productRatePlanChargeId",
+                    "quantity"
+                  ]
+                }
+              },
+              "productRatePlanId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "productRatePlanId"
+            ]
+          }
+        },
+        "invoiceCollect": {
+          "type": "boolean"
+        },
+        "initialTerm": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "myCustomField__c": {
+          "type": "string"
+        }
+      }
+    },
+    "subscriptionPostResponse": {
+      "type": "object",
+      "properties": {
+        "subscriptionNumber": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "subscriptionId": {
+          "type": "string"
+        }
+      }
+    },
+    "subscriptions": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "nextPage": {
+          "type": "string"
+        },
+        "subscriptions": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "contractedMrr": {
+                  "type": "number"
+                },
+                "termStartDate": {
+                  "type": "string"
+                },
+                "subscriptionNumber": {
+                  "type": "string"
+                },
+                "accountNumber": {
+                  "type": "string"
+                },
+                "totalContractedValue": {
+                  "type": "number"
+                },
+                "accountName": {
+                  "type": "string"
+                },
+                "ratePlans": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ratePlanName": {
+                          "type": "string"
+                        },
+                        "productName": {
+                          "type": "string"
+                        },
+                        "ratePlanCharges": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "billingPeriod": {
+                                  "type": "string"
+                                },
+                                "model": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "pricingSummary": {
+                                  "type": "string"
+                                },
+                                "quantity": {
+                                  "type": "number"
+                                },
+                                "billingDay": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "status": {
+                  "type": "string"
+                },
+                "renewalTerm": {
+                  "type": "number"
+                },
+                "accountId": {
+                  "type": "string"
+                },
+                "autoRenew": {
+                  "type": "boolean"
+                },
+                "termType": {
+                  "type": "string"
+                },
+                "termEndDate": {
+                  "type": "string"
+                },
+                "contractEffectiveDate": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                },
+                "initialTerm": {
+                  "type": "number"
+                },
+                "subscriptionStartDate": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "subscriptionGet": {
+      "type": "object",
+      "properties": {
+        "contractedMrr": {
+          "type": "number"
+        },
+        "termStartDate": {
+          "type": "string"
+        },
+        "subscriptionNumber": {
+          "type": "string"
+        },
+        "accountNumber": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "totalContractedValue": {
+          "type": "number"
+        },
+        "accountName": {
+          "type": "string"
+        },
+        "ratePlans": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ratePlanName": {
+                  "type": "string"
+                },
+                "productName": {
+                  "type": "string"
+                },
+                "ratePlanCharges": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "billingPeriod": {
+                          "type": "object"
+                        },
+                        "model": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "pricingSummary": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "object"
+                        },
+                        "billingDay": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "status": {
+          "type": "string"
+        },
+        "renewalTerm": {
+          "type": "number"
+        },
+        "accountId": {
+          "type": "string"
+        },
+        "autoRenew": {
+          "type": "boolean"
+        },
+        "termType": {
+          "type": "string"
+        },
+        "termEndDate": {
+          "type": "string"
+        },
+        "contractEffectiveDate": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "initialTerm": {
+          "type": "number"
+        },
+        "subscriptionStartDate": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "subscriptionPutBody": {
+      "type": "object",
+      "properties": {
+        "renewalTerm": {
+          "type": "string"
+        },
+        "termType": {
+          "type": "string"
+        },
+        "autoRenew": {
+          "type": "boolean"
+        },
+        "currentTerm": {
+          "type": "string"
+        },
+        "update": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ratePlanId": {
+                "type": "string"
+              },
+              "contractEffectiveDate": {
+                "type": "string"
+              },
+              "chargeUpdateDetails": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ratePlanChargeId": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "myCustomField__c": {
+          "type": "string"
+        }
+      }
+    },
+    "subscriptionRenewBody": {
+      "type": "object",
+      "properties": {
+        "invoiceCollect": {
+          "type": "boolean"
+        },
+        "invoiceTargetDate": {
+          "type": "string"
+        }
+      }
+    },
+    "subscriptionRenewResponse": {
+      "type": "object",
+      "properties": {
+        "termStartDate": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "termEndDate": {
+          "type": "string"
+        },
+        "subscriptionId": {
+          "type": "string"
+        }
+      }
+    },
+    "subscriptionCancelBody": {
+      "required": [
+        "cancellationPolicy",
+        "invoiceCollect"
+      ],
+      "type": "object",
+      "properties": {
+        "cancellationPolicy": {
+          "type": "string"
+        },
+        "invoiceCollect": {
+          "type": "boolean"
+        },
+        "cancellationEffectiveDate": {
+          "type": "string"
+        },
+        "invoiceTargetDate": {
+          "type": "string"
+        }
+      }
+    },
+    "subscriptionCancelResponse": {
+      "type": "object",
+      "properties": {
+        "cancelledDate": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "subscriptionId": {
+          "type": "string"
+        }
+      }
+    },
+    "usageDetailsAccout": {
+      "type": "object",
+      "properties": {
+        "usage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "accountId": {
+                "type": "string"
+              },
+              "accountName": {
+                "type": "string"
+              },
+              "accountNumber": {
+                "type": "string"
+              },
+              "chargeNumber": {
+                "type": "null"
+              },
+              "id": {
+                "type": "string"
+              },
+              "quantity": {
+                "type": "integer"
+              },
+              "sourceName": {
+                "type": "string"
+              },
+              "startDateTime": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "submissionDateTime": {
+                "type": "string"
+              },
+              "subscriptionNumber": {
+                "type": "null"
+              },
+              "unitOfMeasure": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "nextPage": {
+          "type": "string"
+        }
+      }
+    },
+    "usagePostRequest": {
+      "type": "object",
+      "properties": {
+        "filename": {
+          "type": "string"
+        }
+      }
+    },
+    "usagePostResponse": {
+      "type": "object",
+      "properties": {
+        "checkImportStatus": {
+          "type": "string"
+        },
+        "size": {
+          "type": "number"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "invoices": {
+      "type": "object",
+      "properties": {
+        "invoices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "accountId": {
+                "type": "string"
+              },
+              "accountName": {
+                "type": "string"
+              },
+              "accountNumber": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "integer"
+              },
+              "balance": {
+                "type": "integer"
+              },
+              "createdBy": {
+                "type": "string"
+              },
+              "dueDate": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "invoiceDate": {
+                "type": "string"
+              },
+              "invoiceItems": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "chargeAmount": {
+                      "type": "integer"
+                    },
+                    "chargeDescription": {
+                      "type": "string"
+                    },
+                    "chargeId": {
+                      "type": "string"
+                    },
+                    "chargeName": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "productName": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "integer"
+                    },
+                    "serviceEndDate": {
+                      "type": "string"
+                    },
+                    "serviceStartDate": {
+                      "type": "string"
+                    },
+                    "subscriptionId": {
+                      "type": "string"
+                    },
+                    "subscriptionName": {
+                      "type": "string"
+                    },
+                    "taxAmount": {
+                      "type": "integer"
+                    },
+                    "unitOfMeasure": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "invoiceNumber": {
+                "type": "string"
+              },
+              "invoiceTargetDate": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "payments": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "payments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "accountId": {
+                "type": "string"
+              },
+              "accountName": {
+                "type": "string"
+              },
+              "accountNumber": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number"
+              },
+              "effectiveDate": {
+                "type": "string"
+              },
+              "gatewayTransactionNumber": {
+                "type": "null"
+              },
+              "id": {
+                "type": "string"
+              },
+              "paidInvoices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "appliedPaymentAmount": {
+                      "type": "integer"
+                    },
+                    "invoiceId": {
+                      "type": "string"
+                    },
+                    "invoiceNumber": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "paymentMethodId": {
+                "type": "string"
+              },
+              "paymentNumber": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "invoiceCollectBody": {
+      "required": [
+        "accountKey"
+      ],
+      "type": "object",
+      "properties": {
+        "accountKey": {
+          "type": "string"
+        },
+        "invoiceDate": {
+          "type": "string"
+        },
+        "invoiceTargetDate": {
+          "type": "string"
+        }
+      }
+    },
+    "invoiceCollectResponse": {
+      "type": "object",
+      "properties": {
+        "invoices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "invoiceAmount": {
+                "type": "number"
+              },
+              "invoiceId": {
+                "type": "string"
+              },
+              "invoiceNumber": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "paymentId": {
+          "type": "string"
+        },
+        "amountCollected": {
+          "type": "number"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
