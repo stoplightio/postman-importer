@@ -1,0 +1,33 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: API Platform V2 API
+definitions:
+  Person:
+    properties:
+      name:
+        type: string
+        xml:
+          attribute: true
+          name: fullname
+      addresses:
+        type: array
+        xml:
+          wrapped: true
+        items:
+          $ref: '#/definitions/Address'
+    type: object
+    required:
+      - name
+      - addresses
+  Address:
+    properties:
+      street:
+        type: string
+      city:
+        type: string
+    type: object
+    required:
+      - street
+      - city
+paths: {}
