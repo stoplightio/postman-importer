@@ -1,1 +1,0 @@
-LinkedIn is a business-oriented social networking service.

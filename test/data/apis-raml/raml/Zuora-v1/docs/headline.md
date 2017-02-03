@@ -1,1 +1,0 @@
-Zuora offers online billing solutions for businesses looking for subscription commerce as a service, delivered all on one killer platform.

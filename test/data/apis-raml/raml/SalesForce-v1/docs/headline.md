@@ -1,1 +1,0 @@
-Salesforce customer relationship management (CRM) service.
