@@ -1,0 +1,35 @@
+#%RAML 1.0
+title: traits example
+
+traits:
+  imageable:
+     queryParameters:
+        imageType:
+            description: Comma,separated list just like in example. One alone may be present
+            type: string
+            required: false
+            default: SmallImage
+            example: TinyImage,SwatchImage,SmallImage,MediumImage,LargeImage
+  accessToken:
+     headers:
+        token:
+            description: access token
+            type: string
+            example: password
+  hasFound:
+     responses:
+        200:
+          body:
+            application/json:
+              type: Item
+
+types:
+  Item:
+    type: object
+    properties:
+      id: integer
+      name: string
+
+/items:
+   get:
+      is: [imageable,accessToken, hasFound]
