@@ -1,0 +1,60 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: Example of request bodies
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /users:
+    post:
+      operationId: POST_users
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /groups:
+    post:
+      operationId: POST_groups
+      consumes:
+        - text/xml
+      parameters:
+        - name: body
+          in: body
+          schema:
+            type: object
+      responses:
+        default:
+          description: ''
+          schema: {}
+      x-raml-body-application/json:
+        - name: body
+          in: body
+          schema:
+            properties:
+              groupName:
+                type: string
+              deptCode:
+                type: number
+            type: object
+            required:
+              - groupName
+              - deptCode
+      x-raml-body-text/xml: []
+definitions:
+  User:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+    type: object
+    required:
+      - firstName
+      - lastName
