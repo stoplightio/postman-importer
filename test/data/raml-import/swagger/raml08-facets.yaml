@@ -1,0 +1,46 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: Pega API
+  description: >-
+    The Pega API provides a set of built-in REST services for Pega 7
+    applications. All APIs require authentication. Provide the credentials for a
+    Pega operator in the Authorization header for each request. Pega recommends
+    accessing APIs using TLS 1.2.
+host: myorg.com
+basePath: /prweb/api/v1
+schemes:
+  - https
+paths:
+  /users:
+      post:
+        operationId: POST_users
+        description: >-
+          Terminates all existing sessions in all nodes of the cluster for the
+          given set of users.
+        consumes:
+          - application/json
+        parameters:
+          - name: body
+            in: body
+            schema:
+              $ref: '#/definitions/UserSessionTerminationRequest'
+        responses:
+          '400':
+            description: Bad request
+          '401':
+            description: Unauthorized
+          '403':
+            description: Forbidden
+definitions:
+  UserSessionTerminationRequest:
+    title: UserSessionTerminationRequest
+    x-raml-facets-id: UserSessionTerminationRequest
+    type: object
+    properties:
+      Message:
+        type: string
+      User:
+        type: array
+        items:
+          type: string
