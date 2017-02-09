@@ -9,6 +9,7 @@ const beforeEach = require("mocha/lib/mocha.js").beforeEach;
 const afterEach = require("mocha/lib/mocha.js").afterEach;
 const it = require("mocha/lib/mocha.js").it;
 const describe = require("mocha/lib/mocha.js").describe;
+const timeout = 60 * 1000; //1000 ms == 1s.
 
 chai.use(require('chai-string'));
 
@@ -246,11 +247,11 @@ describe('from swagger to raml', function () {
 			
 			if (process.env.fileToTest) {
 				if (_.endsWith(sourceFile, process.env.fileToTest)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate)).timeout(timeout);
 				}
 			}
 			else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate)).timeout(timeout);
 			}
 		}
 	});

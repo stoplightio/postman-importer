@@ -1,0 +1,1593 @@
+#%RAML 1.0
+title: Oxford Dictionaries
+version: 1.4.0
+baseUri: 'https://od-api.oxforddictionaries.com/api/v1'
+mediaType: application/json
+protocols:
+  - HTTPS
+(oas-info):
+  (oas-x-logo):
+    url: 'https://api.apis.guru/v2/cache/logo/https_developer.oxforddictionaries.com_images_logo.png'
+  (oas-x-origin):
+    format: swagger
+    url: 'https://developer.oxforddictionaries.com/swagger/spec/public_doc_guest.json'
+    version: '2.0'
+  (oas-x-preferred): true
+  (oas-x-providerName): oxforddictionaries.com
+  termsOfService: 'http://helloreverb.com/terms/'
+  license:
+    name: API Terms And Conditions
+    url: 'https://developer.oxforddictionaries.com/api-terms-and-conditions'
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-collectionFormat:
+    type: string
+  oas-definition-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-x-hasEquivalentPaths: any
+/filters:
+  displayName: filters
+  get:
+    displayName: GET_filters
+    description: |
+      Returns a list of all the valid filters to construct API calls.
+    (oas-summary): Lists available filters.
+    is:
+      - appId
+      - appKey
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Filters
+            (oas-schema-title): FiltersResults
+        description: Successful response.
+      '500':
+        description: Internal Error. An error occourred while processing the data.
+    (oas-tags):
+      - Utility
+  '/{endpoint}':
+    displayName: '{endpoint}'
+    uriParameters:
+      endpoint:
+        description: Name of the endpoint.
+        enum:
+          - entries
+          - inflections
+          - translations
+        required: true
+        type: string
+    get:
+      displayName: GET_filters-endpoint
+      description: |
+        Returns a list of all the valid filters for a given endpoint to construct API calls.
+      (oas-summary): Lists available filters for specific endpoint.
+      is:
+        - appId
+        - appKey
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Filters
+              (oas-schema-title): FiltersResults
+          description: Successful response.
+        '404':
+          description: Unknown endpoint.
+        '500':
+          description: Internal Error. An error occourred while processing the data.
+      (oas-tags):
+        - Utility
+/wordlist:
+  displayName: wordlist
+  '/{source_lang}':
+    displayName: '{source_lang}'
+    '/{filters_basic}':
+      displayName: '{filters_basic}'
+      uriParameters:
+        filters_basic:
+          default: registers=Rare;domains=Art
+          description: 'Semicolon separated list of wordlist parameters, presented as value pairs: LexicalCategory, domains, regions, registers. Parameters can take comma separated list of values. E.g., lexicalCategory=noun,adjective;domains=sport.'
+          required: true
+          type: string
+      get:
+        displayName: GET_wordlist-source_lang-filters_basic
+        description: |
+          Retrieve list of words for particular domain, lexical category register and/or region.  
+
+            <div id="wordlist"></div>
+        (oas-summary): Retrieve list of words for category.
+        is:
+          - appId
+          - appKey
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Wordlist
+                (oas-schema-title): WordlistResults
+            description: Successful response.
+          '400':
+            description: filter has no values; total number of filters > 20.
+          '404':
+            description: |
+              No entries is found matching supplied filters or lang or filters is not recognized.
+          '500':
+            description: |
+              Internal Error. An error occourred while processing the data.
+        queryParameters:
+          limit:
+            description: Limit the number of results per response. Default and maximum limit is 5000.
+            required: false
+            type: string
+          offset:
+            description: Offset the start number of the result.
+            required: false
+            type: string
+        (oas-tags):
+          - Wordlist
+    '/{filters_advanced}':
+      displayName: '{filters_advanced}'
+      uriParameters:
+        filters_advanced:
+          default: registers=Rare;domains=Art
+          description: 'Semicolon separated list of wordlist parameters, presented as value pairs: LexicalCategory, domains, regions, registers. Parameters can take comma separated list of values. E.g., lexicalCategory=noun,adjective;domains=sport'
+          required: true
+          type: string
+      get:
+        displayName: GET_wordlist-source_lang-filters_advanced
+        description: |
+          Advanced options for retrieving wordlist - exclude filter, filter by word length or match by substring (prefix). 
+
+            <div id="wordlist_advanced"></div>
+        (oas-summary): Retrieve list of words for category with advanced options.
+        is:
+          - appId
+          - appKey
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Wordlist
+                (oas-schema-title): WordlistResults
+            description: Successful response.
+          '400':
+            description: disjoint sets of word_length values (eg <3>10); filter has no values; total number of filters > 20; filters and excludes values can not be the same; source_lang and translations can not be same; word_length conflicts with prefix length.
+          '404':
+            description: |
+              No entries is found matching supplied filters or lang or filters is not recognized.
+          '500':
+            description: |
+              Internal Error. An error occourred while processing the data.
+        queryParameters:
+          exclude:
+            description: 'Semicolon separated list of wordlist parameters to be excluded from response, presented as value pairs: LexicalCategory, domains, regions, registers, grammaticalFeatures. Parameters can take comma separated list of values.'
+            required: false
+            type: string
+          word_length:
+            description: 'Parameter to speficy the minimum (>), exact or maximum (<) length of the words required. E.g., >5 - more than 5 chars; <4 - less than 4 chars; >5<10 - from 5 to 10 chars; 3 - exactly 3 chars.'
+            required: false
+            type: string
+          prefix:
+            default: eye
+            description: Filter words that start with prefix parameter
+            required: false
+            type: string
+          exact:
+            description: If exact=true wordlist returns a list of entries that exactly matches the search string. Otherwise wordlist lists entries that start with prefix string.
+            required: false
+            type: boolean
+          limit:
+            description: Limit the number of results per response. Default and maximum limit is 5000.
+            required: false
+            type: string
+          offset:
+            description: Offset the start number of the result.
+            required: false
+            type: string
+        (oas-tags):
+          - Wordlist
+/domains:
+  displayName: domains
+  '/{source_language}':
+    displayName: '{source_language}'
+    uriParameters:
+      source_language:
+        description: IANA language code. Source Language.
+        enum:
+          - en
+          - es
+          - lv
+          - nso
+          - ro
+          - zu
+        required: true
+        type: string
+    get:
+      displayName: GET_domains-source_language
+      description: |
+        Returns a list of the available domains for a given monolingual language dataset.
+      (oas-summary): Lists available domains in a given monolingual language dataset.
+      is:
+        - appId
+        - appKey
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Labels
+              (oas-schema-title): DomainsResults
+          description: Successful response.
+        '404':
+          description: Unknown source_language.
+      (oas-tags):
+        - Utility
+    '/{target_language}':
+      displayName: '{target_language}'
+      uriParameters:
+        target_language:
+          description: IANA language code. Target Language.
+          enum:
+            - es
+            - en
+            - lv
+            - nso
+            - ro
+            - zu
+          required: true
+          type: string
+      get:
+        displayName: GET_domains-source_language-target_language
+        description: |
+          Returns a list of the available domains for a given bilingual language dataset.
+        (oas-summary): Lists available domains in a given bilingual language dataset.
+        is:
+          - appId
+          - appKey
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Labels
+                (oas-schema-title): DomainsResults
+            description: Successful response.
+          '400':
+            description: source_language and target_language are same.
+          '404':
+            description: Unknown source_language and/or target_language.
+        (oas-tags):
+          - Utility
+/inflections:
+  displayName: inflections
+  '/{source_lang}':
+    displayName: '{source_lang}'
+    '/{word_id}':
+      displayName: '{word_id}'
+      uriParameters:
+        word_id:
+          default: changed
+          description: An inflected wordform. Case-sensitive.
+          required: true
+          type: string
+      get:
+        displayName: GET_inflections-source_lang-word_id
+        description: |
+
+          Retrieve available [lemmas](/glossary?tag=#lemma&expand) for a given [inflected](/glossary?tag=#inflection&expand) wordform. 
+
+            <div id="lemmatron"></div>
+        (oas-summary): Retrieve lemmas for a given inflected wordform.
+        is:
+          - appId
+          - appKey
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Lemmatron
+                (oas-schema-title): InflectionsResults
+            description: Successful response.
+          '500':
+            description: |
+              Internal Error. An error occourred while processing the data.
+        (oas-tags):
+          - Lemmatron
+      '/{filters}':
+        displayName: '{filters}'
+        uriParameters:
+          filters:
+            default:
+              - 'grammaticalFeatures=singular,past;lexicalCategory=noun'
+            description: Separate filtering conditions using a semicolon. Conditions take values grammaticalFeatures and/or lexicalCategory and are case-sensitive. To list multiple values in single condition divide them with comma.
+            items:
+              pattern: (lexicalCategory|grammaticalFeatures)=.+
+              type: string
+            required: true
+            type: array
+            (oas-collectionFormat): csv
+        get:
+          displayName: GET_inflections-source_lang-word_id-filters
+          description: |
+
+            Retrieve available [lemmas](/glossary?tag=#lemma&expand) for a given [inflected](/glossary?tag=#inflection&expand) wordform. Filter results by categories.  
+
+              <div id="lemmatron_filters"></div>
+          (oas-summary): Apply filters to Lemmatron response
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Lemmatron
+                  (oas-schema-title): InflectionsResults
+              description: Successful response.
+            '500':
+              description: |
+                Internal Error. An error occourred while processing the data.
+          (oas-tags):
+            - Lemmatron
+/entries:
+  displayName: entries
+  '/{source_language}':
+    displayName: '{source_language}'
+    '/{word_id}':
+      displayName: '{word_id}'
+      /sentences:
+        displayName: sentences
+        get:
+          displayName: GET_entries-source_language-word_id-sentences
+          description: |
+
+            Retrieve list of sentences and list of senses (English language only).
+              <div id="sentences"></div>
+          (oas-summary): Retrieve corpus sentences for a given word.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: Sentences
+                  (oas-schema-title): SentencesResults
+              description: Successful response.
+            '404':
+              description: |
+                No entry is found matching supplied id and source_language
+            '500':
+              description: |
+                Internal Error. An error occurred while processing the data.
+          (oas-tags):
+            - The Sentence Dictionary
+          (oas-externalDocs):
+            description: find more info here
+            url: 'https://helloreverb.com/about'
+  '/{source_lang}':
+    displayName: '{source_lang}'
+    '/{word_id}':
+      displayName: '{word_id}'
+      /antonyms:
+        displayName: antonyms
+        get:
+          displayName: GET_entries-source_lang-word_id-antonyms
+          description: |
+
+            Retrieve available antonyms for a given word and language. 
+
+              <div id="antonyms"></div>
+          (oas-summary): Retrieve antonyms for a given word.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): RetrieveEntryResults
+              description: Successful response.
+            '404':
+              description: |
+                No entry is found matching supplied id and source_lang or filters are not recognized
+            '500':
+              description: |
+                Internal Error. An error occurred while processing the data.
+          (oas-tags):
+            - Thesaurus
+          (oas-externalDocs):
+            description: find more info here
+            url: 'https://helloreverb.com/about'
+      /examples:
+        displayName: examples
+        get:
+          displayName: GET_entries-source_lang-word_id-examples
+          description: |
+
+            Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
+
+              <div id="dictionary_entries_filters_examples"></div>
+          (oas-summary): Retrieve only example sentences in entry search.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): RetrieveEntryResults
+              description: Successful response.
+            '404':
+              description: |
+                no entry is found matching supplied source_lang and id
+                and/or that entry has no senses with translations in the target language. 
+            '500':
+              description: |
+                Internal Error. An error occourred while processing the data.
+          (oas-tags):
+            - Dictionary entries
+      '/regions={region}':
+        displayName: 'regions={region}'
+        uriParameters:
+          region:
+            description: Region filter parameter. gb = Great Britain English. us = United States English. Default is gb.
+            enum:
+              - gb
+              - us
+            required: true
+            type: string
+        get:
+          displayName: GET_entries-source_lang-word_id-regions=region
+          description: |
+
+            Retrieve available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. 
+
+              <div id="dictionary_entries"></div>
+          (oas-summary): Specify GB or US dictionary for English entry search.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): RetrieveEntryResults
+              description: Successful response.
+            '404':
+              description: |
+                no entry is found matching supplied source_lang and id
+                and/or that entry has no senses with translations in the target language. 
+            '500':
+              description: |
+                Internal Error. An error occourred while processing the data.
+          (oas-tags):
+            - Dictionary entries
+          (oas-externalDocs):
+            description: find more info here
+            url: 'https://helloreverb.com/about'
+      /synonyms;antonyms:
+        displayName: synonyms;antonyms
+        get:
+          displayName: GET_entries-source_lang-word_id-synonyms;antonyms
+          description: |
+
+            Retrieve available synonyms and antonyms for a given word and language. 
+
+              <div id="synonyms_and_antonyms"></div>
+          (oas-summary): Retrieve synonyms and antonyms for a given word.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): RetrieveEntryResults
+              description: Successful response.
+            '404':
+              description: |
+                No entry is found matching supplied id and source_lang or filters are not recognized
+            '500':
+              description: |
+                Internal Error. An error occurred while processing the data.
+          (oas-tags):
+            - Thesaurus
+          (oas-externalDocs):
+            description: find more info here
+            url: 'https://helloreverb.com/about'
+      '/{filters}':
+        displayName: '{filters}'
+        uriParameters:
+          filters:
+            default:
+              - 'grammaticalFeatures=singular,past;lexicalCategory=noun'
+            description: Separate filtering conditions using a semicolon. Conditions take values grammaticalFeatures and/or lexicalCategory and are case-sensitive. To list multiple values in single condition divide them with comma.
+            items:
+              pattern: (lexicalCategory|grammaticalFeatures)=.+
+              type: string
+            required: true
+            type: array
+            (oas-collectionFormat): csv
+        get:
+          displayName: GET_entries-source_lang-word_id-filters
+          description: |
+
+            Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
+
+              <div id="dictionary_entries_filters"></div>
+          (oas-summary): Apply filters to entry search.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): RetrieveEntryResults
+              description: Successful response.
+            '404':
+              description: |
+                no entry is found matching supplied source_lang and id
+                and/or that entry has no senses with translations in the target language. 
+            '500':
+              description: |
+                Internal Error. An error occourred while processing the data.
+          (oas-tags):
+            - Dictionary entries
+      uriParameters:
+        word_id:
+          default: ace
+          description: An Entry identifier. Case-sensitive.
+          required: true
+          type: string
+      get:
+        displayName: GET_entries-source_lang-word_id
+        description: |
+
+          Retrieve available [dictionary entries](/glossary?tag=#entry&expand) for a given word and language. 
+
+            <div id="dictionary_entries"></div>
+        (oas-summary): Retrieve dictionary entries for a given word.
+        is:
+          - appId
+          - appKey
+        responses:
+          '200':
+            body:
+              application/json:
+                type: RetrieveEntry
+                (oas-schema-title): RetrieveEntryResults
+            description: Successful response.
+          '404':
+            description: |
+              No entry is found matching supplied id and source_lang or filters are not recognized
+          '500':
+            description: |
+              Internal Error. An error occurred while processing the data.
+        (oas-tags):
+          - Dictionary entries
+        (oas-externalDocs):
+          description: find more info here
+          url: 'https://helloreverb.com/about'
+      /definitions:
+        displayName: definitions
+        get:
+          displayName: GET_entries-source_lang-word_id-definitions
+          description: |
+
+            Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
+
+              <div id="dictionary_entries_filters_definitions"></div>
+          (oas-summary): Retrieve only definitions in entry search.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): RetrieveEntryResults
+              description: Successful response.
+            '404':
+              description: |
+                no entry is found matching supplied source_lang and id
+                and/or that entry has no senses with translations in the target language. 
+            '500':
+              description: |
+                Internal Error. An error occourred while processing the data.
+          (oas-tags):
+            - Dictionary entries
+      '/translations={target_lang}':
+        displayName: 'translations={target_lang}'
+        uriParameters:
+          target_lang:
+            description: IANA language code
+            enum:
+              - es
+              - en
+              - lv
+              - nso
+              - ro
+              - zu
+              - ms
+              - id
+              - tn
+            required: true
+            type: string
+        get:
+          displayName: GET_entries-source_lang-word_id-translations=target_lang
+          description: |
+            Returns target language translations for a given word ID and source language. 
+            In the event that a word in the dataset does not have a direct translation, the response will be a definition in the target language.
+
+              <div id="translation"></div>
+          (oas-summary): Find translation for a given word.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): TranslationsResults
+              description: Successful response. In case word doesn't have a direct translation a response would be definitions.
+            '400':
+              description: any of target languages is unknown
+            '404':
+              description: |
+                no entry is found matching supplied source_lang and id
+                and/or that entry has no senses with translations in the target language(s). 
+            '500':
+              description: |
+                Internal Error. An error occourred while processing the data.
+          (oas-tags):
+            - Translation
+      /synonyms:
+        displayName: synonyms
+        get:
+          displayName: GET_entries-source_lang-word_id-synonyms
+          description: |
+
+            Retrieve available synonyms for a given word and language. 
+
+              <div id="synonyms"></div>
+          (oas-summary): Retrieve synonyms for a given word.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): RetrieveEntryResults
+              description: Successful response.
+            '404':
+              description: |
+                No entry is found matching supplied id and source_lang or filters are not recognized
+            '500':
+              description: |
+                Internal Error. An error occurred while processing the data.
+          (oas-tags):
+            - Thesaurus
+          (oas-externalDocs):
+            description: find more info here
+            url: 'https://helloreverb.com/about'
+      /pronunciations:
+        displayName: pronunciations
+        get:
+          displayName: GET_entries-source_lang-word_id-pronunciations
+          description: |
+
+            Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
+
+              <div id="dictionary_entries_filters_pronunciations"></div>
+          (oas-summary): Retrieve only pronunciations in entry search.
+          is:
+            - appId
+            - appKey
+          responses:
+            '200':
+              body:
+                application/json:
+                  type: RetrieveEntry
+                  (oas-schema-title): RetrieveEntryResults
+              description: Successful response.
+            '404':
+              description: |
+                no entry is found matching supplied source_lang and id
+                and/or that entry has no senses with translations in the target language. 
+            '500':
+              description: |
+                Internal Error. An error occourred while processing the data.
+          (oas-tags):
+            - Dictionary entries
+/languages:
+  displayName: languages
+  get:
+    displayName: GET_languages
+    description: |
+      Returns a list of monolingual and bilingual language datasets available in the API
+    (oas-summary): Lists available monolingual and bilingual language datasets in the API.
+    is:
+      - bilingualSourceLanguage
+      - bilingualTargetLanguage
+      - appId
+      - appKey
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Languages
+            (oas-schema-title): LanguagesResults
+        description: Successful response.
+      '404':
+        description: Unknown sourceLanguage and/or targetLanguage.
+      '500':
+        description: Internal Error. An error occourred while processing the data.
+    (oas-tags):
+      - Utility
+/lexicalcategories:
+  displayName: lexicalcategories
+  '/{language}':
+    displayName: '{language}'
+    uriParameters:
+      language:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - nso
+          - ro
+          - zu
+        required: true
+        type: string
+    get:
+      displayName: GET_lexicalcategories-language
+      description: |
+        Returns a list of available lexical categories for a given language dataset.
+      (oas-summary): Lists available lexical categories in a given language dataset.
+      is:
+        - appId
+        - appKey
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Labels
+              (oas-schema-title): LexicalCategoriesResults
+          description: Successful response.
+        '404':
+          description: Unknown language.
+        '500':
+          description: Internal Error. An error occourred while processing the data.
+      (oas-tags):
+        - Utility
+/regions:
+  displayName: regions
+  '/{source_language}':
+    displayName: '{source_language}'
+    uriParameters:
+      source_language:
+        description: IANA language code
+        enum:
+          - en
+        required: true
+        type: string
+    get:
+      displayName: GET_regions-source_language
+      description: |
+        Returns a list of the available regions for a given monolingual language dataset.
+      (oas-summary): Lists available regions in a given monolingual language dataset.
+      is:
+        - appId
+        - appKey
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Regions
+              (oas-schema-title): RegionsResults
+          description: Successful response.
+        '404':
+          description: Unknown source_language.
+      (oas-tags):
+        - Utility
+/registers:
+  displayName: registers
+  '/{source_language}':
+    displayName: '{source_language}'
+    uriParameters:
+      source_language:
+        description: IANA language code. Source Language.
+        enum:
+          - en
+          - es
+          - lv
+          - nso
+          - ro
+          - zu
+        required: true
+        type: string
+    get:
+      displayName: GET_registers-source_language
+      description: |
+        Returns a list of the available registers for a given monolingual language dataset.
+      (oas-summary): Lists available registers in a given monolingual language dataset.
+      is:
+        - appId
+        - appKey
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Labels
+              (oas-schema-title): RegistersResults
+          description: Successful response.
+        '404':
+          description: Unknown source_language.
+        '500':
+          description: Internal Error. An error occourred while processing the data.
+      (oas-tags):
+        - Utility
+    '/{target_language}':
+      displayName: '{target_language}'
+      uriParameters:
+        target_language:
+          description: IANA language code. Target Language.
+          enum:
+            - es
+            - en
+            - lv
+            - nso
+            - ro
+            - zu
+          required: true
+          type: string
+      get:
+        displayName: GET_registers-source_language-target_language
+        description: |
+          Returns a list of the available registers for a given bilingual language dataset.
+        (oas-summary): Lists available registers in a given bilingual language dataset.
+        is:
+          - appId
+          - appKey
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Labels
+                (oas-schema-title): RegistersResults
+            description: Successful response.
+          '400':
+            description: source_language and target_language are same.
+          '404':
+            description: Unknown source_language and/or target_language.
+          '500':
+            description: Internal Error. An error occourred while processing the data.
+        (oas-tags):
+          - Utility
+/search:
+  displayName: search
+  '/{source_lang}':
+    displayName: '{source_lang}'
+    '/translations={target_lang}':
+      displayName: 'translations={target_lang}'
+      uriParameters:
+        target_lang:
+          description: IANA language code
+          enum:
+            - es
+            - en
+            - lv
+            - nso
+            - ro
+            - zu
+            - ms
+            - id
+            - tn
+          required: true
+          type: string
+      get:
+        displayName: GET_search-source_lang-translations=target_lang
+        description: |
+
+          Find available translation results  for a search query and language. 
+
+            <div id="search_translation"></div>
+        (oas-summary): Find translation results for search query.
+        is:
+          - appId
+          - appKey
+        responses:
+          '200':
+            body:
+              application/json:
+                type: Wordlist
+                (oas-schema-title): WordlistResults
+            description: Successful response.
+          '404':
+            description: |
+              No entry is found matching supplied id and source_lang or filters are not recognized
+          '500':
+            description: |
+              Internal Error. An error occurred while processing the data.
+        queryParameters:
+          q:
+            default: eye
+            description: Search string.
+            required: false
+            type: string
+          prefix:
+            description: Set prefix to true if you'd like to get results only starting with search string.
+            required: false
+            type: boolean
+          regions:
+            description: 'Filter words with specific region(s) E.g., regions=us. For now gb, us are available for en language.'
+            required: false
+            type: string
+          limit:
+            description: Limit the number of results per response. Default and maximum limit is 5000.
+            required: false
+            type: string
+          offset:
+            description: Offset the start number of the result.
+            required: false
+            type: string
+        (oas-tags):
+          - Search
+        (oas-externalDocs):
+          description: find more info here
+          url: 'https://helloreverb.com/about'
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - hi
+        required: true
+        type: string
+    get:
+      displayName: GET_search-source_lang
+      description: |
+
+        Retrieve available results for a search query and language. 
+
+          <div id="search"></div>
+      (oas-summary): Find results for search query.
+      is:
+        - appId
+        - appKey
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Wordlist
+              (oas-schema-title): WordlistResults
+          description: Successful response.
+        '404':
+          description: |
+            No entry is found matching supplied id and source_lang or filters are not recognized
+        '500':
+          description: |
+            Internal Error. An error occurred while processing the data.
+      queryParameters:
+        q:
+          default: eye
+          description: Search string.
+          required: false
+          type: string
+        prefix:
+          description: Set prefix to true if you'd like to get results only starting with search string.
+          required: false
+          type: boolean
+        regions:
+          description: 'Filter words with specific region(s) E.g., regions=us. For now gb, us are available for en language.'
+          required: false
+          type: string
+        limit:
+          description: Limit the number of results per response. Default and maximum limit is 5000.
+          required: false
+          type: string
+        offset:
+          description: Offset the start number of the result.
+          required: false
+          type: string
+      (oas-tags):
+        - Search
+      (oas-externalDocs):
+        description: find more info here
+        url: 'https://helloreverb.com/about'
+types:
+  CrossReference:
+    description: cross references of a sense
+    properties:
+      id:
+        description: The word id of cooccurrence
+        type: string
+        required: false
+      sense_id:
+        description: The id of the sense that co-occurs
+        type: string
+        required: false
+      text:
+        description: The word of cooccurrence
+        type: string
+        required: false
+      type:
+        description: 'The type of relation between the two words. Possible values are ''close match'', ''related'', ''see also'', ''variant spelling'', and ''abbreviation'' in case of crossreferences, or ''pre'', ''post'' in case of collocates.'
+        type: string
+        required: false
+  Entry:
+    properties:
+      editorialNotes:
+        description: Editorial information intended to help a human reader understand the sense
+        type: arrayofstrings
+        required: false
+      etymologies:
+        description: The origin of the word and the way in which its meaning has changed throughout history
+        type: arrayofstrings
+        required: false
+      grammaticalFeatures:
+        description: The different forms are correlated with meanings or functions which we text as 'features'
+        items:
+          properties:
+            text:
+              type: string
+              required: false
+            type:
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+      homographNumber:
+        description: Identifies the homograph grouping. The last two digits identify different entries of the same homograph. The first one/two digits identify the homograph number.
+        type: string
+        required: false
+      pronunciations:
+        description: A grouping of pronunciation information
+        items:
+          type: Pronunciation
+        type: array
+        required: false
+      senses:
+        description: Complete list of senses
+        items:
+          type: Sense
+        type: array
+        required: false
+      variantForms:
+        description: 'Various words that are used interchangeably depending on the context, e.g ''a'' and ''an'''
+        type: VariantForms
+        required: false
+  Filters:
+    description: Schema for the Filters endpoint.
+    properties:
+      metadata:
+        description: Additional Information provided by OUP
+        type: object
+        required: false
+      results:
+        description: A mapping of filters available per endpoints.
+        properties:
+          entries:
+            description: A list of filters available for Dictionary Entry endpoint
+            type: arrayofstrings
+            required: false
+          inflections:
+            description: A list of filters available for Lemmatron endpoint
+            type: arrayofstrings
+            required: false
+          translations:
+            description: A list of filters available for Translation endpoint
+            type: arrayofstrings
+            required: false
+        type: object
+        required: false
+  Inflection:
+    description: A grouping of the modifications of a word to express different grammatical categories
+    properties:
+      id:
+        description: Inflected word ID
+        type: string
+        required: false
+      text:
+        type: string
+        required: false
+  Labels:
+    description: 'Schema for lexicalcategories, registers utility endpoints.'
+    properties:
+      metadata:
+        description: Additional Information provided by OUP
+        type: object
+        required: false
+      results:
+        description: Mapping of labels available.
+        type: patternProperties
+        required: false
+  Languages:
+    description: Schema for the languages endpoint.
+    properties:
+      metadata:
+        description: Additional Information provided by OUP
+        type: object
+        required: false
+      results:
+        description: A list of languages available.
+        items:
+          properties:
+            region:
+              description: Name of region.
+              type: string
+              required: false
+            source:
+              description: Name of source dictionary.
+              type: string
+              required: false
+            sourceLanguage:
+              properties:
+                id:
+                  description: IANA language code
+                  type: string
+                  required: false
+                language:
+                  description: Language label.
+                  type: string
+                  required: false
+              type: object
+              required: false
+            targetLanguage:
+              properties:
+                id:
+                  description: IANA language code
+                  type: string
+                  required: false
+                language:
+                  description: Language label.
+                  type: string
+                  required: false
+              type: object
+              required: false
+            type:
+              description: whether monolingual or bilingual.
+              enum:
+                - monolingual
+                - bilingual
+              type: string
+              required: false
+        type: array
+        required: false
+  Lemmatron:
+    description: Schema for the inflections endpoint.
+    properties:
+      metadata:
+        description: Additional Information provided by OUP
+        type: object
+        required: false
+      results:
+        description: A list of inflections matching given word
+        items:
+          description: Description of an inflection word
+          properties:
+            id:
+              description: The identifier of a word
+              type: string
+              required: false
+            language:
+              description: IANA language code
+              type: string
+              required: false
+            lexicalEntries:
+              description: 'A grouping of various senses in a specific language, and a lexical category that relates to a word'
+              items:
+                type: lexicalEntry
+              type: array
+              required: false
+            word:
+              description: 'A given written or spoken realisation of a an entry, lowercased.'
+              type: string
+              required: false
+          type: object
+        minItems: 1
+        type: array
+        required: false
+  Pronunciation:
+    description: A grouping of pronunciation information
+    properties:
+      audioFile:
+        description: The URL of the sound file
+        type: string
+        required: false
+      phoneticsNotation:
+        description: The alphabetic system used to display the phonetic spelling
+        type: string
+        required: false
+      phoneticsSpelling:
+        description: Phonetic spelling is the representation of vocal sounds which express pronunciations of words. It is a system of spelling in which each letter represents invariably the same spoken sound
+        type: string
+        required: false
+      regions:
+        description: 'A particular area in which the pronunciation occurs, e.g. ''Great Britain'''
+        type: arrayofstrings
+        required: false
+  Regions:
+    description: Schema for regions endpoint.
+    properties:
+      metadata:
+        description: Additional Information provided by OUP
+        type: object
+        required: false
+      results:
+        description: The list of labels for an object. Every object is region name.
+        items:
+          properties:
+            text:
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+  RetrieveEntry:
+    description: Schema for the 'entries' endpoints
+    properties:
+      metadata:
+        description: Additional Information provided by OUP
+        type: object
+        required: false
+      results:
+        description: A list of entries and all the data related to them
+        items:
+          description: Description of a word
+          properties:
+            id:
+              description: The identifier of a word
+              type: string
+              required: false
+            language:
+              description: IANA language code
+              type: string
+              required: false
+            lexicalEntries:
+              description: 'A grouping of various senses in a specific language, and a lexical category that relates to a word'
+              items:
+                type: lexicalEntry
+              type: array
+              required: false
+            pronunciations:
+              description: A grouping of pronunciation information
+              items:
+                type: Pronunciation
+              type: array
+              required: false
+            word:
+              description: 'A given written or spoken realisation of a an entry, lowercased.'
+              type: string
+              required: false
+          type: object
+        minItems: 1
+        type: array
+        required: false
+  Sense:
+    description: A lexical sense represents the lexical meaning of a lexical entry when interpreted as referring to the corresponding ontology element
+    properties:
+      closeMatches:
+        description: A reference to another word that is closely related
+        type: arrayofstrings
+        required: false
+      crossReferences:
+        description: 'A reference to another word that is closely related, might provide additional information about the subject, has a variant spelling or is an abbreviated form of it.'
+        items:
+          type: CrossReference
+        type: array
+        required: false
+      definitions:
+        description: A list of statements of the exact meaning of a word
+        type: arrayofstrings
+        required: false
+      domains:
+        description: 'A subject, discipline, or branch of knowledge particular to the Sense'
+        type: arrayofstrings
+        required: false
+      examples:
+        description: A list of written or spoken rendering of examples of use of a word or text
+        items:
+          properties:
+            text:
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+      grammaticalNotes:
+        description: Show transitivity statements or usage notes.
+        type: arrayofstrings
+        required: false
+      id:
+        description: The id of the sense that is required for the delete procedure
+        type: string
+        required: false
+      markers:
+        description: Editorial information intended to help a reader understand the Sense
+        type: arrayofstrings
+        required: false
+      parentSense:
+        description: This sense has a super sense.
+        type: string
+        required: false
+      pronunciations:
+        description: A grouping of pronunciation information
+        items:
+          type: Pronunciation
+        type: array
+        required: false
+      regions:
+        description: 'A particular area in which the Sense occurs, e.g. ''Great Britain'''
+        type: arrayofstrings
+        required: false
+      registers:
+        description: 'A level of language usage, typically with respect to formality. e.g. ''offensive'', ''informal'''
+        type: arrayofstrings
+        required: false
+      relatedTo:
+        description: A reference to a related word
+        type: arrayofstrings
+        required: false
+      seeAlso:
+        description: A reference to a resource that might provide additional information about the subject
+        type: arrayofstrings
+        required: false
+      variantForms:
+        description: 'Various words that are used interchangeably depending on the context, e.g ''duck'' and ''duck boat'''
+        type: VariantForms
+        required: false
+  Sentences:
+    description: Schema for sentences endpoint.
+    properties:
+      metadata:
+        description: Additional Information provided by OUP
+        type: object
+        required: false
+      results:
+        description: A list of found words
+        items:
+          description: Description of found word
+          properties:
+            id:
+              description: The identifier of a word
+              type: string
+              required: false
+            language:
+              description: IANA code.
+              type: string
+              required: false
+            lexicalEntries:
+              description: 'Grammatical features, Lexical category and Sentences.'
+              items:
+                description: List of found sentences.
+                properties:
+                  grammaticalFeatures:
+                    description: ''
+                    type: string
+                    required: false
+                  language:
+                    description: ''
+                    type: string
+                    required: false
+                  lexicalCategory:
+                    description: ''
+                    type: string
+                    required: false
+                  sentences:
+                    description: ''
+                    items: {}
+                    type: array
+                    required: false
+                type: object
+              type: array
+              required: false
+          type: object
+        minItems: 0
+        type: array
+        required: false
+  VariantForms:
+    description: 'Various words that are used interchangeably depending on the context, e.g ''aluminium'' and ''aluminum'''
+    items:
+      properties:
+        regions:
+          description: 'A particular area in which the variant form occurs, e.g. ''Great Britain'''
+          type: arrayofstrings
+        text:
+          type: string
+      type: object
+    type: array
+  Wordlist:
+    description: Schema for wordlist endpoint.
+    properties:
+      metadata:
+        description: Additional Information provided by OUP
+        type: object
+        required: false
+      results:
+        description: A list of found words
+        items:
+          description: Description of found word
+          properties:
+            id:
+              description: The identifier of a word
+              type: string
+              required: false
+            word:
+              description: 'A given written or spoken realisation of a an entry, lowercased.'
+              type: string
+              required: false
+          type: object
+        minItems: 0
+        type: array
+        required: false
+  __a-zA-Z___:
+    description: 'The list of labels for an object. Every object can be a lexical category, or a register, or a domain.'
+    properties:
+      en:
+        description: Label in English
+        type: string
+        required: false
+    (oas-definition-name): '^[a-zA-Z]+$'
+  arrayofstrings:
+    items:
+      type: string
+    type: array
+  lexicalEntry:
+    description: Description of an entry for a particular part of speech
+    properties:
+      entries:
+        items:
+          type: Entry
+        type: array
+        required: false
+      grammaticalFeatures:
+        description: The different forms are correlated with meanings or functions which we text as 'features'
+        items:
+          properties:
+            text:
+              type: string
+              required: false
+            type:
+              type: string
+              required: false
+          type: object
+        type: array
+        required: false
+      grammaticalNotes:
+        description: Show transitivity statements or usage notes.
+        type: arrayofstrings
+        required: false
+      inflectionOf:
+        description: The canonical form of words for which the entry is an inflection
+        items:
+          type: Inflection
+        type: array
+        required: false
+      inflections:
+        description: The modification of a word to express different grammatical categories
+        items:
+          type: Inflection
+        type: array
+        required: false
+      language:
+        description: IANA language code
+        type: string
+        required: false
+      lexicalCategory:
+        description: 'A linguistic category of words (or more precisely lexical items), generally defined by the syntactic or morphological behaviour of the lexical item in question, such as noun or verb'
+        type: string
+        required: false
+      pronunciations:
+        description: A grouping of pronunciation information
+        items:
+          type: Pronunciation
+        type: array
+        required: false
+      text:
+        description: A given written or spoken realisation of a an entry.
+        type: string
+        required: false
+      variantForms:
+        description: 'Various words that are used interchangeably depending on the context, e.g ''a'' and ''an'''
+        type: VariantForms
+        required: false
+  patternProperties:
+    type: __a-zA-Z___
+traits:
+  bilingualSourceLanguage:
+    queryParameters:
+      sourceLanguage:
+        type: string
+        description: IANA language code. If provided output will be filtered by sourceLanguage.
+        enum:
+          - en
+          - es
+          - lv
+          - nso
+          - ro
+          - zu
+          - ms
+          - id
+          - tn
+          - ur
+        required: false
+  bilingualTargetLanguage:
+    queryParameters:
+      targetLanguage:
+        type: string
+        description: IANA language code. If provided output will be filtered by sourceLanguage.
+        enum:
+          - es
+          - en
+          - lv
+          - nso
+          - ro
+          - zu
+          - ms
+          - id
+          - tn
+        required: false
+  appId:
+    headers:
+      app_id:
+        type: string
+        description: App ID Authentication Parameter
+        default: 5037d509
+        required: true
+  appKey:
+    headers:
+      app_key:
+        type: string
+        description: App Key Authentication Parameter
+        default: 4dc1aebaa63721f0f8e79a55e2514bc7
+        required: true
+(oas-x-hasEquivalentPaths): true
