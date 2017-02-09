@@ -1,0 +1,39 @@
+#%RAML 0.8
+title: Box
+version: 2.0
+baseUri: https://api.box.com/
+mediaType: application/json
+resourceTypes:
+  - mediaTypeExtension:
+      uriParameters:
+        mediaTypeExtension:
+          description: Media type
+          enum: [ .json ]
+          default: .json
+          example: .json
+/tickets:
+  /{id}:
+    /comments:
+      /{comment_id}:
+        /redact{mediaTypeExtension}:
+          type: mediaTypeExtension
+          put:
+            description: Redaction allows you to permanently remove attachments.
+            responses:
+              200:
+                description: OK
+                body:
+                  application/json:
+                    example: |
+                      "comment example"
+    /audits{mediaTypeExtension}:
+      type: mediaTypeExtension
+      get:
+        description: Listing Audits
+        responses:
+          200:
+            description: OK
+            body:
+              application/json:
+                example: |
+                  "audit example"

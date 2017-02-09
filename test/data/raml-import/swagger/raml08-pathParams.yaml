@@ -1,0 +1,55 @@
+swagger: '2.0'
+info:
+  version: '2.0'
+  title: Box
+host: api.box.com
+basePath: /
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  '/tickets/{id}/comments/{comment_id}/redact{mediaTypeExtension}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: comment_id
+        in: path
+        required: true
+        type: string
+      - name: mediaTypeExtension
+        in: path
+        description: Media type
+        required: true
+        type: string
+    put:
+      operationId: PUT_tickets-id-comments-comment_id-redactmediaTypeExtension
+      description: Redaction allows you to permanently remove attachments.
+      responses:
+        '200':
+          description: OK
+          examples:
+            application/json: comment example
+  '/tickets/{id}/audits{mediaTypeExtension}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: mediaTypeExtension
+        in: path
+        description: Media type
+        required: true
+        type: string
+    get:
+      operationId: GET_tickets-id-auditsmediaTypeExtension
+      description: Listing Audits
+      responses:
+        '200':
+          description: OK
+          examples:
+            application/json: audit example
