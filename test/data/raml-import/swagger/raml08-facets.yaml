@@ -20,6 +20,8 @@ paths:
           given set of users.
         consumes:
           - application/json
+        produces:
+          - application/json
         parameters:
           - name: body
             in: body
@@ -32,6 +34,17 @@ paths:
             description: Unauthorized
           '403':
             description: Forbidden
+            schema:
+              title: ResponseSchema
+              x-raml-id: ResponseSchema
+              type: object
+              properties:
+                Message:
+                  type: string
+                User:
+                  type: array
+                  items:
+                    type: string
 definitions:
   UserSessionTerminationRequest:
     title: UserSessionTerminationRequest
