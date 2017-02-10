@@ -1,0 +1,29 @@
+swagger: '2.0'
+info:
+  title: Prediction
+  version: v1.3
+paths:
+  "/training":
+    post:
+      description: Begin training your model
+      operationId: prediction.training.insert
+      parameters:
+      - in: body
+        name: body
+        schema:
+          "$ref": "#/definitions/Training"
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            "$ref": "#/definitions/Training"
+definitions:
+  Training:
+    properties:
+      modelInfo:
+        properties:
+          confusionMatrix:
+            additionalProperties:
+              additionalProperties:
+                type: string
+              description: The true class label.

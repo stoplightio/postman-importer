@@ -1,0 +1,37 @@
+#%RAML 1.0
+title: Prediction
+version: v1.3
+annotationTypes:
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/training:
+  displayName: training
+  post:
+    displayName: prediction.training.insert
+    description: Begin training your model
+    body:
+      application/json:
+        type: Training
+        (oas-body-name): body
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Training
+        description: Successful response
+types:
+  Training:
+    properties:
+      modelInfo:
+        properties:
+          confusionMatrix:
+            type: object
+            required: false
+            properties:
+              //:
+                description: The true class label.
+                properties:
+                  //:
+                    type: string
+        required: false
