@@ -70,12 +70,6 @@ describe('Importer', function () {
 				expect(err.message).to.equal('data not loaded for Importer');
 			}
 		});
-		it('should set mapped flag so that multiple call doesn\'t cause all calculation over again', function () {
-			importer.data = require(filePath);
-			expect(importer.Mapped).to.be.false;
-			importer.import();
-			expect(importer.Mapped).to.be.true;
-		});
 	});
 	
 	describe('_mapEndpoint', function () {

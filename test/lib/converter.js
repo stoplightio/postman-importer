@@ -199,17 +199,17 @@ describe('reversable - from raml 2 swagger 2 raml', function () {
 describe('from swagger to raml', function () {
 	const baseDir = __dirname + '/../data/swagger-import/swagger';
 	const testFiles = fs.readdirSync(baseDir);
-	
+	const converter08 = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML08);
+	const converter10 = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
+
 	const testWithData = function (sourceFile, targetFile, stringCompare, validate) {
 		
 		return function (done) {
-			const ramlVersion = _.includes(sourceFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
-			const converter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
 			const validateOptions = {
 				validate: validate,
 				fsResolver: myFsResolver
 			};
-			converter.convertFile(sourceFile, validateOptions).then((convertedRAML) => {
+      (_.includes(sourceFile, 'raml08') ? converter08 : converter10).convertFile(sourceFile, validateOptions).then((convertedRAML) => {
 				const notExistsTarget = !fs.existsSync(targetFile);
 
 				if (notExistsTarget) {
@@ -265,7 +265,9 @@ describe('from swagger to raml', function () {
 describe('from raml to swagger', function () {
 	const baseDir = __dirname + '/../data/raml-import/raml';
 	const testFiles = fs.readdirSync(baseDir);
-	
+	const converter08 = new specConverter.Converter(specConverter.Formats.RAML08, specConverter.Formats.SWAGGER);
+	const converter10 = new specConverter.Converter(specConverter.Formats.RAML10, specConverter.Formats.SWAGGER);
+
 	const testWithData = function (sourceFile, targetFile, validate) {
 		const validateOptions = {
 			validate: validate,
@@ -274,9 +276,7 @@ describe('from raml to swagger', function () {
 		};
 		
 		return function (done) {
-			const ramlVersion = _.includes(sourceFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
-			const converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
-			converter.convertFile(sourceFile, validateOptions)
+			(_.includes(sourceFile, 'raml08') ? converter08 : converter10).convertFile(sourceFile, validateOptions)
 				.then(resultSwagger => {
 
 					try {

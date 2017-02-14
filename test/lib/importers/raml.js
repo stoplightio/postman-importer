@@ -60,7 +60,7 @@ describe('RAML 0.8 Importer', function () {
 			importer.data = {
 				baseUri: undefined
 			};
-			importer._mapHost();
+			importer._mapHost(importer.project);
 			expect(importer.project.Environment.Host).to.be.equal(null);
 		});
 	});
@@ -278,7 +278,7 @@ describe('RAML 1.0 Importer', function () {
 			importer.data = {
 				baseUri: undefined
 			};
-			importer._mapHost();
+			importer._mapHost(importer.project);
 			expect(importer.project.Environment.Host).to.be.equal(null);
 		});
 	});

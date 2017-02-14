@@ -48,9 +48,9 @@ describe('Auto Importer', function () {
 		it('should be able to parse a valid RAML .yaml file', function (done) {
 			importer.loadFile(path.join(dataPath, '/raml-import/raml/raml08.yaml'))
 				.then(() => {
-					importer.import();
-					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Resources.length).to.gt(0);
+					const project = importer.import();
+					expect(project).to.be.instanceOf(Project);
+					expect(project.Resources.length).to.gt(0);
 					done();
 					
 				})
@@ -62,9 +62,9 @@ describe('Auto Importer', function () {
 		it('should be able to parse a valid Swagger .yaml file', function (done) {
 			importer.loadFile(path.join(dataPath, 'swagger.yaml'))
 				.then(() => {
-					importer.import();
-					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Endpoints.length).to.gt(0);
+					const project = importer.import();
+					expect(project).to.be.instanceOf(Project);
+					expect(project.Endpoints.length).to.gt(0);
 					done();
 					
 				})
@@ -92,9 +92,9 @@ describe('Auto Importer', function () {
 		it('should be able to load a valid raml 0.8 yaml file', function (done) {
 			importer.loadFile(__dirname + '/../../data/raml-import/raml/raml08.yaml')
 				.then(() => {
-					importer.import();
-					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Resources.length).to.gt(0);
+					const project = importer.import();
+					expect(project).to.be.instanceOf(Project);
+					expect(project.Resources.length).to.gt(0);
 					done();
 				})
 				.catch((err) => {
@@ -105,9 +105,9 @@ describe('Auto Importer', function () {
 		it('should be able to load a valid raml 1.0 yaml file', function (done) {
 			importer.loadFile(__dirname + '/../../data/raml-import/raml/raml10-simple.yaml')
 				.then(() => {
-					importer.import();
-					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Resources.length).to.gt(0);
+					const project = importer.import();
+					expect(project).to.be.instanceOf(Project);
+					expect(project.Resources.length).to.gt(0);
 					done();
 				})
 				.catch((err) => {
@@ -121,9 +121,9 @@ describe('Auto Importer', function () {
 		it('should be able to load a local file', function (done) {
 			importer.loadFile(path.join(dataPath, 'swagger.yaml'))
 				.then(() => {
-					importer.import();
-					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Endpoints.length).to.gt(0);
+					const project = importer.import();
+					expect(project).to.be.instanceOf(Project);
+					expect(project.Endpoints.length).to.gt(0);
 					done();
 				})
 				.catch((err) => {
@@ -134,9 +134,9 @@ describe('Auto Importer', function () {
 		it('should be able to load a remote file', function (done) {
 			importer.loadFile('http://petstore.swagger.io/v2/swagger.json')
 				.then(() => {
-					importer.import();
-					expect(importer.project).to.be.instanceOf(Project);
-					expect(importer.project.Endpoints.length).to.gt(0);
+					const project = importer.import();
+					expect(project).to.be.instanceOf(Project);
+					expect(project.Endpoints.length).to.gt(0);
 					done();
 				})
 				.catch((err) => {

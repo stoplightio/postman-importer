@@ -142,9 +142,9 @@ describe('Swagger Importer', function () {
 		it('should map endpoints successfully', function (done) {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
-					swaggerImporter.import();
-					expect(swaggerImporter.project.Endpoints).to.have.length.above(0);
-					expect(swaggerImporter.project.Endpoints[0]).to.be.instanceOf(Endpoint);
+					const project = swaggerImporter.import();
+					expect(project.Endpoints).to.have.length.above(0);
+					expect(project.Endpoints[0]).to.be.instanceOf(Endpoint);
 					
 					done();
 				})
@@ -158,8 +158,8 @@ describe('Swagger Importer', function () {
 		it('should not create request body for method with no body or formData params', function (done) {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
-					swaggerImporter.import();
-					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
+					const project = swaggerImporter.import();
+					const endpoint = _.find(project.Endpoints, {operationId: 'deletePet'});
 					
 					expect(endpoint.request.bodies).to.be.empty;
 					done();
@@ -174,10 +174,10 @@ describe('Swagger Importer', function () {
 		it('should set request mimeType to undefined for methods with no consumes', function (done) {
 			swaggerImporter.loadFile(filePath)
 				.then(() =>  {
-					swaggerImporter.import();
-					const endpoint = _.find(swaggerImporter.project.Endpoints, {description: 'Updates a pet by name'});
+					const project = swaggerImporter.import();
+					const endpoint = _.find(project.Endpoints, {description: 'Updates a pet by name'});
 					
-					expect(swaggerImporter.project.Environment.Consumes[0]).to.be.eq('application/json');
+					expect(project.Environment.Consumes[0]).to.be.eq('application/json');
 					expect(endpoint.Consumes).to.be.undefined;
 					done();
 				})
@@ -191,10 +191,10 @@ describe('Swagger Importer', function () {
 		it('should set request mimeType to undefined for methods with empty consumes', function (done) {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
-					swaggerImporter.import();
-					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
+					const project = swaggerImporter.import();
+					const endpoint = _.find(project.Endpoints, {operationId: 'copyPetPhoto'});
 					
-					expect(swaggerImporter.project.Environment.Consumes[0]).to.be.eq('application/json');
+					expect(project.Environment.Consumes[0]).to.be.eq('application/json');
 					expect(endpoint.Consumes[0]).to.be.eq('multipart/form-data');
 					done();
 				})
@@ -208,10 +208,10 @@ describe('Swagger Importer', function () {
 		it('should set response mimeType to default for methods with no produces', function (done) {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
-					swaggerImporter.import();
-					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'deletePet'});
+					const project = swaggerImporter.import();
+					const endpoint = _.find(project.Endpoints, {operationId: 'deletePet'});
 					
-					expect(swaggerImporter.project.Environment.Produces[0]).to.be.eq('application/json');
+					expect(project.Environment.Produces[0]).to.be.eq('application/json');
 					expect(endpoint.produces).to.be.undefined;
 					done();
 				})
@@ -225,8 +225,8 @@ describe('Swagger Importer', function () {
 		it('should not set response mimeType for methods with empty produces', function (done) {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
-					swaggerImporter.import();
-					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'copyPetPhoto'});
+					const project = swaggerImporter.import();
+					const endpoint = _.find(project.Endpoints, {operationId: 'copyPetPhoto'});
 					
 					expect(endpoint.Produces).to.be.empty;
 					done();
@@ -267,9 +267,9 @@ describe('Swagger Importer', function () {
 		it('should map apiKey security definitions to stoplight successfully', function (done) {
 			swaggerImporter.loadFile(filePath)
 				.then(() => {
-					swaggerImporter.import();
+					const project = swaggerImporter.import();
 					
-					const endpoint = _.find(swaggerImporter.project.Endpoints, {operationId: 'addPet'});
+					const endpoint = _.find(project.Endpoints, {operationId: 'addPet'});
 					
 					expect(endpoint.securedBy.apiKey.name).to.be.eq('api_key');
 					done();
