@@ -1,0 +1,32 @@
+#%RAML 0.8
+title: SalesForce
+version: v1
+baseUri: https://{domain}/services/data
+schemas:
+  - versions-xml: |
+      <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:element name="Versions">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Version" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="label"/>
+                    <xs:element type="xs:string" name="url"/>
+                    <xs:element type="xs:float" name="version"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:schema>
+/users:
+  description: "Lists summary information about each Salesforce versions currently available, including the version, label, and a link to each version's root."
+  get:
+    description: List Available REST API Versions
+    responses:
+      200:
+        body:
+          application/xml:
+            schema: versions-xml

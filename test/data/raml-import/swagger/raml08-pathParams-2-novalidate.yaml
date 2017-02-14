@@ -1,0 +1,126 @@
+swagger: '2.0'
+info:
+  version: '2.0'
+  title: Box
+host: api.box.com
+basePath: /
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  '/tickets/{id}/comments/{comment_id}/redact{mediaTypeExtension}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: comment_id
+        in: path
+        required: true
+        type: string
+      - name: mediaTypeExtension
+        in: path
+        description: Media type
+        required: true
+        type: string
+    put:
+      operationId: PUT_tickets-id-comments-comment_id-redactmediaTypeExtension
+      description: Redaction allows you to permanently remove attachments.
+      responses:
+        '200':
+          description: OK
+          examples:
+            application/json: comment example
+  '/tickets/{id}/audits{mediaTypeExtension}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: mediaTypeExtension
+        in: path
+        description: Media type
+        required: true
+        type: string
+    get:
+      operationId: GET_tickets-id-auditsmediaTypeExtension
+      description: Listing Audits
+      responses:
+        '200':
+          description: OK
+          examples:
+            application/json: audit example
+  '/identities/{id}{mediaTypeExtension}':
+    parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+      - name: mediaTypeExtension
+        in: path
+        description: mediaTypeExtension
+        required: true
+        type: string
+    delete:
+      operationId: DELETE_identities-idmediaTypeExtension
+      description: |
+        Delete identity for a given user
+         Allowed For: [Agents]
+      responses:
+        '200':
+          description: ''
+    put:
+      operationId: PUT_identities-idmediaTypeExtension
+      description: |
+        This API method only allows you to set an identity as verified. You cannot otherwise change value of an identity but must create a new identity and delete the one you're replacing.
+         Allowed For: [Agents]
+      parameters:
+        - name: 'identity[verified]'
+          in: query
+          description: Identity
+          required: true
+          x-raml-example: 'true'
+          type: string
+      responses:
+        '200':
+          description: OK
+          examples:
+            application/json: |
+              include examples/updateagivenUserIdentityResponse-example.json
+    get:
+      operationId: GET_identities-idmediaTypeExtension
+      description: |
+        Shows the identity with the given id
+         Allowed For: [Agents]
+      responses:
+        '200':
+          description: ''
+          examples:
+            application/json: |
+              include examples/identityResponse-example.json
+  '/identities/{id}/make_primary':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: mediaTypeExtension
+        in: path
+        description: Media type
+        required: true
+        type: string
+    put:
+      operationId: PUT_identities-id-make_primary
+      description: |
+        This API method only allows you to set an identity to primary. If you wish to change an identity, you create a new one with the correct value and delete the old one. This is a collection level operation and the correct behavior for an API client is to subsequently reload the entire collection.
+         Allowed For: [Agents, End Users]
+      responses:
+        '200':
+          description: ''
+          examples:
+            application/json: |
+              include examples/userIdentityResponse-example.json

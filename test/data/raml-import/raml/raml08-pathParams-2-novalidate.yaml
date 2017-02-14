@@ -1,0 +1,98 @@
+#%RAML 0.8
+title: Box
+version: 2.0
+baseUri: https://api.box.com/
+mediaType: application/json
+resourceTypes:
+  - mediaTypeExtension:
+      uriParameters:
+        mediaTypeExtension:
+          description: Media type
+          enum: [ .json ]
+          default: .json
+          example: .json
+/tickets:
+  /{id}:
+    /comments:
+      /{comment_id}:
+        /redact{mediaTypeExtension}:
+          type: mediaTypeExtension
+          put:
+            description: Redaction allows you to permanently remove attachments.
+            responses:
+              200:
+                description: OK
+                body:
+                  application/json:
+                    example: |
+                      "comment example"
+    /audits{mediaTypeExtension}:
+      type: mediaTypeExtension
+      get:
+        description: Listing Audits
+        responses:
+          200:
+            description: OK
+            body:
+              application/json:
+                example: |
+                  "audit example"
+/identities:
+  /{id}{mediaTypeExtension}:
+    type: mediaTypeExtension
+    uriParameters:
+      id:
+        displayName: id
+        description: ID
+        required: true
+        example: 56
+      mediaTypeExtension:
+        displayName: mediaTypeExtension
+        description: Media type
+        required: true
+        enum: [ .json ]
+        example: .json
+    get:
+      description: |
+            Shows the identity with the given id
+             Allowed For: [Agents]
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                include examples/identityResponse-example.json
+    put:
+      description: |
+            This API method only allows you to set an identity as verified. You cannot otherwise change value of an identity but must create a new identity and delete the one you're replacing.
+             Allowed For: [Agents]
+      queryParameters:
+        identity[verified]:
+          description: Identity
+          example: true
+      responses:
+        200:
+          description: OK
+          body:
+            application/json:
+              example: |
+                include examples/updateagivenUserIdentityResponse-example.json
+    delete:
+      description: |
+            Delete identity for a given user
+             Allowed For: [Agents]
+      responses:
+            200:
+  /{id}:
+    /make_primary:
+      type: mediaTypeExtension
+      put:
+        description: |
+              This API method only allows you to set an identity to primary. If you wish to change an identity, you create a new one with the correct value and delete the old one. This is a collection level operation and the correct behavior for an API client is to subsequently reload the entire collection.
+               Allowed For: [Agents, End Users]
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  include examples/userIdentityResponse-example.json
