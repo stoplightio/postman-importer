@@ -1,0 +1,140 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: T-Shirt Service
+host: mocksvc.mulesoft.com
+basePath: /mocks/3f1c43b3-3ac8-4d5f-8a09-654a5accd421
+schemes:
+  - http
+paths:
+  /products:
+    get:
+      operationId: GET_products
+      description: Gets a list of all the inventory products.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          examples:
+            application/json:
+              - productCode: TS
+                size: S
+                description: Small T-shirt
+                count: 30
+              - productCode: TS
+                size: M
+                description: Medium T-shirt
+                count: 22
+  /orders:
+    post:
+      operationId: POST_orders
+      description: Places a new T-Shirt order
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            type: object
+            required:
+              - address1
+              - address2
+              - city
+              - country
+              - email
+              - name
+              - size
+              - stateOrProvince
+              - postalCode
+            properties:
+              address1:
+                type: string
+                x-raml-id: 'http://jsonschema.net/address1'
+              address2:
+                type: string
+                x-raml-id: 'http://jsonschema.net/address2'
+              city:
+                type: string
+                x-raml-id: 'http://jsonschema.net/city'
+              country:
+                type: string
+                x-raml-id: 'http://jsonschema.net/country'
+              email:
+                type: string
+                format: email
+                x-raml-id: 'http://jsonschema.net/email'
+              name:
+                type: string
+                x-raml-id: 'http://jsonschema.net/name'
+              size:
+                type: string
+                enum:
+                  - S
+                  - M
+                  - L
+                  - XL
+                  - XXL
+                x-raml-id: 'http://jsonschema.net/size'
+              stateOrProvince:
+                type: string
+                x-raml-id: 'http://jsonschema.net/stateOrProvince'
+              postalCode:
+                type: string
+                x-raml-id: 'http://jsonschema.net/postalCode'
+            x-raml-$schema: 'http://json-schema.org/draft-03/schema'
+            x-raml-id: 'http://jsonschema.net'
+            example:
+              size: M
+              email: robin@mail.com
+              name: Robin Pille
+              address1: 77 Geary St.
+              address2: Apt 7
+              city: San Francisco
+              stateOrProvince: CA
+              country: US
+              postalCode: '94131'
+      responses:
+        '200':
+          description: ''
+          examples:
+            application/json:
+              orderId: '4321'
+        '500':
+          description: ''
+          examples:
+            application/json:
+              errorMessage: The order couldn't be entered.
+  '/orders/{orderId}/status':
+    parameters:
+      - name: orderId
+        in: path
+        required: true
+        type: string
+    get:
+      operationId: GET_orders-orderId-status
+      produces:
+        - application/json
+      parameters:
+        - name: email
+          in: query
+          description: Provide the same email that was used to place the order.
+          required: true
+          pattern: >-
+            ^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$
+          type: string
+      responses:
+        '200':
+          description: ''
+          examples:
+            application/json:
+              orderId: '4321'
+              status: Delivered
+              size: M
+        '400':
+          description: ''
+          examples:
+            application/json:
+              message: The orderId doesn't match the specified e-mail

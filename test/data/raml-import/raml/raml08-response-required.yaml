@@ -1,0 +1,138 @@
+#%RAML 0.8
+baseUri: http://mocksvc.mulesoft.com/mocks/3f1c43b3-3ac8-4d5f-8a09-654a5accd421
+title: T-Shirt Service
+version: v1
+/products:
+  get:
+    description: Gets a list of all the inventory products.
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "productCode": "TS",
+                  "size": "S",
+                  "description": "Small T-shirt",
+                  "count": 30
+                },
+                {
+                  "productCode": "TS",
+                  "size": "M",
+                  "description": "Medium T-shirt",
+                  "count": 22
+                }
+              ]
+/orders:
+  post:
+    description: Places a new T-Shirt order
+    body:
+      application/json:
+        example: |
+          {
+            "size": "M",
+            "email": "robin@mail.com",
+            "name": "Robin Pille",
+            "address1": "77 Geary St.",
+            "address2": "Apt 7",
+            "city": "San Francisco",
+            "stateOrProvince": "CA",
+            "country": "US",
+            "postalCode": "94131"
+          }
+        schema: |
+          {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "id": "http://jsonschema.net",
+            "required": true,
+            "properties": {
+              "address1": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/address1",
+                  "required": true
+              },
+              "address2": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/address2",
+                  "required": true
+              },
+              "city": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/city",
+                  "required": true
+              },
+              "country": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/country",
+                  "required": true
+              },
+              "email": {
+                  "type": "string",
+                  "format": "email",
+                  "id": "http://jsonschema.net/email",
+                  "required": true
+              },
+              "name": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/name",
+                  "required": true
+              },
+              "size": {
+                  "type": "string",
+                  "enum": ["S", "M", "L", "XL", "XXL"],
+                  "id": "http://jsonschema.net/size",
+                  "required": true
+              },
+              "stateOrProvince": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/stateOrProvince",
+                  "required": true
+              },
+              "postalCode": {
+                "type": "string",
+                "id": "http://jsonschema.net/postalCode",
+                "required": true
+              }
+            }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "orderId": "4321"
+              }
+      500:
+        body:
+          application/json:
+            example: |
+              {
+                "errorMessage": "The order couldn't be entered."
+              }
+  /{orderId}/status:
+    get:
+      queryParameters:
+        email:
+          description: Provide the same email that was used to place the order.
+          pattern: ^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$
+          required: true
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "orderId": "4321",
+                  "status": "Delivered",
+                  "size": "M"
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "The orderId doesn't match the specified e-mail"
+                }
