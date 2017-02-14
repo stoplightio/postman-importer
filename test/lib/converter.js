@@ -266,7 +266,7 @@ describe('from raml to swagger', function () {
 	const baseDir = __dirname + '/../data/raml-import/raml';
 	const testFiles = fs.readdirSync(baseDir);
 	
-	const testWithData = function (testFile, validate) {
+	const testWithData = function (sourceFile, targetFile, validate) {
 		const validateOptions = {
 			validate: validate,
 			fsResolver: myFsResolver,
@@ -274,15 +274,12 @@ describe('from raml to swagger', function () {
 		};
 		
 		return function (done) {
-			const testFilePath = baseDir + '/' + testFile;
-			const ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
+			const ramlVersion = _.includes(sourceFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			const converter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
-			converter.convertFile(testFilePath, validateOptions)
+			converter.convertFile(sourceFile, validateOptions)
 				.then(resultSwagger => {
 
 					try {
-						const targetFile = baseDir + '/../swagger/' + testFile;
-
 						const notExistsTarget = !fs.existsSync(targetFile);
 						if (notExistsTarget) {
 							const data = resultSwagger;
@@ -309,13 +306,17 @@ describe('from raml to swagger', function () {
 		if (!_.startsWith(testFile, '.')) {
 			const validate = !_.includes(testFile, 'novalidate');
 			const skip = _.includes(testFile, 'skip');
-			if (skip) return ;
+
+      const sourceFile = baseDir + '/' + testFile;
+      const targetFile = baseDir + '/../swagger/' + testFile;
+
+      if (skip) return ;
 			if (process.env.fileToTest) {
 				if (_.endsWith(testFile, process.env.fileToTest)) {
-					it('test: ' + testFile, testWithData(testFile, validate));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(testFile, validate));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
 			}
 		}
 	});
