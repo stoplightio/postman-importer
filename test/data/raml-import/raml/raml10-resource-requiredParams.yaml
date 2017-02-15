@@ -1,0 +1,32 @@
+#%RAML 1.0
+title: "4Pay"
+version: "1.0"
+baseUri: https://api.4pay.com/{version}
+mediaType: application/json
+/commands:
+  post:
+    description: |
+                    register new command. Currently following commands are supported "Sos", "Voice", "Pay", "Chat", "eMail", "Call", "Sync", "Reserve", "Confirm". Each command has its own json with following parameters
+                    "Sos" -> {"type"}. Type can be "Health", "Security","Car"
+                    "Voice" -> {"message"}
+                    "Pay" -> object service
+                    "Chat" -> {"message", "userID"}
+                    "eMail" -> {"messageID", "email"}
+                    "Call" ->{"userID"}
+                    "Sync" -> {"messageID"}
+                    "Reserve" -> objeect service
+                    "Confirm" -> {"transactionID|userID"}
+                    "QR" ->{"QRText"} in following format "partner/user;command;serviceID;serverID;widgeKey;IP;timeout;amount;trid;userID@partner;userID@4pay;reserve;reserver;sign}
+    body:
+      application/json:
+        schema:
+          required: true
+          type: object
+          properties:
+            type:
+              enum: [Security, Car, Health]
+              type: string
+              required: true
+    responses:
+      200:
+        description: Problems, while checking user's active session
