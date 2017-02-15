@@ -265,8 +265,7 @@ describe('from swagger to raml', function () {
 describe('from raml to swagger', function () {
 	const baseDir = __dirname + '/../data/raml-import/raml';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter08 = new specConverter.Converter(specConverter.Formats.RAML08, specConverter.Formats.SWAGGER);
-	const converter10 = new specConverter.Converter(specConverter.Formats.RAML10, specConverter.Formats.SWAGGER);
+	const converter = new specConverter.Converter(specConverter.Formats.AUTO, specConverter.Formats.SWAGGER);
 
 	const testWithData = function (sourceFile, targetFile, validate) {
 		const validateOptions = {
@@ -276,7 +275,7 @@ describe('from raml to swagger', function () {
 		};
 		
 		return function (done) {
-			(_.includes(sourceFile, 'raml08') ? converter08 : converter10).convertFile(sourceFile, validateOptions)
+			converter.convertFile(sourceFile, validateOptions)
 				.then(resultSwagger => {
 
 					try {

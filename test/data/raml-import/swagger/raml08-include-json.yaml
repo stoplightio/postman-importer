@@ -1,0 +1,178 @@
+swagger: '2.0'
+info:
+  version: '2.0'
+  title: Box
+host: api.box.com
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /folders:
+    post:
+      operationId: POST_folders
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/NewFolder'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Folder'
+x-basePath: '/{version}/'
+definitions:
+  Folder:
+    type: object
+    properties:
+      type:
+        type: string
+      id:
+        type: string
+      sequence_id:
+        type: string
+      etag:
+        type: string
+      name:
+        type: string
+      created_at:
+        type: string
+      modified_at:
+        type: string
+      description:
+        type: string
+      size:
+        type: number
+      path_collection:
+        type: object
+        properties:
+          total_count:
+            type: number
+          entries:
+            type: array
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  id:
+                    type: string
+                  sequence_id:
+                    type: object
+                  etag:
+                    type: object
+                  name:
+                    type: string
+      created_by:
+        type: object
+        properties:
+          type:
+            type: string
+          id:
+            type: string
+          name:
+            type: string
+          login:
+            type: string
+      modified_by:
+        type: object
+        properties:
+          type:
+            type: string
+          id:
+            type: string
+          name:
+            type: string
+          login:
+            type: string
+      owned_by:
+        type: object
+        properties:
+          type:
+            type: string
+          id:
+            type: string
+          name:
+            type: string
+          login:
+            type: string
+      shared_link:
+        type: object
+        properties:
+          url:
+            type: string
+          download_url:
+            type: string
+          vanity_url:
+            type: object
+          is_password_enabled:
+            type: boolean
+          unshared_at:
+            type: object
+          download_count:
+            type: number
+          preview_count:
+            type: number
+          access:
+            type: string
+          permissions:
+            type: object
+            properties:
+              can_download:
+                type: boolean
+              can_preview:
+                type: boolean
+      folder_upload_email:
+        type: object
+        properties:
+          access:
+            type: string
+          email:
+            type: string
+      parent:
+        type: object
+        properties:
+          type:
+            type: string
+          id:
+            type: string
+          sequence_id:
+            type: object
+          etag:
+            type: object
+          name:
+            type: string
+      item_status:
+        type: string
+      item_collection:
+        type: object
+        properties:
+          total_count:
+            type: number
+          entries:
+            type: array
+            items:
+              type: array
+              items:
+                type: string
+          offset:
+            type: number
+          limit:
+            type: number
+  NewFolder:
+    type: object
+    properties:
+      name:
+        description: The new name for this item.
+        type: string
+      parent:
+        description: The new parent folder for this item.
+        type: object
+      id:
+        description: The id of the new parent folder.
+        type: string
