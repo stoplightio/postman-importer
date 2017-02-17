@@ -1,0 +1,66 @@
+swagger: '2.0'
+info:
+  version: '2.5'
+  title: OpenWeather
+host: api.openweathermap.org
+basePath: /data/2.5/
+schemes:
+  - http
+paths:
+  /weather2:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          type: number
+          default: 1
+          maximum: 100
+        - $ref: '#/parameters/trait:paged:offset'
+      operationId: GET_weather2
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+    x-raml-is:
+      - paged:
+          def: 1
+          max: 100
+    x-raml-resource-displayName: Weather2
+  /forecast2:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          type: number
+          default: 3
+          maximum: 300
+        - $ref: '#/parameters/trait:paged:offset'
+      operationId: GET_forecast2
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+      x-raml-is:
+        - paged:
+            def: 3
+            max: 300
+    x-raml-resource-displayName: Forecast2
+parameters:
+  'trait:paged:offset':
+    name: offset
+    in: query
+    required: true
+    type: number
+    default: 0
+x-raml-traits:
+  'trait:paged:limit':
+    name: limit
+    in: query
+    required: true
+    type: number
+    default: <<def>>
+    maximum: null
