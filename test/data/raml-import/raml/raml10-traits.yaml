@@ -21,10 +21,37 @@ traits:
      APPID:
       description: API Key
       example: 938ffc1ccc85558966b89eaa29a2ddc0
+  paged:
+    queryParameters:
+      offset:
+        description: Inice inicial del listado
+        type: number
+        default: 0
+      limit:
+        description: Cantidad de elementos a listar
+        type: number
 
 /weather:
    displayName: Weather
    is: [isSearchableByCity,isMetric,isAPIKey]
+   get:
+     description: |
+      Search weather by city name
+     responses:
+      200:
+       body:
+        application/json:
+   post:
+     description: |
+      Search weather by city name
+     responses:
+      200:
+       body:
+        application/json:
+
+/weather2:
+   displayName: Weather2
+   is: [paged]
    get:
      description: |
       Search weather by city name
@@ -37,6 +64,18 @@ traits:
   displayName: Forecast
   is: [isSearchableByCity,isMetric,isAPIKey]
   get:
+    is: [paged]
+    description: |
+      seach weather forecast for 5 days with data every 3 hours by city name.
+    responses:
+     200:
+      body:
+        application/json:
+
+/forecast2:
+  displayName: Forecast2
+  get:
+    is: [paged]
     description: |
       seach weather forecast for 5 days with data every 3 hours by city name.
     responses:

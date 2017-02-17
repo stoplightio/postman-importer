@@ -21,16 +21,10 @@ paths:
       responses:
         '200':
           description: ''
-    x-raml-is:
-      - isSearchableByCity
-      - isMetric
-      - isAPIKey
-    x-raml-resource-displayName: Weather
-  /forecast:
-    get:
-      operationId: GET_forecast
+    post:
+      operationId: POST_weather
       description: |
-        seach weather forecast for 5 days with data every 3 hours by city name.
+        Search weather by city name
       produces:
         - application/json
       parameters:
@@ -44,7 +38,62 @@ paths:
       - isSearchableByCity
       - isMetric
       - isAPIKey
+    x-raml-resource-displayName: Weather
+  /weather2:
+    get:
+      operationId: GET_weather2
+      description: |
+        Search weather by city name
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/trait:paged:offset'
+        - $ref: '#/parameters/trait:paged:limit'
+      responses:
+        '200':
+          description: ''
+    x-raml-is:
+      - paged
+    x-raml-resource-displayName: Weather2
+  /forecast:
+    get:
+      operationId: GET_forecast
+      description: |
+        seach weather forecast for 5 days with data every 3 hours by city name.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/trait:isSearchableByCity:q'
+        - $ref: '#/parameters/trait:isMetric:units'
+        - $ref: '#/parameters/trait:isApiKey:APPID'
+        - $ref: '#/parameters/trait:paged:offset'
+        - $ref: '#/parameters/trait:paged:limit'
+      responses:
+        '200':
+          description: ''
+      x-raml-is:
+        - paged
+    x-raml-is:
+      - isSearchableByCity
+      - isMetric
+      - isAPIKey
     x-raml-resource-displayName: Forecast
+  /forecast2:
+    get:
+      operationId: GET_forecast2
+      description: |
+        seach weather forecast for 5 days with data every 3 hours by city name.
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/trait:paged:offset'
+        - $ref: '#/parameters/trait:paged:limit'
+      responses:
+        '200':
+          description: ''
+      x-raml-is:
+        - paged
+    x-raml-resource-displayName: Forecast2
 parameters:
   'trait:isSearchableByCity:q':
     name: q
@@ -69,3 +118,16 @@ parameters:
     required: true
     type: string
     x-raml-example: 938ffc1ccc85558966b89eaa29a2ddc0
+  'trait:paged:offset':
+    name: offset
+    in: query
+    description: Inice inicial del listado
+    required: true
+    type: number
+    default: 0
+  'trait:paged:limit':
+    name: limit
+    in: query
+    description: Cantidad de elementos a listar
+    required: true
+    type: number
