@@ -100,7 +100,8 @@ describe('reversable - from swagger 2 raml 2 swagger', function () {
 	const baseDir = __dirname + '/../data/reversable/swagger';
 	const testFiles = fs.readdirSync(baseDir);
 	const options = {
-		expand: false
+		expand: false,
+		noExtension: false
 	};
 	
 	const testWithData = function (testFile) {
@@ -117,7 +118,7 @@ describe('reversable - from swagger 2 raml 2 swagger', function () {
 						.then((convertedRAML) => {
 							ramlToSwaggerConverter.loadData(convertedRAML, options)
 								.then(() => {
-									ramlToSwaggerConverter.convert('json')
+									ramlToSwaggerConverter.convert('json', options)
 										.then((resultSwagger) => {
 											expect(resultSwagger).to.deep.equal(require(testFilePath));
 											done();
@@ -159,8 +160,11 @@ describe('reversable - from raml 2 swagger 2 raml', function () {
 			const ramlVersion = _.includes(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			const ramlToSwaggerConverter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
 			const swaggerToRamlConverter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
+			const validateOptions = {
+				noExtension: false
+			};
 			
-			ramlToSwaggerConverter.loadFile(testFilePath)
+			ramlToSwaggerConverter.loadFile(testFilePath, validateOptions)
 				.then(() => {
 					ramlToSwaggerConverter.convert('json')
 						.then((resultSwagger) => {
@@ -262,7 +266,7 @@ describe('from swagger to raml', function () {
 	}
 });
 
-describe('from raml to swagger', function () {
+describe('from raml to swagger with extension properties', function () {
 	const baseDir = __dirname + '/../data/raml-import/raml';
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.Converter(specConverter.Formats.AUTO, specConverter.Formats.SWAGGER);
@@ -271,7 +275,8 @@ describe('from raml to swagger', function () {
 		const validateOptions = {
 			validate: validate,
 			fsResolver: myFsResolver,
-			format: 'yaml'
+			format: 'yaml',
+			noExtension: false
 		};
 		
 		return function (done) {
@@ -316,6 +321,50 @@ describe('from raml to swagger', function () {
 				}
 			} else {
 				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate));
+			}
+		}
+	});
+});
+
+describe('from raml to swagger without extension properties', function () {
+	const converter = new specConverter.Converter(specConverter.Formats.AUTO, specConverter.Formats.SWAGGER);
+
+	const testWithData = function (sourceFile) {
+		const validateOptions = {
+			validate: true,
+			fsResolver: myFsResolver,
+
+			format: 'yaml'
+		};
+		
+		return function (done) {
+			converter.convertFile(sourceFile, validateOptions)
+				.then(resultSwagger => {
+					if (_.includes(resultSwagger, 'x-raml')) {
+						return done('error: output file contains extension property.\n Swagger:\n' + resultSwagger);
+					}
+					return done();
+				}).catch((err) => {
+					console.error('error exporting file.');
+					return done(err);
+				});
+		};
+	};
+
+	const baseDir = __dirname + '/../data/raml-import/raml';
+
+	fs.readdirSync(baseDir).forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const skip = _.includes(testFile, 'skip');
+      const sourceFile = baseDir + '/' + testFile;
+
+      if (skip) return ;
+			if (process.env.fileToTest) {
+				if (_.endsWith(testFile, process.env.fileToTest)) {
+					it('test: ' + testFile, testWithData(sourceFile));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile));
 			}
 		}
 	});

@@ -365,34 +365,6 @@ describe('Swagger Exporter', function () {
 			expect(params).to.not.be.undefined;
 			expect(params).to.have.lengthOf(2);
 		});
-		
-		it('should map as formData param for file type prop existence', function () {
-			const stoplightParams = {
-				'type': 'object',
-				'properties': {
-					'id': {
-						'description': 'The photo ID',
-						'type': 'string'
-					},
-					'photo': {
-						'description': 'The pet photo',
-						'type': 'file'
-					}
-				},
-				'required': [
-					'photo'
-				]
-			};
-			const stoplightBody = {
-				body: JSON.stringify(stoplightParams)
-			};
-			
-			const params = swaggerExporter._mapRequestBody(stoplightBody);
-			expect(params).to.not.be.undefined;
-			expect(params.length).to.be.equal(2);
-			expect(params[0].name).to.be.equal('id');
-			expect(params[1].required).to.be.equal(true);
-		});
 	});
 	
 	describe('_mapResponseBody', function () {
