@@ -1,59 +1,35 @@
-{
-  "swagger": "2.0",
-  "schemes": [
-    "https"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "basePath": "/mocks/1201bcdf-f1a0-4eb3-a002-4f6f817d44cc/api",
-  "consumes": [
-    "application/json"
-  ],
-  "host": "ec2-52-201-242-128.compute-1.amazonaws.com",
-  "info": {
-    "title": "Álainn Cosmetics Mobile Orders API",
-    "version": "1"
-  },
-  "paths": {
-    "/mobile-tokens/{mobileType}": {
-      "parameters": [
-        {
-          "in": "path",
-          "name": "mobileType",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "post": {
-        "operationId": "POST_mobile-tokens-mobileType",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "properties": {
-                "token": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "token"
-              ],
-              "type": "object",
-              "x-raml-example": {
-                "token": "afdasfas23lkesf"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "",
-            "schema": {}
-          }
-        }
-      }
-    }
-  }
-}
+swagger: '2.0'
+info:
+  version: '1'
+  title: Álainn Cosmetics Mobile Orders API
+host: ec2-52-201-242-128.compute-1.amazonaws.com
+basePath: /mocks/1201bcdf-f1a0-4eb3-a002-4f6f817d44cc/api
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  '/mobile-tokens/{mobileType}':
+    parameters:
+      - name: mobileType
+        in: path
+        required: true
+        type: string
+    post:
+      operationId: POST_mobile-tokens-mobileType
+      parameters:
+        - name: body
+          in: body
+          schema:
+            properties:
+              token:
+                type: string
+            type: object
+            required:
+              - token
+      responses:
+        default:
+          description: ''
+          schema: {}

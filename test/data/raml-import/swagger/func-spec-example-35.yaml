@@ -2,30 +2,37 @@ swagger: '2.0'
 info:
   version: ''
   title: traits example
-
+paths:
+  /items:
+    get:
+      operationId: GET_items
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/trait:imageable:imageType'
+        - $ref: '#/parameters/trait:accessToken:token'
+      responses:
+        '200':
+          $ref: '#/responses/trait:hasFound:200'
 parameters:
- 'trait:imageable:imageType':
+  'trait:imageable:imageType':
     name: imageType
     in: query
     description: 'Comma,separated list just like in example. One alone may be present'
     required: false
     type: string
     default: SmallImage
-    x-raml-example: TinyImage,SwatchImage,SmallImage,MediumImage,LargeImage
-
- 'trait:accessToken:token':
+  'trait:accessToken:token':
     name: token
     in: header
     description: access token
     required: true
     type: string
-    x-raml-example: password
 responses:
   'trait:hasFound:200':
     description: ''
     schema:
       $ref: '#/definitions/Item'
-
 definitions:
   Item:
     type: object
@@ -35,18 +42,5 @@ definitions:
       name:
         type: string
     required:
-        - id
-        - name
-paths:
-  /items:
-    get:
-      x-raml-is: [imageable, accessToken, hasFound]
-      operationId: GET_items
-      parameters:
-        - $ref: '#/parameters/trait:imageable:imageType'
-        - $ref: '#/parameters/trait:accessToken:token'
-      produces:
-         - application/json
-      responses:
-        '200':
-          $ref: '#/responses/trait:hasFound:200'
+      - id
+      - name

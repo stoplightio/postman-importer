@@ -22,18 +22,12 @@ paths:
         - name: body
           in: body
           schema:
-            x-raml-example:
-              id: first
-              name: last
             $ref: '#/definitions/Foo'
       responses:
         '201':
           description: ''
           schema:
             $ref: '#/definitions/Foo'
-            x-raml-example:
-              id: first
-              name: last
     get:
       operationId: GET_foos
       description: 'List all Foos matching query criteria, if provided; otherwise list all Foos'
@@ -53,11 +47,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Foo'
-            x-raml-example:
-              - id: first1
-                name: last1
-              - id: first2
-                name: last2
   '/foos/{id}':
     parameters:
       - name: id
@@ -74,8 +63,6 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Error'
-            x-raml-example:
-              description: error
     put:
       operationId: PUT_foos-id
       description: Update a Foo by id
@@ -83,24 +70,16 @@ paths:
         - name: body
           in: body
           schema:
-            x-raml-example:
-              id: first
-              name: last
             $ref: '#/definitions/Foo'
       responses:
         '200':
           description: ''
           schema:
             $ref: '#/definitions/Foo'
-            x-raml-example:
-              id: first
-              name: last
         '404':
           description: ''
           schema:
             $ref: '#/definitions/Error'
-            x-raml-example:
-              description: error
     get:
       operationId: GET_foos-id
       description: Get a Foo by id
@@ -109,15 +88,10 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Foo'
-            x-raml-example:
-              id: first
-              name: last
         '404':
           description: ''
           schema:
             $ref: '#/definitions/Error'
-            x-raml-example:
-              description: error
   '/foos/name/{name}':
     parameters:
       - name: name
@@ -134,11 +108,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Foo'
-            x-raml-example:
-              - id: first1
-                name: last1
-              - id: first2
-                name: last2
 x-basePath: '/api/{version}'
 definitions:
   Foo2:

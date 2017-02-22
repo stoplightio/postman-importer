@@ -2,36 +2,31 @@ swagger: '2.0'
 info:
   version: ''
   title: traits example
-
+paths:
+  /items:
+    get:
+      operationId: GET_items
+      parameters:
+        - $ref: '#/parameters/trait:searchable:name'
+        - $ref: '#/parameters/trait:searchable:type'
+        - $ref: '#/parameters/trait:searchable:brand'
+      responses:
+        default:
+          description: ''
+          schema: {}
 parameters:
   'trait:searchable:name':
     name: name
     in: query
     required: false
     type: string
-    x-raml-example: Deep Steep Honey Bubble Bath
   'trait:searchable:type':
     name: type
     in: query
     required: false
     type: string
-    x-raml-example: Oils
   'trait:searchable:brand':
     name: brand
     in: query
     required: false
     type: string
-    x-raml-example: Naturtint
-paths:
-  /items:
-     get:
-        x-raml-is: [ searchable ]
-        operationId: GET_items
-        parameters:
-          - $ref: '#/parameters/trait:searchable:name'
-          - $ref: '#/parameters/trait:searchable:type'
-          - $ref: '#/parameters/trait:searchable:brand'
-        responses:
-          default:
-            description: ''
-            schema: {}

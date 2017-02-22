@@ -2,28 +2,9 @@ swagger: '2.0'
 info:
   version: ''
   title: traits example
-
-parameters:
- 'trait:imageable:imageType':
-    name: imageType
-    in: query
-    description: 'Comma , separated list just like in example. One alone may be present'
-    required: false
-    type: string
-    default: SmallImage
-    x-raml-example: TinyImage,SwatchImage,SmallImage,MediumImage,LargeImage
- 'trait:accessToken:token':
-    name: token
-    in: header
-    description: access token
-    required: true
-    type: string
-    x-raml-example: password
-
 paths:
   /items:
     get:
-      x-raml-is: [ imageable, accessToken ]
       operationId: GET_items
       parameters:
         - $ref: '#/parameters/trait:imageable:imageType'
@@ -32,3 +13,17 @@ paths:
         default:
           description: ''
           schema: {}
+parameters:
+  'trait:imageable:imageType':
+    name: imageType
+    in: query
+    description: 'Comma , separated list just like in example. One alone may be present'
+    required: false
+    type: string
+    default: SmallImage
+  'trait:accessToken:token':
+    name: token
+    in: header
+    description: access token
+    required: true
+    type: string

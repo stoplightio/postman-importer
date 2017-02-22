@@ -3,85 +3,90 @@ info:
   version: '1'
   title: complex types example
 paths:
-  /else:
+  /something:
     post:
+      operationId: POST_something
       consumes:
         - application/json
-      operationId: POST_else
       parameters:
-        - in: body
-          name: body
+        - name: body
+          in: body
           schema:
-            $ref: "#/definitions/FourthType"
-            x-raml-example:
-              strict: false
-              n: 40
-              title: else title
-        - in: header
-          description: else id
-          name: elseId
+            $ref: '#/definitions/SecondType'
+        - name: someId
+          in: header
+          description: some id
           required: true
           type: string
-          x-raml-example:
-            - n: 30
-              title: else other title
-              strict: false
-              x-raml-example-name: aaa
-            - n: 300
-              title: else other titles
-              x-raml-example-name: bbb
       responses:
         default:
-          description: ""
+          description: ''
           schema: {}
-  /something:
     get:
-      description: get something
       operationId: GET_something
-      parameters:
-        - in: query
-          name: param
-          required: true
-          type: string
-          x-raml-example: param example
+      description: get something
       produces:
         - application/json
-      responses:
-        200:
-          description: ""
-          schema:
-            $ref: "#/definitions/FirstType"
-            x-raml-example:
-              n: 500
-              title: get example
-    post:
-      consumes:
-        - application/json
-      operationId: POST_something
       parameters:
-        - in: body
-          name: body
-          schema:
-            $ref: "#/definitions/SecondType"
-            x-raml-example:
-              - n: 20
-                title: some other title
-                x-raml-example-name: aaa
-              - n: 200
-                title: some other titles
-                x-raml-example-name: bbb
-        - description: some id
-          in: header
-          name: someId
+        - name: param
+          in: query
           required: true
           type: string
-          x-raml-example:
-            n: 10
-            title: some title
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/FirstType'
+  /else:
+    post:
+      operationId: POST_else
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/FourthType'
+        - name: elseId
+          in: header
+          description: else id
+          required: true
+          type: string
       responses:
         default:
-          description: ""
+          description: ''
           schema: {}
+parameters:
+  'trait:colors:red':
+    name: red
+    in: query
+    description: red
+    required: false
+    type: string
+  'trait:colors:yellow':
+    name: yellow
+    in: query
+    description: yellow
+    required: false
+    type: string
+  'trait:colors:blue':
+    name: blue
+    in: header
+    description: blue
+    required: true
+    type: string
+  'trait:colors:green':
+    name: green
+    in: header
+    description: green
+    required: true
+    type: string
+responses:
+  'trait:colors:201':
+    description: ''
+    headers:
+      orange:
+        type: string
 definitions:
   FirstType:
     type: object
@@ -100,9 +105,9 @@ definitions:
   SecondType:
     type: object
     example:
-      strict: false
       title: Second
       'n': 2
+      strict: false
     description: something
     properties:
       title:
@@ -126,11 +131,6 @@ definitions:
     example:
       title: Third a
       'n': 3
-      x-raml-example-name: a
-    x-raml-additional-examples:
-      - title: Third b
-        n: 3
-        x-raml-example-name: b
   FourthType:
     type: object
     description: something
@@ -146,52 +146,3 @@ definitions:
       title: Fourth a
       'n': 4
       strict: false
-      x-raml-example-name: a
-    x-raml-additional-examples:
-      - title: Fourth b
-        n: 4
-        x-raml-example-name: b
-parameters:
-  trait:colors:blue:
-    description: blue
-    in: header
-    name: blue
-    required: true
-    type: string
-    x-raml-example: this is a blue example
-  trait:colors:green:
-    description: green
-    in: header
-    name: green
-    required: true
-    type: string
-    x-raml-example:
-      - n: 1000
-        x-raml-example-name: g1
-        title: green 1
-      - n: 2000
-        x-raml-example-name: g2
-        title: green 2
-  trait:colors:red:
-    description: red
-    in: query
-    name: red
-    required: false
-    type: string
-    x-raml-example: this is a red example
-  trait:colors:yellow:
-    description: yellow
-    in: query
-    name: yellow
-    required: false
-    type: string
-    x-raml-example:
-      n: 3000
-      title: Yellow
-responses:
-  trait:colors:201:
-    description: ""
-    headers:
-      orange:
-        type: string
-        x-raml-example: this is an orange example

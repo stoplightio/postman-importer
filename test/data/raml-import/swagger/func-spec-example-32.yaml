@@ -2,22 +2,9 @@ swagger: '2.0'
 info:
   version: ''
   title: traits example
-
-parameters:
- 'trait:imageable:imageType':
-    name: imageType
-    in: query
-    description: 'Comma , separated list just
-          like in example. One alone may be present'
-    required: false
-    type: string
-    default: SmallImage
-    x-raml-example: TinyImage,SwatchImage,SmallImage,MediumImage,LargeImage
-
 paths:
   /items:
     get:
-      x-raml-is: [ imageable ]
       operationId: GET_items
       parameters:
         - $ref: '#/parameters/trait:imageable:imageType'
@@ -25,3 +12,11 @@ paths:
         default:
           description: ''
           schema: {}
+parameters:
+  'trait:imageable:imageType':
+    name: imageType
+    in: query
+    description: 'Comma , separated list just like in example. One alone may be present'
+    required: false
+    type: string
+    default: SmallImage

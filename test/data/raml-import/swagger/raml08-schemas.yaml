@@ -1,81 +1,54 @@
-{
-  "consumes": [
-    "application/json"
-  ],
-  "definitions": {
-    "NewTask": {
-      "properties": {
-        "action": {
-          "description": "The action the task assignee will be prompted to do. Must be 'review'.",
-          "type": "string",
-          "x-raml-type": "review"
-        },
-        "due_at": {
-          "description": "The day at which this task is due.",
-          "type": "string",
-          "x-raml-type": "timestamp"
-        },
-        "type": {
-          "type": "string"
-        },
-        "expires_at": {
-          "type": "null"
-        },
-        "empty_array": {
-          "description": "An empty array",
-          "type": "array",
-          "items":{
-            "type": "string"
-          }
-        },
-        "assignees": {
-          "description": "An array of assignees",
-          "type": "array",
-          "items":{
-            "type": "string"
-          }
-        },
-        "actions": {
-          "description": "An array of actions",
-          "type": "array",
-          "items":{
-            "type": "string"
-          }
-        }
-      },
-      "required": [
-        "action"
-      ],
-      "type": "object"
-    },
-    "Col": {
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
-    }
-  },
-  "host": "api.box.com",
-  "info": {
-    "description": "The Box Content API",
-    "title": "Box",
-    "version": "2.0"
-  },
-  "paths": {},
-  "produces": [
-    "application/json"
-  ],
-  "schemes": [
-    "https"
-  ],
-  "swagger": "2.0",
-  "x-basePath": "/{version}/"
-}
+swagger: '2.0'
+info:
+  version: '2.0'
+  title: Box
+  description: The Box Content API
+host: api.box.com
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths: {}
+x-basePath: '/{version}/'
+definitions:
+  NewTask:
+    type: object
+    properties:
+      action:
+        description: The action the task assignee will be prompted to do. Must be 'review'.
+        type: string
+      due_at:
+        description: The day at which this task is due.
+        type: string
+      type:
+        type: string
+      expires_at:
+        type: 'null'
+      empty_array:
+        description: An empty array
+        type: array
+        items:
+          type: string
+      assignees:
+        description: An array of assignees
+        type: array
+        items:
+          type: string
+      actions:
+        description: An array of actions
+        type: array
+        items:
+          type: string
+    required:
+      - action
+  Col:
+    required:
+      - type
+    type: object
+    properties:
+      type:
+        type: string
+      id:
+        type: string
