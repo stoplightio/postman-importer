@@ -289,6 +289,9 @@ describe('from raml to swagger', function () {
 							return done(data);
 						} else {
 							expect(YAML.safeLoad(resultSwagger)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (_.includes(resultSwagger, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
 							done();
 						}
 					} catch (e) {
