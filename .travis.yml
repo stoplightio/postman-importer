@@ -5,16 +5,16 @@ branches:
   except:
   - gh-pages
 script: npm run coverage && npm run coveralls && npm run eslint && cd site && npm install && npm run build
-before_install:
-- openssl aes-256-cbc -K $encrypted_49b756a8e311_key -iv $encrypted_49b756a8e311_iv
-  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
 after_sucess:
-  - npm run gh-pages-travis
+- npm run gh-pages-travis
 env:
   global:
-    - DEPLOY_BRANCH="master"
-    - SOURCE_DIR="build"
-    - TARGET_BRANCH="gh-pages"
-    - SSH_KEY="id_rsa"
-    - GIT_NAME="travis"
-    - GIT_EMAIL="deploy@travis-ci.org"
+  - DEPLOY_BRANCH="master"
+  - SOURCE_DIR="build"
+  - TARGET_BRANCH="gh-pages"
+  - SSH_KEY="id_rsa"
+  - GIT_NAME="travis"
+  - GIT_EMAIL="deploy@travis-ci.org"
+before_install:
+- openssl aes-256-cbc -K $encrypted_36827dbbeefb_key -iv $encrypted_36827dbbeefb_iv
+  -in id_rsa.enc -out id_rsa -d
