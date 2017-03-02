@@ -1,10 +1,20 @@
 language: node_js
 node_js:
-  - "6"
-script: npm run coverage && npm run coveralls && npm run eslint
-
-after_success: |
-  if [ -n "$GITHUB_API_KEY" ]; then
-    npm install -g browserify && cd site && npm install && mkdir -p public/build && npm run build
-    git push -f -q https://glodieu:$GITHUB_API_KEY@github.com/mulesoft/oas-raml-converter gh-pages &2>/dev/null
-  fi
+- '6'
+branches:
+  except:
+  - gh-pages
+script: npm run coverage && npm run coveralls && npm run eslint && cd site && npm install && npm run build
+before_install:
+- openssl aes-256-cbc -K $encrypted_49b756a8e311_key -iv $encrypted_49b756a8e311_iv
+  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+after_sucess:
+  - npm run gh-pages-travis
+env:
+  global:
+    - DEPLOY_BRANCH="master"
+    - SOURCE_DIR="build"
+    - TARGET_BRANCH="gh-pages"
+    - SSH_KEY="id_rsa"
+    - GIT_NAME="travis"
+    - GIT_EMAIL="deploy@travis-ci.org"
