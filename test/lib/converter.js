@@ -245,8 +245,8 @@ describe('from swagger to raml', function () {
 			const stringCompare = _.includes(testFile, 'stringcompare');
 			const validate = !_.includes(testFile, 'novalidate');
 			
-			if (process.env.fileToTest) {
-				if (_.endsWith(sourceFile, process.env.fileToTest)) {
+			if (process.env.testFile) {
+				if (_.endsWith(sourceFile, process.env.testFile)) {
 					it('test: ' + testFile, testWithData(sourceFile, targetFile, stringCompare, validate)).timeout(timeout);
 				}
 			}
@@ -256,7 +256,7 @@ describe('from swagger to raml', function () {
 		}
 	});
 	
-	if (!process.env.fileToTest) {
+	if (!process.env.testFile) {
 		it('should convert from swagger petstore with external refs to raml 1.0',
 			testWithData(__dirname + '/../data/petstore-separate/spec/swagger.json', __dirname + '/../data/petstore-separate/spec/raml10.yaml', true));
 	}
@@ -315,8 +315,8 @@ describe('from raml to swagger', function () {
       const targetFile = baseDir + '/../swagger/' + testFile;
 
       if (skip) return ;
-			if (process.env.fileToTest) {
-				if (_.endsWith(testFile, process.env.fileToTest)) {
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
 					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
 				}
 			} else {
