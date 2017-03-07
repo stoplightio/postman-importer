@@ -1,0 +1,46 @@
+swagger: '2.0'
+info:
+  version: '2.5'
+  title: OpenWeather
+host: api.openweathermap.org
+basePath: /data/2.5/
+schemes:
+  - http
+paths:
+  /weather2:
+    get:
+      operationId: GET_weather2
+      produces:
+        - application/json
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          type: number
+          maximum: 100
+        - $ref: '#/parameters/trait:paged:offset'
+      responses:
+        '200':
+          description: ''
+  /forecast2:
+    get:
+      operationId: GET_forecast2
+      produces:
+        - application/json
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          type: number
+          maximum: 300
+        - $ref: '#/parameters/trait:paged:offset'
+      responses:
+        '200':
+          description: ''
+parameters:
+  'trait:paged:offset':
+    name: offset
+    in: query
+    required: true
+    type: number
+    default: 0

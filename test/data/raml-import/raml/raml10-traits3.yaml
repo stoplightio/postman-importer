@@ -1,0 +1,32 @@
+#%RAML 1.0
+title: OpenWeather
+version: 2.5
+baseUri: http://api.openweathermap.org/data/2.5/
+
+traits:
+  paged:
+    queryParameters:
+      offset:
+        type: number
+        default: 0
+      limit:
+        type: number
+        maximum: <<max>>
+
+/weather2:
+   displayName: Weather2
+   is: [paged: {max: 100}]
+   get:
+     responses:
+      200:
+       body:
+        application/json:
+
+/forecast2:
+  displayName: Forecast2
+  get:
+    is: [paged: {max: 300}]
+    responses:
+     200:
+      body:
+        application/json:
