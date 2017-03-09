@@ -1,0 +1,104 @@
+swagger: '2.0'
+info:
+  version: '2.0'
+  title: Box
+host: api.box.com
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /orders:
+    post:
+      operationId: POST_orders
+      description: Places a new T-Shirt order
+      parameters:
+        - name: body
+          in: body
+          schema:
+            type: object
+            required:
+              - address1
+              - address2
+              - city
+              - country
+              - email
+              - name
+              - size
+              - stateOrProvince
+              - postalCode
+            properties:
+              address1:
+                type: string
+              address2:
+                type: string
+              city:
+                type: string
+              country:
+                type: string
+              email:
+                type: string
+                format: email
+              name:
+                type: string
+              size:
+                type: string
+                enum:
+                  - S
+                  - M
+                  - L
+                  - XL
+                  - XXL
+              stateOrProvince:
+                type: string
+              postalCode:
+                type: string
+      responses:
+        '200':
+          description: ''
+        '500':
+          description: ''
+x-basePath: '/{version}/'
+definitions:
+  NewTask:
+    type: object
+    properties:
+      action:
+        description: The action the task assignee will be prompted to do. Must be 'review'.
+        type: string
+      due_at:
+        description: The day at which this task is due.
+        type: string
+      type:
+        type: string
+      expires_at:
+        type: string
+    required:
+      - action
+      - due_at
+  Col:
+    required:
+      - type
+    type: object
+    properties:
+      type:
+        type: string
+      id:
+        type: string
+  CargoDetails:
+    type: object
+    properties:
+      cargo:
+        type: string
+      unitOfMeasure:
+        type: string
+    required:
+      - cargo
+      - unitOfMeasure
+  Approval:
+    type: object
+    properties:
+      prop:
+        type: integer

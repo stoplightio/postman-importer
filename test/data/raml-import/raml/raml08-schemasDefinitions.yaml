@@ -1,0 +1,200 @@
+#%RAML 0.8
+title: Box
+version: 2.0
+baseUri: https://api.box.com/{version}/
+mediaType: application/json
+schemas:
+  - NewTask: |
+      {
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The action the task assignee will be prompted to do. Must be 'review'.",
+            "type": [ "review" ]
+          },
+          "due_at": {
+            "description": "The day at which this task is due.",
+            "type": "timestamp"
+          },
+          "type": {
+            "required": false,
+            "type": "string"
+          },
+          "expires_at": {
+            "required": false,
+            "type": "null"
+          },
+          "empty_array": {
+            "description": "An empty array",
+            "type": []
+          },
+          "assignees": {
+            "description": "An array of assignees",
+            "type": "array",
+            "items": []
+          },
+          "actions": {
+            "description": "An array of actions",
+            "type": "array"
+          }
+        },
+        "required": [ "action" ],
+        "definitions": {
+          "ApprovalDetails": {
+          	"type": "object",
+          	"properties": {
+          	  "tier": {
+          		"type": "integer",
+          		"required": true,
+          		"minimum": 1,
+          		"maximum": 2,
+          		"exclusiveMinimum": false,
+          		"exclusiveMaximum": false
+          	  }
+          	}
+          },
+          "CargoDetails": {
+          	"type": "object",
+          	"properties": {
+          	  "cargo": {
+          		"type": "string",
+          		"required": true
+          	  },
+              "unitOfMeasure": {
+        	    "type": "string"
+              }
+        	}
+          }
+        }
+      }
+  - Col: |
+      {
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "required": false,
+        "type": "object",
+        "properties": {
+          "type": {
+            "required": true,
+            "type": "string"
+          },
+          "id": {
+            "required": false,
+            "type": "string"
+          }
+        }
+      }
+  - CargoDetails: |
+      {
+        "type": "object",
+        "properties": {
+          "cargo": {
+            "type": "string",
+            "required": true
+          },
+          "unitOfMeasure": {
+            "type": "string"
+          }
+        }
+      }
+
+/orders:
+  post:
+    description: Places a new T-Shirt order
+    body:
+      application/json:
+        schema: |
+          {
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-03/schema",
+            "id": "http://jsonschema.net",
+            "required": true,
+            "properties": {
+              "address1": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/address1",
+                  "required": true
+              },
+              "address2": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/address2",
+                  "required": true
+              },
+              "city": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/city",
+                  "required": true
+              },
+              "country": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/country",
+                  "required": true
+              },
+              "email": {
+                  "type": "string",
+                  "format": "email",
+                  "id": "http://jsonschema.net/email",
+                  "required": true
+              },
+              "name": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/name",
+                  "required": true
+              },
+              "size": {
+                  "type": "string",
+                  "enum": ["S", "M", "L", "XL", "XXL"],
+                  "id": "http://jsonschema.net/size",
+                  "required": true
+              },
+              "stateOrProvince": {
+                  "type": "string",
+                  "id": "http://jsonschema.net/stateOrProvince",
+                  "required": true
+              },
+              "postalCode": {
+                "type": "string",
+                "id": "http://jsonschema.net/postalCode",
+                "required": true
+              }
+            },
+            "definitions": {
+              "Approval": {
+                "type": "object",
+                "properties": {
+                  "prop": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "CargoDetails": {
+                "type": "object",
+                "properties": {
+                  "props": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "measure": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "orderId": "4321"
+              }
+      500:
+        body:
+          application/json:
+            example: |
+              {
+                "errorMessage": "The order couldn't be entered."
+documentation:
+  - title: Headline
+    content: The Box Content API
