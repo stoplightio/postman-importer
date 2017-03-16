@@ -1,0 +1,48 @@
+#%RAML 0.8
+title: Box
+version: 2.0
+baseUri: https://api.box.com/{version}/
+mediaType: application/json
+schemas:
+  - NewTask: |
+      {
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The action the task assignee will be prompted to do. Must be 'review'.",
+            "oneOf": [
+              {
+                "title": "Push notification",
+                "description": "A single push notification to be sent to an audience through the 'app' channel.",
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "title": "Array of push notifications",
+                "description": "An array of push notifications to be sent to an audience through the 'app' channel."
+              }
+            ]
+          }
+        },
+        "required": [ "action" ]
+      }
+  - Col: |
+      {
+        "$schema": "http://json-schema.org/draft-03/schema",
+        "required": false,
+        "type": "object",
+        "properties": {
+          "oneOF": {
+            "required": true,
+            "type": "string"
+          },
+          "id": {
+            "required": false,
+            "type": "string"
+          }
+        }
+      }
+documentation:
+  - title: Headline
+    content: The Box Content API
