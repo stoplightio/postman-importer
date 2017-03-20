@@ -1,0 +1,39 @@
+#%RAML 1.0
+title: Petstore
+version: 1.0.0
+resourceTypes:
+  pets:
+    get:
+      description: Get all pets
+types:
+  pet:
+    type: string
+/pets:
+  type: pets
+  displayName: Pets
+  description: Path for pets
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: Dog
+  /{id}:
+    get:
+      responses:
+        200:
+          description: Response with status 200
+          body:
+            application/json:
+              type: pet
+/petNames:
+  description: Path for pet names
+  get:
+    description: Get all pet names
+    displayName: GET_pet_names
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            example: Bobby
