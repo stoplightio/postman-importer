@@ -115,38 +115,14 @@ describe ('Oas20 to Raml10 Definition Test', () => {
 					this.oasDefinitions = oasImporter.data.definitions;
 					if (_.isEmpty(this.oasDefinitions)) return done();
 
-					const result = {};
-					result.title = 'title';
-					result.types = [];
-					let index = 0;
-
 					const oas20DefinitionConverter = new Oas20DefinitionConverter();
 					const raml10DefinitionConverter = new Raml10DefinitionConverter();
-
 					const models = oas20DefinitionConverter.import(this.oasDefinitions)
-					Object.entries(raml10DefinitionConverter.export(models)).map(([key, value]) => {
-						const data = {};
-						data[key] = value;
-						result.types.push(data);
-					})
-
-					try {
-						const ramlPromise = ramlImporter.loadFile(targetFile);
-						ramlPromise.then(() => {
-							const originalTypes = ramlImporter.data.types;
-							removePropertyFromObject(originalTypes, 'typePropertyKind');
-							removePropertyFromObject(originalTypes, 'structuredExample');
-							removePropertyFromObject(originalTypes, 'fixedFacets');
-							removePropertyFromObject(originalTypes, 'name');
-							expect(YAML.safeLoad(YAML.safeDump(originalTypes))).to.deep.equal(YAML.safeLoad(YAML.safeDump(result.types)));
-							return done();
-						}).catch(e => {
-							return done(e);
-						});
-					} catch (e) {
-						return done(e);
-					}
-
+					
+					const result = {};
+					result.types = raml10DefinitionConverter.export(models);
+					
+					expect(YAML.safeLoad(YAML.safeDump(result.types))).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')).types);
 
 					//validate if ramlData is valid.
 					// try {
@@ -175,7 +151,7 @@ describe ('Oas20 to Raml10 Definition Test', () => {
 
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			sourceFile = baseDir + '/' + testFile;
+			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../raml/' + _.replace(testFile, 'json', 'yaml');
 
 			if (process.env.testFile) {
