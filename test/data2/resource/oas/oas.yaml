@@ -1,0 +1,69 @@
+swagger: '2.0'
+definitions:
+  pet:
+    type: string
+info:
+  title: Petstore
+  version: '1.0.0'
+paths:
+  /employees:
+    get:
+      consumes:
+        - application/json
+        - text/xml
+        - application/xml
+      operationId: GET_employees
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/pet'
+        - description: Employee´s reviews
+          in: header
+          items:
+            type: string
+          name: reviews
+          required: true
+          type: array
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /petNames:
+    get:
+      description: Get all pet names
+      operationId: GET_pet_names
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ''
+          schema:
+            example: Bobby
+            type: string
+  /pets:
+    get:
+      description: Get all pets
+      operationId: GET_pets
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ''
+          schema:
+            example: Dog
+  /pets/{id}:
+    get:
+      operationId: GET_pets-id
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Response with status 200
+          schema:
+            $ref: '#/definitions/pet'
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
