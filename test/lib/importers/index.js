@@ -7,7 +7,7 @@ const expect = require('chai').expect,
 describe('Importer Factory', function () {
 	describe('hasSupport', function () {
 		it('should return true for supported format', function () {
-			expect(importerFactory.hasSupport(formats.SWAGGER)).to.be.true;
+			expect(importerFactory.hasSupport(formats.OAS)).to.be.true;
 			expect(importerFactory.hasSupport(formats.RAML08)).to.be.true;
 			expect(importerFactory.hasSupport(formats.RAML10)).to.be.true;
 		});
@@ -17,7 +17,7 @@ describe('Importer Factory', function () {
 	});
 	describe('factory', function () {
 		it('should return valid exporter instance for supported format', function () {
-			expect(importerFactory.factory(formats.SWAGGER)).to.be.instanceof(require(importerDir + '/swagger'));
+			expect(importerFactory.factory(formats.OAS)).to.be.instanceof(require(importerDir + '/swagger'));
 			expect(importerFactory.factory(formats.RAML08)).to.be.instanceof(require(importerDir + '/raml08'));
 			expect(importerFactory.factory(formats.RAML10)).to.be.instanceof(require(importerDir + '/raml10'));
 		});

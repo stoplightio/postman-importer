@@ -36,7 +36,7 @@ describe('Auto Importer', function () {
 			expect(format.name).to.be.equal('RAML 1.0');
 		});
 		
-		it('should detect SWAGGER', function () {
+		it('should detect OAS', function () {
 			const fileContent = fs.readFileSync(path.join(dataPath, 'swagger.yaml'), 'utf8'),
 				format = Auto.detectFormat(fileContent);
 			

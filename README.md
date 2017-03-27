@@ -18,13 +18,13 @@ For an online conversion, use: [https://mulesoft.github.io/oas-raml-converter](h
 ### 2. Command line tool
 
 ```
-./lib/bin/converter.js --from SWAGGER --to RAML10 ./path/to/swagger.json
+./lib/bin/converter.js --from OAS --to RAML10 ./path/to/swagger.json
 ```
 
 Or install globally and then:
 
 ```
-oas-raml-converter --from SWAGGER --to RAML10 ./path/to/swagger.json
+oas-raml-converter --from OAS --to RAML10 ./path/to/swagger.json
 ```
 
 ### 3. As a service
@@ -44,13 +44,13 @@ npm install --save oas-raml-converter
 Raml 1.0 to OAS 2.0:
 ```js
 var converter = require('oas-raml-converter');
-var ramlToSwagger = new converter.Converter(converter.Formats.RAML10, converter.Formats.SWAGGER);
+var ramlToSwagger = new converter.Converter(converter.Formats.RAML10, converter.Formats.OAS);
 ```
 
 OAS 2.0 to Raml 1.0:
 ```js
 var converter = require('oas-raml-converter');
-var swaggerToRaml = new converter.Converter(converter.Formats.SWAGGER, converter.Formats.RAML10);
+var swaggerToRaml = new converter.Converter(converter.Formats.OAS, converter.Formats.RAML10);
 ```
 
 You can tell the converter to detect the input format automatically by passing `AUTO` format:

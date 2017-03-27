@@ -16,7 +16,7 @@ describe('index', function() {
         expect(specConverter.Formats.RAML10).to.be.a('Object');
       });
       it('should be swagger supported', function(){
-        expect(specConverter.Formats.SWAGGER).to.be.a('Object');
+        expect(specConverter.Formats.OAS).to.be.a('Object');
       });
     });
 
@@ -28,7 +28,7 @@ describe('index', function() {
         expect(exporter10Instance).to.be.an.instanceof(require('../lib/exporters/raml10'));
       });
       it('should expose swagger exporter api', function(){
-        const exporterInstance = new specConverter.Exporter.factory(specConverter.Formats.SWAGGER);
+        const exporterInstance = new specConverter.Exporter.factory(specConverter.Formats.OAS);
         expect(exporterInstance).to.be.an.instanceof(require('../lib/exporters/swagger'));
       });
     });
@@ -41,7 +41,7 @@ describe('index', function() {
         expect(importer10Instance).to.be.an.instanceof(require('../lib/importers/raml10'));
       });
       it('should expose swagger importer api', function(){
-        const importerInstance = specConverter.Importer.factory(specConverter.Formats.SWAGGER);
+        const importerInstance = specConverter.Importer.factory(specConverter.Formats.OAS);
         expect(importerInstance).to.be.an.instanceof(require('../lib/importers/swagger'));
       });
     });
