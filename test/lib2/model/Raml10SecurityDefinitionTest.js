@@ -3,6 +3,7 @@ const YAML = require('js-yaml');
 const Raml = require('../../../lib/importers/baseraml');
 const _ = require('lodash');
 const fs = require('fs');
+const Converter = require('../../../lib/model/converter');
 
 describe.skip('from raml to model to raml', () => {
 	const testWithData = sourceFile => {
@@ -14,6 +15,8 @@ describe.skip('from raml to model to raml', () => {
 					const data = importer.data;
 					const result = {};
 
+					const attrRemove = ['typePropertyKind'];
+					data.securitySchemes = Converter.cleanObjectFrom(data.securitySchemes, attrRemove);
 					result.title = 'title';
 					const raml10SecurityDefinitionConverter = new Raml10SecurityDefinitionConverter();
 

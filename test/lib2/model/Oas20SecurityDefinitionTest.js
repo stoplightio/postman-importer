@@ -1,5 +1,5 @@
 const Oas = require('../../../lib/importers/swagger');
-const Oas20SecurityDefinitionConverter = require('../../../lib/oas20/Oas20SecurityDefinitionConverter');
+const Oas20SecurityDefinitionConverter = require('../../../lib/oas20/oas20SecurityDefinitionConverter');
 const YAML = require('js-yaml');
 const _ = require('lodash');
 const fs = require('fs');
