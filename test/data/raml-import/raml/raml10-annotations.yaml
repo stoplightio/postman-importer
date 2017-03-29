@@ -1,13 +1,17 @@
 #%RAML 1.0
 title: Swagger Petstore
 version: 1.0.0
-baseUri: 'http://petstore.swagger.io/v2'
+baseUri:
+  value: 'http://petstore.swagger.io/v2'
+  (redirectable): true
 protocols:
   - HTTP
 description: This is a sample server Petstore server.
 annotationTypes:
   testHarness:
     type: string
+  redirectable:
+    type: boolean
 /pet:
   displayName: pet
   '/{petId}':
@@ -34,10 +38,14 @@ types:
     properties:
       id:
         type: string
-        required: false
+        required:
+          value: false
+          (testHarness): property required 1
       name:
         type: string
-        required: false
+        required:
+          value: true
+          (testHarness): property required 2
         (testHarness): property type description
   Pet:
     properties:
