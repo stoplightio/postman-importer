@@ -5,7 +5,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const Converter = require('../../../lib/model/converter');
 
-describe.skip('from raml to model to raml', () => {
+describe('from raml to model to raml', () => {
 	const testWithData = sourceFile => {
 		return done => {
 			const importer = new Raml();

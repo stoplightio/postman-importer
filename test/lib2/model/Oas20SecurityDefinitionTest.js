@@ -4,7 +4,7 @@ const YAML = require('js-yaml');
 const _ = require('lodash');
 const fs = require('fs');
 
-describe.skip('from oas to model to oas', () => {
+describe('from oas to model to oas', () => {
 	const testWithData = sourceFile => {
 		return done => {
 			const importer = new Oas();
