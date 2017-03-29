@@ -24,7 +24,8 @@ describe('Raml10 to Raml10', () => {
 					let result = raml10Converter.export(models);
 					result.title = source.title;
 					result.version = target.version;
-					result.resourceTypes = target.resourceTypes;
+					if (target.types) result.types = target.types;
+					if (target.resourceTypes) result.resourceTypes = target.resourceTypes;
 					
 					expect(result).to.deep.equal(target);
 					return done();
@@ -72,6 +73,7 @@ describe('Oas20 to Oas20', () => {
 					let result = {};
 					result.swagger = source.swagger;
 					result.info = source.info;
+					if (source.definitions) result.definitions = source.definitions;
 					result.paths = oas20Converter.export(models);
 					
 					expect(result).to.deep.equal(target);
@@ -124,6 +126,7 @@ describe('Raml10 to Oas20', () => {
 						title: source.title,
 						version: source.version.toString()
 					};
+					if (source.types) result.definitions = source.types;
 					result.paths = oas20Converter.export(models);
 					
 					expect(result).to.deep.equal(target);
@@ -173,6 +176,7 @@ describe('Oas20 to Raml10', () => {
 					const result = raml10Converter.export(models);
 					result.title = source.info.title;
 					result.version = parseInt(source.info.version);
+					if (source.definitions) result.types = source.definitions;
 					
 					expect(result).to.deep.equal(target);
 					return done();
