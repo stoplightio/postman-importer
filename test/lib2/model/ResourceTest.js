@@ -42,7 +42,7 @@ describe('Raml10 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resources')) {
+		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resource')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
@@ -91,7 +91,7 @@ describe('Oas20 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resources')) {
+		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resource')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
@@ -144,7 +144,7 @@ describe('Raml10 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resources')) {
+		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resource')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
@@ -193,7 +193,7 @@ describe('Oas20 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resources')) {
+		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resource')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			

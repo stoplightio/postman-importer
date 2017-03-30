@@ -1,39 +1,49 @@
-{
-  "swagger": "2.0",
-  "info": {
-    "title": "Petstore",
-    "version": "1"
-  },
-  "definitions": {
-    "pet": {
-      "type": "string"
-    }
-  },
-  "paths": {
-    "/employees": {
-      "get": {
-        "consumes": [
-          "application/json",
-          "text/xml",
-          "application/xml"
-        ],
-        "operationId": "GET_employees",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/pet"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "",
-            "schema": {}
-          }
-        }
-      }
-    }
-  }
-}
+swagger: '2.0'
+info:
+  title: Petstore
+  version: '1'
+definitions:
+  pet:
+    type: string
+paths:
+  /names:
+    get:
+      consumes:
+        - application/json
+        - text/xml
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/pet'
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /nicknames:
+    get:
+      consumes:
+        - text/xml
+      parameters:
+        - in: body
+          name: body
+          required: false
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /employees:
+    get:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          schema: {}
