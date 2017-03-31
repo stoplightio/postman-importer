@@ -30,7 +30,6 @@ describe('Raml10 to Raml10', () => {
 					if (target.types) result.types = target.types;
 					if (target.resourceTypes) result.resourceTypes = resourceTypeResult;
 					
-					console.log(result)
 					expect(result).to.deep.equal(target);
 					return done();
 				} catch (e) {
