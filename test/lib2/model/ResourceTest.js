@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
 const Raml10ResourceConverter = require('../../../lib/raml10/Raml10ResourceConverter');
+const Raml10ResourceTypeConverter = require('../../../lib/raml10/Raml10ResourceTypeConverter');
 const Oas20ResourceConverter = require('../../../lib/oas20/Oas20ResourceConverter');
 const YAML = require('js-yaml');
 const Raml = require('../../../lib/importers/baseraml');
@@ -17,16 +18,19 @@ describe('Raml10 to Raml10', () => {
 				try {
 					const source = YAML.safeLoad(fs.readFileSync(sourceFile, 'utf8'));
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
-					const raml10Converter = new Raml10ResourceConverter();
-					this.data = importer.data;
-					const models = raml10Converter.import(this.data.resources);
+					const raml10ResourceConverter = new Raml10ResourceConverter();
+					const raml10ResourceTypeConverter = new Raml10ResourceTypeConverter();
+					const models = raml10ResourceConverter.import(importer.data.resources);
+					const resourceTypeModels = raml10ResourceTypeConverter.import(importer.data.resourceTypes);
 					
-					let result = raml10Converter.export(models);
+					let result = raml10ResourceConverter.export(models);
+					let resourceTypeResult = raml10ResourceTypeConverter.export(resourceTypeModels);
 					result.title = source.title;
 					result.version = target.version;
 					if (target.types) result.types = target.types;
-					if (target.resourceTypes) result.resourceTypes = target.resourceTypes;
+					if (target.resourceTypes) result.resourceTypes = resourceTypeResult;
 					
+					console.log(result)
 					expect(result).to.deep.equal(target);
 					return done();
 				} catch (e) {
@@ -67,8 +71,7 @@ describe('Oas20 to Oas20', () => {
 					const source = YAML.safeLoad(fs.readFileSync(sourceFile, 'utf8'));
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
 					const oas20Converter = new Oas20ResourceConverter();
-					this.data = importer.data;
-					const models = oas20Converter.import(this.data.paths);
+					const models = oas20Converter.import(importer.data.paths);
 					
 					let result = {};
 					result.swagger = source.swagger;
@@ -117,8 +120,7 @@ describe('Raml10 to Oas20', () => {
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
 					const raml10Converter = new Raml10ResourceConverter();
 					const oas20Converter = new Oas20ResourceConverter();
-					this.data = importer.data;
-					const models = raml10Converter.import(this.data.resources);
+					const models = raml10Converter.import(importer.data.resources);
 					
 					let result = {};
 					result.swagger = '2.0';
@@ -170,8 +172,7 @@ describe('Oas20 to Raml10', () => {
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
 					const oas20Converter = new Oas20ResourceConverter();
 					const raml10Converter = new Raml10ResourceConverter();
-					this.data = importer.data;
-					const models = oas20Converter.import(this.data.paths);
+					const models = oas20Converter.import(importer.data.paths);
 					
 					const result = raml10Converter.export(models);
 					result.title = source.info.title;
