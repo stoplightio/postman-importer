@@ -9,7 +9,7 @@ const fs = require('fs');
 const Converter = require('../../../lib/model/converter');
 const fileHelper = require('../../../lib/utils/file');
 
-describe.skip('Raml10 to Raml10', () => {
+describe('Raml10 to Raml10', () => {
 	const testWithData = function (sourceFile, targetFile) {
 		return done => {
 			const importer = new Raml();
