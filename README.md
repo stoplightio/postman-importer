@@ -4,9 +4,9 @@ This package helps to convert between different API specifications. It was origi
 
 ## Supported Conversions (beta)
 
-- OAS (Swagger 2.0) -> RAML 1.0: [Complete Functional Specification](https://docs.google.com/a/tekgenesis.com/document/d/1LNDz9XrkfkPYILZwpgVytNs4WmLvNga81Ua4jdUWltk/view)
-- RAML 1.0 -> OAS (Swagger 2.0): [Complete Functional Specification](https://docs.google.com/a/tekgenesis.com/document/d/1UzRyR_46oc3bEyWoo3ONzfI7wWIH5LCVFxtJZLlvykY/view)
-- RAML 0.8 -> OAS (Swagger 2.0)
+- OAS (OAS 2.0) -> RAML 1.0: [Complete Functional Specification](https://docs.google.com/a/tekgenesis.com/document/d/1LNDz9XrkfkPYILZwpgVytNs4WmLvNga81Ua4jdUWltk/view)
+- RAML 1.0 -> OAS (OAS 2.0): [Complete Functional Specification](https://docs.google.com/a/tekgenesis.com/document/d/1UzRyR_46oc3bEyWoo3ONzfI7wWIH5LCVFxtJZLlvykY/view)
+- RAML 0.8 -> OAS (OAS 2.0)
 - RAML 0.8 -> RAML 1.0
 
 ## Using
@@ -17,14 +17,18 @@ For an online conversion, use: [https://mulesoft.github.io/oas-raml-converter](h
 
 ### 2. Command line tool
 
+This utility helps you converting local files from your command line.
+
 ```
 ./lib/bin/converter.js --from OAS --to RAML10 ./path/to/swagger.json
+./lib/bin/converter.js --from OAS --to RAML10 ./path/to/swagger.json > output.raml
 ```
 
 Or install globally and then:
 
 ```
 oas-raml-converter --from OAS --to RAML10 ./path/to/swagger.json
+oas-raml-converter --from OAS --to RAML10 ./path/to/swagger.json > output.raml
 ```
 
 ### 3. As a service
