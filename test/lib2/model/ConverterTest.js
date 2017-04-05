@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
-const Raml10DocumentRootConverter = require('../../../lib/raml10/Raml10DocumentRootConverter');
-const Oas20DocumentRootConverter = require('../../../lib/oas20/Oas20DocumentRootConverter');
+const Raml10Converter = require('../../../lib/raml10/Raml10Converter');
+const Oas20Converter = require('../../../lib/oas20/Oas20Converter');
 const YAML = require('js-yaml');
 const Oas = require('../../../lib/importers/swagger');
 const Raml = require('../../../lib/importers/baseraml');
@@ -17,7 +17,7 @@ describe('Raml10 to Raml10', () => {
 			promise.then(() => {
 				try {
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
-					const raml10Converter = new Raml10DocumentRootConverter();
+					const raml10Converter = new Raml10Converter();
 					this.data = importer.data;
 					const attrRemove = ['typePropertyKind'];
 					this.data = Converter.cleanObjectFrom(this.data, attrRemove);
@@ -39,7 +39,7 @@ describe('Raml10 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'documentRoot')) {
+		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'api')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 
@@ -63,13 +63,11 @@ describe('Oas20 to Oas20', () => {
 				try {
 					const source = YAML.safeLoad(fs.readFileSync(sourceFile, 'utf8'));
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
-					const oas20Converter = new Oas20DocumentRootConverter();
+					const oas20Converter = new Oas20Converter();
 					this.data = importer.data;
 					const model = oas20Converter.import(this.data);
 
 					const result = oas20Converter.export(model);
-					result.swagger = source.swagger;
-					result.paths = {};
 
 					expect(result).to.deep.equal(target);
 					return done();
@@ -86,7 +84,7 @@ describe('Oas20 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'documentRoot')) {
+		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'api')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 
@@ -109,16 +107,14 @@ describe('Raml10 to Oas20', () => {
 			promise.then(() => {
 				try {
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
-					const raml10Converter = new Raml10DocumentRootConverter();
-					const oas20Converter = new Oas20DocumentRootConverter();
+					const raml10Converter = new Raml10Converter();
+					const oas20Converter = new Oas20Converter();
 					this.data = importer.data;
 					const attrRemove = ['typePropertyKind'];
 					this.data = Converter.cleanObjectFrom(this.data, attrRemove);
 					const model = raml10Converter.import(this.data);
 
 					const result = oas20Converter.export(model);
-					result.swagger = '2.0';
-					result.paths = {};
 
 					expect(result).to.deep.equal(target);
 					return done();
@@ -135,7 +131,7 @@ describe('Raml10 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.')  && fileHelper.pathStartsWith(testFile, 'documentRoot')) {
+		if (!_.startsWith(testFile, '.')  && fileHelper.pathStartsWith(testFile, 'api')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 
@@ -158,8 +154,8 @@ describe('Oas20 to Raml10', () => {
 			promise.then(() => {
 				try {
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
-					const oas20Converter = new Oas20DocumentRootConverter();
-					const raml10Converter = new Raml10DocumentRootConverter();
+					const oas20Converter = new Oas20Converter();
+					const raml10Converter = new Raml10Converter();
 					this.data = importer.data;
 					const model = oas20Converter.import(this.data);
 
@@ -180,7 +176,7 @@ describe('Oas20 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'documentRoot')) {
+		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'api')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 
