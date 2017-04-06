@@ -80,7 +80,10 @@ describe('Oas20 to Oas20', () => {
 					const oas20TraitConverter = new Oas20TraitConverter();
 					const models = oas20ResourceConverter.import(importer.data.paths);
 					// const resourceTypeModels = oas20ResourceTypeConverter.import(importer.data.parameters);
-					const traitModels = oas20TraitConverter.import(importer.data.parameters);
+					const traitModels = oas20TraitConverter.import({
+						parameters: importer.data.parameters,
+						responses: importer.data.responses
+					});
 					const resourceResult = oas20ResourceConverter.export(models);
 					// const resourceTypeResult = oas20ResourceTypeConverter.export(resourceTypeModels);
 					const traitResult = oas20TraitConverter.export(traitModels);
@@ -90,7 +93,10 @@ describe('Oas20 to Oas20', () => {
 					result.info = source.info;
 					if (source.definitions) result.definitions = source.definitions;
 					result.paths = resourceResult;
-					if (!_.isEmpty(traitResult)) result.parameters = traitResult;
+					if (!_.isEmpty(traitResult)) {
+						result.parameters = traitResult.parameters;
+						result.responses = traitResult.responses;
+					}
 					
 					expect(result).to.deep.equal(target);
 					return done();
@@ -153,7 +159,10 @@ describe('Raml10 to Oas20', () => {
 					if (source.types) result.definitions = source.types;
 					result.paths = resourceResult;
 					// result.resourceTypes = resourceTypeResult;
-					if (!_.isEmpty(traitResult)) result.parameters = traitResult;
+					if (!_.isEmpty(traitResult)) {
+						result.parameters = traitResult.parameters;
+						result.responses = traitResult.responses;
+					}
 					
 					expect(result).to.deep.equal(target);
 					return done();
@@ -202,7 +211,10 @@ describe('Oas20 to Raml10', () => {
 					const raml10TraitConverter = new Raml10TraitConverter();
 					const models = oas20ResourceConverter.import(importer.data.paths);
 					// const resourceTypeModels = oas20ResourceTypeConverter.import(importer.data.resourceTypes);
-					const traitModels = oas20TraitConverter.import(importer.data.parameters);
+					const traitModels = oas20TraitConverter.import({
+						parameters: importer.data.parameters,
+						responses: importer.data.responses
+					});
 					const resourceResult = raml10ResourceConverter.export(models);
 					// const resourceTypeResult = raml10ResourceTypeConverter.export(resourceTypeModels);
 					const traitResult = raml10TraitConverter.export(traitModels);
