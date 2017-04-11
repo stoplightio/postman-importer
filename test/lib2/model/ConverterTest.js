@@ -61,7 +61,6 @@ describe('Oas20 to Oas20', () => {
 			const promise = importer.loadFile(sourceFile);
 			promise.then(() => {
 				try {
-					const source = YAML.safeLoad(fs.readFileSync(sourceFile, 'utf8'));
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
 					const oas20Converter = new Oas20Converter();
 					this.data = importer.data;

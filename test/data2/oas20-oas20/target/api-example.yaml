@@ -1,179 +1,180 @@
-swagger: '2.0'
 info:
   title: Swagger Sample App
   description: This is a sample server Petstore server.
-  termsOfService: http://swagger.io/terms/
+  termsOfService: 'http://swagger.io/terms/'
+  version: 1.0.1
   contact:
     name: API Support
-    url: http://www.swagger.io/support
+    url: 'http://www.swagger.io/support'
     email: support@swagger.io
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.1
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 securityDefinitions:
   oauth2:
+    description: my oauth 2.0 security scheme.
     type: oauth2
     flow: application
+    tokenUrl: 'https://api.dropbox.com/1/oauth2/token'
     scopes:
       'write:pets': ''
       'read:pets': ''
-    description: my oauth 2.0 security scheme.
-    tokenUrl: 'https://api.dropbox.com/1/oauth2/token'
   oauth22:
+    description: my oauth 2.0 security scheme. Version 2.
     type: oauth2
     flow: implicit
-    scopes: {}
-    description: my oauth 2.0 security scheme. Version 2.
     authorizationUrl: 'http://swagger2.io/api/oauth/dialog'
+    scopes: {}
   basicAuth:
-    type: basic
     description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
-  basicAuth2:
     type: basic
+  basicAuth2:
     description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2.
+    type: basic
   internalApiKey:
-    name: api_key
-    type: apiKey
-    in: header
     description: Api Key Authentication
-  internalApiKey2:
-    name: api_key2
     type: apiKey
     in: header
+    name: api_key
+  internalApiKey2:
     description: Api Key Authentication. Version 2.
+    type: apiKey
+    in: header
+    name: api_key2
   internalApiKey3:
-    name: api_key3
-    type: apiKey
-    in: query
     description: Api Key Authentication. Version 3.
-  internalApiKey4:
-    name: api_key4
     type: apiKey
     in: query
+    name: api_key3
+  internalApiKey4:
     description: Api Key Authentication. Version 4.
-definitions:
-  pet:
-    type: string
+    type: apiKey
+    in: query
+    name: api_key4
 paths:
   /names:
     get:
       consumes:
         - application/json
+      operationId: GET_names
+      responses:
+        default:
+          description: ''
+          schema: {}
       parameters:
         - in: body
-          name: body
           required: true
           schema:
             $ref: '#/definitions/pet'
-      responses:
-        default:
-          description: ''
-          schema: {}
+          name: body
   /lastnames:
     get:
-      operationId: GET_pets
-      parameters:
-        - in: query
-          name: age
-          required: true
-          type: integer
-        - description: pet´s name
-          in: query
-          name: name
-          type: string
-        - in: query
-          name: nickname
-          type: string
+      operationId: GET_lastnames
       responses:
         default:
           description: ''
           schema: {}
+      parameters:
+        - in: query
+          required: true
+          type: integer
+          name: age
+        - description: pet´s name
+          in: query
+          type: string
+          name: name
+        - in: query
+          type: string
+          name: nickname
   /nicknames:
     get:
       consumes:
         - text/xml
-      parameters:
-        - in: body
-          name: body
-          schema:
-            type: string
+      operationId: GET_nicknames
       responses:
         default:
           description: ''
           schema: {}
+      parameters:
+        - in: body
+          schema:
+            type: string
+          name: body
   /employees:
     get:
-      parameters:
-        - in: body
-          name: body
-          schema:
-            type: string
+      operationId: GET_employees
       responses:
         default:
           description: ''
           schema: {}
+      parameters:
+        - in: body
+          schema:
+            type: string
+          name: body
   /pets:
-      get:
-        produces:
-          - application/json
-        responses:
-          '200':
-            description: ''
-            schema: {}
-          '201':
-            description: ''
-            schema:
-              example: Dog
-          '202':
-            description: ''
-            schema:
-              example:
-                first: Dog
-                second: Cat
-          '203':
-            description: ''
-            schema:
-              example:
-                - first: Dog
-                - second: Cat
-          '204':
-            description: ''
-            schema:
-              example:
-                first: Dog
-          '205':
-            description: ''
-          '206':
-            description: ''
-            examples:
-              application/json: Dog
-          '207':
-            description: ''
-            examples:
-              application/json:
-                first: Dog
-                second: Cat
-          '208':
-            description: ''
-            examples:
-              application/json:
-                - first: Dog
-                - second: Cat
-          '209':
-            description: ''
-            examples:
-              application/json:
-                first: Dog
-          '210':
-            description: ''
-            examples:
-              application/json: Dog
-            schema:
-              type: object
-              example: Cat
+    get:
+      operationId: GET_pets
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema: {}
+        '201':
+          description: ''
+          schema:
+            example: Dog
+        '202':
+          description: ''
+          schema:
+            example:
+              first: Dog
+              second: Cat
+        '203':
+          description: ''
+          schema:
+            example:
+              - first: Dog
+              - second: Cat
+        '204':
+          description: ''
+          schema:
+            example:
+              first: Dog
+        '205':
+          description: ''
+        '206':
+          description: ''
+          examples:
+            application/json: Dog
+        '207':
+          description: ''
+          examples:
+            application/json:
+              first: Dog
+              second: Cat
+        '208':
+          description: ''
+          examples:
+            application/json:
+              - first: Dog
+              - second: Cat
+        '209':
+          description: ''
+          examples:
+            application/json:
+              first: Dog
+        '210':
+          description: ''
+          schema:
+            type: object
+            example: Cat
+          examples:
+            application/json: Dog
   '/pets/{id}':
     get:
+      operationId: GET_pets-id
       produces:
         - application/json
       responses:
@@ -183,16 +184,12 @@ paths:
             example: 10
     parameters:
       - in: path
-        name: id
         required: true
         type: string
+        name: id
   '/pets/{id}/name':
-    parameters:
-      - in: path
-        name: id
-        required: true
-        type: string
     get:
+      operationId: GET_pets-id-name
       produces:
         - application/json
       responses:
@@ -200,13 +197,14 @@ paths:
           description: ''
           schema:
             example: Robert
-  '/pets/{id}/nickname':
     parameters:
       - in: path
-        name: id
         required: true
         type: string
+        name: id
+  '/pets/{id}/nickname':
     get:
+      operationId: GET_pets-id-nickname
       produces:
         - application/json
       responses:
@@ -214,8 +212,14 @@ paths:
           description: ''
           schema:
             example: Bobby
+    parameters:
+      - in: path
+        required: true
+        type: string
+        name: id
   /pets/other:
     get:
+      operationId: GET_pets-other
       produces:
         - application/json
       responses:
@@ -225,21 +229,26 @@ paths:
             example: some example
   /employers:
     get:
+      operationId: GET_employers
+      responses:
+        default:
+          description: ''
+          schema: {}
       parameters:
         - description: Employee´s reviews
           in: header
           items:
             type: string
-          name: reviews
           required: true
           type: array
+          name: reviews
         - in: header
-          name: names
           type: string
+          name: names
         - in: header
-          name: ages
           type: integer
-      responses:
-        default:
-          description: ''
-          schema: {}
+          name: ages
+definitions:
+  pet:
+    type: string
+swagger: '2.0'
