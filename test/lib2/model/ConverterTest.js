@@ -8,6 +8,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const Converter = require('../../../lib/model/converter');
 const fileHelper = require('../../../lib/utils/file');
+const helper = require('../../../lib/helpers/converter');
 
 describe('Raml10 to Raml10', () => {
 	const testWithData = function (sourceFile, targetFile) {
@@ -19,8 +20,8 @@ describe('Raml10 to Raml10', () => {
 					const target = YAML.safeLoad(fs.readFileSync(targetFile, 'utf8'));
 					const raml10Converter = new Raml10Converter();
 					this.data = importer.data;
-					const attrRemove = ['typePropertyKind'];
-					this.data = Converter.cleanObjectFrom(this.data, attrRemove);
+					const attrRemove = ['typePropertyKind', 'structuredExample'];
+					helper.removePropertiesFromObject(this.data, attrRemove);
 					const model = raml10Converter.import(this.data);
 					const result = raml10Converter.export(model);
 
@@ -109,8 +110,8 @@ describe('Raml10 to Oas20', () => {
 					const raml10Converter = new Raml10Converter();
 					const oas20Converter = new Oas20Converter();
 					this.data = importer.data;
-					const attrRemove = ['typePropertyKind'];
-					this.data = Converter.cleanObjectFrom(this.data, attrRemove);
+					const attrRemove = ['typePropertyKind', 'structuredExample'];
+					helper.removePropertiesFromObject(this.data, attrRemove);
 					const model = raml10Converter.import(this.data);
 
 					const result = oas20Converter.export(model);

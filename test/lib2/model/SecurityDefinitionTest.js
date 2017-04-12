@@ -8,6 +8,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const Converter = require('../../../lib/model/converter');
 const fileHelper = require('../../../lib/utils/file');
+const helper = require('../../../lib/helpers/converter');
 
 describe('Raml10 to Raml10', () => {
 	const testWithData = function (sourceFile, targetFile) {
@@ -21,7 +22,7 @@ describe('Raml10 to Raml10', () => {
 					const raml10Converter = new Raml10SecurityDefinitionConverter();
 					this.data = importer.data;
 					const attrRemove = ['typePropertyKind'];
-					this.data.securitySchemes = Converter.cleanObjectFrom(this.data.securitySchemes, attrRemove);
+					helper.removePropertiesFromObject(this.data.securitySchemes, attrRemove)
 					const models = raml10Converter.import(this.data.securitySchemes);
 
 					const result = {};
@@ -121,7 +122,7 @@ describe('Raml10 to Oas20', () => {
 					const oas20Converter = new Oas20SecurityDefinitionConverter();
 					this.data = importer.data;
 					const attrRemove = ['typePropertyKind'];
-					this.data.securitySchemes = Converter.cleanObjectFrom(this.data.securitySchemes, attrRemove);
+					helper.removePropertiesFromObject(this.data.securitySchemes, attrRemove);
 					const models = raml10Converter.import(this.data.securitySchemes);
 
 					const result = {};
