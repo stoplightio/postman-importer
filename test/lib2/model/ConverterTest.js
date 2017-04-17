@@ -6,7 +6,6 @@ const Oas = require('../../../lib/importers/swagger');
 const Raml = require('../../../lib/importers/baseraml');
 const _ = require('lodash');
 const fs = require('fs');
-const Converter = require('../../../lib/model/converter');
 const fileHelper = require('../../../lib/utils/file');
 const helper = require('../../../lib/helpers/converter');
 
