@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '2.0'
+  version: '2.0.0'
   title: American Flights API
 host: mocksvc.mulesoft.com
 basePath: /mocks/21d01ac7-3cd8-4348-b8d0-2dc61f05bb92/api
@@ -8,65 +8,74 @@ schemes:
   - https
 paths:
   /flights:
-    post:
-      operationId: POST_flights
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          schema:
-            $ref: '#/definitions/Flight'
-      responses:
-        '201':
-          description: ''
     get:
       operationId: GET_flights
       produces:
         - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            example:
+              - id: 1
+                code: ER38sd
+                price: 400
+                departureDate: 2016/03/20
+                origin: MUA
+                destination: SFO
+                emptySeats: 2
+                plane:
+                  type: Boeing 737
+                  totalSeats: 150
+              - id: 2
+                code: ER45if
+                price: 345.99
+                departureDate: 2016/02/11
+                origin: MUA
+                destination: LAX
+                emptySeats: 52
+                plane:
+                  type: Boeing 777
+                  totalSeats: 300
+            $ref: '#/definitions/Flights'
       parameters:
-        - name: destination
-          in: query
-          required: true
-          enum:
+        - enum:
             - SFO
             - LAX
             - CLE
+          in: query
+          name: destination
+          required: true
           type: string
+    post:
+      operationId: POST_flights
+      produces:
+        - application/json
       responses:
-        '200':
+        '201':
           description: ''
           schema:
-            $ref: '#/definitions/Flights'
-  '/flights/{ID}':
-    parameters:
-      - name: ID
-        in: path
-        required: true
-        type: string
-    put:
-      operationId: PUT_flights-ID
+            example:
+              message: Flight added (but not really)
       consumes:
         - application/json
-      produces:
-        - application/json
       parameters:
-        - name: body
-          in: body
-          schema:
+        - schema:
+            example:
+              code: ER38sd
+              price: 400
+              departureDate: 2016/03/20
+              origin: MUA
+              destination: SFO
+              emptySeats: 2
+              plane:
+                type: Boeing 737
+                totalSeats: 150
             $ref: '#/definitions/Flight'
-      responses:
-        '200':
-          description: ''
-    delete:
-      operationId: DELETE_flights-ID
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: ''
+          in: body
+          name: body
+          required: true
+  '/flights/{ID}':
     get:
       operationId: GET_flights-ID
       produces:
@@ -75,7 +84,61 @@ paths:
         '200':
           description: ''
           schema:
+            example:
+              id: 1
+              code: ER38sd
+              price: 400
+              departureDate: 2016/03/20
+              origin: MUA
+              destination: SFO
+              emptySeats: 2
+              plane:
+                type: Boeing 737
+                totalSeats: 150
             $ref: '#/definitions/Flight'
+    delete:
+      operationId: DELETE_flights-ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            example:
+              message: Flight deleted (but not really)
+    put:
+      operationId: PUT_flights-ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            example:
+              message: Flight updated (but not really)
+      consumes:
+        - application/json
+      parameters:
+        - schema:
+            example:
+              code: ER38sd
+              price: 400
+              departureDate: 2016/03/20
+              origin: MUA
+              destination: SFO
+              emptySeats: 2
+              plane:
+                type: Boeing 737
+                totalSeats: 150
+            $ref: '#/definitions/Flight'
+          in: body
+          name: body
+          required: true
+    parameters:
+      - in: path
+        name: ID
+        required: true
+        type: string
 definitions:
   Flight:
     type: object

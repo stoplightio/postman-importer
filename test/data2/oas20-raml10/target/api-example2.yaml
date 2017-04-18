@@ -1,52 +1,12 @@
 #%RAML 1.0
-version: '2.0'
 title: Box
+version: '2.0'
 mediaType:
   - application/json
   - application/json
 protocols:
   - HTTPS
 baseUri: 'https://api.box.com'
-/orders:
-  post:
-    displayName: POST_orders
-    description: Places a new T-Shirt order
-    responses:
-      '200':
-        description: ''
-      '500':
-        description: ''
-    body:
-      application/json:
-        schema:
-          type: object
-          properties:
-            address1:
-              type: string
-            address2:
-              type: string
-            city:
-              type: string
-            country:
-              type: string
-            email:
-              format: email
-              type: string
-            name:
-              type: string
-            size:
-              enum:
-                - S
-                - M
-                - L
-                - XL
-                - XXL
-              type: string
-            stateOrProvince:
-              type: string
-            postalCode:
-              type: string
-        required: false
 types:
   NewTask:
     type: object
@@ -83,3 +43,42 @@ types:
     properties:
       prop:
         type: integer
+/orders:
+  post:
+    displayName: POST_orders
+    description: Places a new T-Shirt order
+    responses:
+      '200':
+        description: ''
+      '500':
+        description: ''
+    body:
+      application/json:
+        type: object
+        properties:
+          address1:
+            type: string
+          address2:
+            type: string
+          city:
+            type: string
+          country:
+            type: string
+          email:
+            format: email
+            type: string
+          name:
+            type: string
+          size:
+            enum:
+              - S
+              - M
+              - L
+              - XL
+              - XXL
+            type: string
+          stateOrProvince:
+            type: string
+          postalCode:
+            type: string
+        required: false
