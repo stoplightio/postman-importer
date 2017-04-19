@@ -2768,40 +2768,38 @@ swagger: "2.0"
 info:
   version: 1.0.0
   title: Definition names conversion example
-
 definitions:
     ResourceLink:
-        description: a description
-        type: object
-        properties:
-            href:
-              type: string
-            rel:
-              type: string
-              enum:
-                - self
-                - next
-                - prev
+      description: a description
+      type: object
+      properties:
+         href:
+           type: string
+         rel:
+           type: string
+           enum:
+            - self
+            - next
+            - prev
     Image[Link]:
-        type: object
-        properties:
-            href:
-              type: string
-            rel:
-              type: string
-              enum:
-                - SmallImage
-                - MediumImage
-                - LargeImage
+      type: object
+      properties:
+        href:
+          type: string
+        rel:
+          type: string
+          enum:
+            - SmallImage
+            - MediumImage
+            - LargeImage
     LinkUsage:
-        type: object
-        required:
-          - name
-        properties:
-          name:
-            type: string
-          usage:
-            $ref: "#/definitions/Image[Link]"
+      required:
+         - name
+      properties:
+	     name:
+	       type: string
+	     usage:
+	       $ref: "#/definitions/Image[Link]"
 paths: {}
 </pre>
 
@@ -2815,6 +2813,7 @@ version: 1.0.0
 types:
   ResourceLink:
     description: a description
+    type: object
     properties:
       href:
         type: string
@@ -2827,6 +2826,7 @@ types:
           - prev
         required: false
   Image_Link_:
+    type: object
     properties:
       href:
         type: string
@@ -3121,8 +3121,8 @@ types:
     <td>
 <pre>
 definitions:  Pet:    type: object    discriminator: petType    properties:      name:        type: string      petType:        type: string    required:    - name    - petType  Cat:    description: 
-       A representation of a cat    allOf:    - $ref: '#/definitions/Pet'    - type: object      properties:        huntingSkill:          type: string          description: The measured skill for hunting          default: lazy          enum:          - clueless          - lazy          - adventurous          - aggressive      required:      - huntingSkill  Dog:    description: 
-      A representation of a dog    allOf:    - $ref: '#/definitions/Pet'    - type: object      properties:        packSize:          type: integer          format: int32          description: the size of the pack the dog is from          default: 0          minimum: 0      required:      - packSize
+       A representation of a cat    allOf:    - $ref: '#/definitions/Pet'    - type: object      properties:        huntingSkill:          type: string          description: The measured ...          default: lazy          enum:          - clueless          - lazy          - adventurous          - aggressive      required:      - huntingSkill  Dog:    description: 
+      A representation of a dog    allOf:    - $ref: '#/definitions/Pet'    - type: object      properties:        packSize:          type: integer          format: int32          description: the size of ...          default: 0          minimum: 0      required:      - packSize
 </pre>
     </td>
     <td>
