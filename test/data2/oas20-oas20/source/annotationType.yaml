@@ -13,7 +13,26 @@ paths:
     x-annotation-experimental:
   /users:
     get:
+      consumes:
+        - application/json
       operationId: GET_users
+      parameters:
+        - in: header
+          name: header
+          required: true
+          type: string
+          x-annotation-something-header: some header
+        - in: body
+          name: body
+          required: true
+          x-annotation-redirectable: false
+          schema:
+            type: object
+        - in: query
+          name: age
+          required: true
+          type: integer
+          x-annotation-something-query: some query parameter
       responses:
         200:
           description: ''
@@ -22,4 +41,12 @@ paths:
     x-annotation-clearanceLevel:
       level: high
       signature: 230-ghtwvfrs1itr
+      x-annotation-something-cl: some
     x-annotation-meta-data: metadata
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        x-annotation-something-uri: some uri parameter

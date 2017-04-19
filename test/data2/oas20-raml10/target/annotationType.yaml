@@ -4,24 +4,49 @@ version: 1
 protocols:
   - HTTP
   - HTTPS
-baseUri:
-  value: http://www.example.com/api
-  (redirectable): true
+baseUri: http://www.example.com/api
 annotationTypes:
-  redirectable: any
+  something: any
+  something-uri: any
+  something-cl: any
+  something-query: any
+  something-header: any
   meta-data: any
-  clearanceLevel: any
+  redirectable: any
   deprecated: nil
+  experimental: nil
   feedbackRequested: any
+  clearanceLevel: any
+(something): something
+/groups:
+  (experimental):
 /users:
   (meta-data): metadata
   (clearanceLevel):
+    (something-cl): some
     level: high
     signature: 230-ghtwvfrs1itr
   get:
+    displayName: GET_users
     (deprecated):
     (feedbackRequested): Feedback committed!
-    displayName: GET_users
+    body:
+      application/json:
+        type: object
+        (redirectable): false
+    headers:
+      header:
+        type: string
+        (something-header): some header
+    queryParameters:
+      age:
+        type: integer
+        (something-query): some query parameter
     responses:
       200:
         description: ''
+  /{id}:
+    uriParameters:
+      id:
+        type: integer
+        (something-uri): some uri parameter

@@ -2,12 +2,13 @@
 title: Illustrating annotations
 version: 1
 protocols:
-  - http
-  - https
+  - HTTP
+  - HTTPS
 baseUri:
   value: http://www.example.com/api
   (redirectable): true
 annotationTypes:
+  something: string
   meta-data:
     displayName: meta data
     description: The metadata
@@ -35,15 +36,34 @@ annotationTypes:
         items:
           type: string
         required: false
+(something): something
 /groups:
   (experimental):
 /users:
   (meta-data): metadata
   (clearanceLevel):
+    (something): some
     level: high
     signature: 230-ghtwvfrs1itr
   get:
     (deprecated):
     (feedbackRequested): Feedback committed!
+    body:
+      application/json:
+        type: object
+        (redirectable): false
+    headers:
+      header:
+        type: string
+        (something): some header
+    queryParameters:
+      age:
+        type: integer
+        (something): some query parameter
     responses:
       200: {}
+  /{id}:
+    uriParameters:
+      id:
+        type: integer
+        (something): some uri parameter
