@@ -6,7 +6,6 @@ const Raml = require('../../../lib/importers/baseraml');
 const Oas = require('../../../lib/importers/swagger');
 const _ = require('lodash');
 const fs = require('fs');
-const fileHelper = require('../../../lib/utils/file');
 
 describe('Raml10 to Raml10', () => {
 	const testWithData = function (sourceFile, targetFile) {
@@ -35,7 +34,7 @@ describe('Raml10 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resource')) {
+		if (!_.startsWith(testFile, '.')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
@@ -77,7 +76,7 @@ describe('Oas20 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resource')) {
+		if (!_.startsWith(testFile, '.')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
@@ -120,7 +119,7 @@ describe('Raml10 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resource')) {
+		if (!_.startsWith(testFile, '.')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
@@ -163,7 +162,7 @@ describe('Oas20 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	
 	testFiles.forEach(function (testFile) {
-		if (!_.startsWith(testFile, '.') && fileHelper.pathStartsWith(testFile, 'resource')) {
+		if (!_.startsWith(testFile, '.')) {
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
