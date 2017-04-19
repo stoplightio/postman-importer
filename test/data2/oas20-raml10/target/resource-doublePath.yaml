@@ -1,0 +1,150 @@
+#%RAML 1.0
+title: American Flights API
+version: '2.0'
+protocols:
+  - HTTPS
+baseUri: 'https://mocksvc.mulesoft.com/mocks/21d01ac7-3cd8-4348-b8d0-2dc61f05bb92/api'
+types:
+  Flight:
+    example:
+      id: 1
+      code: ER38sd
+      price: 400
+      departureDate: 2016/03/20
+      origin: MUA
+      destination: SFO
+      emptySeats: 2
+      plane:
+        type: Boeing 737
+        totalSeats: 150
+    type: object
+    properties:
+      id:
+        type: integer
+        required: false
+      code:
+        type: string
+      price:
+        type: number
+      departureDate:
+        type: string
+      origin:
+        type: string
+      destination:
+        type: string
+      emptySeats:
+        type: integer
+      plane:
+        type: object
+        properties:
+          type:
+            type: string
+          totalSeats:
+            type: integer
+        required: false
+  Flights:
+    example:
+      - id: 1
+        code: ER38sd
+        price: 400
+        departureDate: 2016/03/20
+        origin: MUA
+        destination: SFO
+        emptySeats: 2
+        plane:
+          type: Boeing 737
+          totalSeats: 150
+      - id: 2
+        code: ER45if
+        price: 345.99
+        departureDate: 2016/02/11
+        origin: MUA
+        destination: LAX
+        emptySeats: 52
+        plane:
+          type: Boeing 777
+          totalSeats: 300
+    type: array
+    items:
+      $ref: '#/definitions/Flight'
+/flights:
+  post:
+    displayName: POST_flights
+    responses:
+      '201':
+        description: ''
+    body:
+      application/json:
+        type: Flight
+        required: false
+  get:
+    displayName: GET_flights
+    responses:
+      '200':
+        description: ''
+        body:
+          application/json:
+            type: Flights
+            required: false
+    queryParameters:
+      destination:
+        enum:
+          - SFO
+          - LAX
+          - CLE
+        type: string
+  '/{ID}':
+    /hola:
+      uriParameters:
+        ID:
+          type: string
+      put:
+        displayName: PUT_flights-ID
+        responses:
+          '200':
+            description: ''
+        body:
+          application/json:
+            type: Flight
+            required: false
+      delete:
+        displayName: DELETE_flights-ID
+        responses:
+          '200':
+            description: ''
+      get:
+        displayName: GET_flights-ID
+        responses:
+          '200':
+            description: ''
+            body:
+              application/json:
+                type: Flight
+                required: false
+      /chau:
+        uriParameters:
+          ID:
+            type: string
+        put:
+          displayName: PUT_flights-ID
+          responses:
+            '200':
+              description: ''
+          body:
+            application/json:
+              type: Flight
+              required: false
+        delete:
+          displayName: DELETE_flights-ID
+          responses:
+            '200':
+              description: ''
+        get:
+          displayName: GET_flights-ID
+          responses:
+            '200':
+              description: ''
+              body:
+                application/json:
+                  type: Flight
+                  required: false

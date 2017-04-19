@@ -162,28 +162,88 @@ types:
             - name: time
               type: timestamp
         type: ServiceSpec
-  '/{userName}':
-    '/{serviceName}':
-      uriParameters:
-        userName: {}
-        serviceName: {}
+  '/{userName}/{serviceName}':
+    uriParameters:
+      userName: {}
+      serviceName: {}
+    get:
+      description: >-
+        Get the schema of a service(with name serviceName) of a user (with name
+        userName).
+      responses:
+        '200':
+          body:
+            application/json:
+              example:
+                serviceName: HowHotIsLabs
+                userName: Bob
+                dataFields:
+                  - name: temp
+                    type: float
+                  - name: time
+                    type: timestamp
+              type: ServiceSchema
+        '404':
+          description: Not Found Error
+          body:
+            application/json:
+              example:
+                code: 404
+                message: Service WhereIsMyBallon is not found
+              type: Status
+        '500':
+          description: Internal Server Error
+          body:
+            application/json:
+              type: Status
+    delete:
+      description: Delete the service with name serviceName of a user with name userName.
+      responses:
+        '200':
+          body:
+            application/json:
+              type: Status
+        '401':
+          description: Unauthroized Error
+          body:
+            application/json:
+              example:
+                code: 401
+                message: 'Unauthorized: Unauthorized action'
+              type: Status
+        '404':
+          description: Not Found Error
+          body:
+            application/json:
+              example:
+                code: 404
+                message: Service WhereIsMyBallon is not found
+              type: Status
+        '500':
+          description: Internal Server Error
+          body:
+            application/json:
+              type: Status
+    /entry:
       get:
         description: >-
-          Get the schema of a service(with name serviceName) of a user (with
-          name userName).
+          Gets all data entries from a service(with name serviceName) of a
+          user(with name userName).
         responses:
           '200':
             body:
               application/json:
                 example:
-                  serviceName: HowHotIsLabs
-                  userName: Bob
-                  dataFields:
-                    - name: temp
-                      type: float
-                    - name: time
-                      type: timestamp
-                type: ServiceSchema
+                  - xval: 1
+                    yval: 2
+                  - xval: 2
+                    yval: 5
+                description: >-
+                  A list of data entries, each of which comprises a number of
+                  name-value mappings corresponding to the data fields
+                type: array
+                items:
+                  type: DataEntry
           '404':
             description: Not Found Error
             body:
@@ -198,7 +258,9 @@ types:
               application/json:
                 type: Status
       delete:
-        description: Delete the service with name serviceName of a user with name userName.
+        description: >-
+          Deletes all data entries from a service(with name serviceName) of a
+          user(with name userName).
         responses:
           '200':
             body:
@@ -225,48 +287,71 @@ types:
             body:
               application/json:
                 type: Status
-      /entry:
-        get:
+      post:
+        description: >-
+          Adds a single/list of data entry/entries to a service(with name
+          serviceName) of a user(with name userName). Responds with all data
+          entries of the service after the new addition.
+        responses:
+          '201':
+            body:
+              application/json:
+                type: array
+                items:
+                  type: DataEntry
+          '400':
+            description: Bad Request Error
+            body:
+              application/json:
+                example:
+                  code: 400
+                  message: >-
+                    Bad Request: The types sepcified do not match the type
+                    signature of the service HowHotIsLabs
+                type: Status
+          '401':
+            description: Unauthroized Error
+            body:
+              application/json:
+                example:
+                  code: 401
+                  message: 'Unauthorized: Unauthorized action'
+                type: Status
+          '404':
+            description: Not Found Error
+            body:
+              application/json:
+                example:
+                  code: 404
+                  message: Service WhereIsMyBallon is not found
+                type: Status
+          '500':
+            description: Internal Server Error
+            body:
+              application/json:
+                example:
+                  code: 500
+                  message: Internal Server Error
+                type: Status
+        body:
+          application/json:
+            type: array
+            items:
+              type: DataEntry
+      '/{id}':
+        uriParameters:
+          id: {}
+        delete:
           description: >-
-            Gets all data entries from a service(with name serviceName) of a
-            user(with name userName).
+            Deletes a single data entry by id. Responds with all data entries of
+            the service after the deletion
           responses:
-            '200':
+            '201':
               body:
                 application/json:
-                  example:
-                    - xval: 1
-                      yval: 2
-                    - xval: 2
-                      yval: 5
-                  description: >-
-                    A list of data entries, each of which comprises a number of
-                    name-value mappings corresponding to the data fields
                   type: array
                   items:
                     type: DataEntry
-            '404':
-              description: Not Found Error
-              body:
-                application/json:
-                  example:
-                    code: 404
-                    message: Service WhereIsMyBallon is not found
-                  type: Status
-            '500':
-              description: Internal Server Error
-              body:
-                application/json:
-                  type: Status
-        delete:
-          description: >-
-            Deletes all data entries from a service(with name serviceName) of a
-            user(with name userName).
-          responses:
-            '200':
-              body:
-                application/json:
-                  type: Status
             '401':
               description: Unauthroized Error
               body:
@@ -287,14 +372,16 @@ types:
               description: Internal Server Error
               body:
                 application/json:
+                  example:
+                    code: 500
+                    message: Internal Server Error
                   type: Status
-        post:
+        put:
           description: >-
-            Adds a single/list of data entry/entries to a service(with name
-            serviceName) of a user(with name userName). Responds with all data
-            entries of the service after the new addition.
+            Updates a single data entry by id. Responds with all data entries of
+            the service after the update.
           responses:
-            '201':
+            '200':
               body:
                 application/json:
                   type: array
@@ -336,92 +423,4 @@ types:
                   type: Status
           body:
             application/json:
-              type: array
-              items:
-                type: DataEntry
-        '/{id}':
-          uriParameters:
-            id: {}
-          delete:
-            description: >-
-              Deletes a single data entry by id. Responds with all data entries
-              of the service after the deletion
-            responses:
-              '201':
-                body:
-                  application/json:
-                    type: array
-                    items:
-                      type: DataEntry
-              '401':
-                description: Unauthroized Error
-                body:
-                  application/json:
-                    example:
-                      code: 401
-                      message: 'Unauthorized: Unauthorized action'
-                    type: Status
-              '404':
-                description: Not Found Error
-                body:
-                  application/json:
-                    example:
-                      code: 404
-                      message: Service WhereIsMyBallon is not found
-                    type: Status
-              '500':
-                description: Internal Server Error
-                body:
-                  application/json:
-                    example:
-                      code: 500
-                      message: Internal Server Error
-                    type: Status
-          put:
-            description: >-
-              Updates a single data entry by id. Responds with all data entries
-              of the service after the update.
-            responses:
-              '200':
-                body:
-                  application/json:
-                    type: array
-                    items:
-                      type: DataEntry
-              '400':
-                description: Bad Request Error
-                body:
-                  application/json:
-                    example:
-                      code: 400
-                      message: >-
-                        Bad Request: The types sepcified do not match the type
-                        signature of the service HowHotIsLabs
-                    type: Status
-              '401':
-                description: Unauthroized Error
-                body:
-                  application/json:
-                    example:
-                      code: 401
-                      message: 'Unauthorized: Unauthorized action'
-                    type: Status
-              '404':
-                description: Not Found Error
-                body:
-                  application/json:
-                    example:
-                      code: 404
-                      message: Service WhereIsMyBallon is not found
-                    type: Status
-              '500':
-                description: Internal Server Error
-                body:
-                  application/json:
-                    example:
-                      code: 500
-                      message: Internal Server Error
-                    type: Status
-            body:
-              application/json:
-                type: DataEntry
+              type: DataEntry

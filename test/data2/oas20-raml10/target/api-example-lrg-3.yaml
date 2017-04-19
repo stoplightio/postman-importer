@@ -1,0 +1,499 @@
+#%RAML 1.0
+title: DataCamelDataServiceAPI
+version: 0.0.1
+
+/types:
+  get:
+    description: Gets a list of types supported by the service API.
+
+    responses:
+      200:
+        body:
+          application/json:
+            type: SupportedType[]
+            example: |
+              [
+                "integer",
+                "float",
+                "location",
+                "timestamp",
+                "string"
+              ]
+      500:
+        body:
+          application/json:
+            type: Status
+            example: |
+              {
+                "code": 500,
+                "message": "Internal Server Error"
+              }
+/service:
+  post:
+    description: Creates a new service
+
+    body:
+      application/json:
+        type: ServiceSpec
+        example: |
+          {
+            "serviceName": "HowHotIsLabs",
+            "userName": "Bob",
+            "accessToken": "a41c5ed0ff6a",
+            "dataFields": [
+              {
+                "name": "temp",
+                "type": "float"
+              },
+              {
+                "name": "time",
+                "type": "timestamp"
+              }
+            ]
+          }
+
+    responses:
+      201:
+        body:
+          application/json:
+            type: Status
+            example: |
+              {
+                "code": 201,
+                "message": "Successfully created"
+              }
+      400:
+        description: Bad Request Error
+        body:
+          application/json:
+            type: Status
+            example: |
+              {
+                "code": 400,
+                "message": "Bad Request: Type cake is not supported"
+              }
+
+      401:
+       description: Unauthroized Error
+       body:
+         application/json:
+           type: Status
+           example: |
+             {
+                "code": 401,
+                "message": "Unauthorized: Unauthorized action"
+             }
+
+      500:
+        description: Internal Server Error
+        body:
+          application/json:
+            type: Status
+            example: |
+              {
+                "code": 500,
+                "message": "Internal Server Error"
+              }
+
+  /{userName}/{serviceName}:
+    get:
+      description: Get the schema of a service(with name serviceName) of a user (with name userName).
+
+      responses:
+        200:
+          body:
+            application/json:
+              type: ServiceSchema
+              example: |
+                {
+                  "serviceName": "HowHotIsLabs",
+                  "userName": "Bob",
+                  "dataFields":
+                    [
+                     {
+                      "name": "temp",
+                      "type": "float"
+                     },
+                     {
+                      "name": "time",
+                      "type": "timestamp"
+                     }
+                    ]
+                }
+        404:
+          description: Not Found Error
+          body:
+            application/json:
+              type: Status
+              example: |
+                {
+                  "code": 404,
+                  "message": "Service WhereIsMyBallon is not found"
+                }
+
+        500:
+          description: Internal Server Error
+          body:
+            application/json:
+              type: Status
+
+    delete:
+      description: Delete the service with name serviceName of a user with name userName.
+
+      responses:
+        200:
+          body:
+            application/json:
+              type: Status
+
+        401:
+         description: Unauthroized Error
+         body:
+           application/json:
+             type: Status
+             example: |
+               {
+                  "code": 401,
+                  "message": "Unauthorized: Unauthorized action"
+               }
+
+        404:
+          description: Not Found Error
+          body:
+            application/json:
+              type: Status
+              example: |
+                {
+                  "code": 404,
+                  "message": "Service WhereIsMyBallon is not found"
+                }
+
+        500:
+          description: Internal Server Error
+          body:
+            application/json:
+              type: Status
+
+    /entry:
+      get:
+        description: Gets all data entries from a service(with name serviceName) of a user(with name userName).
+        responses:
+          200:
+            body:
+              application/json:
+                description: A list of data entries, each of which comprises a number of name-value mappings corresponding
+                  to the data fields
+                type: DataEntry[]
+                example: |
+                  [
+                    {
+                      "xval": 1,
+                      "yval": 2
+                    },
+                    {
+                      "xval": 2,
+                      "yval": 5
+                    }
+                  ]
+
+          404:
+            description: Not Found Error
+            body:
+              application/json:
+                type: Status
+                example: |
+                  {
+                    "code": 404,
+                    "message": "Service WhereIsMyBallon is not found"
+                  }
+
+          500:
+            description: Internal Server Error
+            body:
+              application/json:
+                type: Status
+
+      delete:
+        description: Deletes all data entries from a service(with name serviceName) of a user(with name userName).
+
+        responses:
+          200:
+            body:
+              application/json:
+                type: Status
+
+          401:
+           description: Unauthroized Error
+           body:
+             application/json:
+               type: Status
+               example: |
+                 {
+                    "code": 401,
+                    "message": "Unauthorized: Unauthorized action"
+                 }
+
+          404:
+            description: Not Found Error
+            body:
+              application/json:
+                type: Status
+                example: |
+                  {
+                    "code": 404,
+                    "message": "Service WhereIsMyBallon is not found"
+                  }
+
+          500:
+            description: Internal Server Error
+            body:
+              application/json:
+                type: Status
+
+      post:
+        description: Adds a single/list of data entry/entries to a service(with name serviceName) of a user(with name userName).
+          Responds with all data entries of the service after the new addition.
+
+        body:
+          application/json:
+            type: DataEntry[]
+
+        responses:
+          201:
+            body:
+              application/json:
+                type: DataEntry[]
+
+          400:
+            description: Bad Request Error
+            body:
+              application/json:
+                type: Status
+                example: |
+                  {
+                    "code": 400,
+                    "message":
+                      "Bad Request: The types sepcified do not match the type signature of the service HowHotIsLabs"
+                  }
+          404:
+            description: Not Found Error
+            body:
+              application/json:
+                type: Status
+                example: |
+                  {
+                    "code": 404,
+                    "message": "Service WhereIsMyBallon is not found"
+                  }
+
+          401:
+           description: Unauthroized Error
+           body:
+             application/json:
+               type: Status
+               example: |
+                 {
+                    "code": 401,
+                    "message": "Unauthorized: Unauthorized action"
+                 }
+
+          500:
+            description: Internal Server Error
+            body:
+              application/json:
+                type: Status
+                example: |
+                  {
+                    "code": 500,
+                    "message": "Internal Server Error"
+                  }
+
+
+
+      /{id}:
+        delete:
+          description: Deletes a single data entry by id.
+            Responds with all data entries of the service after the deletion
+
+          responses:
+            201:
+              body:
+                application/json:
+                  type: DataEntry[]
+
+
+            404:
+              description: Not Found Error
+              body:
+                application/json:
+                  type: Status
+                  example: |
+                    {
+                      "code": 404,
+                      "message": "Service WhereIsMyBallon is not found"
+                    }
+
+            401:
+              description: Unauthroized Error
+              body:
+                application/json:
+                  type: Status
+                  example: |
+                    {
+                      "code": 401,
+                      "message": "Unauthorized: Unauthorized action"
+                    }
+
+            500:
+              description: Internal Server Error
+              body:
+                application/json:
+                  type: Status
+                  example: |
+                    {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+
+        put:
+          description: Updates a single data entry by id.
+            Responds with all data entries of the service after the update.
+
+          body:
+            application/json:
+              type: DataEntry
+
+          responses:
+            200:
+              body:
+                application/json:
+                  type: DataEntry[]
+            400:
+              description: Bad Request Error
+              body:
+                application/json:
+                  type: Status
+                  example: |
+                    {
+                      "code": 400,
+                      "message":
+                        "Bad Request: The types sepcified do not match the type signature of the service HowHotIsLabs"
+                    }
+            404:
+              description: Not Found Error
+              body:
+                application/json:
+                  type: Status
+                  example: |
+                    {
+                      "code": 404,
+                      "message": "Service WhereIsMyBallon is not found"
+                    }
+
+            401:
+              description: Unauthroized Error
+              body:
+               application/json:
+                 type: Status
+                 example: |
+                   {
+                      "code": 401,
+                      "message": "Unauthorized: Unauthorized action"
+                   }
+
+            500:
+              description: Internal Server Error
+              body:
+                application/json:
+                  type: Status
+                  example: |
+                    {
+                      "code": 500,
+                      "message": "Internal Server Error"
+                    }
+types:
+  DataField:
+    description: A single data field(column) with specified field name and field type
+    type: object
+    properties:
+      name: string
+      type: string
+
+  ServiceSpec:
+    type: object
+    properties:
+      serviceName: string
+      userName: string
+      accessToken: string
+      dataFields: DataField[]
+
+  ServiceSchema:
+    description: Same as ServiceSpec but without accessToken.
+    type: object
+    properties:
+      serviceName: string
+      userName: string
+      dataFields: DataField[]
+
+  DataEntry:
+    description: A single data entry(row) with any number of field-name, field-value pairs
+    type: object
+    properties:
+        //:
+          type: Integer | Float | Location | Timestamp | String
+
+    example: |
+      {
+       "temp": 20.5,
+       "time": 12565
+      }
+
+  Status:
+    description: The status code and message of the response after serving a request
+    type: object
+    properties:
+      code: integer
+      message: string
+
+  SupportedType:
+    description: Information (string) about various data types supported by the system
+    type: string
+    enum: ["integer", "string", "location", "timestamp", "float"]
+
+  #Supported Input Data Types
+  Integer:
+    description: 8-byte signed integer
+    type: integer
+    format: int64
+
+  Float:
+    description: 8-byte double precision floating-point
+    type: number
+    format: double
+
+  Location:
+    description: Signed degrees format
+      Signed degrees format (DDD.dddd)
+
+      A latitude or longitude with 8 decimal places pinpoints a location to within 1 millimeter,( 1/16 inch).
+
+      Precede South latitudes and West longitudes with a minus sign.
+      Latitudes range from -90 to 90.
+      Longitudes range from -180 to 180.
+
+      41.25,-120.9762
+      -31.96,115.84
+      90,0 (North Pole)
+    type: string
+    pattern: ^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$
+
+  Timestamp:
+    description: UNIX timestamp in milliseconds since 1970. (8 bytes)
+    type: integer
+    format: int64
+
+  String:
+    description: At least one and up to 160 characters
+    type: string
+    minLength: 1
+    maxLength: 160
