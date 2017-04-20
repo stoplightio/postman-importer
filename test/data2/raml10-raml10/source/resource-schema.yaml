@@ -1,0 +1,147 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+schemas:
+  Pet: |
+    {
+      "type": "string"
+    }
+  Bottle: |
+    {
+      "id": "Bottle",
+      "title": "Bottle",
+      "type": "object",
+      "properties": {
+        "bottleUid": {
+          "type": "string"
+        },
+        "isActive": {
+          "type": "boolean"
+        },
+        "remindersActive": {
+          "type": "boolean"
+        },
+        "onBottleLights": {
+          "type": "boolean"
+        },
+        "onBottleSounds": {
+          "type": "boolean"
+        },
+        "doseOne": {
+          "type": "string"
+        },
+        "doseTwo": {
+          "type": "string"
+        },
+        "doseThree": {
+          "type": "string"
+        },
+        "feedbackActive": {
+          "type": "boolean"
+        },
+        "patientUid": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bottleUid"
+      ]
+    }
+/bottles:
+  /{bottleUid}:
+    uriParameters:
+      bottleUid:
+        description: Bottle UID
+        type: string
+        required: true
+        displayName: bottleUid
+    get:
+      displayName: getBottle
+      description: Get a bottle by its UID.
+      responses:
+        200:
+          description: Bottle found and returned
+          body:
+            application/json:
+              schema: Bottle
+        404:
+          description: Bottle not found.
+    put:
+
+      displayName: updateBottle
+      description: Modify a bottle by its UID.
+      responses:
+        200:
+          description: Bottle found and modified.
+        404:
+          description: Bottle not found.
+        405:
+          description: Validation exception.
+  get:
+    displayName: getBottlesByValues
+    description: Get a list of bottles filtered by status and/or patient(s).
+    responses:
+      200:
+        description: Query completed; results returned.
+        body:
+          application/json:
+            schema: Bottle
+      400:
+        description: Incomplete or invalid pagination or sort parameters.
+      405:
+        description: Validation exception.
+    queryParameters:
+      isActive:
+        description: Flag that indicates if bottle is active.
+        type: boolean
+        required: true
+        displayName: isActive
+      remindersActive:
+        description: Flag that indicates if reminders are active.
+        type: boolean
+        required: true
+        displayName: remindersActive
+      onBottleLights:
+        description: Flag that indicates if visual alarms are active.
+        type: boolean
+        required: true
+        displayName: onBottleLights
+      onBottleSounds:
+        description: Flag that indicates if auditory alarms are active.
+        type: boolean
+        required: true
+        displayName: onBottleSounds
+      feedbackActive:
+        description: Flag that indicates if feedback requests are active.
+        type: boolean
+        required: true
+        displayName: feedbackActive
+      patientUid:
+        description: The ID of the patient using this bottle.
+        type: integer
+        required: true
+        displayName: patientUid
+      page:
+        description: Current front-end page number; required for pagination.
+        type: integer
+        required: true
+        displayName: page
+      itemsPerPage:
+        description: Current front-end items per page value; required for pagination.
+        type: integer
+        required: true
+        displayName: itemsPerPage
+      sort:
+        description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'uid' ascending as default.
+        type: string
+        required: true
+        displayName: sort
+/employees:
+  get:
+    body:
+      application/json:
+        type: Pet
+      text/xml:
+        type: boolean
+      application/xml:
+        type: string
