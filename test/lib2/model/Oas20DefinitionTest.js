@@ -5,56 +5,55 @@ const Oas20DefinitionConverter = require('../../../lib/oas20/Oas20DefinitionConv
 const YAML = require('js-yaml');
 const fs = require('fs');
 const _ = require('lodash');
+const jsonHelper = require('../../../lib/utils/json');
 
 describe('Oas Definition Test', () => {
-	let data;
-	const filePath = __dirname + '/../../data2/definition/oas/oas.yaml';
 
-	beforeEach(done =>  {
+	it('should be able to convert a simple definition', done => {
+
+		const filePath = __dirname + '/../../data2/definition/oas/oas.yaml';
 		const importer = new Oas();
 		const promise = importer.loadFile(filePath);
 		promise.then(() => {
-			this.data = importer.data;
+			const data = importer.data;
+
+			//import
+			const oas20Definitions = new Oas20DefinitionConverter();
+			const models = oas20Definitions.import(data.definitions);
+
+			const modelPet = models.pet;
+			expect(modelPet.type).to.be.equal('string');
+			expect(modelPet.reference).to.be.empty;
+			expect(modelPet.properties).to.be.empty;
+
+			const modelDog = models.dog;
+			expect(modelDog.type).to.be.empty;
+			expect(modelDog.reference).to.be.equal('pet');
+			expect(modelDog.properties).to.be.empty;
+
+			const modelCat = models.cat;
+			expect(modelCat.reference).to.be.empty;
+			expect(modelCat.type).to.be.equal('object');
+			expect(modelCat.properties).not.to.be.empty;
+			expect(modelCat.properties.a.type).to.be.equal('string');
+			expect(modelCat.properties.a.reference).to.be.empty;
+			expect(modelCat.properties.b.type).to.be.empty;
+			expect(modelCat.properties.b.reference).to.be.equal('dog');
+			expect(modelCat.propsRequired).not.to.be.empty;
+			expect(modelCat.propsRequired[0]).to.be.equals('a');
+
+			//export
+
+			const defs = oas20Definitions.export(models);
+			expect(YAML.safeLoad(YAML.safeDump(defs))).to.deep.equal(YAML.safeLoad(YAML.safeDump(data.definitions)));
+
 			return done();
 		}).catch(err => {
 			console.log(err);
 			return done(err);
 		});
-	});
 
-	it('should be able to convert a simple definition', done => {
 
-		//import
-		const oas20Definitions = new Oas20DefinitionConverter();
-		const models = oas20Definitions.import(this.data.definitions);
-
-		const modelPet = models.pet;
-		expect(modelPet.type).to.be.equal('string');
-		expect(modelPet.reference).to.be.empty;
-		expect(modelPet.properties).to.be.empty;
-
-		const modelDog = models.dog;
-		expect(modelDog.type).to.be.empty;
-		expect(modelDog.reference).to.be.equal('pet');
-		expect(modelDog.properties).to.be.empty;
-
-		const modelCat = models.cat;
-		expect(modelCat.reference).to.be.empty;
-		expect(modelCat.type).to.be.equal('object');
-		expect(modelCat.properties).not.to.be.empty;
-		expect(modelCat.properties.a.type).to.be.equal('string');
-		expect(modelCat.properties.a.reference).to.be.empty;
-		expect(modelCat.properties.b.type).to.be.empty;
-		expect(modelCat.properties.b.reference).to.be.equal('dog');
-		expect(modelCat.propsRequired).not.to.be.empty;
-		expect(modelCat.propsRequired[0]).to.be.equals('a');
-
-		//export
-
-		const defs = oas20Definitions.export(models);
-		expect(YAML.safeLoad(YAML.safeDump(defs))).to.deep.equal(YAML.safeLoad(YAML.safeDump(this.data.definitions)));
-
-		done();
 	});
 });
 
@@ -66,6 +65,8 @@ describe('from oas to model to oas', () => {
 			promise.then(() => {
 				try {
 					const data = importer.data;
+
+					if (_.isEmpty(data.definitions)) return done();
 
 					const result = {};
 					result.swagger = '2.0';
@@ -80,19 +81,9 @@ describe('from oas to model to oas', () => {
 					const models = oas20Definition.import(data.definitions);
 					result.definitions = oas20Definition.export(models);
 
-					//validate if oasData is valid.
-					try {
-						const promise2 = importer.loadData(JSON.stringify(result));
-						promise2
-							.then(() => {
-								return done();
-							})
-							.catch(err => {
-								return done(err);
-							});
-					} catch (e) {
-						return done(e);
-					}
+					// expect(YAML.safeLoad(YAML.safeDump(result.definitions))).to.deep.equal(YAML.safeLoad(YAML.safeDump(data.definitions)));
+					expect(YAML.safeLoad(YAML.dump(jsonHelper.parse(JSON.stringify(result.definitions))))).to.deep.equal(YAML.safeLoad(YAML.dump(jsonHelper.parse(JSON.stringify(data.definitions)))));
+					return done();
 				}
 				catch (e) {
 					return done(e);

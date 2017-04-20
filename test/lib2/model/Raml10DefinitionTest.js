@@ -23,31 +23,22 @@ function removePropertyFromObject(object, propName) {
 
 describe('Raml10 Definition Test', () => {
 	const filePath = __dirname + '/../../data2/definition/raml10/raml10.yaml';
-	let data;
 
-	beforeEach((done) =>  {
+	it('should be able to convert a simple definition', done => {
+
 		const importer = new Raml();
 		const promise = importer.loadFile(filePath);
 		promise.then(() => {
-			this.data = importer.data;
+			const data = importer.data;
 			removePropertyFromObject(this.data, 'typePropertyKind');
-			return done();
-		}).catch(err => {
-			console.log(err);
-			return done(err);
-		});
-	});
-
-	describe('convert definition', () => {
-		it('should be able to convert a simple definition', done => {
 
 			//import
-			const originalPet = this.data.types[0].pet;
-			const originalDog = this.data.types[1].dog;
-			const originalCat = this.data.types[2].cat;
+			const originalPet = data.types[0].pet;
+			const originalDog = data.types[1].dog;
+			const originalCat = data.types[2].cat;
 
 			const raml10DefinitionConverter = new Raml10DefinitionConverter();
-			const models = raml10DefinitionConverter.import(this.data.types);
+			const models = raml10DefinitionConverter.import(data.types);
 			const modelPet = models.pet;
 			expect(modelPet.type).to.be.equal('string');
 			expect(modelPet.reference).to.be.empty;
@@ -67,13 +58,10 @@ describe('Raml10 Definition Test', () => {
 			expect(modelCat.propsRequired).not.to.be.empty;
 			expect(modelCat.propsRequired[0]).to.be.equals('a');
 
-			//export
-			const ramlDefs = raml10DefinitionConverter.export(models);
-			expect(YAML.safeLoad(YAML.safeDump(ramlDefs.pet))).to.deep.equal(YAML.safeLoad(YAML.safeDump(this.data.types[0].pet)));
-			expect(YAML.safeLoad(YAML.safeDump(ramlDefs.dog))).to.deep.equal(YAML.safeLoad(YAML.safeDump(this.data.types[1].dog)));
-			expect(YAML.safeLoad(YAML.safeDump(ramlDefs.cat))).to.deep.equal(YAML.safeLoad(YAML.safeDump(this.data.types[2].cat)));
-
-			done();
+			return done();
+		}).catch(err => {
+			console.log(err);
+			return done(err);
 		});
 	});
 });
@@ -91,12 +79,13 @@ describe('from raml to model to raml', () => {
 					removePropertyFromObject(data, 'structuredExample');
 					removePropertyFromObject(data, 'fixedFacets');
 
-					result.title = 'title';
 					result.types = {};
 					const raml10DefinitionConverter = new Raml10DefinitionConverter();
 
 					const models = raml10DefinitionConverter.import(data.types)
 					result.types = raml10DefinitionConverter.export(models);
+
+					// expect(YAML.safeLoad(YAML.safeDump(result.types))).to.deep.equal(YAML.safeLoad(fs.readFileSync(sourceFile, 'utf8')).types);
 
 					//validate if ramlData is valid.
 					try {
