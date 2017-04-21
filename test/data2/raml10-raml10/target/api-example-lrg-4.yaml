@@ -5,6 +5,8 @@ documentation:
 - title: AdhereTech External API
   content: An API designed to expose AdhereTech server's data to clients and other services.
 baseUri: https://example.com/api/v1
+protocols:
+  - HTTPS
 securitySchemes:
   auth:
     type: Basic Authentication
@@ -792,7 +794,6 @@ schemas:
       bottleUid:
         description: Bottle UID
         type: string
-        required: true
         displayName: bottleUid
     get:
       securedBy:
@@ -804,7 +805,7 @@ schemas:
           description: Bottle found and returned
           body:
             application/json:
-              schema: Bottle
+              type: Bottle
         404:
           description: Bottle not found.
     put:
@@ -829,7 +830,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: Bottle-array
+            type: Bottle-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -838,47 +839,38 @@ schemas:
       isActive:
         description: Flag that indicates if bottle is active.
         type: boolean
-        required: true
         displayName: isActive
       remindersActive:
         description: Flag that indicates if reminders are active.
         type: boolean
-        required: true
         displayName: remindersActive
       onBottleLights:
         description: Flag that indicates if visual alarms are active.
         type: boolean
-        required: true
         displayName: onBottleLights
       onBottleSounds:
         description: Flag that indicates if auditory alarms are active.
         type: boolean
-        required: true
         displayName: onBottleSounds
       feedbackActive:
         description: Flag that indicates if feedback requests are active.
         type: boolean
-        required: true
         displayName: feedbackActive
       patientUid:
         description: The ID of the patient using this bottle.
         type: integer
-        required: true
         displayName: patientUid
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'uid' ascending as default.
         type: string
-        required: true
         displayName: sort
 /patients:
   /{patientUid}:
@@ -886,7 +878,6 @@ schemas:
       patientUid:
         description: Patient UID
         type: string
-        required: true
         displayName: patientUid
     /disenroll:
       post:
@@ -933,7 +924,6 @@ schemas:
           feedbackId:
             description: Feedback request ID
             type: integer
-            required: true
             displayName: feedbackId
         get:
           securedBy:
@@ -945,7 +935,7 @@ schemas:
               description: Feedback request found and returned
               body:
                 application/json:
-                  schema: FeedbackRequest
+                  type: FeedbackRequest
             404:
               description: Feedback request not found.
         put:
@@ -978,7 +968,7 @@ schemas:
             description: Query completed; results returned.
             body:
               application/json:
-                schema: FeedbackRequest-array
+                type: FeedbackRequest-array
           400:
             description: Incomplete or invalid pagination or sort parameters.
           405:
@@ -987,17 +977,14 @@ schemas:
           page:
             description: Current front-end page number; required for pagination.
             type: integer
-            required: true
             displayName: page
           itemsPerPage:
             description: Current front-end items per page value; required for pagination.
             type: integer
-            required: true
             displayName: itemsPerPage
           sort:
             description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'timesent' descending as default.
             type: string
-            required: true
             displayName: sort
       post:
         securedBy:
@@ -1029,7 +1016,7 @@ schemas:
           description: Patient found and returned.
           body:
             application/json:
-              schema: Patient
+              type: Patient
         404:
           description: Patient not found.
     put:
@@ -1062,7 +1049,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: Patient-array
+            type: Patient-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -1071,47 +1058,38 @@ schemas:
       firstName:
         description: Patient's first name.
         type: string
-        required: true
         displayName: firstName
       lastName:
         description: Patient's last name.
         type: string
-        required: true
         displayName: lastName
       phoneNumber:
         description: Patient's phone number.
         type: string
-        required: true
         displayName: phoneNumber
       programName:
         description: A string to search within the program's name.
         type: string
-        required: true
         displayName: programName
       contactMethod:
         description: The contact method used to reach the patient (phone, sms or email).
         type: string
-        required: true
         displayName: contactMethod
       emailAddress:
         description: Patient's email address.
         type: string
-        required: true
         displayName: emailAddress
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'uid' ascending as default.
         type: string
-        required: true
         displayName: sort
   post:
     securedBy:
@@ -1129,7 +1107,6 @@ schemas:
       bottleUids,:
         description: Comma separated list of bottleUids for this bottle. Removing from this list will remove it from the patient. Adding bottles must be done through Bottle endpoint
         type: string
-        required: true
         displayName: bottleUids,
 /programs:
   /{programName}:
@@ -1137,7 +1114,6 @@ schemas:
       programName:
         description: Program name.
         type: string
-        required: true
         displayName: programName
     get:
       securedBy:
@@ -1149,7 +1125,7 @@ schemas:
           description: Program found and returned.
           body:
             application/json:
-              schema: Program
+              type: Program
         404:
           description: Program not found.
     put:
@@ -1182,7 +1158,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: Program-array
+            type: Program-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -1191,44 +1167,34 @@ schemas:
       programName:
         description: A string to search within the program's name.
         type: string
-        required: true
         displayName: programName
       programDescription:
         description: A string to search within an program's description.
         type: string
-        required: true
         displayName: programDescription
       startDate:
         description: The start date for the date range filter. It filters by only returning programs which were or should be active in the given date range.
-        type: datetime
-        format: rfc2616
-        required: true
+        type: string
         displayName: startDate
       endDatetime:
         description: The end date for the date range filter. It filters by only returning programs which were or should be active in the given date range.
-        type: datetime
-        format: rfc2616
-        required: true
+        type: string
         displayName: endDatetime
       patientUids:
         description: Filters programs so that the results include only programs with the given patients (semicolon separated list).
         type: string
-        required: true
         displayName: patientUids
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'name' ascending as default.
         type: string
-        required: true
         displayName: sort
   post:
     securedBy:
@@ -1248,7 +1214,6 @@ schemas:
       username:
         description: username
         type: string
-        required: true
         displayName: username
     get:
       securedBy:
@@ -1260,7 +1225,7 @@ schemas:
           description: User found and returned.
           body:
             application/json:
-              schema: User
+              type: User
         404:
           description: User not found.
     put:
@@ -1293,7 +1258,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: User-array
+            type: User-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -1302,32 +1267,26 @@ schemas:
       username:
         description: Login username.
         type: string
-        required: true
         displayName: username
       emailAddress:
         description: User's email address.
         type: string
-        required: true
         displayName: emailAddress
       role:
         description: User's permission roles as a comma separated String.
         type: string
-        required: true
         displayName: role
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'username' ascending as default.
         type: string
-        required: true
         displayName: sort
   post:
     securedBy:
@@ -1350,7 +1309,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: BottleReading-array
+            type: BottleReading-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -1359,62 +1318,50 @@ schemas:
       bottleReadingId:
         description: The ID of the bottle reading.
         type: integer
-        required: true
         displayName: bottleReadingId
       bottleUid:
         description: The bottle UID.
         type: string
-        required: true
         displayName: bottleUid
       checkinType:
         description: The type of check-in for this reading.
         type: string
-        required: true
         displayName: checkinType
       startDatetime:
         description: The start date for the date range filter. It filters by receivedDateTime.
         type: string
-        required: true
         displayName: startDatetime
       endDatetime:
         description: The end date for the date range filter. It filters by receivedDateTime.
         type: string
-        required: true
         displayName: endDatetime
       batteryLevel:
         description: The numerical representation of the battery level.
         type: integer
-        required: true
         displayName: batteryLevel
       batteryStatus:
         description: The text representation of the battery status.
         type: string
-        required: true
         displayName: batteryStatus
       cellServiceLevel:
         description: The numerical representation of the cell signal level.
         type: integer
-        required: true
         displayName: cellServiceLevel
       cellServiceStatus:
         description: The text representation of the cell signal status.
         type: string
-        required: true
         displayName: cellServiceStatus
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'timereceived' descending as default.
         type: string
-        required: true
         displayName: sort
 /doses:
   get:
@@ -1427,7 +1374,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: Dose-array
+            type: Dose-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -1436,57 +1383,46 @@ schemas:
       patientUid:
         description: The UID of the patient.
         type: string
-        required: true
         displayName: patientUid
       bottleUid:
         description: The UID of the bottle.
         type: string
-        required: true
         displayName: bottleUid
       bottleReadingId:
         description: The ID of the bottle reading.
         type: string
-        required: true
         displayName: bottleReadingId
       reminderSent:
         description: If a reminder was sent for this dose.
         type: boolean
-        required: true
         displayName: reminderSent
       doseStatus:
         description: The status of the dose (missed, early, ontime).
         type: string
-        required: true
         displayName: doseStatus
       deadline:
         description: The deadline of the dose.
         type: string
-        required: true
         displayName: deadline
       startDatetime:
         description: Start date for the date range filter.
         type: string
-        required: true
         displayName: startDatetime
       endDatetime:
         description: End date for the date range filter.
         type: string
-        required: true
         displayName: endDatetime
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'timerecorded' descending as default.
         type: string
-        required: true
         displayName: sort
 /events:
   /subscriptions:
@@ -1495,7 +1431,6 @@ schemas:
         subscriptionId:
           description: Subscription ID
           type: integer
-          required: true
           displayName: subscriptionId
       get:
         securedBy:
@@ -1507,13 +1442,12 @@ schemas:
             description: Subscription found and returned.
             body:
               application/json:
-                schema: EventSubscription
+                type: EventSubscription
       delete:
         securedBy:
         - auth
         displayName: deleteSubscription
         description: Delete a subscription by ID.
-        responses: {}
     get:
       securedBy:
       - auth
@@ -1524,7 +1458,7 @@ schemas:
           description: Subscriptions returned.
           body:
             application/json:
-              schema: EventSubscription-array
+              type: EventSubscription-array
     post:
       securedBy:
       - auth
@@ -1545,7 +1479,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: Event-array
+            type: Event-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -1554,47 +1488,38 @@ schemas:
       patientUid:
         description: Patient UID.
         type: string
-        required: true
         displayName: patientUid
       bottleUid:
         description: Bottle UID for filtering.
         type: string
-        required: true
         displayName: bottleUid
       eventType:
         description: The type of event to select.
         type: string
-        required: true
         displayName: eventType
       bottleReadingId:
         description: Bottle Reading ID for filtering.
         type: integer
-        required: true
         displayName: bottleReadingId
       startDatetime:
         description: The start date for the date range filter. It filters by timeOccurred.
         type: string
-        required: true
         displayName: startDatetime
       endDatetime:
         description: The end date for the date range filter. It filters by timeOccurred.
         type: string
-        required: true
         displayName: endDatetime
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'timeoccurred' descending as default.
         type: string
-        required: true
         displayName: sort
 /eventtypes:
   get:
@@ -1611,7 +1536,6 @@ schemas:
       alertId:
         description: Alert ID.
         type: integer
-        required: true
         displayName: alertId
     get:
       securedBy:
@@ -1623,7 +1547,7 @@ schemas:
           description: Query completed; results returned.
           body:
             application/json:
-              schema: Alert
+              type: Alert
         405:
           description: Validation exception.
     put:
@@ -1648,7 +1572,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: Alert-array
+            type: Alert-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -1657,57 +1581,46 @@ schemas:
       patientUid:
         description: Patient UID.
         type: string
-        required: true
         displayName: patientUid
       bottleUid:
         description: Bottle UID for filtering.
         type: string
-        required: true
         displayName: bottleUid
       alertType:
         description: The type of alert to select.
         type: string
-        required: true
         displayName: alertType
       bottleReadingId:
         description: Bottle Reading ID for filtering.
         type: integer
-        required: true
         displayName: bottleReadingId
       state:
         description: State for filtering.
         type: string
-        required: true
         displayName: state
       priority:
         description: minimum priority for filtering. The request will return every alert with a priority higher than this number.
         type: integer
-        required: true
         displayName: priority
       startDatetime:
         description: The start date for the date range filter. It filters by timeOccurred.
         type: string
-        required: true
         displayName: startDatetime
       endDatetime:
         description: The end date for the date range filter. It filters by timeOccurred.
         type: string
-        required: true
         displayName: endDatetime
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'timeoccurred' descending as default.
         type: string
-        required: true
         displayName: sort
 /alerttypes:
   get:
@@ -1729,12 +1642,11 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: SearchResult-array
+            type: SearchResult-array
     queryParameters:
       q:
         description: The search query.
         type: string
-        required: true
         displayName: q
 /pauses:
   /{pauseId}:
@@ -1742,7 +1654,6 @@ schemas:
       pauseId:
         description: Pause ID.
         type: integer
-        required: true
         displayName: pauseId
     get:
       securedBy:
@@ -1754,7 +1665,7 @@ schemas:
           description: Query completed; results returned.
           body:
             application/json:
-              schema: Pause
+              type: Pause
         404:
           description: Pause not found.
         405:
@@ -1769,7 +1680,7 @@ schemas:
           description: Pause found and updated.
           body:
             application/json:
-              schema: Pause
+              type: Pause
         400:
           description: Invalid parameters / arguments.
         404:
@@ -1780,7 +1691,6 @@ schemas:
         endnow:
           description: Set true to end an active pause.
           type: boolean
-          required: true
           displayName: endnow
     delete:
       securedBy:
@@ -1792,7 +1702,7 @@ schemas:
           description: Pause found and deleted.
           body:
             application/json:
-              schema: Pause
+              type: Pause
         400:
           description: Pause cannot be deleted.
         404:
@@ -1809,7 +1719,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: Pause-array
+            type: Pause-array
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -1818,47 +1728,38 @@ schemas:
       patientUid:
         description: Patient UID.
         type: string
-        required: true
         displayName: patientUid
       status:
         description: Pause status for filtering.
         type: string
-        required: true
         displayName: status
       startdateBefore:
         description: The maximum start date for the date range filter.
         type: string
-        required: true
         displayName: startdateBefore
       startdateAfter:
         description: The minimum start date for the date range filter.
         type: string
-        required: true
         displayName: startdateAfter
       enddateBefore:
         description: The maximum end date for the date range filter.
         type: string
-        required: true
         displayName: enddateBefore
       enddateAfter:
         description: The minimum end date for the date range filter.
         type: string
-        required: true
         displayName: enddateAfter
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'startdate' descending as default.
         type: string
-        required: true
         displayName: sort
   post:
     securedBy:
@@ -1870,7 +1771,7 @@ schemas:
         description: Pause created.
         body:
           application/json:
-            schema: Pause
+            type: Pause
       400:
         description: Patient not found or invalid parameters.
       405:

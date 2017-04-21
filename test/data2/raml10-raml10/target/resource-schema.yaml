@@ -53,7 +53,6 @@ schemas:
       bottleUid:
         description: Bottle UID
         type: string
-        required: true
         displayName: bottleUid
     get:
       displayName: getBottle
@@ -63,7 +62,7 @@ schemas:
           description: Bottle found and returned
           body:
             application/json:
-              schema: Bottle
+              type: Bottle
         404:
           description: Bottle not found.
     put:
@@ -85,7 +84,7 @@ schemas:
         description: Query completed; results returned.
         body:
           application/json:
-            schema: Bottle
+            type: Bottle
       400:
         description: Incomplete or invalid pagination or sort parameters.
       405:
@@ -94,47 +93,38 @@ schemas:
       isActive:
         description: Flag that indicates if bottle is active.
         type: boolean
-        required: true
         displayName: isActive
       remindersActive:
         description: Flag that indicates if reminders are active.
         type: boolean
-        required: true
         displayName: remindersActive
       onBottleLights:
         description: Flag that indicates if visual alarms are active.
         type: boolean
-        required: true
         displayName: onBottleLights
       onBottleSounds:
         description: Flag that indicates if auditory alarms are active.
         type: boolean
-        required: true
         displayName: onBottleSounds
       feedbackActive:
         description: Flag that indicates if feedback requests are active.
         type: boolean
-        required: true
         displayName: feedbackActive
       patientUid:
         description: The ID of the patient using this bottle.
         type: integer
-        required: true
         displayName: patientUid
       page:
         description: Current front-end page number; required for pagination.
         type: integer
-        required: true
         displayName: page
       itemsPerPage:
         description: Current front-end items per page value; required for pagination.
         type: integer
-        required: true
         displayName: itemsPerPage
       sort:
         description: Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by 'uid' ascending as default.
         type: string
-        required: true
         displayName: sort
 /employees:
   get:
