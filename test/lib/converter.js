@@ -265,7 +265,7 @@ describe('from swagger to raml', function () {
 describe('from raml to swagger', function () {
 	const baseDir = __dirname + '/../data/raml-import/raml';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.Converter(specConverter.Formats.AUTO, specConverter.Formats.SWAGGER);
+	const converter = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.OAS20);
 
 	const testWithData = function (sourceFile, targetFile, validate, extension) {
 		const validateOptions = {
@@ -277,20 +277,19 @@ describe('from raml to swagger', function () {
 		
 		return function (done) {
 			converter.convertFile(sourceFile, validateOptions)
-				.then(resultSwagger => {
-
+				.then(resultOAS => {
 					try {
 						const notExistsTarget = !fs.existsSync(targetFile);
 						if (notExistsTarget) {
-							const data = resultSwagger;
 							console.log('Content for non existing target file ' + targetFile + '\n.');
 							console.log('********** Begin file **********\n');
-							console.log(data);
+							console.log(resultOAS);
 							console.log('********** Finish file **********\n');
-							return done(data);
+							return done(resultOAS);
 						} else {
-							expect(YAML.safeLoad(resultSwagger)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
-							if (!extension && _.includes(resultSwagger, 'x-raml')) {
+							const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultOAS, 'x-raml')) {
 								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
 							}
 							done();
