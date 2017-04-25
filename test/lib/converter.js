@@ -21,7 +21,6 @@ const filePathMap = {
 	'/types/Address.yaml': '/data/types/Address.yaml'
 };
 
-
 const myFsResolver = {
 	content: function (filePath) {
 		const path = __dirname + '/..' + filePathMap[filePath]; ///Users/gaston/mulesoft/api-spec-converter/test/lib
@@ -95,7 +94,6 @@ describe('Converter', function () {
 	});
 });
 
-
 describe('reversable - from swagger 2 raml 2 swagger', function () {
 	const baseDir = __dirname + '/../data/reversable/swagger';
 	const testFiles = fs.readdirSync(baseDir);
@@ -146,7 +144,6 @@ describe('reversable - from swagger 2 raml 2 swagger', function () {
 		}
 	});
 });
-
 
 describe('reversable - from raml 2 swagger 2 raml', function () {
 	const baseDir = __dirname + '/../data/reversable/raml';
@@ -199,9 +196,8 @@ describe('reversable - from raml 2 swagger 2 raml', function () {
 describe('from swagger to raml', function () {
 	const baseDir = __dirname + '/../data/swagger-import/swagger';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter08 = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML08);
-	const converter10 = new specConverter.Converter(specConverter.Formats.SWAGGER, specConverter.Formats.RAML10);
-
+	const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.RAML10);
+	
 	const testWithData = function (sourceFile, targetFile, stringCompare, validate) {
 		
 		return function (done) {
@@ -209,30 +205,26 @@ describe('from swagger to raml', function () {
 				validate: validate,
 				fsResolver: myFsResolver
 			};
-      (_.includes(sourceFile, 'raml08') ? converter08 : converter10).convertFile(sourceFile, validateOptions).then((convertedRAML) => {
-				const notExistsTarget = !fs.existsSync(targetFile);
-
-				if (notExistsTarget) {
-					console.log('Content for non existing target file ' + targetFile + '\n.');
-					console.log('********** Begin file **********\n');
-					console.log(convertedRAML);
-					console.log('********** Finish file **********\n');
-
-					done('Error');
-				}
-
-				try {
-					if (stringCompare == true) {
-						expect(convertedRAML).to.deep.equal(fs.readFileSync(targetFile, 'utf8'));
-					} else {
-						expect(YAML.safeLoad(convertedRAML)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+			converter.convertFile(sourceFile, validateOptions)
+				.then(resultRAML => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultRAML);
+							console.log('********** Finish file **********\n');
+							return done(resultRAML);
+						} else {
+							const formattedData = typeof resultRAML === 'object' ? JSON.stringify(resultRAML) : resultRAML;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							done();
+						}
+					} catch (e) {
+						done(e);
 					}
-					done();
-				} catch (e) {
-					done(e);
-				}
-			}).catch((err) => {
-				console.log('Error exporting file.');
+				}).catch((err) => {
+				console.error('error exporting file.');
 				done(err);
 			});
 		};
