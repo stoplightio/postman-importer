@@ -9,19 +9,19 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: body
-          in: body
-          schema:
-            $ref: '#/definitions/SecondType'
         - name: someId
           in: header
           description: some id
           required: true
           type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SecondType'
       responses:
         default:
           description: ''
-          schema: {}
     get:
       operationId: GET_something
       description: get something
@@ -43,31 +43,29 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: body
-          in: body
-          schema:
-            $ref: '#/definitions/FourthType'
         - name: elseId
           in: header
           description: else id
           required: true
           type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/FourthType'
       responses:
         default:
           description: ''
-          schema: {}
 parameters:
   'trait:colors:red':
     name: red
     in: query
     description: red
-    required: false
     type: string
   'trait:colors:yellow':
     name: yellow
     in: query
     description: yellow
-    required: false
     type: string
   'trait:colors:blue':
     name: blue
@@ -86,7 +84,7 @@ responses:
     description: ''
     headers:
       orange:
-        type: string
+        example: this is an orange example
 definitions:
   FirstType:
     type: object
