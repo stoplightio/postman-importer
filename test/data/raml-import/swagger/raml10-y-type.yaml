@@ -5,6 +5,7 @@ info:
 host: rest-api.baeldung.com
 schemes:
   - https
+  - http
 consumes:
   - application/json
 produces:
@@ -18,9 +19,14 @@ paths:
     post:
       operationId: POST_foos
       description: Create a new Foo
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
         - name: body
           in: body
+          required: true
           schema:
             $ref: '#/definitions/Foo'
       responses:
@@ -31,20 +37,25 @@ paths:
     get:
       operationId: GET_foos
       description: 'List all Foos matching query criteria, if provided; otherwise list all Foos'
+      produces:
+        - application/json
       parameters:
         - name: name
           in: query
-          required: false
           type: string
         - name: ownerName
           in: query
-          required: false
           type: string
       responses:
         '200':
           description: ''
           schema:
             type: array
+            example:
+              - id: first1
+                name: last1
+              - id: first2
+                name: last2
             items:
               $ref: '#/definitions/Foo'
   '/foos/{id}':
@@ -56,6 +67,8 @@ paths:
     delete:
       operationId: DELETE_foos-id
       description: Delete a Foo by id
+      produces:
+        - application/json
       responses:
         '204':
           description: ''
@@ -66,9 +79,14 @@ paths:
     put:
       operationId: PUT_foos-id
       description: Update a Foo by id
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
         - name: body
           in: body
+          required: true
           schema:
             $ref: '#/definitions/Foo'
       responses:
@@ -83,6 +101,8 @@ paths:
     get:
       operationId: GET_foos-id
       description: Get a Foo by id
+      produces:
+        - application/json
       responses:
         '200':
           description: ''
@@ -101,11 +121,18 @@ paths:
     get:
       operationId: GET_foos-name-name
       description: List all Foos with a certain name
+      produces:
+        - application/json
       responses:
         '200':
           description: ''
           schema:
             type: array
+            example:
+              - id: first1
+                name: last1
+              - id: first2
+                name: last2
             items:
               $ref: '#/definitions/Foo'
 x-basePath: '/api/{version}'
