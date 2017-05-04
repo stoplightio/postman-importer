@@ -12,6 +12,8 @@ produces:
 paths:
   /commands:
     post:
+      consumes:
+        - application/json
       operationId: POST_commands
       description: |
         register new command. Currently following commands are supported "Sos", "Voice", "Pay", "Chat", "eMail", "Call", "Sync", "Reserve", "Confirm". Each command has its own json with following parameters
@@ -28,6 +30,7 @@ paths:
       parameters:
         - name: body
           in: body
+          required: true
           schema:
             type: object
             properties:

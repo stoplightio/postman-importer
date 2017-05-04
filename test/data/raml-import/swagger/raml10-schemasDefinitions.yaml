@@ -12,11 +12,16 @@ produces:
 paths:
   /orders:
     post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
       operationId: POST_orders
       description: Places a new T-Shirt order
       parameters:
         - name: body
           in: body
+          required: true
           schema:
             type: object
             required:
@@ -58,8 +63,14 @@ paths:
       responses:
         '200':
           description: ''
+          schema:
+            example:
+              orderId: 4321
         '500':
           description: ''
+          schema:
+            example:
+              errorMessage: The order couldn't be entered.
 x-basePath: '/{version}/'
 definitions:
   NewTask:

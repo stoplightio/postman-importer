@@ -3,12 +3,6 @@ title: Healthcare FHIR System API
 version: v1
 mediaType: application/json
 
-resourceTypes:
-  fhirVersionedResource:
-    get:
-      description: The vread interaction preforms a version specific read of the resource.
-      is: [vread: { resourceName: <<resourceName>> }]
-
 traits:
   vread:
     responses:
@@ -19,4 +13,8 @@ traits:
 
 /AllergyIntolerance:
   /_history:
-    type: { fhirVersionedResource: { resourceName: string } }
+    get:
+      is: [vread: { resourceName: string }]
+  /other:
+    post:
+      is: [vread: { resourceName: object }]
