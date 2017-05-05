@@ -4,6 +4,10 @@ version: '2.0'
 protocols:
   - HTTPS
 baseUri: 'https://mocksvc.mulesoft.com/mocks/21d01ac7-3cd8-4348-b8d0-2dc61f05bb92/api'
+annotationTypes:
+  oas-body-name:
+    allowedTargets: TypeDeclaration
+    type: string
 types:
   Flight:
     example:
@@ -78,6 +82,7 @@ types:
       application/json:
         type: Flight
         required: false
+        (oas-body-name): body
   get:
     displayName: GET_flights
     responses:
@@ -107,6 +112,7 @@ types:
         application/json:
           type: Flight
           required: false
+          (oas-body-name): body
     delete:
       displayName: DELETE_flights-ID
       responses:

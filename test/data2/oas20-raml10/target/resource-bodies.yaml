@@ -1,6 +1,10 @@
 #%RAML 1.0
 title: Petstore
 version: 1
+annotationTypes:
+  oas-body-name:
+    allowedTargets: TypeDeclaration
+    type: string
 types:
   pet:
     type: string
@@ -11,6 +15,7 @@ types:
     body:
       application/json:
         type: pet
+        (oas-body-name): body
 /nicknames:
   displayName: nicknames
   get:
@@ -19,6 +24,7 @@ types:
       text/xml:
         required: false
         type: string
+        (oas-body-name): body
 /employees:
   displayName: employees
   get:
@@ -27,3 +33,4 @@ types:
       application/json:
         required: false
         type: string
+        (oas-body-name): body

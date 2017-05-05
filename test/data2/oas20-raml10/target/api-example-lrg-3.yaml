@@ -1,6 +1,10 @@
 #%RAML 1.0
 title: DataCamelDataServiceAPI
 version: 0.0.1
+annotationTypes:
+  oas-body-name:
+    allowedTargets: TypeDeclaration
+    type: string
 types:
   DataField:
     description: A single data field(column) with specified field name and field type
@@ -140,6 +144,7 @@ types:
       application/json:
         type: ServiceSpec
         required: false
+        (oas-body-name): body
   '/{userName}':
     displayName: '{userName}'
     '/{serviceName}':
@@ -241,6 +246,7 @@ types:
               items:
                 type: DataEntry
               required: false
+              (oas-body-name): body
         delete:
           displayName: DELETE_service-userName-serviceName-entry
           description: >-
@@ -338,6 +344,7 @@ types:
               application/json:
                 type: DataEntry
                 required: false
+                (oas-body-name): body
           delete:
             displayName: DELETE_service-userName-serviceName-entry-id
             description: >-
