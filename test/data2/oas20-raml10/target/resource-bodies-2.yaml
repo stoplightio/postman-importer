@@ -1,6 +1,10 @@
 #%RAML 1.0
 title: Petstore
 version: 1
+annotationTypes:
+  oas-responses-default:
+    allowedTargets: Method
+    type: any
 /employees:
   displayName: employees
   get:
@@ -9,8 +13,12 @@ version: 1
       multipart/form-data:
         description: form data 1
         type: string
+    (oas-responses-default):
+      description: ''
   post:
     displayName: POST_employees
     body:
       application/x-www-form-urlencoded:
         type: string
+    (oas-responses-default):
+      description: ''
