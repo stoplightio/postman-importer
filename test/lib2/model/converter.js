@@ -57,19 +57,19 @@ describe('Raml10 to Raml10', () => {
 
 		return function (done) {
 			converter.convertFile(sourceFile, validateOptions)
-				.then(resultOAS => {
+				.then(resultRaml => {
 					try {
 						const notExistsTarget = !fs.existsSync(targetFile);
 						if (notExistsTarget) {
 							console.log('Content for non existing target file ' + targetFile + '\n.');
 							console.log('********** Begin file **********\n');
-							console.log(resultOAS);
+							console.log(resultRaml);
 							console.log('********** Finish file **********\n');
-							return done(resultOAS);
+							return done(resultRaml);
 						} else {
-							const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
+							const formattedData = typeof resultRaml === 'object' ? JSON.stringify(resultRaml) : resultRaml;
 							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
-							if (!extension && _.includes(resultOAS, 'x-raml')) {
+							if (!extension && _.includes(resultRaml, 'x-raml')) {
 								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
 							}
 							done();
@@ -246,19 +246,19 @@ describe('Oas20 to Raml10', () => {
 
 		return function (done) {
 			converter.convertFile(sourceFile, validateOptions)
-				.then(resultOAS => {
+				.then(resultRaml => {
 					try {
 						const notExistsTarget = !fs.existsSync(targetFile);
 						if (notExistsTarget) {
 							console.log('Content for non existing target file ' + targetFile + '\n.');
 							console.log('********** Begin file **********\n');
-							console.log(resultOAS);
+							console.log(resultRaml);
 							console.log('********** Finish file **********\n');
-							return done(resultOAS);
+							return done(resultRaml);
 						} else {
-							const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
+							const formattedData = typeof resultRaml === 'object' ? JSON.stringify(resultRaml) : resultRaml;
 							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
-							if (!extension && _.includes(resultOAS, 'x-raml')) {
+							if (!extension && _.includes(resultRaml, 'x-raml')) {
 								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
 							}
 							done();
