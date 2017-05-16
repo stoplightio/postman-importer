@@ -203,7 +203,8 @@ describe('from swagger to raml', function () {
 		return function (done) {
 			const validateOptions = {
 				validate: validate,
-				fsResolver: myFsResolver
+				fsResolver: myFsResolver,
+				expand: true
 			};
 			converter.convertFile(sourceFile, validateOptions)
 				.then(resultRAML => {
