@@ -216,8 +216,12 @@ describe('from swagger to raml', function () {
 							console.log('********** Finish file **********\n');
 							return done(resultRAML);
 						} else {
-							const formattedData = typeof resultRAML === 'object' ? JSON.stringify(resultRAML) : resultRAML;
-							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+              const formattedData = typeof resultRAML === 'object' ? JSON.stringify(resultRAML) : resultRAML;
+              if (stringCompare == true) {
+                expect(YAML.dump(JSON.parse(formattedData))).to.deep.equal(fs.readFileSync(targetFile,'utf8'))
+              } else {
+                expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+              }
 							done();
 						}
 					} catch (e) {
