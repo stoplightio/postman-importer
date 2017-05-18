@@ -5,6 +5,10 @@ annotationTypes:
   oas-body-name:
     allowedTargets: TypeDeclaration
     type: string
+  oas-global-response-definition:
+    allowedTargets: Response
+    type: any
+  oas-responses: any
 traits:
   pets:
     queryParameters:
@@ -17,12 +21,6 @@ traits:
     headers:
       reviews:
         type: string
-    responses:
-      200:
-        description: ''
-        body:
-          application/json:
-            example: Dog
 /pets:
   displayName: pets
   get:
@@ -43,3 +41,14 @@ traits:
         body:
           application/json:
             example: Cat
+      200:
+        (oas-global-response-definition): trait:pets:200
+        description: ''
+        body:
+          application/json:
+            example: Dog
+(oas-responses):
+  'trait:pets:200':
+    description: ''
+    body:
+      example: Dog

@@ -5,6 +5,7 @@ annotationTypes:
   oas-body-name:
     allowedTargets: TypeDeclaration
     type: string
+  oas-responses: any
 traits:
   pets:
     queryParameters:
@@ -23,17 +24,6 @@ traits:
       age:
         type: integer
         required: false
-    responses:
-      200:
-        description: ''
-        body:
-          application/json:
-            example: Dog
-      201:
-        description: ''
-        body:
-          application/json:
-            type: boolean
   employees:
     headers:
       surnames:
@@ -42,9 +32,16 @@ traits:
       application/json:
         type: object
         (oas-body-name): body
-    responses:
-      200:
-        description: ''
-        body:
-          application/json:
-            type: object
+(oas-responses):
+  trait:pets:200:
+    description: ''
+    body:
+      example: Dog
+  trait:pets:201:
+    description: ''
+    body:
+      type: boolean
+  trait:employees:200:
+    description: ''
+    body:
+      type: object
