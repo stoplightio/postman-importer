@@ -36,7 +36,6 @@ description: |
   '/{username}':
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     get:
@@ -305,6 +304,7 @@ traits:
     queryParameters:
       pageNumber:
         type: integer
+        required: false
         description: Page number
         default: 1
   includeNonVerifiedUsers:
@@ -313,6 +313,7 @@ traits:
         type: boolean
         description: Result will not include non verified user by default if this parameter is not provided
         default: false
+        required: false
         (oas-allowEmptyValue): true
   sortPersons:
     queryParameters:
@@ -322,6 +323,7 @@ traits:
         uniqueItems: true
         minItems: 1
         maxItems: 3
+        required: false
         (oas-collectionFormat): pipes
         default:
           - '-lastTimeOnline'
@@ -334,7 +336,6 @@ traits:
       User-Agent:
         type: string
         description: All API consumers MUST provide a user agent
-        required: true
 (oas-responses):
   Standard500ErrorResponse:
     body:
