@@ -52,15 +52,6 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-deprecated:
-    type: boolean
-    allowedTargets: Method
-  oas-summary:
-    type: string
-    allowedTargets: Method
   oas-externalDocs:
     properties:
       description?: string
@@ -82,6 +73,15 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
   oas-schema-title:
     type: string
     allowedTargets: TypeDeclaration
@@ -102,16 +102,13 @@ annotationTypes:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 /media:
-  displayName: media
   '/{media-id}':
-    displayName: '{media-id}'
     uriParameters:
       media-id:
         description: The media ID
         type: integer
         required: true
     get:
-      displayName: GET_media-media-id
       description: |
         Get information about a media object.
         The returned type key will allow you to differentiate between `image`
@@ -127,16 +124,14 @@ annotationTypes:
         - Media
       (oas-deprecated): true
 /test-path:
-  displayName: test-path
   '/{id}':
-    displayName: '{id}'
     uriParameters:
       id:
         description: ID
         type: string
         required: true
     get:
-      displayName: GET_test-path-id
+      displayName: test path get summary
       (oas-summary): test path get summary
       responses:
         '200':
@@ -145,7 +140,7 @@ annotationTypes:
           description: Error
 /:
   post:
-    displayName: POST_root
+    displayName: post echo
     (oas-summary): post echo
     body:
       multipart/form-data:
@@ -164,7 +159,7 @@ annotationTypes:
     (oas-externalDocs):
       url: 'https://swagger.io'
   get:
-    displayName: GET_root
+    displayName: gets echo test
     (oas-summary): gets echo test
     responses:
       '200':
@@ -181,8 +176,6 @@ annotationTypes:
       url: 'https://swagger.io'
 types:
   ErrorModel:
-    (oas-externalDocs):
-      url: 'https:swagger.io'
     properties:
       message:
         type: string
@@ -191,6 +184,8 @@ types:
         minimum: 100
         maximum: 600
     (oas-schema-title): error model
+    (oas-externalDocs):
+      url: 'https:swagger.io'
     example:
       message: Error in Echo API
       code: 500

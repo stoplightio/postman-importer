@@ -10,6 +10,34 @@ description: |
   [Learn about Swagger](http://swagger.io) or join the IRC channel `#swagger` on irc.freenode.net.
 
   For this sample, you can use the api key `special-key` to test the authorization filters
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-collectionFormat:
+    type: string
 (oas-info):
   contact:
     name: apiteam@swagger.io
@@ -18,11 +46,8 @@ description: |
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 /stores:
-  displayName: stores
   /order:
-    displayName: order
     '/{orderId}':
-      displayName: '{orderId}'
       uriParameters:
         orderId:
           description: ID of pet that needs to be fetched
@@ -74,9 +99,7 @@ description: |
       (oas-tags):
         - store
 /users:
-  displayName: users
   '/{username}':
-    displayName: '{username}'
     uriParameters:
       username:
         description: The name that needs to be fetched. Use user1 for testing.
@@ -138,7 +161,6 @@ description: |
     (oas-tags):
       - user
   /createWithArray:
-    displayName: createWithArray
     post:
       displayName: createUsersWithArrayInput
       (oas-summary): Creates list of users with given input array
@@ -154,7 +176,6 @@ description: |
       (oas-tags):
         - user
   /createWithList:
-    displayName: createWithList
     post:
       displayName: createUsersWithListInput
       (oas-summary): Creates list of users with given input array
@@ -170,7 +191,6 @@ description: |
       (oas-tags):
         - user
   /logout:
-    displayName: logout
     get:
       displayName: logoutUser
       (oas-summary): Logs out current logged in user session
@@ -179,7 +199,6 @@ description: |
       (oas-tags):
         - user
   /login:
-    displayName: login
     get:
       displayName: loginUser
       (oas-summary): Logs user into the system
@@ -203,7 +222,6 @@ description: |
       (oas-tags):
         - user
 /pets:
-  displayName: pets
   post:
     displayName: addPet
     (oas-summary): Add a new pet to the store
@@ -218,7 +236,6 @@ description: |
     (oas-tags):
       - pet
   /findByStatus:
-    displayName: findByStatus
     get:
       displayName: findPetsByStatus
       description: Multiple status values can be provided with comma seperated strings
@@ -238,13 +255,12 @@ description: |
           description: Status values that need to be considered for filter
           required: false
           type: array
-          (oas-collectionFormat): multi
           items:
             type: string
+          (oas-collectionFormat): multi
       (oas-tags):
         - pet
   '/{petId}':
-    displayName: '{petId}'
     uriParameters:
       petId:
         description: ID of pet that needs to be updated
@@ -299,7 +315,6 @@ description: |
       (oas-tags):
         - pet
   /findByTags:
-    displayName: findByTags
     get:
       displayName: findPetsByTags
       description: 'Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.'
@@ -319,9 +334,9 @@ description: |
           description: Tags to filter by
           required: false
           type: array
-          (oas-collectionFormat): multi
           items:
             type: string
+          (oas-collectionFormat): multi
       (oas-tags):
         - pet
   put:
@@ -439,31 +454,3 @@ types:
       complete:
         type: boolean
         required: false
-annotationTypes:
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-collectionFormat:
-    type: string

@@ -2,92 +2,81 @@
 title: Simple API
 version: 0.0.0
 mediaType: application/json
-annotationTypes:
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
 /param_formdata:
-  displayName: param_formdata
   post:
-    displayName: POST_param_formdata
     body:
       multipart/form-data:
         properties:
           username:
             description: The person's username
-            type: string
             required: true
+            type: string
     responses:
       '200':
-        description: History information for the given user
         body:
           application/json:
             type: Person
+        description: History information for the given user
+annotationTypes:
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
 /param_body:
-  displayName: param_body
   post:
-    displayName: POST_param_body
     body:
       application/json:
-        (oas-body-name): person
         type: Person
+        (oas-body-name): person
         description: person to add to the system
     responses:
       '200':
-        description: History information for the given user
         body:
           application/json:
             type: Person
+        description: History information for the given user
 /param_header:
-  displayName: param_header
   get:
     headers:
       token:
-        description: token description
         type: string
+        description: token description
         required: true
-    displayName: GET_param_header
     responses:
       '200':
-        description: History information for the given user
-        headers:
-          token-response:
-            description: token response description
-            type: string
         body:
           application/json:
             type: Person
+        description: History information for the given user
+        headers:
+          token-response:
+            type: string
+            description: token response description
 /param_query:
-  displayName: param_query
   get:
-    displayName: GET_param_query
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Person
+        description: History information for the given user
     queryParameters:
       pageNumber:
         description: Page number
         type: integer
-    responses:
-      '200':
-        description: History information for the given user
-        body:
-          application/json:
-            type: Person
 /param_path:
-  displayName: param_path
   '/{username}':
-    displayName: '{username}'
     uriParameters:
       username:
         description: The person's username
         type: string
         required: true
     get:
-      displayName: GET_param_path-username
       responses:
         '200':
-          description: History information for the given user
           body:
             application/json:
               type: Person
+          description: History information for the given user
 types:
   Person:
     properties:

@@ -3,12 +3,36 @@ title: Billing Engine Process APIs
 version: v1
 baseUri: /invoiceengineprocessapi
 description: Billing Engine Process APIs
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-readOnly:
+    type: boolean
+    allowedTargets: TypeDeclaration
+  oas-definition-name:
+    type: string
+    allowedTargets: TypeDeclaration
 (oas-info):
   termsOfService: None
 /api:
-  displayName: api
   /Payments:
-    displayName: Payments
     post:
       displayName: ApiPaymentsPost
       body:
@@ -21,15 +45,10 @@ description: Billing Engine Process APIs
       (oas-tags):
         - Payments
   /Invoice:
-    displayName: Invoice
     '/{invoiceId}':
-      displayName: '{invoiceId}'
       /item:
-        displayName: item
         '/{invoiceItemId}':
-          displayName: '{invoiceItemId}'
           /Adjust2:
-            displayName: Adjust2
             post:
               displayName: ApiInvoiceByInvoiceIdItemByInvoiceItemIdAdjustPost
               body:
@@ -40,12 +59,11 @@ description: Billing Engine Process APIs
                 '200':
                   body:
                     text/plain:
-                      type: 'ServiceResponse_String_'
+                      type: ServiceResponse_String_
                   description: Success
               (oas-tags):
                 - Invoice
       /Adjust:
-        displayName: Adjust
         post:
           displayName: ApiInvoiceByInvoiceIdAdjustPost
           body:
@@ -58,7 +76,7 @@ description: Billing Engine Process APIs
             '200':
               body:
                 text/plain:
-                  type: 'ServiceResponse_InvoiceAdjustmentDTO_'
+                  type: ServiceResponse_InvoiceAdjustmentDTO_
               description: Success
           (oas-tags):
             - Invoice
@@ -78,25 +96,20 @@ description: Billing Engine Process APIs
         (oas-tags):
           - Invoice
     '/{id}':
-      displayName: '{id}'
       /item:
-        displayName: item
         '/{invoiceItemId}':
-          displayName: '{invoiceItemId}'
           /Adjust:
-            displayName: Adjust
             get:
               displayName: ApiInvoiceByIdItemByInvoiceItemIdAdjustGet
               responses:
                 '200':
                   body:
                     text/plain:
-                      type: 'ServiceResponse_String_'
+                      type: ServiceResponse_String_
                   description: Success
               (oas-tags):
                 - Invoice
     /GenerateSplitInvoices:
-      displayName: GenerateSplitInvoices
       post:
         displayName: ApiInvoiceGenerateSplitInvoicesPost
         body:
@@ -107,7 +120,7 @@ description: Billing Engine Process APIs
           '200':
             body:
               text/plain:
-                type: 'ServiceResponse_String_'
+                type: ServiceResponse_String_
             description: Success
         (oas-tags):
           - Invoice
@@ -121,12 +134,11 @@ description: Billing Engine Process APIs
         '200':
           body:
             text/plain:
-              type: 'ServiceResponse_String_'
+              type: ServiceResponse_String_
           description: Success
       (oas-tags):
         - Invoice
   /Accounts:
-    displayName: Accounts
     post:
       displayName: ApiAccountsPost
       body:
@@ -137,7 +149,7 @@ description: Billing Engine Process APIs
         '200':
           body:
             text/plain:
-              type: 'ServiceResponse_String_'
+              type: ServiceResponse_String_
           description: Success
       (oas-tags):
         - Accounts
@@ -854,52 +866,52 @@ types:
         format: int32
         type: integer
         required: false
-  'ServiceResponse_InvoiceAdjustmentDTO_':
-    (oas-definition-name): ServiceResponse[InvoiceAdjustmentDTO]
+  ServiceResponse_InvoiceAdjustmentDTO_:
     properties:
       error:
-        (oas-readOnly): true
         type: string
+        (oas-readOnly): true
         required: false
       message:
-        (oas-readOnly): true
         type: string
+        (oas-readOnly): true
         required: false
       responseObject:
-        (oas-readOnly): true
         type: InvoiceAdjustmentDTO
+        (oas-readOnly): true
         required: false
       success:
-        (oas-readOnly): true
         type: boolean
+        (oas-readOnly): true
         required: false
       warning:
-        (oas-readOnly): true
         type: string
+        (oas-readOnly): true
         required: false
-  'ServiceResponse_String_':
-    (oas-definition-name): ServiceResponse[String]
+    (oas-definition-name): 'ServiceResponse[InvoiceAdjustmentDTO]'
+  ServiceResponse_String_:
     properties:
       error:
-        (oas-readOnly): true
         type: string
+        (oas-readOnly): true
         required: false
       message:
-        (oas-readOnly): true
         type: string
+        (oas-readOnly): true
         required: false
       responseObject:
-        (oas-readOnly): true
         type: string
+        (oas-readOnly): true
         required: false
       success:
-        (oas-readOnly): true
         type: boolean
+        (oas-readOnly): true
         required: false
       warning:
-        (oas-readOnly): true
         type: string
+        (oas-readOnly): true
         required: false
+    (oas-definition-name): 'ServiceResponse[String]'
   SplitInvoiceDTO:
     properties:
       invoiceId:
@@ -921,29 +933,3 @@ types:
       dueDate:
         format: rfc3339
         type: datetime
-annotationTypes:
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-definition-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-readOnly:
-    type: boolean
-    allowedTargets: TypeDeclaration

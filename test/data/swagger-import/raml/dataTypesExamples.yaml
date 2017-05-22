@@ -3,20 +3,19 @@ title: Simple API
 version: 0.0.0
 /:
   get:
-    displayName: GET_root
     responses:
       '200':
         description: OK
 annotationTypes:
-  oas-exclusiveMaximum:
+  oas-readOnly:
     type: boolean
+    allowedTargets: TypeDeclaration
+  oas-format:
+    type: string
+    allowedTargets: TypeDeclaration
   oas-exclusiveMinimum:
     type: boolean
-  oas-format:
-    allowedTargets: TypeDeclaration
-    type: string
-  oas-readOnly:
-    allowedTargets: TypeDeclaration
+  oas-exclusiveMaximum:
     type: boolean
 types:
   Person:
@@ -51,8 +50,8 @@ types:
       longProp:
         type: integer
         format: int64
-        required: false
         example: 1010
+        required: false
       floatProp:
         type: number
         format: float
@@ -144,9 +143,9 @@ types:
         format: double
         minimum: 0
         maximum: 10000
-        required: false
         (oas-exclusiveMinimum): true
         (oas-exclusiveMaximum): false
+        required: false
   Vinyl:
     properties:
       albumName:

@@ -3,11 +3,27 @@ title: Billing Engine Process APIs
 version: v1
 baseUri: /invoiceengineprocessapi
 description: Billing Engine Process APIs
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-readOnly:
+    type: boolean
+    allowedTargets: TypeDeclaration
 (oas-info):
   termsOfService: None
 /:
   get:
-    displayName: GET_root
     responses:
       '200':
         description: OK
@@ -54,27 +70,10 @@ types:
         (oas-readOnly): true
         required: false
       responseObject:
-        (oas-readOnly): true
         type: InvoiceAdjustmentDTO
+        (oas-readOnly): true
         required: false
       warning:
         type: string
         (oas-readOnly): true
         required: false
-annotationTypes:
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-readOnly:
-    allowedTargets: TypeDeclaration
-    type: boolean

@@ -1,10 +1,18 @@
 #%RAML 1.0
 title: Simple API
 version: 1.1.0
+annotationTypes:
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
 /persons:
-  displayName: persons
   '/{username}':
-    displayName: '{username}'
     uriParameters:
       username:
         required: true
@@ -28,11 +36,9 @@ version: 1.1.0
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-
     is:
       - userAgent
       - pageSize
-
 types:
   Person:
     description: A person which can be the user itself or one of his friend
@@ -55,7 +61,6 @@ types:
         maxLength: 64
         example: john1doe6
     (oas-schema-title): Human
-
 traits:
   pageSize:
     queryParameters:
@@ -84,14 +89,3 @@ traits:
         type: Person
         (oas-body-name): userBody
         description: The person body.
-
-annotationTypes:
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-schema-title:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration

@@ -39,14 +39,14 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  oas-summary:
+    type: string
+    allowedTargets: Method
   oas-tags:
     type: 'string[]'
     allowedTargets: Method
   oas-deprecated:
     type: boolean
-    allowedTargets: Method
-  oas-summary:
-    type: string
     allowedTargets: Method
   oas-externalDocs:
     properties:
@@ -58,9 +58,8 @@ annotationTypes:
       - TypeDeclaration
   oas-x-custom: any
 /users:
-  displayName: users
   get:
-    displayName: GET_users
+    displayName: Users
     (oas-summary): Users
     responses:
       '200':
@@ -68,16 +67,14 @@ annotationTypes:
     (oas-tags):
       - Location
 /media:
-  displayName: media
   '/{media-id}':
-    displayName: '{media-id}'
     uriParameters:
       media-id:
         description: The media ID
         type: integer
         required: true
     get:
-      displayName: GET_media-media-id
+      displayName: Get info about a media object.
       description: |
         Get information about a media object.
         The returned type key will allow you to differentiate between `image`
@@ -97,7 +94,7 @@ annotationTypes:
         url: 'https://swagger.io/about'
 /:
   get:
-    displayName: GET_root
+    displayName: Get
     (oas-summary): Get
     responses:
       '200':

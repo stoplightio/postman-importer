@@ -6,6 +6,28 @@ mediaType: application/json
 protocols:
   - HTTP
 description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-collectionFormat:
+    type: string
 (oas-info):
   contact:
     name: Swagger API Team
@@ -13,20 +35,18 @@ description: A sample API that uses a petstore as an example to demonstrate feat
   license:
     name: MIT
 /pets:
-  displayName: pets
   '/{id}':
-    displayName: '{id}'
     uriParameters:
       id:
         description: IDs of pet to fetch
         required: true
         type: array
-        minItems: 10
-        maxItems: 100
-        uniqueItems: true
         items:
           type: integer
           format: int64
+        minItems: 10
+        maxItems: 100
+        uniqueItems: true
     delete:
       displayName: deletePet
       description: deletes a single pet based on the ID supplied
@@ -92,9 +112,9 @@ description: A sample API that uses a petstore as an example to demonstrate feat
         description: tags to filter by
         required: false
         type: array
-        (oas-collectionFormat): csv
         items:
           type: string
+        (oas-collectionFormat): csv
       limit:
         description: maximum number of results to return
         required: false
@@ -121,25 +141,3 @@ types:
         format: int32
       message:
         type: string
-annotationTypes:
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-collectionFormat:
-    type: string
