@@ -6,42 +6,7 @@ mediaType: application/json
 protocols:
   - HTTP
 description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
-(oas-info):
-  contact:
-    name: Swagger API Team
-    url: 'http://swagger.io'
-  termsOfService: 'http://swagger.io/terms/'
-  license:
-    name: Creative Commons 4.0 International
-    url: 'http://creativecommons.org/licenses/by/4.0/'
-/pets:
-  displayName: pets
-  '/{petId}':
-    displayName: '{petId}'
-    uriParameters:
-      petId:
-        description: ID of pet that needs to be fetched
-        required: true
-        type: array
-        (oas-collectionFormat): csv
-        items:
-          type: string
-    get:
-      displayName: getPetsById
-      description: Returns a pet based on ID
-      (oas-summary): Find pet by ID
-      responses:
-        '200':
-          body:
-            application/json:
-              type: string
-          description: pet response
 annotationTypes:
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-collectionFormat:
-    type: string
   oas-info:
     properties:
       termsOfService?: string
@@ -55,3 +20,36 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-collectionFormat:
+    type: string
+(oas-info):
+  contact:
+    name: Swagger API Team
+    url: 'http://swagger.io'
+  termsOfService: 'http://swagger.io/terms/'
+  license:
+    name: Creative Commons 4.0 International
+    url: 'http://creativecommons.org/licenses/by/4.0/'
+/pets:
+  '/{petId}':
+    uriParameters:
+      petId:
+        description: ID of pet that needs to be fetched
+        required: true
+        type: array
+        items:
+          type: string
+        (oas-collectionFormat): csv
+    get:
+      displayName: getPetsById
+      description: Returns a pet based on ID
+      (oas-summary): Find pet by ID
+      responses:
+        '200':
+          body:
+            application/json:
+              type: string
+          description: pet response

@@ -8,6 +8,41 @@ mediaType:
 protocols:
   - HTTPS
 description: A simple API to learn how to write OpenAPI Specification.
+annotationTypes:
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-global-response-definition:
+    type: any
+    allowedTargets: Response
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses: any
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -21,9 +56,7 @@ description: A simple API to learn how to write OpenAPI Specification.
     name: Apache-2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0'
 /images:
-  displayName: images
   '/{imageId}':
-    displayName: '{imageId}'
     uriParameters:
       imageId:
         required: true
@@ -151,38 +184,3 @@ traits:
         type: datetime
         description: When rate limit will be reset
         format: rfc3339
-annotationTypes:
-  oas-responses: any
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-    allowedTargets:
-      - API
-      - Method
-      - TypeDeclaration
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-schema-title:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-global-response-definition:
-    type: any
-    allowedTargets: Response

@@ -93,26 +93,6 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
-  oas-x-apisguru-categories: any
-  oas-x-logo: any
-  oas-x-origin: any
-  oas-x-preferred: any
-  oas-x-providerName: any
-  oas-x-tags: any
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-deprecated:
-    type: boolean
-    allowedTargets: Method
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-    allowedTargets:
-      - API
-      - Method
-      - TypeDeclaration
   oas-info:
     properties:
       termsOfService?: string
@@ -126,15 +106,35 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-format:
-    type: string
-    allowedTargets: TypeDeclaration
+  oas-x-apisguru-categories: any
+  oas-x-logo: any
+  oas-x-origin: any
+  oas-x-preferred: any
+  oas-x-providerName: any
+  oas-x-tags: any
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
   oas-responses-default:
     type: any
     allowedTargets: Method
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-format:
+    type: string
+    allowedTargets: TypeDeclaration
   oas-x-radar-pages: any
   oas-x-revision: any
 (oas-info):
@@ -162,7 +162,6 @@ annotationTypes:
 securitySchemes:
   oauth2:
     type: OAuth 2.0
-    description: 'OAuth 2 as per [RFC-6749](https://tools.ietf.org/html/rfc6749).'
     settings:
       authorizationUri: 'https://bitbucket.org/site/oauth2/authorize'
       accessTokenUri: 'https://bitbucket.org/site/oauth2/access_token'
@@ -191,6 +190,7 @@ securitySchemes:
         - 'team:write'
         - webhook
         - wiki
+    description: 'OAuth 2 as per [RFC-6749](https://tools.ietf.org/html/rfc6749).'
   basic:
     type: Basic Authentication
     description: 'Basic HTTP Authentication as per [RFC-2617](https://tools.ietf.org/html/rfc2617) (Digest not supported). Note that Basic Auth with username and password as credentials is only available on accounts that have 2-factor-auth / 2-step-verification disabled. If you use 2fa, you should authenticate using OAuth2 instead.'
@@ -202,21 +202,15 @@ securitySchemes:
           type: string
     description: API Keys can be used as Basic HTTP Authentication credentials and provide a substitute for the account's actual username and password. API Keys are only available to team accounts and there is only 1 key per account. API Keys do not support scopes and have therefore access to all contents of the account.
 /repositories:
-  displayName: repositories
   '/{username}':
-    displayName: '{username}'
     '/{repo_slug}':
-      displayName: '{repo_slug}'
       /patch:
-        displayName: patch
         '/{spec}':
-          displayName: '{spec}'
           uriParameters:
             spec:
               required: true
               type: string
           get:
-            displayName: GET_repositories-username-repo_slug-patch-spec
             responses:
               '200':
                 description: The raw patches
@@ -240,9 +234,7 @@ securitySchemes:
             (oas-tags):
               - commits
       /pullrequests:
-        displayName: pullrequests
         get:
-          displayName: GET_repositories-username-repo_slug-pullrequests
           (oas-responses-default):
             body:
               application/json:
@@ -266,7 +258,6 @@ securitySchemes:
           (oas-tags):
             - pullrequests
         post:
-          displayName: POST_repositories-username-repo_slug-pullrequests
           body:
             application/json:
               type: pullrequest
@@ -296,9 +287,7 @@ securitySchemes:
           (oas-tags):
             - pullrequests
         /activity:
-          displayName: activity
           get:
-            displayName: GET_repositories-username-repo_slug-pullrequests-activity
             (oas-responses-default):
               body:
                 application/json:
@@ -313,13 +302,11 @@ securitySchemes:
             (oas-tags):
               - pullrequests
         '/{pull_request_id}':
-          displayName: '{pull_request_id}'
           uriParameters:
             pull_request_id:
               required: true
               type: string
           get:
-            displayName: GET_repositories-username-repo_slug-pullrequests-pull_request_id
             responses:
               '200':
                 body:
@@ -335,7 +322,6 @@ securitySchemes:
             (oas-tags):
               - pullrequests
           put:
-            displayName: PUT_repositories-username-repo_slug-pullrequests-pull_request_id
             (oas-responses-default):
               body:
                 application/json:
@@ -350,9 +336,7 @@ securitySchemes:
             (oas-tags):
               - pullrequests
           /activity:
-            displayName: activity
             get:
-              displayName: GET_repositories-username-repo_slug-pullrequests-pull_request_id-activity
               (oas-responses-default):
                 body:
                   application/json:
@@ -367,9 +351,7 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
           /approve:
-            displayName: approve
             delete:
-              displayName: DELETE_repositories-username-repo_slug-pullrequests-pull_request_id-approve
               (oas-responses-default):
                 body:
                   application/json:
@@ -384,7 +366,6 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
             post:
-              displayName: POST_repositories-username-repo_slug-pullrequests-pull_request_id-approve
               (oas-responses-default):
                 body:
                   application/json:
@@ -399,9 +380,7 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
           /comments:
-            displayName: comments
             get:
-              displayName: GET_repositories-username-repo_slug-pullrequests-pull_request_id-comments
               (oas-responses-default):
                 body:
                   application/json:
@@ -416,13 +395,11 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
             '/{comment_id}':
-              displayName: '{comment_id}'
               uriParameters:
                 comment_id:
                   required: true
                   type: string
               get:
-                displayName: GET_repositories-username-repo_slug-pullrequests-pull_request_id-comments-comment_id
                 (oas-responses-default):
                   body:
                     application/json:
@@ -437,9 +414,7 @@ securitySchemes:
                 (oas-tags):
                   - pullrequests
           /commits:
-            displayName: commits
             get:
-              displayName: GET_repositories-username-repo_slug-pullrequests-pull_request_id-commits
               (oas-responses-default):
                 body:
                   application/json:
@@ -454,9 +429,7 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
           /decline:
-            displayName: decline
             post:
-              displayName: POST_repositories-username-repo_slug-pullrequests-pull_request_id-decline
               responses:
                 '200':
                   body:
@@ -472,9 +445,7 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
           /diff:
-            displayName: diff
             get:
-              displayName: GET_repositories-username-repo_slug-pullrequests-pull_request_id-diff
               (oas-responses-default):
                 body:
                   application/json:
@@ -489,9 +460,7 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
           /merge:
-            displayName: merge
             post:
-              displayName: POST_repositories-username-repo_slug-pullrequests-pull_request_id-merge
               responses:
                 '200':
                   body:
@@ -507,9 +476,7 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
           /patch:
-            displayName: patch
             get:
-              displayName: GET_repositories-username-repo_slug-pullrequests-pull_request_id-patch
               (oas-responses-default):
                 body:
                   application/json:
@@ -524,9 +491,7 @@ securitySchemes:
               (oas-tags):
                 - pullrequests
           /statuses:
-            displayName: statuses
             get:
-              displayName: GET_repositories-username-repo_slug-pullrequests-pull_request_id-statuses
               responses:
                 '200':
                   body:
@@ -555,7 +520,6 @@ securitySchemes:
           required: true
           type: string
       delete:
-        displayName: DELETE_repositories-username-repo_slug
         responses:
           '204':
             description: Indicates successful deletion.
@@ -578,7 +542,6 @@ securitySchemes:
         (oas-tags):
           - repositories
       post:
-        displayName: POST_repositories-username-repo_slug
         body:
           application/json:
             type: repository
@@ -609,9 +572,7 @@ securitySchemes:
         (oas-tags):
           - repositories
       /branch-restrictions:
-        displayName: branch-restrictions
         get:
-          displayName: GET_repositories-username-repo_slug-branch-restrictions
           responses:
             '200':
               body:
@@ -642,14 +603,12 @@ securitySchemes:
           (oas-tags):
             - branchrestrictions
         '/{id}':
-          displayName: '{id}'
           uriParameters:
             id:
               required: true
               type: string
               description: The restriction rule's id
           delete:
-            displayName: DELETE_repositories-username-repo_slug-branch-restrictions-id
             responses:
               '204': {}
               '401':
@@ -676,7 +635,6 @@ securitySchemes:
             (oas-tags):
               - branchrestrictions
           put:
-            displayName: PUT_repositories-username-repo_slug-branch-restrictions-id
             body:
               application/json:
                 type: branchrestriction
@@ -712,7 +670,6 @@ securitySchemes:
             (oas-tags):
               - branchrestrictions
           get:
-            displayName: GET_repositories-username-repo_slug-branch-restrictions-id
             responses:
               '200':
                 body:
@@ -743,7 +700,6 @@ securitySchemes:
             (oas-tags):
               - branchrestrictions
         post:
-          displayName: POST_repositories-username-repo_slug-branch-restrictions
           body:
             application/json:
               type: branchrestriction
@@ -779,13 +735,9 @@ securitySchemes:
           (oas-tags):
             - branchrestrictions
       /commit:
-        displayName: commit
         '/{node}':
-          displayName: '{node}'
           /approve:
-            displayName: approve
             post:
-              displayName: POST_repositories-username-repo_slug-commit-node-approve
               responses:
                 '200':
                   body:
@@ -806,7 +758,6 @@ securitySchemes:
               (oas-tags):
                 - commits
             delete:
-              displayName: DELETE_repositories-username-repo_slug-commit-node-approve
               responses:
                 '204':
                   description: An empty response indicating the authenticated user's approval has been withdrawn.
@@ -824,11 +775,8 @@ securitySchemes:
               (oas-tags):
                 - commits
           /statuses:
-            displayName: statuses
             /build:
-              displayName: build
               post:
-                displayName: POST_repositories-username-repo_slug-commit-node-statuses-build
                 body:
                   application/json:
                     type: commitstatus
@@ -857,14 +805,12 @@ securitySchemes:
                   - repositories
                   - commitstatuses
               '/{key}':
-                displayName: '{key}'
                 uriParameters:
                   key:
                     required: true
                     type: string
                     description: The build status' unique key
                 put:
-                  displayName: PUT_repositories-username-repo_slug-commit-node-statuses-build-key
                   body:
                     application/json:
                       type: commitstatus
@@ -893,7 +839,6 @@ securitySchemes:
                     - repositories
                     - commitstatuses
                 get:
-                  displayName: GET_repositories-username-repo_slug-commit-node-statuses-build-key
                   responses:
                     '200':
                       body:
@@ -917,7 +862,6 @@ securitySchemes:
                     - repositories
                     - commitstatuses
             get:
-              displayName: GET_repositories-username-repo_slug-commit-node-statuses
               responses:
                 '200':
                   body:
@@ -941,11 +885,8 @@ securitySchemes:
                 - repositories
                 - commitstatuses
         '/{sha}':
-          displayName: '{sha}'
           /comments:
-            displayName: comments
             get:
-              displayName: GET_repositories-username-repo_slug-commit-sha-comments
               (oas-responses-default):
                 body:
                   application/json:
@@ -960,13 +901,11 @@ securitySchemes:
               (oas-tags):
                 - commits
             '/{comment_id}':
-              displayName: '{comment_id}'
               uriParameters:
                 comment_id:
                   required: true
                   type: string
               get:
-                displayName: GET_repositories-username-repo_slug-commit-sha-comments-comment_id
                 (oas-responses-default):
                   body:
                     application/json:
@@ -981,14 +920,12 @@ securitySchemes:
                 (oas-tags):
                   - commits
         '/{revision}':
-          displayName: '{revision}'
           uriParameters:
             revision:
               required: true
               type: string
               description: The commit's SHA1.
           get:
-            displayName: GET_repositories-username-repo_slug-commit-revision
             responses:
               '200':
                 body:
@@ -1009,9 +946,7 @@ securitySchemes:
             (oas-tags):
               - commits
       /refs:
-        displayName: refs
         get:
-          displayName: GET_repositories-username-repo_slug-refs
           (oas-responses-default):
             body:
               application/json:
@@ -1026,9 +961,7 @@ securitySchemes:
           (oas-tags):
             - refs
         /branches:
-          displayName: branches
           get:
-            displayName: GET_repositories-username-repo_slug-refs-branches
             (oas-responses-default):
               body:
                 application/json:
@@ -1043,13 +976,11 @@ securitySchemes:
             (oas-tags):
               - refs
           '/{name}':
-            displayName: '{name}'
             uriParameters:
               name:
                 required: true
                 type: string
             get:
-              displayName: GET_repositories-username-repo_slug-refs-branches-name
               (oas-responses-default):
                 body:
                   application/json:
@@ -1064,9 +995,7 @@ securitySchemes:
               (oas-tags):
                 - refs
         /tags:
-          displayName: tags
           get:
-            displayName: GET_repositories-username-repo_slug-refs-tags
             (oas-responses-default):
               body:
                 application/json:
@@ -1081,13 +1010,11 @@ securitySchemes:
             (oas-tags):
               - refs
           '/{name}':
-            displayName: '{name}'
             uriParameters:
               name:
                 required: true
                 type: string
             get:
-              displayName: GET_repositories-username-repo_slug-refs-tags-name
               (oas-responses-default):
                 body:
                   application/json:
@@ -1102,9 +1029,7 @@ securitySchemes:
               (oas-tags):
                 - refs
       /commits:
-        displayName: commits
         get:
-          displayName: GET_repositories-username-repo_slug-commits
           (oas-responses-default):
             body:
               application/json:
@@ -1119,13 +1044,11 @@ securitySchemes:
           (oas-tags):
             - commits
         '/{revision}':
-          displayName: '{revision}'
           uriParameters:
             revision:
               required: true
               type: string
           get:
-            displayName: GET_repositories-username-repo_slug-commits-revision
             (oas-responses-default):
               body:
                 application/json:
@@ -1140,7 +1063,6 @@ securitySchemes:
             (oas-tags):
               - commits
           post:
-            displayName: POST_repositories-username-repo_slug-commits-revision
             (oas-responses-default):
               body:
                 application/json:
@@ -1155,7 +1077,6 @@ securitySchemes:
             (oas-tags):
               - commits
         post:
-          displayName: POST_repositories-username-repo_slug-commits
           (oas-responses-default):
             body:
               application/json:
@@ -1170,9 +1091,7 @@ securitySchemes:
           (oas-tags):
             - commits
       /versions:
-        displayName: versions
         get:
-          displayName: GET_repositories-username-repo_slug-versions
           responses:
             '200':
               body:
@@ -1193,14 +1112,12 @@ securitySchemes:
           (oas-tags):
             - issue_tracker
         '/{version_id}':
-          displayName: '{version_id}'
           uriParameters:
             version_id:
               required: true
               type: integer
               description: The version's id
           get:
-            displayName: GET_repositories-username-repo_slug-versions-version_id
             responses:
               '200':
                 body:
@@ -1221,9 +1138,7 @@ securitySchemes:
             (oas-tags):
               - issue_tracker
       /components:
-        displayName: components
         get:
-          displayName: GET_repositories-username-repo_slug-components
           responses:
             '200':
               body:
@@ -1244,14 +1159,12 @@ securitySchemes:
           (oas-tags):
             - issue_tracker
         '/{component_id}':
-          displayName: '{component_id}'
           uriParameters:
             component_id:
               required: true
               type: integer
               description: The component's id
           get:
-            displayName: GET_repositories-username-repo_slug-components-component_id
             responses:
               '200':
                 body:
@@ -1272,9 +1185,7 @@ securitySchemes:
             (oas-tags):
               - issue_tracker
       /default-reviewers:
-        displayName: default-reviewers
         get:
-          displayName: GET_repositories-username-repo_slug-default-reviewers
           responses:
             '200':
               description: The paginated list of default reviewers
@@ -1287,7 +1198,6 @@ securitySchemes:
           (oas-tags):
             - pullrequests
         '/{target_username}':
-          displayName: '{target_username}'
           uriParameters:
             username:
               required: true
@@ -1296,7 +1206,6 @@ securitySchemes:
               required: true
               type: string
           get:
-            displayName: GET_repositories-username-repo_slug-default-reviewers-target_username
             (oas-responses-default):
               body:
                 application/json:
@@ -1311,7 +1220,6 @@ securitySchemes:
             (oas-tags):
               - pullrequests
           put:
-            displayName: PUT_repositories-username-repo_slug-default-reviewers-target_username
             (oas-responses-default):
               body:
                 application/json:
@@ -1326,7 +1234,6 @@ securitySchemes:
             (oas-tags):
               - pullrequests
           delete:
-            displayName: DELETE_repositories-username-repo_slug-default-reviewers-target_username
             (oas-responses-default):
               body:
                 application/json:
@@ -1341,9 +1248,7 @@ securitySchemes:
             (oas-tags):
               - pullrequests
       /watchers:
-        displayName: watchers
         get:
-          displayName: GET_repositories-username-repo_slug-watchers
           (oas-responses-default):
             body:
               application/json:
@@ -1358,15 +1263,12 @@ securitySchemes:
           (oas-tags):
             - repositories
       /diff:
-        displayName: diff
         '/{spec}':
-          displayName: '{spec}'
           uriParameters:
             spec:
               required: true
               type: string
           get:
-            displayName: GET_repositories-username-repo_slug-diff-spec
             responses:
               '200':
                 description: The raw diff
@@ -1399,9 +1301,7 @@ securitySchemes:
             (oas-tags):
               - commits
       /downloads:
-        displayName: downloads
         post:
-          displayName: POST_repositories-username-repo_slug-downloads
           (oas-responses-default):
             body:
               application/json:
@@ -1416,13 +1316,11 @@ securitySchemes:
           (oas-tags):
             - downloads
         '/{filename}':
-          displayName: '{filename}'
           uriParameters:
             filename:
               required: true
               type: string
           get:
-            displayName: GET_repositories-username-repo_slug-downloads-filename
             (oas-responses-default):
               body:
                 application/json:
@@ -1437,7 +1335,6 @@ securitySchemes:
             (oas-tags):
               - downloads
           delete:
-            displayName: DELETE_repositories-username-repo_slug-downloads-filename
             (oas-responses-default):
               body:
                 application/json:
@@ -1452,7 +1349,6 @@ securitySchemes:
             (oas-tags):
               - downloads
         get:
-          displayName: GET_repositories-username-repo_slug-downloads
           (oas-responses-default):
             body:
               application/json:
@@ -1467,9 +1363,7 @@ securitySchemes:
           (oas-tags):
             - downloads
       /hooks:
-        displayName: hooks
         get:
-          displayName: GET_repositories-username-repo_slug-hooks
           responses:
             '200':
               body:
@@ -1496,14 +1390,12 @@ securitySchemes:
             - repositories
             - webhooks
         '/{uid}':
-          displayName: '{uid}'
           uriParameters:
             uid:
               required: true
               type: string
               description: The installed webhook's id.
           delete:
-            displayName: DELETE_repositories-username-repo_slug-hooks-uid
             responses:
               '204':
                 description: When the webhook was deleted successfully
@@ -1527,7 +1419,6 @@ securitySchemes:
               - repositories
               - webhooks
           put:
-            displayName: PUT_repositories-username-repo_slug-hooks-uid
             responses:
               '200':
                 body:
@@ -1554,7 +1445,6 @@ securitySchemes:
               - repositories
               - webhooks
           get:
-            displayName: GET_repositories-username-repo_slug-hooks-uid
             responses:
               '200':
                 body:
@@ -1576,7 +1466,6 @@ securitySchemes:
               - repositories
               - webhooks
         post:
-          displayName: POST_repositories-username-repo_slug-hooks
           responses:
             '201':
               body:
@@ -1607,9 +1496,7 @@ securitySchemes:
             - repositories
             - webhooks
       /issues:
-        displayName: issues
         post:
-          displayName: POST_repositories-username-repo_slug-issues
           body:
             application/json:
               type: issue
@@ -1649,13 +1536,11 @@ securitySchemes:
           (oas-tags):
             - issue_tracker
         '/{issue_id}':
-          displayName: '{issue_id}'
           uriParameters:
             issue_id:
               required: true
               type: string
           get:
-            displayName: GET_repositories-username-repo_slug-issues-issue_id
             responses:
               '200':
                 body:
@@ -1681,9 +1566,7 @@ securitySchemes:
             (oas-tags):
               - issue_tracker
           /attachments:
-            displayName: attachments
             post:
-              displayName: POST_repositories-username-repo_slug-issues-issue_id-attachments
               responses:
                 '201':
                   description: An empty response document.
@@ -1709,13 +1592,11 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
             '/{path}':
-              displayName: '{path}'
               uriParameters:
                 path:
                   required: true
                   type: string
               get:
-                displayName: GET_repositories-username-repo_slug-issues-issue_id-attachments-path
                 responses:
                   '302':
                     description: A redirect to the file's contents
@@ -1738,7 +1619,6 @@ securitySchemes:
                 (oas-tags):
                   - issue_tracker
               delete:
-                displayName: DELETE_repositories-username-repo_slug-issues-issue_id-attachments-path
                 responses:
                   '204':
                     description: Indicates that the deletion was successful
@@ -1758,7 +1638,6 @@ securitySchemes:
                 (oas-tags):
                   - issue_tracker
             get:
-              displayName: GET_repositories-username-repo_slug-issues-issue_id-attachments
               responses:
                 '200':
                   body:
@@ -1781,15 +1660,12 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
           /comments:
-            displayName: comments
             '/{comment_id}':
-              displayName: '{comment_id}'
               uriParameters:
                 comment_id:
                   required: true
                   type: string
               get:
-                displayName: GET_repositories-username-repo_slug-issues-issue_id-comments-comment_id
                 (oas-responses-default):
                   body:
                     application/json:
@@ -1804,7 +1680,6 @@ securitySchemes:
                 (oas-tags):
                   - issue_tracker
             get:
-              displayName: GET_repositories-username-repo_slug-issues-issue_id-comments
               (oas-responses-default):
                 body:
                   application/json:
@@ -1819,9 +1694,7 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
           /vote:
-            displayName: vote
             get:
-              displayName: GET_repositories-username-repo_slug-issues-issue_id-vote
               responses:
                 '204':
                   body:
@@ -1848,7 +1721,6 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
             put:
-              displayName: PUT_repositories-username-repo_slug-issues-issue_id-vote
               responses:
                 '204':
                   body:
@@ -1875,7 +1747,6 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
             delete:
-              displayName: DELETE_repositories-username-repo_slug-issues-issue_id-vote
               (oas-responses-default):
                 body:
                   application/json:
@@ -1891,9 +1762,7 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
           /watch:
-            displayName: watch
             delete:
-              displayName: DELETE_repositories-username-repo_slug-issues-issue_id-watch
               responses:
                 '204':
                   body:
@@ -1920,7 +1789,6 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
             put:
-              displayName: PUT_repositories-username-repo_slug-issues-issue_id-watch
               responses:
                 '204':
                   body:
@@ -1947,7 +1815,6 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
             get:
-              displayName: GET_repositories-username-repo_slug-issues-issue_id-watch
               responses:
                 '204':
                   body:
@@ -1974,7 +1841,6 @@ securitySchemes:
               (oas-tags):
                 - issue_tracker
           delete:
-            displayName: DELETE_repositories-username-repo_slug-issues-issue_id
             responses:
               '200':
                 body:
@@ -2000,7 +1866,6 @@ securitySchemes:
             (oas-tags):
               - issue_tracker
         get:
-          displayName: GET_repositories-username-repo_slug-issues
           responses:
             '200':
               body:
@@ -2021,16 +1886,13 @@ securitySchemes:
           (oas-tags):
             - issue_tracker
       /milestones:
-        displayName: milestones
         '/{milestone_id}':
-          displayName: '{milestone_id}'
           uriParameters:
             milestone_id:
               required: true
               type: integer
               description: The milestone's id
           get:
-            displayName: GET_repositories-username-repo_slug-milestones-milestone_id
             responses:
               '200':
                 body:
@@ -2051,7 +1913,6 @@ securitySchemes:
             (oas-tags):
               - issue_tracker
         get:
-          displayName: GET_repositories-username-repo_slug-milestones
           responses:
             '200':
               body:
@@ -2072,7 +1933,6 @@ securitySchemes:
           (oas-tags):
             - issue_tracker
       put:
-        displayName: PUT_repositories-username-repo_slug
         body:
           application/json:
             type: repository
@@ -2122,7 +1982,6 @@ securitySchemes:
         (oas-tags):
           - repositories
       get:
-        displayName: GET_repositories-username-repo_slug
         responses:
           '200':
             body:
@@ -2148,9 +2007,7 @@ securitySchemes:
         (oas-tags):
           - repositories
       /forks:
-        displayName: forks
         get:
-          displayName: GET_repositories-username-repo_slug-forks
           responses:
             '200':
               body:
@@ -2170,7 +2027,6 @@ securitySchemes:
         required: true
         type: string
     get:
-      displayName: GET_repositories-username
       responses:
         '200':
           body:
@@ -2208,7 +2064,6 @@ securitySchemes:
       (oas-tags):
         - repositories
   get:
-    displayName: GET_repositories
     responses:
       '200':
         body:
@@ -2224,13 +2079,9 @@ securitySchemes:
     (oas-tags):
       - repositories
 /users:
-  displayName: users
   '/{username}':
-    displayName: '{username}'
     /repositories:
-      displayName: repositories
       get:
-        displayName: GET_users-username-repositories
         (oas-responses-default):
           body:
             application/json:
@@ -2251,7 +2102,6 @@ securitySchemes:
         type: string
         description: The account's username or UUID.
     get:
-      displayName: GET_users-username
       responses:
         '200':
           body:
@@ -2270,9 +2120,7 @@ securitySchemes:
       (oas-tags):
         - users
     /followers:
-      displayName: followers
       get:
-        displayName: GET_users-username-followers
         responses:
           '200':
             body:
@@ -2291,9 +2139,7 @@ securitySchemes:
         (oas-tags):
           - users
     /following:
-      displayName: following
       get:
-        displayName: GET_users-username-following
         responses:
           '200':
             body:
@@ -2314,9 +2160,7 @@ securitySchemes:
         (oas-tags):
           - users
     /hooks:
-      displayName: hooks
       get:
-        displayName: GET_users-username-hooks
         responses:
           '200':
             body:
@@ -2343,14 +2187,12 @@ securitySchemes:
           - users
           - webhooks
       '/{uid}':
-        displayName: '{uid}'
         uriParameters:
           uid:
             required: true
             type: string
             description: The installed webhook's id
         put:
-          displayName: PUT_users-username-hooks-uid
           responses:
             '200':
               body:
@@ -2377,7 +2219,6 @@ securitySchemes:
             - users
             - webhooks
         get:
-          displayName: GET_users-username-hooks-uid
           responses:
             '200':
               body:
@@ -2399,7 +2240,6 @@ securitySchemes:
             - users
             - webhooks
         delete:
-          displayName: DELETE_users-username-hooks-uid
           responses:
             '204':
               description: When the webhook was deleted successfully
@@ -2423,7 +2263,6 @@ securitySchemes:
             - users
             - webhooks
       post:
-        displayName: POST_users-username-hooks
         responses:
           '201':
             body:
@@ -2454,13 +2293,9 @@ securitySchemes:
           - users
           - webhooks
 /account:
-  displayName: account
   '/{username}':
-    displayName: '{username}'
     /addons:
-      displayName: addons
       get:
-        displayName: GET_account-username-addons
         (oas-responses-default):
           body:
             application/json:
@@ -2475,13 +2310,11 @@ securitySchemes:
         (oas-tags):
           - addon
       '/{encoded_context_id}':
-        displayName: '{encoded_context_id}'
         uriParameters:
           encoded_context_id:
             required: true
             type: string
         delete:
-          displayName: DELETE_account-username-addons-encoded_context_id
           (oas-responses-default):
             body:
               application/json:
@@ -2496,7 +2329,6 @@ securitySchemes:
           (oas-tags):
             - addon
         put:
-          displayName: PUT_account-username-addons-encoded_context_id
           (oas-responses-default):
             body:
               application/json:
@@ -2511,7 +2343,6 @@ securitySchemes:
           (oas-tags):
             - addon
         get:
-          displayName: GET_account-username-addons-encoded_context_id
           (oas-responses-default):
             body:
               application/json:
@@ -2526,9 +2357,7 @@ securitySchemes:
           (oas-tags):
             - addon
         /refresh:
-          displayName: refresh
           put:
-            displayName: PUT_account-username-addons-encoded_context_id-refresh
             (oas-responses-default):
               body:
                 application/json:
@@ -2543,7 +2372,6 @@ securitySchemes:
             (oas-tags):
               - addon
       post:
-        displayName: POST_account-username-addons
         (oas-responses-default):
           body:
             application/json:
@@ -2558,9 +2386,7 @@ securitySchemes:
         (oas-tags):
           - addon
 /addon:
-  displayName: addon
   delete:
-    displayName: DELETE_addon
     (oas-responses-default):
       body:
         application/json:
@@ -2573,9 +2399,7 @@ securitySchemes:
     (oas-tags):
       - addon
   /linkers:
-    displayName: linkers
     get:
-      displayName: GET_addon-linkers
       (oas-responses-default):
         body:
           application/json:
@@ -2588,11 +2412,8 @@ securitySchemes:
       (oas-tags):
         - addon
     '/{linker_key}':
-      displayName: '{linker_key}'
       /values:
-        displayName: values
         delete:
-          displayName: DELETE_addon-linkers-linker_key-values
           (oas-responses-default):
             body:
               application/json:
@@ -2605,7 +2426,6 @@ securitySchemes:
           (oas-tags):
             - addon
         post:
-          displayName: POST_addon-linkers-linker_key-values
           (oas-responses-default):
             body:
               application/json:
@@ -2619,7 +2439,6 @@ securitySchemes:
             - addon
         /:
           delete:
-            displayName: DELETE_addon-linkers-linker_key-values
             (oas-responses-default):
               body:
                 application/json:
@@ -2632,7 +2451,6 @@ securitySchemes:
             (oas-tags):
               - addon
           get:
-            displayName: GET_addon-linkers-linker_key-values
             (oas-responses-default):
               body:
                 application/json:
@@ -2645,7 +2463,6 @@ securitySchemes:
             (oas-tags):
               - addon
         get:
-          displayName: GET_addon-linkers-linker_key-values
           (oas-responses-default):
             body:
               application/json:
@@ -2658,7 +2475,6 @@ securitySchemes:
           (oas-tags):
             - addon
         put:
-          displayName: PUT_addon-linkers-linker_key-values
           (oas-responses-default):
             body:
               application/json:
@@ -2675,7 +2491,6 @@ securitySchemes:
           required: true
           type: string
       get:
-        displayName: GET_addon-linkers-linker_key
         (oas-responses-default):
           body:
             application/json:
@@ -2688,7 +2503,6 @@ securitySchemes:
         (oas-tags):
           - addon
   put:
-    displayName: PUT_addon
     (oas-responses-default):
       body:
         application/json:
@@ -2701,9 +2515,7 @@ securitySchemes:
     (oas-tags):
       - addon
 /hook_events:
-  displayName: hook_events
   get:
-    displayName: GET_hook_events
     responses:
       '200':
         body:
@@ -2717,7 +2529,6 @@ securitySchemes:
     (oas-tags):
       - webhooks
   '/{subject_type}':
-    displayName: '{subject_type}'
     uriParameters:
       subject_type:
         required: true
@@ -2728,7 +2539,6 @@ securitySchemes:
           - repository
           - team
     get:
-      displayName: GET_hook_events-subject_type
       responses:
         '200':
           body:
@@ -2747,9 +2557,7 @@ securitySchemes:
       (oas-tags):
         - webhooks
 /snippets:
-  displayName: snippets
   get:
-    displayName: GET_snippets
     responses:
       '200':
         body:
@@ -2779,7 +2587,6 @@ securitySchemes:
     (oas-tags):
       - snippets
   post:
-    displayName: POST_snippets
     body:
       application/json:
         type: snippet
@@ -2809,13 +2616,11 @@ securitySchemes:
     (oas-tags):
       - snippets
   '/{username}':
-    displayName: '{username}'
     uriParameters:
       username:
         required: true
         type: string
     get:
-      displayName: GET_snippets-username
       responses:
         '200':
           body:
@@ -2845,7 +2650,6 @@ securitySchemes:
       (oas-tags):
         - snippets
     post:
-      displayName: POST_snippets-username
       body:
         application/json:
           type: snippet
@@ -2880,14 +2684,12 @@ securitySchemes:
       (oas-tags):
         - snippets
     '/{encoded_id}':
-      displayName: '{encoded_id}'
       uriParameters:
         encoded_id:
           required: true
           type: string
           description: The snippet's id.
       delete:
-        displayName: DELETE_snippets-username-encoded_id
         responses:
           '204':
             description: If the snippet was deleted successfully.
@@ -2915,7 +2717,6 @@ securitySchemes:
         (oas-tags):
           - snippets
       get:
-        displayName: GET_snippets-username-encoded_id
         responses:
           '200':
             body:
@@ -2946,7 +2747,6 @@ securitySchemes:
         (oas-tags):
           - snippets
       put:
-        displayName: PUT_snippets-username-encoded_id
         responses:
           '200':
             body:
@@ -2977,9 +2777,7 @@ securitySchemes:
         (oas-tags):
           - snippets
       /comments:
-        displayName: comments
         get:
-          displayName: GET_snippets-username-encoded_id-comments
           responses:
             '200':
               body:
@@ -3005,7 +2803,6 @@ securitySchemes:
           (oas-tags):
             - snippets
         post:
-          displayName: POST_snippets-username-encoded_id-comments
           body:
             application/json:
               type: snippet
@@ -3040,13 +2837,11 @@ securitySchemes:
           (oas-tags):
             - snippets
         '/{comment_id}':
-          displayName: '{comment_id}'
           uriParameters:
             comment_id:
               required: true
               type: string
           delete:
-            displayName: DELETE_snippets-username-encoded_id-comments-comment_id
             responses:
               '204':
                 description: Indicates the comment was deleted successfully.
@@ -3069,7 +2864,6 @@ securitySchemes:
             (oas-tags):
               - snippets
           get:
-            displayName: GET_snippets-username-encoded_id-comments-comment_id
             responses:
               '200':
                 body:
@@ -3095,7 +2889,6 @@ securitySchemes:
             (oas-tags):
               - snippets
           put:
-            displayName: PUT_snippets-username-encoded_id-comments-comment_id
             responses:
               '200':
                 description: The updated comment object.
@@ -3118,9 +2911,7 @@ securitySchemes:
             (oas-tags):
               - snippets
       /commits:
-        displayName: commits
         get:
-          displayName: GET_snippets-username-encoded_id-commits
           responses:
             '200':
               body:
@@ -3146,13 +2937,11 @@ securitySchemes:
           (oas-tags):
             - snippets
         '/{revision}':
-          displayName: '{revision}'
           uriParameters:
             revision:
               required: true
               type: string
           get:
-            displayName: GET_snippets-username-encoded_id-commits-revision
             responses:
               '200':
                 body:
@@ -3178,9 +2967,7 @@ securitySchemes:
             (oas-tags):
               - snippets
       /watch:
-        displayName: watch
         delete:
-          displayName: DELETE_snippets-username-encoded_id-watch
           responses:
             '204':
               body:
@@ -3206,7 +2993,6 @@ securitySchemes:
           (oas-tags):
             - snippets
         get:
-          displayName: GET_snippets-username-encoded_id-watch
           responses:
             '204':
               body:
@@ -3227,7 +3013,6 @@ securitySchemes:
           (oas-tags):
             - snippets
         put:
-          displayName: PUT_snippets-username-encoded_id-watch
           responses:
             '204':
               body:
@@ -3253,9 +3038,7 @@ securitySchemes:
           (oas-tags):
             - snippets
       /watchers:
-        displayName: watchers
         get:
-          displayName: GET_snippets-username-encoded_id-watchers
           responses:
             '200':
               body:
@@ -3277,14 +3060,12 @@ securitySchemes:
             - snippets
           (oas-deprecated): true
       '/{node_id}':
-        displayName: '{node_id}'
         uriParameters:
           node_id:
             required: true
             type: string
             description: A commit revision (SHA1).
         delete:
-          displayName: DELETE_snippets-username-encoded_id-node_id
           responses:
             '204':
               description: If the snippet was deleted successfully.
@@ -3317,7 +3098,6 @@ securitySchemes:
           (oas-tags):
             - snippets
         get:
-          displayName: GET_snippets-username-encoded_id-node_id
           responses:
             '200':
               body:
@@ -3348,7 +3128,6 @@ securitySchemes:
           (oas-tags):
             - snippets
         put:
-          displayName: PUT_snippets-username-encoded_id-node_id
           responses:
             '200':
               body:
@@ -3384,15 +3163,12 @@ securitySchemes:
           (oas-tags):
             - snippets
         /files:
-          displayName: files
           '/{path}':
-            displayName: '{path}'
             uriParameters:
               path:
                 required: true
                 type: string
             get:
-              displayName: GET_snippets-username-encoded_id-node_id-files-path
               responses:
                 '200':
                   description: Returns the contents of the specified file.
@@ -3422,11 +3198,8 @@ securitySchemes:
               (oas-tags):
                 - snippets
       '/{revision}':
-        displayName: '{revision}'
         /diff:
-          displayName: diff
           get:
-            displayName: GET_snippets-username-encoded_id-revision-diff
             responses:
               '200':
                 description: The raw diff contents.
@@ -3453,9 +3226,7 @@ securitySchemes:
             (oas-tags):
               - snippets
         /patch:
-          displayName: patch
           get:
-            displayName: GET_snippets-username-encoded_id-revision-patch
             responses:
               '200':
                 description: The raw patch contents.
@@ -3478,9 +3249,7 @@ securitySchemes:
             (oas-tags):
               - snippets
 /teams:
-  displayName: teams
   get:
-    displayName: GET_teams
     responses:
       '200':
         body:
@@ -3518,12 +3287,9 @@ securitySchemes:
     (oas-tags):
       - teams
   '/{owner}':
-    displayName: '{owner}'
     /projects:
-      displayName: projects
       /:
         get:
-          displayName: GET_teams-owner-projects
           responses:
             '200':
               body:
@@ -3549,7 +3315,6 @@ securitySchemes:
           (oas-tags):
             - projects
         post:
-          displayName: POST_teams-owner-projects
           body:
             application/json:
               type: project
@@ -3583,7 +3348,6 @@ securitySchemes:
           (oas-tags):
             - projects
       '/{project_key}':
-        displayName: '{project_key}'
         uriParameters:
           project_key:
             description: |
@@ -3592,7 +3356,6 @@ securitySchemes:
             required: true
             type: string
         delete:
-          displayName: DELETE_teams-owner-projects-project_key
           responses:
             '204':
               description: Successful deletion.
@@ -3615,7 +3378,6 @@ securitySchemes:
           (oas-tags):
             - projects
         get:
-          displayName: GET_teams-owner-projects-project_key
           responses:
             '200':
               body:
@@ -3641,7 +3403,6 @@ securitySchemes:
           (oas-tags):
             - projects
         put:
-          displayName: PUT_teams-owner-projects-project_key
           body:
             application/json:
               type: project
@@ -3686,14 +3447,12 @@ securitySchemes:
           (oas-tags):
             - projects
   '/{username}':
-    displayName: '{username}'
     uriParameters:
       username:
         required: true
         type: string
         description: The team's username or UUID.
     get:
-      displayName: GET_teams-username
       responses:
         '200':
           body:
@@ -3712,9 +3471,7 @@ securitySchemes:
       (oas-tags):
         - teams
     /followers:
-      displayName: followers
       get:
-        displayName: GET_teams-username-followers
         responses:
           '200':
             body:
@@ -3733,9 +3490,7 @@ securitySchemes:
         (oas-tags):
           - teams
     /following:
-      displayName: following
       get:
-        displayName: GET_teams-username-following
         responses:
           '200':
             body:
@@ -3756,9 +3511,7 @@ securitySchemes:
         (oas-tags):
           - teams
     /hooks:
-      displayName: hooks
       get:
-        displayName: GET_teams-username-hooks
         responses:
           '200':
             body:
@@ -3785,7 +3538,6 @@ securitySchemes:
           - teams
           - webhooks
       post:
-        displayName: POST_teams-username-hooks
         responses:
           '201':
             body:
@@ -3816,14 +3568,12 @@ securitySchemes:
           - teams
           - webhooks
       '/{uid}':
-        displayName: '{uid}'
         uriParameters:
           uid:
             required: true
             type: string
             description: The installed webhook's id
         delete:
-          displayName: DELETE_teams-username-hooks-uid
           responses:
             '204':
               description: When the webhook was deleted successfully
@@ -3847,7 +3597,6 @@ securitySchemes:
             - teams
             - webhooks
         get:
-          displayName: GET_teams-username-hooks-uid
           responses:
             '200':
               body:
@@ -3869,7 +3618,6 @@ securitySchemes:
             - teams
             - webhooks
         put:
-          displayName: PUT_teams-username-hooks-uid
           responses:
             '200':
               body:
@@ -3896,9 +3644,7 @@ securitySchemes:
             - teams
             - webhooks
     /members:
-      displayName: members
       get:
-        displayName: GET_teams-username-members
         responses:
           '200':
             body:
@@ -3919,9 +3665,7 @@ securitySchemes:
         (oas-tags):
           - teams
     /repositories:
-      displayName: repositories
       get:
-        displayName: GET_teams-username-repositories
         (oas-responses-default):
           body:
             application/json:
@@ -3937,9 +3681,7 @@ securitySchemes:
           - users
           - teams
 /user:
-  displayName: user
   get:
-    displayName: GET_user
     responses:
       '200':
         body:
@@ -3960,9 +3702,7 @@ securitySchemes:
     (oas-tags):
       - users
   /emails:
-    displayName: emails
     get:
-      displayName: GET_user-emails
       (oas-responses-default):
         body:
           application/json:
@@ -3977,13 +3717,11 @@ securitySchemes:
       (oas-tags):
         - users
     '/{email}':
-      displayName: '{email}'
       uriParameters:
         email:
           required: true
           type: string
       get:
-        displayName: GET_user-emails-email
         (oas-responses-default):
           body:
             application/json:
@@ -4015,8 +3753,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4024,8 +3762,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4033,8 +3771,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4042,8 +3780,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4051,8 +3789,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4060,8 +3798,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4135,8 +3873,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4163,8 +3901,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4172,8 +3910,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4181,8 +3919,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4190,8 +3928,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4199,8 +3937,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4208,8 +3946,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4217,8 +3955,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4259,8 +3997,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4268,8 +4006,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4313,8 +4051,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4357,8 +4095,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4366,8 +4104,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4487,8 +4225,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4496,8 +4234,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4505,8 +4243,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4514,8 +4252,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4523,8 +4261,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4532,8 +4270,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4593,8 +4331,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4617,8 +4355,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -4639,8 +4377,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4654,8 +4392,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4668,8 +4406,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4683,8 +4421,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4704,8 +4442,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4719,8 +4457,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4740,8 +4478,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4755,8 +4493,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4776,8 +4514,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4791,8 +4529,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4812,8 +4550,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4827,8 +4565,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4847,8 +4585,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4862,8 +4600,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4883,8 +4621,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4898,8 +4636,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4919,8 +4657,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4934,8 +4672,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4955,8 +4693,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4970,8 +4708,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4991,8 +4729,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -5006,8 +4744,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -5027,8 +4765,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -5042,8 +4780,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -5062,8 +4800,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -5077,8 +4815,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -5098,8 +4836,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -5113,8 +4851,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -5134,8 +4872,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -5149,8 +4887,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -5170,8 +4908,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -5185,8 +4923,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -5206,8 +4944,8 @@ types:
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -5221,8 +4959,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -5283,8 +5021,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5292,8 +5030,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5331,8 +5069,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5340,8 +5078,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5349,8 +5087,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5358,8 +5096,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5367,8 +5105,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5376,8 +5114,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5385,8 +5123,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5394,8 +5132,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5403,8 +5141,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5470,8 +5208,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5479,8 +5217,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5488,8 +5226,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5497,8 +5235,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5506,8 +5244,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5515,8 +5253,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5524,8 +5262,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5533,8 +5271,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5542,8 +5280,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5551,8 +5289,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5633,8 +5371,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5642,8 +5380,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5663,8 +5401,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5672,8 +5410,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5681,8 +5419,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5703,8 +5441,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5717,8 +5455,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5731,8 +5469,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5759,8 +5497,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                (oas-format): uri
                 type: string
+                (oas-format): uri
                 required: false
             type: object
             required: false
@@ -5827,8 +5565,8 @@ types:
         required: false
       url:
         description: The URL events get delivered to.
-        (oas-format): uri
         type: string
+        (oas-format): uri
         required: false
       uuid:
         description: The webhook's id

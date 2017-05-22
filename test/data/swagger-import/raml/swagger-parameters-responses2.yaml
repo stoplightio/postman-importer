@@ -24,13 +24,6 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
-  oas-responses: any
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-summary:
-    type: string
-    allowedTargets: Method
   oas-externalDocs:
     properties:
       description?: string
@@ -52,18 +45,25 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-global-response-definition:
+    type: any
+    allowedTargets: Response
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
   oas-schema-title:
     type: string
     allowedTargets: TypeDeclaration
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-global-response-definition:
-    type: any
-    allowedTargets: Response
+  oas-responses: any
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -77,7 +77,6 @@ annotationTypes:
     name: Apache-2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0'
 /persons4:
-  displayName: persons4
   post:
     displayName: createUser4
     description: Adds a new person to the persons list.
@@ -88,9 +87,7 @@ annotationTypes:
       '204':
         description: Person succesfully created.
 /persons3:
-  displayName: persons3
   '/{username}':
-    displayName: '{username}'
     uriParameters:
       username:
         required: true
@@ -108,7 +105,6 @@ annotationTypes:
         '204':
           description: Person succesfully created.
 /persons2:
-  displayName: persons2
   get:
     displayName: readPerson2
     description: Returns a single person for its username.
@@ -124,9 +120,7 @@ annotationTypes:
     (oas-tags):
       - Persons
 /persons:
-  displayName: persons
   '/{username}':
-    displayName: '{username}'
     uriParameters:
       username:
         required: true

@@ -30,40 +30,6 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
-  oas-x-extension4: any
-  oas-x-extension7: any
-  oas-x-extension2: any
-  oas-x-extension3: any
-  oas-x-extension5: any
-  oas-paths:
-    type: any
-    allowedTargets: API
-  oas-x-extension8: any
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-deprecated:
-    type: boolean
-    allowedTargets: Method
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-allowEmptyValue:
-    type: boolean
-  oas-collectionFormat:
-    type: string
-  oas-exclusiveMaximum:
-    type: boolean
-  oas-exclusiveMinimum:
-    type: boolean
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-    allowedTargets:
-      - API
-      - Method
-      - TypeDeclaration
   oas-info:
     properties:
       termsOfService?: string
@@ -77,11 +43,45 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
+  oas-x-extension4: any
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-x-extension7: any
+  oas-x-extension2: any
+  oas-x-extension3: any
+  oas-x-extension5: any
+  oas-paths:
+    type: any
+    allowedTargets: API
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-x-extension8: any
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
   oas-responses-default:
     type: any
+    allowedTargets: Method
+  oas-collectionFormat:
+    type: string
+  oas-allowEmptyValue:
+    type: boolean
+  oas-exclusiveMaximum:
+    type: boolean
+  oas-exclusiveMinimum:
+    type: boolean
+  oas-deprecated:
+    type: boolean
     allowedTargets: Method
   oas-x-extension1: any
 (oas-info):
@@ -118,11 +118,8 @@ securitySchemes:
 (oas-paths):
   (oas-x-extension5): value5
 /store:
-  displayName: store
   /order:
-    displayName: order
     '/{orderId}':
-      displayName: '{orderId}'
       uriParameters:
         orderId:
           description: ID of the order that needs to be deleted
@@ -176,7 +173,6 @@ securitySchemes:
       (oas-tags):
         - store
   /inventory:
-    displayName: inventory
     get:
       displayName: getInventory
       description: Returns a map of status codes to quantities
@@ -188,17 +184,15 @@ securitySchemes:
               type: object
               properties:
                 //:
-                  format: int32
                   type: integer
+                  format: int32
           description: successful operation
       securedBy:
         - api_key
       (oas-tags):
         - store
 /user:
-  displayName: user
   '/{username}':
-    displayName: '{username}'
     uriParameters:
       username:
         description: 'The name that needs to be fetched. Use user1 for testing. '
@@ -260,7 +254,6 @@ securitySchemes:
     (oas-tags):
       - user
   /createWithArray:
-    displayName: createWithArray
     post:
       displayName: createUsersWithArrayInput
       (oas-summary): Creates list of users with given input array
@@ -276,7 +269,6 @@ securitySchemes:
       (oas-tags):
         - user
   /createWithList:
-    displayName: createWithList
     post:
       displayName: createUsersWithListInput
       (oas-summary): Creates list of users with given input array
@@ -292,7 +284,6 @@ securitySchemes:
       (oas-tags):
         - user
   /logout:
-    displayName: logout
     get:
       displayName: logoutUser
       (oas-summary): Logs out current logged in user session
@@ -301,7 +292,6 @@ securitySchemes:
       (oas-tags):
         - user
   /login:
-    displayName: login
     get:
       displayName: loginUser
       (oas-summary): Logs user into the system
@@ -337,7 +327,6 @@ securitySchemes:
       (oas-tags):
         - user
 /pet:
-  displayName: pet
   post:
     (oas-x-extension8): value8
     displayName: addPet
@@ -360,7 +349,6 @@ securitySchemes:
     (oas-tags):
       - pet
   /findByStatus:
-    displayName: findByStatus
     get:
       displayName: findPetsByStatus
       description: Multiple status values can be provided with comma separated strings
@@ -396,7 +384,6 @@ securitySchemes:
       (oas-tags):
         - pet
   '/{petId}':
-    displayName: '{petId}'
     uriParameters:
       petId:
         description: ID of pet that needs to be updated
@@ -441,7 +428,6 @@ securitySchemes:
       (oas-tags):
         - pet
     /uploadImage:
-      displayName: uploadImage
       post:
         displayName: uploadFile
         (oas-summary): uploads an image
@@ -497,7 +483,6 @@ securitySchemes:
       (oas-tags):
         - pet
   /findByTags:
-    displayName: findByTags
     get:
       displayName: findPetsByTags
       description: 'Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.'

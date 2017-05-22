@@ -14,22 +14,39 @@ securitySchemes:
       authorizationGrants:
         - implicit
       scopes:
-        - write:pets
-        - read:pets
+        - 'write:pets'
+        - 'read:pets'
   basicAuth:
     type: Basic Authentication
     description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
   internalApiKey:
     type: Pass Through
-    description: Api Key Authentication
     describedBy:
       queryParameters:
         api_key:
           type: string
-/getApiKey:
-  displayName: getApiKey
+    description: Api Key Authentication
+/getOauth2Auth:
   get:
-    displayName: GET_getApiKey
+    responses:
+      '200':
+        description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+    queryParameters:
+      count:
+        description: Count of media to return.
+        type: integer
+      max_id:
+        description: Return media earlier than this max_id.s
+        type: integer
+      min_id:
+        description: Return media later than this min_id.
+        type: integer
+    securedBy:
+      - oauth2:
+          scopes:
+            - 'read:pets'
+/getApiKey:
+  get:
     responses:
       '200':
         description: 'InternalApiKey. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
@@ -46,9 +63,7 @@ securitySchemes:
     securedBy:
       - internalApiKey
 /getBasicAuth:
-  displayName: getBasicAuth
   get:
-    displayName: GET_getBasicAuth
     responses:
       '200':
         description: 'Basic Auth. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
@@ -64,23 +79,3 @@ securitySchemes:
         type: integer
     securedBy:
       - basicAuth
-/getOauth2Auth:
-  displayName: getOauth2Auth
-  get:
-    displayName: GET_getOauth2Auth
-    responses:
-      '200':
-        description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
-    queryParameters:
-      count:
-        description: Count of media to return.
-        type: integer
-      max_id:
-        description: Return media earlier than this max_id.s
-        type: integer
-      min_id:
-        description: Return media later than this min_id.
-        type: integer
-    securedBy:
-      - oauth2:
-          scopes: [ read:pets ]

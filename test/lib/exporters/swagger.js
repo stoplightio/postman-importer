@@ -153,8 +153,6 @@ describe('Swagger Exporter', function () {
 				type: 'string'
 			});
 			
-			endpoint.SetOperationId(null, 'GET', '/foo/bar/');
-			
 			const env = new Environment();
 			env.Consumes = ['application/json'];
 			
