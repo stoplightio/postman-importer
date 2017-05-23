@@ -6,62 +6,47 @@ mediaType: application/json
 protocols:
   - HTTPS
 (oas-info):
-  (oas-x-apisguru-categories):
+  (apisguru-categories):
     - analytics
     - ecommerce
-  (oas-x-logo):
+  (logo):
     backgroundColor: '#444444'
     url: 'https://api.apis.guru/v2/cache/logo/https_www.indix.com_wp-content_themes_indix2015_images_logo.png'
-  (oas-x-origin):
+  (origin):
     format: swagger
     url: 'https://developer.indix.com/swagger/spec/INDIX_API_V2.json'
     version: '2.0'
-  (oas-x-preferred): true
-  (oas-x-providerName): indix.com
-  (oas-x-tags):
+  (preferred): true
+  (providerName): indix.com
+  (tags):
     - DaaS
     - Product information
 annotationTypes:
   oas-info:
     properties:
-      termsOfService:
-        type: string
-        required: false
-      contact:
-        required: false
+      termsOfService?: string
+      contact?:
         properties:
-          name:
-            type: string
-            required: false
-          url:
-            type: string
-            required: false
-          email:
-            type: string
-            required: false
-      license:
-        required: false
+          name?: string
+          url?: string
+          email?: string
+      license?:
         properties:
-          name:
-            type: string
-            required: false
-          url:
-            type: string
-            required: false
+          name?: string
+          url?: string
     allowedTargets: API
-  oas-x-apisguru-categories: any
-  oas-x-logo: any
-  oas-x-origin: any
-  oas-x-preferred: any
-  oas-x-providerName: any
-  oas-x-tags: any
+  apisguru-categories: any
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
+  tags: any
   oas-externalDocs:
     properties:
       description:
         type: string
         required: false
-      url:
-        type: string
+      url: string
     allowedTargets:
       - API
       - Method
@@ -79,7 +64,6 @@ annotationTypes:
 (oas-externalDocs):
   url: 'http://docs.indix.com/'
 /v2:
-  displayName: v2
   /offersPremium:
     displayName: offersPremium
     /products:
@@ -368,7 +352,6 @@ annotationTypes:
   /universal:
     displayName: universal
     /products:
-      displayName: products
       '/{mpid}':
         displayName: '{mpid}'
         uriParameters:
@@ -398,9 +381,8 @@ annotationTypes:
           (oas-tags):
             - 3 - Product Lookup
       get:
-        displayName: GET_v2-universal-products
         description: '<p>Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 22 credits per product returned.'
-        (oas-summary): Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores - Cr
+        (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores - Credits: 　n x 22'
         responses:
           '200':
             description: Response
@@ -530,7 +512,7 @@ annotationTypes:
         post:
           displayName: POST_v2-universal-bulk-products
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 22 credits per product returned.'
-          (oas-summary): Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores
+          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores - Credits: 　n x 22'
           body:
             multipart/form-data:
               properties:
@@ -684,9 +666,7 @@ annotationTypes:
           (oas-tags):
             - 8 - Advanced Search Endpoint
   /brands:
-    displayName: brands
     get:
-      displayName: GET_v2-brands
       description: '<p>Lists all brands, along with their IDs, matching query term. Does not support wildcards. Limit is 10 results per query. This API does not consume any credits.'
       (oas-summary): 'Search Brands - Lists all brands along with their IDs - Credits: 　0'
       responses:
@@ -1075,15 +1055,12 @@ annotationTypes:
           (oas-tags):
             - 7 - Bulk job status and download
   /catalogPremium:
-    displayName: catalogPremium
     /bulk:
-      displayName: bulk
       /products:
-        displayName: products
         post:
           displayName: POST_v2-catalogPremium-bulk-products
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 18 credits per product returned.'
-          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits:'
+          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits: 　n x 18'
           body:
             multipart/form-data:
               properties:
@@ -1170,7 +1147,6 @@ annotationTypes:
           (oas-tags):
             - 5 - Bulk Product Search
       /lookup:
-        displayName: lookup
         post:
           displayName: POST_v2-catalogPremium-bulk-lookup
           description: This operation returns the catalog premium information for the specified product across all the stores where it is sold at. This consumes 18 credits per product returned.
@@ -1199,15 +1175,12 @@ annotationTypes:
           (oas-tags):
             - 6 - Bulk Product Lookup
     /products:
-      displayName: products
       '/{mpid}':
-        displayName: '{mpid}'
         uriParameters:
           mpid:
             description: The Indix product identifier - should be a 32-digit HEX value retrieved via the Product Search API
             type: string
         get:
-          displayName: GET_v2-catalogPremium-products-mpid
           description: <p>This operation returns the catalog premium information for the specified product across all the stores where it is sold at. This consumes 18 credits.
           (oas-summary): 'Product Details - Returns catalog premium information for a product - Credits: 　18'
           responses:
@@ -1232,7 +1205,7 @@ annotationTypes:
       get:
         displayName: GET_v2-catalogPremium-products
         description: '<p>Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 18 credits per product returned.'
-        (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits: 　n x'
+        (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits: 　n x 18'
         responses:
           '200':
             description: Response
@@ -1382,15 +1355,12 @@ annotationTypes:
         (oas-tags):
           - 4 - Search suggestions
   /catalogStandard:
-    displayName: catalogStandard
     /bulk:
-      displayName: bulk
       /products:
-        displayName: products
         post:
           displayName: POST_v2-catalogStandard-bulk-products
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 18 credits per product returned.'
-          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their aggregated catalog info - Credits: 　n'
+          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their aggregated catalog info - Credits: 　n x 18'
           body:
             multipart/form-data:
               properties:
