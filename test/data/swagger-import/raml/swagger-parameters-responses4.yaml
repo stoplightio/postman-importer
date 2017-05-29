@@ -126,6 +126,11 @@ annotationTypes:
     displayName: readPerson2
     description: Returns a single person for its username.
     (oas-summary): Gets a person
+    body:
+      application/json:
+        type: Person
+        description: The person body.
+        (oas-body-name): userBody
     responses:
       '200':
         body:
@@ -150,6 +155,12 @@ annotationTypes:
           type: string
           description: All API consumers MUST provide a user agent
           required: true
+      body:
+        multipart/form-data:
+          properties:
+            userData:
+              description: The person's data
+              type: string
       (oas-responses-default):
         description: A totally unexpected response
         headers:
