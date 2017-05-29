@@ -59,73 +59,47 @@ annotationTypes:
     type: array
     items:
       properties:
-        name:
-          type: string
-        description:
-          type: string
-          required: false
-        externalDocs:
-          required: false
+        name: string
+        description?: string
+        externalDocs?:
           properties:
-            url:
-              type: string
-            description:
-              type: string
-              required: false
+            url: string
+            description?: string
     allowedTargets: API
   oas-info:
     properties:
-      termsOfService:
-        type: string
-        required: false
-      contact:
-        required: false
+      termsOfService?: string
+      contact?:
         properties:
-          name:
-            type: string
-            required: false
-          url:
-            type: string
-            required: false
-          email:
-            type: string
-            required: false
-      license:
-        required: false
+          name?: string
+          url?: string
+          email?: string
+      license?:
         properties:
-          name:
-            type: string
-            required: false
-          url:
-            type: string
-            required: false
+          name?: string
+          url?: string
     allowedTargets: API
-  oas-x-logo: any
-  oas-x-origin: any
-  oas-x-preferred: any
-  oas-x-providerName: any
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
   oas-summary:
     type: string
     allowedTargets: Method
   oas-tags:
-    type: array
-    items:
-      type: string
+    type: string[]
     allowedTargets: Method
-  oas-format:
-    type: string
-    allowedTargets: TypeDeclaration
   oas-collectionFormat:
     type: string
 (oas-info):
-  (oas-x-logo):
+  (logo):
     url: 'https://api.apis.guru/v2/cache/logo/http_draft-labs64.rhcloud.com_content_uploads_2015_06_labs64-logo.png'
-  (oas-x-origin):
+  (origin):
     format: swagger
     url: 'http://io.labs64.com/NetLicensing-API/v2.x/netlicensing.json'
     version: '2.0'
-  (oas-x-preferred): true
-  (oas-x-providerName): netlicensing.io
+  (preferred): true
+  (providerName): netlicensing.io
   termsOfService: 'https://www.labs64.com/legal/terms-of-service/netlicensing'
 securitySchemes:
   basicAuth:
@@ -451,7 +425,7 @@ securitySchemes:
               description: for TIMEVOLUME licenseType
               required: false
               type: datetime
-              (oas-format): rfc3339
+              format: rfc3339
             parentfeature:
               required: false
               type: string
@@ -462,7 +436,7 @@ securitySchemes:
               description: 'Price for the license. If > 0, it must always be accompanied by the currency specification. Read-only, set from license template on creation'
               required: false
               type: number
-              (oas-format): double
+              format: double
             currency:
               description: 'Specifies currency for the license price. Check data types to discover which currencies are supported. Read-only, set from license template on creation'
               required: false
@@ -546,12 +520,12 @@ securitySchemes:
             description: Mandatory for 'TIMEVOLUME' license type.
             required: false
             type: datetime
-            (oas-format): rfc3339
+            format: rfc3339
           price:
             description: 'Price for the license. If >0, it must always be accompanied by the currency specification. Read-only, set from license template on creation'
             required: false
             type: number
-            (oas-format): double
+            format: double
           currency:
             description: 'Specifies currency for the license price. Check data types to discover which currencies are supported. Read-only, set from license template on creation'
             required: false
@@ -834,17 +808,17 @@ securitySchemes:
             description: Maximum checkout validity (days). Mandatory for 'Floating' licensing model.
             required: false
             type: integer
-            (oas-format): int32
+            format: int32
           yellowThreshold:
             description: Remaining time volume for yellow level. Mandatory for 'Rental' licensing model.
             required: false
             type: integer
-            (oas-format): int32
+            format: int32
           redThreshold:
             description: Remaining time volume for red level. Mandatory for 'Rental' licensing model.
             required: false
             type: integer
-            (oas-format): int32
+            format: int32
           licenseTemplate:
             description: License template. Mandatory for 'Try &amp; Buy' licensing model.
             items:
@@ -965,17 +939,17 @@ securitySchemes:
               description: Maximum checkout validity (days). Mandatory for 'Floating' licensing model.
               required: false
               type: integer
-              (oas-format): int32
+              format: int32
             yellowThreshold:
               description: Remaining time volume for yellow level. Mandatory for 'Rental' licensing model.
               required: false
               type: integer
-              (oas-format): int32
+              format: int32
             redThreshold:
               description: Remaining time volume for red level. Mandatory for 'Rental' licensing model.
               required: false
               type: integer
-              (oas-format): int32
+              format: int32
             licenseTemplate:
               description: License template. Mandatory for 'Try &amp; Buy' licensing model.
               items:
@@ -1053,7 +1027,7 @@ securitySchemes:
             description: 'price for the license. If >0, it must always be accompanied by the currency specification.'
             required: false
             type: number
-            (oas-format): double
+            format: double
           currency:
             description: specifies currency for the license price. Check data types to discover which currencies are supported.
             required: false
@@ -1160,7 +1134,7 @@ securitySchemes:
               description: 'Price for the license. If >0, it must always be accompanied by the currency specification.'
               required: false
               type: number
-              (oas-format): double
+              format: double
             currency:
               description: Specifies currency for the license price. Check data types to discover which currencies are supported.
               required: false
@@ -1531,11 +1505,11 @@ securitySchemes:
             dateCreated:
               required: false
               type: datetime
-              (oas-format): rfc3339
+              format: rfc3339
             dateClosed:
               required: false
               type: datetime
-              (oas-format): rfc3339
+              format: rfc3339
             paymentMethod:
               required: false
               type: string
@@ -1615,11 +1589,11 @@ securitySchemes:
           dateCreated:
             required: false
             type: datetime
-            (oas-format): rfc3339
+            format: rfc3339
           dateClosed:
             required: false
             type: datetime
-            (oas-format): rfc3339
+            format: rfc3339
           paymentMethod:
             required: false
             type: string
