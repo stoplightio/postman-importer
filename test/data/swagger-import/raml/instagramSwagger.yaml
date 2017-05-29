@@ -200,13 +200,9 @@ securitySchemes:
         access_token:
           type: string
 /media:
-  displayName: media
   '/{media-id}':
-    displayName: '{media-id}'
     /comments:
-      displayName: comments
       get:
-        displayName: GET_media-media-id-comments
         description: |
           Get a list of recent comments on a media object.
         responses:
@@ -229,7 +225,6 @@ securitySchemes:
         (oas-tags):
           - Comments
       post:
-        displayName: POST_media-media-id-comments
         description: |
           Create a comment on a media object with the following rules:
 
@@ -269,7 +264,6 @@ securitySchemes:
           - Comments
           - Media
       delete:
-        displayName: DELETE_media-media-id-comments
         description: |
           Remove a comment either on the authenticated user's media object or
           authored by the authenticated user.
@@ -292,9 +286,7 @@ securitySchemes:
         (oas-tags):
           - Comments
     /likes:
-      displayName: likes
       get:
-        displayName: GET_media-media-id-likes
         description: |
           Get a list of users who have liked this media.
         responses:
@@ -318,7 +310,6 @@ securitySchemes:
           - Likes
           - Media
       post:
-        displayName: POST_media-media-id-likes
         description: Set a like on this media by the currently authenticated user.
         responses:
           '200':
@@ -343,7 +334,6 @@ securitySchemes:
         (oas-tags):
           - Likes
       delete:
-        displayName: DELETE_media-media-id-likes
         description: |
           Remove a like on this media by the currently authenticated user.
         responses:
@@ -369,7 +359,6 @@ securitySchemes:
         description: The media ID
         type: integer
     get:
-      displayName: GET_media-media-id
       description: |
         Get information about a media object.
         The returned type key will allow you to differentiate between `image`
@@ -387,9 +376,7 @@ securitySchemes:
       (oas-tags):
         - Media
   /popular:
-    displayName: popular
     get:
-      displayName: GET_media-popular
       description: |
         Get a list of what media is most popular at the moment.
         Can return mix of image and video types.
@@ -406,9 +393,7 @@ securitySchemes:
       (oas-tags):
         - Media
   /search:
-    displayName: search
     get:
-      displayName: GET_media-search
       description: |
         Search for media in a given area. The default time span is set to 5
         days. The time span must not exceed 7 days. Defaults time stamps cover
@@ -462,15 +447,10 @@ securitySchemes:
       (oas-tags):
         - Media
 /geographies:
-  displayName: geographies
   '/{geo-id}':
-    displayName: '{geo-id}'
     /media:
-      displayName: media
       /recent:
-        displayName: recent
         get:
-          displayName: GET_geographies-geo-id-media-recent
           description: |
             Get recent media from a geography subscription that you created.
             **Note**: You can only access Geographies that were explicitly created
@@ -494,16 +474,13 @@ securitySchemes:
               type: integer
               required: false
 /users:
-  displayName: users
   '/{user-id}':
-    displayName: '{user-id}'
     uriParameters:
       user-id:
         description: The user identifier number
         type: number
         required: true
     get:
-      displayName: GET_users-user-id
       description: Get basic information about a user.
       responses:
         '200':
@@ -523,11 +500,8 @@ securitySchemes:
       (oas-tags):
         - Users
     /media:
-      displayName: media
       /recent:
-        displayName: recent
         get:
-          displayName: GET_users-user-id-media-recent
           responses:
             '200':
               body:
@@ -567,9 +541,7 @@ securitySchemes:
           (oas-tags):
             - Users
     /followed-by:
-      displayName: followed-by
       get:
-        displayName: GET_users-user-id-followed-by
         description: Get the list of users this user is followed by.
         responses:
           '200':
@@ -585,9 +557,7 @@ securitySchemes:
         (oas-tags):
           - Relationships
     /relationship:
-      displayName: relationship
       post:
-        displayName: POST_users-user-id-relationship
         description: |
           Modify the relationship between the current user and thetarget user.
         body:
@@ -620,9 +590,7 @@ securitySchemes:
         (oas-tags):
           - Relationships
     /follows:
-      displayName: follows
       get:
-        displayName: GET_users-user-id-follows
         description: Get the list of users this user follows.
         responses:
           '200':
@@ -638,9 +606,7 @@ securitySchemes:
         (oas-tags):
           - Relationships
   /search:
-    displayName: search
     get:
-      displayName: GET_users-search
       description: Search for a user by name.
       responses:
         '200':
@@ -665,13 +631,9 @@ securitySchemes:
       (oas-tags):
         - Users
   /self:
-    displayName: self
     /media:
-      displayName: media
       /liked:
-        displayName: liked
         get:
-          displayName: GET_users-self-media-liked
           description: |
             See the list of media liked by the authenticated user.
             Private media is returned as long as the authenticated user
@@ -701,9 +663,7 @@ securitySchemes:
           (oas-tags):
             - Users
     /feed:
-      displayName: feed
       get:
-        displayName: GET_users-self-feed
         description: See the authenticated user's feed.
         responses:
           '200':
@@ -733,9 +693,7 @@ securitySchemes:
         (oas-tags):
           - Users
     /requested-by:
-      displayName: requested-by
       get:
-        displayName: GET_users-self-requested-by
         description: |
           List the users who have requested this user's permission to follow.
         responses:
@@ -758,16 +716,13 @@ securitySchemes:
         (oas-tags):
           - Relationships
 /tags:
-  displayName: tags
   '/{tag-name}':
-    displayName: '{tag-name}'
     uriParameters:
       tag-name:
         description: Tag name
         type: string
         required: true
     get:
-      displayName: GET_tags-tag-name
       description: Get information about a tag object.
       responses:
         '200':
@@ -778,11 +733,8 @@ securitySchemes:
       (oas-tags):
         - Tags
     /media:
-      displayName: media
       /recent:
-        displayName: recent
         get:
-          displayName: GET_tags-tag-name-media-recent
           description: |
             Get a list of recently tagged media. Use the `max_tag_id` and
             `min_tag_id` parameters in the pagination response to paginate through
@@ -801,9 +753,7 @@ securitySchemes:
           (oas-tags):
             - Tags
   /search:
-    displayName: search
     get:
-      displayName: GET_tags-search
       responses:
         '200':
           body:
@@ -831,15 +781,12 @@ securitySchemes:
       (oas-tags):
         - Tags
 /media1:
-  displayName: media1
   '/{shortcode}':
-    displayName: '{shortcode}'
     uriParameters:
       shortcode:
         description: The media shortcode
         type: string
     get:
-      displayName: GET_media1-shortcode
       description: |
         This endpoint returns the same response as **GET** `/media/media-id`.
 
@@ -855,11 +802,8 @@ securitySchemes:
       (oas-tags):
         - Media
 /locations:
-  displayName: locations
   /search:
-    displayName: search
     get:
-      displayName: GET_locations-search
       description: Search for a location by geographic coordinate.
       responses:
         '200':
@@ -911,13 +855,9 @@ securitySchemes:
       (oas-tags):
         - Location
   '/{location-id}':
-    displayName: '{location-id}'
     /media:
-      displayName: media
       /recent:
-        displayName: recent
         get:
-          displayName: GET_locations-location-id-media-recent
           description: Get a list of recent media objects from a given location.
           responses:
             '200':
@@ -956,7 +896,6 @@ securitySchemes:
         description: Location ID
         type: integer
     get:
-      displayName: GET_locations-location-id
       description: Get information about a location.
       responses:
         '200':

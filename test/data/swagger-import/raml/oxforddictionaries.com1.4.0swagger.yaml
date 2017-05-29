@@ -61,9 +61,7 @@ annotationTypes:
   hasEquivalentPaths: any
   data-threescale-name: any
 /filters:
-  displayName: filters
   get:
-    displayName: GET_filters
     description: |
       Returns a list of all the valid filters to construct API calls.
     (oas-summary): Lists available filters.
@@ -82,7 +80,6 @@ annotationTypes:
     (oas-tags):
       - Utility
   '/{endpoint}':
-    displayName: '{endpoint}'
     uriParameters:
       endpoint:
         description: Name of the endpoint.
@@ -93,7 +90,6 @@ annotationTypes:
         required: true
         type: string
     get:
-      displayName: GET_filters-endpoint
       description: |
         Returns a list of all the valid filters for a given endpoint to construct API calls.
       (oas-summary): Lists available filters for specific endpoint.
@@ -114,11 +110,8 @@ annotationTypes:
       (oas-tags):
         - Utility
 /wordlist:
-  displayName: wordlist
   '/{source_lang}':
-    displayName: '{source_lang}'
     '/{filters_basic}':
-      displayName: '{filters_basic}'
       uriParameters:
         filters_basic:
           default: registers=Rare;domains=Art
@@ -126,7 +119,6 @@ annotationTypes:
           required: true
           type: string
       get:
-        displayName: GET_wordlist-source_lang-filters_basic
         description: |
           Retrieve list of words for particular domain, lexical category register and/or region.  
 
@@ -162,7 +154,6 @@ annotationTypes:
         (oas-tags):
           - Wordlist
     '/{filters_advanced}':
-      displayName: '{filters_advanced}'
       uriParameters:
         filters_advanced:
           default: registers=Rare;domains=Art
@@ -170,7 +161,6 @@ annotationTypes:
           required: true
           type: string
       get:
-        displayName: GET_wordlist-source_lang-filters_advanced
         description: |
           Advanced options for retrieving wordlist - exclude filter, filter by word length or match by substring (prefix). 
 
@@ -223,9 +213,7 @@ annotationTypes:
         (oas-tags):
           - Wordlist
 /domains:
-  displayName: domains
   '/{source_language}':
-    displayName: '{source_language}'
     uriParameters:
       source_language:
         description: IANA language code. Source Language.
@@ -239,7 +227,6 @@ annotationTypes:
         required: true
         type: string
     get:
-      displayName: GET_domains-source_language
       description: |
         Returns a list of the available domains for a given monolingual language dataset.
       (oas-summary): Lists available domains in a given monolingual language dataset.
@@ -258,7 +245,6 @@ annotationTypes:
       (oas-tags):
         - Utility
     '/{target_language}':
-      displayName: '{target_language}'
       uriParameters:
         target_language:
           description: IANA language code. Target Language.
@@ -272,7 +258,6 @@ annotationTypes:
           required: true
           type: string
       get:
-        displayName: GET_domains-source_language-target_language
         description: |
           Returns a list of the available domains for a given bilingual language dataset.
         (oas-summary): Lists available domains in a given bilingual language dataset.
@@ -293,11 +278,8 @@ annotationTypes:
         (oas-tags):
           - Utility
 /inflections:
-  displayName: inflections
   '/{source_lang}':
-    displayName: '{source_lang}'
     '/{word_id}':
-      displayName: '{word_id}'
       uriParameters:
         word_id:
           default: changed
@@ -305,7 +287,6 @@ annotationTypes:
           required: true
           type: string
       get:
-        displayName: GET_inflections-source_lang-word_id
         description: |
 
           Retrieve available [lemmas](/glossary?tag=#lemma&expand) for a given [inflected](/glossary?tag=#inflection&expand) wordform. 
@@ -328,7 +309,6 @@ annotationTypes:
         (oas-tags):
           - Lemmatron
       '/{filters}':
-        displayName: '{filters}'
         uriParameters:
           filters:
             default:
@@ -341,7 +321,6 @@ annotationTypes:
             type: array
             (oas-collectionFormat): csv
         get:
-          displayName: GET_inflections-source_lang-word_id-filters
           description: |
 
             Retrieve available [lemmas](/glossary?tag=#lemma&expand) for a given [inflected](/glossary?tag=#inflection&expand) wordform. Filter results by categories.  
@@ -364,15 +343,10 @@ annotationTypes:
           (oas-tags):
             - Lemmatron
 /entries:
-  displayName: entries
   '/{source_language}':
-    displayName: '{source_language}'
     '/{word_id}':
-      displayName: '{word_id}'
       /sentences:
-        displayName: sentences
         get:
-          displayName: GET_entries-source_language-word_id-sentences
           description: |
 
             Retrieve list of sentences and list of senses (English language only).
@@ -400,13 +374,9 @@ annotationTypes:
             description: find more info here
             url: 'https://helloreverb.com/about'
   '/{source_lang}':
-    displayName: '{source_lang}'
     '/{word_id}':
-      displayName: '{word_id}'
       /antonyms:
-        displayName: antonyms
         get:
-          displayName: GET_entries-source_lang-word_id-antonyms
           description: |
 
             Retrieve available antonyms for a given word and language. 
@@ -435,9 +405,7 @@ annotationTypes:
             description: find more info here
             url: 'https://helloreverb.com/about'
       /examples:
-        displayName: examples
         get:
-          displayName: GET_entries-source_lang-word_id-examples
           description: |
 
             Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
@@ -464,7 +432,6 @@ annotationTypes:
           (oas-tags):
             - Dictionary entries
       '/regions={region}':
-        displayName: 'regions={region}'
         uriParameters:
           region:
             description: Region filter parameter. gb = Great Britain English. us = United States English. Default is gb.
@@ -474,7 +441,6 @@ annotationTypes:
             required: true
             type: string
         get:
-          displayName: GET_entries-source_lang-word_id-regions=region
           description: |
 
             Retrieve available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. 
@@ -504,9 +470,7 @@ annotationTypes:
             description: find more info here
             url: 'https://helloreverb.com/about'
       /synonyms;antonyms:
-        displayName: synonyms;antonyms
         get:
-          displayName: GET_entries-source_lang-word_id-synonyms;antonyms
           description: |
 
             Retrieve available synonyms and antonyms for a given word and language. 
@@ -535,7 +499,6 @@ annotationTypes:
             description: find more info here
             url: 'https://helloreverb.com/about'
       '/{filters}':
-        displayName: '{filters}'
         uriParameters:
           filters:
             default:
@@ -548,7 +511,6 @@ annotationTypes:
             type: array
             (oas-collectionFormat): csv
         get:
-          displayName: GET_entries-source_lang-word_id-filters
           description: |
 
             Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
@@ -581,7 +543,6 @@ annotationTypes:
           required: true
           type: string
       get:
-        displayName: GET_entries-source_lang-word_id
         description: |
 
           Retrieve available [dictionary entries](/glossary?tag=#entry&expand) for a given word and language. 
@@ -610,9 +571,7 @@ annotationTypes:
           description: find more info here
           url: 'https://helloreverb.com/about'
       /definitions:
-        displayName: definitions
         get:
-          displayName: GET_entries-source_lang-word_id-definitions
           description: |
 
             Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
@@ -639,7 +598,6 @@ annotationTypes:
           (oas-tags):
             - Dictionary entries
       '/translations={target_lang}':
-        displayName: 'translations={target_lang}'
         uriParameters:
           target_lang:
             description: IANA language code
@@ -656,7 +614,6 @@ annotationTypes:
             required: true
             type: string
         get:
-          displayName: GET_entries-source_lang-word_id-translations=target_lang
           description: |
             Returns target language translations for a given word ID and source language. 
             In the event that a word in the dataset does not have a direct translation, the response will be a definition in the target language.
@@ -685,9 +642,7 @@ annotationTypes:
           (oas-tags):
             - Translation
       /synonyms:
-        displayName: synonyms
         get:
-          displayName: GET_entries-source_lang-word_id-synonyms
           description: |
 
             Retrieve available synonyms for a given word and language. 
@@ -716,9 +671,7 @@ annotationTypes:
             description: find more info here
             url: 'https://helloreverb.com/about'
       /pronunciations:
-        displayName: pronunciations
         get:
-          displayName: GET_entries-source_lang-word_id-pronunciations
           description: |
 
             Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
@@ -745,9 +698,7 @@ annotationTypes:
           (oas-tags):
             - Dictionary entries
 /languages:
-  displayName: languages
   get:
-    displayName: GET_languages
     description: |
       Returns a list of monolingual and bilingual language datasets available in the API
     (oas-summary): Lists available monolingual and bilingual language datasets in the API.
@@ -770,9 +721,7 @@ annotationTypes:
     (oas-tags):
       - Utility
 /lexicalcategories:
-  displayName: lexicalcategories
   '/{language}':
-    displayName: '{language}'
     uriParameters:
       language:
         description: IANA language code
@@ -786,7 +735,6 @@ annotationTypes:
         required: true
         type: string
     get:
-      displayName: GET_lexicalcategories-language
       description: |
         Returns a list of available lexical categories for a given language dataset.
       (oas-summary): Lists available lexical categories in a given language dataset.
@@ -807,9 +755,7 @@ annotationTypes:
       (oas-tags):
         - Utility
 /regions:
-  displayName: regions
   '/{source_language}':
-    displayName: '{source_language}'
     uriParameters:
       source_language:
         description: IANA language code
@@ -818,7 +764,6 @@ annotationTypes:
         required: true
         type: string
     get:
-      displayName: GET_regions-source_language
       description: |
         Returns a list of the available regions for a given monolingual language dataset.
       (oas-summary): Lists available regions in a given monolingual language dataset.
@@ -837,9 +782,7 @@ annotationTypes:
       (oas-tags):
         - Utility
 /registers:
-  displayName: registers
   '/{source_language}':
-    displayName: '{source_language}'
     uriParameters:
       source_language:
         description: IANA language code. Source Language.
@@ -853,7 +796,6 @@ annotationTypes:
         required: true
         type: string
     get:
-      displayName: GET_registers-source_language
       description: |
         Returns a list of the available registers for a given monolingual language dataset.
       (oas-summary): Lists available registers in a given monolingual language dataset.
@@ -874,7 +816,6 @@ annotationTypes:
       (oas-tags):
         - Utility
     '/{target_language}':
-      displayName: '{target_language}'
       uriParameters:
         target_language:
           description: IANA language code. Target Language.
@@ -888,7 +829,6 @@ annotationTypes:
           required: true
           type: string
       get:
-        displayName: GET_registers-source_language-target_language
         description: |
           Returns a list of the available registers for a given bilingual language dataset.
         (oas-summary): Lists available registers in a given bilingual language dataset.
@@ -911,11 +851,8 @@ annotationTypes:
         (oas-tags):
           - Utility
 /search:
-  displayName: search
   '/{source_lang}':
-    displayName: '{source_lang}'
     '/translations={target_lang}':
-      displayName: 'translations={target_lang}'
       uriParameters:
         target_lang:
           description: IANA language code
@@ -932,7 +869,6 @@ annotationTypes:
           required: true
           type: string
       get:
-        displayName: GET_search-source_lang-translations=target_lang
         description: |
 
           Find available translation results  for a search query and language. 
@@ -993,7 +929,6 @@ annotationTypes:
         required: true
         type: string
     get:
-      displayName: GET_search-source_lang
       description: |
 
         Retrieve available results for a search query and language. 
