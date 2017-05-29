@@ -1,0 +1,86 @@
+swagger: '2.0'
+basePath: /api
+host: www.example.com
+info:
+  title: Title
+  version: '1'
+  x-info-ann: info annotation
+  x-info-ann-2:
+    key_1: value 1
+    key_2: value 2
+x-root-ann: root annotation
+securityDefinitions:
+  oauth:
+    type: oauth2
+    flow: implicit
+    authorizationUrl: http://example.swagger.io/oauth/dialog
+    scopes:
+      write:pets: write pets
+    x-sec-ann: security definitions annotations
+tags:
+  - description: first tag
+    name: first
+  - description: second tag
+    name: second
+paths:
+  x-paths-ann: paths annotation
+  x-paths-ann-2: paths annotation 2
+  /pets:
+    x-path-ann: path annotation
+    get:
+      x-method-ann: method annotation
+      summary: the summary
+      deprecated: true
+      tags:
+        - some tag
+        - other tag
+      responses:
+        200:
+          description: ''
+          x-200-ann: 200 annotation
+        default:
+          description: default response
+          schema:
+            x-schema-ann: default schema annotation
+            type: string
+            example: Dog
+      parameters:
+        - description: body parameter
+          in: body
+          name: _body
+          x-body-ann: body annotation
+          schema:
+            type: string
+            x-body-schema-ann: body schema annotation
+        - description: query parameter
+          in: query
+          name: queryParameter
+          allowEmptyValue: true
+          collectionFormat: multi
+          type: string
+definitions:
+  pets:
+    title: Pets
+    x-type-ann: type annotation
+    type: object
+    properties:
+      first:
+        x-prop-ann: property annotation
+        readOnly: true
+      second:
+        format: uri
+        type: string
+      third:
+        format: byte
+        maximum: 255
+        minimum: 1
+        type: string
+      fourth:
+        exclusiveMaximum: true
+        exclusiveMinimum: false
+        type: number
+      fifth:
+        type: number
+        format: double
+  custom[pets]:
+    type: string
