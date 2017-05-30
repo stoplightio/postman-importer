@@ -149,15 +149,12 @@ securitySchemes:
             type: string
           active:
             description: 'If set to ''false'', the product is disabled. No new licensees can be registered for the product, existing licensees can not obtain new licenses.'
-            required: true
             type: boolean
           name:
             description: Product name. Together with the version identifies the product for the end customer.
-            required: true
             type: string
           version:
             description: 'Product version. Convenience parameter, additional to the product name.'
-            required: true
             type: string
           licenseeAutoCreate:
             description: 'If set to ''true'', non-existing licensees will be created at first validation attempt.'
@@ -193,7 +190,6 @@ securitySchemes:
     uriParameters:
       productNumber:
         description: Unique number that identifies the product.
-        required: true
         type: string
     delete:
       displayName: deleteProduct
@@ -486,16 +482,12 @@ securitySchemes:
       multipart/form-data:
         properties:
           licenseeNumber:
-            required: true
             type: string
           licenseTemplateNumber:
-            required: true
             type: string
           active:
-            required: true
             type: boolean
           number:
-            required: true
             type: string
           name:
             description: 'Name for the licensed item. Set from license template on creation, if not specified explicitly.'
@@ -559,14 +551,12 @@ securitySchemes:
             type: string
           productNumber:
             description: productNumber to assign new licensee object
-            required: true
             type: string
           name:
             required: false
             type: string
           active:
             description: 'If set to ''false'', the licensee is disabled. Licensee can not obtain new licenses, and validation is disabled'
-            required: true
             type: boolean
     responses:
       '200':
@@ -766,7 +756,6 @@ securitySchemes:
         properties:
           productNumber:
             description: Unique number (across all products of a vendor) that identifies the product module. Vendor can assign this number when creating a product module or let NetLicensing generate one. Read-only after creation of the first licensee for the product.
-            required: true
             type: string
           number:
             description: Unique number (across all products of a vendor) that identifies the product module. Vendor can assign this number when creating a product module or let NetLicensing generate one. Read-only after creation of the first licensee for the product.
@@ -774,11 +763,9 @@ securitySchemes:
             type: string
           active:
             description: 'If set to ''false'', the product module is disabled. Licensees can not obtain any new licenses for this product module.'
-            required: true
             type: boolean
           name:
             description: Product module name that is visible to the end customers in NetLicensing Shop.
-            required: true
             type: string
           licensingModel:
             description: Licensing model applied to this product module. Defines what license templates can be configured for the product module and how licenses for this product module are processed during validation.
@@ -790,7 +777,6 @@ securitySchemes:
                 - Rental
                 - Floating
               type: string
-            required: true
             type: array
             (oas-collectionFormat): multi
           maxCheckoutValidity:
@@ -840,7 +826,6 @@ securitySchemes:
     uriParameters:
       productModuleNumber:
         description: Unique number (across all products of a vendor) that identifies the product module. Vendor can assign this number when creating a product module or let NetLicensing generate one. Read-only after creation of the first licensee for the product.
-        required: true
         type: string
     delete:
       displayName: deleteProductModule
@@ -976,19 +961,15 @@ securitySchemes:
         properties:
           productModuleNumber:
             description: Number of product module to сreate license template object
-            required: true
             type: string
           number:
             description: lUnique number (across all products of a vendor) that identifies the license template. Vendor can assign this number when creating a license template or let NetLicensing generate one. Read-only after creation of the first license from this license template.
-            required: true
             type: string
           name:
             description: license template name to сreate license template object
-            required: true
             type: string
           active:
             description: 'If set to ''false'', the license template is disabled. Licensee can not obtain any new licenses off this license template.'
-            required: true
             type: boolean
           licenseType:
             description: 'type of licenses created from this license template. Supported types: FEATURE, TIMEVOLUME'
@@ -999,7 +980,6 @@ securitySchemes:
                 - TIMEVOLUME
                 - FLOATING
               type: string
-            required: true
             type: array
             (oas-collectionFormat): multi
           timeVolume:
@@ -1053,7 +1033,6 @@ securitySchemes:
     uriParameters:
       licenseTemplateNumber:
         description: Unique number (across all products of a vendor) that identifies the license template.
-        required: true
         type: string
     get:
       displayName: getLicenseTemplate
@@ -1235,7 +1214,6 @@ securitySchemes:
     uriParameters:
       paymentMethodNumber:
         description: Payment method number
-        required: true
         type: string
     post:
       displayName: updatePaymentMethod
@@ -1330,7 +1308,6 @@ securitySchemes:
               - DEFAULT
               - SHOP
               - APIKEY
-            required: true
             type: string
             (oas-collectionFormat): multi
           licenseeNumber:
@@ -1375,7 +1352,6 @@ securitySchemes:
     uriParameters:
       tokenNumber:
         description: Token number
-        required: true
         type: string
     delete:
       displayName: deleteToken
@@ -1450,7 +1426,6 @@ securitySchemes:
     uriParameters:
       transactionNumber:
         description: Unique number (across all products of a vendor) that identifies the transaction
-        required: true
         type: string
     post:
       displayName: updateTransaction
@@ -1541,7 +1516,6 @@ securitySchemes:
       multipart/form-data:
         properties:
           licenseeNumber:
-            required: true
             type: string
           number:
             description: Unique number (across all products of a vendor) that identifies the transaction
@@ -1549,21 +1523,18 @@ securitySchemes:
             type: string
           active:
             description: always true for transactions
-            required: true
             type: boolean
           status:
             enum:
               - CANCELLED
               - CLOSED
               - PENDING
-            required: true
             type: string
             (oas-collectionFormat): multi
           source:
             description: AUTO transaction for internal use only
             enum:
               - SHOP
-            required: true
             type: string
             (oas-collectionFormat): multi
           dateCreated:
