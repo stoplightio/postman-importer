@@ -189,6 +189,14 @@ securitySchemes:
           body:
             image/png:
               type: Error
+            image/gif:
+              type: Error
+            image/jpeg:
+              type: Error
+            application/json:
+              type: Error
+            application/x-yaml:
+              type: Error
           description: An unexpected error occured.
           headers:
             X-Rate-Limit-Remaining:
@@ -232,6 +240,11 @@ securitySchemes:
               imageId:
                 type: string
                 required: false
+          application/x-yaml:
+            properties:
+              imageId:
+                type: string
+                required: false
         description: Image's ID
         headers:
           X-Rate-Limit-Remaining:
@@ -244,6 +257,8 @@ securitySchemes:
       '500':
         body:
           application/json:
+            type: Error
+          application/x-yaml:
             type: Error
         description: An unexpected error occured.
         headers:
@@ -314,6 +329,29 @@ securitySchemes:
                       imageId: b74469bc-e6a1-4a90-858a-88ef94079356
                       albumName: Star Wars
                       artist: John Williams
+              application/x-yaml:
+                type: PagedCollectingItems
+                examples:
+                  totalItems: 10
+                  totalPages: 4
+                  pageSize: 3
+                  currentPage: 2
+                  items:
+                    - itemType: Vinyl
+                      maxPrice: 20
+                      imageId: 98096838-04eb-4bac-b32e-cd5b7196de71
+                      albumName: Captain Future Original Soundtrack
+                      artist: Yuji Ohno
+                    - itemType: VHS
+                      maxPrice: 10
+                      imageId: b74469bc-e6a1-4a90-858a-88ef94079356
+                      movieTitle: Star Crash
+                      director: Luigi Cozzi
+                    - itemType: AudioCassette
+                      maxPrice: 10
+                      imageId: b74469bc-e6a1-4a90-858a-88ef94079356
+                      albumName: Star Wars
+                      artist: John Williams
             description: A collected items list
             headers:
               X-Rate-Limit-Remaining:
@@ -337,6 +375,8 @@ securitySchemes:
           '500':
             body:
               application/json:
+                type: Error
+              application/x-yaml:
                 type: Error
             description: An unexpected error occured.
             headers:
@@ -378,6 +418,8 @@ securitySchemes:
             body:
               application/json:
                 type: PagedPersons
+              application/x-yaml:
+                type: PagedPersons
             description: A person's friends list
             headers:
               X-Rate-Limit-Remaining:
@@ -401,6 +443,8 @@ securitySchemes:
           '500':
             body:
               application/json:
+                type: Error
+              application/x-yaml:
                 type: Error
             description: An unexpected error occured.
             headers:
@@ -461,6 +505,8 @@ securitySchemes:
           body:
             application/json:
               type: Error
+            application/x-yaml:
+              type: Error
           description: An unexpected error occured.
           headers:
             X-Rate-Limit-Remaining:
@@ -495,6 +541,8 @@ securitySchemes:
           body:
             application/json:
               type: Person
+            application/x-yaml:
+              type: Person
           description: A Person
           headers:
             X-Rate-Limit-Remaining:
@@ -519,6 +567,8 @@ securitySchemes:
           body:
             application/json:
               type: Error
+            application/x-yaml:
+              type: Error
           description: An unexpected error occured.
           headers:
             X-Rate-Limit-Remaining:
@@ -537,6 +587,10 @@ securitySchemes:
     (oas-summary): Creates a person
     body:
       application/json:
+        type: Person
+        (oas-body-name): person
+        description: The person to create.
+      application/x-yaml:
         type: Person
         (oas-body-name): person
         description: The person to create.
@@ -575,6 +629,8 @@ securitySchemes:
       '500':
         body:
           application/json:
+            type: Error
+          application/x-yaml:
             type: Error
         description: An unexpected error occured.
         headers:
@@ -620,6 +676,8 @@ securitySchemes:
         body:
           application/json:
             type: Persons
+          application/x-yaml:
+            type: Persons
         description: A list of Person
         headers:
           X-Rate-Limit-Remaining:
@@ -632,6 +690,8 @@ securitySchemes:
       '500':
         body:
           application/json:
+            type: Error
+          application/x-yaml:
             type: Error
         description: An unexpected error occured.
         headers:
@@ -651,7 +711,7 @@ securitySchemes:
     description: For JS-less partners
     (oas-summary): Creates a person
     body:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         properties:
           username:
             pattern: '[a-z0-9]{8,64}'
