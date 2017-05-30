@@ -1,0 +1,63 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+mediaType:
+  - application/x-www-form-urlencoded
+  - multipart/form-data
+  - application/xml
+  - application/json
+types:
+  error:
+    type: string
+/pets:
+  get:
+    responses:
+      200:
+        description: Success
+        body:
+          image/png:
+            description: pet
+            example: Dog
+          image/gif:
+            description: pet
+            example: Dog
+          image/jpeg:
+            description: pet
+            example: Dog
+      500:
+        (oas-global-response-definition): error
+        description: An unexpected error occured.
+        body:
+          image/png:
+            type: error
+          image/gif:
+            type: error
+          image/jpeg:
+            type: error
+/employees:
+  post:
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          names:
+            type: string
+    responses:
+      200:
+        description: Success
+        body:
+          application/json:
+            description: employee
+            example: Bob
+          application/xml:
+            description: employee
+            example: Bob
+annotationTypes:
+  oas-global-response-definition:
+    allowedTargets: Response
+    type: any
+  oas-responses: any
+(oas-responses):
+  error:
+    description: An unexpected error occured.
+    body:
+      type: error

@@ -44,6 +44,8 @@ description: |
             body:
               application/json:
                 type: Order
+              application/xml:
+                type: Order
             description: successful operation
           '400':
             description: Invalid ID supplied
@@ -64,6 +66,8 @@ description: |
         '200':
           body:
             application/json:
+              type: Order
+            application/xml:
               type: Order
           description: successful operation
         '400':
@@ -111,6 +115,8 @@ description: |
         '200':
           body:
             application/json:
+              type: User
+            application/xml:
               type: User
           description: successful operation
         '400':
@@ -182,6 +188,8 @@ description: |
           body:
             application/json:
               type: string
+            application/xml:
+              type: string
           description: successful operation
         '400':
           description: Invalid username/password supplied
@@ -206,6 +214,11 @@ description: |
         (oas-body-name): body
         required: false
         description: Pet object that needs to be added to the store
+      application/xml:
+        type: Pet
+        (oas-body-name): body
+        required: false
+        description: Pet object that needs to be added to the store
     responses:
       '405':
         description: Invalid input
@@ -220,6 +233,10 @@ description: |
         '200':
           body:
             application/json:
+              type: array
+              items:
+                type: Pet
+            application/xml:
               type: array
               items:
                 type: Pet
@@ -251,6 +268,8 @@ description: |
           body:
             application/json:
               type: Pet
+            application/xml:
+              type: Pet
           description: successful operation
         '400':
           description: Invalid ID supplied
@@ -274,7 +293,7 @@ description: |
       displayName: updatePetWithForm
       (oas-summary): Updates a pet in the store with form data
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             name:
               description: Updated name of the pet
@@ -299,6 +318,10 @@ description: |
               type: array
               items:
                 type: Pet
+            application/xml:
+              type: array
+              items:
+                type: Pet
           description: successful operation
         '400':
           description: Invalid tag value
@@ -317,6 +340,11 @@ description: |
     (oas-summary): Update an existing pet
     body:
       application/json:
+        type: Pet
+        (oas-body-name): body
+        required: false
+        description: Pet object that needs to be added to the store
+      application/xml:
         type: Pet
         (oas-body-name): body
         required: false
