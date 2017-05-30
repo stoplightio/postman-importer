@@ -656,7 +656,6 @@ securitySchemes:
       multipart/form-data:
         properties:
           username:
-            required: true
             pattern: '[a-z0-9]{8,64}'
             minLength: 8
             maxLength: 64
@@ -922,6 +921,7 @@ traits:
     queryParameters:
       pageSize:
         type: integer
+        required: false
         description: Number of persons returned
         format: int32
         minimum: 0
@@ -929,16 +929,19 @@ traits:
         maximum: 100
         (oas-exclusiveMaximum): false
         default: 20
+        multipleOf: 10
   pageNumber:
     queryParameters:
       pageNumber:
         type: integer
+        required: false
         description: Page number
         default: 1
   includeNonVerifiedUsers:
     queryParameters:
       includeNonVerifiedUsers:
         type: boolean
+        required: false
         description: Result will not include non verified user by default if this parameter is not provided
         default: false
         (oas-allowEmptyValue): true
@@ -946,6 +949,7 @@ traits:
     queryParameters:
       sort:
         type: array
+        required: false
         description: Result will be sorted by lastTimeOnline descending and username ascending by default if this parameter is not provided
         uniqueItems: true
         minItems: 1
@@ -961,6 +965,7 @@ traits:
     queryParameters:
       itemType:
         type: array
+        required: false
         description: Filter collected items on their type
         (oas-collectionFormat): multi
         uniqueItems: true
@@ -975,7 +980,6 @@ traits:
       User-Agent:
         type: string
         description: All API consumers MUST provide a user agent
-        required: true
 (oas-responses):
   Standard500ErrorResponse:
     body:

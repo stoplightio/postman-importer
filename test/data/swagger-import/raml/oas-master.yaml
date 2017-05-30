@@ -148,7 +148,6 @@ securitySchemes:
   '/{imageId}':
     uriParameters:
       imageId:
-        required: true
         type: string
     get:
       displayName: readImage
@@ -419,7 +418,6 @@ securitySchemes:
         - userAgent
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     delete:
@@ -656,7 +654,6 @@ securitySchemes:
       multipart/form-data:
         properties:
           username:
-            required: true
             pattern: '[a-z0-9]{8,64}'
             minLength: 8
             maxLength: 64
@@ -922,23 +919,27 @@ traits:
     queryParameters:
       pageSize:
         type: integer
+        required: false
         description: Number of persons returned
         format: int32
         minimum: 0
         (oas-exclusiveMinimum): true
         maximum: 100
         (oas-exclusiveMaximum): false
+        multipleOf: 10
         default: 20
   pageNumber:
     queryParameters:
       pageNumber:
         type: integer
+        required: false
         description: Page number
         default: 1
   includeNonVerifiedUsers:
     queryParameters:
       includeNonVerifiedUsers:
         type: boolean
+        required: false
         description: Result will not include non verified user by default if this parameter is not provided
         default: false
         (oas-allowEmptyValue): true
@@ -946,6 +947,7 @@ traits:
     queryParameters:
       sort:
         type: array
+        required: false
         description: Result will be sorted by lastTimeOnline descending and username ascending by default if this parameter is not provided
         uniqueItems: true
         minItems: 1
@@ -961,6 +963,7 @@ traits:
     queryParameters:
       itemType:
         type: array
+        required: false
         description: Filter collected items on their type
         (oas-collectionFormat): multi
         uniqueItems: true
@@ -975,7 +978,6 @@ traits:
       User-Agent:
         type: string
         description: All API consumers MUST provide a user agent
-        required: true
 (oas-responses):
   Standard500ErrorResponse:
     body:

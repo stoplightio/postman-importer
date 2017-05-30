@@ -1,45 +1,10 @@
 #%RAML 1.0
 title: Swagger Petstore
+description: This is a sample server Petstore server.
 version: 1.0.0
-baseUri: 'http://petstore.swagger.io/v2'
 protocols:
   - HTTP
-description: This is a sample server Petstore server.
-/pet:
-  '/{petId}':
-    uriParameters:
-      petId:
-        description: ID of pet to return
-        required: true
-        type: string
-    get:
-      displayName: getPetById
-      description: Returns a single pet
-      responses:
-        '200':
-          body:
-            application/json:
-              type: Foo
-          description: successful operation
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-  post:
-    displayName: addPet
-    description: Add a new pet to the store
-    body:
-      application/json:
-        type: Pet
-        (oas-body-name): body
-        description: Pet object that needs to be added to the store
-    responses:
-      '405':
-        description: Invalid input
-annotationTypes:
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
+baseUri: 'http://petstore.swagger.io/v2'
 types:
   Foo:
     type: !include ../../types/Complex.json#Foo
@@ -63,4 +28,40 @@ types:
         required: false
       name:
         example: doggie
+        type: string
+annotationTypes:
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+/pet:
+  post:
+    displayName: addPet
+    description: Add a new pet to the store
+    responses:
+      '405':
+        description: Invalid input
+    body:
+      application/json:
+        description: Pet object that needs to be added to the store
+        type: Pet
+        required: false
+        (oas-body-name): body
+  '/{petId}':
+    get:
+      displayName: getPetById
+      description: Returns a single pet
+      responses:
+        '200':
+          description: successful operation
+          body:
+            application/json:
+              type: Foo
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    uriParameters:
+      petId:
+        description: ID of pet to return
+        required: true
         type: string
