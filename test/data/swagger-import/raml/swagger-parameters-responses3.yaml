@@ -93,7 +93,6 @@ annotationTypes:
   '/{username}':
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     post:
@@ -123,6 +122,12 @@ annotationTypes:
     displayName: readPerson2
     description: Returns a single person for its username.
     (oas-summary): Gets a person
+    body:
+      application/json:
+        (oas-body-name): userBody
+        description: The person body.
+        schema:
+          type: Person
     responses:
       '200':
         body:
@@ -135,13 +140,18 @@ annotationTypes:
   '/{username}':
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     get:
       displayName: readPerson
       description: Returns a single person for its username.
       (oas-summary): Gets a person
+      body:
+        multipart/form-data:
+          properties:
+            userData:
+              description: The person's data
+              type: string
       headers:
         userAgent:
           type: string

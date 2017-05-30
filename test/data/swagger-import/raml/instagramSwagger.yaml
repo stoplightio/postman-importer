@@ -448,6 +448,10 @@ securitySchemes:
         - Media
 /geographies:
   '/{geo-id}':
+    uriParameters:
+      geo-id:
+        type: integer
+        description: Geolocation ID
     /media:
       /recent:
         get:
@@ -492,10 +496,10 @@ securitySchemes:
                   required: false
           description: The user object
       securedBy:
+        - key
         - oauth:
             scopes:
               - basic
-        - key
       (oas-tags):
         - Users
     /media:

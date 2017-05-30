@@ -87,7 +87,6 @@ annotationTypes:
           - entries
           - inflections
           - translations
-        required: true
         type: string
     get:
       description: |
@@ -111,12 +110,20 @@ annotationTypes:
         - Utility
 /wordlist:
   '/{source_lang}':
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - hi
+        type: string
     '/{filters_basic}':
       uriParameters:
         filters_basic:
           default: registers=Rare;domains=Art
           description: 'Semicolon separated list of wordlist parameters, presented as value pairs: LexicalCategory, domains, regions, registers. Parameters can take comma separated list of values. E.g., lexicalCategory=noun,adjective;domains=sport.'
-          required: true
           type: string
       get:
         description: |
@@ -158,7 +165,6 @@ annotationTypes:
         filters_advanced:
           default: registers=Rare;domains=Art
           description: 'Semicolon separated list of wordlist parameters, presented as value pairs: LexicalCategory, domains, regions, registers. Parameters can take comma separated list of values. E.g., lexicalCategory=noun,adjective;domains=sport'
-          required: true
           type: string
       get:
         description: |
@@ -224,7 +230,6 @@ annotationTypes:
           - nso
           - ro
           - zu
-        required: true
         type: string
     get:
       description: |
@@ -255,7 +260,6 @@ annotationTypes:
             - nso
             - ro
             - zu
-          required: true
           type: string
       get:
         description: |
@@ -279,12 +283,20 @@ annotationTypes:
           - Utility
 /inflections:
   '/{source_lang}':
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - hi
+        type: string
     '/{word_id}':
       uriParameters:
         word_id:
           default: changed
           description: An inflected wordform. Case-sensitive.
-          required: true
           type: string
       get:
         description: |
@@ -317,7 +329,6 @@ annotationTypes:
             items:
               pattern: (lexicalCategory|grammaticalFeatures)=.+
               type: string
-            required: true
             type: array
             (oas-collectionFormat): csv
         get:
@@ -344,7 +355,19 @@ annotationTypes:
             - Lemmatron
 /entries:
   '/{source_language}':
+    uriParameters:
+      source_language:
+        description: IANA language code.
+        enum:
+          - en
+          - es
+        type: string
     '/{word_id}':
+      uriParameters:
+        word_id:
+          default: ace
+          description: An Entry identifier. Case-sensitive.
+          type: string
       /sentences:
         get:
           description: |
@@ -374,6 +397,15 @@ annotationTypes:
             description: find more info here
             url: 'https://helloreverb.com/about'
   '/{source_lang}':
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - hi
+        type: string
     '/{word_id}':
       /antonyms:
         get:
@@ -438,7 +470,6 @@ annotationTypes:
             enum:
               - gb
               - us
-            required: true
             type: string
         get:
           description: |
@@ -507,7 +538,6 @@ annotationTypes:
             items:
               pattern: (lexicalCategory|grammaticalFeatures)=.+
               type: string
-            required: true
             type: array
             (oas-collectionFormat): csv
         get:
@@ -540,7 +570,6 @@ annotationTypes:
         word_id:
           default: ace
           description: An Entry identifier. Case-sensitive.
-          required: true
           type: string
       get:
         description: |
@@ -611,7 +640,6 @@ annotationTypes:
               - ms
               - id
               - tn
-            required: true
             type: string
         get:
           description: |
@@ -703,8 +731,8 @@ annotationTypes:
       Returns a list of monolingual and bilingual language datasets available in the API
     (oas-summary): Lists available monolingual and bilingual language datasets in the API.
     is:
-      - bilingualSourceLanguage
-      - bilingualTargetLanguage
+      - bilingual-sourceLanguage
+      - bilingual-targetLanguage
       - appId
       - appKey
     responses:
@@ -732,7 +760,6 @@ annotationTypes:
           - nso
           - ro
           - zu
-        required: true
         type: string
     get:
       description: |
@@ -761,7 +788,6 @@ annotationTypes:
         description: IANA language code
         enum:
           - en
-        required: true
         type: string
     get:
       description: |
@@ -793,7 +819,6 @@ annotationTypes:
           - nso
           - ro
           - zu
-        required: true
         type: string
     get:
       description: |
@@ -826,7 +851,6 @@ annotationTypes:
             - nso
             - ro
             - zu
-          required: true
           type: string
       get:
         description: |
@@ -866,7 +890,6 @@ annotationTypes:
             - ms
             - id
             - tn
-          required: true
           type: string
       get:
         description: |
@@ -926,7 +949,6 @@ annotationTypes:
           - es
           - lv
           - hi
-        required: true
         type: string
     get:
       description: |
@@ -1494,7 +1516,7 @@ types:
   patternProperties:
     type: __a-zA-Z___
 traits:
-  bilingualSourceLanguage:
+  bilingual-sourceLanguage:
     queryParameters:
       sourceLanguage:
         type: string
@@ -1511,7 +1533,7 @@ traits:
           - tn
           - ur
         required: false
-  bilingualTargetLanguage:
+  bilingual-targetLanguage:
     queryParameters:
       targetLanguage:
         type: string
