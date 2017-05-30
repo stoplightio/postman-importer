@@ -208,7 +208,6 @@ securitySchemes:
         '/{spec}':
           uriParameters:
             spec:
-              required: true
               type: string
           get:
             responses:
@@ -306,7 +305,6 @@ securitySchemes:
         '/{pull_request_id}':
           uriParameters:
             pull_request_id:
-              required: true
               type: string
           get:
             responses:
@@ -399,7 +397,6 @@ securitySchemes:
             '/{comment_id}':
               uriParameters:
                 comment_id:
-                  required: true
                   type: string
               get:
                 (oas-responses-default):
@@ -519,7 +516,6 @@ securitySchemes:
                 - commitstatuses
       uriParameters:
         repo_slug:
-          required: true
           type: string
       delete:
         responses:
@@ -608,7 +604,6 @@ securitySchemes:
         '/{id}':
           uriParameters:
             id:
-              required: true
               type: string
               description: The restriction rule's id
           delete:
@@ -740,6 +735,10 @@ securitySchemes:
             - branchrestrictions
       /commit:
         '/{node}':
+          uriParameters:
+            node:
+              description: The commit's SHA1.
+              type: string
           /approve:
             post:
               responses:
@@ -812,9 +811,8 @@ securitySchemes:
               '/{key}':
                 uriParameters:
                   key:
-                    required: true
                     type: string
-                    description: The build status' unique key
+                    description: The commit status' unique key
                 put:
                   body:
                     application/json:
@@ -891,6 +889,9 @@ securitySchemes:
                 - repositories
                 - commitstatuses
         '/{sha}':
+          uriParameters:
+            sha:
+              type: string
           /comments:
             get:
               (oas-responses-default):
@@ -909,7 +910,6 @@ securitySchemes:
             '/{comment_id}':
               uriParameters:
                 comment_id:
-                  required: true
                   type: string
               get:
                 (oas-responses-default):
@@ -928,7 +928,6 @@ securitySchemes:
         '/{revision}':
           uriParameters:
             revision:
-              required: true
               type: string
               description: The commit's SHA1.
           get:
@@ -984,7 +983,6 @@ securitySchemes:
           '/{name}':
             uriParameters:
               name:
-                required: true
                 type: string
             get:
               (oas-responses-default):
@@ -1018,7 +1016,6 @@ securitySchemes:
           '/{name}':
             uriParameters:
               name:
-                required: true
                 type: string
             get:
               (oas-responses-default):
@@ -1052,7 +1049,6 @@ securitySchemes:
         '/{revision}':
           uriParameters:
             revision:
-              required: true
               type: string
           get:
             (oas-responses-default):
@@ -1268,7 +1264,6 @@ securitySchemes:
         '/{spec}':
           uriParameters:
             spec:
-              required: true
               type: string
           get:
             responses:
@@ -1320,7 +1315,6 @@ securitySchemes:
         '/{filename}':
           uriParameters:
             filename:
-              required: true
               type: string
           get:
             (oas-responses-default):
@@ -1394,9 +1388,8 @@ securitySchemes:
         '/{uid}':
           uriParameters:
             uid:
-              required: true
               type: string
-              description: The installed webhook's id.
+              description: The installed webhook's id
           delete:
             responses:
               '204':
@@ -1540,7 +1533,6 @@ securitySchemes:
         '/{issue_id}':
           uriParameters:
             issue_id:
-              required: true
               type: string
           get:
             responses:
@@ -1596,7 +1588,6 @@ securitySchemes:
             '/{path}':
               uriParameters:
                 path:
-                  required: true
                   type: string
               get:
                 responses:
@@ -1665,7 +1656,6 @@ securitySchemes:
             '/{comment_id}':
               uriParameters:
                 comment_id:
-                  required: true
                   type: string
               get:
                 (oas-responses-default):
@@ -2189,7 +2179,6 @@ securitySchemes:
       '/{uid}':
         uriParameters:
           uid:
-            required: true
             type: string
             description: The installed webhook's id
         put:
@@ -2294,6 +2283,9 @@ securitySchemes:
           - webhooks
 /account:
   '/{username}':
+    uriParameters:
+      username:
+        type: string
     /addons:
       get:
         (oas-responses-default):
@@ -2312,7 +2304,6 @@ securitySchemes:
       '/{encoded_context_id}':
         uriParameters:
           encoded_context_id:
-            required: true
             type: string
         delete:
           (oas-responses-default):
@@ -2616,8 +2607,8 @@ securitySchemes:
   '/{username}':
     uriParameters:
       username:
-        required: true
         type: string
+        description: Limits the result to snippets owned by this user.
     get:
       responses:
         '200':
@@ -2836,7 +2827,6 @@ securitySchemes:
         '/{comment_id}':
           uriParameters:
             comment_id:
-              required: true
               type: string
           delete:
             responses:
@@ -2936,7 +2926,6 @@ securitySchemes:
         '/{revision}':
           uriParameters:
             revision:
-              required: true
               type: string
           get:
             responses:
@@ -3059,7 +3048,6 @@ securitySchemes:
       '/{node_id}':
         uriParameters:
           node_id:
-            required: true
             type: string
             description: A commit revision (SHA1).
         delete:
@@ -3163,7 +3151,6 @@ securitySchemes:
           '/{path}':
             uriParameters:
               path:
-                required: true
                 type: string
             get:
               responses:
@@ -3195,6 +3182,10 @@ securitySchemes:
               (oas-tags):
                 - snippets
       '/{revision}':
+        uriParameters:
+          revision:
+            description: A revspec expression. This can simply be a commit SHA1, a ref name, or a compare expression like `staging..production`.
+            type: string
         /diff:
           get:
             responses:
@@ -3285,6 +3276,10 @@ securitySchemes:
     (oas-tags):
       - teams
   '/{owner}':
+    uriParameters:
+      owner:
+        description: The team which owns the project. This can either be the `username` of\nthe team or the `UUID` of the team (surrounded by curly-braces (`{}`)).\n
+        type: string
     /projects:
       /:
         get:
@@ -3566,7 +3561,6 @@ securitySchemes:
       '/{uid}':
         uriParameters:
           uid:
-            required: true
             type: string
             description: The installed webhook's id
         delete:
