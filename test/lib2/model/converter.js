@@ -293,3 +293,66 @@ describe('Oas20 to Raml10', () => {
 		}
 	});
 });
+
+describe('Raml08 to Raml10', () => {
+	const baseDir = __dirname + '/../../data2/raml08-raml10/source';
+	const testFiles = fs.readdirSync(baseDir);
+	const converter = new specConverter.NewConverter(specConverter.Formats.RAML08, specConverter.Formats.RAML10);
+	
+	const testWithData = function (sourceFile, targetFile, validate, extension) {
+		const validateOptions = {
+			validate: validate,
+			noExtension: !extension,
+			fsResolver: myFsResolver,
+			format: 'yaml'
+		};
+		
+		return function (done) {
+			converter.convertFile(sourceFile, validateOptions)
+				.then(resultRaml => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultRaml);
+							console.log('********** Finish file **********\n');
+							return done(resultRaml);
+						} else {
+							const formattedData = typeof resultRaml === 'object' ? JSON.stringify(resultRaml) : resultRaml;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultRaml, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
+		};
+	};
+	
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const validate = !_.includes(testFile, 'novalidate');
+			const skip = _.includes(testFile, 'skip');
+			const extension = _.includes(testFile, 'extension');
+			
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../target/' + testFile;
+			
+			if (skip) return ;
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+			}
+		}
+	});
+});

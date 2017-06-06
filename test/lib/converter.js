@@ -261,15 +261,15 @@ describe('from swagger to raml', function () {
 describe('from raml to swagger', function () {
 	const baseDir = __dirname + '/../data/raml-import/raml';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.OAS20);
 
-	const testWithData = function (sourceFile, targetFile, validate, extension) {
+	const testWithData = function (sourceFile, targetFile, validate, extension, ramlFormat) {
 		const validateOptions = {
 			validate: validate,
 			noExtension: !extension,
 			fsResolver: myFsResolver,
 			format: 'yaml'
 		};
+		const converter = new specConverter.NewConverter(ramlFormat, specConverter.Formats.OAS20);
 		
 		return function (done) {
 			converter.convertFile(sourceFile, validateOptions)
@@ -302,6 +302,7 @@ describe('from raml to swagger', function () {
 	
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
+			const ramlFormat = testFile.startsWith('raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
 			const validate = !_.includes(testFile, 'novalidate');
 			const skip = _.includes(testFile, 'skip');
 			const extension = _.includes(testFile, 'extension');
@@ -312,10 +313,10 @@ describe('from raml to swagger', function () {
       if (skip) return ;
 			if (process.env.testFile) {
 				if (_.endsWith(testFile, process.env.testFile)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension, ramlFormat));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension, ramlFormat));
 			}
 		}
 	});
