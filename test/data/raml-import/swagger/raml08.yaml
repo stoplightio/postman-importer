@@ -29,7 +29,6 @@ paths:
       responses:
         default:
           description: ''
-          schema: {}
   /products:
     get:
       operationId: GET_products
@@ -47,6 +46,15 @@ paths:
       operationId: POST_products
       description: Create a product
       parameters:
+        - name: X-Tracking-Example
+          in: header
+          description: You can specify request headers like this
+          required: false
+          type: string
+          enum:
+            - accounting
+            - payroll
+            - finance
         - name: body
           in: body
           schema:
@@ -113,19 +121,9 @@ paths:
                 width: 12 inches
                 height: 12 inches
                 depth: 12 inches
-        - name: X-Tracking-Example
-          in: header
-          description: You can specify request headers like this
-          required: false
-          type: string
-          enum:
-            - accounting
-            - payroll
-            - finance
       responses:
         default:
           description: ''
-          schema: {}
   '/products/{productId}':
     parameters:
       - name: productId
@@ -145,15 +143,12 @@ paths:
       responses:
         '200':
           description: ''
+          schema:
+            example: ''
     put:
       operationId: PUT_products-productId
       description: Updates a single product
       parameters:
-        - name: productId
-          in: query
-          description: The ID of the product
-          required: true
-          type: integer
         - name: body
           in: body
           schema:
@@ -220,11 +215,15 @@ paths:
                 width: 12 inches
                 height: 12 inches
                 depth: 12 inches
+        - name: productId
+          in: query
+          description: The ID of the product
+          required: true
+          type: integer
       responses:
         '200':
           description: ''
           schema:
-            type: object
             properties:
               product:
                 type: object
@@ -268,8 +267,7 @@ paths:
                     type: string
             required:
               - product
-          examples:
-            application/json:
+            example:
               product:
                 id: '1'
                 name: Product One
@@ -300,3 +298,5 @@ paths:
       responses:
         '200':
           description: ''
+          schema:
+            example: ''
