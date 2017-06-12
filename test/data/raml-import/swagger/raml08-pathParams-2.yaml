@@ -12,17 +12,19 @@ produces:
 paths:
   '/tickets/{id}/comments/{comment_id}/redact{mediaTypeExtension}':
     parameters:
-      - name: id
+      - name: mediaTypeExtension
         in: path
+        description: Media type
         required: true
         type: string
+        enum: [ .json ]
+        default: .json
       - name: comment_id
         in: path
         required: true
         type: string
-      - name: mediaTypeExtension
+      - name: id
         in: path
-        description: Media type
         required: true
         type: string
     put:
@@ -35,13 +37,15 @@ paths:
             example: comment example
   '/tickets/{id}/audits{mediaTypeExtension}':
     parameters:
-      - name: id
-        in: path
-        required: true
-        type: string
       - name: mediaTypeExtension
         in: path
         description: Media type
+        required: true
+        type: string
+        enum: [ .json ]
+        default: .json
+      - name: id
+        in: path
         required: true
         type: string
     get:
@@ -56,14 +60,16 @@ paths:
     parameters:
       - name: id
         in: path
-        description: id
+        description: ID
         required: true
         type: string
       - name: mediaTypeExtension
         in: path
-        description: mediaTypeExtension
+        description: Media type
         required: true
         type: string
+        enum: [ .json ]
+        default: .json
     delete:
       operationId: DELETE_identities-idmediaTypeExtension
       description: |
