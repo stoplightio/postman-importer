@@ -4,7 +4,7 @@ const expect = require('chai').expect,
 	Auto = require('../../../lib/importers/auto'),
 	Project = require('../../../lib/entities/project');
 
-describe('Auto Importer', function () {
+describe.skip('Auto Importer', function () {
 	let importer;
 	const dataPath = path.join(__dirname, '..', '..', 'data');
 	

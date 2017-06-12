@@ -1,7 +1,7 @@
 const expect = require('chai').expect,
 	Exporter = require('../../../lib/exporters/exporter');
 
-describe('Exporter', function () {
+describe.skip('Exporter', function () {
 	let exporter;
 	beforeEach(function () {
 		exporter = new Exporter();

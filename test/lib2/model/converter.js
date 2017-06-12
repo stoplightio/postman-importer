@@ -297,7 +297,7 @@ describe('Oas20 to Raml10', () => {
 describe('Raml08 to Raml10', () => {
 	const baseDir = __dirname + '/../../data2/raml08-raml10/source';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.NewConverter(specConverter.Formats.RAML08, specConverter.Formats.RAML10);
+	const converter = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.RAML10);
 	
 	const testWithData = function (sourceFile, targetFile, validate, extension) {
 		const validateOptions = {

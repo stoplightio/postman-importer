@@ -1,7 +1,7 @@
 const expect = require('chai').expect,
 	Importer = require('../../../lib/importers/importer');
 
-describe('Importer', function () {
+describe.skip('Importer', function () {
 	let importer;
 	const filePath = __dirname + '/../../data/swagger.json';
 	beforeEach(function () {

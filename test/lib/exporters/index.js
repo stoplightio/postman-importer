@@ -4,7 +4,7 @@ const expect = require('chai').expect,
 	exporterFactory = require(exporterDir + '/index'),
 	formats = require(baseDir + '/index').Formats;
 
-describe('Exporter Factory', function () {
+describe.skip('Exporter Factory', function () {
 	describe('hasSupport', function () {
 		it('should return true for supported format', function () {
 			expect(exporterFactory.hasSupport(formats.SWAGGER)).to.be.true;
