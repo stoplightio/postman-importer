@@ -5,7 +5,7 @@ const expect = require('chai').expect,
 	Schema = require('../../../lib/entities/schema'),
 	Endpoint = require('../../../lib/entities/endpoint');
 
-describe('Swagger Importer', function () {
+describe.skip('Swagger Importer', function () {
 	let swaggerImporter;
 	const filePath = __dirname + '/../../data/swagger.yaml';
 	

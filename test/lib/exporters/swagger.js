@@ -7,7 +7,7 @@ const expect = require('chai').expect,
 	SwaggerDefinition = require('../../../lib/entities/swagger/definition'),
 	fs = require('fs');
 
-describe('Swagger Exporter', function () {
+describe.skip('Swagger Exporter', function () {
 	let swaggerExporter;
 	beforeEach(function () {
 		swaggerExporter = new Swagger();

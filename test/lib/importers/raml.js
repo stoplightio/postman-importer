@@ -4,7 +4,7 @@ const expect = require('chai').expect,
 	Project = require('../../../lib/entities/project'),
 	fs = require('fs');
 
-describe('RAML 0.8 Importer', function () {
+describe.skip('RAML 0.8 Importer', function () {
 	let ramlImporter;
 	const filePath = __dirname + '/../../data/raml-import/raml/raml08.yaml';
 	beforeEach(function () {

@@ -1,7 +1,7 @@
 const expect = require('chai').expect,
 	RAML10 = require('../../../lib/exporters/raml10');
 
-describe('RAML Exporter', function () {
+describe.skip('RAML Exporter', function () {
 	
 	let ramlExporter;
 	beforeEach(function () {
