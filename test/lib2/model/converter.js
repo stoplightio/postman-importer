@@ -356,3 +356,66 @@ describe('Raml08 to Raml10', () => {
 		}
 	});
 });
+
+describe('Raml08 to Oas20', () => {
+	const baseDir = __dirname + '/../../data2/raml08-oas20/source';
+	const testFiles = fs.readdirSync(baseDir);
+	const converter = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.OAS20);
+	
+	const testWithData = function (sourceFile, targetFile, validate, extension) {
+		const validateOptions = {
+			validate: validate,
+			noExtension: !extension,
+			fsResolver: myFsResolver,
+			format: 'yaml'
+		};
+		
+		return function (done) {
+			converter.convertFile(sourceFile, validateOptions)
+				.then(resultOAS => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultOAS);
+							console.log('********** Finish file **********\n');
+							return done(resultOAS);
+						} else {
+							const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultOAS, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
+		};
+	};
+	
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const validate = !_.includes(testFile, 'novalidate');
+			const skip = _.includes(testFile, 'skip');
+			const extension = _.includes(testFile, 'extension');
+			
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../target/' + testFile;
+			
+			if (skip) return ;
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+			}
+		}
+	});
+});
