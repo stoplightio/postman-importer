@@ -1,0 +1,43 @@
+#%RAML 1.0
+title: Pets API
+resourceTypes:
+  firstType:
+    get:
+      queryParameters:
+        offset:
+          description: Skip over a number of elements by specifying an offset value for the query
+          type: integer
+          example: 20
+          default: 0
+        limit:
+          description: Limit the number of elements on the response
+          type: integer
+          example: 80
+  secondType:
+    get:
+      description: just a second type
+traits:
+  firstTrait:
+    queryParameters:
+      offset:
+        description: Skip over a number of elements by specifying an offset value for the query
+        type: integer
+        example: 20
+        default: 0
+      limit:
+        description: Limit the number of elements on the response
+        type: integer
+        example: 80
+  secondTrait:
+    description: just a second trait
+/first:
+  type: firstType
+  get:
+/second:
+  type: secondType
+  get:
+    description: just a second type
+/third:
+  is:
+    - firstTrait
+    - secondTrait
