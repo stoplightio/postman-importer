@@ -7,7 +7,36 @@ protocols:
 baseUri:
   value: http://www.example.com/api
   (redirectable): true
+(oas-info):
+  (logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.gsa.gov_resources_images_GSAlogo.gif'
+  (origin):
+    format: swagger
+    url: 'https://discovery.gsa.gov/docs/api-docs/'
+    version: '1.2'
+  (preferred): true
+  (providerName): 18f.gov
 annotationTypes:
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
   something: string
   meta-data:
     displayName: meta data
@@ -60,6 +89,11 @@ annotationTypes:
       age:
         type: integer
         (something): some query parameter
+    (oas-responses-default):
+      body:
+        application/json:
+          type: string
+      description: Error response describing why the operation failed.
     responses:
       200:
         (something): some response
