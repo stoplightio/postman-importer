@@ -1,0 +1,55 @@
+swagger: '2.0'
+info:
+  title: Pets schemas
+  version: '1'
+definitions:
+  pet:
+    type: string
+  employee:
+    type: object
+    properties:
+      name:
+        type: string
+      surname:
+        type: string
+    required:
+      - name
+      - surname
+paths:
+  /pets:
+    get:
+      operationId: GET_pets
+      description: Get pets
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/pet'
+        201:
+          description: ''
+          examples:
+            application/json: Dog
+          schema:
+            $ref: '#/definitions/pet'
+        202:
+          description: ''
+          examples:
+            application/json:
+              name: John
+              surname: Doe
+          schema:
+            $ref: '#/definitions/employee'
+        203:
+          description: ''
+          examples:
+            application/json:
+              first:
+                name: John
+                surname: Doe
+              second:
+                name: Jack
+                surname: Sparrow
+          schema:
+            $ref: '#/definitions/employee'
