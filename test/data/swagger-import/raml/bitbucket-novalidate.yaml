@@ -224,6 +224,10 @@ securitySchemes:
               - api_key
             (oas-tags):
               - commits
+      uriParameters:
+        repo_slug:
+          required: true
+          type: string
       /pullrequests:
         get:
           (oas-responses-default):
@@ -296,7 +300,8 @@ securitySchemes:
           uriParameters:
             pull_request_id:
               required: true
-              type: string
+              type: integer
+              description: The pull request's id
           get:
             responses:
               '200':
@@ -506,10 +511,6 @@ securitySchemes:
                 - repositories
                 - pullrequests
                 - commitstatuses
-      uriParameters:
-        repo_slug:
-          required: true
-          type: string
       delete:
         responses:
           '204':
@@ -765,6 +766,11 @@ securitySchemes:
                 - api_key
               (oas-tags):
                 - commits
+          uriParameters:
+            node:
+              required: true
+              type: string
+              description: The commit's SHA1
           /statuses:
             /build:
               post:
@@ -910,6 +916,10 @@ securitySchemes:
                   - api_key
                 (oas-tags):
                   - commits
+          uriParameters:
+            sha:
+              required: true
+              type: string
         '/{revision}':
           uriParameters:
             revision:
@@ -1190,9 +1200,6 @@ securitySchemes:
             - pullrequests
         '/{target_username}':
           uriParameters:
-            username:
-              required: true
-              type: string
             target_username:
               required: true
               type: string
@@ -2091,7 +2098,6 @@ securitySchemes:
       username:
         required: true
         type: string
-        description: The account's username or UUID.
     get:
       responses:
         '200':
@@ -2376,6 +2382,10 @@ securitySchemes:
           - api_key
         (oas-tags):
           - addon
+    uriParameters:
+      username:
+        required: true
+        type: string
 /addon:
   delete:
     (oas-responses-default):
@@ -2679,7 +2689,7 @@ securitySchemes:
         encoded_id:
           required: true
           type: string
-          description: The snippet's id.
+          description: The snippet id.
       delete:
         responses:
           '204':
@@ -3055,7 +3065,6 @@ securitySchemes:
           node_id:
             required: true
             type: string
-            description: A commit revision (SHA1).
         delete:
           responses:
             '204':
@@ -3216,6 +3225,11 @@ securitySchemes:
               - api_key
             (oas-tags):
               - snippets
+        uriParameters:
+          revision:
+            required: true
+            type: string
+            description: 'A revspec expression. This can simply be a commit SHA1, a ref name, or a compare expression like `staging..production`.'
         /patch:
           get:
             responses:
@@ -3437,12 +3451,18 @@ securitySchemes:
             - api_key
           (oas-tags):
             - projects
+    uriParameters:
+      owner:
+        description: |
+          The team which owns the project. This can either be the `username` of
+          the team or the `UUID` of the team (surrounded by curly-braces (`{}`)).
+        required: true
+        type: string
   '/{username}':
     uriParameters:
       username:
         required: true
         type: string
-        description: The team's username or UUID.
     get:
       responses:
         '200':

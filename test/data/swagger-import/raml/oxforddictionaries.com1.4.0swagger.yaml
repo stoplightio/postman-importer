@@ -155,6 +155,16 @@ annotationTypes:
             type: string
         (oas-tags):
           - Wordlist
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - hi
+        required: true
+        type: string
     '/{filters_advanced}':
       uriParameters:
         filters_advanced:
@@ -287,7 +297,7 @@ annotationTypes:
     '/{word_id}':
       uriParameters:
         word_id:
-          default: changed
+          default: change
           description: An inflected wordform. Case-sensitive.
           required: true
           type: string
@@ -349,6 +359,16 @@ annotationTypes:
                 Internal Error. An error occourred while processing the data.
           (oas-tags):
             - Lemmatron
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - hi
+        required: true
+        type: string
 /entries:
   '/{source_language}':
     '/{word_id}':
@@ -381,6 +401,20 @@ annotationTypes:
           (oas-externalDocs):
             description: find more info here
             url: 'https://helloreverb.com/about'
+      uriParameters:
+        word_id:
+          default: ace
+          description: An Entry identifier. Case-sensitive.
+          required: true
+          type: string
+    uriParameters:
+      source_language:
+        description: IANA language code.
+        enum:
+          - en
+          - es
+        required: true
+        type: string
   '/{source_lang}':
     '/{word_id}':
       /antonyms:
@@ -413,6 +447,12 @@ annotationTypes:
           (oas-externalDocs):
             description: find more info here
             url: 'https://helloreverb.com/about'
+      uriParameters:
+        word_id:
+          default: ace
+          description: An Entry identifier. Case-sensitive.
+          required: true
+          type: string
       /examples:
         get:
           displayName: Retrieve only example sentences in entry search.
@@ -549,12 +589,6 @@ annotationTypes:
                 Internal Error. An error occourred while processing the data.
           (oas-tags):
             - Dictionary entries
-      uriParameters:
-        word_id:
-          default: ace
-          description: An Entry identifier. Case-sensitive.
-          required: true
-          type: string
       get:
         displayName: Retrieve dictionary entries for a given word.
         description: |
@@ -715,6 +749,13 @@ annotationTypes:
                 Internal Error. An error occourred while processing the data.
           (oas-tags):
             - Dictionary entries
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+        required: true
+        type: string
 /languages:
   get:
     displayName: Lists available monolingual and bilingual language datasets in the API.
