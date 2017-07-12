@@ -12,7 +12,7 @@ describe('index', function() {
         expect(specConverter.Formats).to.be.a('Object');
       });
       it('should be raml 08 and 10 supported', function(){
-        expect(specConverter.Formats.RAML10).to.be.a('Object');
+        expect(specConverter.Formats.RAML).to.be.a('Object');
       });
       it('should be oas 20 supported', function(){
         expect(specConverter.Formats.OAS20).to.be.a('Object');
@@ -21,9 +21,9 @@ describe('index', function() {
 
     describe.skip('exporters', function(){
       it('should expose raml 08 and 10 exporter api', function(){
-        const exporter08Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML08);
+        const exporter08Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML);
         expect(exporter08Instance).to.be.an.instanceof(require('../lib/exporters/raml08'));
-        const exporter10Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML10);
+        const exporter10Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML);
         expect(exporter10Instance).to.be.an.instanceof(require('../lib/exporters/raml10'));
       });
       it('should expose swagger exporter api', function(){
@@ -34,9 +34,9 @@ describe('index', function() {
 
     describe.skip('importers', function(){
       it('should expose raml importer api', function(){
-        const importer08Instance = specConverter.Importer.factory(specConverter.Formats.RAML08);
+        const importer08Instance = specConverter.Importer.factory(specConverter.Formats.RAML);
         expect(importer08Instance).to.be.an.instanceof(require('../lib/importers/raml08'));
-        const importer10Instance = specConverter.Importer.factory(specConverter.Formats.RAML10);
+        const importer10Instance = specConverter.Importer.factory(specConverter.Formats.RAML);
         expect(importer10Instance).to.be.an.instanceof(require('../lib/importers/raml10'));
       });
       it('should expose swagger importer api', function(){
