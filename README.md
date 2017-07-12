@@ -44,25 +44,25 @@ npm install --save oas-raml-converter
 Raml 1.0 to OAS 2.0:
 ```js
 var converter = require('oas-raml-converter');
-var raml10ToOas20 = new converter.NewConverter(converter.Formats.RAML10, converter.Formats.OAS20);
+var raml10ToOas20 = new converter.NewConverter(converter.Formats.RAML, converter.Formats.OAS20);
 ```
 
 OAS 2.0 to Raml 1.0:
 ```js
 var converter = require('oas-raml-converter');
-var oas20ToRaml10 = new converter.NewConverter(converter.Formats.OAS20, converter.Formats.RAML10);
+var oas20ToRaml10 = new converter.NewConverter(converter.Formats.OAS20, converter.Formats.RAML);
 ```
 
-The converter detects the input raml format automatically by passing `RAML10` import format, so:
+The converter detects the input raml format automatically by passing `RAML` import format, so:
 Raml 0.8 to OAS 2.0:
 ```js
 var converter = require('oas-raml-converter');
-var raml08ToOas20 = new converter.NewConverter(converter.Formats.RAML10, converter.Formats.OAS20);
+var raml08ToOas20 = new converter.NewConverter(converter.Formats.RAML, converter.Formats.OAS20);
 ```
 Raml 0.8 to Raml 1.0:
 ```js
 var converter = require('oas-raml-converter');
-var raml08ToRaml10 = new converter.NewConverter(converter.Formats.RAML10, converter.Formats.RAML10);
+var raml08ToRaml10 = new converter.NewConverter(converter.Formats.RAML, converter.Formats.RAML);
 ```
 
 #### Converting from a file or url
