@@ -274,7 +274,7 @@ class Raml10MethodConverter extends Converter {
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
 			if (value != undefined) {
-				result[attrIdMap[id]] = result[id];
+				result[attrIdMap[id]] = value;
 				delete result[id];
 			}
 		});
