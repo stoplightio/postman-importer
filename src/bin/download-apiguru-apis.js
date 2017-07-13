@@ -1,7 +1,7 @@
 const fs = require('fs')
 const slugify = require('slugify')
 const util = require('./util')
-const urlHelper = require('../../lib/utils/url')
+const urlHelper = require('../../src/utils/url')
 
 const baseDir = __dirname + '../../../test/data/apis-guru/swagger'
 const baseUrl = 'https://api.apis.guru/v2/specs/'

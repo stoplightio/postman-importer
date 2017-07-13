@@ -1,10 +1,10 @@
 const expect = require('chai').expect,
-	Swagger = require('../../../lib/exporters/swagger'),
-	Schema = require('../../../lib/entities/schema'),
-	Endpoint = require('../../../lib/entities/endpoint'),
-	Project = require('../../../lib/entities/project'),
-	Environment = require('../../../lib/entities/environment'),
-	SwaggerDefinition = require('../../../lib/entities/swagger/definition'),
+	Swagger = require('../../../src/exporters/swagger'),
+	Schema = require('../../../src/entities/schema'),
+	Endpoint = require('../../../src/entities/endpoint'),
+	Project = require('../../../src/entities/project'),
+	Environment = require('../../../src/entities/environment'),
+	SwaggerDefinition = require('../../../src/entities/swagger/definition'),
 	fs = require('fs');
 
 describe.skip('Swagger Exporter', function () {

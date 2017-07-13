@@ -1,8 +1,8 @@
 const expect = require('chai').expect,
 	baseDir = __dirname + '/../../..',
-	exporterDir = baseDir + '/lib/exporters',
+	exporterDir = baseDir + '/src/exporters',
 	exporterFactory = require(exporterDir + '/index'),
-	formats = require(baseDir + '/index').Formats;
+	formats = require(baseDir + '/src/index').Formats;
 
 describe.skip('Exporter Factory', function () {
 	describe('hasSupport', function () {

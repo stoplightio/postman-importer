@@ -3,7 +3,7 @@ const Definition = require('./definition');
 const Annotation = require('./annotation');
 
 class Parameter {
-	_in: ?string;
+	_in: string;
 	name: string;
 	definition: Definition;
 	displayName: string;

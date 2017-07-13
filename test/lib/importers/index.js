@@ -1,8 +1,8 @@
 const expect = require('chai').expect,
 	baseDir = __dirname + '/../../..',
-	importerDir = baseDir + '/lib/importers',
+	importerDir = baseDir + '/src/importers',
 	importerFactory = require(importerDir + '/index'),
-	formats = require(baseDir + '/index').Formats;
+	formats = require(baseDir + '/src/index').Formats;
 
 describe.skip('Importer Factory', function () {
 	describe('hasSupport', function () {

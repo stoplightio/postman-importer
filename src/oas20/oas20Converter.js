@@ -127,11 +127,11 @@ class Oas20Converter extends Converter {
 			for (let i = 0; i < resources.length; i++) {
 				const resource: Resource = resources[i];
 				if (resource.hasOwnProperty('resourceType')) {
-					for (const j in resource.resourceType) {
-						if (!resource.resourceType.hasOwnProperty(j)) continue;
-						const type = resource.resourceType[j];
+					const resourceType: Item[] = resource.resourceType;
+					for (let j = 0; j < resourceType.length; j++) {
+						const type = resourceType[j];
 						const usedTypeName: string = type.name;
-						const usedResourceType: ResourceType = resourceTypes.filter(function (resourceType) { return usedTypeName === resourceType.name; })[0];
+						const usedResourceType: ResourceType = resourceTypes.filter(function (rt) { return usedTypeName === rt.name; })[0];
 						if (!usedResourceType) continue;
 						
 						const usedResource: Resource = usedResourceType.resource;

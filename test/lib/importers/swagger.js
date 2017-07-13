@@ -1,9 +1,9 @@
 const expect = require('chai').expect,
 	_ = require('lodash'),
-	Swagger = require('../../../lib/importers/swagger'),
-	Project = require('../../../lib/entities/project'),
-	Schema = require('../../../lib/entities/schema'),
-	Endpoint = require('../../../lib/entities/endpoint');
+	Swagger = require('../../../src/importers/swagger'),
+	Project = require('../../../src/entities/project'),
+	Schema = require('../../../src/entities/schema'),
+	Endpoint = require('../../../src/entities/endpoint');
 
 describe.skip('Swagger Importer', function () {
 	let swaggerImporter;

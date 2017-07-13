@@ -1,6 +1,6 @@
 const chai = require('chai'),
 	expect = chai.expect,
-	specConverter = require('../../../index'),
+	specConverter = require('../../../src/index'),
 	fs = require('fs'),
 	YAML = require('js-yaml'),
 	_ = require('lodash'),

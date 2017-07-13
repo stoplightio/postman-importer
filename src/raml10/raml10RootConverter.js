@@ -5,6 +5,7 @@ const Info = require('../model/info');
 const MediaType = require('../model/mediaType');
 const BaseUri = require('../model/baseUri');
 const Root = require('../model/root');
+const Resource = require('../model/resource');
 const Parameter = require('../model/parameter');
 const Header = require('../model/header');
 const Body = require('../model/body');
@@ -87,7 +88,7 @@ class Raml10RootConverter extends Converter {
 		if (model.hasOwnProperty('baseUriParameters')) {
 			const baseUriParameters: Parameter[] = model.baseUriParameters;
 			if (_.isArray(baseUriParameters) && !_.isEmpty(baseUriParameters)) {
-				const parameterConverter = new ParameterConverter();
+				const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
 				ramlDef.baseUriParameters = parameterConverter.export(baseUriParameters);
 			}
 		}
@@ -163,7 +164,7 @@ class Raml10RootConverter extends Converter {
 			ramlDef['(' + id + ')'] = externalDocs;
 		}
 		if (model.hasOwnProperty('resourceAnnotations')) {
-			const resourceAnnotationsModel: Annotation[] = model.resourceAnnotations;
+			const resourceAnnotationsModel: Resource = model.resourceAnnotations;
 			const id = this.annotationPrefix + '-paths';
 			Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
 			const resourceAnnotations = {};
@@ -241,7 +242,7 @@ class Raml10RootConverter extends Converter {
 
 		if (ramlDef.hasOwnProperty('baseUriParameters')) {
 			if (!_.isEmpty(ramlDef.baseUriParameters)) {
-				const parameterConverter = new ParameterConverter();
+				const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
 				const baseUriParameters: Parameter[] = [];
 				for (const id in ramlDef.baseUriParameters) {
 					if (!ramlDef.baseUriParameters.hasOwnProperty(id)) continue;

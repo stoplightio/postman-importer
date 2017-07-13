@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 class Converter {
 
-	constructor(model:Root, annotationPrefix, def) {
+	constructor(model:Root, annotationPrefix:string, def:any) {
 		this.model = model;
 		this.annotationPrefix = annotationPrefix;
 		this.def = def;
