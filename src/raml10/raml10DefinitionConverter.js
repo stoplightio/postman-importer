@@ -1,6 +1,7 @@
 // @flow
 const _ = require('lodash');
 const Definition = require('../model/definition');
+const Root = require('../model/root');
 const Annotation = require('../model/annotation');
 const Converter = require('../model/converter');
 const helper = require('../helpers/converter');
@@ -17,6 +18,7 @@ class Raml10DefinitionConverter extends Converter {
 
 	export(models:any) {
 		const result = {};
+		this.level = 'type';
 
 		for (const id in models) {
 			if (!models.hasOwnProperty(id)) continue;
@@ -75,6 +77,7 @@ class Raml10DefinitionConverter extends Converter {
 		if (model.hasOwnProperty('items')) {
 			const items: Definition = model.items;
 			ramlDef.items = this._export(items);
+			if (ramlDef.type != 'array') ramlDef.type = 'array';
 		}
 		
 		if (model.hasOwnProperty('itemsList')) {
@@ -167,7 +170,8 @@ class Raml10DefinitionConverter extends Converter {
 			} else {
 				const example = jsonHelper.parse(model.example);
 				if (typeof example === 'object' && !_.isArray(example)) {
-					ramlDef['example'] = Raml10DefinitionConverter.exportExample(example);
+					ramlDef['example'] = Raml10DefinitionConverter.exportExample(example, this.model, this.def);
+					if (this.level === 'type' && !ramlDef.hasOwnProperty('type') && !ramlDef.hasOwnProperty('properties')) ramlDef.type = 'object';
 				} else {
 					ramlDef['example'] = example;
 				}
@@ -248,8 +252,11 @@ class Raml10DefinitionConverter extends Converter {
 			delete result[id];
 		});
 		_.keys(attrIdMap).map(id => {
-			result[attrIdMap[id]] = result[id];
-			delete result[id];
+			const value = result[id];
+			if (value != undefined) {
+				result[attrIdMap[id]] = value;
+				delete result[id];
+			}
 		});
 		
 		return result;
@@ -679,17 +686,18 @@ class Raml10DefinitionConverter extends Converter {
 		}
 	}
 
-	static exportExample(example) {
+	static exportExample(example:any, model:Root, def:any) {
 		let ramlDef = example;
 		if (ramlDef.hasOwnProperty('annotations')) {
-			const annotationConverter = new Raml10AnnotationConverter();
-			ramlDef = annotationConverter._export(ramlDef)
+			const annotationConverter = new Raml10AnnotationConverter(model, '', def);
+			_.assign(ramlDef, annotationConverter._export(ramlDef));
+			delete ramlDef.annotations;
 		}
 		for (const id in ramlDef) {
 			if (!ramlDef.hasOwnProperty(id)) continue;
 
 			if (typeof ramlDef[id] === 'object' && !_.isEmpty(ramlDef[id]))
-				ramlDef[id] = Raml10DefinitionConverter.exportExample(ramlDef[id]);
+				ramlDef[id] = Raml10DefinitionConverter.exportExample(ramlDef[id], model, def);
 		}
 
 		return ramlDef;
