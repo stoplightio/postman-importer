@@ -74,22 +74,16 @@ describe('Converter', function () {
 	
 	describe('convert', function () {
 		it('should successfully convert and return converted data', function (done) {
-			converterInstance.loadFile(fullPath)
-				.then(() => {
-					converterInstance.convert('json')
-						.then((returnedData) => {
-							expect(returnedData).to.be.an('object');
-							expect(returnedData).to.include.keys('swagger');
-							expect(returnedData.swagger).to.be.equal('2.0');
-							done();
-						})
-						.catch((err) => {
-							done(err)
-						})
+			converterInstance.convertFile(fullPath, {format: 'json'})
+				.then((returnedData) => {
+					expect(returnedData).to.be.an('object');
+					expect(returnedData).to.include.keys('swagger');
+					expect(returnedData.swagger).to.be.equal('2.0');
+					done();
 				})
 				.catch((err) => {
 					done(err)
-				});
+				})
 		});
 	});
 });
