@@ -1,8 +1,8 @@
 const expect = require('chai').expect,
 	fs = require('fs'),
 	path = require('path'),
-	Auto = require('../../../lib/importers/auto'),
-	Project = require('../../../lib/entities/project');
+	Auto = require('../../../src/importers/auto'),
+	Project = require('../../../src/entities/project');
 
 describe.skip('Auto Importer', function () {
 	let importer;

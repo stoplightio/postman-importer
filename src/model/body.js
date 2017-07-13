@@ -9,7 +9,7 @@ class Body {
 	description: ?string;
 	required: boolean;
 	hasParams: boolean;
-	annotations: ?Annotation[];
+	annotations: Annotation[];
 }
 
 module.exports = Body;

@@ -75,7 +75,7 @@ class Oas20MethodConverter extends Converter {
 							if (value.hasOwnProperty('headers')) {
 								const headers: Header[] = value.headers;
 								if (_.isArray(headers) && !_.isEmpty(headers)) {
-									const parameterConverter = new ParameterConverter(this.model);
+									const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
 									const result = parameterConverter.export(headers);
 									for (let j = 0; j < headers.length; j++) {
 										const modelHeader: Header = headers[j];

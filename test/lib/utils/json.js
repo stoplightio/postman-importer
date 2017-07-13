@@ -1,6 +1,6 @@
 const chai = require('chai'),
 	expect = chai.expect,
-	jsonHelper = require('../../../lib/utils/json');
+	jsonHelper = require('../../../src/utils/json');
 
 chai.use(require('chai-fuzzy'));
 

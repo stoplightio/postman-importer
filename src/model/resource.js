@@ -1,7 +1,6 @@
 // @flow
 const Item = require('./item');
 const Parameter = require('./parameter');
-const ResourceType = require('./resourceType');
 const Method = require('./method');
 const SecurityRequirement = require('./securityRequirement');
 const Annotation = require('./annotation');
@@ -14,7 +13,7 @@ class Resource {
 	is: Item[];
 	parameters: Parameter[];
 	baseUriParameters: Parameter[];
-	resourceType: any;
+	resourceType: Item[];
 	methods: Method[];
 	securedBy: SecurityRequirement[];
 	annotations: Annotation[];

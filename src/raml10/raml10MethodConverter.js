@@ -76,7 +76,7 @@ class Raml10MethodConverter extends Converter {
 						if (val.hasOwnProperty('headers')) {
 							const headersModel: Header[] = val.headers;
 							if (_.isArray(headersModel) && !_.isEmpty(headersModel)) {
-								const parameterConverter = new ParameterConverter(this.model);
+								const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
 								const headers = parameterConverter.export(headersModel);
 								if (!_.isEmpty(headers)) response.headers = headers;
 							}
@@ -114,7 +114,7 @@ class Raml10MethodConverter extends Converter {
 		if (model.hasOwnProperty('headers')) {
 			const headersModel: Header[] = model.headers;
 			if (_.isArray(headersModel) && !_.isEmpty(headersModel)) {
-				const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def);
+				const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
 				const headers = parameterConverter.export(headersModel);
 				if (!_.isEmpty(headers)) ramlDef.headers = headers;
 			}
@@ -133,7 +133,7 @@ class Raml10MethodConverter extends Converter {
 			const queryStringsModel: Parameter[] = model.queryStrings;
 			if (_.isArray(queryStringsModel) && !_.isEmpty(queryStringsModel)) {
 				const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, 'query');
-				const queryString = parameterConverter.export(queryStringsModel);
+				const queryString: any = parameterConverter.export(queryStringsModel);
 				if (!_.isEmpty(queryString)) ramlDef.queryString = queryString.queryString;
 			}
 		}
@@ -401,7 +401,7 @@ class Raml10MethodConverter extends Converter {
 		if (!_.isEmpty(headers)) model.headers = headers;
 		
 		if (ramlDef.hasOwnProperty('queryParameters')) {
-			const parameterConverter = new ParameterConverter();
+			const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
 			const parameters: Parameter[] = [];
 			for (const id in ramlDef.queryParameters) {
 				if (!ramlDef.queryParameters.hasOwnProperty(id)) continue;
@@ -455,7 +455,7 @@ class Raml10MethodConverter extends Converter {
 		}
 		
 		if (isRaml08Version && ramlDef.hasOwnProperty('baseUriParameters')) {
-			const parameterConverter = new ParameterConverter();
+			const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
 			for (const id in ramlDef.baseUriParameters) {
 				if (!ramlDef.baseUriParameters.hasOwnProperty(id)) continue;
 				
@@ -625,13 +625,15 @@ class Raml10MethodConverter extends Converter {
 		const headers: Header[] = [];
 		
 		if (object.hasOwnProperty('headers')) {
-			const parameterConverter = new ParameterConverter();
+			const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
 			for (const id in object.headers) {
 				if (!object.headers.hasOwnProperty(id)) continue;
 				
 				const headerDef = object.headers[id];
 				const hasParams: boolean = Raml10MethodConverter.hasParams(headerDef);
-				const header: Header = parameterConverter._import(headerDef);
+				const parameter: Parameter = parameterConverter._import(headerDef);
+				const header = new Header();
+				_.assign(header, parameter);
 				header._in = 'header';
 				if (hasParams) header.hasParams = true;
 				headers.push(header);

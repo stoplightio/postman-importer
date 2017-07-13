@@ -31,7 +31,7 @@ class Root {
 	traits: Trait[];
 	annotationTypes: AnnotationType[];
 	annotations: Annotation[];
-	resourceAnnotations: Annotation[];
+	resourceAnnotations: Resource;
 	responses: Response[];
 }
 
