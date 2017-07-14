@@ -72,7 +72,7 @@ class Raml10MethodConverter extends Converter {
 					const val: Response = responsesModel[i];
 					if (val.hasOwnProperty('httpStatusCode') && !val.hasOwnProperty('reference')) {
 						const response = {};
-						if (val.hasOwnProperty('description')) response.description = val.description;
+						if (val.hasOwnProperty('description') && !_.isEmpty(val.description)) response.description = val.description;
 						if (val.hasOwnProperty('headers')) {
 							const headersModel: Header[] = val.headers;
 							if (_.isArray(headersModel) && !_.isEmpty(headersModel)) {
