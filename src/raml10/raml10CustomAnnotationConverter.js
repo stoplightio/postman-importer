@@ -64,20 +64,9 @@ class Raml10CustomAnnotationConverter {
         break;
 
       case prefix + '-' + 'schema-title':
-        definition = {
-          type: 'string',
-          allowedTargets: 'TypeDeclaration'
-        };
-        break;
-
-      case prefix + '-' + 'property-title':
-        definition = {
-          type: 'string',
-          allowedTargets: 'TypeDeclaration'
-        };
-        break;
-
-      case prefix + '-' + 'body-name':
+			case prefix + '-' + 'property-title':
+			case prefix + '-' + 'body-name':
+			case prefix + '-' + 'responses-example':
         definition = {
           type: 'string',
           allowedTargets: 'TypeDeclaration'
