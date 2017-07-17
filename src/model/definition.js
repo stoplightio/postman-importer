@@ -53,6 +53,7 @@ class Definition {
 	readOnly: ?boolean;
 	externalDocs: ExternalDocumentation;
 	title: string;
+	invalidJsonExample: boolean;
 }
 
 module.exports = Definition;

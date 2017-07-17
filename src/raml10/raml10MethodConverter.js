@@ -87,7 +87,15 @@ class Raml10MethodConverter extends Converter {
 						const body = Raml10MethodConverter.exportBodies(val, definitionConverter, mimeTypes, this.model, this.annotationPrefix, this.def);
 						const bodyDef = body[Object.keys(body)[0]];
 						if (bodyDef && bodyDef.hasOwnProperty('examples')) {
-							bodyDef.example = bodyDef.hasOwnProperty('example') ? _.concat(bodyDef.examples, bodyDef.example) : bodyDef.examples;
+							const examples: any = bodyDef.examples;
+							if (bodyDef.invalidJsonExample) {
+								const id = this.annotationPrefix + '-responses-example';
+								Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+								bodyDef['(' + id + ')'] = bodyDef.hasOwnProperty('example') ? _.concat(examples, bodyDef.example) : examples;
+								delete bodyDef.invalidJsonExample;
+							} else {
+								bodyDef.example = bodyDef.hasOwnProperty('example') ? _.concat(examples, bodyDef.example) : examples;
+							}
 							delete bodyDef.examples;
 						}
 						if (!_.isEmpty(body)) response.body = body;
