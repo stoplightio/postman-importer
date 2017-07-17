@@ -640,6 +640,7 @@ class Oas20MethodConverter extends Converter {
 	}
 	
 	static importExamples(source:any, target:Definition, property:string) {
+		let isJson: boolean = false;
 		try {
 			switch (property) {
 				case 'example' :
@@ -651,6 +652,7 @@ class Oas20MethodConverter extends Converter {
 					}
 					break;
 				case 'examples':
+					isJson = _.startsWith(source.examples, '{');
 					const examples = JSON.parse(source.examples);
 					if (typeof source.examples === 'string') {
 						target.examples = examples;
@@ -659,7 +661,11 @@ class Oas20MethodConverter extends Converter {
 					}
 					break;
 			}
-		} catch (e) {}
+		} catch (e) {
+			if (isJson) {
+				target.invalidJsonExample = true;
+			}
+		}
 	}
 }
 
