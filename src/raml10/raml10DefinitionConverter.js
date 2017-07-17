@@ -54,7 +54,7 @@ class Raml10DefinitionConverter extends Converter {
 		if (model.hasOwnProperty('type')) {
 			if (typeof model.type === 'object' && model.type) {
 				const type: Definition = model.type;
-				ramlDef.type = this._export(type);
+				ramlDef.type = _.isArray(type) ? type : this._export(type);
 			} else {
 				ramlDef.type = model.type;
 				if (model.hasOwnProperty('format')) {
@@ -75,9 +75,15 @@ class Raml10DefinitionConverter extends Converter {
 		}
 
 		if (model.hasOwnProperty('items')) {
-			const items: Definition = model.items;
-			ramlDef.items = this._export(items);
+			const itemsModel: Definition = model.items;
+			const items = this._export(itemsModel);
+			if (items && typeof items === 'object' && items.hasOwnProperty('format') && items.format === 'string') {
+				items.type = items.format;
+				delete items.format;
+			}
 			if (ramlDef.type != 'array') ramlDef.type = 'array';
+			if (ramlDef.hasOwnProperty('enum')) delete ramlDef.enum;
+			ramlDef.items = items;
 		}
 		
 		if (model.hasOwnProperty('itemsList')) {
