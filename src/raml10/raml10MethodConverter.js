@@ -88,7 +88,7 @@ class Raml10MethodConverter extends Converter {
 						const bodyDef = body[Object.keys(body)[0]];
 						if (bodyDef && bodyDef.hasOwnProperty('examples')) {
 							const examples: any = bodyDef.examples;
-							if (bodyDef.invalidJsonExample || (bodyDef.type != 'string' && typeof examples === 'string')) {
+							if (bodyDef.invalidJsonExample || (bodyDef.type && bodyDef.type != 'string' && typeof examples === 'string')) {
 								const id = this.annotationPrefix + '-responses-example';
 								Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 								bodyDef['(' + id + ')'] = bodyDef.hasOwnProperty('example') ? _.concat(examples, bodyDef.example) : examples;
