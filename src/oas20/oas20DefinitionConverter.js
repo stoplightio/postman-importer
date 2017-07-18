@@ -195,7 +195,17 @@ class Oas20DefinitionConverter extends Converter {
 		}
 
 		if (oasDef.hasOwnProperty('items')) {
-			model.items = this._import(oasDef.items);
+			const items = oasDef.items;
+			if (_.isArray(items)) {
+				const itemsList: Definition[] = [];
+				for (let i = 0; i < items.length; i++) {
+					const definition: Definition = this._import(items[i]);
+					itemsList.push(definition);
+				}
+				model.itemsList = itemsList;
+			} else {
+				model.items = this._import(oasDef.items);
+			}
 		}
 
 		if (oasDef.hasOwnProperty('additionalProperties')) {
