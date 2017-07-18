@@ -24,7 +24,7 @@ const oasHelper = require('../helpers/oas20');
 class Oas20MethodConverter extends Converter {
 	
 	constructor(model:Root, dereferencedAPI:any, resourcePath:string, def:any) {
-		super(model, null, def);
+		super(model, '', def);
 		this.dereferencedAPI = dereferencedAPI;
 		this.resourcePath = resourcePath;
 	}
@@ -445,7 +445,7 @@ class Oas20MethodConverter extends Converter {
 
 		const attrIdSkip = ['responses', 'description', 'parameters', 'security', 'externalDocs'];
 		const model = Oas20MethodConverter.createMethod(oasDef, attrIdMap, attrIdSkip, oasHelper.getAnnotationPrefix);
-		const definitionConverter = new Oas20DefinitionConverter(this.model);
+		const definitionConverter = new Oas20DefinitionConverter(this.model, this.annotationPrefix, this.def);
 		
 		if (oasDef.hasOwnProperty('security')) {
 			const result: SecurityRequirement[] = [];
@@ -473,7 +473,7 @@ class Oas20MethodConverter extends Converter {
 					const value = oasDef.responses[id];
 					const response = new Response();
 					response.httpStatusCode = id;
-					if (value.hasOwnProperty('$ref')) {
+					if (value.hasOwnProperty('$ref') && this.model.responses) {
 						const reference: string = stringsHelper.computeResourceDisplayName(value.$ref);
 						const modelResponses: Response[] = this.model.responses.filter(modelResponse => { return modelResponse.name === reference });
 						const def: Response = modelResponses[0];
@@ -485,7 +485,7 @@ class Oas20MethodConverter extends Converter {
 						if (value.hasOwnProperty('description')) response.description = value.description;
 						if (value.hasOwnProperty('headers')) {
 							const headers: Header[] = [];
-							const definitionConverter = new Oas20DefinitionConverter();
+							const definitionConverter = new Oas20DefinitionConverter(this.model, this.annotationPrefix, this.def);
 							for (const index in value.headers) {
 								const header = new Header();
 								header.name = index;

@@ -47,7 +47,7 @@ class Raml10DefinitionConverter extends Converter {
 		};
 
 		const attrIdSkip = ['name', 'type', 'reference', 'properties', 'items', 'compositionType', 'in', 'schema', 'additionalProperties', 'title', 'items', 'itemsList',
-			'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference'];
+			'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference', '_enum'];
 
 		const ramlDef = Raml10DefinitionConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 
@@ -72,6 +72,11 @@ class Raml10DefinitionConverter extends Converter {
 
 		if (ramlDef.hasOwnProperty('internalType')) {
 			this._convertFromInternalType(ramlDef);
+		}
+		
+		if (ramlDef.type != 'string') {
+			if (ramlDef.hasOwnProperty('minLength')) delete ramlDef.minLength;
+			if (ramlDef.hasOwnProperty('maxLength')) delete ramlDef.maxLength;
 		}
 
 		if (model.hasOwnProperty('items')) {
@@ -110,6 +115,17 @@ class Raml10DefinitionConverter extends Converter {
       ramlDef.type = stringHelper.checkAndReplaceInvalidChars(model.reference, ramlHelper.getValidCharacters, ramlHelper.getReplacementCharacter);
 		}
 
+		if (model.hasOwnProperty('_enum')) {
+			const enumModel: string[] = model._enum;
+			const isDateOnly: boolean = ramlDef.type === 'date-only';
+			const _enum: string[] = [];
+			for (let i = 0; i < enumModel.length; i++) {
+				const item: string = enumModel[i];
+				_enum.push(isDateOnly ? item.replace('_', '-').replace('_', '-') : item);
+			}
+			ramlDef.enum = _enum;
+		}
+		
 		if (model.hasOwnProperty('properties')) {
 			const ramlProps = {};
 			for (const id in model.properties) {
@@ -174,11 +190,12 @@ class Raml10DefinitionConverter extends Converter {
 			if (model.hasOwnProperty('type') && scalarNumberTypes.indexOf(model.type) >= 0) {
 				ramlDef['example'] = _.toNumber(model.example);
 			} else {
-				const example = jsonHelper.parse(model.example);
+				let example = jsonHelper.parse(model.example);
 				if (typeof example === 'object' && !_.isArray(example)) {
 					ramlDef['example'] = Raml10DefinitionConverter.exportExample(example, this.model, this.def);
 					if (this.level === 'type' && !ramlDef.hasOwnProperty('type') && !ramlDef.hasOwnProperty('properties')) ramlDef.type = 'object';
 				} else {
+					if (_.isNumber(example) && ramlDef.type === 'string') example = example.toString();
 					ramlDef['example'] = example;
 				}
 			}

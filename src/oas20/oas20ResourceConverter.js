@@ -16,10 +16,9 @@ const oasHelper = require('../helpers/oas20');
 
 class Oas20ResourceConverter extends Converter {
 
-	constructor(model:Root, dereferencedAPI:any, oasDef:any) {
-		super(model);
+	constructor(model:Root, dereferencedAPI:any, def:any) {
+		super(model, '', def);
 		this.dereferencedAPI = dereferencedAPI;
-		this.oasDef = oasDef;
 	}
 	
 	export(models:Resource[]) {
@@ -69,7 +68,7 @@ class Oas20ResourceConverter extends Converter {
 		if (model.hasOwnProperty('methods')) {
 			const methodsModel: Method[] = model.methods;
 			if (_.isArray(methodsModel) && !_.isEmpty(methodsModel)) {
-				const methodConverter = new Oas20MethodConverter(this.model, null, model.path, this.oasDef);
+				const methodConverter = new Oas20MethodConverter(this.model, null, model.path, this.def);
 				const methods = methodConverter.export(methodsModel);
 				for (const id in methods) {
 					if (!methods.hasOwnProperty(id)) continue;

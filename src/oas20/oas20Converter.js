@@ -103,7 +103,7 @@ class Oas20Converter extends Converter {
 		const model: Root = rootConverter.import(oasDef);
 		const securityDefinitionConverter = new Oas20SecurityDefinitionConverter(model, oasDef.dereferencedAPI.securityDefinitions);
 		if (oasDef.hasOwnProperty('securityDefinitions') && !_.isEmpty(oasDef.securityDefinitions)) model.securityDefinitions = securityDefinitionConverter.import(oasDef.securityDefinitions);
-		const definitionConverter = new Oas20DefinitionConverter(model);
+		const definitionConverter = new Oas20DefinitionConverter(model, '', oasDef);
 		if (oasDef.hasOwnProperty('definitions')) model.types = definitionConverter.import(oasDef.definitions);
 		const traitConverter = new Oas20TraitConverter(model, oasDef.dereferencedAPI.parameters);
 		if (oasDef.hasOwnProperty('parameters') || oasDef.hasOwnProperty('responses')) {
@@ -112,7 +112,7 @@ class Oas20Converter extends Converter {
 				responses: oasDef.responses
 			});
 		}
-		const resourceConverter = new Oas20ResourceConverter(model, oasDef.dereferencedAPI.paths);
+		const resourceConverter = new Oas20ResourceConverter(model, oasDef.dereferencedAPI.paths, oasDef);
 		if (oasDef.hasOwnProperty('paths')) model.resources = resourceConverter.import(oasDef.paths);
 
 		return model;
