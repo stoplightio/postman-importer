@@ -42,22 +42,18 @@ class Oas20DefinitionConverter extends Converter {
 		}
 
 		if (model.hasOwnProperty('example') && model.example != null) {
-			// if (model.hasOwnProperty('type') && scalarNumberTypes.indexOf(model.type) >= 0) {
-				// oasDef['example'] = _.toNumber(model.example);
-			// } else {
-				const example = jsonHelper.parse(jsonHelper.stringify(model.example));
+			const example = jsonHelper.parse(jsonHelper.stringify(model.example));
 
-				if (typeof example === 'object' && !_.isArray(example) && example != null) {
-					oasDef['example'] = Oas20DefinitionConverter.exportExample(example);
-				} else {
-					oasDef['example'] = example;
-				}
+			if (typeof example === 'object' && !_.isArray(example) && example != null) {
+				oasDef['example'] = Oas20DefinitionConverter.exportExample(example);
+			} else {
+				oasDef['example'] = example;
+			}
 
-				if (typeof oasDef['example'] === 'number' && typeof model.example === 'string')
-					oasDef['example'] = jsonHelper.stringify(model.example);
-				if (_.isArray(oasDef['example'])) oasDef.example.map(e => { Oas20DefinitionConverter.escapeExampleAttributes(e); });
-				else Oas20DefinitionConverter.escapeExampleAttributes(oasDef.example);
-			// }
+			if (typeof oasDef['example'] === 'number' && typeof model.example === 'string')
+				oasDef['example'] = jsonHelper.stringify(model.example);
+			if (_.isArray(oasDef['example'])) oasDef.example.map(e => { Oas20DefinitionConverter.escapeExampleAttributes(e); });
+			else Oas20DefinitionConverter.escapeExampleAttributes(oasDef.example);
 		}
 
 		if (model.hasOwnProperty('examples')) {
@@ -189,10 +185,12 @@ class Oas20DefinitionConverter extends Converter {
 
 		if (oasDef.hasOwnProperty('$ref')) {
 			const value: string = oasDef['$ref'];
-			if (fileHelper.isFilePath(value)) {
+			const name: string = value.replace('#/definitions/', '');
+			const existingType: boolean = this.def && _.keys(this.def.definitions).includes(name);
+			if (!existingType && fileHelper.isFilePath(value)) {
 				model.fileReference = value;
 			} else {
-				model.reference = value.replace('#/definitions/', '');
+				model.reference = name;
 			}
 		}
 
