@@ -9,6 +9,9 @@ annotationTypes:
   oas-responses-default:
     allowedTargets: Method
     type: any
+  oas-responses-example:
+    allowedTargets: TypeDeclaration
+    type: string
   oas-info:
     allowedTargets: 'API'
     properties:
@@ -100,7 +103,6 @@ types:
         type: pet
         (oas-body-name): body
     (oas-responses-default):
-      description: ''
       body:
         application/json: {}
 /lastnames:
@@ -117,7 +119,6 @@ types:
         type: string
         required: false
     (oas-responses-default):
-      description: ''
       body:
         application/json: {}
 /nicknames:
@@ -128,7 +129,6 @@ types:
         required: false
         (oas-body-name): body
     (oas-responses-default):
-      description: ''
       body:
         application/json: {}
 /employees:
@@ -139,75 +139,64 @@ types:
         required: false
         (oas-body-name): body
     (oas-responses-default):
-      description: ''
       body:
         application/json: {}
 /pets:
   get:
     responses:
       '200':
-        description: ''
         body:
           application/json: {}
       '201':
-        description: ''
         body:
           application/json:
             example: Dog
       '202':
-        description: ''
         body:
           application/json:
             example:
               first: Dog
               second: Cat
       '203':
-        description: ''
         body:
           application/json:
             example:
               - first: Dog
               - second: Cat
       '204':
-        description: ''
         body:
           application/json:
             example:
               first: Dog
-      '205':
-        description: ''
+      '205': {}
       '206':
-        description: ''
         body:
           application/json:
             example: Dog
       '207':
-        description: ''
         body:
           application/json:
             example:
               first: Dog
               second: Cat
       '208':
-        description: ''
         body:
           application/json:
             example:
               - first: Dog
               - second: Cat
       '209':
-        description: ''
         body:
           application/json:
             example:
               first: Dog
       '210':
-        description: ''
         body:
           application/json:
-            example:
+            (oas-responses-example):
               - Dog
               - Cat
+            example: Cat
             type: object
   '/{id}':
     uriParameters:
@@ -216,7 +205,6 @@ types:
     get:
       responses:
         '200':
-          description: ''
           body:
             application/json:
               example: 10
@@ -224,7 +212,6 @@ types:
       get:
         responses:
           '200':
-            description: ''
             body:
               application/json:
                 example: Robert
@@ -232,7 +219,6 @@ types:
       get:
         responses:
           '200':
-            description: ''
             body:
               application/json:
                 example: Bobby
@@ -240,7 +226,6 @@ types:
     get:
       responses:
         '200':
-          description: ''
           body:
             application/json:
               example: some example
@@ -259,6 +244,5 @@ types:
         type: integer
         required: false
     (oas-responses-default):
-      description: ''
       body:
         application/json: {}

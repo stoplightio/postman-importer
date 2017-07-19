@@ -2,9 +2,15 @@
   "name": "oas-raml-converter",
   "version": "0.2.1",
   "description": "This package helps to convert between different API specifications. Supports OAS (Swagger 2), RAML 0.8, RAML 1.0. ",
-  "main": "index.js",
+  "main": "/lib/index.js",
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "test": "mocha --compilers js:babel-register && npm run eslint",
+    "start": "node ./lib/bin/converter.js",
+    "build": "babel src -d lib",
+    "publish": "npm test && npm run build && npm publish",
     "eslint": "./node_modules/.bin/eslint ./lib index.js ./lib",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
@@ -34,6 +40,7 @@
     "xml2js": "^0.4.17"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-latest": "^6.16.0",

@@ -1,8 +1,8 @@
 /* global describe,beforeEach,it */
 const expect = require('chai').expect,
-	RAML08 = require('../../../lib/importers/raml08'),
-	RAML10 = require('../../../lib/importers/raml10'),
-	Project = require('../../../lib/entities/project'),
+	RAML08 = require('../../../src/importers/raml08'),
+	RAML10 = require('../../../src/importers/raml10'),
+	Project = require('../../../src/entities/project'),
 	fs = require('fs');
 
 describe.skip('RAML 0.8 Importer', function () {

@@ -1,6 +1,6 @@
 const chai = require('chai'),
 	expect = chai.expect,
-	specConverter = require('../../index'),
+	specConverter = require('../../src/index'),
 	fs = require('fs'),
 	YAML = require('js-yaml'),
 	_ = require('lodash'),
@@ -48,7 +48,7 @@ const myFsResolver = {
 describe('Converter', function () {
 	let converterInstance, fullPath = __dirname + '/../data/raml-import/raml/raml08.yaml';
 	beforeEach(function () {
-		converterInstance = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.OAS20);
+		converterInstance = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.OAS20);
 	});
 	afterEach(function () {
 		converterInstance = null;
@@ -74,22 +74,16 @@ describe('Converter', function () {
 	
 	describe('convert', function () {
 		it('should successfully convert and return converted data', function (done) {
-			converterInstance.loadFile(fullPath)
-				.then(() => {
-					converterInstance.convert('json')
-						.then((returnedData) => {
-							expect(returnedData).to.be.an('object');
-							expect(returnedData).to.include.keys('swagger');
-							expect(returnedData.swagger).to.be.equal('2.0');
-							done();
-						})
-						.catch((err) => {
-							done(err);
-						});
+			converterInstance.convertFile(fullPath, {format: 'json'})
+				.then((returnedData) => {
+					expect(returnedData).to.be.an('object');
+					expect(returnedData).to.include.keys('swagger');
+					expect(returnedData.swagger).to.be.equal('2.0');
+					done();
 				})
 				.catch((err) => {
-					done(err);
-				});
+					done(err)
+				})
 		});
 	});
 });
@@ -105,7 +99,7 @@ describe.skip('reversable - from swagger 2 raml 2 swagger', function () {
 		return function (done) {
 			const testFilePath = baseDir + '/' + testFile;
 			
-			const ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
+			const ramlVersion = _.startsWith(testFile, 'raml08') ? specConverter.Formats.RAML : specConverter.Formats.RAML;
 			const swaggerToRamlConverter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
 			const ramlToSwaggerConverter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
 			
@@ -153,7 +147,7 @@ describe.skip('reversable - from raml 2 swagger 2 raml', function () {
 		return function (done) {
 			const testFilePath = baseDir + '/' + testFile;
 			
-			const ramlVersion = _.includes(testFile, 'raml08') ? specConverter.Formats.RAML08 : specConverter.Formats.RAML10;
+			const ramlVersion = _.includes(testFile, 'raml08') ? specConverter.Formats.RAML : specConverter.Formats.RAML;
 			const ramlToSwaggerConverter = new specConverter.Converter(ramlVersion, specConverter.Formats.SWAGGER);
 			const swaggerToRamlConverter = new specConverter.Converter(specConverter.Formats.SWAGGER, ramlVersion);
 
@@ -196,7 +190,7 @@ describe.skip('reversable - from raml 2 swagger 2 raml', function () {
 describe('from swagger to raml', function () {
 	const baseDir = __dirname + '/../data/swagger-import/swagger';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.RAML10);
+	const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.RAML);
 	
 	const testWithData = function (sourceFile, targetFile, stringCompare, validate) {
 		

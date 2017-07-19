@@ -44,25 +44,31 @@ npm install --save oas-raml-converter
 Raml 1.0 to OAS 2.0:
 ```js
 var converter = require('oas-raml-converter');
-var ramlToSwagger = new converter.Converter(converter.Formats.RAML10, converter.Formats.SWAGGER);
+var raml10ToOas20 = new converter.NewConverter(converter.Formats.RAML, converter.Formats.OAS20);
 ```
 
 OAS 2.0 to Raml 1.0:
 ```js
 var converter = require('oas-raml-converter');
-var swaggerToRaml = new converter.Converter(converter.Formats.SWAGGER, converter.Formats.RAML10);
+var oas20ToRaml10 = new converter.NewConverter(converter.Formats.OAS20, converter.Formats.RAML);
 ```
 
-You can tell the converter to detect the input format automatically by passing `AUTO` format:
+The converter detects the input raml format automatically by passing `RAML` import format, so:
+Raml 0.8 to OAS 2.0:
 ```js
 var converter = require('oas-raml-converter');
-var autoToRaml = new converter.Converter(converter.Formats.AUTO, converter.Formats.RAML10);
+var raml08ToOas20 = new converter.NewConverter(converter.Formats.RAML, converter.Formats.OAS20);
+```
+Raml 0.8 to Raml 1.0:
+```js
+var converter = require('oas-raml-converter');
+var raml08ToRaml10 = new converter.NewConverter(converter.Formats.RAML, converter.Formats.RAML);
 ```
 
 #### Converting from a file or url
 
 ```js
-swaggerToRaml.convertFile('/path/to/swagger.json').then(function(raml) {
+oas20ToRaml10.convertFile('/path/to/swagger.json').then(function(raml) {
   console.log(raml); // raml is raml yaml string
 })
 .catch(function(err) {
@@ -73,8 +79,8 @@ swaggerToRaml.convertFile('/path/to/swagger.json').then(function(raml) {
 #### Converting from a string or json
 
 ```js
-var mySwaggerString = '...';
-swaggerToRaml.convertData(mySwaggerString).then(function(raml) {
+var myOasString = '...';
+oas20ToRaml10.convertData(myOasString).then(function(raml) {
   console.log(raml); // raml is raml yaml string
 })
 .catch(function(err) {
@@ -93,7 +99,7 @@ var options = {
     fs: { ... } // Use a custom file system solver (not yet available)
 };
 
-swaggerToRaml.convertFile('/path/to/swagger.json', options).then(function(raml) {
+oas20ToRaml10.convertFile('/path/to/swagger.json', options).then(function(raml) {
   console.log(raml); // raml is raml yaml string
 })
 .catch(function(err) {

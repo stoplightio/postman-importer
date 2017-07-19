@@ -1,5 +1,5 @@
 const expect = require('chai').expect,
-	Importer = require('../../../lib/importers/importer');
+	Importer = require('../../../src/importers/importer');
 
 describe.skip('Importer', function () {
 	let importer;

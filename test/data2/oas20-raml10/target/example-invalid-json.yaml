@@ -1,0 +1,70 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+annotationTypes:
+  oas-responses-example:
+    type: string
+    allowedTargets: TypeDeclaration
+types:
+  data:
+    properties:
+      first:
+        type: string
+        required: false
+      second:
+        type: string
+        required: false
+/pets:
+  get:
+    responses:
+      '200':
+        body:
+          application/json:
+            example: Dog
+      '201':
+        body:
+          application/json:
+            example:
+              first: Dog
+              second: Cat
+      '202':
+        body:
+          application/json:
+            example:
+              first: Dog
+              second: Cat
+      '203':
+        body:
+          application/json:
+            example: |-
+              {
+                "first": "Dog"
+                "second": "Cat"
+              }
+      '204':
+        body:
+          application/json:
+            example: Cat
+      '205':
+        body:
+          application/json:
+            type: data
+            example:
+              first: Cat
+              second: Dog
+      '206':
+        body:
+          application/json:
+            type: data
+            example:
+              first: Cat
+              second: Dog
+      '207':
+        body:
+          application/json:
+            type: data
+            (oas-responses-example): |-
+              {
+                "first": "Cat"
+                "second": "Dog"
+              }
