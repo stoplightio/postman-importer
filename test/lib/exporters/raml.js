@@ -1,5 +1,9 @@
-const expect = require('chai').expect,
-	RAML10 = require('../../../src/exporters/raml10');
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
+const beforeEach = require('mocha/lib/mocha.js').beforeEach;
+const expect = require('chai').expect;
+
+const RAML10 = require('../../../src/exporters/raml10');
 
 describe.skip('RAML Exporter', function () {
 	

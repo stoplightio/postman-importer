@@ -1,5 +1,9 @@
-const expect = require('chai').expect,
-	Importer = require('../../../src/importers/importer');
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
+const beforeEach = require('mocha/lib/mocha.js').beforeEach;
+const expect = require('chai').expect;
+
+const	Importer = require('../../../src/importers/importer');
 
 describe.skip('Importer', function () {
 	let importer;

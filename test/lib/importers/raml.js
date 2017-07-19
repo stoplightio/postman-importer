@@ -1,9 +1,12 @@
-/* global describe,beforeEach,it */
-const expect = require('chai').expect,
-	RAML08 = require('../../../src/importers/raml08'),
-	RAML10 = require('../../../src/importers/raml10'),
-	Project = require('../../../src/entities/project'),
-	fs = require('fs');
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
+const beforeEach = require('mocha/lib/mocha.js').beforeEach;
+const expect = require('chai').expect;
+const	fs = require('fs');
+
+const	RAML08 = require('../../../src/importers/raml08');
+const	RAML10 = require('../../../src/importers/raml10');
+const	Project = require('../../../src/entities/project');
 
 describe.skip('RAML 0.8 Importer', function () {
 	let ramlImporter;

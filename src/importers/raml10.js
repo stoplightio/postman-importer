@@ -1,6 +1,6 @@
-const RAMLImporter = require('./baseraml'),
-	jsonHelper = require('../utils/json'),
-	_ = require('lodash');
+const RAMLImporter = require('./baseraml');
+const jsonHelper = require('../utils/json');
+const _ = require('lodash');
 
 class RAML10Importer extends RAMLImporter {
 	constructor() {

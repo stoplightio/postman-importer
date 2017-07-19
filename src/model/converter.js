@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Root = require('./root');
 
 class Converter {
 

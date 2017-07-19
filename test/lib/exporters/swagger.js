@@ -1,11 +1,15 @@
-const expect = require('chai').expect,
-	Swagger = require('../../../src/exporters/swagger'),
-	Schema = require('../../../src/entities/schema'),
-	Endpoint = require('../../../src/entities/endpoint'),
-	Project = require('../../../src/entities/project'),
-	Environment = require('../../../src/entities/environment'),
-	SwaggerDefinition = require('../../../src/entities/swagger/definition'),
-	fs = require('fs');
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
+const beforeEach = require('mocha/lib/mocha.js').beforeEach;
+const expect = require('chai').expect;
+const	fs = require('fs');
+
+const	Swagger = require('../../../src/exporters/swagger');
+const	Schema = require('../../../src/entities/schema');
+const	Endpoint = require('../../../src/entities/endpoint');
+const Project = require('../../../src/entities/project');
+const	Environment = require('../../../src/entities/environment');
+const	SwaggerDefinition = require('../../../src/entities/swagger/definition');
 
 describe.skip('Swagger Exporter', function () {
 	let swaggerExporter;

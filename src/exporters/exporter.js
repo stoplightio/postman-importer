@@ -1,6 +1,6 @@
-const YAML = require('js-yaml'),
-	Importer = require('../importers/index'),
-	Formats = require('../formats');
+const YAML = require('js-yaml');
+const Importer = require('../importers/index');
+const Formats = require('../formats');
 
 class Exporter {
 	constructor() {

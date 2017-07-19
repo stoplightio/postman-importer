@@ -1,9 +1,9 @@
-const _ = require('lodash'),
-	Exporter = require('./exporter'),
-	ramlHelper = require('../helpers/raml'),
-	stringHelper = require('../utils/strings'),
-	jsonHelper = require('../utils/json'),
-	YAML = require('js-yaml');
+const _ = require('lodash');
+const Exporter = require('./exporter');
+const ramlHelper = require('../helpers/raml');
+const stringHelper = require('../utils/strings');
+const jsonHelper = require('../utils/json');
+const YAML = require('js-yaml');
 
 class RAMLDefinition {
 	constructor(title, env) {

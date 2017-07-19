@@ -1,9 +1,13 @@
-const expect = require('chai').expect,
-	_ = require('lodash'),
-	Swagger = require('../../../src/importers/swagger'),
-	Project = require('../../../src/entities/project'),
-	Schema = require('../../../src/entities/schema'),
-	Endpoint = require('../../../src/entities/endpoint');
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
+const beforeEach = require('mocha/lib/mocha.js').beforeEach;
+const expect = require('chai').expect;
+const	_ = require('lodash');
+
+const	Swagger = require('../../../src/importers/swagger');
+const	Project = require('../../../src/entities/project');
+const	Schema = require('../../../src/entities/schema');
+const	Endpoint = require('../../../src/entities/endpoint');
 
 describe.skip('Swagger Importer', function () {
 	let swaggerImporter;

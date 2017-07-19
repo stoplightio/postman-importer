@@ -1,8 +1,8 @@
-const RAMLImporter = require('./baseraml'),
-	jsonHelper = require('../utils/json'),
-	ramlHelper = require('../helpers/raml'),
-	Text = require('../entities/text'),
-	_ = require('lodash');
+const RAMLImporter = require('./baseraml');
+const jsonHelper = require('../utils/json');
+const ramlHelper = require('../helpers/raml');
+const Text = require('../entities/text');
+const _ = require('lodash');
 
 class RAML08Importer extends RAMLImporter {
 	constructor() {

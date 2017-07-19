@@ -1,8 +1,11 @@
-const expect = require('chai').expect,
-	baseDir = __dirname + '/../../..',
-	exporterDir = baseDir + '/src/exporters',
-	exporterFactory = require(exporterDir + '/index'),
-	formats = require(baseDir + '/src/index').Formats;
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
+const expect = require('chai').expect;
+
+const	baseDir = __dirname + '/../../..';
+const	exporterDir = baseDir + '/src/exporters';
+const	exporterFactory = require(exporterDir + '/index');
+const	formats = require(baseDir + '/src/index').Formats;
 
 describe.skip('Exporter Factory', function () {
 	describe('hasSupport', function () {

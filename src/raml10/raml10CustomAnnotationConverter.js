@@ -63,15 +63,15 @@ class Raml10CustomAnnotationConverter {
 			};
 			break;
 
-      case prefix + '-' + 'schema-title':
-			case prefix + '-' + 'property-title':
-			case prefix + '-' + 'body-name':
-			case prefix + '-' + 'responses-example':
-        definition = {
-          type: 'string',
-          allowedTargets: 'TypeDeclaration'
-        };
-        break;
+		case prefix + '-' + 'schema-title':
+		case prefix + '-' + 'property-title':
+		case prefix + '-' + 'body-name':
+		case prefix + '-' + 'responses-example':
+			definition = {
+				type: 'string',
+				allowedTargets: 'TypeDeclaration'
+			};
+			break;
 
 		case prefix + '-' + 'responses-default':
 			definition = {
@@ -133,12 +133,12 @@ class Raml10CustomAnnotationConverter {
 			};
 			break;
       
-      case prefix + '-' + 'paths':
-        definition = {
-          allowedTargets: 'API',
-          type: 'any'
-        };
-        break;
+		case prefix + '-' + 'paths':
+			definition = {
+				allowedTargets: 'API',
+				type: 'any'
+			};
+			break;
       
 		case prefix + '-' + 'tags-definition':
 			definition = {

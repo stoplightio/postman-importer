@@ -1,13 +1,13 @@
-const parser = require('swagger-parser'),
-	Method = require('../entities/swagger/method'),
-	Endpoint = require('../entities/endpoint'),
-	Schema = require('../entities/schema'),
-	Importer = require('./importer'),
-	Project = require('../entities/project'),
-	jsonHelper = require('../utils/json'),
-	swaggerHelper = require('../helpers/swagger'),
-	YAML = require('js-yaml'),
-	_ = require('lodash');
+const parser = require('swagger-parser');
+const Method = require('../entities/swagger/method');
+const Endpoint = require('../entities/endpoint');
+const Schema = require('../entities/schema');
+const Importer = require('./importer');
+const Project = require('../entities/project');
+const jsonHelper = require('../utils/json');
+const swaggerHelper = require('../helpers/swagger');
+const YAML = require('js-yaml');
+const _ = require('lodash');
 
 const referenceRegex = /\/(parameters|responses)\/(.+)/i;
 
@@ -73,7 +73,8 @@ class Swagger extends Importer {
 					tokenUrl: sd.tokenUrl || ''
 				};
 					
-				const slScopes = [], swaggerScopes = sd.scopes;
+				const slScopes = [];
+				const swaggerScopes = sd.scopes;
 					
 				if (swaggerScopes) {
 					for (const key in swaggerScopes) {
@@ -684,12 +685,12 @@ class Swagger extends Importer {
 	}
 	
 	_mapTraits(parameters, responses, resolvedParameters) {
-		const traits = {},
-			queryParams = {},
-			headerParams = {},
-			formDataParams = {},
-			bodyParams = {},
-			traitResponses = {};
+		const traits = {};
+		const queryParams = {};
+		const headerParams = {};
+		const formDataParams = {};
+		const bodyParams = {};
+		const traitResponses = {};
 		
 		for (const k in parameters) {
 			if (!parameters.hasOwnProperty(k)) continue;

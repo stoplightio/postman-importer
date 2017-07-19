@@ -11,10 +11,10 @@ const Item = require('../model/item');
 const MediaType = require('../model/mediaType');
 const Annotation = require('../model/annotation');
 const Converter = require('../model/converter');
-const Oas20RootConverter = require('../oas20/Oas20RootConverter');
-const Oas20DefinitionConverter = require('../oas20/Oas20DefinitionConverter');
-const Oas20AnnotationConverter = require('../oas20/Oas20AnnotationConverter');
-const ParameterConverter = require('../common/ParameterConverter');
+const Oas20RootConverter = require('../oas20/oas20RootConverter');
+const Oas20DefinitionConverter = require('../oas20/oas20DefinitionConverter');
+const Oas20AnnotationConverter = require('../oas20/oas20AnnotationConverter');
+const ParameterConverter = require('../common/parameterConverter');
 const SecurityRequirement = require('../model/securityRequirement');
 const ExternalDocumentation = require('../model/externalDocumentation');
 const helper = require('../helpers/converter');
@@ -178,7 +178,7 @@ class Oas20MethodConverter extends Converter {
 					const body: Body = formBodies[i];
 					const definition: Definition = body.definition;
 					if (body.mimeType && !consumes.includes(body.mimeType)) consumes.push(body.mimeType);
-					if (definition.internalType === 'file' && !consumes.includes('multipart/form-data')) consumes.push('multipart/form-data')
+					if (definition.internalType === 'file' && !consumes.includes('multipart/form-data')) consumes.push('multipart/form-data');
 					let input = {};
 					const propertiesRequired = definition.propsRequired ? definition.propsRequired : [];
 					let hasProperties;
@@ -262,20 +262,20 @@ class Oas20MethodConverter extends Converter {
 	
 	static exportExamples(source:Definition, target:any, mimeType:string, exampleKey:string) {
 		switch (exampleKey) {
-			case 'example':
-				if (source.hasOwnProperty(exampleKey)) {
-					if (!target.examples) target.examples = {};
-					target.examples[mimeType] = source.example;
-					delete source.example;
-				}
-				break;
-			case 'examples':
-				if (source.hasOwnProperty(exampleKey)) {
-					if (!target.examples) target.examples = {};
-					target.examples[mimeType] = source.examples;
-					delete source.examples;
-				}
-				break;
+		case 'example':
+			if (source.hasOwnProperty(exampleKey)) {
+				if (!target.examples) target.examples = {};
+				target.examples[mimeType] = source.example;
+				delete source.example;
+			}
+			break;
+		case 'examples':
+			if (source.hasOwnProperty(exampleKey)) {
+				if (!target.examples) target.examples = {};
+				target.examples[mimeType] = source.examples;
+				delete source.examples;
+			}
+			break;
 		}
 	}
 	
@@ -382,7 +382,7 @@ class Oas20MethodConverter extends Converter {
 		});
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
-			if (value != undefined) {
+			if (value != null) {
 				result[attrIdMap[id]] = result[id];
 				delete result[id];
 			}
@@ -475,7 +475,7 @@ class Oas20MethodConverter extends Converter {
 					response.httpStatusCode = id;
 					if (value.hasOwnProperty('$ref') && this.model.responses) {
 						const reference: string = stringsHelper.computeResourceDisplayName(value.$ref);
-						const modelResponses: Response[] = this.model.responses.filter(modelResponse => { return modelResponse.name === reference });
+						const modelResponses: Response[] = this.model.responses.filter(modelResponse => { return modelResponse.name === reference; });
 						const def: Response = modelResponses[0];
 						if (def.hasOwnProperty('description')) response.description = def.description;
 						if (def.hasOwnProperty('headers')) response.headers = def.headers;
@@ -610,7 +610,7 @@ class Oas20MethodConverter extends Converter {
 							const definition: Definition = definitionConverter._import(val);
 							parameter.definition = definition;
 							Oas20MethodConverter.importRequired(val, parameter);
-							if (val.in === 'path' && this.model[this.resourcePath] && dereferencedParam && this.resourcePath.split("/").pop().includes(dereferencedParam.name)) {
+							if (val.in === 'path' && this.model[this.resourcePath] && dereferencedParam && this.resourcePath.split('/').pop().includes(dereferencedParam.name)) {
 								if (this.model[this.resourcePath].parameters) {
 									this.model[this.resourcePath].parameters.push(parameter);
 								} else {
@@ -643,23 +643,25 @@ class Oas20MethodConverter extends Converter {
 		let isJson: boolean = false;
 		try {
 			switch (property) {
-				case 'example' :
-					const example = JSON.parse(source.example);
-					if (typeof source.example === 'string') {
-						target.example = example;
-					} else if (source.example === null) {
-						delete target.example;
-					}
-					break;
-				case 'examples':
-					isJson = _.startsWith(source.examples, '{');
-					const examples = JSON.parse(source.examples);
-					if (typeof source.examples === 'string') {
-						target.examples = examples;
-					} else if (source.examples === null) {
-						delete target.examples;
-					}
-					break;
+			case 'example' :{
+				const example = JSON.parse(source.example);
+				if (typeof source.example === 'string') {
+					target.example = example;
+				} else if (source.example === null) {
+					delete target.example;
+				}
+				break;
+			}
+			case 'examples': {
+				isJson = _.startsWith(source.examples, '{');
+				const examples = JSON.parse(source.examples);
+				if (typeof source.examples === 'string') {
+					target.examples = examples;
+				} else if (source.examples === null) {
+					delete target.examples;
+				}
+				break;
+			}
 			}
 		} catch (e) {
 			if (isJson) {
