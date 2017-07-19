@@ -41,9 +41,10 @@ describe.skip('Exporter', function () {
 			exporter.data = dummyData;
 		});
 		
-		it('should perform export and return raw data with given format', function () {
+		it('should perform export and return raw data with given format', function (done) {
 			exporter.export('json').then((exportedData) => {
 				expect(exportedData).to.equal(dummyData);
+				done();
 			}).catch((err) => {
 				done(err);
 			});
