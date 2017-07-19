@@ -10,7 +10,7 @@ const arrayHelper = require('../utils/array');
 const ramlHelper = require('../helpers/raml');
 const stringHelper = require('../utils/strings');
 const xmlHelper = require('../utils/xml');
-const Raml10RootConverter = require('../raml10/raml10RootConverter');
+const Raml10RootConverter = require('../raml10/raml10RootConverter'); // eslint-disable-line no-unused-vars,FIXME
 const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
 const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
 
@@ -74,7 +74,7 @@ class Raml10DefinitionConverter extends Converter {
 			this._convertFromInternalType(ramlDef);
 		}
 		
-		if (ramlDef.type != 'string') {
+		if (ramlDef.type !== 'string') {
 			if (ramlDef.hasOwnProperty('minLength')) delete ramlDef.minLength;
 			if (ramlDef.hasOwnProperty('maxLength')) delete ramlDef.maxLength;
 		}
@@ -86,7 +86,7 @@ class Raml10DefinitionConverter extends Converter {
 				items.type = items.format;
 				delete items.format;
 			}
-			if (ramlDef.type != 'array') ramlDef.type = 'array';
+			if (ramlDef.type !== 'array') ramlDef.type = 'array';
 			if (ramlDef.hasOwnProperty('enum')) delete ramlDef.enum;
 			ramlDef.items = items;
 		}
@@ -276,7 +276,7 @@ class Raml10DefinitionConverter extends Converter {
 		});
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
-			if (value != undefined) {
+			if (value != null) {
 				result[attrIdMap[id]] = value;
 				delete result[id];
 			}
@@ -802,7 +802,7 @@ class Raml10DefinitionConverter extends Converter {
 const scalarNumberTypes = ['number', 'integer'];
 const scalarTypes = _.concat(scalarNumberTypes, ['string', 'boolean', 'datetime', 'date-only', 'file', 'time-only', 'datetime-only', 'nil', 'null', 'timestamp']);
 const integerValidFormats = ['int', 'int8', 'int16', 'int32', 'int64'];
-const numberValidFormats = _.concat(integerValidFormats, ['long', 'float', 'double']);
+const numberValidFormats = _.concat(integerValidFormats, ['long', 'float', 'double']); // eslint-disable-line no-unused-vars,FIXME
 const raml10BuiltinTypes = _.concat(scalarTypes, ['any', 'array', 'object', 'union']);
 const raml08BuiltinTypes = _.concat(raml10BuiltinTypes, ['date']);
 

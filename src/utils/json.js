@@ -1,5 +1,5 @@
-const _ = require('lodash'),
-	jsonSchemaConverter = require('json-schema-compatibility');
+const _ = require('lodash');
+const jsonSchemaConverter = require('json-schema-compatibility');
 
 module.exports = {
 	parse: function (data) {

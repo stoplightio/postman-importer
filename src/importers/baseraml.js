@@ -1,13 +1,12 @@
-const
-	Endpoint = require('../entities/endpoint'),
-	Importer = require('./importer'),
-	Project = require('../entities/project'),
-	jsonHelper = require('../utils/json'),
-	xmlHelper = require('../utils/xml'),
-	ramlHelper = require('../helpers/raml'),
-	Schema = require('../entities/schema'),
-	url = require('url'),
-	_ = require('lodash');
+const Endpoint = require('../entities/endpoint');
+const Importer = require('./importer');
+const Project = require('../entities/project');
+const jsonHelper = require('../utils/json');
+const xmlHelper = require('../utils/xml');
+const ramlHelper = require('../helpers/raml');
+const Schema = require('../entities/schema');
+const url = require('url');
+const _ = require('lodash');
 
 const toJSONOptions = {
 	serializeMetadata: false
@@ -683,7 +682,7 @@ class RAMLImporter extends Importer {
 					reject(e);
 				}
 			}, e => {
-        reject(e);
+				reject(e);
 			});
 		});
 	}

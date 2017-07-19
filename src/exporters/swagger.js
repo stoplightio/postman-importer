@@ -1,13 +1,13 @@
-const Exporter = require('./exporter'),
-	jsonHelper = require('../utils/json.js'),
-	stringHelper = require('../utils/strings.js'),
-	urlHelper = require('../utils/url'),
-	SwaggerDefinition = require('../entities/swagger/definition'),
-	swaggerHelper = require('../helpers/swagger'),
-	xmlHelper = require('../utils/xml.js'),
-	_ = require('lodash'),
-	arrayHelper = require('../utils/array.js'),
-	url = require('url');
+const Exporter = require('./exporter');
+const jsonHelper = require('../utils/json.js');
+const stringHelper = require('../utils/strings.js');
+const urlHelper = require('../utils/url');
+const SwaggerDefinition = require('../entities/swagger/definition');
+const swaggerHelper = require('../helpers/swagger');
+const xmlHelper = require('../utils/xml.js');
+const _ = require('lodash');
+const arrayHelper = require('../utils/array.js');
+const url = require('url');
 
 class Swagger extends Exporter {
 	constructor() {
@@ -15,8 +15,8 @@ class Swagger extends Exporter {
 	}
 
 	_getResponseTypes(endpoint, defaultResponseType) {
-		const defRespType = defaultResponseType || [],
-			produces = endpoint.Produces || [];
+		const defRespType = defaultResponseType || [];
+		const produces = endpoint.Produces || [];
 		
 		return produces.reduce(function (result, mimeType) {
 			if (result.indexOf(mimeType) === -1 &&
@@ -29,10 +29,10 @@ class Swagger extends Exporter {
 	}
 	
 	_getRequestTypes(endpoint, parameters, defaultRequestType) {
-		const result = [],
-			typesToInclude = ['multipart/form-data', 'application/x-www-form-urlencoded'],
-			consumes = endpoint.Consumes || [],
-			defReqType = defaultRequestType || [];
+		const result = [];
+		const typesToInclude = ['multipart/form-data', 'application/x-www-form-urlencoded'];
+		const consumes = endpoint.Consumes || [];
+		const defReqType = defaultRequestType || [];
 		
 		for (const i in parameters) {
 			if (!parameters.hasOwnProperty(i)) continue;
@@ -70,7 +70,8 @@ class Swagger extends Exporter {
 	
 	static _validateParameters(parameters) {
 		parameters = jsonHelper.orderByKeys(parameters, ['$ref', 'name', 'in', 'description', 'required', 'schema', 'type']);
-		const validTypes = ['string', 'number', 'integer', 'boolean', 'array', 'file'], defaultType = 'string';
+		const validTypes = ['string', 'number', 'integer', 'boolean', 'array', 'file'];
+		const defaultType = 'string';
 		for (const i in parameters) {
 			if (!parameters.hasOwnProperty(i)) continue;
 			
@@ -779,8 +780,8 @@ class Swagger extends Exporter {
 			}
 			
 			for (const i in trait.responses) {
-				const res = trait.responses[i],
-					code = (res.codes && res.codes.length > 0 && parseInt(res.codes[0]) ? res.codes[0] : 'default');
+				const res = trait.responses[i];
+				const code = (res.codes && res.codes.length > 0 && parseInt(res.codes[0]) ? res.codes[0] : 'default');
 				
 				result[code] = {
 					$ref: '#/responses/' + stringHelper.computeTraitName(trait.name, code)

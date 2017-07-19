@@ -60,7 +60,7 @@ class Raml10ResourceConverter extends Converter {
 	}
 
 	static mapUriParameters(source:any, path:string, uriParameters:any, target:any) {
-		const relativePath = path ? path.substring(path.lastIndexOf('/')) : "";
+		const relativePath = path ? path.substring(path.lastIndexOf('/')) : '';
 		for (const paramName in source) {
 			if (!source.hasOwnProperty(paramName)) continue;
 
@@ -125,7 +125,7 @@ class Raml10ResourceConverter extends Converter {
 		const parameters: Parameter[] = model.parameters ? model.parameters : [];
 		const inheritedParameters = Raml10ResourceConverter.exportInheritedParameters(parameters);
 		const uriParameters: any = {};
-    Raml10ResourceConverter.exportUriParameters(model, uriParameters, this.model, this.annotationPrefix, this.def);
+		Raml10ResourceConverter.exportUriParameters(model, uriParameters, this.model, this.annotationPrefix, this.def);
 
 		if (model.hasOwnProperty('methods')) {
 			const methodsModel: Method[] = model.methods;
@@ -138,22 +138,26 @@ class Raml10ResourceConverter extends Converter {
 						const props: any[] = inheritedParameters[property];
 						if (!_.isEmpty(props)) {
 							switch (property) {
-								case 'bodies':
-									const bodies: Body[] = method.bodies ? method.bodies : [];
-									method.bodies = _.concat(bodies, props);
-									break;
-								case 'formBodies':
-									const formBodies: Body[] = method.formBodies ? method.formBodies : [];
-									method.formBodies = _.concat(formBodies, props);
-									break;
-								case 'parameters':
-									const parameters: Parameter[] = method.parameters ? method.parameters : [];
-									method.parameters = _.concat(parameters, props);
-									break;
-								case 'headers':
-									const headers: Header[] = method.headers ? method.headers : [];
-									method.headers = _.concat(headers, props);
-									break;
+							case 'bodies': {
+								const bodies: Body[] = method.bodies ? method.bodies : [];
+								method.bodies = _.concat(bodies, props);
+								break;
+							}
+							case 'formBodies': {
+								const formBodies: Body[] = method.formBodies ? method.formBodies : [];
+								method.formBodies = _.concat(formBodies, props);
+								break;
+							}
+							case 'parameters': {
+								const parameters: Parameter[] = method.parameters ? method.parameters : [];
+								method.parameters = _.concat(parameters, props);
+								break;
+							}
+							case 'headers': {
+								const headers: Header[] = method.headers ? method.headers : [];
+								method.headers = _.concat(headers, props);
+								break;
+							}
 							}
 						}
 					}
@@ -263,7 +267,7 @@ class Raml10ResourceConverter extends Converter {
 		});
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
-			if (value != undefined) {
+			if (value != null) {
 				result[attrIdMap[id]] = result[id];
 				delete result[id];
 			}
@@ -316,26 +320,26 @@ class Raml10ResourceConverter extends Converter {
 		const model: Resource = Raml10ResourceConverter.createResource(ramlDef, attrIdMap, attrIdSkip);
 		const isRaml08Version: boolean = ramlHelper.isRaml08Version(this.version);
 
-    if (ramlDef.hasOwnProperty('is') && _.isArray(ramlDef.is)) {
+		if (ramlDef.hasOwnProperty('is') && _.isArray(ramlDef.is)) {
 			const is: Item[] = [];
-      for (const id in ramlDef.is) {
-        if (!ramlDef.is.hasOwnProperty(id)) continue;
+			for (const id in ramlDef.is) {
+				if (!ramlDef.is.hasOwnProperty(id)) continue;
 	
-        const value = ramlDef.is[id];
-        if (typeof value === 'string') {
+				const value = ramlDef.is[id];
+				if (typeof value === 'string') {
 					const item = new Item();
 					item.name = value;
-        	is.push(item);
+					is.push(item);
 				} else if (typeof value === 'object') {
 					const name: string = Object.keys(value)[0];
 					const item = new Item();
 					item.name = name;
 					item.value = value[name];
 					is.push(item);
-        }
-      }
-      model.is = is;
-    }
+				}
+			}
+			model.is = is;
+		}
 
 		if (ramlDef.hasOwnProperty('absoluteUri')) {
 			if (this.model.baseUri){
@@ -374,11 +378,11 @@ class Raml10ResourceConverter extends Converter {
 		
 		if (ramlDef.hasOwnProperty('type')) {
 			let resourceTypes: Item[] = [];
-    	if (typeof ramlDef.type === 'string') {
+			if (typeof ramlDef.type === 'string') {
 				const item = new Item();
-    		item.name = ramlDef.type;
+				item.name = ramlDef.type;
 				resourceTypes.push(item);
-			} else if (typeof ramlDef.type === 'object') {
+			} else if (typeof ramlDef.type === 'object') {
 				for (const name in ramlDef.type) {
 					const item = new Item();
 					item.name = name;

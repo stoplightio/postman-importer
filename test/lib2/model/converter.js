@@ -1,14 +1,15 @@
-const chai = require('chai'),
-	expect = chai.expect,
-	specConverter = require('../../../src/index'),
-	fs = require('fs'),
-	YAML = require('js-yaml'),
-	_ = require('lodash'),
-	path = require('path');
 const it = require('mocha/lib/mocha.js').it;
 const describe = require('mocha/lib/mocha.js').describe;
+const chai = require('chai');
+const expect = chai.expect;
+const	fs = require('fs');
+const	YAML = require('js-yaml');
+const	_ = require('lodash');
+const	path = require('path');
 
 chai.use(require('chai-string'));
+
+const specConverter = require('../../../src/index');
 
 const filePathMap = {
 	'/types/Complex.json': '/data/types/Complex.json',

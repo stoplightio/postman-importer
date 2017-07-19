@@ -1,8 +1,12 @@
-const expect = require('chai').expect,
-	fs = require('fs'),
-	path = require('path'),
-	Auto = require('../../../src/importers/auto'),
-	Project = require('../../../src/entities/project');
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
+const beforeEach = require('mocha/lib/mocha.js').beforeEach;
+const expect = require('chai').expect;
+const fs = require('fs');
+const path = require('path');
+
+const Auto = require('../../../src/importers/auto');
+const Project = require('../../../src/entities/project');
 
 describe.skip('Auto Importer', function () {
 	let importer;
@@ -23,22 +27,22 @@ describe.skip('Auto Importer', function () {
 	
 	describe('detectFormat', function () {
 		it('should detect RAML 0.8', function () {
-			const fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml08.yaml'), 'utf8'),
-				format = Auto.detectFormat(fileContent);
+			const fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml08.yaml'), 'utf8');
+			const	format = Auto.detectFormat(fileContent);
 			
 			expect(format.name).to.be.equal('RAML 0.8');
 		});
 
 		it('should detect RAML 1.0', function () {
-			const fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml10-file.yaml'), 'utf8'),
-				format = Auto.detectFormat(fileContent);
+			const fileContent = fs.readFileSync(path.join(dataPath, '/raml-import/raml/raml10-file.yaml'), 'utf8');
+			const format = Auto.detectFormat(fileContent);
 
 			expect(format.name).to.be.equal('RAML 1.0');
 		});
 		
 		it('should detect SWAGGER', function () {
-			const fileContent = fs.readFileSync(path.join(dataPath, 'swagger.yaml'), 'utf8'),
-				format = Auto.detectFormat(fileContent);
+			const fileContent = fs.readFileSync(path.join(dataPath, 'swagger.yaml'), 'utf8');
+			const format = Auto.detectFormat(fileContent);
 			
 			expect(format.name).to.be.equal('OAS 2.0');
 		});

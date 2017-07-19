@@ -1,8 +1,8 @@
-const fs = require('fs'),
-	_ = require('lodash'),
-	Formats = require('../formats'),
-	Importer = require('./importer'),
-	urlHelper = require('../utils/url');
+const fs = require('fs');
+const _ = require('lodash');
+const Formats = require('../formats');
+const Importer = require('./importer');
+const urlHelper = require('../utils/url');
 
 const importers = {
 	RAML08: require('./raml08'),

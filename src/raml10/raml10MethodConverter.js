@@ -88,7 +88,7 @@ class Raml10MethodConverter extends Converter {
 						const bodyDef = body[Object.keys(body)[0]];
 						if (bodyDef && bodyDef.hasOwnProperty('examples')) {
 							const examples: any = bodyDef.examples;
-							if (bodyDef.invalidJsonExample || (bodyDef.type && bodyDef.type != 'string' && typeof examples === 'string')) {
+							if (bodyDef.invalidJsonExample || (bodyDef.type && bodyDef.type !== 'string' && typeof examples === 'string')) {
 								const id = this.annotationPrefix + '-responses-example';
 								Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 								bodyDef['(' + id + ')'] = bodyDef.hasOwnProperty('example') ? _.concat(examples, bodyDef.example) : examples;
@@ -158,7 +158,7 @@ class Raml10MethodConverter extends Converter {
 
 		if (model.hasOwnProperty('protocols')) {
 			const protocols: string[] = model.protocols;
-			ramlDef.protocols = protocols.map(function(protocol){ return protocol.toUpperCase() })
+			ramlDef.protocols = protocols.map(function(protocol){ return protocol.toUpperCase(); });
 		}
 		
 		if (model.hasOwnProperty('summary')) {
@@ -195,11 +195,11 @@ class Raml10MethodConverter extends Converter {
 			if (securityReq.hasOwnProperty('scopes') && !_.isEmpty(securityReq.scopes)) {
 				const scopes: string[] = securityReq.scopes;
 				const result = {};
-        result[securityReq.name] = { scopes: scopes };
-        security.push(result);
+				result[securityReq.name] = { scopes: scopes };
+				security.push(result);
 			} else {
-        security.push(securityReq.name);
-      }
+				security.push(securityReq.name);
+			}
 		}
 		
 		return security;
@@ -281,7 +281,7 @@ class Raml10MethodConverter extends Converter {
 		});
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
-			if (value != undefined) {
+			if (value != null) {
 				result[attrIdMap[id]] = value;
 				delete result[id];
 			}
@@ -354,7 +354,7 @@ class Raml10MethodConverter extends Converter {
 					const item = new Item();
 					item.name = value;
 					is.push(item);
-				} else if (typeof value === 'object' && value != undefined) {
+				} else if (typeof value === 'object' && value != null) {
 					const name: string = Object.keys(value)[0];
 					const item = new Item();
 					item.name = name;
@@ -425,7 +425,7 @@ class Raml10MethodConverter extends Converter {
 			model.parameters = parameters;
 		}
 		
-		if (ramlDef.hasOwnProperty('queryString')) {
+		if (ramlDef.hasOwnProperty('queryString')) {
 			const queryStrings: Parameter[] = [];
 			const queryString = new Parameter();
 			const definition: Definition = definitionConverter._import(ramlDef.queryString);
@@ -514,9 +514,9 @@ class Raml10MethodConverter extends Converter {
 					securityReq.scopes = scopes;
 				}
 			} else {
-        securityReq.name = security;
-        securityReq.scopes = [];
-      }
+				securityReq.name = security;
+				securityReq.scopes = [];
+			}
       
 			securedBy.push(securityReq);
 		});

@@ -7,11 +7,12 @@
     "lib/"
   ],
   "scripts": {
-    "test": "mocha --compilers js:babel-register && npm run eslint",
+		"test": "npm run eslint && npm run mocha",
+    "mocha": "mocha --compilers js:babel-register",
     "start": "node ./lib/bin/converter.js",
     "build": "babel src -d lib",
     "publish": "npm test && npm run build && npm publish",
-    "eslint": "./node_modules/.bin/eslint ./lib index.js ./lib",
+    "eslint": "eslint src/ test/",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "flow": "flow"
