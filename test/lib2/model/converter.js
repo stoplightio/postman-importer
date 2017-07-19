@@ -5,8 +5,8 @@ const chai = require('chai'),
 	YAML = require('js-yaml'),
 	_ = require('lodash'),
 	path = require('path');
-const it = require("mocha/lib/mocha.js").it;
-const describe = require("mocha/lib/mocha.js").describe;
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
 
 chai.use(require('chai-string'));
 
@@ -78,9 +78,9 @@ describe('Raml10 to Raml10', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -141,9 +141,9 @@ describe('Oas20 to Oas20', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -204,9 +204,9 @@ describe('Raml10 to Oas20', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -267,9 +267,9 @@ describe('Oas20 to Raml10', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -330,9 +330,9 @@ describe('Raml08 to Raml10', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 	
@@ -393,9 +393,9 @@ describe('Raml08 to Oas20', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 	

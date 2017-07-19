@@ -1,3 +1,4 @@
+/* global describe,beforeEach,it */
 const expect = require('chai').expect,
 	RAML08 = require('../../../lib/importers/raml08'),
 	RAML10 = require('../../../lib/importers/raml10'),
@@ -232,16 +233,16 @@ describe('RAML 1.0 Importer', function () {
 				.then(() => {
 					try {
 						ramlImporter.import();
-						done(err);
+						done();
 					}
 					catch (err) {
-						expect(err).not.to.be.undefined;
+						expect(err).to.not.be.undefined;
 						done();
 					}
 				})
 				.catch((err) => {
 					if (err) {
-						expect(err).not.to.be.undefined;
+						expect(err).to.not.be.undefined;
 						done();
 					}
 				});
