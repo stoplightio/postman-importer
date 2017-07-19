@@ -1,6 +1,6 @@
 const chai = require('chai'),
 	expect = chai.expect,
-	stringsHelper = require('../../../lib/utils/strings');
+	stringsHelper = require('../../../src/utils/strings');
 
 describe('strings utility library', function () {
 	describe('computeOperationId', function () {

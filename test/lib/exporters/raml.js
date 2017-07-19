@@ -1,5 +1,5 @@
 const expect = require('chai').expect,
-	RAML10 = require('../../../lib/exporters/raml10');
+	RAML10 = require('../../../src/exporters/raml10');
 
 describe.skip('RAML Exporter', function () {
 	

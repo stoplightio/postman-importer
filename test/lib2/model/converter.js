@@ -1,6 +1,6 @@
 const chai = require('chai'),
 	expect = chai.expect,
-	specConverter = require('../../../index'),
+	specConverter = require('../../../src/index'),
 	fs = require('fs'),
 	YAML = require('js-yaml'),
 	_ = require('lodash'),
@@ -45,7 +45,7 @@ const myFsResolver = {
 describe('Raml10 to Raml10', () => {
 	const baseDir = __dirname + '/../../data2/raml10-raml10/source';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.RAML10);
+	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.RAML);
 
 	const testWithData = function (sourceFile, targetFile, validate, extension) {
 		const validateOptions = {
@@ -171,7 +171,7 @@ describe('Oas20 to Oas20', () => {
 describe('Raml10 to Oas20', () => {
 	const baseDir = __dirname + '/../../data2/raml10-oas20/source';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.OAS20);
+	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.OAS20);
 
 	const testWithData = function (sourceFile, targetFile, validate, extension) {
 		const validateOptions = {
@@ -234,7 +234,7 @@ describe('Raml10 to Oas20', () => {
 describe('Oas20 to Raml10', () => {
 	const baseDir = __dirname + '/../../data2/oas20-raml10/source';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.RAML10);
+	const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.RAML);
 
 	const testWithData = function (sourceFile, targetFile, validate, extension) {
 		const validateOptions = {
@@ -297,7 +297,7 @@ describe('Oas20 to Raml10', () => {
 describe('Raml08 to Raml10', () => {
 	const baseDir = __dirname + '/../../data2/raml08-raml10/source';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.RAML10);
+	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.RAML);
 	
 	const testWithData = function (sourceFile, targetFile, validate, extension) {
 		const validateOptions = {
@@ -360,7 +360,7 @@ describe('Raml08 to Raml10', () => {
 describe('Raml08 to Oas20', () => {
 	const baseDir = __dirname + '/../../data2/raml08-oas20/source';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.NewConverter(specConverter.Formats.RAML10, specConverter.Formats.OAS20);
+	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.OAS20);
 	
 	const testWithData = function (sourceFile, targetFile, validate, extension) {
 		const validateOptions = {

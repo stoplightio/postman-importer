@@ -1,23 +1,20 @@
 const expect = require('chai').expect,
 	baseDir = __dirname + '/../../..',
-	exporterDir = baseDir + '/lib/exporters',
+	exporterDir = baseDir + '/src/exporters',
 	exporterFactory = require(exporterDir + '/index'),
-	formats = require(baseDir + '/index').Formats;
+	formats = require(baseDir + '/src/index').Formats;
 
 describe.skip('Exporter Factory', function () {
 	describe('hasSupport', function () {
 		it('should return true for supported format', function () {
 			expect(exporterFactory.hasSupport(formats.SWAGGER)).to.be.true;
-			expect(exporterFactory.hasSupport(formats.RAML08)).to.be.true;
-			expect(exporterFactory.hasSupport(formats.RAML10)).to.be.true;
-			expect(exporterFactory.hasSupport(formats.RAML)).to.be.false;
+			expect(exporterFactory.hasSupport(formats.RAML)).to.be.true;
 		});
 	});
 	describe('factory', function () {
 		it('should return valid exporter instance for supported format', function () {
 			expect(exporterFactory.factory(formats.SWAGGER)).to.be.instanceof(require(exporterDir + '/swagger'));
-			expect(exporterFactory.factory(formats.RAML08)).to.be.instanceof(require(exporterDir + '/raml08'));
-			expect(exporterFactory.factory(formats.RAML10)).to.be.instanceof(require(exporterDir + '/raml10'));
+			expect(exporterFactory.factory(formats.RAML)).to.be.instanceof(require(exporterDir + '/raml10'));
 		});
 	});
 });
