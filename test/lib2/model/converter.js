@@ -179,11 +179,15 @@ describe('Raml10 to Oas20', () => {
 			validate: validate,
 			noExtension: !extension,
 			fsResolver: myFsResolver,
-			format: 'yaml'
+			format: 'yaml',
+			attributeDefaults: false,
+			rejectOnErrors: true
 		};
 
 		return function (done) {
-			converter.convertFile(sourceFile, validateOptions)
+			const data = fs.readFileSync(sourceFile, 'utf8');
+			converter.convertData(data, validateOptions)
+			// converter.convertFile(sourceFile, validateOptions)
 				.then(resultOAS => {
 					try {
 						const notExistsTarget = !fs.existsSync(targetFile);
