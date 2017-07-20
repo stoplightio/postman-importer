@@ -22,6 +22,7 @@ const Raml10AnnotationTypeConverter = require('../raml10/raml10AnnotationTypeCon
 const helper = require('../helpers/raml10');
 const YAML = require('js-yaml');
 const fs = require('fs');
+const toJSONOptions = { serializeMetadata: false };
 
 class Raml10Converter extends Converter {
 
@@ -46,6 +47,19 @@ class Raml10Converter extends Converter {
 					reject(e);
 				}
 			}).catch(reject);
+		});
+	}
+	
+	loadData(data:string, options:any) {
+		this.format = Raml10Converter.detectFormat(data);
+		return new Promise((resolve, reject) => {
+			const parsedData = parser.parseRAMLSync(data, options);
+			if (parsedData.name === 'Error') {
+				reject();
+			} else {
+				this.data = parsedData.expand(true).toJSON(toJSONOptions);
+				resolve();
+			}
 		});
 	}
 	
