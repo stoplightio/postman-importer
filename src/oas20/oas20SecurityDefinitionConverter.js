@@ -68,37 +68,37 @@ class Oas20SecurityDefinitionConverter extends Converter {
 		}
 
 		switch (oasDef.type){
-		case 'oauth2' : {
-			const authorizationUrlValidFlows = ['implicit', 'accessCode'];
-			const tokenUrlValidFlows = ['application', 'password', 'accessCode'];
-			if (model.hasOwnProperty('authorization')) oasDef.flow = model.authorization[0];
-			if (_.includes(authorizationUrlValidFlows, oasDef.flow)) oasDef.authorizationUrl = model.authorizationUrl;
-			if (_.includes(tokenUrlValidFlows, oasDef.flow)) oasDef.tokenUrl = model.tokenUrl;
-			oasDef.scopes = {};
-			if (model.hasOwnProperty('scopes')) {
-				const scopes: SecurityScope[] = model.scopes;
-				for (let i = 0; i < scopes.length; i++) {
-					let scope: SecurityScope = scopes[i];
-					oasDef.scopes[scope.value] = scope.description;
+			case 'oauth2' : {
+				const authorizationUrlValidFlows = ['implicit', 'accessCode'];
+				const tokenUrlValidFlows = ['application', 'password', 'accessCode'];
+				if (model.hasOwnProperty('authorization')) oasDef.flow = model.authorization[0];
+				if (_.includes(authorizationUrlValidFlows, oasDef.flow)) oasDef.authorizationUrl = model.authorizationUrl;
+				if (_.includes(tokenUrlValidFlows, oasDef.flow)) oasDef.tokenUrl = model.tokenUrl;
+				oasDef.scopes = {};
+				if (model.hasOwnProperty('scopes')) {
+					const scopes: SecurityScope[] = model.scopes;
+					for (let i = 0; i < scopes.length; i++) {
+						let scope: SecurityScope = scopes[i];
+						oasDef.scopes[scope.value] = scope.description;
+					}
 				}
+				break;
 			}
-			break;
-		}
 
-		case 'apiKey' : {
-			const describedBy: Method = model.describedBy;
-			if (!describedBy) {
-				oasDef.in = 'header';
-				oasDef.name = model.schemaName;
-			} else if (describedBy.hasOwnProperty('headers') && !_.isEmpty(describedBy.headers) && describedBy.headers != null) {
-				oasDef.in = 'header';
-				oasDef.name = describedBy.headers[0].name;
-			} else if (describedBy.hasOwnProperty('parameters') && !_.isEmpty(describedBy.parameters) && describedBy.parameters != null) {
-				oasDef.in = 'query';
-				oasDef.name = describedBy.parameters[0].name;
+			case 'apiKey' : {
+				const describedBy: Method = model.describedBy;
+				if (!describedBy) {
+					oasDef.in = 'header';
+					oasDef.name = model.schemaName;
+				} else if (describedBy.hasOwnProperty('headers') && !_.isEmpty(describedBy.headers) && describedBy.headers != null) {
+					oasDef.in = 'header';
+					oasDef.name = describedBy.headers[0].name;
+				} else if (describedBy.hasOwnProperty('parameters') && !_.isEmpty(describedBy.parameters) && describedBy.parameters != null) {
+					oasDef.in = 'query';
+					oasDef.name = describedBy.parameters[0].name;
+				}
+				break;
 			}
-			break;
-		}
 		}
 
 		return oasDef;

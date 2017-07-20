@@ -32,18 +32,18 @@ class RAML10Exporter extends RAMLExporter {
 	mapAuthorizationGrants(flow) {
 		let ag = [];
 		switch (flow) {
-		case 'implicit':
-			ag = ['implicit'];
-			break;
-		case 'password':
-			ag = ['password'];
-			break;
-		case 'application':
-			ag = ['client_credentials'];
-			break;
-		case 'accessCode':
-			ag = ['authorization_code'];
-			break;
+			case 'implicit':
+				ag = ['implicit'];
+				break;
+			case 'password':
+				ag = ['password'];
+				break;
+			case 'application':
+				ag = ['client_credentials'];
+				break;
+			case 'accessCode':
+				ag = ['authorization_code'];
+				break;
 		}
 		return ag;
 	}

@@ -138,26 +138,26 @@ class Raml10ResourceConverter extends Converter {
 						const props: any[] = inheritedParameters[property];
 						if (!_.isEmpty(props)) {
 							switch (property) {
-							case 'bodies': {
-								const bodies: Body[] = method.bodies ? method.bodies : [];
-								method.bodies = _.concat(bodies, props);
-								break;
-							}
-							case 'formBodies': {
-								const formBodies: Body[] = method.formBodies ? method.formBodies : [];
-								method.formBodies = _.concat(formBodies, props);
-								break;
-							}
-							case 'parameters': {
-								const parameters: Parameter[] = method.parameters ? method.parameters : [];
-								method.parameters = _.concat(parameters, props);
-								break;
-							}
-							case 'headers': {
-								const headers: Header[] = method.headers ? method.headers : [];
-								method.headers = _.concat(headers, props);
-								break;
-							}
+								case 'bodies': {
+									const bodies: Body[] = method.bodies ? method.bodies : [];
+									method.bodies = _.concat(bodies, props);
+									break;
+								}
+								case 'formBodies': {
+									const formBodies: Body[] = method.formBodies ? method.formBodies : [];
+									method.formBodies = _.concat(formBodies, props);
+									break;
+								}
+								case 'parameters': {
+									const parameters: Parameter[] = method.parameters ? method.parameters : [];
+									method.parameters = _.concat(parameters, props);
+									break;
+								}
+								case 'headers': {
+									const headers: Header[] = method.headers ? method.headers : [];
+									method.headers = _.concat(headers, props);
+									break;
+								}
 							}
 						}
 					}

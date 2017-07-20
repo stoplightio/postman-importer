@@ -60,10 +60,10 @@ class Exporter {
 	
 	_getData(format) {
 		switch (format) {
-		case 'yaml':
-			return YAML.dump(JSON.parse(JSON.stringify(this.Data)), {lineWidth: -1});
-		default:
-			return this.Data;
+			case 'yaml':
+				return YAML.dump(JSON.parse(JSON.stringify(this.Data)), {lineWidth: -1});
+			default:
+				return this.Data;
 		}
 	}
 	

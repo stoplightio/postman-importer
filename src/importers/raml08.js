@@ -136,18 +136,18 @@ class RAML08Importer extends RAMLImporter {
 
 	mapAuthorizationGrants(oauth, flow) {
 		switch (flow) {
-		case 'code':
-			oauth.flow = 'accessCode';
-			break;
-		case 'token':
-			oauth.flow = 'implicit';
-			break;
-		case 'credentials':
-			oauth.flow = 'application';
-			break;
-		case 'owner':
-			oauth.flow = 'password';
-			break;
+			case 'code':
+				oauth.flow = 'accessCode';
+				break;
+			case 'token':
+				oauth.flow = 'implicit';
+				break;
+			case 'credentials':
+				oauth.flow = 'application';
+				break;
+			case 'owner':
+				oauth.flow = 'password';
+				break;
 		}
 		return oauth;
 	}
