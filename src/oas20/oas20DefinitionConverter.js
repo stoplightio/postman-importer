@@ -405,7 +405,8 @@ class Oas20DefinitionConverter extends Converter {
 		Oas20DefinitionConverter.escapeExampleAttributes(oasDef);
 		if (oasDef.hasOwnProperty('annotations') && (_.isArray(oasDef.annotations) || typeof oasDef.annotations === 'object')) {
 			const annotationConverter = new Oas20AnnotationConverter();
-			oasDef = annotationConverter._export(oasDef);
+			_.assign(oasDef, annotationConverter._export(oasDef));
+			delete oasDef.annotations;
 		}
 		for (const id in oasDef) {
 			if (!oasDef.hasOwnProperty(id)) continue;
