@@ -186,54 +186,54 @@ class RAMLExporter extends Exporter {
 			for (const prop in param) {
 				if (!param.hasOwnProperty(prop)) continue;
 				switch (prop) {
-				case 'type': {
-					const type = params[key].type;
-					if (acceptedTypes.indexOf(type) < 0) {
+					case 'type': {
+						const type = params[key].type;
+						if (acceptedTypes.indexOf(type) < 0) {
 							//not supported type, delete param
-						delete params[key];
-						continue;
+							delete params[key];
+							continue;
+						}
+						break;
 					}
-					break;
-				}
-				case 'enum':
-				case 'pattern':
-				case 'minLength':
-				case 'maxLength':
-					if (params[key].type !== 'string') {
-						delete params[key][prop];
+					case 'enum':
+					case 'pattern':
+					case 'minLength':
+					case 'maxLength':
+						if (params[key].type !== 'string') {
+							delete params[key][prop];
+						}
+						break;
+					case 'minimum':
+					case 'maximum': {
+						const typeLowercase = _.toLower(params[key].type);
+						if (typeLowercase !== 'integer' && typeLowercase !== 'number') {
+							delete params[key][prop];
+						}
+						break;
 					}
-					break;
-				case 'minimum':
-				case 'maximum': {
-					const typeLowercase = _.toLower(params[key].type);
-					if (typeLowercase !== 'integer' && typeLowercase !== 'number') {
-						delete params[key][prop];
-					}
-					break;
-				}
-				case 'required':
-				case 'displayName':
-				case 'description':
-				case 'example':
-				case 'repeat':
-				case 'default':
-				case 'items':
-				case 'format':
-				case 'maxItems':
-				case 'minItems':
-				case 'uniqueItems':
-				case 'facets':
-				case '(oas-format)':
-				case '(oas-allowEmptyValue)':
-				case '(oas-collectionFormat)':
-				case '(oas-exclusiveMaximum)':
-				case '(oas-exclusiveMinimum)':
-					break;
-				default:
+					case 'required':
+					case 'displayName':
+					case 'description':
+					case 'example':
+					case 'repeat':
+					case 'default':
+					case 'items':
+					case 'format':
+					case 'maxItems':
+					case 'minItems':
+					case 'uniqueItems':
+					case 'facets':
+					case '(oas-format)':
+					case '(oas-allowEmptyValue)':
+					case '(oas-collectionFormat)':
+					case '(oas-exclusiveMaximum)':
+					case '(oas-exclusiveMinimum)':
+						break;
+					default:
 						//not supported types
-					if (params[key]) {
-						delete params[key][prop];
-					}
+						if (params[key]) {
+							delete params[key][prop];
+						}
 				}
 			}
 		}
@@ -246,20 +246,20 @@ class RAMLExporter extends Exporter {
 		if (!bodyData.body || mimeType === '') return body;
 		
 		switch (mimeType) {
-		case 'application/json':
-			body[mimeType] = this.mapBody(bodyData, mimeType, ramlDef);
-			this.convertRequiredFromProperties(body[mimeType]);
-			if (bodyData.name) {
-				RAMLExporter._createAnnotation(body[mimeType], 'body-name', bodyData.name, ramlDef);
+			case 'application/json':
+				body[mimeType] = this.mapBody(bodyData, mimeType, ramlDef);
+				this.convertRequiredFromProperties(body[mimeType]);
+				if (bodyData.name) {
+					RAMLExporter._createAnnotation(body[mimeType], 'body-name', bodyData.name, ramlDef);
+				}
+				break;
+			case 'multipart/form-data':
+			case 'application/x-www-form-urlencoded': {
+				const parsedBody = jsonHelper.parse(bodyData.body);
+				body[mimeType] = this.mapRequestBodyForm(this.convertRefFromModel(parsedBody, false, null, ramlDef), ramlDef);
+				break;
 			}
-			break;
-		case 'multipart/form-data':
-		case 'application/x-www-form-urlencoded': {
-			const parsedBody = jsonHelper.parse(bodyData.body);
-			body[mimeType] = this.mapRequestBodyForm(this.convertRefFromModel(parsedBody, false, null, ramlDef), ramlDef);
-			break;
-		}
-		default:
+			default:
 			//unsuported format
 			//TODO
 		}
@@ -504,149 +504,149 @@ class RAMLExporter extends Exporter {
 		let definition;
 		let found = true;
 		switch (id) {
-		case 'allowEmptyValue':
-			definition = {
-				type: 'boolean'
-			};
-			break;
+			case 'allowEmptyValue':
+				definition = {
+					type: 'boolean'
+				};
+				break;
 			
-		case 'tags':
-			definition = {
-				type: 'string[]',
-				allowedTargets: 'Method'
-			};
-			break;
+			case 'tags':
+				definition = {
+					type: 'string[]',
+					allowedTargets: 'Method'
+				};
+				break;
 			
-		case 'deprecated':
-			definition = {
-				type: 'boolean',
-				allowedTargets: 'Method'
-			};
-			break;
+			case 'deprecated':
+				definition = {
+					type: 'boolean',
+					allowedTargets: 'Method'
+				};
+				break;
 			
-		case 'summary':
-			definition = {
-				type: 'string',
-				allowedTargets: 'Method'
-			};
-			break;
+			case 'summary':
+				definition = {
+					type: 'string',
+					allowedTargets: 'Method'
+				};
+				break;
 			
-		case 'externalDocs':
-			definition = {
-				properties: {
-					'description?': 'string',
-					'url': 'string'
-				},
-				allowedTargets: ['API', 'Method', 'TypeDeclaration']
-			};
-			break;
+			case 'externalDocs':
+				definition = {
+					properties: {
+						'description?': 'string',
+						'url': 'string'
+					},
+					allowedTargets: ['API', 'Method', 'TypeDeclaration']
+				};
+				break;
 			
-		case 'info':
-			definition = {
-				properties: {
-					'termsOfService?': 'string',
-					'contact?': {
-						properties: {
-							'name?': 'string',
-							'url?': 'string',
-							'email?': 'string'
+			case 'info':
+				definition = {
+					properties: {
+						'termsOfService?': 'string',
+						'contact?': {
+							properties: {
+								'name?': 'string',
+								'url?': 'string',
+								'email?': 'string'
+							}
+						},
+						'license?': {
+							properties: {
+								'name?': 'string',
+								'url?': 'string'
+							}
 						}
 					},
-					'license?': {
-						properties: {
-							'name?': 'string',
-							'url?': 'string'
-						}
-					}
-				},
-				allowedTargets: 'API'
-			};
-			break;
+					allowedTargets: 'API'
+				};
+				break;
 			
-		case 'schema-title':
-			definition = {
-				type: 'string',
-				allowedTargets: 'TypeDeclaration'
-			};
-			break;
+			case 'schema-title':
+				definition = {
+					type: 'string',
+					allowedTargets: 'TypeDeclaration'
+				};
+				break;
 			
-		case 'property-title':
-			definition = {
-				type: 'string',
-				allowedTargets: 'TypeDeclaration'
-			};
-			break;
+			case 'property-title':
+				definition = {
+					type: 'string',
+					allowedTargets: 'TypeDeclaration'
+				};
+				break;
 			
-		case 'body-name':
-			definition = {
-				type: 'string',
-				allowedTargets: 'TypeDeclaration'
-			};
-			break;
+			case 'body-name':
+				definition = {
+					type: 'string',
+					allowedTargets: 'TypeDeclaration'
+				};
+				break;
 			
-		case 'responses-default':
-			definition = {
-				type: 'any',
-				allowedTargets: 'Method'
-			};
-			break;
+			case 'responses-default':
+				definition = {
+					type: 'any',
+					allowedTargets: 'Method'
+				};
+				break;
 			
-		case 'global-response-definition':
-			definition = {
-				type: 'any',
-				allowedTargets: 'Response'
-			};
-			break;
+			case 'global-response-definition':
+				definition = {
+					type: 'any',
+					allowedTargets: 'Response'
+				};
+				break;
 			
-		case 'definition-name':
-			definition = {
-				type: 'string',
-				allowedTargets: 'TypeDeclaration'
-			};
-			break;
+			case 'definition-name':
+				definition = {
+					type: 'string',
+					allowedTargets: 'TypeDeclaration'
+				};
+				break;
 			
-		case 'collectionFormat':
-			definition = {
-				type: 'string'
-			};
-			break;
+			case 'collectionFormat':
+				definition = {
+					type: 'string'
+				};
+				break;
 			
-		case 'format':
-			definition = {
-				type: 'string',
-				allowedTargets: 'TypeDeclaration'
-			};
-			break;
+			case 'format':
+				definition = {
+					type: 'string',
+					allowedTargets: 'TypeDeclaration'
+				};
+				break;
 			
-		case 'readOnly':
-			definition = {
-				type: 'boolean',
-				allowedTargets: 'TypeDeclaration'
-			};
-			break;
+			case 'readOnly':
+				definition = {
+					type: 'boolean',
+					allowedTargets: 'TypeDeclaration'
+				};
+				break;
 			
-		case 'responses':
-			definition = 'any';
-			break;
+			case 'responses':
+				definition = 'any';
+				break;
 			
-		case 'exclusiveMaximum':
-		case 'exclusiveMinimum':
-			definition = {
-				type: 'boolean'
-			};
-			break;
+			case 'exclusiveMaximum':
+			case 'exclusiveMinimum':
+				definition = {
+					type: 'boolean'
+				};
+				break;
 
-		case 'maximum':
-		case 'minimum':
-			definition = {
-				allowedTargets: 'TypeDeclaration',
-				type: 'number'
-			};
-			break;
+			case 'maximum':
+			case 'minimum':
+				definition = {
+					allowedTargets: 'TypeDeclaration',
+					type: 'number'
+				};
+				break;
 
-		default:
-			found = false;
-			break;
+			default:
+				found = false;
+				break;
 		}
 		
 		if (!found) return false;
@@ -1176,15 +1176,15 @@ class RAMLExporter extends Exporter {
 			if (!ramlDef.annotationTypes) ramlDef.annotationTypes = {};
 			if (!ramlDef.annotationTypes.hasOwnProperty('oas-' + annotationKey)) {
 				switch (key) {
-				case 'example':
-					ramlDef.annotationTypes['oas-' + annotationKey] = { type: 'string', allowedTargets: 'TypeDeclaration' };
-					break;
-				case 'externalDocs':
-					ramlDef.annotationTypes['oas-' + annotationKey] = { properties: { 'description?': 'string', 'url': 'string' }, allowedTargets: ['API', 'Method', 'TypeDeclaration'] };
-					break;
-				default:
-					ramlDef.annotationTypes['oas-' + key] = 'any';
-					break;
+					case 'example':
+						ramlDef.annotationTypes['oas-' + annotationKey] = { type: 'string', allowedTargets: 'TypeDeclaration' };
+						break;
+					case 'externalDocs':
+						ramlDef.annotationTypes['oas-' + annotationKey] = { properties: { 'description?': 'string', 'url': 'string' }, allowedTargets: ['API', 'Method', 'TypeDeclaration'] };
+						break;
+					default:
+						ramlDef.annotationTypes['oas-' + key] = 'any';
+						break;
 				}
 			}
 		}
@@ -1245,12 +1245,12 @@ class RAMLExporter extends Exporter {
 	
 	_getData(format) {
 		switch (format) {
-		case 'yaml': {
-			const yaml = this._unescapeYamlIncludes(YAML.dump(jsonHelper.parse(JSON.stringify(this.Data)), {lineWidth: -1}));
-			return '#%RAML ' + this.version() + '\n' + yaml;
-		}
-		default:
-			throw Error('RAML doesn not support ' + format + ' format');
+			case 'yaml': {
+				const yaml = this._unescapeYamlIncludes(YAML.dump(jsonHelper.parse(JSON.stringify(this.Data)), {lineWidth: -1}));
+				return '#%RAML ' + this.version() + '\n' + yaml;
+			}
+			default:
+				throw Error('RAML doesn not support ' + format + ' format');
 		}
 	}
 	

@@ -262,20 +262,20 @@ class Oas20MethodConverter extends Converter {
 	
 	static exportExamples(source:Definition, target:any, mimeType:string, exampleKey:string) {
 		switch (exampleKey) {
-		case 'example':
-			if (source.hasOwnProperty(exampleKey)) {
-				if (!target.examples) target.examples = {};
-				target.examples[mimeType] = source.example;
-				delete source.example;
-			}
-			break;
-		case 'examples':
-			if (source.hasOwnProperty(exampleKey)) {
-				if (!target.examples) target.examples = {};
-				target.examples[mimeType] = source.examples;
-				delete source.examples;
-			}
-			break;
+			case 'example':
+				if (source.hasOwnProperty(exampleKey)) {
+					if (!target.examples) target.examples = {};
+					target.examples[mimeType] = source.example;
+					delete source.example;
+				}
+				break;
+			case 'examples':
+				if (source.hasOwnProperty(exampleKey)) {
+					if (!target.examples) target.examples = {};
+					target.examples[mimeType] = source.examples;
+					delete source.examples;
+				}
+				break;
 		}
 	}
 	
@@ -643,25 +643,25 @@ class Oas20MethodConverter extends Converter {
 		let isJson: boolean = false;
 		try {
 			switch (property) {
-			case 'example' :{
-				const example = JSON.parse(source.example);
-				if (typeof source.example === 'string') {
-					target.example = example;
-				} else if (source.example === null) {
-					delete target.example;
+				case 'example' :{
+					const example = JSON.parse(source.example);
+					if (typeof source.example === 'string') {
+						target.example = example;
+					} else if (source.example === null) {
+						delete target.example;
+					}
+					break;
 				}
-				break;
-			}
-			case 'examples': {
-				isJson = _.startsWith(source.examples, '{');
-				const examples = JSON.parse(source.examples);
-				if (typeof source.examples === 'string') {
-					target.examples = examples;
-				} else if (source.examples === null) {
-					delete target.examples;
+				case 'examples': {
+					isJson = _.startsWith(source.examples, '{');
+					const examples = JSON.parse(source.examples);
+					if (typeof source.examples === 'string') {
+						target.examples = examples;
+					} else if (source.examples === null) {
+						delete target.examples;
+					}
+					break;
 				}
-				break;
-			}
 			}
 		} catch (e) {
 			if (isJson) {

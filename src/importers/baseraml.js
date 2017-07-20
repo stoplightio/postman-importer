@@ -50,82 +50,82 @@ class RAMLImporter extends Importer {
 				if (!securityScheme.hasOwnProperty(name)) continue;
 				const scheme = securityScheme[name];
 				switch (scheme.type) {
-				case 'Pass Through' : {
-					if (!slSecurityScheme['apiKey']) {
-						slSecurityScheme['apiKey'] = [];
-					}
-					const apiKey = {
-						name: name
-					};
-					if (scheme.describedBy) {
-						if (scheme.describedBy.headers) {
-							for (const index in scheme.describedBy.headers) {
-								if (!scheme.describedBy.headers.hasOwnProperty(index)) continue;
-								const current = scheme.describedBy.headers[index];
-								apiKey.headers = [];
-								apiKey.headers.push({
-									name: current.name
-								});
+					case 'Pass Through' : {
+						if (!slSecurityScheme['apiKey']) {
+							slSecurityScheme['apiKey'] = [];
+						}
+						const apiKey = {
+							name: name
+						};
+						if (scheme.describedBy) {
+							if (scheme.describedBy.headers) {
+								for (const index in scheme.describedBy.headers) {
+									if (!scheme.describedBy.headers.hasOwnProperty(index)) continue;
+									const current = scheme.describedBy.headers[index];
+									apiKey.headers = [];
+									apiKey.headers.push({
+										name: current.name
+									});
+								}
+							}
+							if (scheme.describedBy.queryParameters) {
+								for (const index in scheme.describedBy.queryParameters) {
+									if (!scheme.describedBy.queryParameters.hasOwnProperty(index)) continue;
+									const current = scheme.describedBy.queryParameters[index];
+									apiKey.queryString = [];
+									apiKey.queryString.push({
+										name: current.name
+									});
+								}
 							}
 						}
-						if (scheme.describedBy.queryParameters) {
-							for (const index in scheme.describedBy.queryParameters) {
-								if (!scheme.describedBy.queryParameters.hasOwnProperty(index)) continue;
-								const current = scheme.describedBy.queryParameters[index];
-								apiKey.queryString = [];
-								apiKey.queryString.push({
-									name: current.name
-								});
-							}
+						if (scheme.description) {
+							apiKey.description = scheme.description;
 						}
-					}
-					if (scheme.description) {
-						apiKey.description = scheme.description;
-					}
 						
-					slSecurityScheme['apiKey'].push(apiKey);
-					break;
-				}
-				case 'OAuth 2.0': {
-					if (!slSecurityScheme['oauth2']) {
-						slSecurityScheme['oauth2'] = [];
+						slSecurityScheme['apiKey'].push(apiKey);
+						break;
 					}
-					let oauth = {
-						name: name, //not used in stoplight designer
-						authorizationUrl: scheme.settings.authorizationUri || '',
-						tokenUrl: scheme.settings.accessTokenUri || '',
-						scopes: []
-					};
-					if (Array.isArray(scheme.settings.scopes)) {
-						for (const scopeIndex in scheme.settings.scopes) {
-							if (!scheme.settings.scopes.hasOwnProperty(scopeIndex)) continue;
-							oauth.scopes.push({
-								name: scheme.settings.scopes[scopeIndex],
-								value: ''
-							});
+					case 'OAuth 2.0': {
+						if (!slSecurityScheme['oauth2']) {
+							slSecurityScheme['oauth2'] = [];
 						}
-					}
+						let oauth = {
+							name: name, //not used in stoplight designer
+							authorizationUrl: scheme.settings.authorizationUri || '',
+							tokenUrl: scheme.settings.accessTokenUri || '',
+							scopes: []
+						};
+						if (Array.isArray(scheme.settings.scopes)) {
+							for (const scopeIndex in scheme.settings.scopes) {
+								if (!scheme.settings.scopes.hasOwnProperty(scopeIndex)) continue;
+								oauth.scopes.push({
+									name: scheme.settings.scopes[scopeIndex],
+									value: ''
+								});
+							}
+						}
 						//authorizationGrants are flow, only one supported in stoplight
-					const flow = !_.isEmpty(scheme.settings.authorizationGrants) ? scheme.settings.authorizationGrants[0] : 'code';
-					oauth = this.mapAuthorizationGrants(oauth, flow);
+						const flow = !_.isEmpty(scheme.settings.authorizationGrants) ? scheme.settings.authorizationGrants[0] : 'code';
+						oauth = this.mapAuthorizationGrants(oauth, flow);
 
-					if (scheme.description) {
-						oauth.description = scheme.description;
+						if (scheme.description) {
+							oauth.description = scheme.description;
+						}
+						slSecurityScheme['oauth2'].push(oauth);
+						break;
 					}
-					slSecurityScheme['oauth2'].push(oauth);
-					break;
-				}
-				case 'Basic Authentication':
-					if (!slSecurityScheme['basic']) {
-						slSecurityScheme['basic'] = [];
-					}
-					slSecurityScheme['basic'].push({
-						name: name,
-						value: '',
-						description: scheme.description || ''
-					});
-					break;
-				default:
+					case 'Basic Authentication':
+						if (!slSecurityScheme['basic']) {
+							slSecurityScheme['basic'] = [];
+						}
+						slSecurityScheme['basic'].push({
+							name: name,
+							value: '',
+							description: scheme.description || ''
+						});
+						break;
+					default:
 					//TODO not supported
 				}
 			}
@@ -261,45 +261,45 @@ class RAMLImporter extends Importer {
 		const type = _.isArray(object.type) && object.type.length === 1 ? object.type[0]: object.type;
 		object.type = type;
 		switch (type) {
-		case 'date-only':
-			object.type = 'string';
-			object.format = 'date';
-			break;
-		case 'time-only':
-			object.type = 'string';
-			object[RAMLImporter.getCustomProperty('format')] = 'time-only';
-			break;
-		case 'datetime-only':
-			object.type = 'string';
-			object[RAMLImporter.getCustomProperty('format')] = 'datetime-only';
-			break;
-		case 'datetime':
-			object.type = 'string';
-			if (object.format === 'rfc3339' || !object.hasOwnProperty('format')) {
-				object.format = 'date-time';
-			} else {
-				object[RAMLImporter.getCustomProperty('format')] = object.format;
-				delete object.format;
-			}
-			break;
-		case 'file':
-			if (isSchema) {
+			case 'date-only':
 				object.type = 'string';
-				object[RAMLImporter.getCustomProperty('type')] = 'file';
-			}
-			if (object.hasOwnProperty('fileTypes')) {
-				object[RAMLImporter.getCustomProperty('fileTypes')] = object['fileTypes'];
-				delete object['fileTypes'];
-			}
-			break;
-		default:
-			if (typeof type === 'string' && (type.includes('|') || type.includes('?'))) {
-				object.type = 'object';
-			} else if (typeof type !== 'object' && ramlHelper.getRAML10ScalarTypes.indexOf(type) < 0) {
-				object[RAMLImporter.getCustomProperty('type')] = type;
+				object.format = 'date';
+				break;
+			case 'time-only':
 				object.type = 'string';
-			}
-			break;
+				object[RAMLImporter.getCustomProperty('format')] = 'time-only';
+				break;
+			case 'datetime-only':
+				object.type = 'string';
+				object[RAMLImporter.getCustomProperty('format')] = 'datetime-only';
+				break;
+			case 'datetime':
+				object.type = 'string';
+				if (object.format === 'rfc3339' || !object.hasOwnProperty('format')) {
+					object.format = 'date-time';
+				} else {
+					object[RAMLImporter.getCustomProperty('format')] = object.format;
+					delete object.format;
+				}
+				break;
+			case 'file':
+				if (isSchema) {
+					object.type = 'string';
+					object[RAMLImporter.getCustomProperty('type')] = 'file';
+				}
+				if (object.hasOwnProperty('fileTypes')) {
+					object[RAMLImporter.getCustomProperty('fileTypes')] = object['fileTypes'];
+					delete object['fileTypes'];
+				}
+				break;
+			default:
+				if (typeof type === 'string' && (type.includes('|') || type.includes('?'))) {
+					object.type = 'object';
+				} else if (typeof type !== 'object' && ramlHelper.getRAML10ScalarTypes.indexOf(type) < 0) {
+					object[RAMLImporter.getCustomProperty('type')] = type;
+					object.type = 'string';
+				}
+				break;
 		}
 	}
 	

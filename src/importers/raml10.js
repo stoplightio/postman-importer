@@ -22,38 +22,38 @@ class RAML10Importer extends RAMLImporter {
 		
 		if (methodBody.properties && !_.isEmpty(methodBody.properties)) {
 			switch (data.mimeType) {
-			case 'application/json':
-				data.body = this._mapSchema(methodBody, true, false);
+				case 'application/json':
+					data.body = this._mapSchema(methodBody, true, false);
 					// data.body = RAML10Importer.convertObjectProperty(mimeType);
-				delete data.body.description;
+					delete data.body.description;
 					// delete data.body.type;
-				break;
-			case 'multipart/form-data':
-			case 'application/x-www-form-urlencoded': {
-				data.body = {
-					type: 'object',
-					'properties': {},
-					'required': []
-				};
-				const formParams = methodBody.properties;
-				for (const j in formParams) {
-					if (!formParams.hasOwnProperty(j)) continue;
-					const param = formParams[j];
-					const bodyType = !_.isEmpty(param.type) ? param.type[0] : param.type;
-					data.body.properties[param.name] = {
-						type: bodyType
+					break;
+				case 'multipart/form-data':
+				case 'application/x-www-form-urlencoded': {
+					data.body = {
+						type: 'object',
+						'properties': {},
+						'required': []
 					};
-					if (param.description) {
-						data.body.properties[param.name].description = param.description;
+					const formParams = methodBody.properties;
+					for (const j in formParams) {
+						if (!formParams.hasOwnProperty(j)) continue;
+						const param = formParams[j];
+						const bodyType = !_.isEmpty(param.type) ? param.type[0] : param.type;
+						data.body.properties[param.name] = {
+							type: bodyType
+						};
+						if (param.description) {
+							data.body.properties[param.name].description = param.description;
+						}
+						if (param.format) {
+							data.body.properties[param.name].format = param.format;
+						}
+						RAMLImporter._convertRequiredToArray(param, param.name, data.body.required);
 					}
-					if (param.format) {
-						data.body.properties[param.name].format = param.format;
-					}
-					RAMLImporter._convertRequiredToArray(param, param.name, data.body.required);
+					break;
 				}
-				break;
-			}
-			default:
+				default:
 			}
 		}
 		else if (RAML10Importer.isArray(methodBody)) {
@@ -410,18 +410,18 @@ class RAML10Importer extends RAMLImporter {
 
 	mapAuthorizationGrants(oauth, flow) {
 		switch (flow) {
-		case 'authorization_code':
-			oauth.flow = 'accessCode';
-			break;
-		case 'implicit':
-			oauth.flow = 'implicit';
-			break;
-		case 'client_credentials':
-			oauth.flow = 'application';
-			break;
-		case 'password':
-			oauth.flow = 'password';
-			break;
+			case 'authorization_code':
+				oauth.flow = 'accessCode';
+				break;
+			case 'implicit':
+				oauth.flow = 'implicit';
+				break;
+			case 'client_credentials':
+				oauth.flow = 'application';
+				break;
+			case 'password':
+				oauth.flow = 'password';
+				break;
 		}
 		return oauth;
 	}

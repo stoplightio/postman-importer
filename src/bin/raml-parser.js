@@ -23,39 +23,39 @@ program
 if (typeof file === 'undefined') util.exit('File path required. See --help.');
 
 switch (mode) {
-case '1':
-	parser.loadApi(file, {
-		attributeDefaults: false,
-		rejectOnErrors: false
-	}).then((api) => {
-		if (expand && api.expand) api = api.expand(true);
+	case '1':
+		parser.loadApi(file, {
+			attributeDefaults: false,
+			rejectOnErrors: false
+		}).then((api) => {
+			if (expand && api.expand) api = api.expand(true);
 
-		const json = api.toJSON({
-			serializeMetadata: false,
-			dumpSchemaContents: false,
-			rootNodeDetails: true
-		});
+			const json = api.toJSON({
+				serializeMetadata: false,
+				dumpSchemaContents: false,
+				rootNodeDetails: true
+			});
 
-		if (json.errors && json.errors.length)
-			util.exit(util.stringify(json.errors));
-		else
+			if (json.errors && json.errors.length)
+				util.exit(util.stringify(json.errors));
+			else
         console.log(util.stringify(json.specification));
 
-	}).catch(util.exit);
-	break;
-default:
-	parser.loadApi(file, {
-		attributeDefaults: false,
-		rejectOnErrors: true
-	}).then((api) => {
-		if (expand && api.expand) api = api.expand(true);
+		}).catch(util.exit);
+		break;
+	default:
+		parser.loadApi(file, {
+			attributeDefaults: false,
+			rejectOnErrors: true
+		}).then((api) => {
+			if (expand && api.expand) api = api.expand(true);
 
-		const json = api.toJSON({
-			serializeMetadata: false
-		});
+			const json = api.toJSON({
+				serializeMetadata: false
+			});
 
-		console.log(util.stringify(json));
+			console.log(util.stringify(json));
 
-	}).catch(util.exit);
-	break;
+		}).catch(util.exit);
+		break;
 }

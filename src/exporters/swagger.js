@@ -206,96 +206,96 @@ class Swagger extends Exporter {
 			
 			const sd = securityDefinitions[type];
 			switch (type) {
-			case 'apiKey':
-				for (const index in sd) {
-					if (!sd.hasOwnProperty(index)) continue;
-					const current = sd[index];
+				case 'apiKey':
+					for (const index in sd) {
+						if (!sd.hasOwnProperty(index)) continue;
+						const current = sd[index];
 						
-					if (current.hasOwnProperty('headers') && current.headers.length > 0) {
-						for (const i in current.headers) {
-							if (!current.headers.hasOwnProperty(i)) continue;
+						if (current.hasOwnProperty('headers') && current.headers.length > 0) {
+							for (const i in current.headers) {
+								if (!current.headers.hasOwnProperty(i)) continue;
 								
-							const header = current.headers[i];
-							result[current.name] = {
-								name: header.name,
-								type: type,
-								in: 'header'
-							};
-							if (current.description) {
-								result[current.name]['description'] = current.description;
+								const header = current.headers[i];
+								result[current.name] = {
+									name: header.name,
+									type: type,
+									in: 'header'
+								};
+								if (current.description) {
+									result[current.name]['description'] = current.description;
+								}
+							}
+						}
+						if (current.hasOwnProperty('queryString') && current.queryString.length > 0) {
+							for (const i in current.queryString) {
+								if (!current.queryString.hasOwnProperty(i)) continue;
+								
+								const header = current.queryString[i];
+								result[current.name] = {
+									name: header.name,
+									type: type,
+									in: 'query'
+								};
+								if (current.description) {
+									result[current.name]['description'] = current.description;
+								}
 							}
 						}
 					}
-					if (current.hasOwnProperty('queryString') && current.queryString.length > 0) {
-						for (const i in current.queryString) {
-							if (!current.queryString.hasOwnProperty(i)) continue;
-								
-							const header = current.queryString[i];
-							result[current.name] = {
-								name: header.name,
-								type: type,
-								in: 'query'
-							};
-							if (current.description) {
-								result[current.name]['description'] = current.description;
-							}
-						}
-					}
-				}
-				break;
-			case 'oauth2': {
-				for (const index in sd) {
-					if (!sd.hasOwnProperty(index)) continue;
+					break;
+				case 'oauth2': {
+					for (const index in sd) {
+						if (!sd.hasOwnProperty(index)) continue;
 						
-					const current = sd[index];
+						const current = sd[index];
 
-					const slScopes = current.scopes;
-					const swaggerScopes = {};
-					for (const i in slScopes) {
-						if (!slScopes.hasOwnProperty(i)) continue;
+						const slScopes = current.scopes;
+						const swaggerScopes = {};
+						for (const i in slScopes) {
+							if (!slScopes.hasOwnProperty(i)) continue;
 							
-						const scope = slScopes[i];
-						swaggerScopes[scope.name] = scope.value;
+							const scope = slScopes[i];
+							swaggerScopes[scope.name] = scope.value;
+						}
+						
+						const oauth2 = {
+							type: type,
+							flow: current.flow,
+							scopes: swaggerScopes
+						};
+						
+						if (current.description) {
+							oauth2.description = current.description;
+						}
+						
+						if (['implicit', 'accessCode'].indexOf(current.flow) >= 0) {
+							oauth2['authorizationUrl'] = current.authorizationUrl;
+						}
+						
+						if (['password', 'application', 'accessCode'].indexOf(current.flow) >= 0) {
+							oauth2['tokenUrl'] = current.tokenUrl;
+						}
+						
+						result[current.name] = oauth2;
 					}
-						
-					const oauth2 = {
-						type: type,
-						flow: current.flow,
-						scopes: swaggerScopes
-					};
-						
-					if (current.description) {
-						oauth2.description = current.description;
-					}
-						
-					if (['implicit', 'accessCode'].indexOf(current.flow) >= 0) {
-						oauth2['authorizationUrl'] = current.authorizationUrl;
-					}
-						
-					if (['password', 'application', 'accessCode'].indexOf(current.flow) >= 0) {
-						oauth2['tokenUrl'] = current.tokenUrl;
-					}
-						
-					result[current.name] = oauth2;
+					break;
 				}
-				break;
-			}
-			case 'basic':
-				for (const index in sd) {
-					if (!sd.hasOwnProperty(index)) continue;
-					const current = sd[index];
+				case 'basic':
+					for (const index in sd) {
+						if (!sd.hasOwnProperty(index)) continue;
+						const current = sd[index];
 						
-					const basic = {
-						type: type
-					};
+						const basic = {
+							type: type
+						};
 						
-					if (!_.isEmpty(current.description)) {
-						basic.description = current.description;
+						if (!_.isEmpty(current.description)) {
+							basic.description = current.description;
+						}
+						
+						result[current.name] = basic;
 					}
-						
-					result[current.name] = basic;
-				}
-				break;
+					break;
 			}
 		}
 		return result;

@@ -43,77 +43,77 @@ class Swagger extends Importer {
 			const type = securityDefinitions[name].type;
 			const sd = securityDefinitions[name];
 			switch (type) {
-			case 'apiKey': {
-				if (!result.hasOwnProperty(type)) {
-					result[type] = {};
-				}
-					
-				const current = {
-					externalName: name,
-					name: sd.name,
-					value: '',
-					description: sd.description
-				};
-
-				const keyPlaceHolder = (sd.in === 'header') ? 'headers' : 'queryString';
-				if (!result[type].hasOwnProperty(keyPlaceHolder)) {
-					result[type][keyPlaceHolder] = [];
-				}
-				result[type][keyPlaceHolder].push(current);
-				break;
-			}
-			case 'oauth2': {
-				if (!result.hasOwnProperty(type)) {
-					result[type] = [];
-				}
-				const current = {
-					name: name,
-					authorizationUrl: sd.authorizationUrl || '',
-						//scopes: slScopes,
-					tokenUrl: sd.tokenUrl || ''
-				};
-					
-				const slScopes = [];
-				const swaggerScopes = sd.scopes;
-					
-				if (swaggerScopes) {
-					for (const key in swaggerScopes) {
-						if (!swaggerScopes.hasOwnProperty(key)) continue;
-						const scope = {};
-						scope['name'] = key;
-						scope['value'] = swaggerScopes[key];
-						slScopes.push(scope);
+				case 'apiKey': {
+					if (!result.hasOwnProperty(type)) {
+						result[type] = {};
 					}
-				}
 					
-				if (sd.flow) {
-					current['flow'] = sd.flow;
+					const current = {
+						externalName: name,
+						name: sd.name,
+						value: '',
+						description: sd.description
+					};
+
+					const keyPlaceHolder = (sd.in === 'header') ? 'headers' : 'queryString';
+					if (!result[type].hasOwnProperty(keyPlaceHolder)) {
+						result[type][keyPlaceHolder] = [];
+					}
+					result[type][keyPlaceHolder].push(current);
+					break;
 				}
+				case 'oauth2': {
+					if (!result.hasOwnProperty(type)) {
+						result[type] = [];
+					}
+					const current = {
+						name: name,
+						authorizationUrl: sd.authorizationUrl || '',
+						//scopes: slScopes,
+						tokenUrl: sd.tokenUrl || ''
+					};
 					
-				if (sd.description) {
-					current['description'] = sd.description;
+					const slScopes = [];
+					const swaggerScopes = sd.scopes;
+					
+					if (swaggerScopes) {
+						for (const key in swaggerScopes) {
+							if (!swaggerScopes.hasOwnProperty(key)) continue;
+							const scope = {};
+							scope['name'] = key;
+							scope['value'] = swaggerScopes[key];
+							slScopes.push(scope);
+						}
+					}
+					
+					if (sd.flow) {
+						current['flow'] = sd.flow;
+					}
+					
+					if (sd.description) {
+						current['description'] = sd.description;
+					}
+					
+					if (!_.isEmpty(slScopes)) {
+						current['scopes'] = slScopes;
+					}
+					
+					result[type].push(current);
+					break;
 				}
+				case 'basic': {
+					if (!result.hasOwnProperty(type)) {
+						result[type] = [];
+					}
 					
-				if (!_.isEmpty(slScopes)) {
-					current['scopes'] = slScopes;
+					const current = {
+						name: name,
+						value: '',
+						description: sd.description || ''
+					};
+					result[type].push(current);
+					break;
 				}
-					
-				result[type].push(current);
-				break;
-			}
-			case 'basic': {
-				if (!result.hasOwnProperty(type)) {
-					result[type] = [];
-				}
-					
-				const current = {
-					name: name,
-					value: '',
-					description: sd.description || ''
-				};
-				result[type].push(current);
-				break;
-			}
 			}
 		}
 		return result;
@@ -206,24 +206,24 @@ class Swagger extends Importer {
 				continue;
 			}
 			switch (param.in) {
-			case 'body':
-				Swagger.mapExample(param.schema, data);
-				data.body = param.schema;
-				if (param.name) {
-					data.name = param.name;
+				case 'body':
+					Swagger.mapExample(param.schema, data);
+					data.body = param.schema;
+					if (param.name) {
+						data.name = param.name;
+					}
+					if (param.description) {
+						data.description = jsonHelper.stringify(param.description);
+					}
+					break;
+				default: {
+					let prop = {};
+					prop = swaggerHelper.setParameterFields(param, prop);
+					if (param.required) {
+						data.body.required.push(param.name);
+					}
+					data.body.properties[param.name] = prop;
 				}
-				if (param.description) {
-					data.description = jsonHelper.stringify(param.description);
-				}
-				break;
-			default: {
-				let prop = {};
-				prop = swaggerHelper.setParameterFields(param, prop);
-				if (param.required) {
-					data.body.required.push(param.name);
-				}
-				data.body.properties[param.name] = prop;
-			}
 			}
 		}
 		//remove required field if doesn't have anything inside it
@@ -657,24 +657,24 @@ class Swagger extends Importer {
 							continue;
 						}
 						switch (scheme.type) {
-						case 'apiKey':
-						case 'basic':
-							if (!endpoint.SecuredBy) {
-								endpoint.SecuredBy = {};
-							}
-							endpoint.SecuredBy[scheme.type] = {
-								name: securityName
-							};
-							break;
-						case 'oauth2':
-							if (!endpoint.SecuredBy) {
-								endpoint.SecuredBy = {};
-							}
-							endpoint.SecuredBy[scheme.type] = {
-								name: securityName,
-								scope: securities[securityIndex][securityName]
-							};
-							break;
+							case 'apiKey':
+							case 'basic':
+								if (!endpoint.SecuredBy) {
+									endpoint.SecuredBy = {};
+								}
+								endpoint.SecuredBy[scheme.type] = {
+									name: securityName
+								};
+								break;
+							case 'oauth2':
+								if (!endpoint.SecuredBy) {
+									endpoint.SecuredBy = {};
+								}
+								endpoint.SecuredBy[scheme.type] = {
+									name: securityName,
+									scope: securities[securityIndex][securityName]
+								};
+								break;
 						}
 					}
 				}
@@ -707,22 +707,22 @@ class Swagger extends Importer {
 			}
 			
 			switch (param.in) {
-			case 'query':
-				queryParams[name] = queryParams[name] || [];
-				queryParams[name].push(param);
-				break;
-			case 'header':
-				headerParams[name] = headerParams[name] || [];
-				headerParams[name].push(param);
-				break;
-			case 'formData':
-				formDataParams[name] = formDataParams[name] || [];
-				formDataParams[name].push(param);
-				break;
-			case 'body':
-				bodyParams[name] = bodyParams[name] || [];
-				bodyParams[name].push(param);
-				break;
+				case 'query':
+					queryParams[name] = queryParams[name] || [];
+					queryParams[name].push(param);
+					break;
+				case 'header':
+					headerParams[name] = headerParams[name] || [];
+					headerParams[name].push(param);
+					break;
+				case 'formData':
+					formDataParams[name] = formDataParams[name] || [];
+					formDataParams[name].push(param);
+					break;
+				case 'body':
+					bodyParams[name] = bodyParams[name] || [];
+					bodyParams[name].push(param);
+					break;
 			}
 		}
 		

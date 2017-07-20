@@ -33,66 +33,66 @@ class Raml10SecurityDefinitionConverter extends Converter {
 		if (model.hasOwnProperty('type')) {
 			const type: string = model.type;
 			switch (type) {
-			case 'oauth1' :
-				ramlDef.type = 'OAuth 1.0';
-				if (model.hasOwnProperty('requestTokenUri')) settings.requestTokenUri = model.requestTokenUri;
-				if (model.hasOwnProperty('authorizationUrl')) settings.authorizationUri = model.authorizationUrl;
-				if (model.hasOwnProperty('tokenUrl')) settings.tokenCredentialsUri = model.tokenUrl;
-				if (model.hasOwnProperty('signatures')) settings.signatures = model.signatures;
-				break;
+				case 'oauth1' :
+					ramlDef.type = 'OAuth 1.0';
+					if (model.hasOwnProperty('requestTokenUri')) settings.requestTokenUri = model.requestTokenUri;
+					if (model.hasOwnProperty('authorizationUrl')) settings.authorizationUri = model.authorizationUrl;
+					if (model.hasOwnProperty('tokenUrl')) settings.tokenCredentialsUri = model.tokenUrl;
+					if (model.hasOwnProperty('signatures')) settings.signatures = model.signatures;
+					break;
 
-			case 'oauth2' :
-				ramlDef.type = 'OAuth 2.0';
-				if (model.hasOwnProperty('authorizationUrl')) settings.authorizationUri = model.authorizationUrl;
-				if (model.hasOwnProperty('tokenUrl')) settings.accessTokenUri = model.tokenUrl;
+				case 'oauth2' :
+					ramlDef.type = 'OAuth 2.0';
+					if (model.hasOwnProperty('authorizationUrl')) settings.authorizationUri = model.authorizationUrl;
+					if (model.hasOwnProperty('tokenUrl')) settings.accessTokenUri = model.tokenUrl;
 
-				if (model.hasOwnProperty('authorization')) {
-					let grants: string[] = model.authorization;
-					for (let i = 0; i < grants.length; i++) {
-						switch (grants[i]) {
-						case 'accessCode':
-							grants[i] = 'authorization_code';
-							break;
-						case 'application' :
-							grants[i] = 'client_credentials';
-							break;
+					if (model.hasOwnProperty('authorization')) {
+						let grants: string[] = model.authorization;
+						for (let i = 0; i < grants.length; i++) {
+							switch (grants[i]) {
+								case 'accessCode':
+									grants[i] = 'authorization_code';
+									break;
+								case 'application' :
+									grants[i] = 'client_credentials';
+									break;
+							}
+						}
+						if (_.includes(grants, 'implicit') && !settings.hasOwnProperty('accessTokenUri')) {
+							settings.accessTokenUri = '';
+						}
+
+						settings.authorizationGrants = grants;
+					}
+
+					if (model.hasOwnProperty('scopes')) {
+						settings.scopes = [];
+						const scopes: SecurityScope[] = model.scopes;
+						for (let i = 0; i < scopes.length; i++) {
+							const scope: SecurityScope = scopes[i];
+							settings.scopes.push(scope.value);
+						}
+						if (_.isEmpty(settings.scopes)) {
+							delete settings.scopes;
 						}
 					}
-					if (_.includes(grants, 'implicit') && !settings.hasOwnProperty('accessTokenUri')) {
-						settings.accessTokenUri = '';
-					}
+					break;
 
-					settings.authorizationGrants = grants;
-				}
+				case 'basic' :
+					ramlDef.type = 'Basic Authentication';
+					break;
 
-				if (model.hasOwnProperty('scopes')) {
-					settings.scopes = [];
-					const scopes: SecurityScope[] = model.scopes;
-					for (let i = 0; i < scopes.length; i++) {
-						const scope: SecurityScope = scopes[i];
-						settings.scopes.push(scope.value);
-					}
-					if (_.isEmpty(settings.scopes)) {
-						delete settings.scopes;
-					}
-				}
-				break;
+				case 'apiKey' :
+					ramlDef.type = 'Pass Through';
+					break;
 
-			case 'basic' :
-				ramlDef.type = 'Basic Authentication';
-				break;
+				case 'digest' :
+					ramlDef.type = 'Digest Authentication';
+					break;
 
-			case 'apiKey' :
-				ramlDef.type = 'Pass Through';
-				break;
-
-			case 'digest' :
-				ramlDef.type = 'Digest Authentication';
-				break;
-
-			default :
-				ramlDef.type = type;
-				break;
+				default :
+					ramlDef.type = type;
+					break;
 			}
 		}
 
@@ -139,29 +139,29 @@ class Raml10SecurityDefinitionConverter extends Converter {
 		if (ramlDef.hasOwnProperty('type')) {
 			const type: string = ramlDef.type;
 			switch (type) {
-			case 'OAuth 1.0' :
-				model.type = 'oauth1';
-				break;
-			case 'OAuth 2.0' :
-				model.type = 'oauth2';
-				break;
-			case 'Pass Through' :
-				model.type = 'apiKey';
-				break;
-			case 'Basic Authentication' :
-				model.type = 'basic';
-				break;
-			case 'Digest Authentication' :
-			case 'DigestSecurityScheme Authentication' :
-				model.type = 'digest';
-				break;
-			default :
-				if (type.substr(0,2) === 'x-') {
-					model.type = type;
-				} else {
-					model.type = 'x-' + type;
-				}
-				break;
+				case 'OAuth 1.0' :
+					model.type = 'oauth1';
+					break;
+				case 'OAuth 2.0' :
+					model.type = 'oauth2';
+					break;
+				case 'Pass Through' :
+					model.type = 'apiKey';
+					break;
+				case 'Basic Authentication' :
+					model.type = 'basic';
+					break;
+				case 'Digest Authentication' :
+				case 'DigestSecurityScheme Authentication' :
+					model.type = 'digest';
+					break;
+				default :
+					if (type.substr(0,2) === 'x-') {
+						model.type = type;
+					} else {
+						model.type = 'x-' + type;
+					}
+					break;
 			}
 		}
 
@@ -193,20 +193,20 @@ class Raml10SecurityDefinitionConverter extends Converter {
 				const grants: string[] = settings.authorizationGrants;
 				for (let i = 0; i < grants.length; i++) {
 					switch (grants[i]) {
-					case 'credentials' :
-					case 'client_credentials' :
-						grants[i] = 'application';
-						break;
-					case 'code' :
-					case 'authorization_code' :
-						grants[i] = 'accessCode';
-						break;
-					case 'token' :
-						grants[i] = 'implicit';
-						break;
-					case 'owner' :
-						grants[i] = 'password';
-						break;
+						case 'credentials' :
+						case 'client_credentials' :
+							grants[i] = 'application';
+							break;
+						case 'code' :
+						case 'authorization_code' :
+							grants[i] = 'accessCode';
+							break;
+						case 'token' :
+							grants[i] = 'implicit';
+							break;
+						case 'owner' :
+							grants[i] = 'password';
+							break;
 					}
 				}
 				model.authorization = grants;
