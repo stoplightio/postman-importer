@@ -160,7 +160,7 @@ class Raml10RootConverter extends Converter {
 			const externalDocs = {};
 			if (externalDocsModel.hasOwnProperty('url')) externalDocs.url = externalDocsModel.url;
 			if (externalDocsModel.hasOwnProperty('description')) externalDocs.description = externalDocsModel.description;
-			Raml10RootConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, externalDocsModel, externalDocs);
+			Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, externalDocsModel, externalDocs);
 			ramlDef['(' + id + ')'] = externalDocs;
 		}
 		if (model.hasOwnProperty('resourceAnnotations')) {
@@ -168,10 +168,10 @@ class Raml10RootConverter extends Converter {
 			const id = this.annotationPrefix + '-paths';
 			Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
 			const resourceAnnotations = {};
-			Raml10RootConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, resourceAnnotationsModel, resourceAnnotations);
+			Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, resourceAnnotationsModel, resourceAnnotations);
 			ramlDef['(' + id + ')'] = resourceAnnotations;
 		}
-		Raml10RootConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, model, ramlDef);
+		Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, model, ramlDef);
 
 		return ramlDef;
 	}
@@ -237,7 +237,7 @@ class Raml10RootConverter extends Converter {
         }
       }
       model.baseUri = baseUri;
-      Raml10RootConverter.importAnnotations(ramlDef.baseUri, model, model);
+			Raml10AnnotationConverter.importAnnotations(ramlDef.baseUri, model, model);
 		}
 
 		if (ramlDef.hasOwnProperty('baseUriParameters')) {
@@ -345,19 +345,6 @@ class Raml10RootConverter extends Converter {
 		});
 
 		return result;
-	}
-	
-	static importAnnotations(source:any, target:any, model:Root) {
-		if ((source.hasOwnProperty('annotations') && !_.isEmpty(source.annotations))
-				|| (source.hasOwnProperty('scalarsAnnotations') && !_.isEmpty(source.scalarsAnnotations))) {
-			const annotationConverter = new Raml10AnnotationConverter(model);
-			const annotations: Annotation[] = annotationConverter._import(source);
-			if (!_.isEmpty(annotations)) target.annotations = annotations;
-			if (target.definition) {
-				const definition: Definition = target.definition;
-				delete definition.annotations;
-			}
-		}
 	}
 	
 }
