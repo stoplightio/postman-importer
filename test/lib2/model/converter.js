@@ -42,7 +42,7 @@ const myFsResolver = {
 	}
 };
 
-describe('Raml10 to Raml10', () => {
+describe.skip('Raml10 to Raml10', () => {
 	const baseDir = __dirname + '/../../data2/raml10-raml10/source';
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.RAML);
