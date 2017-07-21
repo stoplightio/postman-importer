@@ -12,7 +12,6 @@ const Definition = require('../model/definition');
 const Annotation = require('../model/annotation');
 const Converter = require('../model/converter');
 const SecurityRequirement = require('../model/securityRequirement');
-const Raml10RootConverter = require('../raml10/raml10RootConverter');
 const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
 const ParameterConverter = require('../common/parameterConverter');
 const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
@@ -106,7 +105,7 @@ class Raml10MethodConverter extends Converter {
 							Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 							response['(' + id + ')'] = responseDef;
 						}
-						Raml10RootConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, val, response);
+						Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, val, response);
 						const httpStatusCode: string = val.httpStatusCode;
 						if (httpStatusCode === 'default') {
 							const id = this.annotationPrefix + '-responses-default';
@@ -181,7 +180,7 @@ class Raml10MethodConverter extends Converter {
 			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.externalDocs;
 		}
-		Raml10RootConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
+		Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
 		
 		return ramlDef;
 	}
@@ -230,7 +229,7 @@ class Raml10MethodConverter extends Converter {
 						Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, annotationPrefix, id);
 						bodyDef['(' + id + ')'] = val.name;
 					}
-					Raml10RootConverter.exportAnnotations(model, annotationPrefix, ramlDef, val, bodyDef);
+					Raml10AnnotationConverter.exportAnnotations(model, annotationPrefix, ramlDef, val, bodyDef);
 					if (val.mimeType) {
 						const mimeType: string = val.mimeType;
 						body[mimeType] = bodyDef;
@@ -254,7 +253,7 @@ class Raml10MethodConverter extends Converter {
 					const bodyDef = converter._export(definition);
 					if (val.hasOwnProperty('description')) bodyDef.description = val.description;
 					Raml10MethodConverter.exportRequired(val, bodyDef);
-					Raml10RootConverter.exportAnnotations(model, annotationPrefix, ramlDef, val, bodyDef);
+					Raml10AnnotationConverter.exportAnnotations(model, annotationPrefix, ramlDef, val, bodyDef);
 					if (!body[mimeType]) {
 						body[mimeType] = {};
 						body[mimeType].properties = {};
@@ -397,7 +396,7 @@ class Raml10MethodConverter extends Converter {
 					if (!_.isEmpty(headers)) response.headers = headers;
 					const bodies: Body[] = Raml10MethodConverter.importBodies(value, definitionConverter, this.model, isRaml08Version);
 					if (!_.isEmpty(bodies)) response.bodies = bodies;
-					Raml10RootConverter.importAnnotations(value, response, this.model);
+					Raml10AnnotationConverter.importAnnotations(value, response, this.model);
 					if (hasParams) response.hasParams = true;
 					responses.push(response);
 				}
@@ -533,7 +532,7 @@ class Raml10MethodConverter extends Converter {
 		Raml10MethodConverter.importRequired(object, body, isRaml08Version);
 		if (object.hasOwnProperty('examples')) Raml10MethodConverter.importExamples(object, definition);
 		body.definition = definition;
-		Raml10RootConverter.importAnnotations(object, body, this.model);
+		Raml10AnnotationConverter.importAnnotations(object, body, this.model);
 		
 		return body;
 	}
@@ -591,7 +590,7 @@ class Raml10MethodConverter extends Converter {
 				if (!schema.hasOwnProperty('type') && !jsonHelper.parse(schema).hasOwnProperty('type')) delete body.definition.internalType;
 				Raml10MethodConverter.importRequired(value, body, isRaml08Version);
 				Raml10MethodConverter.importExamples(value, body.definition);
-				Raml10RootConverter.importAnnotations(value, body, this.model);
+				Raml10AnnotationConverter.importAnnotations(value, body, this.model);
 				if (hasParams) body.hasParams = true;
 				bodies.push(body);
 			}

@@ -1,5 +1,6 @@
 // @flow
 const _ = require('lodash');
+const Root = require('../model/root');
 const Definition = require('../model/definition');
 const Annotation = require('../model/annotation');
 const Converter = require('../model/converter');
@@ -111,6 +112,26 @@ class Raml10AnnotationConverter extends Converter {
 		}
 		
 		return annotation;
+	}
+	
+	static exportAnnotations(model:Root, annotationPrefix:string, ramlDef:any, source:any, target:any) {
+		if (source.hasOwnProperty('annotations') && _.isArray(source.annotations) && !_.isEmpty(source.annotations)) {
+			const annotationConverter = new Raml10AnnotationConverter(model, annotationPrefix, ramlDef);
+			_.assign(target, annotationConverter._export(source));
+		}
+	}
+	
+	static importAnnotations(source:any, target:any, model:Root) {
+		if ((source.hasOwnProperty('annotations') && !_.isEmpty(source.annotations))
+			|| (source.hasOwnProperty('scalarsAnnotations') && !_.isEmpty(source.scalarsAnnotations))) {
+			const annotationConverter = new Raml10AnnotationConverter(model);
+			const annotations: Annotation[] = annotationConverter._import(source);
+			if (!_.isEmpty(annotations)) target.annotations = annotations;
+			if (target.definition) {
+				const definition: Definition = target.definition;
+				delete definition.annotations;
+			}
+		}
 	}
 }
 

@@ -9,8 +9,8 @@ const SecurityRequirement = require('../model/securityRequirement');
 const Parameter = require('../model/parameter');
 const Item = require('../model/item');
 const Converter = require('../model/converter');
-const Raml10RootConverter = require('../raml10/raml10RootConverter');
 const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
+const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
 const ParameterConverter = require('../common/parameterConverter');
 const helper = require('../helpers/converter');
 const ramlHelper = require('../helpers/raml');
@@ -187,7 +187,7 @@ class Raml10ResourceConverter extends Converter {
 			}
 		}
 		
-		Raml10RootConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
+		Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
 
 		if (model.hasOwnProperty('securedBy')) {
 			ramlDef.securedBy = Raml10MethodConverter.exportSecurityRequirements(model);
@@ -406,7 +406,7 @@ class Raml10ResourceConverter extends Converter {
 			}
 		}
 		
-		Raml10RootConverter.importAnnotations(ramlDef, model, this.model);
+		Raml10AnnotationConverter.importAnnotations(ramlDef, model, this.model);
 
 		if (ramlDef.hasOwnProperty('securedBy')) {
 			Raml10ResourceConverter.addInheritedSecuredBy(ramlDef, ramlDef.securedBy);
