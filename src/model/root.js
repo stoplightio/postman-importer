@@ -22,7 +22,7 @@ class Root {
 	mediaType: MediaType;
 	securityDefinitions: SecurityDefinition[];
 	resources: Resource[];
-	types: any; // Definition[]?
+	types: Definition[];
 	tags: Tag[];
 	externalDocs: ExternalDocumentation;
 	documentation: Item[];
