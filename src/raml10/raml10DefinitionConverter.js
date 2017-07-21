@@ -16,20 +16,19 @@ const Raml10CustomAnnotationConverter = require('../raml10/Raml10CustomAnnotatio
 
 class Raml10DefinitionConverter extends Converter {
 
-	export(models:any) {
+	export(models:Definition[]) {
 		const result = {};
 		this.level = 'type';
 
-		for (const id in models) {
-			if (!models.hasOwnProperty(id)) continue;
-			
-			const model: Definition = models[id];
-			const name = stringHelper.checkAndReplaceInvalidChars(id, ramlHelper.getValidCharacters, ramlHelper.getReplacementCharacter);
+		for (let i = 0; i < models.length; i++) {
+			const model: Definition = models[i];
+			const modelName: string = model.name;
+			const name = stringHelper.checkAndReplaceInvalidChars(modelName, ramlHelper.getValidCharacters, ramlHelper.getReplacementCharacter);
 			result[name] = this._export(model);
-			if (id !== name) {
+			if (modelName !== name) {
 				const annotationName = this.annotationPrefix + '-definition-name';
 				Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, annotationName);
-				result[name]['(' + annotationName + ')'] = id;
+				result[name]['(' + annotationName + ')'] = modelName;
 			}
 		}
 
@@ -300,7 +299,7 @@ class Raml10DefinitionConverter extends Converter {
 	}
 
 	import(ramlDefs:any) {
-		const result = {};
+		let result: Definition[] = [];
 		if (_.isEmpty(ramlDefs)) return result;
 		if (ramlHelper.isRaml08Version(this.version)) return this.importRAML08(ramlDefs);
 
@@ -317,14 +316,19 @@ class Raml10DefinitionConverter extends Converter {
 					const jsonValue = Raml10DefinitionConverter._readTypeAttribute(value.type);
 					const parse = jsonHelper.parse(jsonValue);
 					if (parse.hasOwnProperty('definitions')) {
-						_.assign(result, (this.import(Raml10DefinitionConverter._convertMapToArray(parse.definitions))));
+						const definitions: Definition[] = this.import(Raml10DefinitionConverter._convertMapToArray(parse.definitions));
+						result = result.concat(definitions);
 						delete parse.definitions;
 						value.type[0] = jsonHelper.stringify(parse);
 					}
-					result[key] = this._import(parse);
-					result[key].jsonValue = jsonValue;
+					const definition: Definition = this._import(parse);
+					definition.name = key;
+					definition.jsonValue = jsonValue;
+					result.push(definition);
 				} else {
-					result[key] = this._import(value);
+					const definition: Definition = this._import(value);
+					definition.name = key;
+					result.push(definition);
 				}
 			}
 		}
@@ -333,7 +337,7 @@ class Raml10DefinitionConverter extends Converter {
 	}
 	
 	importRAML08(ramlDefs:any) {
-		const result = {};
+		let result: Definition[] = [];
 		if (_.isEmpty(ramlDefs)) return result;
 		
 		if (_.isArray(ramlDefs) && !_.isEmpty(ramlDefs)) {
@@ -342,17 +346,21 @@ class Raml10DefinitionConverter extends Converter {
 				
 				const value = ramlDefs[id];
 				const name = _.keys(value)[0];
-				if (_.keys(this.types).includes(name)) continue;
+				if (this.types && this.types.includes(name)) continue;
 				let schema = helper.isJson(value[name]) ? JSON.parse(value[name]) : value[name];
 				if (schema.hasOwnProperty('definitions')) {
-					_.assign(result, (this.importRAML08(Raml10DefinitionConverter._convertMapToArray(schema.definitions))));
+					const definitions: Definition[] = this.importRAML08(Raml10DefinitionConverter._convertMapToArray(schema.definitions));
+					result = result.concat(definitions);
 					delete schema.definitions;
 				}
 				if (xmlHelper.isXml(schema)) schema = { type: schema };
-				result[name] = this._import(schema);
+				const definition: Definition = this._import(schema);
+				definition.name = name;
+				result.push(definition);
 			}
 		}
-		this.types = result;
+		const typeNames: string[] = result.map(type => { return type.name });
+		this.types = this.types ? this.types.concat(typeNames) : typeNames;
 		
 		return result;
 	}
@@ -621,11 +629,6 @@ class Raml10DefinitionConverter extends Converter {
 
 	_convertSimpleType(entry:string, model:any) {
 		if (typeof entry != 'string' || entry == undefined) return;
-		// const val = (entry.indexOf('|') >= 0) ? 'object' : (_.endsWith(entry, '?') ? entry.substring(0, entry.length - 1) : entry);
-		// if (raml10BuiltinTypes.indexOf(val) < 0)
-		// 	model.reference = val;
-		// else
-		// 	model.type = val;
 		let val;
 		if (entry.indexOf('|') < 0) {
 			val = entry.replace('(', '').replace(')', '');
