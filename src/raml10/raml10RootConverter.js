@@ -15,11 +15,11 @@ const Item = require('../model/item');
 const Annotation = require('../model/annotation');
 const Response = require('../model/response');
 const ExternalDocumentation = require('../model/externalDocumentation');
-const Raml10InfoConverter = require('../raml10/Raml10InfoConverter');
-const Raml10DefinitionConverter = require('../raml10/Raml10DefinitionConverter');
-const ParameterConverter = require('../common/ParameterConverter');
-const Raml10AnnotationConverter = require('../raml10/Raml10AnnotationConverter');
-const Raml10CustomAnnotationConverter = require('../raml10/Raml10CustomAnnotationConverter');
+const Raml10InfoConverter = require('../raml10/raml10InfoConverter');
+const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
+const ParameterConverter = require('../common/parameterConverter');
+const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
+const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
 const url = require('url');
 
 class Raml10RootConverter extends Converter {

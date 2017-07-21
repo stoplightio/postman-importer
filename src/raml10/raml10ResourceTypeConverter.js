@@ -5,9 +5,9 @@ const Resource = require('../model/resource');
 const Method = require('../model/method');
 const Parameter = require('../model/parameter');
 const Converter = require('../model/converter');
-const Raml10DefinitionConverter = require('../raml10/Raml10DefinitionConverter');
-const Raml10ResourceConverter = require('../raml10/Raml10ResourceConverter');
-const Raml10MethodConverter = require('../raml10/Raml10MethodConverter');
+const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
+const Raml10ResourceConverter = require('../raml10/raml10ResourceConverter');
+const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
 const helper = require('../helpers/converter');
 const ramlHelper = require('../helpers/raml');
  

@@ -12,11 +12,11 @@ const Header = require('../model/header');
 const Resource = require('../model/resource');
 const Converter = require('../model/converter');
 const parser = require('swagger-parser');
-const Oas20RootConverter = require('../oas20/Oas20RootConverter');
-const Oas20SecurityDefinitionConverter = require('../oas20/Oas20SecurityDefinitionConverter');
-const Oas20ResourceConverter = require('../oas20/Oas20ResourceConverter');
-const Oas20DefinitionConverter = require('../oas20/Oas20DefinitionConverter');
-const Oas20TraitConverter = require('../oas20/Oas20TraitConverter');
+const Oas20RootConverter = require('../oas20/oas20RootConverter');
+const Oas20SecurityDefinitionConverter = require('../oas20/oas20SecurityDefinitionConverter');
+const Oas20ResourceConverter = require('../oas20/oas20ResourceConverter');
+const Oas20DefinitionConverter = require('../oas20/oas20DefinitionConverter');
+const Oas20TraitConverter = require('../oas20/oas20TraitConverter');
 
 class Oas20Converter extends Converter {
 	

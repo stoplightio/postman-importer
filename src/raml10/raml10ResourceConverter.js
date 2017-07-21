@@ -9,9 +9,9 @@ const SecurityRequirement = require('../model/securityRequirement');
 const Parameter = require('../model/parameter');
 const Item = require('../model/item');
 const Converter = require('../model/converter');
-const Raml10RootConverter = require('../raml10/Raml10RootConverter');
-const Raml10MethodConverter = require('../raml10/Raml10MethodConverter');
-const ParameterConverter = require('../common/ParameterConverter');
+const Raml10RootConverter = require('../raml10/raml10RootConverter');
+const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
+const ParameterConverter = require('../common/parameterConverter');
 const helper = require('../helpers/converter');
 const ramlHelper = require('../helpers/raml');
 

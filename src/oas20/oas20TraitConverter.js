@@ -3,7 +3,7 @@ const _ = require('lodash');
 const Trait = require('../model/trait');
 const Method = require('../model/method');
 const Converter = require('../model/converter');
-const Oas20MethodConverter = require('../oas20/Oas20MethodConverter');
+const Oas20MethodConverter = require('../oas20/oas20MethodConverter');
 
 class Oas20TraitConverter extends Converter {
 	
