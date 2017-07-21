@@ -9,13 +9,14 @@
   "scripts": {
     "test": "mocha --compilers js:babel-register && npm run eslint",
     "start": "node ./lib/bin/converter.js",
-    "build": "babel src -d lib",
+    "build": "babel src -d lib && flow-copy-source -v src lib",
     "publish": "npm test && npm run build && npm publish",
     "eslint": "./node_modules/.bin/eslint ./lib index.js ./lib",
     "coverage": "babel-node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "flow": "flow",
-    "babel-node": "babel-node"
+    "babel-node": "babel-node",
+    "flow-copy-source": "flow-copy-source src lib"
   },
   "bin": {
     "oas-raml-converter": "./lib/bin/converter.js",
@@ -55,6 +56,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "flow-bin": "^0.49.1",
+    "flow-copy-source": "^1.2.0",
     "istanbul": "^1.0.0-alpha.2",
     "mocha": "^2.4.5",
     "slugify": "^1.0.2"

@@ -5,7 +5,7 @@ const SecurityScope = require('../model/securityScope');
 const Method = require('../model/method');
 const SecurityDefinition = require('../model/securityDefinition');
 const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
-const Oas20RootConverter = require('../oas20/Oas20RootConverter');
+const Oas20RootConverter = require('../oas20/oas20RootConverter');
 const oasHelper = require('../helpers/oas20');
 
 class Oas20SecurityDefinitionConverter extends Converter {
