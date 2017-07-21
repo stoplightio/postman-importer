@@ -1,6 +1,6 @@
 // @flow
 const Converter = require('../model/converter');
-const Oas20AnnotationConverter = require('../oas20/Oas20AnnotationConverter');
+const Oas20AnnotationConverter = require('../oas20/oas20AnnotationConverter');
 const Info = require('../model/info');
 const InfoData = require('../model/infoData');
 const Annotation = require('../model/annotation');

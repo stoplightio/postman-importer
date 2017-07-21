@@ -3,7 +3,7 @@ const _ = require('lodash');
 const Trait = require('../model/trait');
 const Method = require('../model/method');
 const Converter = require('../model/converter');
-const Raml10MethodConverter = require('../raml10/Raml10MethodConverter');
+const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
 const helper = require('../helpers/converter');
  
 class Raml10TraitConverter extends Converter {
