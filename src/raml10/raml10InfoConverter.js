@@ -6,7 +6,6 @@ const Converter = require('../model/converter');
 const ramlHelper = require('../helpers/raml');
 const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
 const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
-const Raml10RootConverter = require('../raml10/raml10RootConverter');
 
 class Raml10InfoConverter extends Converter {
 	
@@ -107,7 +106,7 @@ class Raml10InfoConverter extends Converter {
 					delete oasInfo.license;
 				}
 
-				Raml10RootConverter.importAnnotations({annotations: oasInfo}, model, this.model);
+				Raml10AnnotationConverter.importAnnotations({annotations: oasInfo}, model, this.model);
 			}
 		}
 

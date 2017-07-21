@@ -42,7 +42,7 @@ const myFsResolver = {
 	}
 };
 
-describe.skip('Raml10 to Raml10', () => {
+describe('Raml10 to Raml10', () => {
 	const baseDir = __dirname + '/../../data2/raml10-raml10/source';
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.RAML);
@@ -168,7 +168,7 @@ describe('Oas20 to Oas20', () => {
 	});
 });
 
-describe.skip('Raml10 to Oas20', () => {
+describe('Raml10 to Oas20', () => {
 	const baseDir = __dirname + '/../../data2/raml10-oas20/source';
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.OAS20);

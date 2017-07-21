@@ -5,7 +5,7 @@ const SecurityScope = require('../model/securityScope');
 const Method = require('../model/method');
 const SecurityDefinition = require('../model/securityDefinition');
 const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
-const Raml10RootConverter = require('../raml10/raml10RootConverter');
+const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
 
 class Raml10SecurityDefinitionConverter extends Converter {
 
@@ -108,7 +108,7 @@ class Raml10SecurityDefinitionConverter extends Converter {
 			ramlDef.describedBy = method;
 		}
 
-		Raml10RootConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
+		Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
 		
 		return ramlDef;
 	}
