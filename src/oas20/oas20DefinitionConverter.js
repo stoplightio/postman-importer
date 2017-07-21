@@ -9,21 +9,26 @@ const Oas20AnnotationConverter = require('../oas20/oas20AnnotationConverter');
 
 class Oas20DefinitionConverter extends Converter {
 
-	export(models:any) {
+	export(models:Definition[]) {
 		const result = {};
-		_.entries(models).map(([key, value]) => {
+		for (let i = 0; i < models.length; i++) {
+			const model: Definition = models[i];
+			const modelName: string = model.name;
 			this.level = 'type';
-			if (!_.isEmpty(value) && value.hasOwnProperty('annotations')) {
-				const definitionNameAnnotation = value.annotations.filter( function(annotation) { return annotation.name === 'oas-definition-name'; });
+			if (!_.isEmpty(model) && model.hasOwnProperty('annotations')) {
+				const annotations: Annotation[] = model.annotations;
+				const definitionNameAnnotation: Annotation[] = annotations.filter( function(annotation) { return annotation.name === 'oas-definition-name'; });
 				if (!_.isEmpty(definitionNameAnnotation)) {
-					result[definitionNameAnnotation[0].definition] = this._export(value);
+					const annotation: Annotation = definitionNameAnnotation[0];
+					const name: any = annotation.definition;
+					result[name] = this._export(model);
 				} else {
-					result[key] = this._export(value);
+					result[modelName] = this._export(model);
 				}
 			} else {
-				result[key] = this._export(value);
+				result[modelName] = this._export(model);
 			}
-		});
+		}
 
 		return result;
 	}
@@ -164,6 +169,22 @@ class Oas20DefinitionConverter extends Converter {
 		const result = new Definition();
 		_.assign(result, object);
 
+		return result;
+	}
+	
+	import(oasDefs:any) {
+		const result: Definition[] = [];
+		if (_.isEmpty(oasDefs)) return result;
+		
+		for (const name in oasDefs) {
+			if (!oasDefs.hasOwnProperty(name)) continue;
+			
+			const value = oasDefs[name];
+			const definition: Definition = this._import(value);
+			definition.name = name;
+			result.push(definition);
+		}
+		
 		return result;
 	}
 	
