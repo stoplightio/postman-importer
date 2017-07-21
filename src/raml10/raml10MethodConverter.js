@@ -574,16 +574,18 @@ class Raml10MethodConverter extends Converter {
 					body.definition = definition;
 				}
 				if (model && body.definition.hasOwnProperty('definitions')) {
-					if (!model.types) model.types = {};
-					const typeNames = Object.keys(model.types);
+					const types: Definition[] = model.types ? model.types : [];
+					const typeNames = types.map(type => { return type.name });
 					for (const typeName in body.definition.definitions) {
 						if (!body.definition.definitions.hasOwnProperty(typeName)) continue;
 
 						if (typeNames.indexOf(typeName) < 0) {
-							model.types[typeName] = converter._import(body.definition.definitions[typeName]);
+							const definition: Definition = converter._import(body.definition.definitions[typeName]);
+							definition.name = typeName;
+							types.push(definition);
 						}
 					}
-					if (_.isEmpty(model.types)) delete model.types;
+					if (!_.isEmpty(types)) model.types = types;
 					delete body.definition.definitions;
 				}
 				if (!schema.hasOwnProperty('type') && !jsonHelper.parse(schema).hasOwnProperty('type')) delete body.definition.internalType;
@@ -613,11 +615,12 @@ class Raml10MethodConverter extends Converter {
 			if (isReference) {
 				const type: string = definition.type;
 				const internalType: string = definition.internalType;
+				const typeNames: string[] = model && model.types ? model.types.map(type => { return type.name }) : [];
 				if (type) {
 					definition = new Definition();
 					definition.reference = type;
 				}
-				else if (internalType && _.keys(model.types).includes(internalType)) {
+				else if (internalType && typeNames.includes(internalType)) {
 					definition = new Definition();
 					definition.reference = internalType;
 				}
