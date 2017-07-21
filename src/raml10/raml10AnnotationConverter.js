@@ -3,7 +3,7 @@ const _ = require('lodash');
 const Definition = require('../model/definition');
 const Annotation = require('../model/annotation');
 const Converter = require('../model/converter');
-const Raml10CustomAnnotationConverter = require('../raml10/Raml10CustomAnnotationConverter');
+const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
 const ramlHelper = require('../helpers/raml10');
 
 class Raml10AnnotationConverter extends Converter {

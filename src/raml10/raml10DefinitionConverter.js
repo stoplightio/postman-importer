@@ -10,9 +10,9 @@ const arrayHelper = require('../utils/array');
 const ramlHelper = require('../helpers/raml');
 const stringHelper = require('../utils/strings');
 const xmlHelper = require('../utils/xml');
-const Raml10RootConverter = require('../raml10/Raml10RootConverter');
-const Raml10AnnotationConverter = require('../raml10/Raml10AnnotationConverter');
-const Raml10CustomAnnotationConverter = require('../raml10/Raml10CustomAnnotationConverter');
+const Raml10RootConverter = require('../raml10/raml10RootConverter');
+const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
+const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
 
 class Raml10DefinitionConverter extends Converter {
 

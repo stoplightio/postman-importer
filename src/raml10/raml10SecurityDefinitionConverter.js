@@ -5,7 +5,7 @@ const SecurityScope = require('../model/securityScope');
 const Method = require('../model/method');
 const SecurityDefinition = require('../model/securityDefinition');
 const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
-const Raml10RootConverter = require('../raml10/Raml10RootConverter');
+const Raml10RootConverter = require('../raml10/raml10RootConverter');
 
 class Raml10SecurityDefinitionConverter extends Converter {
 

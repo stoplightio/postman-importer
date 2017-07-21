@@ -5,7 +5,7 @@ const Converter = require('../model/converter');
 const fileHelper = require('../utils/file');
 const _ = require('lodash');
 const jsonHelper = require('../utils/json');
-const Oas20AnnotationConverter = require('../oas20/Oas20AnnotationConverter');
+const Oas20AnnotationConverter = require('../oas20/oas20AnnotationConverter');
 
 class Oas20DefinitionConverter extends Converter {
 
