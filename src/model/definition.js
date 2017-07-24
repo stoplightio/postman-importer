@@ -9,7 +9,7 @@ class Definition {
 	compositionType: Definition[];
 	reference: string;
 	fileReference: string;
-	properties: any;
+	properties: Definition[];
 	propsRequired: string[];
 	required: boolean;
 	format: ?string;
