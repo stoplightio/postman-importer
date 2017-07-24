@@ -46,7 +46,7 @@ class Raml10SecurityDefinitionConverter extends Converter {
 					if (model.hasOwnProperty('authorizationUrl')) settings.authorizationUri = model.authorizationUrl;
 					if (model.hasOwnProperty('tokenUrl')) settings.accessTokenUri = model.tokenUrl;
 
-					if (model.hasOwnProperty('authorization')) {
+					if (model.hasOwnProperty('authorization') && model.authorization) {
 						let grants: string[] = model.authorization;
 						for (let i = 0; i < grants.length; i++) {
 							switch (grants[i]) {
@@ -67,10 +67,12 @@ class Raml10SecurityDefinitionConverter extends Converter {
 
 					if (model.hasOwnProperty('scopes')) {
 						settings.scopes = [];
-						const scopes: SecurityScope[] = model.scopes;
-						for (let i = 0; i < scopes.length; i++) {
-							const scope: SecurityScope = scopes[i];
-							settings.scopes.push(scope.value);
+						const scopes: ?SecurityScope[] = model.scopes;
+						if (scopes) {
+							for (let i = 0; i < scopes.length; i++) {
+								const scope: SecurityScope = scopes[i];
+								settings.scopes.push(scope.value);
+							}
 						}
 						if (_.isEmpty(settings.scopes)) {
 							delete settings.scopes;

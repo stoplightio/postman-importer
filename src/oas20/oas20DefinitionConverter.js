@@ -15,7 +15,7 @@ class Oas20DefinitionConverter extends Converter {
 			const model: Definition = models[i];
 			const modelName: string = model.name;
 			this.level = 'type';
-			if (!_.isEmpty(model) && model.hasOwnProperty('annotations')) {
+			if (!_.isEmpty(model) && model.hasOwnProperty('annotations') && model.annotations != null) {
 				const annotations: Annotation[] = model.annotations;
 				const definitionNameAnnotation: Annotation[] = annotations.filter( function(annotation) { return annotation.name === 'oas-definition-name'; });
 				if (!_.isEmpty(definitionNameAnnotation)) {
@@ -62,12 +62,13 @@ class Oas20DefinitionConverter extends Converter {
 		}
 
 		if (model.hasOwnProperty('examples')) {
-			if (_.isArray(model.examples) && !_.isEmpty(model.examples)) {
-				oasDef['example'] = jsonHelper.parse(jsonHelper.stringify(model.examples[0]));
+			const examples: ?any = model.examples;
+			if (_.isArray(examples) && !_.isEmpty(examples) && examples != null) {
+				oasDef['example'] = jsonHelper.parse(jsonHelper.stringify(examples[0]));
 			}
 		}
 
-		if (model.hasOwnProperty('additionalProperties')) {
+		if (model.hasOwnProperty('additionalProperties') && model.additionalProperties != null) {
 			if (typeof model.additionalProperties === 'object') {
 				const additionalProperties: Definition = model.additionalProperties;
 				if (additionalProperties.hasOwnProperty('required') && !additionalProperties.required)
@@ -78,12 +79,12 @@ class Oas20DefinitionConverter extends Converter {
 			}
 		}
 
-		if (model.hasOwnProperty('items')) {
+		if (model.hasOwnProperty('items') && model.items != null) {
 			const items: Definition = model.items;
 			oasDef.items = this._export(items);
 		}
 		
-		if (model.hasOwnProperty('itemsList')) {
+		if (model.hasOwnProperty('itemsList') && model.itemsList != null) {
 			const itemsList: Definition[] = model.itemsList;
 			const items = [];
 			for (let i = 0; i < itemsList.length; i++) {
@@ -97,7 +98,7 @@ class Oas20DefinitionConverter extends Converter {
 			oasDef['$ref'] = model.fileReference;
 		}
 
-		if (model.hasOwnProperty('reference')) {
+		if (model.hasOwnProperty('reference') && model.reference != null) {
 			const reference: string = model.reference;
 			if (!this.def || (this.def && this.def.definitions && _.keys(this.def.definitions).includes(reference)))
 				oasDef.$ref = reference.startsWith('http://') ? reference : '#/definitions/' + reference;
@@ -105,7 +106,7 @@ class Oas20DefinitionConverter extends Converter {
 				oasDef.type = 'string';
 		}
 
-		if (model.hasOwnProperty('properties')) {
+		if (model.hasOwnProperty('properties') && model.properties != null) {
 			const properties: Definition[] = model.properties;
 			const oasProps = {};
 			for (let i = 0; i < properties.length; i++) {
@@ -133,7 +134,7 @@ class Oas20DefinitionConverter extends Converter {
 			else oasDef.allOf = allOf;
 		}
 		
-		if (model.hasOwnProperty('schema')) {
+		if (model.hasOwnProperty('schema') && model.schema != null) {
 			const schema: Definition = model.schema;
 			oasDef.schema = this._export(schema);
 		}

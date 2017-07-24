@@ -71,11 +71,11 @@ class Oas20SecurityDefinitionConverter extends Converter {
 			case 'oauth2' :
 				const authorizationUrlValidFlows = ['implicit', 'accessCode'];
 				const tokenUrlValidFlows = ['application', 'password', 'accessCode'];
-				if (model.hasOwnProperty('authorization')) oasDef.flow = model.authorization[0];
+				if (model.hasOwnProperty('authorization') && model.authorization) oasDef.flow = model.authorization[0];
 				if (_.includes(authorizationUrlValidFlows, oasDef.flow)) oasDef.authorizationUrl = model.authorizationUrl;
 				if (_.includes(tokenUrlValidFlows, oasDef.flow)) oasDef.tokenUrl = model.tokenUrl;
 				oasDef.scopes = {};
-				if (model.hasOwnProperty('scopes')) {
+				if (model.hasOwnProperty('scopes') && model.scopes) {
 					const scopes: SecurityScope[] = model.scopes;
 					for (let i = 0; i < scopes.length; i++) {
 						let scope: SecurityScope = scopes[i];
@@ -85,7 +85,7 @@ class Oas20SecurityDefinitionConverter extends Converter {
 				break;
 
 			case 'apiKey' :
-				const describedBy: Method = model.describedBy;
+				const describedBy: ?Method = model.describedBy;
 				if (!describedBy) {
 					oasDef.in = 'header';
 					oasDef.name = model.schemaName;

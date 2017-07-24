@@ -32,7 +32,7 @@ class Raml10InfoConverter extends Converter {
 		const oasInfo = {};
 		if (model.hasOwnProperty('termsOfService')) oasInfo.termsOfService = model.termsOfService;
 
-		if (model.hasOwnProperty('contact')) {
+		if (model.hasOwnProperty('contact') && model.contact != null) {
 			const contact = {};
 			const contactModel: InfoData = model.contact;
 			if (contactModel.hasOwnProperty('name')) contact.name = contactModel.name;
@@ -45,7 +45,7 @@ class Raml10InfoConverter extends Converter {
 			if (!_.isEmpty(contact)) oasInfo.contact = contact;
 		}
 
-		if (model.hasOwnProperty('license')) {
+		if (model.hasOwnProperty('license') && model.license != null) {
 			const license = {};
 			const licenseModel: InfoData = model.license;
 			if (licenseModel.hasOwnProperty('name')) license.name = licenseModel.name;

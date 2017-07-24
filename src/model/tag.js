@@ -4,7 +4,7 @@ const ExternalDocumentation = require('./externalDocumentation');
 class Tag {
 	name: string;
 	description: ?string;
-	externalDocs: ExternalDocumentation;
+	externalDocs: ?ExternalDocumentation;
 }
 
 module.exports = Tag;

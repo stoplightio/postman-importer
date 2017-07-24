@@ -6,12 +6,12 @@ class Definition {
 	name: string;
 	type: ?string;
 	internalType: ?string;
-	compositionType: Definition[];
-	reference: string;
-	fileReference: string;
-	properties: Definition[];
-	propsRequired: string[];
-	required: boolean;
+	compositionType: ?Definition[];
+	reference: ?string;
+	fileReference: ?string;
+	properties: ?Definition[];
+	propsRequired: ?string[];
+	required: ?boolean;
 	format: ?string;
 	description: ?string;
 	_default: ?string;
@@ -26,34 +26,34 @@ class Definition {
 	uniqueItems: ?boolean;
 	maxProperties: ?number;
 	minProperties: ?number;
-	_enum: string[];
-	items: Definition;
-	itemsList: Definition[];
-	additionalProperties: boolean|Definition;
+	_enum: ?string[];
+	items: ?Definition;
+	itemsList: ?Definition[];
+	additionalProperties: ?(boolean|Definition);
 	discriminator: ?string;
 	xml: ?string;
-	example: any;
-	definitions: any;
-	annotations: Annotation[];
+	example: ?any;
+	definitions: ?any;
+	annotations: ?Annotation[];
 	
 	jsonValue: ?string;
-	fileTypes: string;
-	discriminatorValue: any;
+	fileTypes: ?string;
+	discriminatorValue: ?any;
 	facets: ?any[]; //swagger extension
-	examples: any;
-	schema: Definition;
-	schemaPath: string;
+	examples: ?any;
+	schema: ?Definition;
+	schemaPath: ?string;
 	displayName: ?string;
-	collectionFormat: string;
-	allowEmptyValue: boolean;
+	collectionFormat: ?string;
+	allowEmptyValue: ?boolean;
 	
-	allOf: any[];
+	allOf: ?any[];
 	exclusiveMaximum: ?boolean;
 	exclusiveMinimum: ?boolean;
 	readOnly: ?boolean;
-	externalDocs: ExternalDocumentation;
-	title: string;
-	invalidJsonExample: boolean;
+	externalDocs: ?ExternalDocumentation;
+	title: ?string;
+	invalidJsonExample: ?boolean;
 }
 
 module.exports = Definition;

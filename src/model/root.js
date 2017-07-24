@@ -17,22 +17,22 @@ const Annotation = require('./annotation');
 
 class Root {
 	info: Info;
-	protocols: string[];
-	baseUri: BaseUri;
-	mediaType: MediaType;
-	securityDefinitions: SecurityDefinition[];
-	resources: Resource[];
-	types: Definition[];
-	tags: Tag[];
-	externalDocs: ExternalDocumentation;
-	documentation: Item[];
-	baseUriParameters: Parameter[];
-	resourceTypes: ResourceType[];
-	traits: Trait[];
-	annotationTypes: AnnotationType[];
-	annotations: Annotation[];
-	resourceAnnotations: Resource;
-	responses: Response[];
+	protocols: ?string[];
+	baseUri: ?BaseUri;
+	mediaType: ?MediaType;
+	securityDefinitions: ?SecurityDefinition[];
+	resources: ?Resource[];
+	types: ?Definition[];
+	tags: ?Tag[];
+	externalDocs: ?ExternalDocumentation;
+	documentation: ?Item[];
+	baseUriParameters: ?Parameter[];
+	resourceTypes: ?ResourceType[];
+	traits: ?Trait[];
+	annotationTypes: ?AnnotationType[];
+	annotations: ?Annotation[];
+	resourceAnnotations: ?Resource;
+	responses: ?Response[];
 }
 
 module.exports = Root;
