@@ -5,9 +5,9 @@ class AnnotationType {
 	name: string;
 	displayName: ?string;
 	description: ?string;
-	allowedTargets: string[];
+	allowedTargets: ?string[];
 	definition: Definition;
-	required: boolean;
+	required: ?boolean;
 }
 
 module.exports = AnnotationType;

@@ -2,9 +2,9 @@
 const Annotation = require('./annotation');
 
 class ExternalDocumentation {
-	url: string;
+	url: ?string;
 	description: ?string;
-	annotations: Annotation[];
+	annotations: ?Annotation[];
 }
 
 module.exports = ExternalDocumentation;

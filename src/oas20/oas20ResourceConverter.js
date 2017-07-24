@@ -34,7 +34,7 @@ class Oas20ResourceConverter extends Converter {
 				const modelParameters: string[] = parameters.map(function(parameter) {
 					return parameter.name;
 				});
-				if (parent.hasOwnProperty('parameters')) {
+				if (parent.hasOwnProperty('parameters') && parent.parameters) {
 					const parentParams: Parameter[] = parent.parameters;
 					for (let j = 0; j < parentParams.length; j++) {
 						const parameter: Parameter = parentParams[j];
@@ -46,10 +46,14 @@ class Oas20ResourceConverter extends Converter {
 				}
 			}
 			const oasDef = this._export(model);
-			const hasNestedResources: boolean = models.filter(resource => { return resource.path.startsWith(model.path) && resource.path != model.path }).length > 0;
+			let hasNestedResources: boolean = false;
+			for (let i = 0; i < models.length; i++) {
+				const resource: Resource = models[i];
+				if (!hasNestedResources && resource.path && model.path) hasNestedResources = resource.path.startsWith(model.path) && resource.path != model.path;
+			}
 			const hasOnlyUriParams: boolean = oasDef.hasOwnProperty('parameters') && oasDef.parameters.filter(param => { return param.in != 'path' }).length === 0;
 			const ignore: boolean = hasNestedResources && _.keys(oasDef).length == 1 && hasOnlyUriParams;
-			if (!(_.isEmpty(oasDef) || ignore) || model.hasOwnProperty('securedBy')) {
+			if ((!(_.isEmpty(oasDef) || ignore) || model.hasOwnProperty('securedBy')) && model.path) {
 				result[model.path] = oasDef;
 			}
 		}
@@ -65,7 +69,7 @@ class Oas20ResourceConverter extends Converter {
 		const oasDef = Oas20ResourceConverter.createOasDef(model, attrIdMap, attrIdSkip);
 		const definitionConverter = new Oas20DefinitionConverter();
 		
-		if (model.hasOwnProperty('methods')) {
+		if (model.hasOwnProperty('methods') && model.methods) {
 			const methodsModel: Method[] = model.methods;
 			if (_.isArray(methodsModel) && !_.isEmpty(methodsModel)) {
 				const methodConverter = new Oas20MethodConverter(this.model, null, model.path, this.def);
@@ -78,14 +82,14 @@ class Oas20ResourceConverter extends Converter {
 			}
 		}
 		
-		if (model.hasOwnProperty('parameters')) {
+		if (model.hasOwnProperty('parameters') && model.parameters) {
 			const paramsModel: Parameter[] = model.parameters;
 			if (_.isArray(paramsModel) && !_.isEmpty(paramsModel)) {
 				const parameters = [];
 				for (let i = 0; i < paramsModel.length; i++) {
 					const value: Parameter = paramsModel[i];
-					if (!model.path.includes(value.name)) continue;
-					const definition: Definition = value.definition;
+					if (model.path && !model.path.includes(value.name)) continue;
+					const definition: ?Definition = value.definition;
 					const parameter = Object.assign({}, definitionConverter._export(definition));
 					parameter.in = value._in;
 					parameter.name = value.name;
@@ -107,7 +111,7 @@ class Oas20ResourceConverter extends Converter {
 		return oasDef;
 	}
 	
-	static getParents(path:string, models:Resource[]) {
+	static getParents(path:?string, models:Resource[]) {
 		const parentAbsolutePath: string = Oas20ResourceConverter.getParentAbsolutePath(path);
 		let parents: Resource[] = models.filter(function(model) {
 			return model.path == parentAbsolutePath;
@@ -162,7 +166,7 @@ class Oas20ResourceConverter extends Converter {
 				const resource: Resource = this._import(oasDef);
 				resource.path = id;
 				resource.relativePath = Oas20ResourceConverter.getRelativePath(id);
-				if (resource.hasOwnProperty('methods')) {
+				if (resource.hasOwnProperty('methods') && resource.methods) {
 					const methods: Method[] = resource.methods;
 					for (let i = 0; i < methods.length; i++) {
 						const method: Method = methods[i];
@@ -229,12 +233,14 @@ class Oas20ResourceConverter extends Converter {
 		return model;
 	}
 	
-	static getParentPath(path:string) {
+	static getParentPath(path:?string) {
+		if (!path) return '';
 		const absoluteParent: string = path.substring(0, path.lastIndexOf('/'));
 		return Oas20ResourceConverter.getRelativePath(absoluteParent);
 	}
 	
-	static getParentAbsolutePath(path:string) {
+	static getParentAbsolutePath(path:?string) {
+		if (!path) return '';
 		const parentPath: string = Oas20ResourceConverter.getParentPath(path);
 		return path.substring(0, path.indexOf(parentPath)) + parentPath;
 	}

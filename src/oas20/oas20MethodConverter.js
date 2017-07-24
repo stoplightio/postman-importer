@@ -23,7 +23,7 @@ const oasHelper = require('../helpers/oas20');
 
 class Oas20MethodConverter extends Converter {
 	
-	constructor(model:Root, dereferencedAPI:any, resourcePath:string, def:any) {
+	constructor(model:Root, dereferencedAPI:any, resourcePath:?string, def:any) {
 		super(model, '', def);
 		this.dereferencedAPI = dereferencedAPI;
 		this.resourcePath = resourcePath;
@@ -53,12 +53,12 @@ class Oas20MethodConverter extends Converter {
 		
 		if (!oasDef.hasOwnProperty('operationId')) oasDef.operationId = stringsHelper.computeOperationId(model.method, model.path);
 		
-		if (model.hasOwnProperty('responses')) {
+		if (model.hasOwnProperty('responses') && model.responses != null) {
 			const responsesModel: Response[] = model.responses;
 			if (_.isArray(responsesModel) && !_.isEmpty(responsesModel)) {
 				const responses = {};
 				let produces: string[] = [];
-				if (model.hasOwnProperty('produces')) produces = model.produces;
+				if (model.hasOwnProperty('produces') && model.produces != null) produces = model.produces;
 				for (let i = 0; i < responsesModel.length; i++) {
 					const value: Response = responsesModel[i];
 					if (value.hasOwnProperty('httpStatusCode')) {
@@ -67,12 +67,12 @@ class Oas20MethodConverter extends Converter {
 							response['$ref'] = value.reference;
 							if (value.hasOwnProperty('bodies') && value.bodies && !_.isEmpty(value.bodies)) {
 								const bodies: Body[] = value.bodies;
-								const mimeType: string = bodies[0].mimeType;
-								if (!produces.includes(mimeType)) produces.push(mimeType);
+								const mimeType: ?string = bodies[0].mimeType;
+								if (mimeType != null && !produces.includes(mimeType)) produces.push(mimeType);
 							}
 						} else {
 							response.description = value.hasOwnProperty('description') && value.description != null ? value.description : '';
-							if (value.hasOwnProperty('headers')) {
+							if (value.hasOwnProperty('headers') && value.headers) {
 								const headers: Header[] = value.headers;
 								if (_.isArray(headers) && !_.isEmpty(headers)) {
 									const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
@@ -81,10 +81,12 @@ class Oas20MethodConverter extends Converter {
 										const modelHeader: Header = headers[j];
 										const header = result[modelHeader.name];
 										if (header.hasOwnProperty('type')) {
-											const definition: Definition = modelHeader.definition;
-											Oas20DefinitionConverter._convertFromInternalType(definition);
-											if (definition.hasOwnProperty('type')) header.type = definition.type;
-											if (definition.hasOwnProperty('format')) header.format = definition.format;
+											const definition: ?Definition = modelHeader.definition;
+											if (definition != null) {
+												Oas20DefinitionConverter._convertFromInternalType(definition);
+												if (definition.hasOwnProperty('type')) header.type = definition.type;
+												if (definition.hasOwnProperty('format')) header.format = definition.format;
+											}
 											if (header.type === 'array' && !header.hasOwnProperty('items')) header.items = { type: 'string' };
 										}
 										if (header.hasOwnProperty('example')) delete header.example;
@@ -94,34 +96,38 @@ class Oas20MethodConverter extends Converter {
 									if (!_.isEmpty(result)) response.headers = result;
 								}
 							}
-							if (value.hasOwnProperty('bodies')) {
+							if (value.hasOwnProperty('bodies') && value.bodies) {
 								const bodies: Body[] = value.bodies;
 								if (_.isArray(bodies) && !_.isEmpty(bodies)) {
 									let schema = {};
 									for (let j = 0; j < bodies.length; j++) {
 										const val: Body = bodies[j];
-										const definition: Definition = val.definition;
 										if (val.mimeType && !produces.includes(val.mimeType)) produces.push(val.mimeType);
 										response.description = val.hasOwnProperty('description') && _.isEmpty(response.description) ? val.description : response.description;
-										Oas20MethodConverter.exportExamples(definition, response, val.mimeType, 'examples');
-										schema = definitionConverter._export(definition);
-										if (definition.hasOwnProperty('internalType') && definition.internalType === 'file') schema.type = 'file';
-										if (!definition.hasOwnProperty('internalType') && !definition.hasOwnProperty('type') && schema.hasOwnProperty('type')) delete schema.type;
-										if (schema.hasOwnProperty('required') && schema.required === true) delete schema.required;
-										if (schema.hasOwnProperty('$ref')) {
-											Oas20MethodConverter.exportExamples(schema, response, val.mimeType, 'example');
-											schema = { $ref: schema.$ref };
+										const definition: ?Definition = val.definition;
+										if (definition != null) {
+											
+											Oas20MethodConverter.exportExamples(definition, response, val.mimeType, 'examples');
+											schema = definitionConverter._export(definition);
+											if (definition.hasOwnProperty('internalType') && definition.internalType === 'file') schema.type = 'file';
+											if (!definition.hasOwnProperty('internalType') && !definition.hasOwnProperty('type') && schema.hasOwnProperty('type')) delete schema.type;
+											if (schema.hasOwnProperty('required') && schema.required === true) delete schema.required;
+											if (schema.hasOwnProperty('$ref')) {
+												Oas20MethodConverter.exportExamples(schema, response, val.mimeType, 'example');
+												schema = { $ref: schema.$ref };
+											}
+											Oas20RootConverter.exportAnnotations(val, schema);
+											if (!_.isEmpty(schema) && !response.schema) response.schema = schema;
+											else if (response.schema && response.schema.hasOwnProperty('$ref')) response.schema = { type: 'object' };
 										}
-										Oas20RootConverter.exportAnnotations(val, schema);
-										if (!_.isEmpty(schema) && !response.schema) response.schema = schema;
-										else if (response.schema && response.schema.hasOwnProperty('$ref')) response.schema = { type: 'object' };
 									}
 								}
 							}
 						}
 						Oas20RootConverter.exportAnnotations(value, response);
 						if (value.hasOwnProperty('hasParams')) response.hasParams = value.hasParams;
-						responses[value.httpStatusCode] = response;
+						const httpStatusCode: ?string = value.httpStatusCode;
+						if (httpStatusCode) responses[httpStatusCode] = response;
 					}
 				}
 				if (!_.isEmpty(produces)) {
@@ -139,13 +145,13 @@ class Oas20MethodConverter extends Converter {
 		
 		let parameters = Oas20MethodConverter.exportHeaders(model, definitionConverter);
 		
-		let consumes = [];
+		let consumes: ?string[] = [];
 		if (model.hasOwnProperty('consumes')) consumes = model.consumes;
-		if (model.hasOwnProperty('bodies')) {
+		if (model.hasOwnProperty('bodies') && model.bodies != null) {
 			const bodies: Body[] = model.bodies;
 			if (_.isArray(bodies) && !_.isEmpty(bodies)) {
 				const value: Body = bodies[0];
-				const definition: Definition = value.definition;
+				const definition: ?Definition = value.definition;
 				const parameter: any = {};
 				parameter.schema = Object.assign({}, definitionConverter._export(definition));
 				parameter.in = 'body';
@@ -159,64 +165,70 @@ class Oas20MethodConverter extends Converter {
 						parameter.schema.type = 'string';
 				}
 				Oas20MethodConverter.exportRequired(value, parameter);
-				if (definition.hasOwnProperty('example') && !parameter.schema.hasOwnProperty('example')) parameter.schema.example = definition.example;
+				if (definition != null && definition.hasOwnProperty('example') && !parameter.schema.hasOwnProperty('example'))
+					parameter.schema.example = definition.example;
 				Oas20RootConverter.exportAnnotations(value, parameter);
 				if (value.hasOwnProperty('hasParams')) parameter.hasParams = value.hasParams;
 				parameters.push(parameter);
 
-				for (let i = 0; i < bodies.length; i++) {
-					const body: Body = bodies[i];
-					if (body.mimeType && !consumes.includes(body.mimeType)) consumes.push(body.mimeType);
+				if (consumes != null) {
+					for (let i = 0; i < bodies.length; i++) {
+						const body: Body = bodies[i];
+						if (body.mimeType && !consumes.includes(body.mimeType)) consumes.push(body.mimeType);
+					}
 				}
 			}
 		}
 		
-		if (model.hasOwnProperty('formBodies')) {
+		if (model.hasOwnProperty('formBodies') && model.formBodies != null) {
 			const formBodies: Body[] = model.formBodies;
 			if (_.isArray(formBodies) && !_.isEmpty(formBodies)) {
 				for (let i = 0; i < formBodies.length; i++) {
 					const body: Body = formBodies[i];
-					const definition: Definition = body.definition;
-					if (body.mimeType && !consumes.includes(body.mimeType)) consumes.push(body.mimeType);
-					if (definition.internalType === 'file' && !consumes.includes('multipart/form-data')) consumes.push('multipart/form-data')
-					let input: Definition[] = [];
-					const propertiesRequired = definition.propsRequired ? definition.propsRequired : [];
-					let hasProperties;
-					if (definition.hasOwnProperty('properties')) {
-						input = definition.properties;
-						hasProperties = true;
-					} else {
-						hasProperties = false;
-						const bodyDef: Definition = definition;
-						if (body.hasOwnProperty('required')) bodyDef.required = body.required;
-						input = [bodyDef];
-					}
-					for (let i = 0; i < input.length; i++) {
-						const param: Definition = input[i];
-						const parameter = {};
-						parameter.in = 'formData';
-						parameter.name = param.name;
-						if (param.internalType) {
-							if (param.internalType === 'file') {
-								param.type = 'file';
-								delete param.internalType;
-							} else if (param.internalType === 'datetime') {
-								param.type = 'datetime';
-								delete param.internalType;
-							}
-							else Oas20DefinitionConverter._convertFromInternalType(param);
+					if (body.mimeType && consumes != null && !consumes.includes(body.mimeType)) consumes.push(body.mimeType);
+					const definition: ?Definition = body.definition;
+					if (definition != null) {
+						
+						if (definition.internalType === 'file' && consumes != null && !consumes.includes('multipart/form-data')) consumes.push('multipart/form-data')
+						let input: Definition[] = [];
+						const propertiesRequired = definition.propsRequired ? definition.propsRequired : [];
+						let hasProperties;
+						if (definition.hasOwnProperty('properties') && definition.properties != null) {
+							input = definition.properties;
+							hasProperties = true;
+						} else {
+							hasProperties = false;
+							const bodyDef: Definition = definition;
+							if (body.hasOwnProperty('required')) bodyDef.required = body.required;
+							input = [bodyDef];
 						}
-						parameter.type = param.type;
-						if (!parameter.type) parameter.type = 'string';
-						if (param.hasOwnProperty('description')) parameter.description = param.description;
-						if (hasProperties) param.required = propertiesRequired.includes(param.name);
-						if (parameter.type === 'array' && !parameter.hasOwnProperty('items')) parameter.items = {type: 'string'};
-						Oas20MethodConverter.exportRequired(param, parameter);
-						Oas20RootConverter.exportAnnotations(param, parameter);
-						parameters.push(parameter);
+						for (let i = 0; i < input.length; i++) {
+							const param: Definition = input[i];
+							const parameter = {};
+							parameter.in = 'formData';
+							parameter.name = param.name;
+							if (param.internalType) {
+								if (param.internalType === 'file') {
+									param.type = 'file';
+									delete param.internalType;
+								} else if (param.internalType === 'datetime') {
+									param.type = 'datetime';
+									delete param.internalType;
+								}
+								else Oas20DefinitionConverter._convertFromInternalType(param);
+							}
+							parameter.type = param.type;
+							if (!parameter.type) parameter.type = 'string';
+							if (param.hasOwnProperty('description')) parameter.description = param.description;
+							if (hasProperties) param.required = propertiesRequired.includes(param.name);
+							if (parameter.type === 'array' && !parameter.hasOwnProperty('items')) parameter.items = {type: 'string'};
+							Oas20MethodConverter.exportRequired(param, parameter);
+							Oas20RootConverter.exportAnnotations(param, parameter);
+							parameters.push(parameter);
+						}
 					}
 				}
-				if (_.isEmpty(_.intersection(consumes, helper.getValidFormDataMimeTypes))) consumes.push('multipart/form-data');
+				if (consumes != null && _.isEmpty(_.intersection(consumes, helper.getValidFormDataMimeTypes))) consumes.push('multipart/form-data');
 			}
 		}
 		if (!_.isEmpty(consumes)) oasDef.consumes = consumes;
@@ -229,7 +241,7 @@ class Oas20MethodConverter extends Converter {
 		
 		if (!_.isEmpty(parameters)) oasDef.parameters = parameters;
 
-		if (model.hasOwnProperty('securedBy') && this.def && this.def.securityDefinitions) {
+		if (model.hasOwnProperty('securedBy') && model.securedBy != null && this.def && this.def.securityDefinitions) {
 			const securedByModel: SecurityRequirement[] = model.securedBy;
 			const security = [];
 			for (let i = 0; i < securedByModel.length; i++) {
@@ -246,31 +258,41 @@ class Oas20MethodConverter extends Converter {
 		
 		if (this.model && this.model.hasOwnProperty('mediaType')) {
 			const mediaType: MediaType = this.model.mediaType;
-			if (mediaType.hasOwnProperty('consumes') && oasDef.hasOwnProperty('consumes')){
-				oasDef.consumes = oasDef.consumes.filter(function (consume) { return !mediaType.consumes.includes(consume)});
+			if (mediaType.hasOwnProperty('consumes') && oasDef.hasOwnProperty('consumes')) {
+				const consumes: ?string[] = mediaType.consumes;
+				if (consumes != null && oasDef.consumes != null) {
+					oasDef.consumes = oasDef.consumes.filter(function (consume) {
+						return !consumes.includes(consume)
+					});
+				}
 				if (_.isEmpty(oasDef.consumes)) delete oasDef.consumes;
 			}
-			if (mediaType.hasOwnProperty('produces') && oasDef.hasOwnProperty('produces')){
-				oasDef.produces = oasDef.produces.filter(function (produce) { return !mediaType.produces.includes(produce)});
+			if (mediaType.hasOwnProperty('produces') && oasDef.hasOwnProperty('produces')) {
+				const produces: ?string[] = mediaType.produces;
+				if (produces!= null) {
+					oasDef.produces = oasDef.produces.filter(function (produce) {
+						return !produces.includes(produce)
+					});
+				}
 				if (_.isEmpty(oasDef.produces)) delete oasDef.produces;
 			}
 		}
 		return oasDef;
 	}
 	
-	static exportExamples(source:Definition, target:any, mimeType:string, exampleKey:string) {
+	static exportExamples(source:Definition, target:any, mimeType:?string, exampleKey:string) {
 		switch (exampleKey) {
 			case 'example':
 				if (source.hasOwnProperty(exampleKey)) {
 					if (!target.examples) target.examples = {};
-					target.examples[mimeType] = source.example;
+					if (mimeType != null) target.examples[mimeType] = source.example;
 					delete source.example;
 				}
 				break;
 			case 'examples':
 				if (source.hasOwnProperty(exampleKey)) {
 					if (!target.examples) target.examples = {};
-					target.examples[mimeType] = source.examples;
+					if (mimeType != null) target.examples[mimeType] = source.examples;
 					delete source.examples;
 				}
 				break;
@@ -286,19 +308,19 @@ class Oas20MethodConverter extends Converter {
 	static exportHeaders(object:Method, converter:any) {
 		const headers = [];
 		
-		if (object.hasOwnProperty('headers')) {
+		if (object.hasOwnProperty('headers') && object.headers != null) {
 			const headersModel: Header[] = object.headers;
 			if (_.isArray(headersModel) && !_.isEmpty(headersModel)) {
 				for (let i = 0; i < headersModel.length; i++) {
 					const value: Header = headersModel[i];
-					const definition: Definition = value.definition;
+					const definition: ?Definition = value.definition;
 					let header;
 					if (value.hasOwnProperty('reference')) {
 						header = { $ref: value.reference };
 					} else {
 						header = Object.assign({}, converter._export(definition));
 						header.in = value._in;
-						header.name = definition.name;
+						if (definition != null) header.name = definition.name;
 						if (!header.type) header.type = 'string';
 						if (header.$ref) delete header.$ref;
 						if (header.type === 'array' && !header.hasOwnProperty('items')) header.items = {type: 'string'};
@@ -317,18 +339,18 @@ class Oas20MethodConverter extends Converter {
 	static exportParameters(object:Method, paramsType:string, converter:any) {
 		let parameters = [];
 		if (object.hasOwnProperty(paramsType)) {
-			const parametersModel: Parameter[] = paramsType === 'parameters' ? object.parameters : object.queryStrings;
-			if (_.isArray(parametersModel) && !_.isEmpty(parametersModel)) {
+			const parametersModel: ?Parameter[] = paramsType === 'parameters' ? object.parameters : object.queryStrings;
+			if (_.isArray(parametersModel) && !_.isEmpty(parametersModel) && parametersModel != null) {
 				for (let i = 0; i < parametersModel.length; i++) {
 					const value: Parameter = parametersModel[i];
-					const definition: Definition = value.definition;
+					const definition: ?Definition = value.definition;
 					let parameter;
 					if (value.hasOwnProperty('reference')) {
 						parameter = { $ref: value.reference };
-					} else if (paramsType === 'queryStrings' && definition.hasOwnProperty('properties')) {
+					} else if (paramsType === 'queryStrings' && definition != null && definition.hasOwnProperty('properties')) {
 						const queryStrings = Oas20MethodConverter.exportMultipleQueryStrings(value, converter);
 						if (!_.isEmpty(queryStrings)) parameters = parameters.concat(queryStrings);
-					} else {
+					} else if (definition != null) {
 						parameter = Object.assign({}, converter._export(definition));
 						if (parameter.hasOwnProperty('items') && parameter.items.hasOwnProperty('$ref')) {
 							parameter.items.type = 'string';
@@ -354,18 +376,22 @@ class Oas20MethodConverter extends Converter {
 	}
 	
 	static exportMultipleQueryStrings(object:Parameter, converter:any) {
-		const definition: Definition = object.definition;
+		const definition: ?Definition = object.definition;
 		const queryStrings = [];
-		const properties: Definition[] = definition.properties;
-		for (let i = 0; i < properties.length; i++) {
-			const value: Definition = properties[i];
-			const name: string = value.name;
-			const parameter = converter._export(value);
-			if (definition.hasOwnProperty('propsRequired')) value.required = definition.propsRequired.indexOf(name) > -1;
-			parameter.in = object._in;
-			parameter.name = name;
-			Oas20MethodConverter.exportRequired(value, parameter);
-			queryStrings.push(parameter)
+		if (definition != null && definition.properties != null) {
+			const properties: Definition[] = definition.properties;
+			for (let i = 0; i < properties.length; i++) {
+				const value: Definition = properties[i];
+				const name: string = value.name;
+				const parameter = converter._export(value);
+				if (definition.hasOwnProperty('propsRequired') && definition.propsRequired != null) {
+					value.required = definition.propsRequired.indexOf(name) > -1;
+				}
+				parameter.in = object._in;
+				parameter.name = name;
+				Oas20MethodConverter.exportRequired(value, parameter);
+				queryStrings.push(parameter)
+			}
 		}
 		
 		return queryStrings;
@@ -533,7 +559,7 @@ class Oas20MethodConverter extends Converter {
       if (defExternalDocs.hasOwnProperty('url')) externalDocs.url = defExternalDocs.url;
       if (defExternalDocs.hasOwnProperty('description')) externalDocs.description = defExternalDocs.description;
       if (!_.isEmpty(externalDocs)) {
-        model.externalDocs = externalDocs;
+      	model.externalDocs = externalDocs;
       }
 		}
 		if (oasDef.hasOwnProperty('parameters')) {
