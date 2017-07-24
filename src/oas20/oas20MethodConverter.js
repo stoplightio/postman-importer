@@ -179,7 +179,7 @@ class Oas20MethodConverter extends Converter {
 					const definition: Definition = body.definition;
 					if (body.mimeType && !consumes.includes(body.mimeType)) consumes.push(body.mimeType);
 					if (definition.internalType === 'file' && !consumes.includes('multipart/form-data')) consumes.push('multipart/form-data')
-					let input = {};
+					let input: Definition[] = [];
 					const propertiesRequired = definition.propsRequired ? definition.propsRequired : [];
 					let hasProperties;
 					if (definition.hasOwnProperty('properties')) {
@@ -187,16 +187,14 @@ class Oas20MethodConverter extends Converter {
 						hasProperties = true;
 					} else {
 						hasProperties = false;
-						const bodyDef = definition;
+						const bodyDef: Definition = definition;
 						if (body.hasOwnProperty('required')) bodyDef.required = body.required;
-						input = {definition: bodyDef};
+						input = [bodyDef];
 					}
-					for (const index in input) {
-						if (!input.hasOwnProperty(index)) continue;
-
+					for (let i = 0; i < input.length; i++) {
+						const param: Definition = input[i];
 						const parameter = {};
 						parameter.in = 'formData';
-						const param = input[index];
 						parameter.name = param.name;
 						if (param.internalType) {
 							if (param.internalType === 'file') {
@@ -208,13 +206,13 @@ class Oas20MethodConverter extends Converter {
 							}
 							else Oas20DefinitionConverter._convertFromInternalType(param);
 						}
-						parameter.type = input[index].type;
+						parameter.type = param.type;
 						if (!parameter.type) parameter.type = 'string';
-						if (input[index].hasOwnProperty('description')) parameter.description = input[index].description;
-						if (hasProperties) input[index].required = propertiesRequired.includes(index);
+						if (param.hasOwnProperty('description')) parameter.description = param.description;
+						if (hasProperties) param.required = propertiesRequired.includes(param.name);
 						if (parameter.type === 'array' && !parameter.hasOwnProperty('items')) parameter.items = {type: 'string'};
-						Oas20MethodConverter.exportRequired(input[index], parameter);
-						Oas20RootConverter.exportAnnotations(input[index], parameter);
+						Oas20MethodConverter.exportRequired(param, parameter);
+						Oas20RootConverter.exportAnnotations(param, parameter);
 						parameters.push(parameter);
 					}
 				}
@@ -358,14 +356,14 @@ class Oas20MethodConverter extends Converter {
 	static exportMultipleQueryStrings(object:Parameter, converter:any) {
 		const definition: Definition = object.definition;
 		const queryStrings = [];
-		for (const id in definition.properties) {
-			if (!definition.properties.hasOwnProperty(id)) continue;
-			
-			const value: Definition = definition.properties[id];
+		const properties: Definition[] = definition.properties;
+		for (let i = 0; i < properties.length; i++) {
+			const value: Definition = properties[i];
+			const name: string = value.name;
 			const parameter = converter._export(value);
-			if (definition.hasOwnProperty('propsRequired')) value.required = definition.propsRequired.indexOf(id) > -1;
+			if (definition.hasOwnProperty('propsRequired')) value.required = definition.propsRequired.indexOf(name) > -1;
 			parameter.in = object._in;
-			parameter.name = id;
+			parameter.name = name;
 			Oas20MethodConverter.exportRequired(value, parameter);
 			queryStrings.push(parameter)
 		}

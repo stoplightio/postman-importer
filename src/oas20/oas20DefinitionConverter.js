@@ -106,11 +106,13 @@ class Oas20DefinitionConverter extends Converter {
 		}
 
 		if (model.hasOwnProperty('properties')) {
+			const properties: Definition[] = model.properties;
 			const oasProps = {};
-			_.entries(model.properties).map(([key, value]) => {
+			for (let i = 0; i < properties.length; i++) {
+				const prop: Definition = properties[i];
 				this.level = 'property';
-				oasProps[key] = this._export(value);
-			});
+				oasProps[prop.name] = this._export(prop);
+			}
 
 			if (!_.isEmpty(oasProps)) oasDef.properties = oasProps;
 			if (!_.isEmpty(model.propsRequired)) {
@@ -238,10 +240,12 @@ class Oas20DefinitionConverter extends Converter {
 		}
 		
 		if (oasDef.hasOwnProperty('properties')) {
-			const modelProps: any = {};
+			const modelProps: Definition[] = [];
 
 			_.entries(oasDef.properties).map(([key, value]) => {
-				modelProps[key] = this._import(value);
+				const prop: Definition = this._import(value);
+				prop.name = key;
+				modelProps.push(prop);
 			});
 
 			model.properties = modelProps;
