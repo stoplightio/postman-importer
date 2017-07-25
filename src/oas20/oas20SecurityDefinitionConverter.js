@@ -67,8 +67,8 @@ class Oas20SecurityDefinitionConverter extends Converter {
 			return;
 		}
 
-		switch (oasDef.type){
-			case 'oauth2' : {
+		switch (oasDef.type) {
+			case 'oauth2' :
 				const authorizationUrlValidFlows = ['implicit', 'accessCode'];
 				const tokenUrlValidFlows = ['application', 'password', 'accessCode'];
 				if (model.hasOwnProperty('authorization') && model.authorization) oasDef.flow = model.authorization[0];
@@ -83,7 +83,6 @@ class Oas20SecurityDefinitionConverter extends Converter {
 					}
 				}
 				break;
-			}
 
 			case 'apiKey' :
 				const describedBy: ?Method = model.describedBy;
@@ -98,7 +97,6 @@ class Oas20SecurityDefinitionConverter extends Converter {
 					oasDef.name = describedBy.parameters[0].name;
 				}
 				break;
-			}
 		}
 
 		return oasDef;
