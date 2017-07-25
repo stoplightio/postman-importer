@@ -2,7 +2,7 @@
 
 class Item {
 	name: string;
-	value: any;
+	value: ?any;
 }
 
 module.exports = Item;

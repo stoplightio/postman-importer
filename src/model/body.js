@@ -3,13 +3,13 @@ const Definition = require('./definition');
 const Annotation = require('./annotation');
 
 class Body {
-	mimeType: string;
+	mimeType: ?string;
 	name: string;
-	definition: Definition;
+	definition: ?Definition;
 	description: ?string;
-	required: boolean;
-	hasParams: boolean;
-	annotations: Annotation[];
+	required: ?boolean;
+	hasParams: ?boolean;
+	annotations: ?Annotation[];
 }
 
 module.exports = Body;

@@ -31,7 +31,7 @@ class Raml10TraitConverter extends Converter {
 		const methodConverter = new Raml10MethodConverter(this.model, this.annotationPrefix, this.def);
 		
 		if (model.hasOwnProperty('method') && !_.isEmpty(model.method)) {
-			const methodModel: Method = model.method;
+			const methodModel: ?Method = model.method;
 			const method = methodConverter._export(methodModel);
 			delete method.displayName;
 			for (const id in method) {

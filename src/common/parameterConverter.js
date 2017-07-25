@@ -33,7 +33,7 @@ class ParameterConverter extends Converter {
 	_export(model:Parameter) {
 		const definitionConverter = new Raml10DefinitionConverter(this.model, this.annotationPrefix, this.def);
 		
-		const definition: Definition = model.definition;
+		const definition: ?Definition = model.definition;
 		const ramlDef = definitionConverter._export(definition);
 		if (model._in === 'header' && ((ramlDef.type && !ramlHelper.getBuiltinTypes.includes(ramlDef.type)) || !ramlDef.type)) ramlDef.type = 'string';
 		

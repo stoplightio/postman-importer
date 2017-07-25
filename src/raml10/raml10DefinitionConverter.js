@@ -10,7 +10,6 @@ const arrayHelper = require('../utils/array');
 const ramlHelper = require('../helpers/raml');
 const stringHelper = require('../utils/strings');
 const xmlHelper = require('../utils/xml');
-const Raml10RootConverter = require('../raml10/raml10RootConverter'); // eslint-disable-line no-unused-vars,FIXME
 const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
 const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
 
@@ -78,7 +77,7 @@ class Raml10DefinitionConverter extends Converter {
 			if (ramlDef.hasOwnProperty('maxLength')) delete ramlDef.maxLength;
 		}
 
-		if (model.hasOwnProperty('items')) {
+		if (model.hasOwnProperty('items') && model.items != null) {
 			const itemsModel: Definition = model.items;
 			const items = this._export(itemsModel);
 			if (items && typeof items === 'object' && items.hasOwnProperty('format') && items.format === 'string') {
@@ -90,7 +89,7 @@ class Raml10DefinitionConverter extends Converter {
 			ramlDef.items = items;
 		}
 		
-		if (model.hasOwnProperty('itemsList')) {
+		if (model.hasOwnProperty('itemsList') && model.itemsList != null) {
 			const itemsList: Definition[] = model.itemsList;
 			const items = [];
 			for (let i = 0; i < itemsList.length; i++) {
@@ -100,7 +99,7 @@ class Raml10DefinitionConverter extends Converter {
 			ramlDef.items = items;
 		}
 
-		if (model.hasOwnProperty('reference')) {
+		if (model.hasOwnProperty('reference') && model.reference != null) {
 			const val: string = model.reference;
 			if (_.isArray(val)) {
 				ramlDef.type = val;
@@ -114,7 +113,7 @@ class Raml10DefinitionConverter extends Converter {
 			ramlDef.type = stringHelper.checkAndReplaceInvalidChars(model.reference, ramlHelper.getValidCharacters, ramlHelper.getReplacementCharacter);
 		}
 
-		if (model.hasOwnProperty('_enum')) {
+		if (model.hasOwnProperty('_enum') && model._enum != null) {
 			const enumModel: string[] = model._enum;
 			const isDateOnly: boolean = ramlDef.type === 'date-only';
 			const _enum: string[] = [];
@@ -125,18 +124,19 @@ class Raml10DefinitionConverter extends Converter {
 			ramlDef.enum = _enum;
 		}
 		
-		if (model.hasOwnProperty('properties')) {
+		if (model.hasOwnProperty('properties') && model.properties != null) {
+			const properties: Definition[] = model.properties;
 			const ramlProps = {};
-			for (const id in model.properties) {
-				if (!model.properties.hasOwnProperty(id)) continue;
-				
-				const value: any = model.properties[id];
-				ramlProps[id] = this._export(value);
+			for (let i = 0; i < properties.length; i++) {
+				const value: Definition = properties[i];
+				const name: string = value.name;
+				ramlProps[name] = this._export(value);
 				
 				if (!model.hasOwnProperty('propsRequired')) {
-					ramlProps[id].required = false;
-				} else if (model.hasOwnProperty('propsRequired')) {
-					if (_.isEmpty(model.propsRequired) || model.propsRequired.indexOf(id) < 0) ramlProps[id].required = false;
+					ramlProps[name].required = false;
+				} else if (model.hasOwnProperty('propsRequired') && model.propsRequired != null) {
+					const propsRequired: string[] = model.propsRequired;
+					if (_.isEmpty(propsRequired) || propsRequired.indexOf(name) < 0) ramlProps[name].required = false;
 				}
 			}
 
@@ -144,7 +144,7 @@ class Raml10DefinitionConverter extends Converter {
 			delete ramlDef.propsRequired;
 		}
 
-		if (model.hasOwnProperty('compositionType')) {
+		if (model.hasOwnProperty('compositionType') && model.compositionType != null) {
 			const result = {};
 			for (let i = 0; i < model.compositionType.length; i++) {
 				const value: Definition = model.compositionType[i];
@@ -167,12 +167,12 @@ class Raml10DefinitionConverter extends Converter {
 			delete ramlDef.compositionType;
 		}
 		
-		if (model.hasOwnProperty('schema')) {
+		if (model.hasOwnProperty('schema') && model.schema != null) {
 			const schema: Definition = model.schema;
 			ramlDef.schema = this._export(schema);
 		}
 
-		if (model.hasOwnProperty('additionalProperties')) {
+		if (model.hasOwnProperty('additionalProperties') && model.additionalProperties != null) {
 			if (typeof model.additionalProperties === 'object') {
 				const additionalProperties: Definition = model.additionalProperties;
 				if (!ramlDef.hasOwnProperty('properties')) {
@@ -478,7 +478,7 @@ class Raml10DefinitionConverter extends Converter {
 			const required: string[] = ramlDef.hasOwnProperty('required') && _.isArray(ramlDef.required) ? ramlDef.required.filter(function (req) { return Object.keys(ramlDef.properties).includes(req); }) : [];
 			const ignoreRequired = !_.isEmpty(required);
 
-			const modelProps = {};
+			const modelProps: Definition[] = [];
 			for (const id in ramlDef.properties) {
 				if (!ramlDef.properties.hasOwnProperty(id)) continue;
 
@@ -498,7 +498,9 @@ class Raml10DefinitionConverter extends Converter {
 						value = val;
 					}
 
-					modelProps[id] = this._import(value);
+					const prop: Definition = this._import(value);
+					prop.name = id;
+					modelProps.push(prop);
 				}
 			}
 			if (ramlDef.type === 'array' && !ramlDef.hasOwnProperty('items')) {

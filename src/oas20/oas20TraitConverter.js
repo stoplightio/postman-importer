@@ -18,8 +18,8 @@ class Oas20TraitConverter extends Converter {
 		const traits = {};
 		for (let i = 0; i < models.length; i++) {
 			const model: Trait = models[i];
-			const method: Method = model.method;
-			if (model.method) traits[model.name] = this._export(method);
+			const method: ?Method = model.method;
+			if (method) traits[model.name] = this._export(method);
 		}
 		
 		const paramsResult = {};

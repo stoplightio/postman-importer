@@ -34,7 +34,7 @@ class Raml10ResourceTypeConverter extends Converter {
 		const resourceConverter = new Raml10ResourceConverter(this.model);
 		
 		if (model.hasOwnProperty('resource') && !_.isEmpty(model.resource)) {
-			const resourceModel: Resource = model.resource;
+			const resourceModel: ?Resource = model.resource;
 			const resource = resourceConverter._export(resourceModel).result;
 			for (const id in resource) {
 				if (!resource.hasOwnProperty(id)) continue;
