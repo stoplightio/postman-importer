@@ -1,5 +1,5 @@
 const supportedFormats = {
-	"RAML": {
+	'RAML': {
 		name: 'RAML',
 		className: 'RAML',
 		formats: ['yaml'],

@@ -1,6 +1,6 @@
-const RAMLImporter = require('./baseraml'),
-	jsonHelper = require('../utils/json'),
-	_ = require('lodash');
+const RAMLImporter = require('./baseraml');
+const jsonHelper = require('../utils/json');
+const _ = require('lodash');
 
 class RAML10Importer extends RAMLImporter {
 	constructor() {
@@ -61,11 +61,11 @@ class RAML10Importer extends RAMLImporter {
 		}
 		else if (methodBody.schema && !_.isEmpty(methodBody.schema)) {
 			let schema = _.isArray(methodBody.schema)? methodBody.schema[0] : methodBody.schema;
-			if (typeof schema !== "object")
+			if (typeof schema !== 'object')
 				schema = jsonHelper.parse(schema);
 
 			if (schema.hasOwnProperty('definitions')) {
-				this.data.types = this.addDefinitions(schema,this.data.types)
+				this.data.types = this.addDefinitions(schema,this.data.types);
 			}
 
 			data.body = this._mapSchema(this.convertRefToModel({
@@ -157,7 +157,7 @@ class RAML10Importer extends RAMLImporter {
 			if (param.properties && !_.isEmpty(param.properties))
 				target.properties[paramName] = this.convertObjectProperty(param);
 		}
-		if (target.required && target.required.length == 0) {
+		if (target.required && target.required.length === 0) {
 			delete target.required;
 		}
 		if (target.properties && _.isEmpty(target.properties)) {
@@ -188,7 +188,7 @@ class RAML10Importer extends RAMLImporter {
 			properties = this.convertObjectProperty(definition);
 		}
 		
-		if (definition.hasOwnProperty('type') && definition.type != 'object') { //type
+		if (definition.hasOwnProperty('type') && definition.type !== 'object') { //type
 			if (_.isArray(definition.type)) {
 				RAML10Importer._removeHarmlessChars(definition.type); //remove ( and )
 				RAML10Importer._modifyUnionTypeDef(definition);
@@ -219,7 +219,7 @@ class RAML10Importer extends RAMLImporter {
 				if (definition.hasOwnProperty('schema')) {
 					definition = jsonHelper.parse(_.isArray(definition.schema) ? definition.schema[0] : definition.schema);
 					result = this.convertObjectProperty(definition);
-				} else if (definition.type == 'object') {
+				} else if (definition.type === 'object') {
 					result = definition;
 				}
 			}
@@ -349,7 +349,7 @@ class RAML10Importer extends RAMLImporter {
 		const type = definition.type;
 		const pattern = definition.name;
 		let info = {};
-		if (_.isArray(type) && type.length == 1) {
+		if (_.isArray(type) && type.length === 1) {
 			info.type = type[0];
 		}
 		if (pattern !== '//') {
@@ -372,14 +372,14 @@ class RAML10Importer extends RAMLImporter {
 	
 	static convertFacet(definition) {
 		const facets = definition.facets;
-    const result = [];
+		const result = [];
 		for (const key in facets) {
 			if (!facets.hasOwnProperty(key)) continue;
-      const facet = facets[key];
+			const facet = facets[key];
 			facet[key] = _.isArray(facet.type) ? facet.type[0] : facet.type;
 			delete facet.name;
 			delete facet.type;
-      delete facet.typePropertyKind;
+			delete facet.typePropertyKind;
 			result.push(facet);
 		}
 		definition[RAMLImporter.getCustomProperty('facets')] = result;

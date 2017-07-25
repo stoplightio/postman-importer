@@ -1,13 +1,13 @@
-const parser = require('swagger-parser'),
-	Method = require('../entities/swagger/method'),
-	Endpoint = require('../entities/endpoint'),
-	Schema = require('../entities/schema'),
-	Importer = require('./importer'),
-	Project = require('../entities/project'),
-	jsonHelper = require('../utils/json'),
-	swaggerHelper = require('../helpers/swagger'),
-	YAML = require('js-yaml'),
-	_ = require('lodash');
+const parser = require('swagger-parser');
+const Method = require('../entities/swagger/method');
+const Endpoint = require('../entities/endpoint');
+const Schema = require('../entities/schema');
+const Importer = require('./importer');
+const Project = require('../entities/project');
+const jsonHelper = require('../utils/json');
+const swaggerHelper = require('../helpers/swagger');
+const YAML = require('js-yaml');
+const _ = require('lodash');
 
 const referenceRegex = /\/(parameters|responses)\/(.+)/i;
 
@@ -73,7 +73,8 @@ class Swagger extends Importer {
 						tokenUrl: sd.tokenUrl || ''
 					};
 					
-					const slScopes = [], swaggerScopes = sd.scopes;
+					const slScopes = [];
+					const swaggerScopes = sd.scopes;
 					
 					if (swaggerScopes) {
 						for (const key in swaggerScopes) {
@@ -226,7 +227,7 @@ class Swagger extends Importer {
 			}
 		}
 		//remove required field if doesn't have anything inside it
-		if (data.body.required && data.body.required.length == 0) {
+		if (data.body.required && data.body.required.length === 0) {
 			delete data.body.required;
 		}
 		return data;
@@ -261,7 +262,7 @@ class Swagger extends Importer {
 				res.body = schema;
 			}
 			
-			this._mapResponseExample(needBeReferenced ? resolvedResponses[code] : response, res);
+			Swagger._mapResponseExample(needBeReferenced ? resolvedResponses[code] : response, res);
 			Swagger._mapResponseHeaders(needBeReferenced ? resolvedResponses[code] : response, res);
 			Swagger._mapResponseDescription(needBeReferenced ? resolvedResponses[code] : response, description, res);
 			if (needBeReferenced) {
@@ -293,14 +294,14 @@ class Swagger extends Importer {
 		}
 	}
 	
-	_mapResponseExample(responseBody, res) {
+	static _mapResponseExample(responseBody, res) {
 		if (responseBody.hasOwnProperty('examples') && !_.isEmpty(responseBody.examples)) {
 			const examples = responseBody.examples;
 			
 			if (_.isArray(examples)) {
 				for (const t in examples) {
 					if (!examples.hasOwnProperty(t)) continue;
-					if (t === resType) {
+					if (t === res.type /* resType */) { // FIXME
 						res.example = jsonHelper.stringify(examples[t], 4);
 					}
 				}
@@ -337,8 +338,8 @@ class Swagger extends Importer {
 		return new Promise((resolve, reject) => {
 			
 			const validateOptions = _.cloneDeep(options || {});
-      const validate = options && (options.validate === true || options.validateImport === true);
-      validateOptions.validate = { schema: validate, spec: validate};
+			const validate = options && (options.validate === true || options.validateImport === true);
+			validateOptions.validate = { schema: validate, spec: validate};
 			
 			// with validation
 			//in case of data, if not cloned, referenced to resolved data
@@ -526,7 +527,7 @@ class Swagger extends Importer {
 				}
 				
 				globalParamsNonURI = Swagger._getParams(methods.parameters, resolvedPathParames, (param) => {
-					return !(param.in && param.in == 'path');
+					return !(param.in && param.in === 'path');
 				});
 			}
 			
@@ -684,12 +685,12 @@ class Swagger extends Importer {
 	}
 	
 	_mapTraits(parameters, responses, resolvedParameters) {
-		const traits = {},
-			queryParams = {},
-			headerParams = {},
-			formDataParams = {},
-			bodyParams = {},
-			traitResponses = {};
+		const traits = {};
+		const queryParams = {};
+		const headerParams = {};
+		const formDataParams = {};
+		const bodyParams = {};
+		const traitResponses = {};
 		
 		for (const k in parameters) {
 			if (!parameters.hasOwnProperty(k)) continue;
@@ -746,11 +747,11 @@ class Swagger extends Importer {
 		for (const k in queryParams) {
 			if (!queryParams.hasOwnProperty(k)) continue;
 			const trait = traits[k] || {
-					_id: k,
-					name: k,
-					request: {},
-					responses: []
-				};
+				_id: k,
+				name: k,
+				request: {},
+				responses: []
+			};
 			
 			trait.request.queryString = this._mapQueryString(queryParams[k]);
 			traits[k] = trait;
@@ -759,11 +760,11 @@ class Swagger extends Importer {
 		for (const k in headerParams) {
 			if (!headerParams.hasOwnProperty(k)) continue;
 			const trait = traits[k] || {
-					_id: k,
-					name: k,
-					request: {},
-					responses: []
-				};
+				_id: k,
+				name: k,
+				request: {},
+				responses: []
+			};
 			
 			trait.request.headers = this._mapRequestHeaders(headerParams[k]);
 			traits[k] = trait;
@@ -772,11 +773,11 @@ class Swagger extends Importer {
 		for (const k in formDataParams) {
 			if (!formDataParams.hasOwnProperty(k)) continue;
 			const trait = traits[k] || {
-					_id: k,
-					name: k,
-					request: {},
-					responses: []
-				};
+				_id: k,
+				name: k,
+				request: {},
+				responses: []
+			};
 			
 			trait.request.formData = this._mapRequestBody(formDataParams[k]);
 			traits[k] = trait;
@@ -785,11 +786,11 @@ class Swagger extends Importer {
 		for (const k in bodyParams) {
 			if (!bodyParams.hasOwnProperty(k)) continue;
 			const trait = traits[k] || {
-					_id: k,
-					name: k,
-					request: {},
-					responses: []
-				};
+				_id: k,
+				name: k,
+				request: {},
+				responses: []
+			};
 			
 			trait.request.body = this._mapRequestBody(bodyParams[k]);
 			traits[k] = trait;
@@ -798,11 +799,11 @@ class Swagger extends Importer {
 		for (const k in traitResponses) {
 			if (!traitResponses.hasOwnProperty(k)) continue;
 			const trait = traits[k] || {
-					_id: k,
-					name: k,
-					request: {},
-					responses: []
-				};
+				_id: k,
+				name: k,
+				request: {},
+				responses: []
+			};
 			trait.responses = this._mapResponseBody(traitResponses[k]);
 			traits[k] = trait;
 		}

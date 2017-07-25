@@ -58,8 +58,8 @@ class Raml10SecurityDefinitionConverter extends Converter {
 									break;
 							}
 						}
-						if (_.includes(grants, "implicit") && !settings.hasOwnProperty('accessTokenUri')) {
-							settings.accessTokenUri = "";
+						if (_.includes(grants, 'implicit') && !settings.hasOwnProperty('accessTokenUri')) {
+							settings.accessTokenUri = '';
 						}
 
 						settings.authorizationGrants = grants;
@@ -185,7 +185,7 @@ class Raml10SecurityDefinitionConverter extends Converter {
 					if (!settings.scopes.hasOwnProperty(id)) continue;
 					const scope = new SecurityScope();
 					scope.value = settings.scopes[id];
-					scope.description = "";
+					scope.description = '';
 					scopes.push(scope);
 				}
 				model.scopes = scopes;

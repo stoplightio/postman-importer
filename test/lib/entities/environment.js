@@ -1,3 +1,5 @@
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
 
 describe('Endpoint Entity', function () {
 	describe('constructor', function () {

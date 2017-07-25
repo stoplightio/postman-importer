@@ -1,5 +1,5 @@
-const _ = require('lodash'),
-	jsonSchemaConverter = require('json-schema-compatibility');
+const _ = require('lodash');
+const jsonSchemaConverter = require('json-schema-compatibility');
 
 module.exports = {
 	parse: function (data) {
@@ -120,7 +120,7 @@ module.exports = {
 	},
 	isJson: function (str) {
 		try {
-			if (!_.startsWith(str, '{') || !_.endsWith(str, "}")) return false;
+			if (!_.startsWith(str, '{') || !_.endsWith(str, '}')) return false;
 
 			JSON.parse(str);
 		} catch (e) {

@@ -114,7 +114,7 @@ class Oas20ResourceConverter extends Converter {
 	static getParents(path:?string, models:Resource[]) {
 		const parentAbsolutePath: string = Oas20ResourceConverter.getParentAbsolutePath(path);
 		let parents: Resource[] = models.filter(function(model) {
-			return model.path == parentAbsolutePath;
+			return model.path === parentAbsolutePath;
 		});
 		if (!_.isEmpty(parentAbsolutePath)) parents = parents.concat(Oas20ResourceConverter.getParents(parentAbsolutePath, models));
 		
@@ -130,7 +130,7 @@ class Oas20ResourceConverter extends Converter {
 		});
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
-			if (value != undefined) {
+			if (value !== undefined) {
 				result[attrIdMap[id]] = result[id];
 				delete result[id];
 			}

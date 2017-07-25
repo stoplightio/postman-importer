@@ -1,8 +1,8 @@
-const _ = require('lodash'),
-	RAMLExporter = require('./baseraml'),
-  stringHelper = require('../utils/strings'),
-	ramlHelper = require('../helpers/raml'),
-	jsonHelper = require('../utils/json');
+const _ = require('lodash');
+const RAMLExporter = require('./baseraml');
+const stringHelper = require('../utils/strings');
+const ramlHelper = require('../helpers/raml');
+const jsonHelper = require('../utils/json');
 
 class RAML10Exporter extends RAMLExporter {
 	constructor() {
@@ -62,8 +62,8 @@ class RAML10Exporter extends RAMLExporter {
 					value.value = result.example.value;
 					result.example.value = value;
 				}
-			if(typeof result.example === 'object')
-				result.example = this.fixValuesFormat(result.example);
+				if(typeof result.example === 'object')
+					result.example = this.fixValuesFormat(result.example);
 			}
 		}
 		return result;
@@ -81,13 +81,13 @@ class RAML10Exporter extends RAMLExporter {
 		return object;
 	}
 
-  static fixDateFormat(val) {
-    if (typeof val === 'string' && ramlHelper.getRFC3339Format.test(val)) {
-      if (val.match(/\d*Z/)[0].length > 3)
-        return val.replace(/\d*Z/, val.match(/\d*Z/)[0].slice(0, 3) + 'Z');
-    }
-    return val;
-  }
+	static fixDateFormat(val) {
+		if (typeof val === 'string' && ramlHelper.getRFC3339Format.test(val)) {
+			if (val.match(/\d*Z/)[0].length > 3)
+				return val.replace(/\d*Z/, val.match(/\d*Z/)[0].slice(0, 3) + 'Z');
+		}
+		return val;
+	}
 
 	mapRequestBodyForm(bodyData, ramlDef) {
 		const body = {
@@ -139,7 +139,7 @@ class RAML10Exporter extends RAMLExporter {
 			const val = object[id];
 			if (!val) continue;
 			
-			if (id == 'allOf') {
+			if (id === 'allOf') {
 				object = this.convertAllOfAttribute(object);
 			} else if (typeof val === 'object') {
 				object[id] = this.convertAllOfToModel(val);
@@ -221,7 +221,7 @@ class RAML10Exporter extends RAMLExporter {
 	mapSchemaProperties(definition) {
 		this.convertRequiredFromProperties(definition);
 		
-		if (definition.properties && definition.type == 'object') {
+		if (definition.properties && definition.type === 'object') {
 			delete definition.type;
 		}
 		

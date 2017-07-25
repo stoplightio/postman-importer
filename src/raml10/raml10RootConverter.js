@@ -198,7 +198,7 @@ class Raml10RootConverter extends Converter {
 
 		if (ramlDef.hasOwnProperty('protocols')){
 			if (_.isArray(ramlDef.protocols)){
-				const protocols: string[] = ramlDef.protocols.map(function(protocol){ return protocol.toLowerCase() }) ;
+				const protocols: string[] = ramlDef.protocols.map(function(protocol){ return protocol.toLowerCase(); }) ;
 				model.protocols = protocols;
 			} else {
 				const protocols: string[] = [ramlDef.protocols.toLowerCase()];
@@ -238,9 +238,9 @@ class Raml10RootConverter extends Converter {
         } else if (baseUri.protocol != null) {
 					const protocols: string[] = [baseUri.protocol];
 					model.protocols = protocols;
-        }
-      }
-      model.baseUri = baseUri;
+				}
+			}
+			model.baseUri = baseUri;
 			Raml10AnnotationConverter.importAnnotations(ramlDef.baseUri, model, model);
 		}
 
@@ -251,7 +251,7 @@ class Raml10RootConverter extends Converter {
 				for (const id in ramlDef.baseUriParameters) {
 					if (!ramlDef.baseUriParameters.hasOwnProperty(id)) continue;
 			
-					const parameter: Parameter = parameterConverter._import(ramlDef.baseUriParameters[id])
+					const parameter: Parameter = parameterConverter._import(ramlDef.baseUriParameters[id]);
 					baseUriParameters.push(parameter);
 				}
 				model.baseUriParameters = baseUriParameters;

@@ -29,7 +29,7 @@ class Raml10AnnotationTypeConverter extends Converter {
 			ramlDef = definitionConverter._export(definition);
 			if (model.hasOwnProperty('required') && !model.required) ramlDef.required = model.required;
 			if (model.hasOwnProperty('displayName')) ramlDef.displayName = model.displayName;
-			if (ramlDef.hasOwnProperty('allowedTargets') && _.isArray(ramlDef.allowedTargets) && ramlDef.allowedTargets.length == 1) {
+			if (ramlDef.hasOwnProperty('allowedTargets') && _.isArray(ramlDef.allowedTargets) && ramlDef.allowedTargets.length === 1) {
 				ramlDef.allowedTargets = ramlDef.allowedTargets[0];
 			}
 		} else if (typeof model.definition === 'string') {
@@ -49,7 +49,7 @@ class Raml10AnnotationTypeConverter extends Converter {
 			
 			const ramlDef = ramlDefs[id];
 			const keys = Object.keys(ramlDef);
-			if (!_.isEmpty(keys) && keys.length == 1){
+			if (!_.isEmpty(keys) && keys.length === 1){
 				const name = keys[0];
 				const anntoationType: AnnotationType = this._import(ramlDef[name]);
 				result.push(anntoationType);

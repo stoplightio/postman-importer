@@ -406,7 +406,7 @@ class Oas20MethodConverter extends Converter {
 		});
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
-			if (value != undefined) {
+			if (value != null) {
 				result[attrIdMap[id]] = result[id];
 				delete result[id];
 			}
@@ -499,7 +499,7 @@ class Oas20MethodConverter extends Converter {
 					response.httpStatusCode = id;
 					if (value.hasOwnProperty('$ref') && this.model.responses) {
 						const reference: string = stringsHelper.computeResourceDisplayName(value.$ref);
-						const modelResponses: Response[] = this.model.responses.filter(modelResponse => { return modelResponse.name === reference });
+						const modelResponses: Response[] = this.model.responses.filter(modelResponse => { return modelResponse.name === reference; });
 						const def: Response = modelResponses[0];
 						if (def.hasOwnProperty('description')) response.description = def.description;
 						if (def.hasOwnProperty('headers')) response.headers = def.headers;
@@ -562,7 +562,7 @@ class Oas20MethodConverter extends Converter {
       	model.externalDocs = externalDocs;
       }
 		}
-		if (oasDef.hasOwnProperty('parameters')) {
+		if (oasDef.hasOwnProperty('parameters')) {
 			if (_.isArray(oasDef.parameters) && !_.isEmpty(oasDef.parameters)) {
 				const headers: Header[] = [];
 				const bodies: Body[] = [];
@@ -578,10 +578,10 @@ class Oas20MethodConverter extends Converter {
 					const val = (isExternal || isInPath) && dereferencedParam ? dereferencedParam : oasDef.parameters[index];
 					if (val.hasOwnProperty('$ref') && !isInPath) {
 						const regex = /(trait:)(.*)(:.*)/;
-						let traitName = stringsHelper.computeResourceDisplayName(val.$ref)
+						let traitName = stringsHelper.computeResourceDisplayName(val.$ref);
 						const match = traitName.match(regex);
 						if (match) traitName = match[2];
-						if (!is.map(object => { return object.name }).includes(traitName)) {
+						if (!is.map(object => object.name ).includes(traitName)) {
 							const item = new Item();
 							item.name = traitName;
 							is.push(item);
@@ -634,7 +634,7 @@ class Oas20MethodConverter extends Converter {
 							const definition: Definition = definitionConverter._import(val);
 							parameter.definition = definition;
 							Oas20MethodConverter.importRequired(val, parameter);
-							if (val.in === 'path' && this.model[this.resourcePath] && dereferencedParam && this.resourcePath.split("/").pop().includes(dereferencedParam.name)) {
+							if (val.in === 'path' && this.model[this.resourcePath] && dereferencedParam && this.resourcePath.split('/').pop().includes(dereferencedParam.name)) {
 								if (this.model[this.resourcePath].parameters) {
 									this.model[this.resourcePath].parameters.push(parameter);
 								} else {
@@ -667,7 +667,7 @@ class Oas20MethodConverter extends Converter {
 		let isJson: boolean = false;
 		try {
 			switch (property) {
-				case 'example' :
+				case 'example' :{
 					const example = JSON.parse(source.example);
 					if (typeof source.example === 'string') {
 						target.example = example;
@@ -675,7 +675,8 @@ class Oas20MethodConverter extends Converter {
 						delete target.example;
 					}
 					break;
-				case 'examples':
+				}
+				case 'examples': {
 					isJson = _.startsWith(source.examples, '{');
 					const examples = JSON.parse(source.examples);
 					if (typeof source.examples === 'string') {
@@ -684,6 +685,7 @@ class Oas20MethodConverter extends Converter {
 						delete target.examples;
 					}
 					break;
+				}
 			}
 		} catch (e) {
 			if (isJson) {

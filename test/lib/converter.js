@@ -1,17 +1,18 @@
-const chai = require('chai'),
-	expect = chai.expect,
-	specConverter = require('../../src/index'),
-	fs = require('fs'),
-	YAML = require('js-yaml'),
-	_ = require('lodash'),
-	path = require('path');
-const beforeEach = require("mocha/lib/mocha.js").beforeEach;
-const afterEach = require("mocha/lib/mocha.js").afterEach;
-const it = require("mocha/lib/mocha.js").it;
-const describe = require("mocha/lib/mocha.js").describe;
+const chai = require('chai');
+const expect = chai.expect;
+const fs = require('fs');
+const YAML = require('js-yaml');
+const _ = require('lodash');
+const path = require('path');
+const beforeEach = require('mocha/lib/mocha.js').beforeEach;
+const afterEach = require('mocha/lib/mocha.js').afterEach;
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
 const timeout = 60 * 1000; //1000 ms == 1s.
 
 chai.use(require('chai-string'));
+
+const specConverter = require('../../src/index');
 
 const filePathMap = {
 	'/types/Complex.json': '/data/types/Complex.json',
@@ -46,7 +47,8 @@ const myFsResolver = {
 };
 
 describe('Converter', function () {
-	let converterInstance, fullPath = __dirname + '/../data/raml-import/raml/raml08.yaml';
+	const fullPath = __dirname + '/../data/raml-import/raml/raml08.yaml';
+	let converterInstance;
 	beforeEach(function () {
 		converterInstance = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.OAS20);
 	});
@@ -82,8 +84,8 @@ describe('Converter', function () {
 					done();
 				})
 				.catch((err) => {
-					done(err)
-				})
+					done(err);
+				});
 		});
 	});
 });
@@ -111,21 +113,21 @@ describe('from swagger to raml', function () {
 							console.log('********** Finish file **********\n');
 							return done(resultRAML);
 						} else {
-              const formattedData = typeof resultRAML === 'object' ? JSON.stringify(resultRAML) : resultRAML;
-              if (stringCompare === true) {
-                expect(formattedData).to.deep.equal(fs.readFileSync(targetFile,'utf8'));
-              } else {
-                expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
-              }
+							const formattedData = typeof resultRAML === 'object' ? JSON.stringify(resultRAML) : resultRAML;
+							if (stringCompare === true) {
+								expect(formattedData).to.deep.equal(fs.readFileSync(targetFile,'utf8'));
+							} else {
+								expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							}
 							done();
 						}
 					} catch (e) {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 	
@@ -201,10 +203,10 @@ describe('from raml to swagger', function () {
 			const skip = _.includes(testFile, 'skip');
 			const extension = _.includes(testFile, 'extension');
 
-      const sourceFile = baseDir + '/' + testFile;
-      const targetFile = baseDir + '/../swagger/' + testFile;
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../swagger/' + testFile;
 
-      if (skip) return ;
+			if (skip) return ;
 			if (process.env.testFile) {
 				if (_.endsWith(testFile, process.env.testFile)) {
 					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
