@@ -87,7 +87,7 @@ class Raml10MethodConverter extends Converter {
 						const bodyDef = body[Object.keys(body)[0]];
 						if (bodyDef && bodyDef.hasOwnProperty('examples')) {
 							const examples: any = bodyDef.examples;
-							if (bodyDef.invalidJsonExample || (bodyDef.type && bodyDef.type != 'string' && typeof examples === 'string')) {
+							if (bodyDef.invalidJsonExample || (bodyDef.type && bodyDef.type !== 'string' && typeof examples === 'string')) {
 								const id = this.annotationPrefix + '-responses-example';
 								Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 								bodyDef['(' + id + ')'] = bodyDef.hasOwnProperty('example') ? _.concat(examples, bodyDef.example) : examples;
@@ -157,7 +157,7 @@ class Raml10MethodConverter extends Converter {
 
 		if (model.hasOwnProperty('protocols') && model.protocols != null) {
 			const protocols: string[] = model.protocols;
-			ramlDef.protocols = protocols.map(function(protocol){ return protocol.toUpperCase() })
+			ramlDef.protocols = protocols.map(function(protocol){ return protocol.toUpperCase(); });
 		}
 		
 		if (model.hasOwnProperty('summary')) {
@@ -282,7 +282,7 @@ class Raml10MethodConverter extends Converter {
 		});
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
-			if (value != undefined) {
+			if (value != null) {
 				result[attrIdMap[id]] = value;
 				delete result[id];
 			}
@@ -355,7 +355,7 @@ class Raml10MethodConverter extends Converter {
 					const item = new Item();
 					item.name = value;
 					is.push(item);
-				} else if (typeof value === 'object' && value != undefined) {
+				} else if (typeof value === 'object' && value != null) {
 					const name: string = Object.keys(value)[0];
 					const item = new Item();
 					item.name = name;
@@ -426,7 +426,7 @@ class Raml10MethodConverter extends Converter {
 			model.parameters = parameters;
 		}
 		
-		if (ramlDef.hasOwnProperty('queryString')) {
+		if (ramlDef.hasOwnProperty('queryString')) {
 			const queryStrings: Parameter[] = [];
 			const queryString = new Parameter();
 			const definition: Definition = definitionConverter._import(ramlDef.queryString);
@@ -493,7 +493,7 @@ class Raml10MethodConverter extends Converter {
 
 		if (ramlDef.hasOwnProperty('protocols')){
 			if (_.isArray(ramlDef.protocols)){
-				const protocols: string[] = ramlDef.protocols.map(function(protocol){ return protocol.toLowerCase() }) ;
+				const protocols: string[] = ramlDef.protocols.map((protocol) => protocol.toLowerCase());
 				model.protocols = protocols;
 			} else {
 				const protocols: string[] = [ramlDef.protocols.toLowerCase()];
@@ -515,9 +515,9 @@ class Raml10MethodConverter extends Converter {
 					securityReq.scopes = scopes;
 				}
 			} else {
-        securityReq.name = security;
-        securityReq.scopes = [];
-      }
+				securityReq.name = security;
+				securityReq.scopes = [];
+			}
       
 			securedBy.push(securityReq);
 		});

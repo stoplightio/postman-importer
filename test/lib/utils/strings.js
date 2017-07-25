@@ -1,6 +1,7 @@
-const chai = require('chai'),
-	expect = chai.expect,
-	stringsHelper = require('../../../src/utils/strings');
+const describe = require('mocha/lib/mocha.js').describe;
+const expect = require('chai').expect;
+
+const stringsHelper = require('../../../src/utils/strings');
 
 describe('strings utility library', function () {
 	describe('computeOperationId', function () {

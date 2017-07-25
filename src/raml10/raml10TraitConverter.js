@@ -34,10 +34,10 @@ class Raml10TraitConverter extends Converter {
 			const methodModel: ?Method = model.method;
 			const method = methodConverter._export(methodModel);
 			delete method.displayName;
-		  for (const id in method) {
-		  	if (!method.hasOwnProperty(id)) continue;
-		  	
-		  	ramlDef[id] = method[id];
+			for (const id in method) {
+				if (!method.hasOwnProperty(id)) continue;
+				
+				ramlDef[id] = method[id];
 			}
 		}
 		

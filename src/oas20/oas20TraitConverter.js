@@ -108,7 +108,7 @@ class Oas20TraitConverter extends Converter {
 			const model = new Trait();
 			model.name = id;
 			this.currentParam = id;
-			const method: Method = this._import(traits[id])
+			const method: Method = this._import(traits[id]);
 			model.method = method;
 			result.push(model);
 		}
@@ -128,7 +128,7 @@ class Oas20TraitConverter extends Converter {
 	
 	static getTraitName(fullName) {
 		const index = fullName.indexOf(':');
-		return index < 0 ? fullName : fullName.substring(index + 1, fullName.lastIndexOf(':'))
+		return index < 0 ? fullName : fullName.substring(index + 1, fullName.lastIndexOf(':'));
 	}
 	
 }

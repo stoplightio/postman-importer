@@ -1,6 +1,6 @@
-const _ = require('lodash'),
-	RAMLExporter = require('./baseraml'),
-	jsonHelper = require('../utils/json');
+const _ = require('lodash');
+const RAMLExporter = require('./baseraml');
+const jsonHelper = require('../utils/json');
 
 class RAML08Exporter extends RAMLExporter {
 	constructor() {

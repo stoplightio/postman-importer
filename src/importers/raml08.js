@@ -1,8 +1,8 @@
-const RAMLImporter = require('./baseraml'),
-	jsonHelper = require('../utils/json'),
-	ramlHelper = require('../helpers/raml'),
-	Text = require('../entities/text'),
-	_ = require('lodash');
+const RAMLImporter = require('./baseraml');
+const jsonHelper = require('../utils/json');
+const ramlHelper = require('../helpers/raml');
+const Text = require('../entities/text');
+const _ = require('lodash');
 
 class RAML08Importer extends RAMLImporter {
 	constructor() {
@@ -21,7 +21,7 @@ class RAML08Importer extends RAMLImporter {
 			const schema = jsonHelper.parse(methodBody.schema);
 			if (schema.hasOwnProperty('definitions')) {
 				this.data.schemas = this.addDefinitions(schema, this.data.schemas);
-				methodBody.schema = jsonHelper.stringify(schema)
+				methodBody.schema = jsonHelper.stringify(schema);
 			}
 
 			data.body = this._mapSchema(this.convertRefToModel(jsonHelper.parse(methodBody.schema), false));
@@ -86,7 +86,7 @@ class RAML08Importer extends RAMLImporter {
 			let val = definition[id];
 			if (!isProperty) {
 				if (id === 'items') {
-					if (_.isArray(val) && val.length == 0) {
+					if (_.isArray(val) && val.length === 0) {
 						definition[id] = {type: 'string'};
 					} else if (_.isArray(val) || val.hasOwnProperty('0')) {
 						for (const key in val) {
@@ -99,15 +99,15 @@ class RAML08Importer extends RAMLImporter {
 				}
 				else if (id === 'type') {
 					if (_.isArray(val)) {
-						if (val.length == 1)
+						if (val.length === 1)
 							val = val[0];
-						else if (val.length == 0) {
+						else if (val.length === 0) {
 							definition[id] = 'array';
 							definition['items'] = {type: 'string'};
 							val = 'array';
 						}
 					}
-					if (typeof val === 'string' && val != 'object' && ramlHelper.getRAML08ScalarTypes.indexOf(val) < 0) {
+					if (typeof val === 'string' && val !== 'object' && ramlHelper.getRAML08ScalarTypes.indexOf(val) < 0) {
 						definition[RAMLImporter.getCustomProperty('type')] = val;
 						definition.type = 'string';
 					}
@@ -119,11 +119,11 @@ class RAML08Importer extends RAMLImporter {
 				}
 			}
 			else {
-				definition[id] = this._mapSchema(val, isSchema, false)
+				definition[id] = this._mapSchema(val, isSchema, false);
 			}
 		}
 		
-		if (definition.required && definition.required.length == 0) {
+		if (definition.required && definition.required.length === 0) {
 			delete definition.required;
 		}
 		return definition;

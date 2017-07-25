@@ -1,13 +1,13 @@
-const Exporter = require('./exporter'),
-	jsonHelper = require('../utils/json.js'),
-	stringHelper = require('../utils/strings.js'),
-	urlHelper = require('../utils/url'),
-	SwaggerDefinition = require('../entities/swagger/definition'),
-	swaggerHelper = require('../helpers/swagger'),
-	xmlHelper = require('../utils/xml.js'),
-	_ = require('lodash'),
-	arrayHelper = require('../utils/array.js'),
-	url = require('url');
+const Exporter = require('./exporter');
+const jsonHelper = require('../utils/json.js');
+const stringHelper = require('../utils/strings.js');
+const urlHelper = require('../utils/url');
+const SwaggerDefinition = require('../entities/swagger/definition');
+const swaggerHelper = require('../helpers/swagger');
+const xmlHelper = require('../utils/xml.js');
+const _ = require('lodash');
+const arrayHelper = require('../utils/array.js');
+const url = require('url');
 
 class Swagger extends Exporter {
 	constructor() {
@@ -15,8 +15,8 @@ class Swagger extends Exporter {
 	}
 
 	_getResponseTypes(endpoint, defaultResponseType) {
-		const defRespType = defaultResponseType || [],
-			produces = endpoint.Produces || [];
+		const defRespType = defaultResponseType || [];
+		const produces = endpoint.Produces || [];
 		
 		return produces.reduce(function (result, mimeType) {
 			if (result.indexOf(mimeType) === -1 &&
@@ -29,10 +29,10 @@ class Swagger extends Exporter {
 	}
 	
 	_getRequestTypes(endpoint, parameters, defaultRequestType) {
-		const result = [],
-			typesToInclude = ['multipart/form-data', 'application/x-www-form-urlencoded'],
-			consumes = endpoint.Consumes || [],
-			defReqType = defaultRequestType || [];
+		const result = [];
+		const typesToInclude = ['multipart/form-data', 'application/x-www-form-urlencoded'];
+		const consumes = endpoint.Consumes || [];
+		const defReqType = defaultRequestType || [];
 		
 		for (const i in parameters) {
 			if (!parameters.hasOwnProperty(i)) continue;
@@ -70,11 +70,12 @@ class Swagger extends Exporter {
 	
 	static _validateParameters(parameters) {
 		parameters = jsonHelper.orderByKeys(parameters, ['$ref', 'name', 'in', 'description', 'required', 'schema', 'type']);
-		const validTypes = ['string', 'number', 'integer', 'boolean', 'array', 'file'], defaultType = 'string';
+		const validTypes = ['string', 'number', 'integer', 'boolean', 'array', 'file'];
+		const defaultType = 'string';
 		for (const i in parameters) {
 			if (!parameters.hasOwnProperty(i)) continue;
 			
-			if (parameters[i].in && parameters[i].in != 'body') {
+			if (parameters[i].in && parameters[i].in !== 'body') {
 				if (Array.isArray(parameters[i].type)) {
 					if (parameters[i].type.length > 0) {
 						parameters[i].type = parameters[i].type[0];
@@ -387,7 +388,7 @@ class Swagger extends Exporter {
 	mapHeaderProperties(headers){
 		for (const i in headers) {
 			if (!headers.hasOwnProperty(i)) continue;
-      let header = headers[i];
+			let header = headers[i];
 			if (header.hasOwnProperty('required')) {
 				this.addExtension(header, 'x-raml-required', header['required']);
 				delete header.required;
@@ -453,7 +454,7 @@ class Swagger extends Exporter {
 
 		if (!jsonHelper.isEmptySchema(body)) {
 			//make sure body isn't empty
-			const regex = /\"type\":[ ]*\"file\"|\"type\":[ ]*\"binary\"/;
+			const regex = /"type":[ ]*"file"|"type":[ ]*"binary"/;
 			//export as formData only if schema includes file type property
 			if (jsonHelper.stringify(slRequestBody.body, 4).match(regex) ||
 				(!_.isEmpty(requestTypes) && ['multipart/form-data', 'application/x-www-form-urlencoded'].indexOf(requestTypes[0]) !== -1)) {
@@ -583,7 +584,7 @@ class Swagger extends Exporter {
 			}
 
 			if (_.startsWith(id, oldId)) {
-				const replaceId = _.replace(id, new RegExp(oldId,"g"), newId);
+				const replaceId = _.replace(id, new RegExp(oldId,'g'), newId);
 				this.addExtension(object, replaceId, object[id]);
 				delete object[id];
 			}
@@ -594,16 +595,16 @@ class Swagger extends Exporter {
 	convertRefFromModel(object, isSchema, isProperty) {
 		if (xmlHelper.isXml(object)) {
 			const o = object;
-			object = {type: "object"};
+			object = {type: 'object'};
 			this.addExtension(object, 'x-raml-xsd-definition', o);
 		}
-		if (object.hasOwnProperty('definitions') && object.hasOwnProperty('items') && object.type == 'array') {
+		if (object.hasOwnProperty('definitions') && object.hasOwnProperty('items') && object.type === 'array') {
 			object = Swagger.convertDefinitions(object);
 		}
 		for (let id in object) {
 			if (!object.hasOwnProperty(id) || swaggerHelper.isExtension(id)) continue;
 			const val = object[id];
-			if (id == 'allOf') {
+			if (id === 'allOf') {
 				const allOf = object.allOf;
 				for (const key in allOf) {
 					if (!allOf.hasOwnProperty(key)) continue;
@@ -623,11 +624,11 @@ class Swagger extends Exporter {
 				this.addExtension(object, 'x-raml-xsd-definition', val);
 				delete object[id];
 			} else if (typeof val === 'string') {
-				if (id == 'ref') {
+				if (id === 'ref') {
 					object.$ref = '#/definitions/' + val;
 					delete object[id];
 					id = '$ref';
-				} else if (id == 'include') {
+				} else if (id === 'include') {
 					object.$ref = val;
 					delete object[id];
 					id = '$ref';
@@ -637,10 +638,10 @@ class Swagger extends Exporter {
 					object = this._convertExamples(object, isSchema);
 					id = 'example';
 				} else if (id !== 'xml'){
-					object[id] = this.convertRefFromModel(val, isSchema, id == 'properties' && !isProperty);
+					object[id] = this.convertRefFromModel(val, isSchema, id === 'properties' && !isProperty);
 				}
 			}
-			if (!_.isArray(object) && typeof object == 'object' && !isProperty && swaggerHelper.getSupportedSchemaFields.indexOf(id) < 0 && !_.startsWith(id, 'x-raml')){
+			if (!_.isArray(object) && typeof object === 'object' && !isProperty && swaggerHelper.getSupportedSchemaFields.indexOf(id) < 0 && !_.startsWith(id, 'x-raml')){
 				this.addExtension(object, 'x-raml-' + id, val);
 				delete object[id];
 			}
@@ -779,8 +780,8 @@ class Swagger extends Exporter {
 			}
 			
 			for (const i in trait.responses) {
-				const res = trait.responses[i],
-					code = (res.codes && res.codes.length > 0 && parseInt(res.codes[0]) ? res.codes[0] : 'default');
+				const res = trait.responses[i];
+				const code = (res.codes && res.codes.length > 0 && parseInt(res.codes[0]) ? res.codes[0] : 'default');
 				
 				result[code] = {
 					$ref: '#/responses/' + stringHelper.computeTraitName(trait.name, code)
@@ -970,7 +971,7 @@ class Swagger extends Exporter {
 					this.addExtension(response['schema'], 'x-raml-type', response['schema']['$ref']);
 					delete response['schema']['$ref'];
 				}
-        responses[responseName] = response;
+				responses[responseName] = response;
 			}
 		}
 		

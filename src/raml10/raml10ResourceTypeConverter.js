@@ -117,7 +117,7 @@ class Raml10ResourceTypeConverter extends Converter {
 				if (!def.hasOwnProperty(id) || !validMethods.includes(id)) continue;
 				
 				const value = def[id];
-				const method: Method = methodConverter._import(value)
+				const method: Method = methodConverter._import(value);
 				methods.push(method);
 			}
 			if (!_.isEmpty(methods)) resource.methods = methods;

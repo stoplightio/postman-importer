@@ -72,7 +72,7 @@ class Raml10DefinitionConverter extends Converter {
 			this._convertFromInternalType(ramlDef);
 		}
 		
-		if (ramlDef.type != 'string') {
+		if (ramlDef.type !== 'string') {
 			if (ramlDef.hasOwnProperty('minLength')) delete ramlDef.minLength;
 			if (ramlDef.hasOwnProperty('maxLength')) delete ramlDef.maxLength;
 		}
@@ -84,7 +84,7 @@ class Raml10DefinitionConverter extends Converter {
 				items.type = items.format;
 				delete items.format;
 			}
-			if (ramlDef.type != 'array') ramlDef.type = 'array';
+			if (ramlDef.type !== 'array') ramlDef.type = 'array';
 			if (ramlDef.hasOwnProperty('enum')) delete ramlDef.enum;
 			ramlDef.items = items;
 		}
@@ -110,7 +110,7 @@ class Raml10DefinitionConverter extends Converter {
 					ramlDef.type = val;
 				}
 			}
-      ramlDef.type = stringHelper.checkAndReplaceInvalidChars(model.reference, ramlHelper.getValidCharacters, ramlHelper.getReplacementCharacter);
+			ramlDef.type = stringHelper.checkAndReplaceInvalidChars(model.reference, ramlHelper.getValidCharacters, ramlHelper.getReplacementCharacter);
 		}
 
 		if (model.hasOwnProperty('_enum') && model._enum != null) {
@@ -275,7 +275,7 @@ class Raml10DefinitionConverter extends Converter {
 		});
 		_.keys(attrIdMap).map(id => {
 			const value = result[id];
-			if (value != undefined) {
+			if (value != null) {
 				result[attrIdMap[id]] = value;
 				delete result[id];
 			}
@@ -494,7 +494,7 @@ class Raml10DefinitionConverter extends Converter {
 					//union type property
 					if (_.isArray(value)) {
 						const val = {name: id, type: []};
-						value.map( v => {val.type.push(Raml10DefinitionConverter._readTypeAttribute(v.type))});
+						value.map( v => {val.type.push(Raml10DefinitionConverter._readTypeAttribute(v.type));});
 						value = val;
 					}
 
@@ -535,13 +535,13 @@ class Raml10DefinitionConverter extends Converter {
 					const modelItems = new Definition();
 					modelItems.type = 'string';
 					model.items = modelItems;
-				} else if (ramlDef.items.length == 1) {
+				} else if (ramlDef.items.length === 1) {
 					const items = ramlDef.items[0];
 					model.items = this._import(items);
 				} else {
 					const modelItems: Definition[] = [];
 					for (let i = 0; i < ramlDef.items.length; i++) {
-						const items: Definition = this._import(ramlDef.items[i])
+						const items: Definition = this._import(ramlDef.items[i]);
 						modelItems.push(items);
 					}
 					if (!_.isEmpty(modelItems)) model.itemsList = modelItems;
@@ -552,7 +552,7 @@ class Raml10DefinitionConverter extends Converter {
 			}
 		}
 		
-		if (ramlDef.hasOwnProperty('schema')) {
+		if (ramlDef.hasOwnProperty('schema')) {
 			// TODO: check lrg cases
 			// const schema: Definition = this._export(ramlDef.schema);
 			// model.schema = schema;
@@ -630,7 +630,7 @@ class Raml10DefinitionConverter extends Converter {
 	}
 
 	_convertSimpleType(entry:string, model:any) {
-		if (typeof entry != 'string' || entry == undefined) return;
+		if (typeof entry !== 'string' || entry === undefined) return;
 		let val;
 		if (entry.indexOf('|') < 0) {
 			val = entry.replace('(', '').replace(')', '');
@@ -650,14 +650,14 @@ class Raml10DefinitionConverter extends Converter {
 				{
 					type: 'array',
 					items: {}
-				})
+				});
 
 			this._convertSimpleType(val, model.items);
 		} else {
 			const isRaml08Version = ramlHelper.isRaml08Version(this.version);
 			const builtinTypes = isRaml08Version ? raml08BuiltinTypes : raml10BuiltinTypes;
 			if (builtinTypes.indexOf(val) < 0) {
-				if (isRaml08Version && this.def && this.def.schemas && !this.def.schemas.map(schema => { return _.keys(schema)[0] }).includes(val))
+				if (isRaml08Version && this.def && this.def.schemas && !this.def.schemas.map(schema => { return _.keys(schema)[0]; }).includes(val))
 					model.type = 'string';
 				else model.reference = val;
 			}
@@ -774,8 +774,8 @@ class Raml10DefinitionConverter extends Converter {
 		} else if (internalType === 'binary') {
 			ramlDef.type = 'string';
 			const id = this.annotationPrefix + '-format';
-      Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
-      ramlDef['(' + id + ')'] = 'binary';
+			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			ramlDef['(' + id + ')'] = 'binary';
 		} else if (internalType === 'password') {
 			ramlDef.type = 'string';
 			const id = this.annotationPrefix + '-format';
@@ -807,7 +807,7 @@ class Raml10DefinitionConverter extends Converter {
 const scalarNumberTypes = ['number', 'integer'];
 const scalarTypes = _.concat(scalarNumberTypes, ['string', 'boolean', 'datetime', 'date-only', 'file', 'time-only', 'datetime-only', 'nil', 'null', 'timestamp']);
 const integerValidFormats = ['int', 'int8', 'int16', 'int32', 'int64'];
-const numberValidFormats = _.concat(integerValidFormats, ['long', 'float', 'double']);
+const numberValidFormats = _.concat(integerValidFormats, ['long', 'float', 'double']); // eslint-disable-line no-unused-vars,FIXME
 const raml10BuiltinTypes = _.concat(scalarTypes, ['any', 'array', 'object', 'union']);
 const raml08BuiltinTypes = _.concat(raml10BuiltinTypes, ['date']);
 

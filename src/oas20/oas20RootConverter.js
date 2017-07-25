@@ -165,11 +165,11 @@ class Oas20RootConverter extends Converter {
 			if (baseUri.host) {
 				baseProtocol = model.protocols ? model.protocols[0] : 'http';
 			}
-			baseUri.uri = (baseProtocol ? baseProtocol + '://' : "") +
-										(baseUri.host ? baseUri.host : "") +
-										(baseUri.basePath? baseUri.basePath : "");
+			baseUri.uri = (baseProtocol ? baseProtocol + '://' : '') +
+										(baseUri.host ? baseUri.host : '') +
+										(baseUri.basePath? baseUri.basePath : '');
 		}
-		if (!_.isEmpty(baseUri) && baseUri.uri !== "") model.baseUri = baseUri;
+		if (!_.isEmpty(baseUri) && baseUri.uri !== '') model.baseUri = baseUri;
 
 		const mediaType = new MediaType();
 		if (oasDef.hasOwnProperty('consumes')) {

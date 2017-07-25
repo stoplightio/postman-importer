@@ -1,13 +1,12 @@
-const
-	Endpoint = require('../entities/endpoint'),
-	Importer = require('./importer'),
-	Project = require('../entities/project'),
-	jsonHelper = require('../utils/json'),
-	xmlHelper = require('../utils/xml'),
-	ramlHelper = require('../helpers/raml'),
-	Schema = require('../entities/schema'),
-	url = require('url'),
-	_ = require('lodash');
+const Endpoint = require('../entities/endpoint');
+const Importer = require('./importer');
+const Project = require('../entities/project');
+const jsonHelper = require('../utils/json');
+const xmlHelper = require('../utils/xml');
+const ramlHelper = require('../helpers/raml');
+const Schema = require('../entities/schema');
+const url = require('url');
+const _ = require('lodash');
 
 const toJSONOptions = {
 	serializeMetadata: false
@@ -208,7 +207,7 @@ class RAMLImporter extends Importer {
 	
 	_mapQueryString(queryString) {
 		const result = queryString;
-    delete result.typePropertyKind;
+		delete result.typePropertyKind;
 
 		RAMLImporter._mapTypesFormats(queryString, false);
 		
@@ -259,7 +258,7 @@ class RAMLImporter extends Importer {
 	
 	static _mapTypesFormats(object, isSchema) {
 		if (!object.hasOwnProperty('type') || object.type === 'object') return object;
-		const type = _.isArray(object.type) && object.type.length == 1 ? object.type[0]: object.type;
+		const type = _.isArray(object.type) && object.type.length === 1 ? object.type[0]: object.type;
 		object.type = type;
 		switch (type) {
 			case 'date-only':
@@ -276,7 +275,7 @@ class RAMLImporter extends Importer {
 				break;
 			case 'datetime':
 				object.type = 'string';
-				if (object.format == 'rfc3339' || !object.hasOwnProperty('format')) {
+				if (object.format === 'rfc3339' || !object.hasOwnProperty('format')) {
 					object.format = 'date-time';
 				} else {
 					object[RAMLImporter.getCustomProperty('format')] = object.format;
@@ -422,7 +421,7 @@ class RAMLImporter extends Importer {
 			return this.isValidRefValue(values);
 		}
 		let result = true;
-		for (let index = 0; index < values.length && result == true; index++) {
+		for (let index = 0; index < values.length && result === true; index++) {
 			result = this.isValidRefValue(values[index]);
 		}
 		
@@ -456,7 +455,7 @@ class RAMLImporter extends Importer {
 			let val = object[id];
 			if (!val) continue;
 			if (id === 'type') {
-				if (_.isArray(object[id]) && object[id].length == 1) object[id] = object[id][0];
+				if (_.isArray(object[id]) && object[id].length === 1) object[id] = object[id][0];
 				val = object[id];
 				if (val !== 'object' && typeof val === 'string' && !xmlHelper.isXml(val)) {
 					object[id] = RAMLImporter._modifyUnionType(val);
@@ -487,16 +486,16 @@ class RAMLImporter extends Importer {
 						return object;
 					}
 				}
-				if (id == 'fixedFacets') { //delete garbage
+				if (id === 'fixedFacets') { //delete garbage
 					delete object[id];
 				} else {
-					if (id == 'xml') { //no process xml object
+					if (id === 'xml') { //no process xml object
 						object[id] = val;
 					} else {
 						object[id] = this.convertRefToModel(val, isSchema, id === 'properties' && !isProperty);
 					}
 				}
-			} else if (id == 'name') { //delete garbage
+			} else if (id === 'name') { //delete garbage
 				delete object[id];
 			}
 		}
@@ -683,7 +682,7 @@ class RAMLImporter extends Importer {
 					reject(e);
 				}
 			}, e => {
-        reject(e);
+				reject(e);
 			});
 		});
 	}
@@ -694,7 +693,7 @@ class RAMLImporter extends Importer {
 				const parser = require('raml-1-parser');
 				const parsedData = parser.parseRAMLSync(data, RAMLImporter._options(options));
 				if (parsedData.name === 'Error') {
-					reject(error);
+					reject(parsedData /* error */);
 				} else {
 					this.data = parsedData.expand(true).toJSON(toJSONOptions);
 					resolve();
@@ -706,7 +705,7 @@ class RAMLImporter extends Importer {
 	}
 
 	static _options(options) {
-    const validate = options && (options.validate === true || options.validateImport === true);
+		const validate = options && (options.validate === true || options.validateImport === true);
 		const parseOptions = {
 			attributeDefaults: false,
 			rejectOnErrors: validate

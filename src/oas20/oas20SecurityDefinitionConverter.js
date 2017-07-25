@@ -68,7 +68,7 @@ class Oas20SecurityDefinitionConverter extends Converter {
 		}
 
 		switch (oasDef.type){
-			case 'oauth2' :
+			case 'oauth2' : {
 				const authorizationUrlValidFlows = ['implicit', 'accessCode'];
 				const tokenUrlValidFlows = ['application', 'password', 'accessCode'];
 				if (model.hasOwnProperty('authorization') && model.authorization) oasDef.flow = model.authorization[0];
@@ -83,6 +83,7 @@ class Oas20SecurityDefinitionConverter extends Converter {
 					}
 				}
 				break;
+			}
 
 			case 'apiKey' :
 				const describedBy: ?Method = model.describedBy;
@@ -92,11 +93,12 @@ class Oas20SecurityDefinitionConverter extends Converter {
 				} else if (describedBy.hasOwnProperty('headers') && !_.isEmpty(describedBy.headers) && describedBy.headers != null) {
 					oasDef.in = 'header';
 					oasDef.name = describedBy.headers[0].name;
-				} else if (describedBy.hasOwnProperty('parameters') && !_.isEmpty(describedBy.parameters) && describedBy.parameters != null){
+				} else if (describedBy.hasOwnProperty('parameters') && !_.isEmpty(describedBy.parameters) && describedBy.parameters != null) {
 					oasDef.in = 'query';
 					oasDef.name = describedBy.parameters[0].name;
 				}
 				break;
+			}
 		}
 
 		return oasDef;

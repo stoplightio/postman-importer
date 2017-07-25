@@ -130,7 +130,7 @@ class Oas20DefinitionConverter extends Converter {
 				if (typeModel.hasOwnProperty('internalType') || typeModel.hasOwnProperty('$ref')) allOf.push(this._export(value));
 			});
 
-			if (allOf.length == 1) oasDef.type = allOf[0].type;
+			if (allOf.length === 1) oasDef.type = allOf[0].type;
 			else oasDef.allOf = allOf;
 		}
 		
@@ -259,13 +259,13 @@ class Oas20DefinitionConverter extends Converter {
 			const composition: Definition[] = [];
 
 			_.values(oasDef['allOf']).map(val => {
-				composition.push(this._import(val))
-			})
+				composition.push(this._import(val));
+			});
 
 			model.compositionType = composition;
 		}
 
-		if (oasDef.hasOwnProperty('schema')) {
+		if (oasDef.hasOwnProperty('schema')) {
 			model.schema = this._import(oasDef.schema);
 		}
 
@@ -372,7 +372,7 @@ class Oas20DefinitionConverter extends Converter {
 			if (level === 'type') {
 				oasDef.type = 'object';
 			} else if (level === 'property'){
-				oasDef.type = 'string'
+				oasDef.type = 'string';
 			}
 		} else if (internalType === 'timestamp') {
 			oasDef.type = 'string';

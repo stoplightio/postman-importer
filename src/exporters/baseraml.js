@@ -1,9 +1,9 @@
-const _ = require('lodash'),
-	Exporter = require('./exporter'),
-	ramlHelper = require('../helpers/raml'),
-	stringHelper = require('../utils/strings'),
-	jsonHelper = require('../utils/json'),
-	YAML = require('js-yaml');
+const _ = require('lodash');
+const Exporter = require('./exporter');
+const ramlHelper = require('../helpers/raml');
+const stringHelper = require('../utils/strings');
+const jsonHelper = require('../utils/json');
+const YAML = require('js-yaml');
 
 class RAMLDefinition {
 	constructor(title, env) {
@@ -296,7 +296,7 @@ class RAMLExporter extends Exporter {
 			const resBody = responseData[i];
 			if (!_.isEmpty(resBody.codes)) {
 				const code = resBody.codes[0];
-				if (parseInt(code) == 'NaN' || _.startsWith(code, 'x-')) {
+				if (isNaN(parseInt(code)) || _.startsWith(code, 'x-')) {
 					continue;
 				}
 				
@@ -377,12 +377,12 @@ class RAMLExporter extends Exporter {
 		if (object.hasOwnProperty('enum')){
 			if (object.type === 'date-only'){
 				for (const index in object.enum){
-          if (!object.enum.hasOwnProperty(index)) continue;
+					if (!object.enum.hasOwnProperty(index)) continue;
 					let val = object.enum[index];
 					if (ramlHelper.getDateOnlyFormat.test(val)){
-						val = val.replace(/_/g,"-");
-            val = val.replace(new RegExp("/","g"), "-");
-            object['enum'][index] = val;
+						val = val.replace(/_/g,'-');
+						val = val.replace(new RegExp('/','g'), '-');
+						object['enum'][index] = val;
 					}
 				}
 			}
@@ -392,7 +392,7 @@ class RAMLExporter extends Exporter {
 	static mapProtocols(protocols) {
 		const validProtocols = [];
 		for (const i in protocols) {
-			if (!protocols.hasOwnProperty(i) || ((_.toLower(protocols[i]) != 'http') && (_.toLower(protocols[i]) != 'https'))) {
+			if (!protocols.hasOwnProperty(i) || ((_.toLower(protocols[i]) !== 'http') && (_.toLower(protocols[i]) !== 'https'))) {
 				//RAML incompatible formats( 'ws' etc)
 				continue;
 			}
@@ -403,7 +403,7 @@ class RAMLExporter extends Exporter {
 	
 	_mapTextSections(slTexts) {
 		const results = [];
-		if (!slTexts) return resilts;
+		if (!slTexts) return results;
 		
 		for (const i in slTexts) {
 			if (!slTexts.hasOwnProperty(i)) continue;
@@ -432,8 +432,8 @@ class RAMLExporter extends Exporter {
 				let val = object[id];
 				if (insideProperties)
 					val = RAMLExporter.convertSchemaTitles(val, 'property', ramlDef);
-				if (id == '$ref' && !insideProperties) {
-					if (val.indexOf('#/') == 0) {
+				if (id === '$ref' && !insideProperties) {
+					if (val.indexOf('#/') === 0) {
 						object.type = val.replace('#/definitions/', '');
 						//check if object.type has invalid characters.
 						object.type = stringHelper.checkAndReplaceInvalidChars(object.type, ramlHelper.getValidCharacters, ramlHelper.getReplacementCharacter);
@@ -441,7 +441,7 @@ class RAMLExporter extends Exporter {
 						object.type = '!include ' + val.replace('#/', '#');
 					}
 					delete object[id];
-				} else if (id == 'type' && !insideProperties) {
+				} else if (id === 'type' && !insideProperties) {
 					if (val === 'null')
 						object.type = 'nil';
 					else if (typeof val === 'object') {
@@ -451,10 +451,10 @@ class RAMLExporter extends Exporter {
 						}
 					}
 				} else if (typeof val === 'string') {
-					if (id == 'ref') {
+					if (id === 'ref') {
 						object.type = val;
 						delete object[id];
-					} else if (id == 'include') {
+					} else if (id === 'include') {
 						object.type = '!include ' + val;
 						delete object[id];
 					} else if (id === 'collectionFormat') {
@@ -484,13 +484,13 @@ class RAMLExporter extends Exporter {
 					RAMLExporter._createAnnotation(object, id, object[id], ramlDef);
 					delete object[id];
 				} else if (!ramlHelper.isNumberType(object.type) && (id === 'maximum' || id === 'minimum')) {
-          RAMLExporter._createAnnotation(object, id, object[id], ramlDef);
-          delete object[id];
-        }
-        if (ramlHelper.isNumberType(object.type) && id === 'example') {
+					RAMLExporter._createAnnotation(object, id, object[id], ramlDef);
+					delete object[id];
+				}
+				if (ramlHelper.isNumberType(object.type) && id === 'example') {
 					object[id] = _.toNumber(object[id]);
-        }
-        if (val.hasOwnProperty('readOnly') && id !== 'properties') {
+				}
+				if (val.hasOwnProperty('readOnly') && id !== 'properties') {
 					RAMLExporter._createAnnotation(val, 'readOnly', val['readOnly'], ramlDef);
 					delete val['readOnly'];
 				}
@@ -639,8 +639,8 @@ class RAMLExporter extends Exporter {
 			case 'maximum':
 			case 'minimum':
 				definition = {
-          allowedTargets: 'TypeDeclaration',
-          type: 'number'
+					allowedTargets: 'TypeDeclaration',
+					type: 'number'
 				};
 				break;
 
@@ -670,18 +670,18 @@ class RAMLExporter extends Exporter {
 	}
 	
 	static _mapFormats(object, ramlDef) {
-    const intValidFormats = ['int', 'int8', 'int16', 'int32', 'int64'];
-		if (object && !object.hasOwnProperty('type') && object.format == 'string') {
+		const intValidFormats = ['int', 'int8', 'int16', 'int32', 'int64'];
+		if (object && !object.hasOwnProperty('type') && object.format === 'string') {
 			object['type'] = 'string';
 			delete object.format;
-		} else if (object && object.type == 'string'){
-			if (object.format == 'byte' || object.format == 'binary' || object.format == 'password' || object.format == 'uuid') {
+		} else if (object && object.type === 'string'){
+			if (object.format === 'byte' || object.format === 'binary' || object.format === 'password' || object.format === 'uuid') {
 				RAMLExporter._createAnnotation(object, 'format', object.format, ramlDef);
 				delete object.format;
-			} else if (object.format == 'date') {
+			} else if (object.format === 'date') {
 				object['type'] = 'date-only';
 				delete object.format;
-			} else if (object.format == 'date-time') {
+			} else if (object.format === 'date-time') {
 				object['type'] = 'datetime';
 				object['format'] = 'rfc3339';
 			}
@@ -691,15 +691,15 @@ class RAMLExporter extends Exporter {
 					delete object.format;
 				}
 			}
-		} else if (object && object.type == 'integer') {
+		} else if (object && object.type === 'integer') {
 			if (intValidFormats.indexOf(object.format) < 0)
 				delete object.format;
-		} else if (object && object.type == 'number') {
+		} else if (object && object.type === 'number') {
 			if (intValidFormats.concat(['long', 'float', 'double']).indexOf(object.format) < 0) {
-        if (object.format == 'integer')
-          object['type'] = 'integer';
-        delete object.format;
-      }
+				if (object.format === 'integer')
+					object['type'] = 'integer';
+				delete object.format;
+			}
 		}
 	}
 	
@@ -1237,9 +1237,9 @@ class RAMLExporter extends Exporter {
 	
 	_unescapeYamlIncludes(yaml) {
 		const start = yaml.indexOf("'!include ");
-		if (start == -1) return yaml;
+		if (start === -1) return yaml;
 		const end = yaml.indexOf("'", start + 1);
-		if (end == -1) return yaml;
+		if (end === -1) return yaml;
 		return yaml.substring(0, start) + yaml.substring(start + 1, end) + this._unescapeYamlIncludes(yaml.substring(end + 1));
 	}
 	
