@@ -30,6 +30,41 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  extension1: any
+  extension2: any
+  extension3: any
+  extension4: any
+  extension5: any
+  extension6: any
+  extension7: any
+  oas-paths:
+    type: any
+    allowedTargets: API
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-allowEmptyValue:
+    type: boolean
+  oas-collectionFormat:
+    type: string
+  oas-exclusiveMaximum:
+    type: boolean
+  oas-exclusiveMinimum:
+    type: boolean
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
   oas-info:
     properties:
       termsOfService?: string
@@ -43,61 +78,26 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-x-extension4: any
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-    allowedTargets:
-      - API
-      - Method
-      - TypeDeclaration
-  oas-x-extension7: any
-  oas-x-extension2: any
-  oas-x-extension3: any
-  oas-x-extension5: any
-  oas-paths:
-    type: any
-    allowedTargets: API
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-x-extension8: any
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
   oas-responses-default:
     type: any
     allowedTargets: Method
-  oas-collectionFormat:
-    type: string
-  oas-allowEmptyValue:
-    type: boolean
-  oas-exclusiveMaximum:
-    type: boolean
-  oas-exclusiveMinimum:
-    type: boolean
-  oas-deprecated:
-    type: boolean
-    allowedTargets: Method
-  oas-x-extension1: any
 (oas-info):
-  (oas-x-extension4): value4
+  (extension4): value4
   contact:
     email: apiteam@swagger.io
-    (oas-x-extension2): value2
+    (extension2): value2
   termsOfService: 'http://swagger.io/terms/'
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-    (oas-x-extension3): value3
+    (extension3): value3
 (oas-externalDocs):
   description: Find out more about Swagger
   url: 'http://swagger.io'
-  (oas-x-extension7): value7
+  (extension7): value7
 securitySchemes:
   petstore_auth:
     type: OAuth 2.0
@@ -109,6 +109,7 @@ securitySchemes:
       scopes:
         - 'write:pets'
         - 'read:pets'
+    (extension6): value6
   api_key:
     type: Pass Through
     describedBy:
@@ -116,14 +117,13 @@ securitySchemes:
         api_key:
           type: string
 (oas-paths):
-  (oas-x-extension5): value5
+  (extension5): value5
 /store:
   /order:
     '/{orderId}':
       uriParameters:
         orderId:
           description: ID of the order that needs to be deleted
-          required: true
           type: integer
           minimum: 1
           format: int64
@@ -135,6 +135,8 @@ securitySchemes:
           '200':
             body:
               application/json:
+                type: Order
+              application/xml:
                 type: Order
             description: successful operation
           '400':
@@ -167,6 +169,8 @@ securitySchemes:
           body:
             application/json:
               type: Order
+            application/xml:
+              type: Order
           description: successful operation
         '400':
           description: Invalid Order
@@ -184,8 +188,8 @@ securitySchemes:
               type: object
               properties:
                 //:
-                  type: integer
                   format: int32
+                  type: integer
           description: successful operation
       securedBy:
         - api_key
@@ -195,8 +199,7 @@ securitySchemes:
   '/{username}':
     uriParameters:
       username:
-        description: 'The name that needs to be fetched. Use user1 for testing. '
-        required: true
+        description: 'The name that needs to be deleted'
         type: string
     delete:
       displayName: deleteUser
@@ -232,6 +235,8 @@ securitySchemes:
         '200':
           body:
             application/json:
+              type: User
+            application/xml:
               type: User
           description: successful operation
         '400':
@@ -300,6 +305,8 @@ securitySchemes:
           body:
             application/json:
               type: string
+            application/xml:
+              type: string
           description: successful operation
           headers:
             X-Rate-Limit:
@@ -315,11 +322,9 @@ securitySchemes:
       queryParameters:
         username:
           description: The user name for login
-          required: true
           type: string
         password:
           description: The password for login in clear text
-          required: true
           type: string
           (oas-allowEmptyValue): true
           (oas-exclusiveMaximum): true
@@ -328,13 +333,17 @@ securitySchemes:
         - user
 /pet:
   post:
-    (oas-x-extension8): value8
+    (extension6): value6
     displayName: addPet
     (oas-summary): Add a new pet to the store
     protocols:
       - HTTPS
     body:
       application/json:
+        type: Pet
+        (oas-body-name): body
+        description: Pet object that needs to be added to the store
+      application/xml:
         type: Pet
         (oas-body-name): body
         description: Pet object that needs to be added to the store
@@ -360,13 +369,16 @@ securitySchemes:
               type: array
               items:
                 type: Pet
+            application/xml:
+              type: array
+              items:
+                type: Pet
           description: successful operation
         '400':
           description: Invalid status value
       queryParameters:
         status:
           description: Status values that need to be considered for filter
-          required: true
           type: array
           items:
             type: string
@@ -386,8 +398,7 @@ securitySchemes:
   '/{petId}':
     uriParameters:
       petId:
-        description: ID of pet that needs to be updated
-        required: true
+        description: Pet id to delete
         type: integer
         format: int64
     get:
@@ -398,6 +409,8 @@ securitySchemes:
         '200':
           body:
             application/json:
+              type: Pet
+            application/xml:
               type: Pet
           description: successful operation
         '400':
@@ -459,7 +472,7 @@ securitySchemes:
       displayName: updatePetWithForm
       (oas-summary): Updates a pet in the store with form data
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             name:
               description: Updated name of the pet
@@ -494,13 +507,16 @@ securitySchemes:
               type: array
               items:
                 type: Pet
+            application/xml:
+              type: array
+              items:
+                type: Pet
           description: successful operation
         '400':
           description: Invalid tag value
       queryParameters:
         tags:
           description: Tags to filter by
-          required: true
           type: array
           items:
             type: string
@@ -521,6 +537,10 @@ securitySchemes:
         type: Pet
         (oas-body-name): body
         description: Pet object that needs to be added to the store
+      application/xml:
+        type: Pet
+        (oas-body-name): body
+        description: Pet object that needs to be added to the store
     responses:
       '400':
         description: Invalid ID supplied
@@ -537,6 +557,7 @@ securitySchemes:
       - pet
 types:
   Order:
+    type: object
     properties:
       id:
         type: integer
@@ -569,6 +590,7 @@ types:
     xml:
       name: Order
   Category:
+    type: object
     properties:
       id:
         type: integer
@@ -580,6 +602,7 @@ types:
     xml:
       name: Category
   User:
+    type: object
     properties:
       id:
         type: integer
@@ -611,6 +634,7 @@ types:
     xml:
       name: User
   Tag:
+    type: object
     properties:
       id:
         type: integer
@@ -622,6 +646,7 @@ types:
     xml:
       name: Tag
   ApiResponse:
+    type: object
     properties:
       code:
         type: integer
@@ -634,6 +659,7 @@ types:
         type: string
         required: false
   Pet:
+    type: object
     properties:
       id:
         type: integer
@@ -670,4 +696,4 @@ types:
         required: false
     xml:
       name: Pet
-(oas-x-extension1): value1
+(extension1): value1

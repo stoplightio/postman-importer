@@ -1,0 +1,48 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+annotationTypes:
+  oas-body-name:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-responses-default:
+    allowedTargets: Method
+    type: any
+types:
+  pet:
+    type: string
+/names:
+  get:
+    body:
+      application/json:
+        type: pet
+        (oas-body-name): body
+      text/xml:
+        type: pet
+        (oas-body-name): body
+      application/xml:
+        type: pet
+        (oas-body-name): body
+    (oas-responses-default):
+      body:
+        application/json: {}
+/nicknames:
+  get:
+    body:
+      text/xml:
+        required: false
+        type: string
+        (oas-body-name): body
+    (oas-responses-default):
+      body:
+        application/json: {}
+/employees:
+  get:
+    body:
+      application/json:
+        required: false
+        type: string
+        (oas-body-name): body
+    (oas-responses-default):
+      body:
+        application/json: {}

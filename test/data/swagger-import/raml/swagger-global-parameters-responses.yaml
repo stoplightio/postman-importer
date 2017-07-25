@@ -8,41 +8,6 @@ mediaType:
 protocols:
   - HTTPS
 description: A simple API to learn how to write OpenAPI Specification.
-annotationTypes:
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-    allowedTargets:
-      - API
-      - Method
-      - TypeDeclaration
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-global-response-definition:
-    type: any
-    allowedTargets: Response
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-schema-title:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-responses: any
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -59,7 +24,6 @@ annotationTypes:
   '/{imageId}':
     uriParameters:
       imageId:
-        required: true
         type: string
     get:
       displayName: readImage
@@ -100,6 +64,14 @@ annotationTypes:
         '500':
           body:
             image/png:
+              type: Error
+            image/gif:
+              type: Error
+            image/jpeg:
+              type: Error
+            application/json:
+              type: Error
+            application/x-yaml:
               type: Error
           description: An unexpected error occured.
           headers:
@@ -160,7 +132,6 @@ traits:
       User-Agent:
         type: string
         description: All API consumers MUST provide a user agent
-        required: true
 (oas-responses):
   Standard500ErrorResponse:
     body:
@@ -184,3 +155,38 @@ traits:
         type: datetime
         description: When rate limit will be reset
         format: rfc3339
+annotationTypes:
+  oas-responses: any
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-global-response-definition:
+    type: any
+    allowedTargets: Response

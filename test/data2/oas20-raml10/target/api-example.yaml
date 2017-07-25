@@ -1,0 +1,248 @@
+#%RAML 1.0
+title: Swagger Sample App
+description: This is a sample server Petstore server.
+version: 1.0.1
+annotationTypes:
+  oas-body-name:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-responses-default:
+    allowedTargets: Method
+    type: any
+  oas-responses-example:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-info:
+    allowedTargets: 'API'
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+(oas-info):
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: API Support
+    url: 'http://www.swagger.io/support'
+    email: support@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+securitySchemes:
+  oauth2:
+    description: my oauth 2.0 security scheme.
+    type: OAuth 2.0
+    settings:
+      accessTokenUri: 'https://api.dropbox.com/1/oauth2/token'
+      authorizationGrants:
+        - client_credentials
+      scopes:
+        - 'write:pets'
+        - 'read:pets'
+  oauth22:
+    description: my oauth 2.0 security scheme. Version 2.
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'http://swagger2.io/api/oauth/dialog'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+  basicAuth:
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+    type: Basic Authentication
+  basicAuth2:
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2.
+    type: Basic Authentication
+  internalApiKey:
+    description: Api Key Authentication
+    type: Pass Through
+    describedBy:
+      headers:
+        api_key:
+          type: string
+  internalApiKey2:
+    description: Api Key Authentication. Version 2.
+    type: Pass Through
+    describedBy:
+      headers:
+        api_key2:
+          type: string
+  internalApiKey3:
+    description: Api Key Authentication. Version 3.
+    type: Pass Through
+    describedBy:
+      queryParameters:
+        api_key3:
+          type: string
+  internalApiKey4:
+    description: Api Key Authentication. Version 4.
+    type: Pass Through
+    describedBy:
+      queryParameters:
+        api_key4:
+          type: string
+types:
+  pet:
+    type: string
+/names:
+  get:
+    body:
+      application/json:
+        type: pet
+        (oas-body-name): body
+      text/xml:
+        type: pet
+        (oas-body-name): body
+      application/xml:
+        type: pet
+        (oas-body-name): body
+    (oas-responses-default):
+      body:
+        application/json: {}
+/lastnames:
+  get:
+    displayName: GET_lastnames
+    queryParameters:
+      age:
+        type: integer
+      name:
+        description: pet´s name
+        required: false
+        type: string
+      nickname:
+        type: string
+        required: false
+    (oas-responses-default):
+      body:
+        application/json: {}
+/nicknames:
+  get:
+    body:
+      text/xml:
+        type: string
+        required: false
+        (oas-body-name): body
+    (oas-responses-default):
+      body:
+        application/json: {}
+/employees:
+  get:
+    body:
+      application/json:
+        type: string
+        required: false
+        (oas-body-name): body
+    (oas-responses-default):
+      body:
+        application/json: {}
+/pets:
+  get:
+    responses:
+      '200':
+        body:
+          application/json: {}
+      '201':
+        body:
+          application/json:
+            example: Dog
+      '202':
+        body:
+          application/json:
+            example:
+              first: Dog
+              second: Cat
+      '203':
+        body:
+          application/json:
+            example:
+              - first: Dog
+              - second: Cat
+      '204':
+        body:
+          application/json:
+            example:
+              first: Dog
+      '205': {}
+      '206':
+        body:
+          application/json:
+            example: Dog
+      '207':
+        body:
+          application/json:
+            example:
+              first: Dog
+              second: Cat
+      '208':
+        body:
+          application/json:
+            example:
+              - first: Dog
+              - second: Cat
+      '209':
+        body:
+          application/json:
+            example:
+              first: Dog
+      '210':
+        body:
+          application/json:
+            (oas-responses-example):
+              - Dog
+              - Cat
+            example: Cat
+            type: object
+  '/{id}':
+    uriParameters:
+      id:
+        type: string
+    get:
+      responses:
+        '200':
+          body:
+            application/json:
+              example: 10
+    /name:
+      get:
+        responses:
+          '200':
+            body:
+              application/json:
+                example: Robert
+    /nickname:
+      get:
+        responses:
+          '200':
+            body:
+              application/json:
+                example: Bobby
+  /other:
+    get:
+      responses:
+        '200':
+          body:
+            application/json:
+              example: some example
+/employers:
+  get:
+    headers:
+      reviews:
+        description: Employee´s reviews
+        type: array
+        items:
+          type: string
+      names:
+        required: false
+        type: string
+      ages:
+        type: integer
+        required: false
+    (oas-responses-default):
+      body:
+        application/json: {}

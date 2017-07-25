@@ -24,6 +24,13 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-responses: any
+  oas-summary:
+    type: string
+    allowedTargets: Method
   oas-externalDocs:
     properties:
       description?: string
@@ -45,25 +52,18 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-summary:
+  oas-schema-title:
     type: string
-    allowedTargets: Method
+    allowedTargets: TypeDeclaration
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
-  oas-tags:
-    type: 'string[]'
+  oas-responses-default:
+    type: any
     allowedTargets: Method
   oas-global-response-definition:
     type: any
     allowedTargets: Response
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-schema-title:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-responses: any
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -93,7 +93,6 @@ annotationTypes:
   '/{username}':
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     post:
@@ -105,13 +104,11 @@ annotationTypes:
           properties:
             userData:
               description: The person's data
-              required: true
               type: string
       headers:
         userAgent:
           type: string
           description: All API consumers MUST provide a user agent
-          required: true
       responses:
         '204':
           description: Person succesfully created.
@@ -120,12 +117,16 @@ annotationTypes:
           description: Number of persons returned
           type: integer
           format: int32
-          required: true
 /persons2:
   get:
     displayName: readPerson2
     description: Returns a single person for its username.
     (oas-summary): Gets a person
+    body:
+      application/json:
+        (oas-body-name): userBody
+        description: The person body.
+        type: Person
     responses:
       '200':
         body:
@@ -138,18 +139,22 @@ annotationTypes:
   '/{username}':
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     get:
       displayName: readPerson
       description: Returns a single person for its username.
       (oas-summary): Gets a person
+      body:
+        multipart/form-data:
+          properties:
+            userData:
+              description: The person's data
+              type: string
       headers:
         userAgent:
           type: string
           description: All API consumers MUST provide a user agent
-          required: true
       (oas-responses-default):
         description: A totally unexpected response
         headers:
@@ -205,7 +210,6 @@ annotationTypes:
           description: Number of persons returned
           type: integer
           format: int32
-          required: true
       (oas-tags):
         - Persons
 types:

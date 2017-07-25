@@ -1,0 +1,1757 @@
+swagger: '2.0'
+info:
+  version: 0.11.0
+  title: AdhereTech External API
+host: example.com
+basePath: /api/v1
+schemes:
+  - https
+securityDefinitions:
+  auth:
+    type: basic
+paths:
+  /bottles:
+    get:
+      operationId: getBottlesByValues
+      description: Get a list of bottles filtered by status and/or patient(s).
+      produces:
+        - application/json
+      parameters:
+        - name: isActive
+          in: query
+          description: Flag that indicates if bottle is active.
+          required: true
+          type: boolean
+        - name: remindersActive
+          in: query
+          description: Flag that indicates if reminders are active.
+          required: true
+          type: boolean
+        - name: onBottleLights
+          in: query
+          description: Flag that indicates if visual alarms are active.
+          required: true
+          type: boolean
+        - name: onBottleSounds
+          in: query
+          description: Flag that indicates if auditory alarms are active.
+          required: true
+          type: boolean
+        - name: feedbackActive
+          in: query
+          description: Flag that indicates if feedback requests are active.
+          required: true
+          type: boolean
+        - name: patientUid
+          in: query
+          description: The ID of the patient using this bottle.
+          required: true
+          type: integer
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''uid'' ascending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Bottle-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  '/bottles/{bottleUid}':
+    parameters:
+      - name: bottleUid
+        in: path
+        description: bottleUid
+        required: true
+        type: string
+    put:
+      operationId: updateBottle
+      description: Modify a bottle by its UID.
+      responses:
+        '200':
+          description: Bottle found and modified.
+        '404':
+          description: Bottle not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+    get:
+      operationId: getBottle
+      description: Get a bottle by its UID.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Bottle found and returned
+          schema:
+            $ref: '#/definitions/Bottle'
+        '404':
+          description: Bottle not found.
+      security:
+        - auth: []
+  /patients:
+    post:
+      operationId: addPatient
+      description: Add a new patient to the database.
+      parameters:
+        - name: 'bottleUids,'
+          in: query
+          description: Comma separated list of bottleUids for this bottle. Removing from this list will remove it from the patient. Adding bottles must be done through Bottle endpoint
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Patient created.
+        '404':
+          description: Address not found.
+        '405':
+          description: Validation error.
+      security:
+        - auth: []
+    get:
+      operationId: getPatientsByValues
+      description: Get a list of patients filtered by their values.
+      produces:
+        - application/json
+      parameters:
+        - name: firstName
+          in: query
+          description: Patient's first name.
+          required: true
+          type: string
+        - name: lastName
+          in: query
+          description: Patient's last name.
+          required: true
+          type: string
+        - name: phoneNumber
+          in: query
+          description: Patient's phone number.
+          required: true
+          type: string
+        - name: programName
+          in: query
+          description: A string to search within the program's name.
+          required: true
+          type: string
+        - name: contactMethod
+          in: query
+          description: 'The contact method used to reach the patient (phone, sms or email).'
+          required: true
+          type: string
+        - name: emailAddress
+          in: query
+          description: Patient's email address.
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''uid'' ascending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Patient-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  '/patients/{patientUid}':
+    parameters:
+      - name: patientUid
+        in: path
+        description: patientUid
+        required: true
+        type: string
+    delete:
+      operationId: deletePatient
+      description: Delete a patient by UID.
+      responses:
+        '404':
+          description: Patient not found.
+      security:
+        - auth: []
+    put:
+      operationId: updatePatient
+      description: Modify a Patient using a patient UID number.
+      responses:
+        '200':
+          description: Patient found and modified.
+        '404':
+          description: Patient not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+    get:
+      operationId: getPatient
+      description: Get a patient by UID.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Patient found and returned.
+          schema:
+            $ref: '#/definitions/Patient'
+        '404':
+          description: Patient not found.
+      security:
+        - auth: []
+  '/patients/{patientUid}/disenroll':
+    parameters:
+      - name: patientUid
+        in: path
+        description: patientUid
+        required: true
+        type: string
+    post:
+      operationId: disenrollPatient
+      description: Disenroll a patient by UID.
+      parameters:
+        - name: endDate
+          in: query
+          description: effective endDate for disenrollment (default is now). Dates in future not allowed. (UTC).
+          required: false
+          type: string
+        - name: notes
+          in: query
+          description: notes to include with disenrollment action
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Patient found and disenrolled. All bottles and reminders disabled
+        '400':
+          description: Patient not found. Or patient already disenrolled. Or invalid parameter
+      security:
+        - auth: []
+  '/patients/{patientUid}/reenroll':
+    parameters:
+      - name: patientUid
+        in: path
+        description: patientUid
+        required: true
+        type: string
+    post:
+      operationId: reenrollpatient
+      description: Reenroll a patient.
+      parameters:
+        - name: notes
+          in: query
+          description: Notes to be included with reenrollment event
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Patient found and reenrolled
+        '404':
+          description: Patient not found. Or patient already enrolled
+      security:
+        - auth: []
+  '/patients/{patientUid}/feedbackrequests':
+    parameters:
+      - name: patientUid
+        in: path
+        description: patientUid
+        required: true
+        type: string
+    delete:
+      operationId: deleteFeedbackRequests
+      description: Delete all active feedback requests for a patient.
+      responses:
+        '404':
+          description: Patient not found.
+      security:
+        - auth: []
+    post:
+      operationId: addFeedbackRequest
+      description: Add a new feedback request for a patient.
+      responses:
+        '200':
+          description: Feedback request created.
+        '404':
+          description: Patient not found.
+        '405':
+          description: Validation error.
+      security:
+        - auth: []
+    get:
+      operationId: getFeedbackRequests
+      description: Get all active (scheduled but unsent) feedback requests for a patient.
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''timesent'' descending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/FeedbackRequest-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  '/patients/{patientUid}/feedbackrequests/{feedbackId}':
+    parameters:
+      - name: patientUid
+        in: path
+        description: patientUid
+        required: true
+        type: string
+      - name: feedbackId
+        in: path
+        description: feedbackId
+        required: true
+        type: integer
+    delete:
+      operationId: deleteFeedbackRequest
+      description: Delete a feedback request by ID.
+      responses:
+        '404':
+          description: Feedback request not found.
+      security:
+        - auth: []
+    put:
+      operationId: updateFeedbackRequest
+      description: Modify a feedback request by its ID.
+      responses:
+        '200':
+          description: Feedback request found and modified.
+        '404':
+          description: Feedback request not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+    get:
+      operationId: getFeedbackRequest
+      description: Get a feedback request by its ID.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Feedback request found and returned
+          schema:
+            $ref: '#/definitions/FeedbackRequest'
+        '404':
+          description: Feedback request not found.
+      security:
+        - auth: []
+  /programs:
+    post:
+      operationId: addProgram
+      description: Add a new program to the database.
+      responses:
+        '200':
+          description: Program created.
+        '404':
+          description: Address not found.
+        '405':
+          description: Validation error.
+      security:
+        - auth: []
+    get:
+      operationId: getPrograms
+      description: Get a list of programs filtered by their values.
+      produces:
+        - application/json
+      parameters:
+        - name: programName
+          in: query
+          description: A string to search within the program's name.
+          required: true
+          type: string
+        - name: programDescription
+          in: query
+          description: A string to search within an program's description.
+          required: true
+          type: string
+        - name: startDate
+          in: query
+          description: The start date for the date range filter. It filters by only returning programs which were or should be active in the given date range.
+          required: true
+          type: string
+        - name: endDatetime
+          in: query
+          description: The end date for the date range filter. It filters by only returning programs which were or should be active in the given date range.
+          required: true
+          type: string
+        - name: patientUids
+          in: query
+          description: Filters programs so that the results include only programs with the given patients (semicolon separated list).
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''name'' ascending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Program-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  '/programs/{programName}':
+    parameters:
+      - name: programName
+        in: path
+        description: programName
+        required: true
+        type: string
+    delete:
+      operationId: deleteProgram
+      description: Delete a program by programName.
+      responses:
+        '404':
+          description: Program not found.
+      security:
+        - auth: []
+    put:
+      operationId: updateProgram
+      description: Modify a program by programName.
+      responses:
+        '200':
+          description: Program found and modified.
+        '404':
+          description: Program not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+    get:
+      operationId: getProgram
+      description: Get a program by programName.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Program found and returned.
+          schema:
+            $ref: '#/definitions/Program'
+        '404':
+          description: Program not found.
+      security:
+        - auth: []
+  /users:
+    post:
+      operationId: addUser
+      description: Add a new user to the database.
+      responses:
+        '200':
+          description: User created.
+        '405':
+          description: Validation error.
+      security:
+        - auth: []
+    get:
+      operationId: getUsersByValues
+      description: Get a list of users filtered by their values.
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: Login username.
+          required: true
+          type: string
+        - name: emailAddress
+          in: query
+          description: User's email address.
+          required: true
+          type: string
+        - name: role
+          in: query
+          description: User's permission roles as a comma separated String.
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''username'' ascending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/User-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  '/users/{username}':
+    parameters:
+      - name: username
+        in: path
+        description: username
+        required: true
+        type: string
+    delete:
+      operationId: deleteUser
+      description: Delete a user by username.
+      responses:
+        '404':
+          description: User not found.
+      security:
+        - auth: []
+    put:
+      operationId: updateUser
+      description: Modify a user using its username.
+      responses:
+        '200':
+          description: User found and modified.
+        '404':
+          description: User not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+    get:
+      operationId: getUser
+      description: Get a user by username.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User found and returned.
+          schema:
+            $ref: '#/definitions/User'
+        '404':
+          description: User not found.
+      security:
+        - auth: []
+  /bottlereadings:
+    get:
+      operationId: getBottleReadingsByValues
+      description: 'Get a list of bottle readings filtered by status, bottle or date.'
+      produces:
+        - application/json
+      parameters:
+        - name: bottleReadingId
+          in: query
+          description: The ID of the bottle reading.
+          required: true
+          type: integer
+        - name: bottleUid
+          in: query
+          description: The bottle UID.
+          required: true
+          type: string
+        - name: checkinType
+          in: query
+          description: The type of check-in for this reading.
+          required: true
+          type: string
+        - name: startDatetime
+          in: query
+          description: The start date for the date range filter. It filters by receivedDateTime.
+          required: true
+          type: string
+        - name: endDatetime
+          in: query
+          description: The end date for the date range filter. It filters by receivedDateTime.
+          required: true
+          type: string
+        - name: batteryLevel
+          in: query
+          description: The numerical representation of the battery level.
+          required: true
+          type: integer
+        - name: batteryStatus
+          in: query
+          description: The text representation of the battery status.
+          required: true
+          type: string
+        - name: cellServiceLevel
+          in: query
+          description: The numerical representation of the cell signal level.
+          required: true
+          type: integer
+        - name: cellServiceStatus
+          in: query
+          description: The text representation of the cell signal status.
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''timereceived'' descending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/BottleReading-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  /doses:
+    get:
+      operationId: getDosesByValues
+      description: 'Get a list of doses filtered by status, bottle, patient or date.'
+      produces:
+        - application/json
+      parameters:
+        - name: patientUid
+          in: query
+          description: The UID of the patient.
+          required: true
+          type: string
+        - name: bottleUid
+          in: query
+          description: The UID of the bottle.
+          required: true
+          type: string
+        - name: bottleReadingId
+          in: query
+          description: The ID of the bottle reading.
+          required: true
+          type: string
+        - name: reminderSent
+          in: query
+          description: If a reminder was sent for this dose.
+          required: true
+          type: boolean
+        - name: doseStatus
+          in: query
+          description: 'The status of the dose (missed, early, ontime).'
+          required: true
+          type: string
+        - name: deadline
+          in: query
+          description: The deadline of the dose.
+          required: true
+          type: string
+        - name: startDatetime
+          in: query
+          description: Start date for the date range filter.
+          required: true
+          type: string
+        - name: endDatetime
+          in: query
+          description: End date for the date range filter.
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''timerecorded'' descending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Dose-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  /events:
+    get:
+      operationId: getEvents
+      description: Get a list of events.
+      produces:
+        - application/json
+      parameters:
+        - name: patientUid
+          in: query
+          description: Patient UID.
+          required: true
+          type: string
+        - name: bottleUid
+          in: query
+          description: Bottle UID for filtering.
+          required: true
+          type: string
+        - name: eventType
+          in: query
+          description: The type of event to select.
+          required: true
+          type: string
+        - name: bottleReadingId
+          in: query
+          description: Bottle Reading ID for filtering.
+          required: true
+          type: integer
+        - name: startDatetime
+          in: query
+          description: The start date for the date range filter. It filters by timeOccurred.
+          required: true
+          type: string
+        - name: endDatetime
+          in: query
+          description: The end date for the date range filter. It filters by timeOccurred.
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''timeoccurred'' descending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Event-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  /events/subscriptions:
+    post:
+      operationId: addSubscription
+      description: Add a new event subscription.
+      responses:
+        '200':
+          description: Subscription created.
+        '405':
+          description: Validation error.
+      security:
+        - auth: []
+    get:
+      operationId: getSubscriptions
+      description: Get every subscription.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Subscriptions returned.
+          schema:
+            $ref: '#/definitions/EventSubscription-array'
+      security:
+        - auth: []
+  '/events/subscriptions/{subscriptionId}':
+    parameters:
+      - name: subscriptionId
+        in: path
+        description: subscriptionId
+        required: true
+        type: integer
+    delete:
+      operationId: deleteSubscription
+      description: Delete a subscription by ID.
+      responses:
+        default:
+          description: ''
+          schema: {}
+      security:
+        - auth: []
+    get:
+      operationId: getSubscription
+      description: Get a subscription by ID.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Subscription found and returned.
+          schema:
+            $ref: '#/definitions/EventSubscription'
+      security:
+        - auth: []
+  /eventtypes:
+    get:
+      operationId: getEventTypes
+      description: Get the available types of server events.
+      responses:
+        '200':
+          description: Query completed; results returned.
+      security:
+        - auth: []
+  /alerts:
+    get:
+      operationId: getAlerts
+      description: Get a list of alerts.
+      produces:
+        - application/json
+      parameters:
+        - name: patientUid
+          in: query
+          description: Patient UID.
+          required: true
+          type: string
+        - name: bottleUid
+          in: query
+          description: Bottle UID for filtering.
+          required: true
+          type: string
+        - name: alertType
+          in: query
+          description: The type of alert to select.
+          required: true
+          type: string
+        - name: bottleReadingId
+          in: query
+          description: Bottle Reading ID for filtering.
+          required: true
+          type: integer
+        - name: state
+          in: query
+          description: State for filtering.
+          required: true
+          type: string
+        - name: priority
+          in: query
+          description: minimum priority for filtering. The request will return every alert with a priority higher than this number.
+          required: true
+          type: integer
+        - name: startDatetime
+          in: query
+          description: The start date for the date range filter. It filters by timeOccurred.
+          required: true
+          type: string
+        - name: endDatetime
+          in: query
+          description: The end date for the date range filter. It filters by timeOccurred.
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''timeoccurred'' descending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Alert-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  '/alerts/{alertId}':
+    parameters:
+      - name: alertId
+        in: path
+        description: alertId
+        required: true
+        type: integer
+    put:
+      operationId: updateAlert
+      description: Modify an alert record.
+      responses:
+        '200':
+          description: Alert found and modified.
+        '404':
+          description: Alert not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+    get:
+      operationId: getAlert
+      description: Get a specific alert.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Alert'
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  /alerttypes:
+    get:
+      operationId: getAlertTypes
+      description: Get the available types of server alerts.
+      responses:
+        '200':
+          description: Query completed; results returned.
+      security:
+        - auth: []
+  /search:
+    get:
+      operationId: getSearch
+      description: Get search results for a query.
+      produces:
+        - application/json
+      parameters:
+        - name: q
+          in: query
+          description: The search query.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/SearchResult-array'
+      security:
+        - auth: []
+  /pauses:
+    post:
+      operationId: addPause
+      description: Add a new pause for a patient to the database.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Pause created.
+          schema:
+            $ref: '#/definitions/Pause'
+        '400':
+          description: Patient not found or invalid parameters.
+        '405':
+          description: Validation error.
+      security:
+        - auth: []
+    get:
+      operationId: getPauses
+      description: Get a list of pauses.
+      produces:
+        - application/json
+      parameters:
+        - name: patientUid
+          in: query
+          description: Patient UID.
+          required: true
+          type: string
+        - name: status
+          in: query
+          description: Pause status for filtering.
+          required: true
+          type: string
+        - name: startdateBefore
+          in: query
+          description: The maximum start date for the date range filter.
+          required: true
+          type: string
+        - name: startdateAfter
+          in: query
+          description: The minimum start date for the date range filter.
+          required: true
+          type: string
+        - name: enddateBefore
+          in: query
+          description: The maximum end date for the date range filter.
+          required: true
+          type: string
+        - name: enddateAfter
+          in: query
+          description: The minimum end date for the date range filter.
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: Current front-end page number; required for pagination.
+          required: true
+          type: integer
+        - name: itemsPerPage
+          in: query
+          description: Current front-end items per page value; required for pagination.
+          required: true
+          type: integer
+        - name: sort
+          in: query
+          description: 'Attribute(s) and order(s) to sort by in the following example format - "uid desc, timeoccurred asc" etc. Attribute names are case-sensitive. Omit to sort by ''startdate'' descending as default.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Pause-array'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+  '/pauses/{pauseId}':
+    parameters:
+      - name: pauseId
+        in: path
+        description: pauseId
+        required: true
+        type: integer
+    delete:
+      operationId: deletePause
+      description: Delete a future pause.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Pause found and deleted.
+          schema:
+            $ref: '#/definitions/Pause'
+        '400':
+          description: Pause cannot be deleted.
+        '404':
+          description: Pause not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+    put:
+      operationId: updatePause
+      description: Update a pause by id.
+      produces:
+        - application/json
+      parameters:
+        - name: endnow
+          in: query
+          description: Set true to end an active pause.
+          required: true
+          type: boolean
+      responses:
+        '200':
+          description: Pause found and updated.
+          schema:
+            $ref: '#/definitions/Pause'
+        '400':
+          description: Invalid parameters / arguments.
+        '404':
+          description: Pause not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+    get:
+      operationId: getPause
+      description: Get a specific pause.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Pause'
+        '404':
+          description: Pause not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+definitions:
+  Bottle-array:
+    type: array
+    items:
+      title: Bottle
+      type: object
+      properties:
+        bottleUid:
+          type: string
+        isActive:
+          type: boolean
+        remindersActive:
+          type: boolean
+        onBottleLights:
+          type: boolean
+        onBottleSounds:
+          type: boolean
+        doseOne:
+          type: string
+        doseTwo:
+          type: string
+        doseThree:
+          type: string
+        feedbackActive:
+          type: boolean
+        patientUid:
+          type: string
+      required:
+        - bottleUid
+        - isActive
+        - remindersActive
+        - onBottleLights
+        - onBottleSounds
+        - doseOne
+        - doseTwo
+        - doseThree
+        - feedbackActive
+        - patientUid
+  Bottle:
+    title: Bottle
+    type: object
+    properties:
+      bottleUid:
+        type: string
+      isActive:
+        type: boolean
+      remindersActive:
+        type: boolean
+      onBottleLights:
+        type: boolean
+      onBottleSounds:
+        type: boolean
+      doseOne:
+        type: string
+      doseTwo:
+        type: string
+      doseThree:
+        type: string
+      feedbackActive:
+        type: boolean
+      patientUid:
+        type: string
+    required:
+      - bottleUid
+      - isActive
+      - remindersActive
+      - onBottleLights
+      - onBottleSounds
+      - doseOne
+      - doseTwo
+      - doseThree
+      - feedbackActive
+      - patientUid
+  Patient-array:
+    type: array
+    items:
+      title: Patient
+      type: object
+      properties:
+        patientUid:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phoneNumber:
+          type: string
+        contactMethod:
+          type: string
+        emailAddress:
+          type: string
+        caregiverPhoneNumber:
+          type: string
+        caregiverContactMethod:
+          type: string
+        caregiverEmailAddress:
+          type: string
+        programName:
+          type: string
+        timezone:
+          type: string
+        defaultDose1:
+          type: string
+        defaultDose2:
+          type: string
+        defaultDose3:
+          type: string
+        status:
+          type: string
+        lastDose:
+          type: string
+        adherence:
+          type: number
+        adherence7Day:
+          type: number
+        adherence30Day:
+          type: number
+        bottleUids:
+          type: array
+          items:
+            type: string
+      required:
+        - patientUid
+        - firstName
+        - lastName
+        - phoneNumber
+        - contactMethod
+        - emailAddress
+        - caregiverPhoneNumber
+        - caregiverContactMethod
+        - caregiverEmailAddress
+        - programName
+        - timezone
+        - defaultDose1
+        - defaultDose2
+        - defaultDose3
+        - status
+        - lastDose
+        - adherence
+        - adherence7Day
+        - adherence30Day
+        - bottleUids
+  Patient:
+    title: Patient
+    type: object
+    properties:
+      patientUid:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        type: string
+      contactMethod:
+        type: string
+      emailAddress:
+        type: string
+      caregiverPhoneNumber:
+        type: string
+      caregiverContactMethod:
+        type: string
+      caregiverEmailAddress:
+        type: string
+      programName:
+        type: string
+      timezone:
+        type: string
+      defaultDose1:
+        type: string
+      defaultDose2:
+        type: string
+      defaultDose3:
+        type: string
+      status:
+        type: string
+      lastDose:
+        type: string
+      adherence:
+        type: number
+      adherence7Day:
+        type: number
+      adherence30Day:
+        type: number
+      bottleUids:
+        type: array
+        items:
+          type: string
+    required:
+      - patientUid
+      - firstName
+      - lastName
+      - phoneNumber
+      - contactMethod
+      - emailAddress
+      - caregiverPhoneNumber
+      - caregiverContactMethod
+      - caregiverEmailAddress
+      - programName
+      - timezone
+      - defaultDose1
+      - defaultDose2
+      - defaultDose3
+      - status
+      - lastDose
+      - adherence
+      - adherence7Day
+      - adherence30Day
+      - bottleUids
+  FeedbackRequest-array:
+    type: array
+    items:
+      title: FeedbackRequest
+      type: object
+      properties:
+        feedbackId:
+          type: integer
+          format: int32
+        patientUid:
+          type: string
+        bottleUid:
+          type: string
+        feedbackProfileId:
+          type: integer
+          format: int32
+        sendTime:
+          type: string
+      required:
+        - feedbackId
+        - patientUid
+        - bottleUid
+        - feedbackProfileId
+        - sendTime
+  FeedbackRequest:
+    title: FeedbackRequest
+    type: object
+    properties:
+      feedbackId:
+        type: integer
+        format: int32
+      patientUid:
+        type: string
+      bottleUid:
+        type: string
+      feedbackProfileId:
+        type: integer
+        format: int32
+      sendTime:
+        type: string
+    required:
+      - feedbackId
+      - patientUid
+      - bottleUid
+      - feedbackProfileId
+      - sendTime
+  Program-array:
+    type: array
+    items:
+      title: Program
+      type: object
+      properties:
+        programId:
+          type: integer
+          format: int32
+        programName:
+          type: string
+        programDescription:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        patientUids:
+          type: array
+          items:
+            type: string
+      required:
+        - programId
+        - programName
+        - programDescription
+        - startDate
+        - endDate
+        - patientUids
+  Program:
+    title: Program
+    type: object
+    properties:
+      programId:
+        type: integer
+        format: int32
+      programName:
+        type: string
+      programDescription:
+        type: string
+      startDate:
+        type: string
+        format: date-time
+      endDate:
+        type: string
+        format: date-time
+      patientUids:
+        type: array
+        items:
+          type: string
+    required:
+      - programId
+      - programName
+      - programDescription
+      - startDate
+      - endDate
+      - patientUids
+  User-array:
+    type: array
+    items:
+      title: User
+      type: object
+      properties:
+        username:
+          type: string
+        emailAddress:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+      required:
+        - username
+        - emailAddress
+        - roles
+  User:
+    title: User
+    type: object
+    properties:
+      username:
+        type: string
+      emailAddress:
+        type: string
+      roles:
+        type: array
+        items:
+          type: string
+    required:
+      - username
+      - emailAddress
+      - roles
+  BottleReading-array:
+    type: array
+    items:
+      title: BottleReading
+      type: object
+      properties:
+        bottleReadingId:
+          type: integer
+          format: int32
+        bottleUid:
+          type: string
+        checkinType:
+          type: string
+        recordedDatetime:
+          type: string
+        receivedDatetime:
+          type: string
+        batteryLevel:
+          type: integer
+          format: int32
+        batteryStatus:
+          type: string
+        cellServiceLevel:
+          type: integer
+          format: int32
+        cellServiceStatus:
+          type: string
+      required:
+        - bottleReadingId
+        - bottleUid
+        - checkinType
+        - recordedDatetime
+        - receivedDatetime
+        - batteryLevel
+        - batteryStatus
+        - cellServiceLevel
+        - cellServiceStatus
+  Dose-array:
+    type: array
+    items:
+      title: Dose
+      type: object
+      properties:
+        patientUid:
+          type: string
+        bottleUid:
+          type: string
+        bottleReadingId:
+          type: integer
+          format: int32
+        reminderSent:
+          type: boolean
+        doseStatus:
+          type: string
+        deadline:
+          type: string
+        recordedDatetime:
+          type: string
+      required:
+        - patientUid
+        - bottleUid
+        - bottleReadingId
+        - reminderSent
+        - doseStatus
+        - deadline
+        - recordedDatetime
+  Event-array:
+    type: array
+    items:
+      title: Event
+      type: object
+      properties:
+        eventId:
+          type: string
+        eventType:
+          type: string
+        timeOccurred:
+          type: string
+        patientUid:
+          type: string
+        bottleUid:
+          type: string
+        bottleReadingId:
+          type: string
+      required:
+        - eventId
+        - eventType
+        - timeOccurred
+        - patientUid
+        - bottleUid
+        - bottleReadingId
+  EventSubscription-array:
+    type: array
+    items:
+      title: EventSubscription
+      type: object
+      properties:
+        subscriptionId:
+          type: string
+        eventType:
+          type: string
+        username:
+          type: string
+        callbackUrl:
+          type: string
+      required:
+        - subscriptionId
+        - eventType
+        - username
+        - callbackUrl
+  EventSubscription:
+    title: EventSubscription
+    type: object
+    properties:
+      subscriptionId:
+        type: string
+      eventType:
+        type: string
+      username:
+        type: string
+      callbackUrl:
+        type: string
+    required:
+      - subscriptionId
+      - eventType
+      - username
+      - callbackUrl
+  Alert-array:
+    type: array
+    items:
+      title: Alert
+      type: object
+      properties:
+        alertId:
+          type: integer
+          format: int32
+        alertType:
+          type: string
+        timeOccurred:
+          type: string
+        programName:
+          type: string
+        patientUid:
+          type: string
+        bottleUid:
+          type: string
+        bottleReadingId:
+          type: integer
+          format: int32
+        priority:
+          type: integer
+          format: int32
+        state:
+          type: string
+      required:
+        - alertId
+        - alertType
+        - timeOccurred
+        - programName
+        - patientUid
+        - bottleUid
+        - bottleReadingId
+        - priority
+        - state
+  Alert:
+    title: Alert
+    type: object
+    properties:
+      alertId:
+        type: integer
+        format: int32
+      alertType:
+        type: string
+      timeOccurred:
+        type: string
+      programName:
+        type: string
+      patientUid:
+        type: string
+      bottleUid:
+        type: string
+      bottleReadingId:
+        type: integer
+        format: int32
+      priority:
+        type: integer
+        format: int32
+      state:
+        type: string
+    required:
+      - alertId
+      - alertType
+      - timeOccurred
+      - programName
+      - patientUid
+      - bottleUid
+      - bottleReadingId
+      - priority
+      - state
+  SearchResult-array:
+    type: array
+    items:
+      title: SearchResult
+      type: object
+      properties:
+        resultType:
+          type: string
+        resultUid:
+          type: string
+      required:
+        - resultType
+        - resultUid
+  Pause-array:
+    type: array
+    items:
+      title: Pause
+      type: object
+      properties:
+        pauseId:
+          type: integer
+          format: int32
+        patientUid:
+          type: string
+        status:
+          type: string
+        startdate:
+          type: string
+        enddate:
+          type: string
+        reason:
+          type: string
+      required:
+        - pauseId
+        - patientUid
+        - status
+        - startdate
+        - enddate
+        - reason
+  Pause:
+    title: Pause
+    type: object
+    properties:
+      pauseId:
+        type: integer
+        format: int32
+      patientUid:
+        type: string
+      status:
+        type: string
+      startdate:
+        type: string
+      enddate:
+        type: string
+      reason:
+        type: string
+    required:
+      - pauseId
+      - patientUid
+      - status
+      - startdate
+      - enddate
+      - reason

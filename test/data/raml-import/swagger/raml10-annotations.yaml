@@ -5,11 +5,9 @@ info:
   description: This is a sample server Petstore server.
 host: petstore.swagger.io
 basePath: /v2
-x-annotation-redirectable: true
 schemes:
   - http
 paths:
-  /pet: {}
   '/pet/{petId}':
     parameters:
       - name: petId
@@ -31,19 +29,16 @@ paths:
       x-annotation-testHarness: method description
 definitions:
   Category:
+    type: object
     properties:
       id:
         type: string
       name:
         type: string
         x-annotation-testHarness: property type description
-    type: object
-    required:
-      - name
     x-annotation-testHarness: type description
-    x-annotation-id-testHarness: property required 1
-    x-annotation-name-testHarness: property required 2
   Pet:
+    type: object
     properties:
       category:
         $ref: '#/definitions/Category'
@@ -52,6 +47,5 @@ definitions:
       name:
         type: string
         example: doggie
-    type: object
     required:
       - name

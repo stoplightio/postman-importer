@@ -1,0 +1,88 @@
+#%RAML 0.8
+title: Security tryout
+version: 1.0.0
+securitySchemes:
+  - oauthv10:
+      description: |
+        OAuth 1.0 continues to be supported for all API requests, but OAuth 2.0 is now preferred.
+      type: OAuth 1.0
+      settings:
+        requestTokenUri: https://api.mysampleapi.com/1/oauth/request_token
+        authorizationUri: https://api.mysampleapi.com/1/oauth/authorize
+        tokenCredentialsUri: https://api.mysampleapi.com/1/oauth/access_token
+  - oauth2:
+      type: OAuth 2.0
+      description: my oauth 2.0 security scheme.
+      settings:
+        authorizationUri: https://www.dropbox.com/1/oauth2/authorize
+        accessTokenUri: https://api.dropbox.com/1/oauth2/token
+        authorizationGrants:
+          - code
+          - credentials
+          - token
+          - owner
+        scopes:
+          - write:pets
+          - read:pets
+      describedBy:
+        headers:
+          Authorization:
+            description: |
+               Used to send a valid OAuth 2 access token. Do not use
+               with the "access_token" query string parameter.
+            type: string
+        queryParameters:
+          access_token:
+            description: |
+               Used to send a valid OAuth 2 access token. Do not use with
+               the "Authorization" header.
+            type: string
+        responses:
+          401:
+            description: |
+                Bad or expired token. This can happen if the user or Dropbox
+                revoked or expired an access token. To fix, re-authenticate
+                the user.
+          403:
+            description: |
+                Bad OAuth request (wrong consumer key, bad nonce, expired
+                timestamp...). Unfortunately, re-authenticating the user won't help here.
+  - oauth22:
+      type: OAuth 2.0
+      description: my oauth 2.0 security scheme. Version 2.
+      settings:
+        authorizationUri: 'http://swagger2.io/api/oauth/dialog'
+        accessTokenUri: 'http://swagger2.io/api/oauth/token'
+        authorizationGrants:
+          - token
+  - basicAuth:
+      type: Basic Authentication
+      description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+  - basicAuth2:
+      type: Basic Authentication
+      description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2.
+  - digest:
+      description: |
+        This API supports DigestSecurityScheme Authentication.
+      type: Digest Authentication
+  - internalApiKey:
+      type: Digest Authentication
+      description: Api Key Authentication
+      describedBy:
+        headers:
+          api_key:
+            type: string
+  - internalApiKey2:
+      type: DigestSecurityScheme Authentication
+      description: Api Key Authentication. Version 2.
+      describedBy:
+        headers:
+          api_key2:
+            type: string
+  - internalApiKey3:
+      type: x-custom
+      description: Api Key Authentication. Version 3.
+      describedBy:
+        queryParameters:
+          api_key3:
+            type: string

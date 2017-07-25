@@ -1,0 +1,147 @@
+#%RAML 1.0
+title: Security tryout
+version: 1.0.0
+securitySchemes:
+  oauthv10:
+    description: |
+      OAuth 1.0 continues to be supported for all API requests, but OAuth 2.0 is now preferred.
+    type: OAuth 1.0
+    settings:
+      requestTokenUri: https://api.mysampleapi.com/1/oauth/request_token
+      authorizationUri: https://api.mysampleapi.com/1/oauth/authorize
+      tokenCredentialsUri: https://api.mysampleapi.com/1/oauth/access_token
+      signatures: [ 'HMAC-SHA1', 'PLAINTEXT' ]
+  oauth2:
+    type: OAuth 2.0
+    displayName: my display name.
+    description: my oauth 2.0 security scheme.
+    settings:
+      authorizationUri: https://www.dropbox.com/1/oauth2/authorize
+      accessTokenUri: https://api.dropbox.com/1/oauth2/token
+      authorizationGrants:
+        - client_credentials
+      scopes:
+        - write:pets
+        - read:pets
+    describedBy:
+      headers:
+        Authorization:
+          description: |
+             Used to send a valid OAuth 2 access token. Do not use
+             with the "access_token" query string parameter.
+          type: string
+      queryParameters:
+        access_token:
+          description: |
+             Used to send a valid OAuth 2 access token. Do not use with
+             the "Authorization" header.
+          type: string
+      responses:
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox
+              revoked or expired an access token. To fix, re-authenticate
+              the user.
+        403:
+          description: |
+              Bad OAuth request (wrong consumer key, bad nonce, expired
+              timestamp...). Unfortunately, re-authenticating the user won't help here.
+  oauth22:
+    type: OAuth 2.0
+    description: my oauth 2.0 security scheme. Version 2.
+    settings:
+      authorizationUri: 'http://swagger2.io/api/oauth/dialog'
+      accessTokenUri: 'http://swagger2.io/api/oauth/token'
+      authorizationGrants:
+        - implicit
+  basicAuth:
+    type: Basic Authentication
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+  basicAuth2:
+    type: Basic Authentication
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2.
+  digest:
+    description: |
+      This API supports DigestSecurityScheme Authentication.
+    type: Digest Authentication
+  internalApiKey:
+    type: Pass Through
+    description: Api Key Authentication
+    describedBy:
+      headers:
+        api_key:
+          type: string
+  internalApiKey2:
+    type: Pass Through
+    description: Api Key Authentication. Version 2.
+    describedBy:
+      headers:
+        api_key2:
+          type: string
+  internalApiKey3:
+    type: Pass Through
+    description: Api Key Authentication. Version 3.
+    describedBy:
+      queryParameters:
+        api_key3:
+          type: string
+  internalApiKey4:
+    type: Pass Through
+    description: Api Key Authentication. Version 4.
+    describedBy:
+      queryParameters:
+        api_key4:
+          type: string
+/getApiKey:
+  displayName: getApiKey
+  get:
+    displayName: GET_getApiKey
+    responses:
+      '200':
+        description: 'InternalApiKey. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+    securedBy:
+      - oauth22
+      - internalApiKey
+/getBasicAuth:
+  displayName: getBasicAuth
+  get:
+    displayName: GET_getBasicAuth
+    responses:
+      '200':
+        description: 'Basic Auth. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+    securedBy:
+      - basicAuth
+      - internalApiKey2
+/getOauth2Auth:
+  displayName: getOauth2Auth
+  get:
+    displayName: GET_getOauth2Auth
+    responses:
+      '200':
+        description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+    securedBy:
+      - oauth2:
+          scopes: [ read:pets ]
+      - basicAuth2
+/getMixed:
+  displayName: getMixed
+  get:
+    displayName: GET_getMixed
+    responses:
+      '200':
+        description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+    securedBy:
+      - oauth2:
+          scopes: [ read:pets ]
+      - internalApiKey3
+/getMixed2:
+  displayName: getMixed2
+  get:
+    displayName: GET_getMixed2
+    responses:
+      '200':
+        description: 'Oauth2 Authorization. Will send `Authenticated` if authentication is succesful, otherwise it will send `Unauthorized`'
+    securedBy:
+      - oauth2:
+          scopes: [ read:pets ]
+      - internalApiKey4

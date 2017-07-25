@@ -2,6 +2,10 @@
 title: Simple API
 version: 0.0.0
 mediaType: application/json
+annotationTypes:
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
 /param_formdata:
   post:
     body:
@@ -9,74 +13,69 @@ mediaType: application/json
         properties:
           username:
             description: The person's username
-            required: true
             type: string
     responses:
       '200':
+        description: History information for the given user
         body:
           application/json:
             type: Person
-        description: History information for the given user
-annotationTypes:
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
 /param_body:
   post:
     body:
       application/json:
-        type: Person
         (oas-body-name): person
+        type: Person
+        required: false
         description: person to add to the system
     responses:
       '200':
+        description: History information for the given user
         body:
           application/json:
             type: Person
-        description: History information for the given user
 /param_header:
   get:
     headers:
       token:
-        type: string
         description: token description
-        required: true
+        type: string
     responses:
       '200':
-        body:
-          application/json:
-            type: Person
         description: History information for the given user
         headers:
           token-response:
-            type: string
             description: token response description
-/param_query:
-  get:
-    responses:
-      '200':
+            type: string
         body:
           application/json:
             type: Person
-        description: History information for the given user
+/param_query:
+  get:
     queryParameters:
       pageNumber:
         description: Page number
+        required: false
         type: integer
+    responses:
+      '200':
+        description: History information for the given user
+        body:
+          application/json:
+            type: Person
 /param_path:
   '/{username}':
     uriParameters:
       username:
         description: The person's username
         type: string
-        required: true
     get:
       responses:
         '200':
+          description: History information for the given user
           body:
             application/json:
               type: Person
-          description: History information for the given user
 types:
   Person:
     properties:

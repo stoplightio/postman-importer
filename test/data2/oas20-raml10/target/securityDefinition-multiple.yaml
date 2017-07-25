@@ -1,0 +1,56 @@
+#%RAML 1.0
+title: Security tryout
+version: 1.0.0
+securitySchemes:
+  oauth2:
+    type: OAuth 2.0
+    description: my oauth 2.0 security scheme.
+    settings:
+      accessTokenUri: https://api.dropbox.com/1/oauth2/token
+      authorizationGrants:
+        - client_credentials
+      scopes:
+        - write:pets
+        - read:pets
+  oauth22:
+    type: OAuth 2.0
+    description: my oauth 2.0 security scheme. Version 2.
+    settings:
+      authorizationUri: 'http://swagger2.io/api/oauth/dialog'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+  basicAuth:
+    type: Basic Authentication
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+  basicAuth2:
+    type: Basic Authentication
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2.
+  internalApiKey:
+    type: Pass Through
+    description: Api Key Authentication
+    describedBy:
+      headers:
+        api_key:
+          type: string
+  internalApiKey2:
+    type: Pass Through
+    description: Api Key Authentication. Version 2.
+    describedBy:
+      headers:
+        api_key2:
+          type: string
+  internalApiKey3:
+    type: Pass Through
+    description: Api Key Authentication. Version 3.
+    describedBy:
+      queryParameters:
+        api_key3:
+          type: string
+  internalApiKey4:
+    type: Pass Through
+    description: Api Key Authentication. Version 4.
+    describedBy:
+      queryParameters:
+        api_key4:
+          type: string

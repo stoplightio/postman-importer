@@ -14,6 +14,7 @@ produces:
 paths:
   /custom:
     post:
+      operationId: POST_custom
       consumes:
         - application/x-www-form-urlencoded
       parameters:
@@ -28,22 +29,30 @@ paths:
       responses:
         default:
           description: ''
-          schema: {}
   /products:
     get:
+      operationId: GET_products
       description: Get a list of products
       parameters:
         - name: q
           in: query
           description: Search phrase to look for products
-          required: false
           type: string
       responses:
         '200':
           description: ''
     post:
+      operationId: POST_products
       description: Create a product
       parameters:
+        - name: X-Tracking-Example
+          in: header
+          description: You can specify request headers like this
+          type: string
+          enum:
+            - accounting
+            - payroll
+            - finance
         - name: body
           in: body
           schema:
@@ -110,19 +119,9 @@ paths:
                 width: 12 inches
                 height: 12 inches
                 depth: 12 inches
-        - name: X-Tracking-Example
-          in: header
-          description: You can specify request headers like this
-          required: false
-          type: string
-          enum:
-            - accounting
-            - payroll
-            - finance
       responses:
         default:
           description: ''
-          schema: {}
   '/products/{productId}':
     parameters:
       - name: productId
@@ -131,6 +130,7 @@ paths:
         required: true
         type: string
     delete:
+      operationId: DELETE_products-productId
       description: Delete a single product
       parameters:
         - name: productId
@@ -141,14 +141,12 @@ paths:
       responses:
         '200':
           description: ''
+          schema:
+            example: ''
     put:
+      operationId: PUT_products-productId
       description: Updates a single product
       parameters:
-        - name: productId
-          in: query
-          description: The ID of the product
-          required: true
-          type: integer
         - name: body
           in: body
           schema:
@@ -215,6 +213,11 @@ paths:
                 width: 12 inches
                 height: 12 inches
                 depth: 12 inches
+        - name: productId
+          in: query
+          description: The ID of the product
+          required: true
+          type: integer
       responses:
         '200':
           description: ''
@@ -263,8 +266,7 @@ paths:
                     type: string
             required:
               - product
-          examples:
-            application/json:
+            example:
               product:
                 id: '1'
                 name: Product One
@@ -284,6 +286,7 @@ paths:
                 height: 12 inches
                 depth: 12 inches
     get:
+      operationId: GET_products-productId
       description: Get a single product
       parameters:
         - name: productId
@@ -294,3 +297,5 @@ paths:
       responses:
         '200':
           description: ''
+          schema:
+            example: ''

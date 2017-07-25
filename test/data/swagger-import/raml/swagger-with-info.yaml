@@ -6,40 +6,6 @@ mediaType: application/json
 protocols:
   - HTTP
 description: This is a sample server Petstore.
-annotationTypes:
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-    allowedTargets:
-      - API
-      - Method
-      - TypeDeclaration
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-deprecated:
-    type: boolean
-    allowedTargets: Method
-  oas-format:
-    type: string
-    allowedTargets: TypeDeclaration
 (oas-externalDocs):
   description: Find more information here
   url: 'http://swagger.io'
@@ -70,7 +36,6 @@ securitySchemes:
     description: Api Key Authentication
 /users:
   get:
-    displayName: my method summary
     description: Get basic information about a user.
     (oas-summary): my method summary
     responses:
@@ -84,10 +49,10 @@ securitySchemes:
                 required: false
         description: The user object
     securedBy:
+      - internalApiKey
       - petstore_auth:
           scopes:
             - 'read:users'
-      - internalApiKey
     (oas-tags):
       - get_method
     (oas-deprecated): true
@@ -96,6 +61,7 @@ securitySchemes:
       url: 'http://swagger.io'
 types:
   User:
+    type: object
     discriminator: username
     properties:
       id_int:
@@ -143,3 +109,37 @@ types:
     example:
       username: xyz
       user_password: zyx
+annotationTypes:
+  oas-format:
+    type: 'string'
+    allowedTargets: TypeDeclaration
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API

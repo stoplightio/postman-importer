@@ -79,30 +79,27 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-x-logo: any
-  oas-x-origin: any
-  oas-x-preferred: any
-  oas-x-providerName: any
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
   oas-summary:
     type: string
     allowedTargets: Method
   oas-tags:
-    type: 'string[]'
+    type: string[]
     allowedTargets: Method
-  oas-format:
-    type: string
-    allowedTargets: TypeDeclaration
   oas-collectionFormat:
     type: string
 (oas-info):
-  (oas-x-logo):
+  (logo):
     url: 'https://api.apis.guru/v2/cache/logo/http_draft-labs64.rhcloud.com_content_uploads_2015_06_labs64-logo.png'
-  (oas-x-origin):
+  (origin):
     format: swagger
     url: 'http://io.labs64.com/NetLicensing-API/v2.x/netlicensing.json'
     version: '2.0'
-  (oas-x-preferred): true
-  (oas-x-providerName): netlicensing.io
+  (preferred): true
+  (providerName): netlicensing.io
   termsOfService: 'https://www.labs64.com/legal/terms-of-service/netlicensing'
 securitySchemes:
   basicAuth:
@@ -126,6 +123,10 @@ securitySchemes:
             items:
               type: netlicensing
             type: array
+          application/json:
+            items:
+              type: netlicensing
+            type: array
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -144,7 +145,7 @@ securitySchemes:
     description: Creates a new product
     (oas-summary): Create product
     body:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         properties:
           number:
             description: Unique number that identifies the product. Vendor can assign this number when creating a product or let NetLicensing generate one.
@@ -152,15 +153,12 @@ securitySchemes:
             type: string
           active:
             description: 'If set to ''false'', the product is disabled. No new licensees can be registered for the product, existing licensees can not obtain new licenses.'
-            required: true
             type: boolean
           name:
             description: Product name. Together with the version identifies the product for the end customer.
-            required: true
             type: string
           version:
             description: 'Product version. Convenience parameter, additional to the product name.'
-            required: true
             type: string
           licenseeAutoCreate:
             description: 'If set to ''true'', non-existing licensees will be created at first validation attempt.'
@@ -179,6 +177,8 @@ securitySchemes:
         body:
           application/xml:
             type: netlicensing
+          application/json:
+            type: netlicensing
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -196,7 +196,6 @@ securitySchemes:
     uriParameters:
       productNumber:
         description: Unique number that identifies the product.
-        required: true
         type: string
     delete:
       displayName: deleteProduct
@@ -206,6 +205,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -234,6 +235,8 @@ securitySchemes:
           body:
             application/xml:
               type: netlicensing
+            application/json:
+              type: netlicensing
           description: Successful request
         '400':
           description: Malformed or illegal request
@@ -252,7 +255,7 @@ securitySchemes:
       description: Sets the provided properties to a product. Return an updated product
       (oas-summary): Update product
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             number:
               description: New product number (update)
@@ -287,6 +290,8 @@ securitySchemes:
           body:
             application/xml:
               type: netlicensing
+            application/json:
+              type: netlicensing
           description: Successful request
         '400':
           description: Malformed or illegal request
@@ -311,6 +316,8 @@ securitySchemes:
           body:
             application/xml:
               type: netlicensing
+            application/json:
+              type: netlicensing
           description: Successful request
         '400':
           description: Malformed or illegal request
@@ -333,6 +340,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -359,6 +368,10 @@ securitySchemes:
             items:
               type: netlicensing
             type: array
+          application/json:
+            items:
+              type: netlicensing
+            type: array
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -376,7 +389,6 @@ securitySchemes:
     uriParameters:
       licenseNumber:
         description: Unique number (across all products/licensees of a vendor) that identifies the license. Vendor can assign this number when creating a license or let NetLicensing generate one. Read-only after corresponding creation transaction status is set to closed.
-        required: true
         type: string
     delete:
       displayName: deleteLicense
@@ -386,6 +398,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -405,7 +419,7 @@ securitySchemes:
       description: Update license by a licenseNumber
       (oas-summary): Update license
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             number:
               description: Unique number (across all products/licensees of a vendor) that identifies the license. Vendor can assign this number when creating a license or let NetLicensing generate one. Read-only after corresponding creation transaction status is set to closed.
@@ -422,7 +436,7 @@ securitySchemes:
               description: for TIMEVOLUME licenseType
               required: false
               type: datetime
-              (oas-format): rfc3339
+              format: rfc3339
             parentfeature:
               required: false
               type: string
@@ -433,7 +447,7 @@ securitySchemes:
               description: 'Price for the license. If > 0, it must always be accompanied by the currency specification. Read-only, set from license template on creation'
               required: false
               type: number
-              (oas-format): double
+              format: double
             currency:
               description: 'Specifies currency for the license price. Check data types to discover which currencies are supported. Read-only, set from license template on creation'
               required: false
@@ -446,6 +460,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -469,6 +485,8 @@ securitySchemes:
           body:
             application/xml:
               type: netlicensing
+            application/json:
+              type: netlicensing
           description: Successful request
         '400':
           description: Malformed or illegal request
@@ -487,19 +505,15 @@ securitySchemes:
     description: Creates a new license
     (oas-summary): Create license
     body:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         properties:
           licenseeNumber:
-            required: true
             type: string
           licenseTemplateNumber:
-            required: true
             type: string
           active:
-            required: true
             type: boolean
           number:
-            required: true
             type: string
           name:
             description: 'Name for the licensed item. Set from license template on creation, if not specified explicitly.'
@@ -517,12 +531,12 @@ securitySchemes:
             description: Mandatory for 'TIMEVOLUME' license type.
             required: false
             type: datetime
-            (oas-format): rfc3339
+            format: rfc3339
           price:
             description: 'Price for the license. If >0, it must always be accompanied by the currency specification. Read-only, set from license template on creation'
             required: false
             type: number
-            (oas-format): double
+            format: double
           currency:
             description: 'Specifies currency for the license price. Check data types to discover which currencies are supported. Read-only, set from license template on creation'
             required: false
@@ -535,6 +549,8 @@ securitySchemes:
       '200':
         body:
           application/xml:
+            type: netlicensing
+          application/json:
             type: netlicensing
         description: Successful request
       '400':
@@ -555,7 +571,7 @@ securitySchemes:
     description: Creates a new licensee
     (oas-summary): Create licensee
     body:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         properties:
           number:
             description: Unique number (across all products of a vendor) that identifies the licensee. Vendor can assign this number when creating a licensee or let NetLicensing generate one. Read-only after creation of the first license for the licensee
@@ -563,19 +579,19 @@ securitySchemes:
             type: string
           productNumber:
             description: productNumber to assign new licensee object
-            required: true
             type: string
           name:
             required: false
             type: string
           active:
             description: 'If set to ''false'', the licensee is disabled. Licensee can not obtain new licenses, and validation is disabled'
-            required: true
             type: boolean
     responses:
       '200':
         body:
           application/xml:
+            type: netlicensing
+          application/json:
             type: netlicensing
         description: Successful request
       '400':
@@ -594,7 +610,6 @@ securitySchemes:
     uriParameters:
       licenseeNumber:
         description: Unique number (across all products of a vendor) that identifies the licensee. Vendor can assign this number when creating a licensee or let NetLicensing generate one. Read-only after creation of the first license for the licensee.
-        required: true
         type: string
     get:
       displayName: getLicensee
@@ -604,6 +619,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -627,6 +644,8 @@ securitySchemes:
           '200':
             body:
               application/xml:
+                type: netlicensing
+              application/json:
                 type: netlicensing
             description: Successful request
           '400':
@@ -659,6 +678,8 @@ securitySchemes:
           body:
             application/xml:
               type: netlicensing
+            application/json:
+              type: netlicensing
           description: Successful request
         '400':
           description: Malformed or illegal request
@@ -682,7 +703,7 @@ securitySchemes:
       description: Sets the provided properties to a licensee. Return an updated licensee
       (oas-summary): Update licensee
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             number:
               description: New licensee number (update).
@@ -699,6 +720,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -721,6 +744,10 @@ securitySchemes:
       '200':
         body:
           application/xml:
+            items:
+              type: netlicensing
+            type: array
+          application/json:
             items:
               type: netlicensing
             type: array
@@ -749,6 +776,10 @@ securitySchemes:
             items:
               type: netlicensing
             type: array
+          application/json:
+            items:
+              type: netlicensing
+            type: array
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -767,11 +798,10 @@ securitySchemes:
     description: Creates a new product module
     (oas-summary): Create product module
     body:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         properties:
           productNumber:
             description: Unique number (across all products of a vendor) that identifies the product module. Vendor can assign this number when creating a product module or let NetLicensing generate one. Read-only after creation of the first licensee for the product.
-            required: true
             type: string
           number:
             description: Unique number (across all products of a vendor) that identifies the product module. Vendor can assign this number when creating a product module or let NetLicensing generate one. Read-only after creation of the first licensee for the product.
@@ -779,11 +809,9 @@ securitySchemes:
             type: string
           active:
             description: 'If set to ''false'', the product module is disabled. Licensees can not obtain any new licenses for this product module.'
-            required: true
             type: boolean
           name:
             description: Product module name that is visible to the end customers in NetLicensing Shop.
-            required: true
             type: string
           licensingModel:
             description: Licensing model applied to this product module. Defines what license templates can be configured for the product module and how licenses for this product module are processed during validation.
@@ -795,24 +823,23 @@ securitySchemes:
                 - Rental
                 - Floating
               type: string
-            required: true
             type: array
             (oas-collectionFormat): multi
           maxCheckoutValidity:
             description: Maximum checkout validity (days). Mandatory for 'Floating' licensing model.
             required: false
             type: integer
-            (oas-format): int32
+            format: int32
           yellowThreshold:
             description: Remaining time volume for yellow level. Mandatory for 'Rental' licensing model.
             required: false
             type: integer
-            (oas-format): int32
+            format: int32
           redThreshold:
             description: Remaining time volume for red level. Mandatory for 'Rental' licensing model.
             required: false
             type: integer
-            (oas-format): int32
+            format: int32
           licenseTemplate:
             description: License template. Mandatory for 'Try &amp; Buy' licensing model.
             items:
@@ -827,6 +854,8 @@ securitySchemes:
       '200':
         body:
           application/xml:
+            type: netlicensing
+          application/json:
             type: netlicensing
         description: Successful request
       '400':
@@ -845,7 +874,6 @@ securitySchemes:
     uriParameters:
       productModuleNumber:
         description: Unique number (across all products of a vendor) that identifies the product module. Vendor can assign this number when creating a product module or let NetLicensing generate one. Read-only after creation of the first licensee for the product.
-        required: true
         type: string
     delete:
       displayName: deleteProductModule
@@ -855,6 +883,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -883,6 +913,8 @@ securitySchemes:
           body:
             application/xml:
               type: netlicensing
+            application/json:
+              type: netlicensing
           description: Successful request
         '400':
           description: Malformed or illegal request
@@ -901,7 +933,7 @@ securitySchemes:
       description: Sets the provided properties to a product module. Return an updated product module
       (oas-summary): Update product module
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             number:
               description: New product module number (update).
@@ -932,17 +964,17 @@ securitySchemes:
               description: Maximum checkout validity (days). Mandatory for 'Floating' licensing model.
               required: false
               type: integer
-              (oas-format): int32
+              format: int32
             yellowThreshold:
               description: Remaining time volume for yellow level. Mandatory for 'Rental' licensing model.
               required: false
               type: integer
-              (oas-format): int32
+              format: int32
             redThreshold:
               description: Remaining time volume for red level. Mandatory for 'Rental' licensing model.
               required: false
               type: integer
-              (oas-format): int32
+              format: int32
             licenseTemplate:
               description: License template. Mandatory for 'Try &amp; Buy' licensing model.
               items:
@@ -957,6 +989,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -977,23 +1011,19 @@ securitySchemes:
     description: Creates a new license template
     (oas-summary): Create license template
     body:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         properties:
           productModuleNumber:
             description: Number of product module to сreate license template object
-            required: true
             type: string
           number:
             description: lUnique number (across all products of a vendor) that identifies the license template. Vendor can assign this number when creating a license template or let NetLicensing generate one. Read-only after creation of the first license from this license template.
-            required: true
             type: string
           name:
             description: license template name to сreate license template object
-            required: true
             type: string
           active:
             description: 'If set to ''false'', the license template is disabled. Licensee can not obtain any new licenses off this license template.'
-            required: true
             type: boolean
           licenseType:
             description: 'type of licenses created from this license template. Supported types: FEATURE, TIMEVOLUME'
@@ -1004,7 +1034,6 @@ securitySchemes:
                 - TIMEVOLUME
                 - FLOATING
               type: string
-            required: true
             type: array
             (oas-collectionFormat): multi
           timeVolume:
@@ -1019,7 +1048,7 @@ securitySchemes:
             description: 'price for the license. If >0, it must always be accompanied by the currency specification.'
             required: false
             type: number
-            (oas-format): double
+            format: double
           currency:
             description: specifies currency for the license price. Check data types to discover which currencies are supported.
             required: false
@@ -1041,6 +1070,8 @@ securitySchemes:
         body:
           application/xml:
             type: netlicensing
+          application/json:
+            type: netlicensing
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -1057,8 +1088,7 @@ securitySchemes:
   '/{licenseTemplateNumber}':
     uriParameters:
       licenseTemplateNumber:
-        description: Unique number (across all products of a vendor) that identifies the license template.
-        required: true
+        description: Unique number (across all products of a vendor) that identifies the license template. Vendor can assign this number when creating a license template or let NetLicensing generate one. Read-only after creation of the first license from this license template.
         type: string
     get:
       displayName: getLicenseTemplate
@@ -1068,6 +1098,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -1087,7 +1119,7 @@ securitySchemes:
       description: Sets the provided properties to a license template. Return an updated license template
       (oas-summary): Update license template
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             number:
               description: New license template number (update).
@@ -1125,7 +1157,7 @@ securitySchemes:
               description: 'Price for the license. If >0, it must always be accompanied by the currency specification.'
               required: false
               type: number
-              (oas-format): double
+              format: double
             currency:
               description: Specifies currency for the license price. Check data types to discover which currencies are supported.
               required: false
@@ -1146,6 +1178,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -1168,6 +1202,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -1198,6 +1234,10 @@ securitySchemes:
             items:
               type: netlicensing
             type: array
+          application/json:
+            items:
+              type: netlicensing
+            type: array
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -1223,6 +1263,10 @@ securitySchemes:
             items:
               type: netlicensing
             type: array
+          application/json:
+            items:
+              type: netlicensing
+            type: array
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -1240,14 +1284,13 @@ securitySchemes:
     uriParameters:
       paymentMethodNumber:
         description: Payment method number
-        required: true
         type: string
     post:
       displayName: updatePaymentMethod
       description: Sets the provided properties to a payment method. Return an updated payment method
       (oas-summary): Update payment method
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             active:
               description: 'If set to ''false'', the payment method is disabled.'
@@ -1261,6 +1304,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -1283,6 +1328,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -1309,6 +1356,10 @@ securitySchemes:
             items:
               type: netlicensing
             type: array
+          application/json:
+            items:
+              type: netlicensing
+            type: array
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -1327,7 +1378,7 @@ securitySchemes:
     description: Create token by tokenType and additional token parameters
     (oas-summary): Create token
     body:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         properties:
           tokenType:
             description: Token type to be generated
@@ -1335,7 +1386,6 @@ securitySchemes:
               - DEFAULT
               - SHOP
               - APIKEY
-            required: true
             type: string
             (oas-collectionFormat): multi
           licenseeNumber:
@@ -1363,6 +1413,8 @@ securitySchemes:
         body:
           application/xml:
             type: netlicensing
+          application/json:
+            type: netlicensing
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -1380,7 +1432,6 @@ securitySchemes:
     uriParameters:
       tokenNumber:
         description: Token number
-        required: true
         type: string
     delete:
       displayName: deleteToken
@@ -1390,6 +1441,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -1412,6 +1465,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -1438,6 +1493,10 @@ securitySchemes:
             items:
               type: netlicensing
             type: array
+          application/json:
+            items:
+              type: netlicensing
+            type: array
         description: Successful request
       '400':
         description: Malformed or illegal request
@@ -1455,14 +1514,13 @@ securitySchemes:
     uriParameters:
       transactionNumber:
         description: Unique number (across all products of a vendor) that identifies the transaction
-        required: true
         type: string
     post:
       displayName: updateTransaction
       description: Sets the provided properties to a transaction. Return an updated transaction
       (oas-summary): Update transaction
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             number:
               description: Unique number (across all products of a vendor) that identifies the transaction
@@ -1490,11 +1548,11 @@ securitySchemes:
             dateCreated:
               required: false
               type: datetime
-              (oas-format): rfc3339
+              format: rfc3339
             dateClosed:
               required: false
               type: datetime
-              (oas-format): rfc3339
+              format: rfc3339
             paymentMethod:
               required: false
               type: string
@@ -1502,6 +1560,8 @@ securitySchemes:
         '200':
           body:
             application/xml:
+              type: netlicensing
+            application/json:
               type: netlicensing
           description: Successful request
         '400':
@@ -1525,6 +1585,8 @@ securitySchemes:
           body:
             application/xml:
               type: netlicensing
+            application/json:
+              type: netlicensing
           description: Successful request
         '400':
           description: Malformed or illegal request
@@ -1543,10 +1605,9 @@ securitySchemes:
     description: Creates a new transaction
     (oas-summary): Create transaction
     body:
-      multipart/form-data:
+      application/x-www-form-urlencoded:
         properties:
           licenseeNumber:
-            required: true
             type: string
           number:
             description: Unique number (across all products of a vendor) that identifies the transaction
@@ -1554,31 +1615,28 @@ securitySchemes:
             type: string
           active:
             description: always true for transactions
-            required: true
             type: boolean
           status:
             enum:
               - CANCELLED
               - CLOSED
               - PENDING
-            required: true
             type: string
             (oas-collectionFormat): multi
           source:
             description: AUTO transaction for internal use only
             enum:
               - SHOP
-            required: true
             type: string
             (oas-collectionFormat): multi
           dateCreated:
             required: false
             type: datetime
-            (oas-format): rfc3339
+            format: rfc3339
           dateClosed:
             required: false
             type: datetime
-            (oas-format): rfc3339
+            format: rfc3339
           paymentMethod:
             required: false
             type: string
@@ -1586,6 +1644,8 @@ securitySchemes:
       '200':
         body:
           application/xml:
+            type: netlicensing
+          application/json:
             type: netlicensing
         description: Successful request
       '400':
@@ -1602,6 +1662,7 @@ securitySchemes:
       - Transaction
 types:
   License:
+    type: object
     properties:
       active:
         description: 'If set to ''false'', the license is disabled. License can be re-enabled, but as long as it is disabled, the license is excluded from the validation process.'
@@ -1631,6 +1692,7 @@ types:
     xml:
       name: license
   LicenseTemplate:
+    type: object
     properties:
       active:
         description: 'If set to ''false'', the license template is disabled. Licensee can not obtain any new licenses off this license template.'
@@ -1675,6 +1737,7 @@ types:
     xml:
       name: licensetemplate
   Licensee:
+    type: object
     properties:
       active:
         description: 'If set to ''false'', the licensee is disabled. Licensee can not obtain new licenses, and validation is disabled.'
@@ -1687,6 +1750,7 @@ types:
     xml:
       name: licensee
   PaymentMethod:
+    type: object
     properties:
       active:
         type: boolean
@@ -1697,6 +1761,7 @@ types:
     xml:
       name: paymentmethod
   Product:
+    type: object
     properties:
       active:
         description: 'If set to ''false'', the product is disabled. No new licensees can be registered for the product, existing licensees can not obtain new licenses'
@@ -1721,6 +1786,7 @@ types:
     xml:
       name: product
   ProductModule:
+    type: object
     properties:
       active:
         description: 'If set to ''false'', the product module is disabled. Licensees can not obtain any new licenses for this product module.'
@@ -1741,6 +1807,7 @@ types:
     xml:
       name: productmodule
   Token:
+    type: object
     properties:
       active:
         type: boolean
@@ -1767,6 +1834,7 @@ types:
     xml:
       name: token
   Transaction:
+    type: object
     properties:
       active:
         description: Always true for the transactions
@@ -1791,6 +1859,7 @@ types:
     xml:
       name: transaction
   discount:
+    type: object
     properties:
       amountPercent:
         type: string
@@ -1805,14 +1874,13 @@ types:
     xml:
       name: discount
   infos:
-    properties: {}
     xml:
       name: infos
   items:
-    properties: {}
     xml:
       name: items
   licensingModel:
+    type: object
     properties:
       name:
         type: string

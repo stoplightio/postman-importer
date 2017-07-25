@@ -13,6 +13,12 @@ paths:
       consumes:
         - application/json
       parameters:
+        - name: body
+          in: body
+          required: true
+          description: Pet object that needs to be added to the store
+          schema:
+            $ref: '#/definitions/environmentType'
         - name: prop1
           in: query
           required: true
@@ -21,11 +27,6 @@ paths:
           in: query
           required: true
           type: string
-        - name: body
-          in: body
-          description: Pet object that needs to be added to the store
-          schema:
-            $ref: '#/definitions/environmentType'
       responses:
         '405':
           description: Invalid input
@@ -46,13 +47,14 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: queryString
-          in: query
-          description: my description2
-          type: string
         - name: environmentHeaderRequest
           in: header
           required: true
+          type: string
+        - name: queryString
+          in: query
+          required: true
+          description: my description2
           type: string
       responses:
         '200':
@@ -69,9 +71,9 @@ paths:
 x-basePath: '{environmentType}.musicapi.com/{version}'
 definitions:
   environmentType:
+    type: object
     properties:
       username:
         type: string
-    type: object
     required:
       - username

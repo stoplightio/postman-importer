@@ -1,0 +1,47 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+annotationTypes:
+  oas-body-name:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-responses: any
+traits:
+  pets:
+    queryParameters:
+      names:
+        type: string
+      nicknames:
+        type: string
+        required: false
+    body:
+      application/json:
+        type: string
+        (oas-body-name): body
+    headers:
+      reviews:
+        type: string
+      age:
+        type: integer
+        required: false
+  employees:
+    headers:
+      surnames:
+        type: string
+    body:
+      application/json:
+        type: object
+        (oas-body-name): body
+(oas-responses):
+  trait:pets:200:
+    description: ''
+    body:
+      example: Dog
+  trait:pets:201:
+    description: ''
+    body:
+      type: boolean
+  trait:employees:200:
+    description: ''
+    body:
+      type: object

@@ -1,31 +1,10 @@
 #%RAML 1.0
 title: Simple API
 version: 1.1.0
-annotationTypes:
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-global-response-definition:
-    type: any
-    allowedTargets: Response
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-schema-title:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-responses: any
 /persons:
   '/{username}':
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     get:
@@ -33,6 +12,8 @@ annotationTypes:
       description: Returns a single person for its username.
       (oas-summary): Gets a person
       (oas-responses-default):
+        (oas-global-response-definition):
+                         TotallyUnexpectedResponse
         description: A totally unexpected response
         headers:
           X-Rate-Limit-Remaining:
@@ -42,7 +23,6 @@ annotationTypes:
             type: datetime
             description: When rate limit will be reset
             format: rfc3339
-        (oas-global-response-definition): TotallyUnexpectedResponse
       responses:
         '200':
           body:
@@ -58,6 +38,8 @@ annotationTypes:
               description: When rate limit will be reset
               format: rfc3339
         '404':
+          (oas-global-response-definition):
+                        PersonDoesNotExistResponse
           description: Person does not exist.
           headers:
             X-Rate-Limit-Remaining:
@@ -67,8 +49,9 @@ annotationTypes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-          (oas-global-response-definition): PersonDoesNotExistResponse
         '500':
+          (oas-global-response-definition):
+                          Standard500ErrorResponse
           body:
             application/json:
               type: Error
@@ -81,7 +64,6 @@ annotationTypes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-          (oas-global-response-definition): Standard500ErrorResponse
       (oas-tags):
         - Persons
     is:
@@ -123,20 +105,17 @@ traits:
         type: integer
         description: Number of persons returned
         format: int32
-        required: true
   userAgent:
     headers:
       userAgent:
         type: string
         description: All API consumers MUST provide a user agent
-        required: true
   userData:
     body:
       multipart/form-data:
         properties:
           userData:
             description: The person's data
-            required: true
             type: string
   userBody:
     body:
@@ -177,3 +156,23 @@ traits:
         type: datetime
         description: When rate limit will be reset
         format: rfc3339
+annotationTypes:
+  oas-responses: any
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-schema-title:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-global-response-definition:
+    type: any
+    allowedTargets: Response

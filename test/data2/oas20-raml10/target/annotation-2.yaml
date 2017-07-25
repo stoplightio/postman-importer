@@ -1,0 +1,178 @@
+#%RAML 1.0
+title: Title
+version: 1
+baseUri: http://www.example.com/api
+(oas-info):
+  (info-ann): info annotation
+  (info-ann-2):
+    key_1: value 1
+    key_2: value 2
+(root-ann): root annotation
+securitySchemes:
+  oauth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'http://example.swagger.io/oauth/dialog'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'write:pets'
+    (sec-ann): security definitions annotations
+annotationTypes:
+  oas-info:
+    allowedTargets: API
+    properties:
+      contact?:
+        properties:
+          email?: string
+          name?: string
+          url?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+      termsOfService?: string
+  info-ann: any
+  info-ann-2: any
+  root-ann: any
+  oas-summary:
+    allowedTargets: Method
+    type: string
+  oas-tags:
+    allowedTargets: Method
+    type: string[]
+  oas-responses-default:
+    allowedTargets: Method
+    type: any
+  oas-body-name:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-deprecated:
+    allowedTargets: Method
+    type: boolean
+  oas-tags-definition:
+    allowedTargets: API
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+  oas-format:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-exclusiveMaximum:
+    type: boolean
+  oas-exclusiveMinimum:
+    type: boolean
+  oas-schema-title:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-readOnly:
+    allowedTargets: TypeDeclaration
+    type: boolean
+  oas-definition-name:
+    allowedTargets: TypeDeclaration
+    type: string
+  oas-collectionFormat:
+    type: string
+  oas-allowEmptyValue:
+    type: boolean
+  oas-maximum:
+    allowedTargets: TypeDeclaration
+    type: number
+  oas-minimum:
+    allowedTargets: TypeDeclaration
+    type: number
+  oas-paths:
+    allowedTargets: API
+    type: any
+  200-ann: any
+  body-ann: any
+  body-schema-ann: any
+  schema-ann: any
+  type-ann: any
+  prop-ann: any
+  path-ann: any
+  paths-ann: any
+  paths-ann-2: any
+  method-ann: any
+  sec-ann: any
+(oas-tags-definition):
+  - description: first tag
+    name: first
+  - description: second tag
+    name: second
+(oas-paths):
+  (paths-ann): paths annotation
+  (paths-ann-2): paths annotation 2
+/pets:
+  (path-ann): path annotation
+  get:
+    (method-ann): method annotation
+    (oas-summary): the summary
+    (oas-deprecated): true
+    (oas-tags):
+      - some tag
+      - other tag
+    (oas-responses-default):
+      description: default response
+      body:
+        application/json:
+          (schema-ann): default schema annotation
+          type: string
+          example: Dog
+    body:
+      application/json:
+        type: string
+        (oas-body-name): _body
+        required: false
+        description: body parameter
+        (body-ann): body annotation
+        (body-schema-ann): body schema annotation
+    queryParameters:
+      queryParameter:
+        (oas-collectionFormat): multi
+        (oas-allowEmptyValue): true
+        description: query parameter
+        required: false
+        type: string
+    responses:
+      200:
+        (200-ann): 200 annotation
+types:
+  pets:
+    (oas-schema-title): Pets
+    (type-ann): type annotation
+    type: object
+    properties:
+      first:
+        (prop-ann): property annotation
+        (oas-readOnly): true
+        required: false
+      second:
+        (oas-format): uri
+        type: string
+        required: false
+      third:
+        (oas-format): byte
+        (oas-maximum): 255
+        (oas-minimum): 1
+        type: string
+        required: false
+      fourth:
+        (oas-exclusiveMaximum): true
+        (oas-exclusiveMinimum): false
+        required: false
+        type: number
+      fifth:
+        format: double
+        required: false
+        type: number
+  custom_pets_:
+    type: string
+    (oas-definition-name): 'custom[pets]'

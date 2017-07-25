@@ -1,0 +1,122 @@
+swagger: '2.0'
+info:
+  title: Petstore
+  version: '1'
+parameters:
+  trait:employees:body:
+    in: body
+    name: body
+    required: true
+    schema:
+      type: integer
+  trait:employees:h_employees:
+    in: header
+    name: h_employees
+    required: true
+    type: string
+  trait:employees:qp_employees:
+    in: query
+    name: qp_employees
+    required: true
+    type: string
+  trait:pets:body:
+    in: body
+    name: body
+    required: true
+    schema:
+      type: string
+  trait:pets:h_pets:
+    in: header
+    name: h_pets
+    required: true
+    type: string
+  trait:pets:qp_pets:
+    in: query
+    name: qp_pets
+    required: true
+    type: string
+responses:
+  trait:pets:200:
+    description: ''
+    schema:
+      type: string
+  trait:employees:201:
+    description: ''
+    schema:
+      type: integer
+paths:
+  /pets:
+    get:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      description: pets
+      operationId: GET_pets
+      parameters:
+        - $ref: '#/parameters/trait:pets:h_pets'
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: string
+        - $ref: '#/parameters/trait:pets:qp_pets'
+      responses:
+        200:
+          $ref: '#/responses/trait:pets:200'
+  /employees:
+    get:
+      consumes:
+        - application/xml
+      produces:
+        - application/json
+      description: employees
+      operationId: GET_employees
+      parameters:
+        - $ref: '#/parameters/trait:employees:h_employees'
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/parameters/trait:employees:qp_employees'
+      responses:
+        201:
+          $ref: '#/responses/trait:employees:201'
+  /both:
+    get:
+      produces:
+        - application/json
+      consumes:
+        - text/xml
+        - application/json
+        - application/xml
+      description: both
+      operationId: GET_both
+      parameters:
+        - in: header
+          name: h_both
+          required: true
+          type: string
+        - $ref: '#/parameters/trait:pets:h_pets'
+        - $ref: '#/parameters/trait:employees:h_employees'
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+        - in: query
+          name: qp_both
+          required: true
+          type: string
+        - $ref: '#/parameters/trait:pets:qp_pets'
+        - $ref: '#/parameters/trait:employees:qp_employees'
+      responses:
+        200:
+          $ref: '#/responses/trait:pets:200'
+        201:
+          $ref: '#/responses/trait:employees:201'
+        202:
+          description: ''
+          schema:
+            type: boolean

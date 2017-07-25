@@ -1,0 +1,53 @@
+swagger: '2.0'
+schemes:
+  - https
+info:
+  title: AdhereTech External API
+  version: 0.11.0
+host: example.com
+basePath: /api/v1
+securityDefinitions:
+  auth:
+    type: basic
+  auth2:
+    type: basic
+paths:
+  /bottles: {}
+  '/bottles/{bottleUid}':
+    get:
+      description: Get a bottle by its UID.
+      operationId: getBottle
+      responses:
+        '404':
+          description: Bottle not found.
+      security:
+        - auth: []
+        - auth2: []
+    put:
+      description: Modify a bottle by its UID.
+      operationId: updateBottle
+      responses:
+        '200':
+          description: Bottle found and modified.
+        '404':
+          description: Bottle not found.
+        '405':
+          description: Validation exception.
+      security:
+        - auth: []
+        - auth2: []
+    post:
+      description: Reenroll a patient.
+      operationId: reenrollpatient
+      responses:
+        '200':
+          description: Patient found and reenrolled
+        '404':
+          description: Patient not found. Or patient already enrolled
+      security:
+        - auth2: []
+    parameters:
+      - in: path
+        name: bottleUid
+        required: true
+        type: string

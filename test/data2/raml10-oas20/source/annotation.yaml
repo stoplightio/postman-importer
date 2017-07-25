@@ -1,0 +1,196 @@
+#%RAML 1.0
+title: Illustrating annotations
+version: 1
+protocols:
+  - HTTP
+  - HTTPS
+baseUri:
+  value: http://www.example.com/api
+  (redirectable): true
+(oas-info):
+  (logo):
+    url: 'https://api.apis.guru/v2/cache/logo/http_www.gsa.gov_resources_images_GSAlogo.gif'
+  (origin):
+    format: swagger
+    url: 'https://discovery.gsa.gov/docs/api-docs/'
+    version: '1.2'
+  (preferred): true
+  (providerName): 18f.gov
+annotationTypes:
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
+  oas-definition-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  something: string
+  meta-data:
+    displayName: meta data
+    description: The metadata
+    type: string
+    allowedTargets: Resource
+  redirectable: boolean
+  deprecated: nil
+  experimental: nil | string
+  feedbackRequested: string?
+  testHarness:
+    type: string
+  badge:
+  clearanceLevel:
+    properties:
+      level:
+        enum:
+          - low
+          - medium
+          - high
+        required: true
+      signature:
+        pattern: "\\d{3}-\\w{12}"
+      list:
+        type: array
+        items:
+          type: string
+        required: false
+(something): something
+types:
+  Custom_Type_:
+    type: object
+    properties:
+      prop1:
+        type: string
+    (oas-definition-name): Custom[Type]
+  API:
+    type: object
+    example:
+      'googleapis.com:drive':
+        added: '2015-02-22T20:00:45.000Z'
+        preferred: v3
+        versions:
+          v2:
+            added: '2015-02-22T20:00:45.000Z'
+            info:
+              title: Drive
+              version: v2
+              (oas-x-apiClientRegistration):
+                url: 'https://console.developers.google.com'
+              (oas-x-logo):
+                url: 'https://api.apis.guru/v2/cache/logo/https_www.gstatic.com_images_icons_material_product_2x_drive_32dp.png'
+              (oas-x-origin):
+                format: google
+                url: 'https://www.googleapis.com/discovery/v1/apis/drive/v2/rest'
+                version: v1
+              (oas-x-preferred): false
+              (oas-x-providerName): googleapis.com
+              (oas-x-serviceName): drive
+            swaggerUrl: 'https://api.apis.guru/v2/specs/googleapis.com/drive/v2/swagger.json'
+            swaggerYamlUrl: 'https://api.apis.guru/v2/specs/googleapis.com/drive/v2/swagger.yaml'
+            updated: '2016-06-17T00:21:44.000Z'
+          v3:
+            added: '2015-12-12T00:25:13.000Z'
+            info:
+              title: Drive
+              version: v3
+              (oas-x-apiClientRegistration):
+                url: 'https://console.developers.google.com'
+              (oas-x-logo):
+                url: 'https://api.apis.guru/v2/cache/logo/https_www.gstatic.com_images_icons_material_product_2x_drive_32dp.png'
+              (oas-x-origin):
+                format: google
+                url: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+                version: v1
+              (oas-x-preferred): true
+              (oas-x-providerName): googleapis.com
+              (oas-x-serviceName): drive
+            swaggerUrl: 'https://api.apis.guru/v2/specs/googleapis.com/drive/v3/swagger.json'
+            swaggerYamlUrl: 'https://api.apis.guru/v2/specs/googleapis.com/drive/v3/swagger.yaml'
+            updated: '2016-06-17T00:21:44.000Z'
+/groups:
+  (experimental):
+/users:
+  (meta-data): metadata
+  (clearanceLevel):
+    (something): some
+    level: high
+    signature: 230-ghtwvfrs1itr
+  get:
+    (deprecated):
+    (feedbackRequested): Feedback committed!
+    body:
+      application/json:
+        type: object
+        (redirectable): false
+    headers:
+      header:
+        type: string
+        (something): some header
+    queryParameters:
+      age:
+        type: integer
+        (something): some query parameter
+    (oas-responses-default):
+      body:
+        application/json:
+          type: string
+      description: Error response describing why the operation failed.
+    responses:
+      200:
+        (something): some response
+        body:
+          application/json:
+            (something): some schema
+            example:
+              'googleapis.com:drive':
+                versions:
+                  v2:
+                    info:
+                      title: Drive
+                      version: v2
+                      (oas-x-apiClientRegistration):
+                        url: 'https://console.developers.google.com'
+                      (oas-x-logo):
+                        url: 'https://api.apis.guru/v2/cache/logo/https_www.gstatic.com_images_icons_material_product_2x_drive_32dp.png'
+                      (oas-x-origin):
+                        format: google
+                        url: 'https://www.googleapis.com/discovery/v1/apis/drive/v2/rest'
+                        version: v1
+                      (oas-x-preferred): false
+                      (oas-x-providerName): googleapis.com
+                      (oas-x-serviceName): drive
+                  v3:
+                    info:
+                      title: Drive
+                      version: v3
+                      (oas-x-apiClientRegistration):
+                        url: 'https://console.developers.google.com'
+                      (oas-x-logo):
+                        url: 'https://api.apis.guru/v2/cache/logo/https_www.gstatic.com_images_icons_material_product_2x_drive_32dp.png'
+                      (oas-x-origin):
+                        format: google
+                        url: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+                        version: v1
+                      (oas-x-preferred): true
+                      (oas-x-providerName): googleapis.com
+                      (oas-x-serviceName):
+                        (something): some example
+  /{id}:
+    uriParameters:
+      id:
+        type: integer
+        (something): some uri parameter

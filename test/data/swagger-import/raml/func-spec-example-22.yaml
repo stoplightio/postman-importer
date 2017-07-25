@@ -1,39 +1,40 @@
 #%RAML 1.0
 title: Definition names conversion example
 version: 1.0.0
-annotationTypes:
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
 /test:
-  post:
-    body:
-      application/json:
-        type: User
-        properties:
-          //:
-            type: string
-        (oas-body-name): username
-        description: The person's username
-    responses:
-      '200':
-        description: OK
+ post:
+   body:
+     application/json:
+       type: User
+       properties:
+         //:
+          type: string
+       (oas-body-name): username
+       description: The person's username
+   responses:
+     '200':
+       description: OK
 types:
-  User:
-    properties:
-      id:
-        type: integer
-        format: int64
-        required: false
-      username:
-        type: string
-        required: false
-      firstName:
-        type: string
-        required: false
-      lastName:
-        type: string
-        required: false
-      email:
-        type: string
-        required: false
+ User:
+   type: object
+   properties:
+     id:
+       type: integer
+       format: int64
+       required: false
+     username:
+       type: string
+       required: false
+     firstName:
+       type: string
+       required: false
+     lastName:
+       type: string
+       required: false
+     email:
+       type: string
+       required: false
+annotationTypes:
+ oas-body-name:
+   type: string
+   allowedTargets: TypeDeclaration

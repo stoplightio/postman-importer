@@ -9,36 +9,38 @@ produces:
 paths:
   /users:
     post:
+      operationId: POST_users
       parameters:
         - name: body
           in: body
+          required: true
           schema:
             $ref: '#/definitions/User'
       responses:
         default:
           description: ''
-          schema: {}
   /groups:
     post:
+      operationId: POST_groups
       consumes:
         - text/xml
       parameters:
         - name: body
           in: body
+          required: true
           schema:
             type: object
       responses:
         default:
           description: ''
-          schema: {}
 definitions:
   User:
+    type: object
     properties:
       firstName:
         type: string
       lastName:
         type: string
-    type: object
     required:
       - firstName
       - lastName

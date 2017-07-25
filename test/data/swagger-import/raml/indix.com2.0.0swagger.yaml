@@ -6,19 +6,19 @@ mediaType: application/json
 protocols:
   - HTTPS
 (oas-info):
-  (oas-x-apisguru-categories):
+  (apisguru-categories):
     - analytics
     - ecommerce
-  (oas-x-logo):
+  (logo):
     backgroundColor: '#444444'
     url: 'https://api.apis.guru/v2/cache/logo/https_www.indix.com_wp-content_themes_indix2015_images_logo.png'
-  (oas-x-origin):
+  (origin):
     format: swagger
     url: 'https://developer.indix.com/swagger/spec/INDIX_API_V2.json'
     version: '2.0'
-  (oas-x-preferred): true
-  (oas-x-providerName): indix.com
-  (oas-x-tags):
+  (preferred): true
+  (providerName): indix.com
+  (tags):
     - DaaS
     - Product information
 annotationTypes:
@@ -35,12 +35,12 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-x-apisguru-categories: any
-  oas-x-logo: any
-  oas-x-origin: any
-  oas-x-preferred: any
-  oas-x-providerName: any
-  oas-x-tags: any
+  apisguru-categories: any
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
+  tags: any
   oas-externalDocs:
     properties:
       description?: string
@@ -55,7 +55,7 @@ annotationTypes:
   oas-collectionFormat:
     type: string
   oas-tags:
-    type: 'string[]'
+    type: string[]
     allowedTargets: Method
 (oas-externalDocs):
   url: 'http://docs.indix.com/'
@@ -63,7 +63,6 @@ annotationTypes:
   /offersPremium:
     /products:
       get:
-        displayName: 'Search Products - Retrieves a list of products matching a variety of query parameters with offers info across stores - Credits: 　n x 4'
         description: '<p>Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 4 credits per product returned.'
         (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with offers info across stores - Credits: 　n x 4'
         responses:
@@ -72,7 +71,6 @@ annotationTypes:
         queryParameters:
           countryCode:
             description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-            required: true
             type: string
           q:
             description: The product search term
@@ -183,11 +181,9 @@ annotationTypes:
             type: string
           app_id:
             description: Your application id
-            required: true
             type: string
           app_key:
             description: Your application key
-            required: true
             type: string
         (oas-tags):
           - 2 - Product Search
@@ -195,10 +191,8 @@ annotationTypes:
         uriParameters:
           mpid:
             description: The Indix product identifier - should be a 32-digit HEX value retrieved via the Product Search API
-            required: true
             type: string
         get:
-          displayName: 'Product Details - Returns offers premium information for a product - Credits: 　4'
           description: <p>This operation returns the offers premium information for the specified product across all the stores where it is sold at. This consumes 4 credits.
           (oas-summary): 'Product Details - Returns offers premium information for a product - Credits: 　4'
           responses:
@@ -207,7 +201,6 @@ annotationTypes:
           queryParameters:
             countryCode:
               description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-              required: true
               type: string
             pageNumber:
               description: 'The page number of the result set to return. 50 results per page, plus similar items'
@@ -215,18 +208,15 @@ annotationTypes:
               type: string
             app_id:
               description: Your application id
-              required: true
               type: string
             app_key:
               description: Your application key
-              required: true
               type: string
           (oas-tags):
             - 3 - Product Lookup
     /bulk:
       /lookup:
         post:
-          displayName: 'Bulk Product Details - Returns offers premium information for a product - Credits: 　n x 4'
           description: This operation returns the offers premium information for the specified product across all the stores where it is sold at. This consumes 4 credits per product returned.
           (oas-summary): 'Bulk Product Details - Returns offers premium information for a product - Credits: 　n x 4'
           body:
@@ -234,22 +224,18 @@ annotationTypes:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 file:
                   description: |-
                     File input format: JsonLines. Each line should be a valid json conforming to one of the below formats<br><pre>{"upc": "upc1"}
                     {"mpn": "mpn1", "brandId":  123}
                     {"sku": "mpn1", "storeId":  123}</pre>
-                  required: true
                   type: file
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -258,15 +244,13 @@ annotationTypes:
             - 6 - Bulk Product Lookup
       /products:
         post:
-          displayName: 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with offers info across stores - Credits: 　n x 4'
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 4 credits per product returned.'
           (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with offers info across stores - Credits: 　n x 4'
           body:
-            multipart/form-data:
+            application/x-www-form-urlencoded:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 storeId:
                   description: 'Limits results to products sold at store with id. Supports multiple values (acts as OR operator) '
@@ -338,11 +322,9 @@ annotationTypes:
                   type: string
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -355,10 +337,8 @@ annotationTypes:
         uriParameters:
           mpid:
             description: The Indix product identifier - should be a 32-digit HEX value retrieved via the Product Search API
-            required: true
             type: string
         get:
-          displayName: 'Product Details - Returns complete information for a product - Credits: 　22'
           description: <p>This operation returns the complete information for the specified product across all the stores where it is sold at. This consumes 22 credits.
           (oas-summary): 'Product Details - Returns complete information for a product - Credits: 　22'
           responses:
@@ -367,7 +347,6 @@ annotationTypes:
           queryParameters:
             countryCode:
               description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-              required: true
               type: string
             pageNumber:
               description: 'The page number of the result set to return. 50 results per page, plus similar items'
@@ -375,25 +354,21 @@ annotationTypes:
               type: string
             app_id:
               description: Your application id
-              required: true
               type: string
             app_key:
               description: Your application key
-              required: true
               type: string
           (oas-tags):
             - 3 - Product Lookup
       get:
-        displayName: 'Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores - Credits: 　n x 22'
         description: '<p>Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 22 credits per product returned.'
-        (oas-summary): Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores - Cr
+        (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores - Credits: 　n x 22'
         responses:
           '200':
             description: Response
         queryParameters:
           countryCode:
             description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-            required: true
             type: string
           q:
             description: The product search term
@@ -504,26 +479,22 @@ annotationTypes:
             type: string
           app_id:
             description: Your application id
-            required: true
             type: string
           app_key:
             description: Your application key
-            required: true
             type: string
         (oas-tags):
           - 2 - Product Search
     /bulk:
       /products:
         post:
-          displayName: 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores - Credits: 　n x 22'
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 22 credits per product returned.'
-          (oas-summary): Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores
+          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their offers and catalog info across stores - Credits: 　n x 22'
           body:
-            multipart/form-data:
+            application/x-www-form-urlencoded:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 storeId:
                   description: 'Limits results to products sold at store with id. Supports multiple values (acts as OR operator) '
@@ -595,11 +566,9 @@ annotationTypes:
                   type: string
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -608,7 +577,6 @@ annotationTypes:
             - 5 - Bulk Product Search
       /lookup:
         post:
-          displayName: 'Bulk Product Details - Returns complete information for a product - Credits: 　n x 22'
           description: This operation returns the complete information for the specified product across all the stores where it is sold at. This consumes 22 credits per product returned.
           (oas-summary): 'Bulk Product Details - Returns complete information for a product - Credits: 　n x 22'
           body:
@@ -616,22 +584,18 @@ annotationTypes:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 file:
                   description: |-
                     File input format: JsonLines. Each line should be a valid json conforming to one of the below formats<br><pre>{"upc": "upc1"}
                     {"mpn": "mpn1", "brandId":  123}
                     {"sku": "mpn1", "storeId":  123}</pre>
-                  required: true
                   type: file
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -640,7 +604,6 @@ annotationTypes:
             - 6 - Bulk Product Lookup
       /ase:
         post:
-          displayName: 'ASE Universal Bulk - Returns a set of  exact and close matches - Credits: 　n x 25'
           description: Used  to  get a set of  exact and close matches for a given set of  query parameters. You must  include <b>productTitle</b> as a parameter. This consumes 25 credits per product returned.
           (oas-summary): 'ASE Universal Bulk - Returns a set of  exact and close matches - Credits: 　n x 25'
           body:
@@ -648,7 +611,6 @@ annotationTypes:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 file:
                   description: |-
@@ -656,15 +618,12 @@ annotationTypes:
                     {"productTitle": "LPS LPS 2 Brown Penetrating Lubricant - 55  gal Drum  - Food  Grade,  Military  Grade - 00255 [PRICE  is  per DRUM]" ,"mpn": "00255","upc": "078827002552"}
                     {"productTitle": "LPS LPS 2 Brown Penetrating Lubricant - 55  gal Drum  - Food  Grade,  Military  Grade - 00255 [PRICE  is  per DRUM]", "upc": "078827002552"}
                     {"productTitle": "LPS LPS 2 Brown Penetrating Lubricant - 55  gal Drum  - Food  Grade,  Military  Grade - 00255 [PRICE  is  per DRUM]"}</pre>
-                  required: true
                   type: file
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -673,7 +632,6 @@ annotationTypes:
             - 8 - Advanced Search Endpoint
   /brands:
     get:
-      displayName: 'Search Brands - Lists all brands along with their IDs - Credits: 　0'
       description: '<p>Lists all brands, along with their IDs, matching query term. Does not support wildcards. Limit is 10 results per query. This API does not consume any credits.'
       (oas-summary): 'Search Brands - Lists all brands along with their IDs - Credits: 　0'
       responses:
@@ -682,15 +640,12 @@ annotationTypes:
       queryParameters:
         q:
           description: Search term to match against brand name. Partial match. Case insensitive.
-          required: true
           type: string
         app_id:
           description: Your application id
-          required: true
           type: string
         app_key:
           description: Your application key
-          required: true
           type: string
       (oas-tags):
         - '1 - Brand, Store & Category lookup'
@@ -698,7 +653,6 @@ annotationTypes:
     /bulk:
       /lookup:
         post:
-          displayName: 'Bulk Product Details - Returns offers standard information for a product from a single storeId - Credits: 　n x 4'
           description: This operation returns the offers standard information for the specified product from a single storeId. This consumes 4 credits per product returned.
           (oas-summary): 'Bulk Product Details - Returns offers standard information for a product from a single storeId - Credits: 　n x 4'
           body:
@@ -706,22 +660,18 @@ annotationTypes:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 file:
                   description: |-
                     File input format: JsonLines. Each line should be a valid json conforming to one of the below formats<br><pre>{"upc": "upc1"}
                     {"mpn": "mpn1", "brandId":  123}
                     {"sku": "mpn1", "storeId":  123}</pre>
-                  required: true
                   type: file
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -730,15 +680,13 @@ annotationTypes:
             - 6 - Bulk Product Lookup
       /products:
         post:
-          displayName: 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with offers info from a store - Credits: 　n x 4'
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 4 credits per product returned.'
           (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with offers info from a store - Credits: 　n x 4'
           body:
-            multipart/form-data:
+            application/x-www-form-urlencoded:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 storeId:
                   description: 'Limits results to products sold at store with id. Supports multiple values (acts as OR operator) '
@@ -810,11 +758,9 @@ annotationTypes:
                   type: string
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -823,7 +769,6 @@ annotationTypes:
             - 5 - Bulk Product Search
     /products:
       get:
-        displayName: 'Search Products - Retrieves a list of products matching a variety of query parameters with offers info from a store - Credits: 　n x 4'
         description: '<p>Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 4 credits per product returned.'
         (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with offers info from a store - Credits: 　n x 4'
         responses:
@@ -832,7 +777,6 @@ annotationTypes:
         queryParameters:
           countryCode:
             description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-            required: true
             type: string
           q:
             description: The product search term
@@ -840,7 +784,6 @@ annotationTypes:
             type: string
           storeId:
             description: Limits results to products sold at store with id.
-            required: true
             type: string
           alsoSoldAt:
             description: 'Combined with storeId limits results to products sold at both storeIds and alsoSoldAt storeIds. Supports multiple values (acts as OR operator) '
@@ -940,11 +883,9 @@ annotationTypes:
             type: string
           app_id:
             description: Your application id
-            required: true
             type: string
           app_key:
             description: Your application key
-            required: true
             type: string
         (oas-tags):
           - 2 - Product Search
@@ -952,10 +893,8 @@ annotationTypes:
         uriParameters:
           mpid:
             description: The Indix product identifier - should be a 32-digit HEX value retrieved via the Product Search API
-            required: true
             type: string
         get:
-          displayName: 'Product Details - Returns offers standard information for a product from a single storeId - Credits: 　4'
           description: <p>This operation returns the offers standard information for the specified product from a single storeId. This consumes 4 credits.
           (oas-summary): 'Product Details - Returns offers standard information for a product from a single storeId - Credits: 　4'
           responses:
@@ -964,11 +903,9 @@ annotationTypes:
           queryParameters:
             countryCode:
               description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-              required: true
               type: string
             storeId:
               description: Limits results to offers from this store
-              required: true
               type: string
             pageNumber:
               description: 'The page number of the result set to return. 50 results per page, plus similar items'
@@ -976,11 +913,9 @@ annotationTypes:
               type: string
             app_id:
               description: Your application id
-              required: true
               type: string
             app_key:
               description: Your application key
-              required: true
               type: string
           (oas-tags):
             - 3 - Product Lookup
@@ -989,7 +924,6 @@ annotationTypes:
       '/{jobId}':
         /download:
           get:
-            displayName: 'ASE Bulk - Download the products as a file - Credits: 　0'
             description: API downloads the products as a file. This API does not consume any credits.
             (oas-summary): 'ASE Bulk - Download the products as a file - Credits: 　0'
             responses:
@@ -998,21 +932,17 @@ annotationTypes:
             queryParameters:
               app_id:
                 description: Your application id
-                required: true
                 type: string
               app_key:
                 description: Your application key
-                required: true
                 type: string
             (oas-tags):
               - 8 - Advanced Search Endpoint
         uriParameters:
           jobId:
             description: The id that would be used to query the status of the submitted job and download the final products
-            required: true
             type: string
         get:
-          displayName: 'ASE Bulk - Get job status - Credits: 　0'
           description: API returns the status  of  the bulk  Job. This API does not consume any credits.
           (oas-summary): 'ASE Bulk - Get job status - Credits: 　0'
           responses:
@@ -1021,11 +951,9 @@ annotationTypes:
           queryParameters:
             app_id:
               description: Your application id
-              required: true
               type: string
             app_key:
               description: Your application key
-              required: true
               type: string
           (oas-tags):
             - 8 - Advanced Search Endpoint
@@ -1033,7 +961,6 @@ annotationTypes:
       '/{jobId}':
         /download:
           get:
-            displayName: 'Bulk - Download the products as a file - Credits: 　0'
             description: API downloads the products as a file. This API does not consume any credits.
             (oas-summary): 'Bulk - Download the products as a file - Credits: 　0'
             responses:
@@ -1042,21 +969,17 @@ annotationTypes:
             queryParameters:
               app_id:
                 description: Your application id
-                required: true
                 type: string
               app_key:
                 description: Your application key
-                required: true
                 type: string
             (oas-tags):
               - 7 - Bulk job status and download
         uriParameters:
           jobId:
             description: The id that would be used to query the status of the submitted job and download the final products
-            required: true
             type: string
         get:
-          displayName: 'Bulk - Get job status - Credits: 　0'
           description: API returns the status  of  the bulk  Job. This API does not consume any credits.
           (oas-summary): 'Bulk - Get job status - Credits: 　0'
           responses:
@@ -1065,11 +988,9 @@ annotationTypes:
           queryParameters:
             app_id:
               description: Your application id
-              required: true
               type: string
             app_key:
               description: Your application key
-              required: true
               type: string
           (oas-tags):
             - 7 - Bulk job status and download
@@ -1077,15 +998,13 @@ annotationTypes:
     /bulk:
       /products:
         post:
-          displayName: 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits: 　n x 18'
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 18 credits per product returned.'
-          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits:'
+          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits: 　n x 18'
           body:
-            multipart/form-data:
+            application/x-www-form-urlencoded:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 storeId:
                   description: 'Limits results to products sold at store with id. Supports multiple values (acts as OR operator) '
@@ -1157,11 +1076,9 @@ annotationTypes:
                   type: string
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -1170,7 +1087,6 @@ annotationTypes:
             - 5 - Bulk Product Search
       /lookup:
         post:
-          displayName: 'Bulk Product Details - Returns catalog premium information for a product - Credits: 　n x 18'
           description: This operation returns the catalog premium information for the specified product across all the stores where it is sold at. This consumes 18 credits per product returned.
           (oas-summary): 'Bulk Product Details - Returns catalog premium information for a product - Credits: 　n x 18'
           body:
@@ -1178,22 +1094,18 @@ annotationTypes:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 file:
                   description: |-
                     File input format: JsonLines. Each line should be a valid json conforming to one of the below formats<br><pre>{"upc": "upc1"}
                     {"mpn": "mpn1", "brandId":  123}
                     {"sku": "mpn1", "storeId":  123}</pre>
-                  required: true
                   type: file
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -1205,10 +1117,8 @@ annotationTypes:
         uriParameters:
           mpid:
             description: The Indix product identifier - should be a 32-digit HEX value retrieved via the Product Search API
-            required: true
             type: string
         get:
-          displayName: 'Product Details - Returns catalog premium information for a product - Credits: 　18'
           description: <p>This operation returns the catalog premium information for the specified product across all the stores where it is sold at. This consumes 18 credits.
           (oas-summary): 'Product Details - Returns catalog premium information for a product - Credits: 　18'
           responses:
@@ -1217,7 +1127,6 @@ annotationTypes:
           queryParameters:
             countryCode:
               description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-              required: true
               type: string
             pageNumber:
               description: 'The page number of the result set to return. 50 results per page, plus similar items'
@@ -1225,25 +1134,21 @@ annotationTypes:
               type: string
             app_id:
               description: Your application id
-              required: true
               type: string
             app_key:
               description: Your application key
-              required: true
               type: string
           (oas-tags):
             - 3 - Product Lookup
       get:
-        displayName: 'Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits: 　n x 18'
         description: '<p>Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 18 credits per product returned.'
-        (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits: 　n x'
+        (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with their catalog info across stores - Credits: 　n x 18'
         responses:
           '200':
             description: Response
         queryParameters:
           countryCode:
             description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-            required: true
             type: string
           q:
             description: The product search term
@@ -1354,18 +1259,15 @@ annotationTypes:
             type: string
           app_id:
             description: Your application id
-            required: true
             type: string
           app_key:
             description: Your application key
-            required: true
             type: string
         (oas-tags):
           - 2 - Product Search
   /products:
     /suggestions:
       get:
-        displayName: 'Search Suggestions - Lists all product search suggestions - Credits: 　0'
         description: <p>Lists all search suggestions matching the query term. Does not support wildcards. Limit 100 results per query. This API does not consume any credits.
         (oas-summary): 'Search Suggestions - Lists all product search suggestions - Credits: 　0'
         responses:
@@ -1374,19 +1276,15 @@ annotationTypes:
         queryParameters:
           countryCode:
             description: Limits results to products of the geography with this code.
-            required: true
             type: string
           q:
             description: Query term for which suggestions are to be provided
-            required: true
             type: string
           app_id:
             description: Your application id
-            required: true
             type: string
           app_key:
             description: Your application key
-            required: true
             type: string
         (oas-tags):
           - 4 - Search suggestions
@@ -1394,15 +1292,13 @@ annotationTypes:
     /bulk:
       /products:
         post:
-          displayName: 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their aggregated catalog info - Credits: 　n x 18'
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 18 credits per product returned.'
-          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their aggregated catalog info - Credits: 　n'
+          (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their aggregated catalog info - Credits: 　n x 18'
           body:
-            multipart/form-data:
+            application/x-www-form-urlencoded:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 storeId:
                   description: 'Limits results to products sold at store with id. Supports multiple values (acts as OR operator) '
@@ -1474,11 +1370,9 @@ annotationTypes:
                   type: string
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -1487,7 +1381,6 @@ annotationTypes:
             - 5 - Bulk Product Search
       /lookup:
         post:
-          displayName: 'Bulk Product Details - Returns catalog standard information for a product - Credits: 　n x 18'
           description: This operation returns the catalog standard information for the specified product across all the stores where it is sold at. This consumes 18 credits per product returned.
           (oas-summary): 'Bulk Product Details - Returns catalog standard information for a product - Credits: 　n x 18'
           body:
@@ -1495,22 +1388,18 @@ annotationTypes:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 file:
                   description: |-
                     File input format: JsonLines. Each line should be a valid json conforming to one of the below formats<br><pre>{"upc": "upc1"}
                     {"mpn": "mpn1", "brandId":  123}
                     {"sku": "mpn1", "storeId":  123}</pre>
-                  required: true
                   type: file
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -1522,10 +1411,8 @@ annotationTypes:
         uriParameters:
           mpid:
             description: The Indix product identifier - should be a 32-digit HEX value retrieved via the Product Search API
-            required: true
             type: string
         get:
-          displayName: 'Product Details - Returns catalog standard information for a product - Credits: 　18'
           description: <p>This operation returns the catalog standard information for the specified product across all the stores where it is sold at. This consumes 18 credits.
           (oas-summary): 'Product Details - Returns catalog standard information for a product - Credits: 　18'
           responses:
@@ -1534,7 +1421,6 @@ annotationTypes:
           queryParameters:
             countryCode:
               description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-              required: true
               type: string
             pageNumber:
               description: 'The page number of the result set to return. 50 results per page, plus similar items'
@@ -1542,16 +1428,13 @@ annotationTypes:
               type: string
             app_id:
               description: Your application id
-              required: true
               type: string
             app_key:
               description: Your application key
-              required: true
               type: string
           (oas-tags):
             - 3 - Product Lookup
       get:
-        displayName: 'Search Products - Retrieves a list of products matching a variety of query parameters with their aggregated catalog info - Credits: 　n x 18'
         description: '<p>Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 18 credits per product returned.'
         (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with their aggregated catalog info - Credits: 　n x 18'
         responses:
@@ -1560,7 +1443,6 @@ annotationTypes:
         queryParameters:
           countryCode:
             description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-            required: true
             type: string
           q:
             description: The product search term
@@ -1671,17 +1553,14 @@ annotationTypes:
             type: string
           app_id:
             description: Your application id
-            required: true
             type: string
           app_key:
             description: Your application key
-            required: true
             type: string
         (oas-tags):
           - 2 - Product Search
   /stores:
     get:
-      displayName: 'Search Stores - Lists all stores along with their IDs - Credits: 　0'
       description: '<p>Lists all stores, along with their IDs, matching the query term. Does not support wildcards. Limit 10 results per query. This API does not consume any credits.'
       (oas-summary): 'Search Stores - Lists all stores along with their IDs - Credits: 　0'
       responses:
@@ -1690,15 +1569,12 @@ annotationTypes:
       queryParameters:
         q:
           description: Search term to match against store name or the store domain. Partial match. Case insensitive
-          required: true
           type: string
         app_id:
           description: Your application id
-          required: true
           type: string
         app_key:
           description: Your application key
-          required: true
           type: string
       (oas-tags):
         - '1 - Brand, Store & Category lookup'
@@ -1706,7 +1582,6 @@ annotationTypes:
     /bulk:
       /lookup:
         post:
-          displayName: 'Bulk Product Details - Returns summary information for a product - Credits: 　n x 2'
           description: This operation returns the summary information for the specified product. This consumes 2 credits per product returned.
           (oas-summary): 'Bulk Product Details - Returns summary information for a product - Credits: 　n x 2'
           body:
@@ -1714,22 +1589,18 @@ annotationTypes:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 file:
                   description: |-
                     File input format: JsonLines. Each line should be a valid json conforming to one of the below formats<br><pre>{"upc": "upc1"}
                     {"mpn": "mpn1", "brandId":  123}
                     {"sku": "mpn1", "storeId":  123}</pre>
-                  required: true
                   type: file
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -1738,15 +1609,13 @@ annotationTypes:
             - 6 - Bulk Product Lookup
       /products:
         post:
-          displayName: 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their summary info - Credits: 　n x 2'
           description: 'Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 2 credits per product returned.'
           (oas-summary): 'Bulk Search Products - Retrieves a list of products matching a variety of query parameters with their summary info - Credits: 　n x 2'
           body:
-            multipart/form-data:
+            application/x-www-form-urlencoded:
               properties:
                 countryCode:
                   description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-                  required: true
                   type: string
                 storeId:
                   description: 'Limits results to products sold at store with id. Supports multiple values (acts as OR operator) '
@@ -1818,11 +1687,9 @@ annotationTypes:
                   type: string
                 app_id:
                   description: Your application id
-                  required: true
                   type: string
                 app_key:
                   description: Your application key
-                  required: true
                   type: string
           responses:
             '200':
@@ -1831,7 +1698,6 @@ annotationTypes:
             - 5 - Bulk Product Search
     /products:
       get:
-        displayName: 'Search Products - Retrieves a list of products matching a variety of query parameters with their summary info - Credits: 　n x 2'
         description: '<p>Returns a collection of products matching a specified query, along with a variety of statistics about the query results. Requires at least one of query, url, upc, mpn, sku, brandId, storeId, or categoryId. This consumes 2 credits per product returned.'
         (oas-summary): 'Search Products - Retrieves a list of products matching a variety of query parameters with their summary info - Credits: 　n x 2'
         responses:
@@ -1840,7 +1706,6 @@ annotationTypes:
         queryParameters:
           countryCode:
             description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-            required: true
             type: string
           q:
             description: The product search term
@@ -1951,11 +1816,9 @@ annotationTypes:
             type: string
           app_id:
             description: Your application id
-            required: true
             type: string
           app_key:
             description: Your application key
-            required: true
             type: string
         (oas-tags):
           - 2 - Product Search
@@ -1963,10 +1826,8 @@ annotationTypes:
         uriParameters:
           mpid:
             description: The Indix product identifier - should be a 32-digit HEX value retrieved via the Product Search API
-            required: true
             type: string
         get:
-          displayName: 'Product Details - Returns summary information for a product - Credits: 　2'
           description: <p>This operation returns the summary information for the specified product. This consumes 2 credits.
           (oas-summary): 'Product Details - Returns summary information for a product - Credits: 　2'
           responses:
@@ -1975,21 +1836,17 @@ annotationTypes:
           queryParameters:
             countryCode:
               description: 'Limits results to products of the geography with this code. Available values ''US'', ''GB'', ''IN'', ''CA'', ''SG'' and ''AU''. If the user doesn’t pass a value, the default option returns the US countryCode data'
-              required: true
               type: string
             app_id:
               description: Your application id
-              required: true
               type: string
             app_key:
               description: Your application key
-              required: true
               type: string
           (oas-tags):
             - 3 - Product Lookup
   /categories:
     get:
-      displayName: 'Export Categories - Lists all categories along with their IDs and path - Credits: 　0'
       description: <p>Lists all categories along with their IDs and ancestry. This API does not consume any credits.
       (oas-summary): 'Export Categories - Lists all categories along with their IDs and path - Credits: 　0'
       responses:
@@ -1998,11 +1855,9 @@ annotationTypes:
       queryParameters:
         app_id:
           description: Your application id
-          required: true
           type: string
         app_key:
           description: Your application key
-          required: true
           type: string
       (oas-tags):
         - '1 - Brand, Store & Category lookup'

@@ -1,0 +1,48 @@
+swagger: '2.0'
+info:
+  title: Petstore
+  version: '1'
+produces:
+  - application/xml
+  - application/json
+consumes:
+  - application/x-www-form-urlencoded
+  - multipart/form-data
+definitions:
+  error:
+    type: string
+paths:
+  /pets:
+    get:
+      consumes:
+        - text/plain
+      produces:
+        - image/png
+        - image/gif
+        - image/jpeg
+      responses:
+        200:
+          description: Success
+          schema:
+            description: pet
+            example: Dog
+        500:
+            $ref: '#/responses/error'
+  /employees:
+    post:
+      parameters:
+        - in: formData
+          name: names
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            description: employee
+            example: Bob
+responses:
+  error:
+    description: An unexpected error occured.
+    schema:
+      $ref: '#/definitions/error'

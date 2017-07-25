@@ -1,0 +1,255 @@
+swagger: '2.0'
+info:
+  title: Swagger Sample App
+  description: This is a sample server Petstore server.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: API Support
+    url: http://www.swagger.io/support
+    email: support@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+securityDefinitions:
+  oauth2:
+    type: oauth2
+    flow: application
+    scopes:
+      'write:pets': ''
+      'read:pets': ''
+    description: my oauth 2.0 security scheme.
+    tokenUrl: 'https://api.dropbox.com/1/oauth2/token'
+  oauth22:
+    type: oauth2
+    flow: implicit
+    scopes: {}
+    description: my oauth 2.0 security scheme. Version 2.
+    authorizationUrl: 'http://swagger2.io/api/oauth/dialog'
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+  basicAuth2:
+    type: basic
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2.
+  internalApiKey:
+    name: api_key
+    type: apiKey
+    in: header
+    description: Api Key Authentication
+  internalApiKey2:
+    name: api_key2
+    type: apiKey
+    in: header
+    description: Api Key Authentication. Version 2.
+  internalApiKey3:
+    name: api_key3
+    type: apiKey
+    in: query
+    description: Api Key Authentication. Version 3.
+  internalApiKey4:
+    name: api_key4
+    type: apiKey
+    in: query
+    description: Api Key Authentication. Version 4.
+definitions:
+  pet:
+    type: string
+paths:
+  /names:
+    get:
+      consumes:
+        - application/json
+        - text/xml
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/pet'
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /lastnames:
+    get:
+      operationId: GET_lastnames
+      parameters:
+        - in: query
+          name: age
+          required: true
+          type: integer
+        - description: pet´s name
+          in: query
+          name: name
+          required: false
+          type: string
+        - in: query
+          name: nickname
+          type: string
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /nicknames:
+    get:
+      consumes:
+        - text/xml
+      parameters:
+        - in: body
+          name: body
+          required: false
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /employees:
+    get:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: string
+      responses:
+        default:
+          description: ''
+          schema: {}
+  /pets:
+      get:
+        responses:
+          '200':
+            description: ''
+            schema:
+              example:
+          '201':
+            description: ''
+            schema:
+              example: Dog
+          '202':
+            description: ''
+            schema:
+              example:
+                first: Dog
+                second: Cat
+          '203':
+            description: ''
+            schema:
+              example:
+                - first: Dog
+                - second: Cat
+          '204':
+            description: ''
+            schema:
+              example: |-
+                {
+                  "first": "Dog"
+                }
+          '205':
+            description: ''
+            examples:
+              application/json:
+          '206':
+            description: ''
+            examples:
+              application/json: Dog
+          '207':
+            description: ''
+            examples:
+              application/json:
+                first: Dog
+                second: Cat
+          '208':
+            description: ''
+            examples:
+              application/json:
+                - first: Dog
+                - second: Cat
+          '209':
+            description: ''
+            examples:
+              application/json: |-
+                {
+                  "first": "Dog"
+                }
+          '210':
+            description: ''
+            examples:
+              application/json: Dog
+            schema:
+              type: object
+              example: Cat
+  '/pets/{id}':
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            example: 10
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: string
+  '/pets/{id}/name':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: string
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            example: Robert
+  '/pets/{id}/nickname':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: string
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            example: Bobby
+  /pets/other:
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            example: some example
+  /employers:
+    get:
+      parameters:
+        - description: Employee´s reviews
+          in: header
+          items:
+            type: string
+          name: reviews
+          required: true
+          type: array
+        - in: header
+          name: names
+          required: false
+          type: string
+        - in: header
+          name: ages
+          type: integer
+      responses:
+        default:
+          description: ''
+          schema: {}
