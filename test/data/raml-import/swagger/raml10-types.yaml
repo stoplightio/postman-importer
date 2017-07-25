@@ -15,6 +15,7 @@ paths:
       parameters:
         - name: body
           in: body
+          required: true
           description: Pet object that needs to be added to the store
           schema:
             $ref: '#/definitions/environmentType'
@@ -38,12 +39,12 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: petId
-          in: query
-          required: true
-          type: string
         - name: environmentHeaderRequest
           in: header
+          required: true
+          type: string
+        - name: petId
+          in: query
           required: true
           type: string
       responses:
@@ -61,9 +62,22 @@ paths:
 x-basePath: '{environmentType}.musicapi.com/{version}'
 definitions:
   environmentType:
+    type: object
     properties:
       username:
         type: string
-    type: object
     required:
       - username
+  customType:
+    type: object
+    properties:
+      lastName:
+        type: string
+      name:
+        type: string
+      age:
+        type: integer
+    required:
+      - lastName
+      - name
+      - age

@@ -13,6 +13,7 @@ produces:
 paths:
   /orders:
     post:
+      operationId: POST_orders
       description: Places a new T-Shirt order
       parameters:
         - name: body
@@ -58,13 +59,13 @@ paths:
       responses:
         '200':
           description: ''
-          examples:
-            application/json:
+          schema:
+            example:
               orderId: '4321'
         '500':
           description: ''
-          examples:
-            application/json: |
+          schema:
+            example: |
               {
                 "errorMessage": "The order couldn't be entered."
 x-basePath: '/{version}/'
@@ -81,7 +82,7 @@ definitions:
       type:
         type: string
       expires_at:
-        type: 'null'
+        type: string
       empty_array:
         description: An empty array
         type: array
@@ -95,8 +96,6 @@ definitions:
       actions:
         description: An array of actions
         type: array
-        items:
-          type: string
     required:
       - action
   Col:

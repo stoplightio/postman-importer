@@ -1,0 +1,53 @@
+documentation:
+  - title: AdhereTech External API
+    content: >-
+      An API designed to expose AdhereTech server's data to clients and other
+      services.
+title: AdhereTech External API
+version: 0.11.0
+protocols:
+  - HTTPS
+baseUri: 'https://example.com/api/v1'
+securitySchemes:
+  auth:
+    type: Basic Authentication
+  auth2:
+    type: Basic Authentication
+/bottles:
+  securedBy:
+    - auth2
+  '/{bottleUid}':
+    uriParameters:
+      bottleUid: {}
+    get:
+      description: Get a bottle by its UID.
+      displayName: getBottle
+      responses:
+        '404':
+          description: Bottle not found.
+      securedBy:
+        - auth
+        - auth2
+    put:
+      description: Modify a bottle by its UID.
+      displayName: updateBottle
+      responses:
+        '200':
+          description: Bottle found and modified.
+        '404':
+          description: Bottle not found.
+        '405':
+          description: Validation exception.
+      securedBy:
+        - auth
+        - auth2
+    post:
+      description: Reenroll a patient.
+      displayName: reenrollpatient
+      responses:
+        '200':
+          description: Patient found and reenrolled
+        '404':
+          description: Patient not found. Or patient already enrolled
+      securedBy:
+        - auth2

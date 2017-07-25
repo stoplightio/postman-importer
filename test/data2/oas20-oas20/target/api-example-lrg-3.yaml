@@ -1,0 +1,363 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: DataCamelDataServiceAPI
+paths:
+  /types:
+    get:
+      operationId: GET_types
+      description: Gets a list of types supported by the service API.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SupportedType'
+        '500':
+          description: ''
+          schema:
+            $ref: '#/definitions/Status'
+  /service:
+    post:
+      operationId: POST_service
+      description: Creates a new service
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/ServiceSpec'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Status'
+        '400':
+          description: Bad Request Error
+          schema:
+            $ref: '#/definitions/Status'
+        '401':
+          description: Unauthroized Error
+          schema:
+            $ref: '#/definitions/Status'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Status'
+  '/service/{userName}/{serviceName}':
+    parameters:
+      - name: userName
+        in: path
+        required: true
+        type: string
+      - name: serviceName
+        in: path
+        required: true
+        type: string
+    delete:
+      operationId: DELETE_service-userName-serviceName
+      description: Delete the service with name serviceName of a user with name userName.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Status'
+        '401':
+          description: Unauthroized Error
+          schema:
+            $ref: '#/definitions/Status'
+        '404':
+          description: Not Found Error
+          schema:
+            $ref: '#/definitions/Status'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Status'
+    get:
+      operationId: GET_service-userName-serviceName
+      description: Get the schema of a service(with name serviceName) of a user (with name userName).
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/ServiceSchema'
+        '404':
+          description: Not Found Error
+          schema:
+            $ref: '#/definitions/Status'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Status'
+  '/service/{userName}/{serviceName}/entry':
+    parameters:
+      - name: userName
+        in: path
+        required: true
+        type: string
+      - name: serviceName
+        in: path
+        required: true
+        type: string
+    post:
+      operationId: POST_service-userName-serviceName-entry
+      description: Adds a single/list of data entry/entries to a service(with name serviceName) of a user(with name userName). Responds with all data entries of the service after the new addition.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataEntry'
+      responses:
+        '201':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataEntry'
+        '400':
+          description: Bad Request Error
+          schema:
+            $ref: '#/definitions/Status'
+        '401':
+          description: Unauthroized Error
+          schema:
+            $ref: '#/definitions/Status'
+        '404':
+          description: Not Found Error
+          schema:
+            $ref: '#/definitions/Status'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Status'
+    delete:
+      operationId: DELETE_service-userName-serviceName-entry
+      description: Deletes all data entries from a service(with name serviceName) of a user(with name userName).
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Status'
+        '401':
+          description: Unauthroized Error
+          schema:
+            $ref: '#/definitions/Status'
+        '404':
+          description: Not Found Error
+          schema:
+            $ref: '#/definitions/Status'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Status'
+    get:
+      operationId: GET_service-userName-serviceName-entry
+      description: Gets all data entries from a service(with name serviceName) of a user(with name userName).
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 'A list of data entries, each of which comprises a number of name-value mappings corresponding to the data fields'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataEntry'
+        '404':
+          description: Not Found Error
+          schema:
+            $ref: '#/definitions/Status'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Status'
+  '/service/{userName}/{serviceName}/entry/{id}':
+    parameters:
+      - name: userName
+        in: path
+        required: true
+        type: string
+      - name: serviceName
+        in: path
+        required: true
+        type: string
+      - name: id
+        in: path
+        required: true
+        type: string
+    put:
+      operationId: PUT_service-userName-serviceName-entry-id
+      description: Updates a single data entry by id. Responds with all data entries of the service after the update.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/DataEntry'
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataEntry'
+        '400':
+          description: Bad Request Error
+          schema:
+            $ref: '#/definitions/Status'
+        '401':
+          description: Unauthroized Error
+          schema:
+            $ref: '#/definitions/Status'
+        '404':
+          description: Not Found Error
+          schema:
+            $ref: '#/definitions/Status'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Status'
+    delete:
+      operationId: DELETE_service-userName-serviceName-entry-id
+      description: Deletes a single data entry by id. Responds with all data entries of the service after the deletion
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DataEntry'
+        '401':
+          description: Unauthroized Error
+          schema:
+            $ref: '#/definitions/Status'
+        '404':
+          description: Not Found Error
+          schema:
+            $ref: '#/definitions/Status'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Status'
+definitions:
+  DataField:
+    type: object
+    description: A single data field(column) with specified field name and field type
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+    required:
+      - name
+      - type
+  ServiceSpec:
+    type: object
+    properties:
+      serviceName:
+        type: string
+      userName:
+        type: string
+      accessToken:
+        type: string
+      dataFields:
+        type: array
+        items:
+          $ref: '#/definitions/DataField'
+    required:
+      - serviceName
+      - userName
+      - accessToken
+      - dataFields
+  ServiceSchema:
+    type: object
+    description: Same as ServiceSpec but without accessToken.
+    properties:
+      serviceName:
+        type: string
+      userName:
+        type: string
+      dataFields:
+        type: array
+        items:
+          $ref: '#/definitions/DataField'
+    required:
+      - serviceName
+      - userName
+      - dataFields
+  DataEntry:
+    type: object
+    example:
+      temp: 20.5
+      time: 12565
+    description: 'A single data entry(row) with any number of field-name, field-value pairs'
+    additionalProperties:
+      type: object
+  Status:
+    type: object
+    description: The status code and message of the response after serving a request
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    required:
+      - code
+      - message
+  SupportedType:
+    type: string
+    description: Information (string) about various data types supported by the system
+    enum:
+      - integer
+      - string
+      - location
+      - timestamp
+      - float
+  Integer:
+    type: integer
+    description: 8-byte signed integer
+    format: int64
+  Float:
+    type: number
+    description: 8-byte double precision floating-point
+    format: double
+  Location:
+    type: string
+    description: |-
+      Signed degrees format Signed degrees format (DDD.dddd)
+      A latitude or longitude with 8 decimal places pinpoints a location to within 1 millimeter,( 1/16 inch).
+      Precede South latitudes and West longitudes with a minus sign. Latitudes range from -90 to 90. Longitudes range from -180 to 180.
+      41.25,-120.9762 -31.96,115.84 90,0 (North Pole)
+    pattern: '^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$'
+  Timestamp:
+    type: integer
+    description: UNIX timestamp in milliseconds since 1970. (8 bytes)
+    format: int64
+  String:
+    type: string
+    description: At least one and up to 160 characters
+    minLength: 1
+    maxLength: 160

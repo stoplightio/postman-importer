@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import '../App.css'
 import {DropdownButton, MenuItem, Col, Button, Row} from 'react-bootstrap'
-import supportedFormats from './../../../lib/formats'
+import supportedFormats from './../../../src/formats'
 
 const importOptions = Object.keys(supportedFormats).map(k => supportedFormats[k]).filter(v => v.import)
 const exportOptions = Object.keys(supportedFormats).map(k => supportedFormats[k]).filter(v => v.export)

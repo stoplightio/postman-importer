@@ -1,0 +1,79 @@
+#%RAML 1.0
+title: Illustrating annotations
+version: 1
+protocols:
+  - HTTP
+  - HTTPS
+baseUri:
+  value: http://www.example.com/api
+  (redirectable): true
+annotationTypes:
+  something:
+    type: string
+  meta-data:
+    displayName: meta data
+    description: The metadata
+    type: string
+    allowedTargets: Resource
+  redirectable:
+    type: boolean
+  deprecated:
+    type: nil
+  experimental:
+    type: object
+  feedbackRequested:
+    type: object
+    required: false
+  testHarness:
+    type: string
+  clearanceLevel:
+    properties:
+      level:
+        enum:
+          - low
+          - medium
+          - high
+        type: string
+      signature:
+        type: string
+        pattern: "\\d{3}-\\w{12}"
+      list:
+        type: array
+        items:
+          type: string
+        required: false
+(something): something
+/groups:
+  (experimental):
+/users:
+  (meta-data): metadata
+  (clearanceLevel):
+    (something): some
+    level: high
+    signature: 230-ghtwvfrs1itr
+  get:
+    (deprecated):
+    (feedbackRequested): Feedback committed!
+    body:
+      application/json:
+        type: object
+        (redirectable): false
+    headers:
+      header:
+        type: string
+        (something): some header
+    queryParameters:
+      age:
+        type: integer
+        (something): some query paramters
+    responses:
+      200:
+        (something): some response
+        body:
+          application/json:
+            (something): some schema
+  /{id}:
+    uriParameters:
+      id:
+        type: integer
+        (something): some uri parameter

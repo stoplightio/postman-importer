@@ -1,0 +1,185 @@
+swagger: '2.0'
+info:
+  version: '2.0'
+  title: American Flights API
+host: mocksvc.mulesoft.com
+basePath: /mocks/21d01ac7-3cd8-4348-b8d0-2dc61f05bb92/api
+schemes:
+  - https
+paths:
+  /flights:
+    post:
+      operationId: POST_flights
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Flight'
+      responses:
+        '201':
+          description: ''
+    get:
+      operationId: GET_flights
+      produces:
+        - application/json
+      parameters:
+        - name: destination
+          in: query
+          required: true
+          enum:
+            - SFO
+            - LAX
+            - CLE
+          type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Flights'
+  '/flights/{ID}/hola':
+    parameters:
+      - name: ID
+        in: path
+        required: true
+        type: string
+    put:
+      operationId: PUT_flights-ID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Flight'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: DELETE_flights-ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+    get:
+      operationId: GET_flights-ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Flight'
+  '/flights/{ID}/hola/chau':
+    parameters:
+      - name: ID
+        in: path
+        required: true
+        type: string
+    put:
+      operationId: PUT_flights-ID
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/Flight'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: DELETE_flights-ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+    get:
+      operationId: GET_flights-ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Flight'
+definitions:
+  Flight:
+    type: object
+    example:
+      id: 1
+      code: ER38sd
+      price: 400
+      departureDate: 2016/03/20
+      origin: MUA
+      destination: SFO
+      emptySeats: 2
+      plane:
+        type: Boeing 737
+        totalSeats: 150
+    properties:
+      id:
+        type: integer
+      code:
+        type: string
+      price:
+        type: number
+      departureDate:
+        type: string
+      origin:
+        type: string
+      destination:
+        type: string
+      emptySeats:
+        type: integer
+      plane:
+        properties:
+          type:
+            type: string
+          totalSeats:
+            type: integer
+        type: object
+        required:
+          - type
+          - totalSeats
+    required:
+      - code
+      - price
+      - departureDate
+      - origin
+      - destination
+      - emptySeats
+  Flights:
+    type: array
+    example:
+      - id: 1
+        code: ER38sd
+        price: 400
+        departureDate: 2016/03/20
+        origin: MUA
+        destination: SFO
+        emptySeats: 2
+        plane:
+          type: Boeing 737
+          totalSeats: 150
+      - id: 2
+        code: ER45if
+        price: 345.99
+        departureDate: 2016/02/11
+        origin: MUA
+        destination: LAX
+        emptySeats: 52
+        plane:
+          type: Boeing 777
+          totalSeats: 300
+    items:
+      $ref: '#/definitions/Flight'

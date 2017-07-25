@@ -9,29 +9,31 @@ schemes:
 paths:
   /weather:
     get:
+      operationId: GET_weather
       description: |
         Search weather by city name
       produces:
         - application/json
       parameters:
+        - $ref: '#/parameters/trait:userAgent:User-Agent'
         - $ref: '#/parameters/trait:isSearchableByCity:q'
         - $ref: '#/parameters/trait:isMetric:units'
-        - $ref: '#/parameters/trait:isApiKey:APPID'
-        - $ref: '#/parameters/trait:userAgent:User-Agent'
+        - $ref: '#/parameters/trait:isAPIKey:APPID'
       responses:
         '200':
           description: ''
   /forecast:
     get:
+      operationId: GET_forecast
       description: |
         seach weather forecast for 5 days with data every 3 hours by city name.
       produces:
         - application/json
       parameters:
+        - $ref: '#/parameters/trait:userAgent:User-Agent'
         - $ref: '#/parameters/trait:isSearchableByCity:q'
         - $ref: '#/parameters/trait:isMetric:units'
-        - $ref: '#/parameters/trait:isApiKey:APPID'
-        - $ref: '#/parameters/trait:userAgent:User-Agent'
+        - $ref: '#/parameters/trait:isAPIKey:APPID'
       responses:
         '200':
           description: ''
@@ -51,7 +53,7 @@ parameters:
       - metric
       - imperial
     type: string
-  'trait:isApiKey:APPID':
+  'trait:isAPIKey:APPID':
     name: APPID
     in: query
     description: API Key

@@ -1,0 +1,46 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+resourceTypes:
+  a:
+    usage: usage of A
+    displayName: A
+    description: The letter A
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: example A
+    uriParameters:
+      name:
+        type: string
+traits:
+  b:
+    usage: usage fo B
+    queryParameters:
+      nickname: string
+    body:
+      application/json:
+        type: string
+    headers:
+      code: string
+    responses:
+      201:
+        body:
+          application/json:
+            example: example B
+/pets:
+  type: a
+  description: pets description
+  get:
+    is: [b]
+    queryParameters:
+      something: string
+    headers:
+      other: string
+    responses:
+      202:
+        body:
+          application/json:
+            example: Dog

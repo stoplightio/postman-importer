@@ -1,0 +1,82 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+types:
+  pet:
+    type: string
+resourceTypes:
+  pets:
+    get:
+      description: Get all pets
+/employees:
+  get:
+    body:
+      application/json:
+        type: pet
+      text/xml:
+        type: boolean
+      application/xml:
+        type: string
+/employers:
+  post:
+    body:
+      application/json:
+        type: pet
+      text/xml:
+        type: boolean
+      application/xml:
+        type: string
+  get:
+    displayName: GET_employers
+    responses:
+      200:
+        body:
+          application/json:
+            example: Dog
+      201:
+        body:
+          application/xml:
+            example: |
+              {
+                "first": "Dog"
+              }
+/pets:
+  type: pets
+  displayName: Pets
+  description: Path for pets
+  get:
+    displayName: GET_pets
+    responses:
+      200:
+        body:
+          application/json:
+            example: Dog
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "first": "Dog"
+              }
+      202:
+        body:
+          application/json:
+            example:
+              first: Dog
+              second: Cat
+      203:
+        body:
+          application/json:
+            example:
+              - first: Dog
+              - second: Cat
+      204:
+        body:
+          application/json:
+            examples:
+      205:
+        body:
+          application/xml:
+            examples:
+              first: Dog
+              second: Cat

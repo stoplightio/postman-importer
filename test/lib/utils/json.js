@@ -1,8 +1,11 @@
-const chai = require('chai'),
-	expect = chai.expect,
-	jsonHelper = require('../../../lib/utils/json');
+const it = require('mocha/lib/mocha.js').it;
+const describe = require('mocha/lib/mocha.js').describe;
+const chai = require('chai');
+const expect = chai.expect;
 
 chai.use(require('chai-fuzzy'));
+
+const jsonHelper = require('../../../src/utils/json');
 
 describe('json utility library', function () {
 	const sourceJson = {

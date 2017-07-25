@@ -1,0 +1,59 @@
+#%RAML 1.0
+title: muleadore64
+version: 1.0.0
+protocols:
+  - HTTP
+baseUri: 'http://muleadore64.cloudhub.io/api'
+/beep:
+  put:
+    description: Make muleadore64 play a series of tones
+    responses:
+      '200':
+        description: Beep command sent
+/color:
+  post:
+    description: Change the border or background color of the muleadore64
+    responses:
+      '200':
+        description: Color change command successfully sent
+        body:
+          application/json:
+            example:
+              colortype: border
+              color: yellow
+              poke: 7
+              hex: '#EEEE77'
+      '500':
+        description: Error sending color change command
+/lastMsg:
+  get:
+    description: >-
+      Returns the last command message that was sent to muleadore64 for
+      informational purposes
+    responses:
+      '200':
+        body:
+          application/json:
+            example:
+              type: weather
+              id: f8e92cd0-1d57-11e6-a391-06531023394b
+              value: 'SF: 83F Clouds, BA: 7C Clear'
+              c64command: '7SF: 83F Clouds, BA: 7C Clear'
+/tweet:
+  post:
+    description: Send a tweet to @muleadore64
+    responses:
+      '200':
+        description: Tweet sent successfully
+        body:
+          application/json:
+            example:
+              tweet: hello @muleadore64 how are you?
+      '500':
+        description: Error sending tweet
+/weather:
+  get:
+    description: Update the weather information with current conditions
+    responses:
+      '200':
+        description: Weather command successfully sent

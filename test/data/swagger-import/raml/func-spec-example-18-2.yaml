@@ -1,20 +1,8 @@
 #%RAML 1.0
 title: External files example
 version: 1.1.0
-annotationTypes:
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-exclusiveMinimum:
-    type: boolean
-  oas-exclusiveMaximum:
-    type: boolean
 /persons:
   get:
-    displayName: Gets some persons
     description: Returns a list containing all persons. The list supports paging.
     (oas-summary): Gets some persons
     is:
@@ -32,14 +20,17 @@ traits:
         description: Number of items returned
         format: int32
         minimum: 0
-        maximum: 100
-        default: 20
+        required: false
         (oas-exclusiveMinimum): true
+        maximum: 100
         (oas-exclusiveMaximum): false
+        default: 20
+        multipleOf: 10
   pageNumber:
     queryParameters:
       pageNumber:
         type: integer
+        required: false
         description: Page number
         default: 1
   userAgent:
@@ -47,4 +38,14 @@ traits:
       User-Agent:
         type: string
         description: All API consumers MUST provide a user agent
-        required: true
+annotationTypes:
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-exclusiveMaximum:
+    type: boolean
+  oas-exclusiveMinimum:
+    type: boolean

@@ -6,34 +6,6 @@ protocols:
   - HTTP
   - HTTPS
 description: API Program description
-annotationTypes:
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-    allowedTargets:
-      - API
-      - Method
-      - TypeDeclaration
 (oas-info):
   contact:
     name: API Docs
@@ -56,6 +28,7 @@ securitySchemes:
       '200':
         body:
           application/json:
+            description: ''
             type: object
             properties:
               devices:
@@ -92,6 +65,7 @@ securitySchemes:
                       minLength: 1
                     annotations:
                       type: object
+                      required: false
                       properties:
                         managementAddress:
                           type: string
@@ -102,7 +76,6 @@ securitySchemes:
                         channelId:
                           type: string
                           minLength: 1
-                      required: false
         description: OK
     securedBy:
       - basicAuth
@@ -111,3 +84,31 @@ securitySchemes:
     (oas-externalDocs):
       description: Find out more
       url: 'http://docs.example.com/management/apis/get/entities'
+annotationTypes:
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API

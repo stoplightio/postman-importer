@@ -52,6 +52,15 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-summary:
+    type: string
+    allowedTargets: Method
   oas-externalDocs:
     properties:
       description?: string
@@ -73,24 +82,15 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-deprecated:
-    type: boolean
-    allowedTargets: Method
-  oas-summary:
-    type: string
-    allowedTargets: Method
   oas-schema-title:
     type: string
     allowedTargets: TypeDeclaration
-  oas-x-apisguru-categories: any
-  oas-x-logo: any
-  oas-x-origin: any
-  oas-x-preferred: any
-  oas-x-providerName: any
-  oas-x-tags: any
+  apisguru-categories: any
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
+  tags: any
 (oas-externalDocs):
   description: Find more info here
   url: 'https://swagger.io'
@@ -107,7 +107,6 @@ annotationTypes:
       media-id:
         description: The media ID
         type: integer
-        required: true
     get:
       description: |
         Get information about a media object.
@@ -129,9 +128,7 @@ annotationTypes:
       id:
         description: ID
         type: string
-        required: true
     get:
-      displayName: test path get summary
       (oas-summary): test path get summary
       responses:
         '200':
@@ -140,7 +137,6 @@ annotationTypes:
           description: Error
 /:
   post:
-    displayName: post echo
     (oas-summary): post echo
     body:
       multipart/form-data:
@@ -159,7 +155,6 @@ annotationTypes:
     (oas-externalDocs):
       url: 'https://swagger.io'
   get:
-    displayName: gets echo test
     (oas-summary): gets echo test
     responses:
       '200':
@@ -176,6 +171,9 @@ annotationTypes:
       url: 'https://swagger.io'
 types:
   ErrorModel:
+    type: object
+    (oas-externalDocs):
+      url: 'https:swagger.io'
     properties:
       message:
         type: string
@@ -184,22 +182,20 @@ types:
         minimum: 100
         maximum: 600
     (oas-schema-title): error model
-    (oas-externalDocs):
-      url: 'https:swagger.io'
     example:
       message: Error in Echo API
       code: 500
-(oas-x-apisguru-categories):
+(apisguru-categories):
   - developer_tools
-(oas-x-logo):
+(logo):
   url: 'https://api.apis.guru/v2/cache/logo/https_d301sr5gafysq2.cloudfront.net_0c55837759e5_img_homepage_bitbucket-logo-blue.svg'
-(oas-x-origin):
+(origin):
   format: swagger
   url: 'https://bitbucket.org/api/swagger.json'
   version: '2.0'
-(oas-x-preferred): true
-(oas-x-providerName): bitbucket.org
-(oas-x-tags):
+(preferred): true
+(providerName): bitbucket.org
+(tags):
   - code repository
   - code collaboration
   - git

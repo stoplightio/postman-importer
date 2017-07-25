@@ -1,0 +1,57 @@
+swagger: '2.0'
+info:
+  title: Petstore
+  version: '1'
+parameters:
+  trait:pets:names:
+    in: query
+    name: names
+    required: true
+    type: string
+  trait:pets:reviews:
+    in: header
+    name: reviews
+    required: true
+    type: string
+  trait:pets:body:
+    in: body
+    name: body
+    required: true
+    schema:
+      type: string
+paths:
+  /pets:
+    get:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: codes
+          required: true
+          type: string
+        - $ref: '#/parameters/trait:pets:reviews'
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: nicknames
+          required: true
+          type: string
+        - $ref: '#/parameters/trait:pets:names'
+      responses:
+        200:
+          $ref: '#/responses/trait:pets:200'
+        201:
+          description: ''
+          schema:
+            example: Cat
+      operationId: GET_pets
+responses:
+  trait:pets:200:
+    description: ''
+    schema:
+      example: Dog

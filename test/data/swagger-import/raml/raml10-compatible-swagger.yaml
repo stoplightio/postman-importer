@@ -22,7 +22,6 @@ description: A sample API
                 required: false
               label:
                 description: A label for the photo
-                required: true
                 type: string
               description:
                 description: An optional description of the photo
@@ -30,7 +29,6 @@ description: A sample API
                 required: false
               photo:
                 description: The pet photo
-                required: true
                 type: string
         responses:
           '400':
@@ -54,7 +52,6 @@ description: A sample API
     uriParameters:
       petName:
         description: name for the pet
-        required: true
         type: string
     patch:
       displayName: updatePet
@@ -63,6 +60,7 @@ description: A sample API
         application/json:
           type: pet
           (oas-body-name): body
+          required: false
       responses:
         '400':
           body:
@@ -87,12 +85,9 @@ description: A sample API
             application/json:
               type: pet
           description: Returns the pet data
-annotationTypes:
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
 types:
   pet:
+    type: object
     properties:
       name:
         type: string
@@ -124,6 +119,7 @@ types:
           minLength: 1
         required: false
   veterinarian:
+    type: object
     properties:
       name:
         type: string
@@ -132,6 +128,7 @@ types:
         type: address
         required: false
   address:
+    type: object
     properties:
       street:
         type: string
@@ -152,3 +149,7 @@ types:
         minimum: 10000
         maximum: 99999
         required: false
+annotationTypes:
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration

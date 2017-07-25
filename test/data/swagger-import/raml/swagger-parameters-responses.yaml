@@ -24,6 +24,13 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-responses: any
+  oas-summary:
+    type: string
+    allowedTargets: Method
   oas-externalDocs:
     properties:
       description?: string
@@ -45,25 +52,18 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-summary:
-    type: string
-    allowedTargets: Method
-  oas-global-response-definition:
-    type: any
-    allowedTargets: Response
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
   oas-schema-title:
     type: string
     allowedTargets: TypeDeclaration
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
-  oas-responses: any
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-global-response-definition:
+    type: any
+    allowedTargets: Response
 (oas-externalDocs):
   description: documentation describing how to use this API
   url: 'http://doc.simple.api/'
@@ -90,7 +90,6 @@ annotationTypes:
   '/{username}':
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     post:
@@ -108,24 +107,12 @@ annotationTypes:
   '/{username}':
     uriParameters:
       username:
-        required: true
         description: The person's username
         type: string
     get:
       displayName: readPerson
       description: Returns a single person for its username.
       (oas-summary): Gets a person
-      (oas-responses-default):
-        description: A totally unexpected response
-        headers:
-          X-Rate-Limit-Remaining:
-            type: integer
-            description: How many calls consumer can do
-          X-Rate-Limit-Reset:
-            type: datetime
-            description: When rate limit will be reset
-            format: rfc3339
-        (oas-global-response-definition): TotallyUnexpectedResponse
       responses:
         '200':
           body:
@@ -141,6 +128,7 @@ annotationTypes:
               description: When rate limit will be reset
               format: rfc3339
         '404':
+          (oas-global-response-definition): PersonDoesNotExistResponse
           description: Person does not exist.
           headers:
             X-Rate-Limit-Remaining:
@@ -150,8 +138,8 @@ annotationTypes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-          (oas-global-response-definition): PersonDoesNotExistResponse
         '500':
+          (oas-global-response-definition): Standard500ErrorResponse
           body:
             application/json:
               type: Error
@@ -164,7 +152,17 @@ annotationTypes:
               type: datetime
               description: When rate limit will be reset
               format: rfc3339
-          (oas-global-response-definition): Standard500ErrorResponse
+      (oas-responses-default):
+        (oas-global-response-definition): TotallyUnexpectedResponse
+        description: A totally unexpected response
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+            format: rfc3339
       (oas-tags):
         - Persons
     is:
@@ -206,20 +204,17 @@ traits:
         type: integer
         description: Number of persons returned
         format: int32
-        required: true
   userAgent:
     headers:
       userAgent:
         type: string
         description: All API consumers MUST provide a user agent
-        required: true
   userData:
     body:
       multipart/form-data:
         properties:
           userData:
             description: The person's data
-            required: true
             type: string
   userBody:
     body:

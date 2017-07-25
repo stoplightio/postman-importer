@@ -1,0 +1,31 @@
+#%RAML 0.8
+title: Petstore
+version: 1
+resourceTypes:
+  - baseResource:
+      get:
+        headers:
+          x-li-format:
+            description: |
+              Type of data
+            enum:
+              - xml
+              - json
+              - jsonp
+/{companyId}:
+  get:
+    headers:
+      unique:
+        description: |
+          Unique
+  uriParameters:
+    companyId:
+      displayName: companyId
+      description: The unique internal numeric company identifier.
+      required: true
+  /is-company-share-enabled:
+    type: baseResource
+    get:
+  /relation-to-viewer/is-company-share-enabled:
+    type: baseResource
+    get:

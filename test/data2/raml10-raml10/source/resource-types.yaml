@@ -1,0 +1,41 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+resourceTypes:
+  pets:
+    usage: usage
+    displayName: Pets
+    description: Path for pets
+    get:
+      description: Get all pets
+      responses:
+        200:
+          body:
+            application/json:
+              example: Dog
+    put:
+      description: put pets
+    uriParameters:
+      id:
+        type: integer
+        required: true
+      code:
+        type: number
+        required: false
+      name: string
+  other:
+    post:
+      description: Post others
+  name:
+    usage: Names
+    description: My name is <<resourceName>>
+    get:
+      description: Get names
+      headers:
+        some:
+          type: string
+          example: <<resourceName>>
+/pets:
+  type: { name: { resourceName: Bob } }
+/employees:
+  type: { name: { resourceName: Joe } }

@@ -7,12 +7,18 @@ protocols:
   - HTTPS
 description: 'Code against the Bitbucket API to automate simple tasks, embed Bitbucket data into your own site, build mobile or desktop apps, or even add custom UI add-ons into Bitbucket itself using the Connect framework.'
 (oas-tags-definition):
-  - name: users
-  - name: teams
-  - name: repositories
-  - name: refs
-  - name: commits
-  - name: pullrequests
+  - description: ''
+    name: users
+  - description: ''
+    name: teams
+  - description: ''
+    name: repositories
+  - description: ''
+    name: refs
+  - description: ''
+    name: commits
+  - description: ''
+    name: pullrequests
   - description: |-
       The issues resource provides functionality for getting information on
       issues in an issue tracker, creating new issues, updating them and deleting
@@ -23,9 +29,12 @@ description: 'Code against the Bitbucket API to automate simple tasks, embed Bit
       to create issues, as well as access to updating data or deleting issues you
       have access to.
     name: issue_tracker
-  - name: wiki
-  - name: downloads
-  - name: snippets
+  - description: ''
+    name: wiki
+  - description: ''
+    name: downloads
+  - description: ''
+    name: snippets
   - description: |
       Webhooks provide a way to configure Bitbucket Cloud to make requests to
       your server (or another external service) whenever certain events occur in
@@ -84,6 +93,26 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  apisguru-categories: any
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
+  tags: any
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
   oas-info:
     properties:
       termsOfService?: string
@@ -97,49 +126,29 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-x-apisguru-categories: any
-  oas-x-logo: any
-  oas-x-origin: any
-  oas-x-preferred: any
-  oas-x-providerName: any
-  oas-x-tags: any
-  oas-externalDocs:
-    properties:
-      description?: string
-      url: string
-    allowedTargets:
-      - API
-      - Method
-      - TypeDeclaration
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
-  oas-deprecated:
-    type: boolean
-    allowedTargets: Method
   oas-format:
     type: string
     allowedTargets: TypeDeclaration
-  oas-x-radar-pages: any
-  oas-x-revision: any
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  radar-pages: any
+  revision: any
 (oas-info):
-  (oas-x-apisguru-categories):
+  (apisguru-categories):
     - developer_tools
-  (oas-x-logo):
+  (logo):
     url: 'https://api.apis.guru/v2/cache/logo/https_d301sr5gafysq2.cloudfront.net_0c55837759e5_img_homepage_bitbucket-logo-blue.svg'
-  (oas-x-origin):
+  (origin):
     format: swagger
     url: 'https://bitbucket.org/api/swagger.json'
     version: '2.0'
-  (oas-x-preferred): true
-  (oas-x-providerName): bitbucket.org
-  (oas-x-tags):
+  (preferred): true
+  (providerName): bitbucket.org
+  (tags):
     - code repository
     - code collaboration
     - git
@@ -153,6 +162,7 @@ annotationTypes:
 securitySchemes:
   oauth2:
     type: OAuth 2.0
+    description: 'OAuth 2 as per [RFC-6749](https://tools.ietf.org/html/rfc6749).'
     settings:
       authorizationUri: 'https://bitbucket.org/site/oauth2/authorize'
       accessTokenUri: 'https://bitbucket.org/site/oauth2/access_token'
@@ -181,7 +191,6 @@ securitySchemes:
         - 'team:write'
         - webhook
         - wiki
-    description: 'OAuth 2 as per [RFC-6749](https://tools.ietf.org/html/rfc6749).'
   basic:
     type: Basic Authentication
     description: 'Basic HTTP Authentication as per [RFC-2617](https://tools.ietf.org/html/rfc2617) (Digest not supported). Note that Basic Auth with username and password as credentials is only available on accounts that have 2-factor-auth / 2-step-verification disabled. If you use 2fa, you should authenticate using OAuth2 instead.'
@@ -199,7 +208,6 @@ securitySchemes:
         '/{spec}':
           uriParameters:
             spec:
-              required: true
               type: string
           get:
             responses:
@@ -224,10 +232,6 @@ securitySchemes:
               - api_key
             (oas-tags):
               - commits
-      uriParameters:
-        repo_slug:
-          required: true
-          type: string
       /pullrequests:
         get:
           (oas-responses-default):
@@ -244,6 +248,7 @@ securitySchemes:
                 - OPEN
                 - DECLINED
               type: string
+              required: false
           securedBy:
             - oauth2:
                 scopes:
@@ -257,6 +262,7 @@ securitySchemes:
             application/json:
               type: pullrequest
               (oas-body-name): _body
+              required: false
               description: |-
                 The new pull request.
 
@@ -299,9 +305,7 @@ securitySchemes:
         '/{pull_request_id}':
           uriParameters:
             pull_request_id:
-              required: true
-              type: integer
-              description: The pull request's id
+              type: string
           get:
             responses:
               '200':
@@ -393,7 +397,6 @@ securitySchemes:
             '/{comment_id}':
               uriParameters:
                 comment_id:
-                  required: true
                   type: string
               get:
                 (oas-responses-default):
@@ -511,6 +514,9 @@ securitySchemes:
                 - repositories
                 - pullrequests
                 - commitstatuses
+      uriParameters:
+        repo_slug:
+          type: string
       delete:
         responses:
           '204':
@@ -539,6 +545,7 @@ securitySchemes:
             type: repository
             (oas-body-name): _body
             description: The repository that is to be created. Note that most object elements are optional. Elements "owner" and "full_name" are ignored as the URL implies them.
+            required: false
         responses:
           '200':
             body:
@@ -597,7 +604,6 @@ securitySchemes:
         '/{id}':
           uriParameters:
             id:
-              required: true
               type: string
               description: The restriction rule's id
           delete:
@@ -728,6 +734,10 @@ securitySchemes:
             - branchrestrictions
       /commit:
         '/{node}':
+          uriParameters:
+            node:
+              description: The commit's SHA1.
+              type: string
           /approve:
             post:
               responses:
@@ -766,11 +776,6 @@ securitySchemes:
                 - api_key
               (oas-tags):
                 - commits
-          uriParameters:
-            node:
-              required: true
-              type: string
-              description: The commit's SHA1
           /statuses:
             /build:
               post:
@@ -779,6 +784,7 @@ securitySchemes:
                     type: commitstatus
                     (oas-body-name): _body
                     description: The new commit status object.
+                    required: false
                 responses:
                   '201':
                     body:
@@ -804,15 +810,15 @@ securitySchemes:
               '/{key}':
                 uriParameters:
                   key:
-                    required: true
                     type: string
-                    description: The build status' unique key
+                    description: The commit status' unique key
                 put:
                   body:
                     application/json:
                       type: commitstatus
                       (oas-body-name): _body
                       description: The updated build status object
+                      required: false
                   responses:
                     '200':
                       body:
@@ -882,6 +888,9 @@ securitySchemes:
                 - repositories
                 - commitstatuses
         '/{sha}':
+          uriParameters:
+            sha:
+              type: string
           /comments:
             get:
               (oas-responses-default):
@@ -900,7 +909,6 @@ securitySchemes:
             '/{comment_id}':
               uriParameters:
                 comment_id:
-                  required: true
                   type: string
               get:
                 (oas-responses-default):
@@ -916,14 +924,9 @@ securitySchemes:
                   - api_key
                 (oas-tags):
                   - commits
-          uriParameters:
-            sha:
-              required: true
-              type: string
         '/{revision}':
           uriParameters:
             revision:
-              required: true
               type: string
               description: The commit's SHA1.
           get:
@@ -979,7 +982,6 @@ securitySchemes:
           '/{name}':
             uriParameters:
               name:
-                required: true
                 type: string
             get:
               (oas-responses-default):
@@ -1013,7 +1015,6 @@ securitySchemes:
           '/{name}':
             uriParameters:
               name:
-                required: true
                 type: string
             get:
               (oas-responses-default):
@@ -1047,7 +1048,6 @@ securitySchemes:
         '/{revision}':
           uriParameters:
             revision:
-              required: true
               type: string
           get:
             (oas-responses-default):
@@ -1115,7 +1115,6 @@ securitySchemes:
         '/{version_id}':
           uriParameters:
             version_id:
-              required: true
               type: integer
               description: The version's id
           get:
@@ -1162,7 +1161,6 @@ securitySchemes:
         '/{component_id}':
           uriParameters:
             component_id:
-              required: true
               type: integer
               description: The component's id
           get:
@@ -1200,8 +1198,9 @@ securitySchemes:
             - pullrequests
         '/{target_username}':
           uriParameters:
+            username:
+              type: string
             target_username:
-              required: true
               type: string
           get:
             (oas-responses-default):
@@ -1264,7 +1263,6 @@ securitySchemes:
         '/{spec}':
           uriParameters:
             spec:
-              required: true
               type: string
           get:
             responses:
@@ -1316,7 +1314,6 @@ securitySchemes:
         '/{filename}':
           uriParameters:
             filename:
-              required: true
               type: string
           get:
             (oas-responses-default):
@@ -1390,9 +1387,8 @@ securitySchemes:
         '/{uid}':
           uriParameters:
             uid:
-              required: true
               type: string
-              description: The installed webhook's id.
+              description: The installed webhook's id
           delete:
             responses:
               '204':
@@ -1536,7 +1532,6 @@ securitySchemes:
         '/{issue_id}':
           uriParameters:
             issue_id:
-              required: true
               type: string
           get:
             responses:
@@ -1592,7 +1587,6 @@ securitySchemes:
             '/{path}':
               uriParameters:
                 path:
-                  required: true
                   type: string
               get:
                 responses:
@@ -1661,7 +1655,6 @@ securitySchemes:
             '/{comment_id}':
               uriParameters:
                 comment_id:
-                  required: true
                   type: string
               get:
                 (oas-responses-default):
@@ -1887,7 +1880,6 @@ securitySchemes:
         '/{milestone_id}':
           uriParameters:
             milestone_id:
-              required: true
               type: integer
               description: The milestone's id
           get:
@@ -1935,6 +1927,7 @@ securitySchemes:
           application/json:
             type: repository
             (oas-body-name): _body
+            required: false
             description: |
               The repository that is to be updated.
 
@@ -2022,7 +2015,6 @@ securitySchemes:
             - repositories
     uriParameters:
       username:
-        required: true
         type: string
     get:
       responses:
@@ -2096,8 +2088,8 @@ securitySchemes:
           - teams
     uriParameters:
       username:
-        required: true
         type: string
+        description: The account's username or UUID.
     get:
       responses:
         '200':
@@ -2186,7 +2178,6 @@ securitySchemes:
       '/{uid}':
         uriParameters:
           uid:
-            required: true
             type: string
             description: The installed webhook's id
         put:
@@ -2291,6 +2282,9 @@ securitySchemes:
           - webhooks
 /account:
   '/{username}':
+    uriParameters:
+      username:
+        type: string
     /addons:
       get:
         (oas-responses-default):
@@ -2309,7 +2303,6 @@ securitySchemes:
       '/{encoded_context_id}':
         uriParameters:
           encoded_context_id:
-            required: true
             type: string
         delete:
           (oas-responses-default):
@@ -2382,10 +2375,6 @@ securitySchemes:
           - api_key
         (oas-tags):
           - addon
-    uriParameters:
-      username:
-        required: true
-        type: string
 /addon:
   delete:
     (oas-responses-default):
@@ -2489,7 +2478,6 @@ securitySchemes:
             - addon
       uriParameters:
         linker_key:
-          required: true
           type: string
       get:
         (oas-responses-default):
@@ -2532,7 +2520,6 @@ securitySchemes:
   '/{subject_type}':
     uriParameters:
       subject_type:
-        required: true
         type: string
         description: A resource or subject type.
         enum:
@@ -2619,8 +2606,8 @@ securitySchemes:
   '/{username}':
     uriParameters:
       username:
-        required: true
         type: string
+        description: Limits the result to snippets owned by this user.
     get:
       responses:
         '200':
@@ -2687,9 +2674,8 @@ securitySchemes:
     '/{encoded_id}':
       uriParameters:
         encoded_id:
-          required: true
           type: string
-          description: The snippet id.
+          description: The snippet's id.
       delete:
         responses:
           '204':
@@ -2721,22 +2707,38 @@ securitySchemes:
         responses:
           '200':
             body:
+              application/json:
+                type: snippet
               multipart/related:
+                type: snippet
+              multipart/form-data:
                 type: snippet
             description: The snippet object.
           '401':
             body:
+              application/json:
+                type: error
               multipart/related:
+                type: error
+              multipart/form-data:
                 type: error
             description: If the snippet is private and the request was not authenticated.
           '403':
             body:
+              application/json:
+                type: error
               multipart/related:
+                type: error
+              multipart/form-data:
                 type: error
             description: If authenticated user does not have access to the private snippet.
           '404':
             body:
+              application/json:
+                type: error
               multipart/related:
+                type: error
+              multipart/form-data:
                 type: error
             description: If the snippet does not exist.
         securedBy:
@@ -2751,22 +2753,38 @@ securitySchemes:
         responses:
           '200':
             body:
+              application/json:
+                type: snippet
               multipart/related:
+                type: snippet
+              multipart/form-data:
                 type: snippet
             description: The updated snippet object.
           '401':
             body:
+              application/json:
+                type: error
               multipart/related:
+                type: error
+              multipart/form-data:
                 type: error
             description: If the snippet is private and the request was not authenticated.
           '403':
             body:
+              application/json:
+                type: error
               multipart/related:
+                type: error
+              multipart/form-data:
                 type: error
             description: If authenticated user does not have permission to update the private snippet.
           '404':
             body:
+              application/json:
+                type: error
               multipart/related:
+                type: error
+              multipart/form-data:
                 type: error
             description: If the snippet does not exist.
         securedBy:
@@ -2840,7 +2858,6 @@ securitySchemes:
         '/{comment_id}':
           uriParameters:
             comment_id:
-              required: true
               type: string
           delete:
             responses:
@@ -2940,7 +2957,6 @@ securitySchemes:
         '/{revision}':
           uriParameters:
             revision:
-              required: true
               type: string
           get:
             responses:
@@ -3063,8 +3079,8 @@ securitySchemes:
       '/{node_id}':
         uriParameters:
           node_id:
-            required: true
             type: string
+            description: A commit revision (SHA1).
         delete:
           responses:
             '204':
@@ -3101,22 +3117,38 @@ securitySchemes:
           responses:
             '200':
               body:
+                application/json:
+                  type: snippet
                 multipart/related:
+                  type: snippet
+                multipart/form-data:
                   type: snippet
               description: The snippet object.
             '401':
               body:
+                application/json:
+                  type: error
                 multipart/related:
+                  type: error
+                multipart/form-data:
                   type: error
               description: If the snippet is private and the request was not authenticated.
             '403':
               body:
+                application/json:
+                  type: error
                 multipart/related:
+                  type: error
+                multipart/form-data:
                   type: error
               description: If authenticated user does not have access to the private snippet.
             '404':
               body:
+                application/json:
+                  type: error
                 multipart/related:
+                  type: error
+                multipart/form-data:
                   type: error
               description: 'If the snippet, or the revision does not exist.'
           securedBy:
@@ -3131,27 +3163,47 @@ securitySchemes:
           responses:
             '200':
               body:
+                application/json:
+                  type: snippet
                 multipart/related:
+                  type: snippet
+                multipart/form-data:
                   type: snippet
               description: The updated snippet object.
             '401':
               body:
+                application/json:
+                  type: error
                 multipart/related:
+                  type: error
+                multipart/form-data:
                   type: error
               description: If the snippet is private and the request was not authenticated.
             '403':
               body:
+                application/json:
+                  type: error
                 multipart/related:
+                  type: error
+                multipart/form-data:
                   type: error
               description: If authenticated user does not have permission to update the private snippet.
             '404':
               body:
+                application/json:
+                  type: error
                 multipart/related:
+                  type: error
+                multipart/form-data:
                   type: error
               description: If the snippet or the revision does not exist.
             '405':
               body:
+                application/json:
+                  type: error
                 multipart/related:
+                  type: error
+                multipart/form-data:
                   type: error
               description: 'If `{node_id}` is not the latest revision.'
           securedBy:
@@ -3166,7 +3218,6 @@ securitySchemes:
           '/{path}':
             uriParameters:
               path:
-                required: true
                 type: string
             get:
               responses:
@@ -3198,6 +3249,10 @@ securitySchemes:
               (oas-tags):
                 - snippets
       '/{revision}':
+        uriParameters:
+          revision:
+            description: A revspec expression. This can simply be a commit SHA1, a ref name, or a compare expression like `staging..production`.
+            type: string
         /diff:
           get:
             responses:
@@ -3217,6 +3272,7 @@ securitySchemes:
               path:
                 description: 'When used, only one the diff of the specified file will be returned.'
                 type: string
+                required: false
             securedBy:
               - oauth2:
                   scopes:
@@ -3225,11 +3281,6 @@ securitySchemes:
               - api_key
             (oas-tags):
               - snippets
-        uriParameters:
-          revision:
-            required: true
-            type: string
-            description: 'A revspec expression. This can simply be a commit SHA1, a ref name, or a compare expression like `staging..production`.'
         /patch:
           get:
             responses:
@@ -3292,6 +3343,10 @@ securitySchemes:
     (oas-tags):
       - teams
   '/{owner}':
+    uriParameters:
+      owner:
+        description: "The team which owns the project. This can either be the `username` of\nthe team or the `UUID` of the team (surrounded by curly-braces (`{}`)).\n"
+        type: string
     /projects:
       /:
         get:
@@ -3358,7 +3413,6 @@ securitySchemes:
             description: |
               The project in question. This can either be the actual `key` assigned
               to the project or the `UUID` (surrounded by curly-braces (`{}`)).
-            required: true
             type: string
         delete:
           responses:
@@ -3451,18 +3505,11 @@ securitySchemes:
             - api_key
           (oas-tags):
             - projects
-    uriParameters:
-      owner:
-        description: |
-          The team which owns the project. This can either be the `username` of
-          the team or the `UUID` of the team (surrounded by curly-braces (`{}`)).
-        required: true
-        type: string
   '/{username}':
     uriParameters:
       username:
-        required: true
         type: string
+        description: The team's username or UUID.
     get:
       responses:
         '200':
@@ -3581,7 +3628,6 @@ securitySchemes:
       '/{uid}':
         uriParameters:
           uid:
-            required: true
             type: string
             description: The installed webhook's id
         delete:
@@ -3730,7 +3776,6 @@ securitySchemes:
     '/{email}':
       uriParameters:
         email:
-          required: true
           type: string
       get:
         (oas-responses-default):
@@ -3748,6 +3793,7 @@ securitySchemes:
           - users
 types:
   account:
+    additionalProperties: true
     description: An account object.
     properties:
       created_on:
@@ -3764,8 +3810,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3773,8 +3819,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3782,8 +3828,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3791,8 +3837,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3800,8 +3846,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3809,8 +3855,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3828,6 +3874,7 @@ types:
         required: false
     type: object
   base_commit:
+    additionalProperties: true
     description: The common base type for both repository and snippet commits.
     properties:
       author:
@@ -3852,6 +3899,7 @@ types:
         required: false
     type: object
   branchrestriction:
+    additionalProperties: true
     description: A branch restriction rule.
     properties:
       groups:
@@ -3884,8 +3932,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3903,6 +3951,7 @@ types:
         required: false
     type: object
   commit:
+    additionalProperties: true
     description: A repository commit object.
     properties:
       links:
@@ -3912,8 +3961,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3921,8 +3970,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3930,8 +3979,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3939,8 +3988,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3948,8 +3997,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3957,8 +4006,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3966,8 +4015,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -3984,6 +4033,7 @@ types:
         required: false
     type: base_commit
   commitstatus:
+    additionalProperties: true
     description: A commit status object.
     properties:
       created_on:
@@ -4008,8 +4058,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4017,8 +4067,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4050,6 +4100,7 @@ types:
         required: false
     type: object
   component:
+    additionalProperties: true
     description: A component as defined in a repository's issue tracker.
     properties:
       id:
@@ -4062,8 +4113,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4090,7 +4141,9 @@ types:
             type: string
         type: object
         required: false
+    type: object
   group:
+    additionalProperties: true
     description: A group object
     properties:
       full_slug:
@@ -4106,8 +4159,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4115,8 +4168,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4181,7 +4234,9 @@ types:
         description: Summary of the webhook event type.
         type: string
         required: false
+    type: object
   issue:
+    additionalProperties: true
     description: An issue.
     properties:
       assignee:
@@ -4236,8 +4291,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4245,8 +4300,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4254,8 +4309,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4263,8 +4318,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4272,8 +4327,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4281,8 +4336,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4333,6 +4388,7 @@ types:
         required: false
     type: object
   issue_attachment:
+    additionalProperties: true
     description: An issue file attachment's meta data. Note this does not contain the file's actual contents.
     properties:
       links:
@@ -4342,8 +4398,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4354,6 +4410,7 @@ types:
         required: false
     type: object
   milestone:
+    additionalProperties: true
     description: A milestone as defined in a repository's issue tracker.
     properties:
       id:
@@ -4366,8 +4423,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -4378,18 +4435,20 @@ types:
         required: false
     type: object
   object:
+    additionalProperties: true
     description: Base type for most resource objects. It defines the common `type` element that identifies an object's type. It also identifies the element as Swagger's `discriminator`.
     discriminator: type
     properties:
       type:
         type: string
+    type: object
   page:
     additionalProperties: false
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4403,22 +4462,23 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
         minimum: 0
         type: integer
         required: false
+    type: object
   paginated_branchrestrictions:
     additionalProperties: false
     description: A paginated list of branch restriction rules.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4432,8 +4492,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4447,14 +4507,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_commitstatuses:
     additionalProperties: false
     description: A paginated list of commit status objects.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4468,8 +4529,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4483,14 +4544,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_components:
     additionalProperties: false
     description: A paginated list of issue tracker components.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4504,8 +4566,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4519,14 +4581,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_hook_events:
     additionalProperties: false
     description: A paginated list of webhook types available to subscribe on.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4540,8 +4603,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4555,14 +4618,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_issue_attachments:
     additionalProperties: false
     description: A paginated list of issue attachments.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4576,8 +4640,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4590,14 +4654,15 @@ types:
         minItems: 0
         type: array
         required: false
+    type: object
   paginated_issues:
     additionalProperties: false
     description: A paginated list of issues.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4611,8 +4676,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4626,14 +4691,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_milestones:
     additionalProperties: false
     description: A paginated list of issue tracker milestones.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4647,8 +4713,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4662,14 +4728,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_projects:
     additionalProperties: false
     description: A paginated list of projects
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4683,8 +4750,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4698,14 +4765,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_repositories:
     additionalProperties: false
     description: A paginated list of repositories.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4719,8 +4787,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4734,14 +4802,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_snippet_comments:
     additionalProperties: false
     description: A paginated list of snippet comments.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4755,8 +4824,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4770,14 +4839,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_snippet_commit:
     additionalProperties: false
     description: A paginated list of snippet commits.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4791,8 +4861,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4805,14 +4875,15 @@ types:
         minItems: 0
         type: array
         required: false
+    type: object
   paginated_snippets:
     additionalProperties: false
     description: A paginated list of snippets.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4826,8 +4897,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4841,14 +4912,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_teams:
     additionalProperties: false
     description: A paginated list of teams.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4862,8 +4934,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4877,14 +4949,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_users:
     additionalProperties: false
     description: A paginated list of users.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4898,8 +4971,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4913,14 +4986,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_versions:
     additionalProperties: false
     description: A paginated list of issue tracker versions.
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4934,8 +5008,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4949,14 +5023,15 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   paginated_webhook_subscriptions:
     additionalProperties: false
     description: A paginated list of webhook subscriptions
     properties:
       next:
         description: Link to the next page if it exists. The last page of a collection does not have this value. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       page:
         description: Page number of the current results. This is an optional element that is not provided in all responses.
@@ -4970,8 +5045,8 @@ types:
         required: false
       previous:
         description: Link to previous page if it exists. A collections first page does not have this value. This is an optional element that is not provided in all responses. Some result sets strictly support forward navigation and never provide previous links. Clients must anticipate that backwards navigation is not always available. Use this link to navigate the result set and refrain from constructing your own URLs.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       size:
         description: 'Total number of objects in the response. This is an optional element that is not provided in all responses, as it can be expensive to compute.'
@@ -4985,7 +5060,9 @@ types:
         type: array
         uniqueItems: true
         required: false
+    type: object
   participant:
+    additionalProperties: true
     description: Object describing a user's role on resources like commits or pull requests.
     properties:
       approved:
@@ -5002,6 +5079,7 @@ types:
         required: false
     type: object
   project:
+    additionalProperties: true
     description: |-
       A Bitbucket project.
                   Projects are used by teams to organize repositories.
@@ -5032,8 +5110,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5041,8 +5119,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5065,6 +5143,7 @@ types:
         required: false
     type: object
   pullrequest:
+    additionalProperties: true
     description: A pull request object.
     properties:
       author:
@@ -5080,8 +5159,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5089,8 +5168,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5098,8 +5177,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5107,8 +5186,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5116,8 +5195,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5125,8 +5204,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5134,8 +5213,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5143,8 +5222,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5152,8 +5231,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5172,6 +5251,7 @@ types:
         required: false
     type: object
   repository:
+    additionalProperties: true
     description: A Bitbucket repository.
     properties:
       created_on:
@@ -5219,8 +5299,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5228,8 +5308,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5237,8 +5317,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5246,8 +5326,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5255,8 +5335,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5264,8 +5344,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5273,8 +5353,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5282,8 +5362,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5291,8 +5371,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5300,8 +5380,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5338,6 +5418,7 @@ types:
         required: false
     type: object
   snippet:
+    additionalProperties: true
     description: A snippet object.
     properties:
       created_on:
@@ -5373,6 +5454,7 @@ types:
         required: false
     type: object
   snippet_comment:
+    additionalProperties: true
     description: A comment on a snippet.
     properties:
       links:
@@ -5382,8 +5464,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5391,8 +5473,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5403,6 +5485,8 @@ types:
         required: false
     type: object
   snippet_commit:
+    additionalProperties: true
+    description: ''
     properties:
       links:
         additionalProperties: false
@@ -5411,8 +5495,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5420,8 +5504,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5429,8 +5513,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5451,8 +5535,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5465,8 +5549,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5479,22 +5563,24 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
         type: object
         required: false
+    type: object
   team:
+    additionalProperties: true
     description: A team object.
-    properties: {}
-    type: account
+    type: [account, object]
   user:
+    additionalProperties: true
     description: A user object.
-    properties: {}
-    type: account
+    type: [account, object]
   version:
+    additionalProperties: true
     description: A version as defined in a repository's issue tracker.
     properties:
       id:
@@ -5507,8 +5593,8 @@ types:
             additionalProperties: false
             properties:
               href:
-                type: string
                 (oas-format): uri
+                type: string
                 required: false
             type: object
             required: false
@@ -5519,6 +5605,7 @@ types:
         required: false
     type: object
   webhook_subscription:
+    additionalProperties: true
     description: A Webhook subscription.
     properties:
       active:
@@ -5575,15 +5662,15 @@ types:
         required: false
       url:
         description: The URL events get delivered to.
-        type: string
         (oas-format): uri
+        type: string
         required: false
       uuid:
         description: The webhook's id
         type: string
         required: false
     type: object
-(oas-x-radar-pages):
+(radar-pages):
   - content: |
 
       # Authentication methods
@@ -6448,4 +6535,4 @@ types:
     icon: 'data:image/png;base64,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'
     key: bb-connect
     title: Atlassian Connect
-(oas-x-revision): 0c55837759e5
+(revision): 0c55837759e5

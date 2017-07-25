@@ -6,28 +6,6 @@ mediaType: application/json
 protocols:
   - HTTP
 description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
-annotationTypes:
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-responses-default:
-    type: any
-    allowedTargets: Method
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-collectionFormat:
-    type: string
 (oas-info):
   contact:
     name: Swagger API Team
@@ -38,15 +16,9 @@ annotationTypes:
   '/{id}':
     uriParameters:
       id:
-        description: IDs of pet to fetch
-        required: true
-        type: array
-        items:
-          type: integer
-          format: int64
-        minItems: 10
-        maxItems: 100
-        uniqueItems: true
+        description: ID of pet to delete
+        type: integer
+        format: int64
     delete:
       displayName: deletePet
       description: deletes a single pet based on the ID supplied
@@ -65,11 +37,23 @@ annotationTypes:
         body:
           application/xml:
             type: ErrorModel
+          application/json:
+            type: ErrorModel
+          text/html:
+            type: ErrorModel
+          text/xml:
+            type: ErrorModel
         description: unexpected error
       responses:
         '200':
           body:
             application/xml:
+              type: Pet
+            application/json:
+              type: Pet
+            text/html:
+              type: Pet
+            text/xml:
               type: Pet
           description: pet response
   post:
@@ -98,11 +82,29 @@ annotationTypes:
       body:
         application/xml:
           type: ErrorModel
+        application/json:
+          type: ErrorModel
+        text/html:
+          type: ErrorModel
+        text/xml:
+          type: ErrorModel
       description: unexpected error
     responses:
       '200':
         body:
           application/xml:
+            type: array
+            items:
+              type: Pet
+          application/json:
+            type: array
+            items:
+              type: Pet
+          text/html:
+            type: array
+            items:
+              type: Pet
+          text/xml:
             type: array
             items:
               type: Pet
@@ -112,9 +114,9 @@ annotationTypes:
         description: tags to filter by
         required: false
         type: array
+        (oas-collectionFormat): csv
         items:
           type: string
-        (oas-collectionFormat): csv
       limit:
         description: maximum number of results to return
         required: false
@@ -128,6 +130,7 @@ types:
         format: int64
     type: NewPet
   NewPet:
+    type: object
     properties:
       name:
         type: string
@@ -135,9 +138,32 @@ types:
         type: string
         required: false
   ErrorModel:
+    type: object
     properties:
       code:
         type: integer
         format: int32
       message:
         type: string
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+  oas-collectionFormat:
+    type: string

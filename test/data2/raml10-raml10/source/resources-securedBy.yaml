@@ -1,0 +1,45 @@
+#%RAML 1.0
+title: AdhereTech External API
+version: 0.11.0
+documentation:
+- title: AdhereTech External API
+  content: An API designed to expose AdhereTech server's data to clients and other services.
+baseUri: https://example.com/api/v1
+securitySchemes:
+  auth:
+    type: Basic Authentication
+  auth2:
+    type: Basic Authentication
+/bottles:
+  securedBy:
+    - auth2
+  /{bottleUid}:
+    get:
+      securedBy:
+      - auth
+      displayName: getBottle
+      description: Get a bottle by its UID.
+      responses:
+        404:
+          description: Bottle not found.
+    put:
+      securedBy:
+      - auth
+      - auth2
+      displayName: updateBottle
+      description: Modify a bottle by its UID.
+      responses:
+        200:
+          description: Bottle found and modified.
+        404:
+          description: Bottle not found.
+        405:
+          description: Validation exception.
+    post:
+      displayName: reenrollpatient
+      description: Reenroll a patient.
+      responses:
+        200:
+          description: Patient found and reenrolled
+        404:
+          description: Patient not found. Or patient already enrolled

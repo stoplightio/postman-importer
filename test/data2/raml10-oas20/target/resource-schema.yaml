@@ -1,0 +1,143 @@
+info:
+  title: Petstore
+  version: '1'
+swagger: '2.0'
+definitions:
+  Pet:
+    type: string
+  Bottle:
+    title: Bottle
+    required:
+      - bottleUid
+    type: object
+    properties:
+      bottleUid:
+        type: string
+      isActive:
+        type: boolean
+      remindersActive:
+        type: boolean
+      onBottleLights:
+        type: boolean
+      onBottleSounds:
+        type: boolean
+      doseOne:
+        type: string
+      doseTwo:
+        type: string
+      doseThree:
+        type: string
+      feedbackActive:
+        type: boolean
+      patientUid:
+        type: string
+paths:
+  /bottles:
+    get:
+      operationId: getBottlesByValues
+      description: Get a list of bottles filtered by status and/or patient(s).
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Query completed; results returned.
+          schema:
+            $ref: '#/definitions/Bottle'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      parameters:
+        - required: true
+          description: Flag that indicates if bottle is active.
+          type: boolean
+          in: query
+          name: isActive
+        - required: true
+          description: Flag that indicates if reminders are active.
+          type: boolean
+          in: query
+          name: remindersActive
+        - required: true
+          description: Flag that indicates if visual alarms are active.
+          type: boolean
+          in: query
+          name: onBottleLights
+        - required: true
+          description: Flag that indicates if auditory alarms are active.
+          type: boolean
+          in: query
+          name: onBottleSounds
+        - required: true
+          description: Flag that indicates if feedback requests are active.
+          type: boolean
+          in: query
+          name: feedbackActive
+        - required: true
+          description: The ID of the patient using this bottle.
+          type: integer
+          in: query
+          name: patientUid
+        - required: true
+          description: Current front-end page number; required for pagination.
+          type: integer
+          in: query
+          name: page
+        - required: true
+          description: Current front-end items per page value; required for pagination.
+          type: integer
+          in: query
+          name: itemsPerPage
+        - required: true
+          description: >-
+            Attribute(s) and order(s) to sort by in the following example format
+            - "uid desc, timeoccurred asc" etc. Attribute names are
+            case-sensitive. Omit to sort by 'uid' ascending as default.
+          type: string
+          in: query
+          name: sort
+  '/bottles/{bottleUid}':
+    get:
+      operationId: getBottle
+      description: Get a bottle by its UID.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Bottle found and returned
+          schema:
+            $ref: '#/definitions/Bottle'
+        '404':
+          description: Bottle not found.
+    put:
+      operationId: updateBottle
+      description: Modify a bottle by its UID.
+      responses:
+        '200':
+          description: Bottle found and modified.
+        '404':
+          description: Bottle not found.
+        '405':
+          description: Validation exception.
+    parameters:
+      - required: true
+        description: Bottle UID
+        type: string
+        in: path
+        name: bottleUid
+  /employees:
+    get:
+      operationId: GET_employees
+      responses:
+        default:
+          description: ''
+      consumes:
+        - application/json
+        - text/xml
+        - application/xml
+      parameters:
+        - schema:
+            type: object
+          in: body
+          name: body
+          required: true

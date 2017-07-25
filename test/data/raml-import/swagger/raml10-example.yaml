@@ -5,31 +5,44 @@ info:
 paths:
   /organization:
     get:
+      operationId: GET_organization
       description: Returns an organization entity.
       produces:
         - application/json
       responses:
         '201':
           description: ''
+          examples:
+            application/json:
+              acme:
+                name: Acme
+              softwareCorp:
+                name: Software Corp
+                address: 35 Central Street
+                value: Gold
           schema:
             $ref: '#/definitions/Org'
     post:
+      operationId: POST_organization
       consumes:
         - application/json
       parameters:
-        - name: body
-          in: body
-          schema:
-            $ref: '#/definitions/Org'
         - name: UserID
           in: header
           description: the identifier for the user who posts a new organization
           required: true
           type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Org'
+            example:
+              name: Doe Enterprise
+              value: Silver
       responses:
         default:
           description: ''
-          schema: {}
 definitions:
   User:
     type: object

@@ -159,6 +159,9 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
   oas-info:
     properties:
       termsOfService?: string
@@ -172,9 +175,6 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
@@ -236,6 +236,7 @@ securitySchemes:
           application/json:
             type: number
             (oas-body-name): TEXT
+            required: false
             description: |
               Text to post as a comment on the media object as specified in
               media-id.
@@ -284,11 +285,6 @@ securitySchemes:
             description: OK
         (oas-tags):
           - Comments
-    uriParameters:
-      media-id:
-        description: The media ID
-        type: integer
-        required: true
     /likes:
       get:
         description: |
@@ -358,6 +354,10 @@ securitySchemes:
             description: OK
         (oas-tags):
           - Likes
+    uriParameters:
+      media-id:
+        description: The media ID
+        type: integer
     get:
       description: |
         Get information about a media object.
@@ -420,29 +420,38 @@ securitySchemes:
           description: |
             Latitude of the center search coordinate. If used, lng is required.
           type: number
+          required: false
         MIN_TIMESTAMP:
           description: |
             A unix timestamp. All media returned will be taken later than
             this timestamp.
           type: integer
+          required: false
         LNG:
           description: |
             Longitude of the center search coordinate. If used, lat is required.
           type: number
+          required: false
         MAX_TIMESTAMP:
           description: |
             A unix timestamp. All media returned will be taken earlier than this
             timestamp.
           type: integer
+          required: false
         DISTANCE:
           description: 'Default is 1km (distance=1000), max distance is 5km.'
           type: integer
           maximum: 5000
           default: 1000
+          required: false
       (oas-tags):
         - Media
 /geographies:
   '/{geo-id}':
+    uriParameters:
+      geo-id:
+        type: integer
+        description: Geolocation ID
     /media:
       /recent:
         get:
@@ -463,21 +472,17 @@ securitySchemes:
             count:
               description: Max number of media to return.
               type: integer
+              required: false
             min_id:
               description: Return media before this `min_id`.
               type: integer
-    uriParameters:
-      geo-id:
-        description: Geolocation ID
-        type: integer
-        required: true
+              required: false
 /users:
   '/{user-id}':
     uriParameters:
       user-id:
         description: The user identifier number
         type: number
-        required: true
     get:
       description: Get basic information about a user.
       responses:
@@ -491,10 +496,10 @@ securitySchemes:
                   required: false
           description: The user object
       securedBy:
+        - key
         - oauth:
             scopes:
               - basic
-        - key
       (oas-tags):
         - Users
     /media:
@@ -519,18 +524,23 @@ securitySchemes:
             count:
               description: Count of media to return.
               type: integer
+              required: false
             max_timestamp:
               description: Return media before this UNIX timestamp.
               type: integer
+              required: false
             min_timestamp:
               description: Return media after this UNIX timestamp.
               type: integer
+              required: false
             min_id:
               description: Return media later than this min_id.
               type: string
+              required: false
             max_id:
               description: Return media earlier than this max_id.
               type: string
+              required: false
           (oas-tags):
             - Users
     /followed-by:
@@ -556,6 +566,7 @@ securitySchemes:
         body:
           application/json:
             type: string
+            required: false
             enum:
               - follow
               - unfollow
@@ -616,10 +627,10 @@ securitySchemes:
         q:
           description: A query string
           type: string
-          required: true
         count:
           description: Number of users to return.
           type: string
+          required: false
       (oas-tags):
         - Users
   /self:
@@ -647,9 +658,11 @@ securitySchemes:
             count:
               description: Count of media to return.
               type: integer
+              required: false
             max_like_id:
               description: Return media liked before this id.
               type: integer
+              required: false
           (oas-tags):
             - Users
     /feed:
@@ -671,12 +684,15 @@ securitySchemes:
           count:
             description: Count of media to return.
             type: integer
+            required: false
           max_id:
             description: Return media earlier than this max_id.s
             type: integer
+            required: false
           min_id:
             description: Return media later than this min_id.
             type: integer
+            required: false
         (oas-tags):
           - Users
     /requested-by:
@@ -708,7 +724,6 @@ securitySchemes:
       tag-name:
         description: Tag name
         type: string
-        required: true
     get:
       description: Get information about a tag object.
       responses:
@@ -764,6 +779,7 @@ securitySchemes:
           description: |
             A valid tag name without a leading #. (eg. snowy, nofilter)
           type: string
+          required: false
       (oas-tags):
         - Tags
 /media1:
@@ -772,7 +788,6 @@ securitySchemes:
       shortcode:
         description: The media shortcode
         type: string
-        required: true
     get:
       description: |
         This endpoint returns the same response as **GET** `/media/media-id`.
@@ -808,11 +823,13 @@ securitySchemes:
         distance:
           description: 'Default is 1000m (distance=1000), max distance is 5000.'
           type: integer
+          required: false
         facebook_places_id:
           description: |
             Returns a location mapped off of a Facebook places id. If used, a
             Foursquare id and lat, lng are not required.
           type: integer
+          required: false
         foursquare_id:
           description: |
             returns a location mapped off of a foursquare v1 api location id.
@@ -820,19 +837,23 @@ securitySchemes:
             method is deprecated; you should use the new foursquare IDs with V2
             of their API.
           type: integer
+          required: false
         lat:
           description: |
             atitude of the center search coordinate. If used, lng is required.
           type: number
+          required: false
         lng:
           description: |
             ongitude of the center search coordinate. If used, lat is required.
           type: number
+          required: false
         foursquare_v2_id:
           description: |
             Returns a location mapped off of a foursquare v2 api location id. If
             used, you are not required to use lat and lng.
           type: integer
+          required: false
       (oas-tags):
         - Location
   '/{location-id}':
@@ -856,15 +877,19 @@ securitySchemes:
             max_timestamp:
               description: Return media before this UNIX timestamp.
               type: integer
+              required: false
             min_timestamp:
               description: Return media after this UNIX timestamp.
               type: integer
+              required: false
             min_id:
               description: Return media later than this min_id.
               type: string
+              required: false
             max_id:
               description: Return media earlier than this max_id.
               type: string
+              required: false
           (oas-tags):
             - Location
             - Media
@@ -872,7 +897,6 @@ securitySchemes:
       location-id:
         description: Location ID
         type: integer
-        required: true
     get:
       description: Get information about a location.
       responses:
@@ -889,6 +913,7 @@ securitySchemes:
         - Location
 types:
   User:
+    type: object
     properties:
       id:
         type: integer
@@ -922,6 +947,7 @@ types:
             required: false
         required: false
   Media:
+    type: object
     properties:
       created_time:
         description: Epoc time (ms)
@@ -998,6 +1024,7 @@ types:
             required: false
         required: false
   Location:
+    type: object
     properties:
       id:
         type: string
@@ -1012,6 +1039,7 @@ types:
         type: number
         required: false
   Comment:
+    type: object
     properties:
       id:
         type: string
@@ -1026,6 +1054,7 @@ types:
         type: MiniProfile
         required: false
   Like:
+    type: object
     properties:
       user_name:
         type: string
@@ -1043,6 +1072,7 @@ types:
         type: string
         required: false
   Tag:
+    type: object
     properties:
       media_count:
         type: integer
@@ -1051,6 +1081,7 @@ types:
         type: string
         required: false
   Image:
+    type: object
     properties:
       width:
         type: integer
@@ -1062,6 +1093,7 @@ types:
         type: string
         required: false
   MiniProfile:
+    type: object
     description: A shorter version of User for likes array
     properties:
       user_name:

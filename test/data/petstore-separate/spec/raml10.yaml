@@ -1,11 +1,16 @@
 #%RAML 1.0
 title: Swagger Petstore
-version: 1.0.0
-baseUri: 'http://petstore.swagger.wordnik.com/api'
-mediaType: application/json
-protocols:
-  - HTTP
 description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
+version: 1.0.0
+(oas-info):
+  termsOfService: 'http://helloreverb.com/terms/'
+  contact:
+    name: Wordnik API Team
+    url: 'http://madskristensen.net'
+    email: foo@example.com
+  license:
+    name: MIT
+    url: 'http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT'
 annotationTypes:
   oas-info:
     properties:
@@ -23,92 +28,36 @@ annotationTypes:
   oas-responses-default:
     type: any
     allowedTargets: Method
+  oas-collectionFormat:
+    type: string
   oas-body-name:
     type: string
     allowedTargets: TypeDeclaration
-  oas-collectionFormat:
-    type: string
-(oas-info):
-  contact:
-    name: Wordnik API Team
-    url: 'http://madskristensen.net'
-    email: foo@example.com
-  termsOfService: 'http://helloreverb.com/terms/'
-  license:
-    name: MIT
-    url: 'http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT'
+mediaType: application/json
+protocols:
+  - HTTP
+baseUri: 'http://petstore.swagger.wordnik.com/api'
 /pets:
-  '/{id}':
-    uriParameters:
-      id:
-        description: ID of pet to fetch
-        required: true
-        type: integer
-        format: int64
-    delete:
-      displayName: deletePet
-      description: deletes a single pet based on the ID supplied
-      (oas-responses-default):
-        body:
-          application/json:
-            type: !include ../common/Error.json
-        description: unexpected error
-      responses:
-        '204':
-          description: pet deleted
-    get:
-      displayName: find pet by id
-      description: 'Returns a user based on a single ID, if the user does not have access to the pet'
-      (oas-responses-default):
-        body:
-          application/json:
-            type: !include ../common/Error.json
-        description: unexpected error
-      responses:
-        '200':
-          body:
-            application/json:
-              type: !include Pet.json
-          description: pet response
-  post:
-    displayName: addPet
-    description: Creates a new pet in the store.  Duplicates are allowed
-    body:
-      application/json:
-        type: !include NewPet.json
-        (oas-body-name): pet
-        description: Pet to add to the store
-    (oas-responses-default):
-      body:
-        application/json:
-          type: !include ../common/Error.json
-      description: unexpected error
-    responses:
-      '200':
-        body:
-          application/json:
-            type: !include Pet.json
-        description: pet response
   get:
-    displayName: findPets
     description: |
       Returns all pets from the system that the user has access to
       Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.
 
       Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
+    displayName: findPets
     (oas-responses-default):
+      description: unexpected error
       body:
         application/json:
           type: !include ../common/Error.json
-      description: unexpected error
     responses:
       '200':
+        description: pet response
         body:
           application/json:
             type: array
             items:
               type: !include Pet.json
-        description: pet response
     queryParameters:
       tags:
         description: tags to filter by
@@ -122,3 +71,53 @@ annotationTypes:
         required: false
         type: integer
         format: int32
+  post:
+    description: Creates a new pet in the store.  Duplicates are allowed
+    displayName: addPet
+    (oas-responses-default):
+      description: unexpected error
+      body:
+        application/json:
+          type: !include ../common/Error.json
+    responses:
+      '200':
+        description: pet response
+        body:
+          application/json:
+            type: !include Pet.json
+    body:
+      application/json:
+        description: Pet to add to the store
+        type: !include NewPet.json
+        (oas-body-name): pet
+  '/{id}':
+    get:
+      description: 'Returns a user based on a single ID, if the user does not have access to the pet'
+      displayName: find pet by id
+      (oas-responses-default):
+        description: unexpected error
+        body:
+          application/json:
+            type: !include ../common/Error.json
+      responses:
+        '200':
+          description: pet response
+          body:
+            application/json:
+              type: !include Pet.json
+    delete:
+      description: deletes a single pet based on the ID supplied
+      displayName: deletePet
+      (oas-responses-default):
+        description: unexpected error
+        body:
+          application/json:
+            type: !include ../common/Error.json
+      responses:
+        '204':
+          description: pet deleted
+    uriParameters:
+      id:
+        description: ID of pet to delete
+        type: integer
+        format: int64

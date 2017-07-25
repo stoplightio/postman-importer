@@ -16,6 +16,7 @@ paths:
         - application/json
       parameters:
         - name: body
+          required: true
           in: body
           description: Pet object that needs to be added to the store
           schema:
@@ -46,6 +47,7 @@ paths:
           description: Pet not found
 definitions:
   Category:
+    type: object
     properties:
       id:
         type: string
@@ -53,10 +55,10 @@ definitions:
         type: string
       abc:
         $ref: '#/definitions/files.File'
-    type: object
     required:
       - abc
   Pet:
+    type: object
     properties:
       category:
         $ref: '#/definitions/Category'
@@ -65,16 +67,15 @@ definitions:
       name:
         type: string
         example: doggie
-    type: object
     required:
       - name
   files.File:
+    type: object
     properties:
       name:
         type: string
       length:
         type: integer
-    type: object
     required:
       - name
       - length

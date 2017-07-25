@@ -6,14 +6,14 @@ mediaType: application/json
 protocols:
   - HTTPS
 (oas-info):
-  (oas-x-logo):
+  (logo):
     url: 'https://api.apis.guru/v2/cache/logo/https_developer.oxforddictionaries.com_images_logo.png'
-  (oas-x-origin):
+  (origin):
     format: swagger
     url: 'https://developer.oxforddictionaries.com/swagger/spec/public_doc_guest.json'
     version: '2.0'
-  (oas-x-preferred): true
-  (oas-x-providerName): oxforddictionaries.com
+  (preferred): true
+  (providerName): oxforddictionaries.com
   termsOfService: 'http://helloreverb.com/terms/'
   license:
     name: API Terms And Conditions
@@ -32,10 +32,10 @@ annotationTypes:
           name?: string
           url?: string
     allowedTargets: API
-  oas-x-logo: any
-  oas-x-origin: any
-  oas-x-preferred: any
-  oas-x-providerName: any
+  logo: any
+  origin: any
+  preferred: any
+  providerName: any
   oas-summary:
     type: string
     allowedTargets: Method
@@ -43,7 +43,7 @@ annotationTypes:
     type: string
     allowedTargets: TypeDeclaration
   oas-tags:
-    type: 'string[]'
+    type: string[]
     allowedTargets: Method
   oas-externalDocs:
     properties:
@@ -58,10 +58,10 @@ annotationTypes:
   oas-definition-name:
     type: string
     allowedTargets: TypeDeclaration
-  oas-x-hasEquivalentPaths: any
+  hasEquivalentPaths: any
+  data-threescale-name: any
 /filters:
   get:
-    displayName: Lists available filters.
     description: |
       Returns a list of all the valid filters to construct API calls.
     (oas-summary): Lists available filters.
@@ -87,10 +87,8 @@ annotationTypes:
           - entries
           - inflections
           - translations
-        required: true
         type: string
     get:
-      displayName: Lists available filters for specific endpoint.
       description: |
         Returns a list of all the valid filters for a given endpoint to construct API calls.
       (oas-summary): Lists available filters for specific endpoint.
@@ -112,15 +110,22 @@ annotationTypes:
         - Utility
 /wordlist:
   '/{source_lang}':
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - hi
+        type: string
     '/{filters_basic}':
       uriParameters:
         filters_basic:
           default: registers=Rare;domains=Art
           description: 'Semicolon separated list of wordlist parameters, presented as value pairs: LexicalCategory, domains, regions, registers. Parameters can take comma separated list of values. E.g., lexicalCategory=noun,adjective;domains=sport.'
-          required: true
           type: string
       get:
-        displayName: Retrieve list of words for category.
         description: |
           Retrieve list of words for particular domain, lexical category register and/or region.  
 
@@ -155,25 +160,13 @@ annotationTypes:
             type: string
         (oas-tags):
           - Wordlist
-    uriParameters:
-      source_lang:
-        description: IANA language code
-        enum:
-          - en
-          - es
-          - lv
-          - hi
-        required: true
-        type: string
     '/{filters_advanced}':
       uriParameters:
         filters_advanced:
           default: registers=Rare;domains=Art
           description: 'Semicolon separated list of wordlist parameters, presented as value pairs: LexicalCategory, domains, regions, registers. Parameters can take comma separated list of values. E.g., lexicalCategory=noun,adjective;domains=sport'
-          required: true
           type: string
       get:
-        displayName: Retrieve list of words for category with advanced options.
         description: |
           Advanced options for retrieving wordlist - exclude filter, filter by word length or match by substring (prefix). 
 
@@ -237,10 +230,8 @@ annotationTypes:
           - nso
           - ro
           - zu
-        required: true
         type: string
     get:
-      displayName: Lists available domains in a given monolingual language dataset.
       description: |
         Returns a list of the available domains for a given monolingual language dataset.
       (oas-summary): Lists available domains in a given monolingual language dataset.
@@ -269,10 +260,8 @@ annotationTypes:
             - nso
             - ro
             - zu
-          required: true
           type: string
       get:
-        displayName: Lists available domains in a given bilingual language dataset.
         description: |
           Returns a list of the available domains for a given bilingual language dataset.
         (oas-summary): Lists available domains in a given bilingual language dataset.
@@ -294,15 +283,22 @@ annotationTypes:
           - Utility
 /inflections:
   '/{source_lang}':
+    uriParameters:
+      source_lang:
+        description: IANA language code
+        enum:
+          - en
+          - es
+          - lv
+          - hi
+        type: string
     '/{word_id}':
       uriParameters:
         word_id:
-          default: change
+          default: changed
           description: An inflected wordform. Case-sensitive.
-          required: true
           type: string
       get:
-        displayName: Retrieve lemmas for a given inflected wordform.
         description: |
 
           Retrieve available [lemmas](/glossary?tag=#lemma&expand) for a given [inflected](/glossary?tag=#inflection&expand) wordform. 
@@ -333,11 +329,9 @@ annotationTypes:
             items:
               pattern: (lexicalCategory|grammaticalFeatures)=.+
               type: string
-            required: true
             type: array
             (oas-collectionFormat): csv
         get:
-          displayName: Apply filters to Lemmatron response
           description: |
 
             Retrieve available [lemmas](/glossary?tag=#lemma&expand) for a given [inflected](/glossary?tag=#inflection&expand) wordform. Filter results by categories.  
@@ -359,22 +353,23 @@ annotationTypes:
                 Internal Error. An error occourred while processing the data.
           (oas-tags):
             - Lemmatron
+/entries:
+  '/{source_language}':
     uriParameters:
-      source_lang:
-        description: IANA language code
+      source_language:
+        description: IANA language code.
         enum:
           - en
           - es
-          - lv
-          - hi
-        required: true
         type: string
-/entries:
-  '/{source_language}':
     '/{word_id}':
+      uriParameters:
+        word_id:
+          default: ace
+          description: An Entry identifier. Case-sensitive.
+          type: string
       /sentences:
         get:
-          displayName: Retrieve corpus sentences for a given word.
           description: |
 
             Retrieve list of sentences and list of senses (English language only).
@@ -401,25 +396,19 @@ annotationTypes:
           (oas-externalDocs):
             description: find more info here
             url: 'https://helloreverb.com/about'
-      uriParameters:
-        word_id:
-          default: ace
-          description: An Entry identifier. Case-sensitive.
-          required: true
-          type: string
+  '/{source_lang}':
     uriParameters:
-      source_language:
-        description: IANA language code.
+      source_lang:
+        description: IANA language code
         enum:
           - en
           - es
-        required: true
+          - lv
+          - hi
         type: string
-  '/{source_lang}':
     '/{word_id}':
       /antonyms:
         get:
-          displayName: Retrieve antonyms for a given word.
           description: |
 
             Retrieve available antonyms for a given word and language. 
@@ -447,15 +436,8 @@ annotationTypes:
           (oas-externalDocs):
             description: find more info here
             url: 'https://helloreverb.com/about'
-      uriParameters:
-        word_id:
-          default: ace
-          description: An Entry identifier. Case-sensitive.
-          required: true
-          type: string
       /examples:
         get:
-          displayName: Retrieve only example sentences in entry search.
           description: |
 
             Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
@@ -488,10 +470,8 @@ annotationTypes:
             enum:
               - gb
               - us
-            required: true
             type: string
         get:
-          displayName: Specify GB or US dictionary for English entry search.
           description: |
 
             Retrieve available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. 
@@ -522,7 +502,6 @@ annotationTypes:
             url: 'https://helloreverb.com/about'
       /synonyms;antonyms:
         get:
-          displayName: Retrieve synonyms and antonyms for a given word.
           description: |
 
             Retrieve available synonyms and antonyms for a given word and language. 
@@ -559,11 +538,9 @@ annotationTypes:
             items:
               pattern: (lexicalCategory|grammaticalFeatures)=.+
               type: string
-            required: true
             type: array
             (oas-collectionFormat): csv
         get:
-          displayName: Apply filters to entry search.
           description: |
 
             Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
@@ -589,8 +566,12 @@ annotationTypes:
                 Internal Error. An error occourred while processing the data.
           (oas-tags):
             - Dictionary entries
+      uriParameters:
+        word_id:
+          default: ace
+          description: An Entry identifier. Case-sensitive.
+          type: string
       get:
-        displayName: Retrieve dictionary entries for a given word.
         description: |
 
           Retrieve available [dictionary entries](/glossary?tag=#entry&expand) for a given word and language. 
@@ -620,7 +601,6 @@ annotationTypes:
           url: 'https://helloreverb.com/about'
       /definitions:
         get:
-          displayName: Retrieve only definitions in entry search.
           description: |
 
             Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
@@ -660,10 +640,8 @@ annotationTypes:
               - ms
               - id
               - tn
-            required: true
             type: string
         get:
-          displayName: Find translation for a given word.
           description: |
             Returns target language translations for a given word ID and source language. 
             In the event that a word in the dataset does not have a direct translation, the response will be a definition in the target language.
@@ -693,7 +671,6 @@ annotationTypes:
             - Translation
       /synonyms:
         get:
-          displayName: Retrieve synonyms for a given word.
           description: |
 
             Retrieve available synonyms for a given word and language. 
@@ -723,7 +700,6 @@ annotationTypes:
             url: 'https://helloreverb.com/about'
       /pronunciations:
         get:
-          displayName: Retrieve only pronunciations in entry search.
           description: |
 
             Find available [dictionary entries](/glossary?tag=#entry&expand) for given word and language. Filter results by categories. 
@@ -749,22 +725,14 @@ annotationTypes:
                 Internal Error. An error occourred while processing the data.
           (oas-tags):
             - Dictionary entries
-    uriParameters:
-      source_lang:
-        description: IANA language code
-        enum:
-          - en
-        required: true
-        type: string
 /languages:
   get:
-    displayName: Lists available monolingual and bilingual language datasets in the API.
     description: |
       Returns a list of monolingual and bilingual language datasets available in the API
     (oas-summary): Lists available monolingual and bilingual language datasets in the API.
     is:
-      - bilingualSourceLanguage
-      - bilingualTargetLanguage
+      - bilingual-sourceLanguage
+      - bilingual-targetLanguage
       - appId
       - appKey
     responses:
@@ -792,10 +760,8 @@ annotationTypes:
           - nso
           - ro
           - zu
-        required: true
         type: string
     get:
-      displayName: Lists available lexical categories in a given language dataset.
       description: |
         Returns a list of available lexical categories for a given language dataset.
       (oas-summary): Lists available lexical categories in a given language dataset.
@@ -822,10 +788,8 @@ annotationTypes:
         description: IANA language code
         enum:
           - en
-        required: true
         type: string
     get:
-      displayName: Lists available regions in a given monolingual language dataset.
       description: |
         Returns a list of the available regions for a given monolingual language dataset.
       (oas-summary): Lists available regions in a given monolingual language dataset.
@@ -855,10 +819,8 @@ annotationTypes:
           - nso
           - ro
           - zu
-        required: true
         type: string
     get:
-      displayName: Lists available registers in a given monolingual language dataset.
       description: |
         Returns a list of the available registers for a given monolingual language dataset.
       (oas-summary): Lists available registers in a given monolingual language dataset.
@@ -889,10 +851,8 @@ annotationTypes:
             - nso
             - ro
             - zu
-          required: true
           type: string
       get:
-        displayName: Lists available registers in a given bilingual language dataset.
         description: |
           Returns a list of the available registers for a given bilingual language dataset.
         (oas-summary): Lists available registers in a given bilingual language dataset.
@@ -930,10 +890,8 @@ annotationTypes:
             - ms
             - id
             - tn
-          required: true
           type: string
       get:
-        displayName: Find translation results for search query.
         description: |
 
           Find available translation results  for a search query and language. 
@@ -991,10 +949,8 @@ annotationTypes:
           - es
           - lv
           - hi
-        required: true
         type: string
     get:
-      displayName: Find results for search query.
       description: |
 
         Retrieve available results for a search query and language. 
@@ -1046,6 +1002,7 @@ annotationTypes:
         url: 'https://helloreverb.com/about'
 types:
   CrossReference:
+    type: object
     description: cross references of a sense
     properties:
       id:
@@ -1065,6 +1022,7 @@ types:
         type: string
         required: false
   Entry:
+    type: object
     properties:
       editorialNotes:
         description: Editorial information intended to help a human reader understand the sense
@@ -1132,6 +1090,7 @@ types:
         type: object
         required: false
   Inflection:
+    type: object
     description: A grouping of the modifications of a word to express different grammatical categories
     properties:
       id:
@@ -1153,6 +1112,7 @@ types:
         type: patternProperties
         required: false
   Languages:
+    type: object
     description: Schema for the languages endpoint.
     properties:
       metadata:
@@ -1205,6 +1165,7 @@ types:
         type: array
         required: false
   Lemmatron:
+    type: object
     description: Schema for the inflections endpoint.
     properties:
       metadata:
@@ -1239,6 +1200,7 @@ types:
         type: array
         required: false
   Pronunciation:
+    type: object
     description: A grouping of pronunciation information
     properties:
       audioFile:
@@ -1258,6 +1220,7 @@ types:
         type: arrayofstrings
         required: false
   Regions:
+    type: object
     description: Schema for regions endpoint.
     properties:
       metadata:
@@ -1275,6 +1238,7 @@ types:
         type: array
         required: false
   RetrieveEntry:
+    type: object
     description: Schema for the 'entries' endpoints
     properties:
       metadata:
@@ -1315,6 +1279,7 @@ types:
         type: array
         required: false
   Sense:
+    type: object
     description: A lexical sense represents the lexical meaning of a lexical entry when interpreted as referring to the corresponding ontology element
     properties:
       closeMatches:
@@ -1388,6 +1353,7 @@ types:
         type: VariantForms
         required: false
   Sentences:
+    type: object
     description: Schema for sentences endpoint.
     properties:
       metadata:
@@ -1413,15 +1379,19 @@ types:
                 description: List of found sentences.
                 properties:
                   grammaticalFeatures:
+                    description: ''
                     type: string
                     required: false
                   language:
+                    description: ''
                     type: string
                     required: false
                   lexicalCategory:
+                    description: ''
                     type: string
                     required: false
                   sentences:
+                    description: ''
                     items: {}
                     type: array
                     required: false
@@ -1437,13 +1407,16 @@ types:
     items:
       properties:
         regions:
+          required: false
           description: 'A particular area in which the variant form occurs, e.g. ''Great Britain'''
           type: arrayofstrings
         text:
           type: string
+          required: false
       type: object
     type: array
   Wordlist:
+    type: object
     description: Schema for wordlist endpoint.
     properties:
       metadata:
@@ -1468,6 +1441,7 @@ types:
         type: array
         required: false
   __a-zA-Z___:
+    type: object
     description: 'The list of labels for an object. Every object can be a lexical category, or a register, or a domain.'
     properties:
       en:
@@ -1480,6 +1454,7 @@ types:
       type: string
     type: array
   lexicalEntry:
+    type: object
     description: Description of an entry for a particular part of speech
     properties:
       entries:
@@ -1541,7 +1516,7 @@ types:
   patternProperties:
     type: __a-zA-Z___
 traits:
-  bilingualSourceLanguage:
+  bilingual-sourceLanguage:
     queryParameters:
       sourceLanguage:
         type: string
@@ -1558,7 +1533,7 @@ traits:
           - tn
           - ur
         required: false
-  bilingualTargetLanguage:
+  bilingual-targetLanguage:
     queryParameters:
       targetLanguage:
         type: string
@@ -1577,15 +1552,15 @@ traits:
   appId:
     headers:
       app_id:
+        (data-threescale-name): app_ids
         type: string
         description: App ID Authentication Parameter
         default: 5037d509
-        required: true
   appKey:
     headers:
       app_key:
+        (data-threescale-name): app_keys
         type: string
         description: App Key Authentication Parameter
         default: 4dc1aebaa63721f0f8e79a55e2514bc7
-        required: true
-(oas-x-hasEquivalentPaths): true
+(hasEquivalentPaths): true

@@ -16,25 +16,25 @@ annotationTypes:
             url: string
             description?: string
     allowedTargets: API
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
   oas-summary:
     type: string
-    allowedTargets: Method
-  oas-tags:
-    type: 'string[]'
     allowedTargets: Method
 /pet:
   '/{petId}':
     uriParameters:
       petId:
         description: ID of pet that needs to be updated
-        required: true
         type: integer
         format: int64
     post:
       displayName: updatePetWithForm
-      (oas-summary): Updates a pet in the store with form data
+      (oas-summary): Updates a pet in the store
+                     with form data
       body:
-        multipart/form-data:
+        application/x-www-form-urlencoded:
           properties:
             name:
               description: Updated name of the pet
@@ -51,6 +51,7 @@ annotationTypes:
         - pet
 types:
   Order:
+    type: object
     properties:
       id:
         type: integer

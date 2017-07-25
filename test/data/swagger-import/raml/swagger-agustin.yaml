@@ -3,32 +3,6 @@ title: Billing Engine Process APIs
 version: v1
 baseUri: /invoiceengineprocessapi
 description: Billing Engine Process APIs
-annotationTypes:
-  oas-info:
-    properties:
-      termsOfService?: string
-      contact?:
-        properties:
-          name?: string
-          url?: string
-          email?: string
-      license?:
-        properties:
-          name?: string
-          url?: string
-    allowedTargets: API
-  oas-body-name:
-    type: string
-    allowedTargets: TypeDeclaration
-  oas-tags:
-    type: 'string[]'
-    allowedTargets: Method
-  oas-readOnly:
-    type: boolean
-    allowedTargets: TypeDeclaration
-  oas-definition-name:
-    type: string
-    allowedTargets: TypeDeclaration
 (oas-info):
   termsOfService: None
 /api:
@@ -38,6 +12,15 @@ annotationTypes:
       body:
         application/json:
           type: ProcessPaymentDTO
+          required: false
+          (oas-body-name): processPaymentDTO
+        application/json-patch+json:
+          type: ProcessPaymentDTO
+          required: false
+          (oas-body-name): processPaymentDTO
+        text/json:
+          type: ProcessPaymentDTO
+          required: false
           (oas-body-name): processPaymentDTO
       responses:
         '200':
@@ -48,36 +31,56 @@ annotationTypes:
     '/{invoiceId}':
       /item:
         '/{invoiceItemId}':
+          uriParameters:
+            invoiceItemId:
+              type: integer
+              format: int32
           /Adjust2:
             post:
               displayName: ApiInvoiceByInvoiceIdItemByInvoiceItemIdAdjustPost
               body:
                 application/json:
                   type: AdjustInvoiceItemDTO
+                  required: false
+                  (oas-body-name): adjustment
+                application/json-patch+json:
+                  type: AdjustInvoiceItemDTO
+                  required: false
+                  (oas-body-name): adjustment
+                text/json:
+                  type: AdjustInvoiceItemDTO
+                  required: false
                   (oas-body-name): adjustment
               responses:
                 '200':
                   body:
                     text/plain:
-                      type: ServiceResponse_String_
+                      type: 'ServiceResponse_String_'
+                    application/json:
+                      type: 'ServiceResponse_String_'
+                    text/json:
+                      type: 'ServiceResponse_String_'
                   description: Success
               (oas-tags):
                 - Invoice
-          uriParameters:
-            invoiceItemId:
-              format: int32
-              required: true
-              type: integer
-      uriParameters:
-        invoiceId:
-          format: int32
-          required: true
-          type: integer
       /Adjust:
         post:
           displayName: ApiInvoiceByInvoiceIdAdjustPost
           body:
             application/json:
+              required: false
+              items:
+                type: InvoiceAdjustmentDTO
+              type: array
+              (oas-body-name): invoiceAdjustmentDto
+            application/json-patch+json:
+              required: false
+              items:
+                type: InvoiceAdjustmentDTO
+              type: array
+              (oas-body-name): invoiceAdjustmentDto
+            text/json:
+              required: false
               items:
                 type: InvoiceAdjustmentDTO
               type: array
@@ -86,10 +89,18 @@ annotationTypes:
             '200':
               body:
                 text/plain:
-                  type: ServiceResponse_InvoiceAdjustmentDTO_
+                  type: 'ServiceResponse_InvoiceAdjustmentDTO_'
+                application/json:
+                  type: 'ServiceResponse_InvoiceAdjustmentDTO_'
+                text/json:
+                  type: 'ServiceResponse_InvoiceAdjustmentDTO_'
               description: Success
           (oas-tags):
             - Invoice
+      uriParameters:
+        invoiceId:
+          format: int32
+          type: integer
       get:
         displayName: ApiInvoiceByInvoiceIdGet
         responses:
@@ -97,33 +108,52 @@ annotationTypes:
             body:
               text/plain:
                 type: InvoiceDTO
+              application/json:
+                type: InvoiceDTO
+              text/json:
+                type: InvoiceDTO
             description: Success
         (oas-tags):
           - Invoice
     '/{id}':
+      uriParameters:
+        id:
+          type: integer
+          format: int32
       /item:
         '/{invoiceItemId}':
+          uriParameters:
+            invoiceItemId:
+              type: integer
+              format: int32
           /Adjust:
             get:
               displayName: ApiInvoiceByIdItemByInvoiceItemIdAdjustGet
+              body:
+                application/json:
+                  (oas-body-name): adjustment
+                  required: false
+                  type: GenerateInvoiceItemAdjustmentDTO
+                application/json-patch+json:
+                  (oas-body-name): adjustment
+                  required: false
+                  type: GenerateInvoiceItemAdjustmentDTO
+                text/json:
+                  (oas-body-name): adjustment
+                  required: false
+                  type: GenerateInvoiceItemAdjustmentDTO
               responses:
                 '200':
                   body:
                     text/plain:
-                      type: ServiceResponse_String_
+                      type: 'ServiceResponse_String_'
+                    application/json:
+                      type: 'ServiceResponse_String_'
+                    text/json:
+                      type: 'ServiceResponse_String_'
                   description: Success
               (oas-tags):
                 - Invoice
-          uriParameters:
-            invoiceItemId:
-              format: int32
-              required: true
-              type: integer
-      uriParameters:
-        id:
-          format: int32
-          required: true
-          type: integer
     /GenerateSplitInvoices:
       post:
         displayName: ApiInvoiceGenerateSplitInvoicesPost
@@ -131,11 +161,24 @@ annotationTypes:
           application/json:
             type: SplitInvoiceDTO
             (oas-body-name): invoice
+            required: false
+          application/json-patch+json:
+            type: SplitInvoiceDTO
+            (oas-body-name): invoice
+            required: false
+          text/json:
+            type: SplitInvoiceDTO
+            (oas-body-name): invoice
+            required: false
         responses:
           '200':
             body:
               text/plain:
-                type: ServiceResponse_String_
+                type: 'ServiceResponse_String_'
+              application/json:
+                type: 'ServiceResponse_String_'
+              text/json:
+                type: 'ServiceResponse_String_'
             description: Success
         (oas-tags):
           - Invoice
@@ -145,11 +188,24 @@ annotationTypes:
         application/json:
           type: GenerateInvoiceDto
           (oas-body-name): invoice
+          required: false
+        application/json-patch+json:
+          type: GenerateInvoiceDto
+          (oas-body-name): invoice
+          required: false
+        text/json:
+          type: GenerateInvoiceDto
+          (oas-body-name): invoice
+          required: false
       responses:
         '200':
           body:
             text/plain:
-              type: ServiceResponse_String_
+              type: 'ServiceResponse_String_'
+            application/json:
+              type: 'ServiceResponse_String_'
+            text/json:
+              type: 'ServiceResponse_String_'
           description: Success
       (oas-tags):
         - Invoice
@@ -160,16 +216,30 @@ annotationTypes:
         application/json:
           type: ProcessAccountAdjustmentDTO
           (oas-body-name): adjustmentDTO
+          required: false
+        application/json-patch+json:
+          type: ProcessAccountAdjustmentDTO
+          (oas-body-name): adjustmentDTO
+          required: false
+        text/json:
+          type: ProcessAccountAdjustmentDTO
+          (oas-body-name): adjustmentDTO
+          required: false
       responses:
         '200':
           body:
             text/plain:
-              type: ServiceResponse_String_
+              type: 'ServiceResponse_String_'
+            application/json:
+              type: 'ServiceResponse_String_'
+            text/json:
+              type: 'ServiceResponse_String_'
           description: Success
       (oas-tags):
         - Accounts
 types:
   AdjustInvoiceItemDTO:
+    type: object
     properties:
       adjustmentDescription:
         type: string
@@ -209,6 +279,7 @@ types:
         type: string
         required: false
   GenerateInvoiceAccountDto:
+    type: object
     properties:
       accountTypeCode:
         type: string
@@ -239,6 +310,7 @@ types:
         type: integer
         required: false
   GenerateInvoiceContactDto:
+    type: object
     properties:
       contactTypeCode:
         enum:
@@ -268,6 +340,7 @@ types:
         type: string
         required: false
   GenerateInvoiceDto:
+    type: object
     properties:
       billToAccount:
         type: GenerateInvoiceAccountDto
@@ -366,6 +439,7 @@ types:
         type: string
         required: false
   GenerateInvoiceInstallmentDTO:
+    type: object
     properties:
       amount:
         format: double
@@ -377,6 +451,7 @@ types:
         format: int32
         type: integer
   GenerateInvoiceItemAdjustmentDTO:
+    type: object
     properties:
       adjustmentDescription:
         type: string
@@ -424,6 +499,7 @@ types:
         type: string
         required: false
   GenerateInvoiceItemDto:
+    type: object
     properties:
       enabled:
         type: boolean
@@ -471,6 +547,7 @@ types:
         type: string
         required: false
   GenerateInvoiceLocationDTO:
+    type: object
     properties:
       address1:
         type: string
@@ -499,6 +576,7 @@ types:
         type: string
         required: false
   GenerateInvoiceTaxItemDto:
+    type: object
     properties:
       amount:
         format: double
@@ -515,6 +593,7 @@ types:
         type: string
         required: false
   InvoiceAdjustmentDTO:
+    type: object
     properties:
       adjustmentDate:
         format: rfc3339
@@ -577,6 +656,7 @@ types:
         type: string
         required: false
   InvoiceDTO:
+    type: object
     properties:
       billToContactId:
         format: int32
@@ -662,6 +742,7 @@ types:
         type: string
         required: false
   InvoiceItemAdjustmentForInvoiceDTO:
+    type: object
     properties:
       adjustmentDescription:
         type: string
@@ -711,6 +792,7 @@ types:
         type: string
         required: false
   InvoiceItemForInvoiceDTO:
+    type: object
     properties:
       inputPrice:
         format: double
@@ -757,6 +839,7 @@ types:
         type: string
         required: false
   ProcessAccountAdjustmentAccountDTO:
+    type: object
     properties:
       accountId:
         format: int32
@@ -767,6 +850,7 @@ types:
         type: integer
         required: false
   ProcessAccountAdjustmentDTO:
+    type: object
     properties:
       account:
         type: ProcessAccountAdjustmentAccountDTO
@@ -802,6 +886,7 @@ types:
         type: string
         required: false
   ProcessPaymentAccountDTO:
+    type: object
     properties:
       accountId:
         format: int32
@@ -812,6 +897,7 @@ types:
         type: integer
         required: false
   ProcessPaymentDTO:
+    type: object
     properties:
       account:
         type: ProcessPaymentAccountDTO
@@ -827,6 +913,7 @@ types:
         type: array
         required: false
   ProcessPaymentInfoDTO:
+    type: object
     properties:
       amount:
         format: double
@@ -854,6 +941,7 @@ types:
         type: string
         required: false
   ProcessPaymentInvoiceDTO:
+    type: object
     properties:
       appliedCreditBalance:
         format: double
@@ -881,53 +969,56 @@ types:
         format: int32
         type: integer
         required: false
-  ServiceResponse_InvoiceAdjustmentDTO_:
+  'ServiceResponse_InvoiceAdjustmentDTO_':
+    type: object
+    (oas-definition-name): ServiceResponse[InvoiceAdjustmentDTO]
     properties:
       error:
-        type: string
         (oas-readOnly): true
+        type: string
         required: false
       message:
-        type: string
         (oas-readOnly): true
+        type: string
         required: false
       responseObject:
+        (oas-readOnly): true
         type: InvoiceAdjustmentDTO
-        (oas-readOnly): true
         required: false
       success:
-        type: boolean
         (oas-readOnly): true
+        type: boolean
         required: false
       warning:
-        type: string
         (oas-readOnly): true
+        type: string
         required: false
-    (oas-definition-name): 'ServiceResponse[InvoiceAdjustmentDTO]'
-  ServiceResponse_String_:
+  'ServiceResponse_String_':
+    type: object
+    (oas-definition-name): ServiceResponse[String]
     properties:
       error:
-        type: string
         (oas-readOnly): true
+        type: string
         required: false
       message:
-        type: string
         (oas-readOnly): true
+        type: string
         required: false
       responseObject:
-        type: string
         (oas-readOnly): true
+        type: string
         required: false
       success:
-        type: boolean
         (oas-readOnly): true
+        type: boolean
         required: false
       warning:
-        type: string
         (oas-readOnly): true
+        type: string
         required: false
-    (oas-definition-name): 'ServiceResponse[String]'
   SplitInvoiceDTO:
+    type: object
     properties:
       invoiceId:
         format: int32
@@ -941,6 +1032,7 @@ types:
         type: string
         required: false
   SplitInvoiceInstallmentDTO:
+    type: object
     properties:
       amount:
         format: double
@@ -948,3 +1040,29 @@ types:
       dueDate:
         format: rfc3339
         type: datetime
+annotationTypes:
+  oas-tags:
+    type: string[]
+    allowedTargets: Method
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-definition-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-readOnly:
+    type: boolean
+    allowedTargets: TypeDeclaration
