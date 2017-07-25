@@ -27,7 +27,8 @@ class Oas20InfoConverter extends Converter {
 
 		oasDef.version = model.hasOwnProperty('version') && model.version ? model.version.toString() : '';
 		
-		if (model.hasOwnProperty('contact')) {
+		const contact = {};
+		if (model.hasOwnProperty('contact') && model.contact != null) {
 			const contact = {};
 			const contactModel: InfoData = model.contact;
 			if (contactModel.hasOwnProperty('name')) contact.name = contactModel.name;
@@ -37,7 +38,8 @@ class Oas20InfoConverter extends Converter {
 			if (!_.isEmpty(contact)) oasDef.contact = contact;
 		}
 
-		if (model.hasOwnProperty('license')) {
+		const license = {};
+		if (model.hasOwnProperty('license') && model.license != null) {
 			const license = {};
 			const licenseModel: InfoData = model.license;
 			if (licenseModel.hasOwnProperty('name')) license.name = licenseModel.name;

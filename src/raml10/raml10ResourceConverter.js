@@ -23,10 +23,13 @@ class Raml10ResourceConverter extends Converter {
 		
 		for (let i = 0; i < models.length; i++) {
 			const model: Resource = models[i];
-			const paths: string[] = model.path.split('/');
-			paths.shift();
-			const relativePath: string = model.path.substring(model.path.lastIndexOf('/'));
-			result = this.mapResource(model, result, paths, relativePath).result;
+			const path: ?string = model.path;
+			if (path) {
+				const paths: string[] = path.split('/');
+				paths.shift();
+				const relativePath: string = path.substring(path.lastIndexOf('/'));
+				result = this.mapResource(model, result, paths, relativePath).result;
+			}
 		}
 		
 		return result;
@@ -59,7 +62,7 @@ class Raml10ResourceConverter extends Converter {
 		}
 	}
 
-	static mapUriParameters(source:any, path:string, uriParameters:any, target:any) {
+	static mapUriParameters(source:any, path:?string, uriParameters:any, target:any) {
 		const relativePath = path ? path.substring(path.lastIndexOf('/')) : '';
 		for (const paramName in source) {
 			if (!source.hasOwnProperty(paramName)) continue;
@@ -86,7 +89,7 @@ class Raml10ResourceConverter extends Converter {
 		const ramlDef = Raml10ResourceConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 		const methodConverter = new Raml10MethodConverter(this.model, this.annotationPrefix, this.def);
 
-		if (model.hasOwnProperty('is')) {
+		if (model.hasOwnProperty('is') && model.is) {
 			const isList: Item[] = model.is;
 			if (_.isArray(isList) && !_.isEmpty(isList)) {
 				const is: any[] = [];
@@ -104,7 +107,7 @@ class Raml10ResourceConverter extends Converter {
 			}
 		}
 
-		if (model.hasOwnProperty('resourceType')) {
+		if (model.hasOwnProperty('resourceType') && model.resourceType) {
 			const resourceTypes: Item[] = model.resourceType;
 			if (_.isArray(resourceTypes) && !_.isEmpty(resourceTypes)) {
 				const types: any[] = [];
@@ -127,7 +130,7 @@ class Raml10ResourceConverter extends Converter {
 		const uriParameters: any = {};
 		Raml10ResourceConverter.exportUriParameters(model, uriParameters, this.model, this.annotationPrefix, this.def);
 
-		if (model.hasOwnProperty('methods')) {
+		if (model.hasOwnProperty('methods') && model.methods) {
 			const methodsModel: Method[] = model.methods;
 			if (_.isArray(methodsModel) && !_.isEmpty(methodsModel)) {
 				for (let i = 0; i < methodsModel.length; i++) {
@@ -177,12 +180,13 @@ class Raml10ResourceConverter extends Converter {
 			Raml10ResourceConverter.mapUriParameters(uriParameters, model.relativePath, {}, ramlDef);
 		}
 		
-		if (model.hasOwnProperty('resources')) {
+		if (model.hasOwnProperty('resources') && model.resources) {
 			const resources: Resource[] = model.resources;
 			if (_.isArray(resources) && !_.isEmpty(resources)) {
 				for (let i = 0; i < resources.length; i++) {
 					const value: Resource = resources[i];
-					ramlDef[value.relativePath] = this._export(value).result;
+					const relativePath: ?string = value.relativePath;
+					if (relativePath != null) ramlDef[relativePath] = this._export(value).result;
 				}
 			}
 		}
@@ -196,7 +200,7 @@ class Raml10ResourceConverter extends Converter {
 		return {result: ramlDef, uriParameters: uriParameters};
 	}
 
-	static mapUnusedUriParameters(uriParameters:any, absolutePath:string, target:any) {
+	static mapUnusedUriParameters(uriParameters:any, absolutePath:?string, target:any) {
 		const unusedUriParameters = {};
 		for (const paramName in uriParameters) {
 			if (!uriParameters.hasOwnProperty(paramName)) continue;
@@ -359,7 +363,7 @@ class Raml10ResourceConverter extends Converter {
 				
 				const value = ramlDef.uriParameters[id];
 				const parameter: Parameter = parameterConverter._import(value);
-				if (!value.hasOwnProperty('type')) delete parameter.definition.internalType;
+				if (!value.hasOwnProperty('type') && parameter.definition != null) delete parameter.definition.internalType;
 				parameter._in = 'path';
 				modelParameters.push(parameter);
 			}

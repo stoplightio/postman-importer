@@ -5,7 +5,7 @@ class InfoData {
 	name: ?string;
 	url: ?string;
 	email: ?string;
-	annotations: Annotation[];
+	annotations: ?Annotation[];
 }
 
 module.exports = InfoData;

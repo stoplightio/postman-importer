@@ -43,7 +43,7 @@ class Raml10RootConverter extends Converter {
 			_.merge(ramlDef, infoConverter.export(info));
 		}
 
-		if (model.hasOwnProperty('tags')) {
+		if (model.hasOwnProperty('tags') && model.tags) {
 			const tags: Tag[] = model.tags;
 			const tagsDef = [];
 			for (let i = 0; i < tags.length; i++) {
@@ -52,7 +52,7 @@ class Raml10RootConverter extends Converter {
 				if (tag.hasOwnProperty('name')) result.name = tag.name;
 				if (tag.hasOwnProperty('description')) result.description = tag.description;
 				if (tag.hasOwnProperty('externalDocs')) {
-					const externalDocs: ExternalDocumentation = tag.externalDocs;
+					const externalDocs: ?ExternalDocumentation = tag.externalDocs;
 					result.externalDocs = externalDocs;
 				}
 				if (!_.isEmpty(result)) {
@@ -66,7 +66,7 @@ class Raml10RootConverter extends Converter {
 			}
 		}
 
-		if (model.hasOwnProperty('mediaType')) {
+		if (model.hasOwnProperty('mediaType') && model.mediaType) {
 			const mediaType: MediaType = model.mediaType;
 			if (mediaType.mimeTypes.length > 1) {
 				ramlDef.mediaType = mediaType.mimeTypes;
@@ -75,7 +75,7 @@ class Raml10RootConverter extends Converter {
 			}
 		}
 
-		if (model.hasOwnProperty('protocols')) {
+		if (model.hasOwnProperty('protocols') && model.protocols) {
 			const protocolsModel: string[] = model.protocols;
 			const protocols = [];
 			for (let i = 0; i < protocolsModel.length; i++) {
@@ -85,7 +85,7 @@ class Raml10RootConverter extends Converter {
 			ramlDef.protocols = protocols;
 		}
 
-		if (model.hasOwnProperty('baseUriParameters')) {
+		if (model.hasOwnProperty('baseUriParameters') && model.baseUriParameters) {
 			const baseUriParameters: Parameter[] = model.baseUriParameters;
 			if (_.isArray(baseUriParameters) && !_.isEmpty(baseUriParameters)) {
 				const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
@@ -93,7 +93,7 @@ class Raml10RootConverter extends Converter {
 			}
 		}
 
-		if (model.hasOwnProperty('baseUri')) {
+		if (model.hasOwnProperty('baseUri') && model.baseUri) {
 			const baseUri: BaseUri = model.baseUri;
 			if (baseUri.hasOwnProperty('annotations')) {
 				const annotationConverter = new Raml10AnnotationConverter(this.model, this.annotationPrefix, ramlDef);
@@ -103,7 +103,7 @@ class Raml10RootConverter extends Converter {
 				ramlDef.baseUri = baseUri.uri;
 		}
 		
-		if (model.hasOwnProperty('documentation')) {
+		if (model.hasOwnProperty('documentation') && model.documentation) {
 			const documentationModel: Item[] = model.documentation;
 			const documentation = [];
 			for (let i = 0; i < documentationModel.length; i++) {
@@ -117,7 +117,7 @@ class Raml10RootConverter extends Converter {
 			ramlDef.documentation = documentation;
 		}
 		
-		if (model.hasOwnProperty('responses')) {
+		if (model.hasOwnProperty('responses') && model.responses) {
 			const responsesModel: Response[] = model.responses;
 			const responses = {};
 			for (let i = 0; i < responsesModel.length; i++) {
@@ -126,24 +126,25 @@ class Raml10RootConverter extends Converter {
 				if (response.hasOwnProperty('description')) responseDef.description = response.description;
 				const headersDef = {};
 				const definitionConverter = new Raml10DefinitionConverter();
-				if (response.hasOwnProperty('headers')) {
+				if (response.hasOwnProperty('headers') && response.headers) {
 					const headers: Header[] = response.headers;
 					for (let j = 0; j < headers.length; j++) {
 						const header: Header = headers[j];
-						const definition: Definition = header.definition;
+						const definition: ?Definition = header.definition;
 						headersDef[header.name] = definitionConverter._export(definition);
 					}
 					if (!_.isEmpty(headersDef)) responseDef.headers = headersDef;
 				}
-				if (response.hasOwnProperty('bodies')) {
+				if (response.hasOwnProperty('bodies') && response.bodies) {
 					const bodies: Body[] = response.bodies;
 					for (let j = 0; j < bodies.length; j++) {
 						const body = bodies[j];
-						const definition: Definition = body.definition;
+						const definition: ?Definition = body.definition;
 						responseDef.body = definitionConverter._export(definition);
 					}
 				}
-				responses[response.name] = responseDef;
+				const name: ?string = response.name;
+				if (name) responses[name] = responseDef;
 			}
 			
 			if (!_.isEmpty(responses)) {
@@ -153,7 +154,7 @@ class Raml10RootConverter extends Converter {
 			}
 		}
 		
-		if (model.hasOwnProperty('externalDocs')) {
+		if (model.hasOwnProperty('externalDocs') && model.externalDocs) {
 			const externalDocsModel: ExternalDocumentation = model.externalDocs;
 			const id = this.annotationPrefix + '-externalDocs';
 			Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
@@ -163,7 +164,7 @@ class Raml10RootConverter extends Converter {
 			Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, externalDocsModel, externalDocs);
 			ramlDef['(' + id + ')'] = externalDocs;
 		}
-		if (model.hasOwnProperty('resourceAnnotations')) {
+		if (model.hasOwnProperty('resourceAnnotations') && model.resourceAnnotations) {
 			const resourceAnnotationsModel: Resource = model.resourceAnnotations;
 			const id = this.annotationPrefix + '-paths';
 			Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
@@ -206,31 +207,35 @@ class Raml10RootConverter extends Converter {
 		}
 
 		if (ramlDef.hasOwnProperty('baseUri') && ramlDef.baseUri) {
-			const baseUri = new BaseUri();
-			baseUri.uri = ramlDef.baseUri;
-			const parsedURL = url.parse(ramlDef.baseUri);
-			if (parsedURL.hasOwnProperty('host') && parsedURL.host) {
-				const host: string = parsedURL.host;
-				const index = baseUri.uri.indexOf(parsedURL.host);
-				if (baseUri.uri.charAt(index + host.length) !== '{') {
-					baseUri.host = host;
-				}
-			}
-			if (parsedURL.path && parsedURL.path !== '/') {
-				const basePath: string = parsedURL.path.replace(/%7B/g, '{').replace(/%7D/g, '}');
-				if (!basePath.startsWith('{')) {
-					baseUri.basePath = basePath;
-				}
-			}
-			if (parsedURL.protocol) {
-				const protocol: string = parsedURL.protocol.slice(0, -1).toLowerCase();
-				baseUri.protocol = protocol;
-				if (model.hasOwnProperty('protocols')) {
-					if (!_.includes(model.protocols, baseUri.protocol)) {
-						const protocol: string = baseUri.protocol;
-						model.protocols.push(protocol);
+      const baseUri = new BaseUri();
+      baseUri.uri = ramlDef.baseUri;
+      const parsedURL = url.parse(ramlDef.baseUri);
+      if (parsedURL.hasOwnProperty('host') && parsedURL.host) {
+      	const host: string = parsedURL.host;
+				const uri: ?string = baseUri.uri;
+				if (uri != null) {
+					const index = uri.indexOf(parsedURL.host);
+					if (uri.charAt(index + host.length) !== '{') {
+						baseUri.host = host;
 					}
-				} else {
+				}
+      }
+      if (parsedURL.path && parsedURL.path !== '/') {
+        const basePath: string = parsedURL.path.replace(/%7B/g, '{').replace(/%7D/g, '}');
+        if (!basePath.startsWith('{')) {
+          baseUri.basePath = basePath;
+        }
+      }
+      if (parsedURL.protocol) {
+        const protocol: string = parsedURL.protocol.slice(0, -1).toLowerCase();
+        baseUri.protocol = protocol;
+        if (model.hasOwnProperty('protocols') && model.protocols) {
+          const protocols: string[] = model.protocols;
+        	if (!_.includes(protocols, baseUri.protocol)) {
+						const protocol: ?string = baseUri.protocol;
+						if (protocol != null) protocols.push(protocol);
+          }
+        } else if (baseUri.protocol != null) {
 					const protocols: string[] = [baseUri.protocol];
 					model.protocols = protocols;
 				}

@@ -38,7 +38,7 @@ class Oas20AnnotationConverter extends Converter {
 			name = annotationPrefix + value.name;
 		}
 		oasDef[name] = value.definition;
-		if (value.hasOwnProperty('annotations') && !_.isEmpty(value.annotations)) {
+		if (value.hasOwnProperty('annotations') && !_.isEmpty(value.annotations) && value.annotations != null) {
 			const annotations: Annotation[] = value.annotations;
 			for (let i = 0; i < annotations.length; i++) {
 				this.exportAnnotation(oasDef[name], annotations[i]);

@@ -119,20 +119,20 @@ class Raml10Converter extends Converter {
 	
 	static fixInheritedProperties(model:Root) {
 		const map = [];
-		const resourceTypes: ResourceType[] = model.resourceTypes;
-		const traits: Trait[] = model.traits;
-		if (model.hasOwnProperty('resources')) {
+		const resourceTypes: ?ResourceType[] = model.resourceTypes;
+		const traits: ?Trait[] = model.traits;
+		if (model.hasOwnProperty('resources') && model.resources) {
 			const resources: Resource[] = model.resources;
 			for (let i = 0; i < resources.length; i++) {
 				const resource: Resource = resources[i];
-				if (resource.hasOwnProperty('resourceType')) {
+				if (resource.hasOwnProperty('resourceType') && resource.resourceType && resourceTypes) {
 					const resourceType: Item[] = resource.resourceType;
 					for (let j = 0; j < resourceType.length; j++) {
 						const type = resourceType[j];
 						const usedTypeName: string = type.name;
 						const usedResourceType: ResourceType = resourceTypes.filter(function (resourceType) { return usedTypeName === resourceType.name; })[0];
-						const usedResource: Resource = usedResourceType.resource;
-						if (usedResource.hasOwnProperty('parameters')) {
+						const usedResource: ?Resource = usedResourceType.resource;
+						if (usedResource && usedResource.hasOwnProperty('parameters') && usedResource.parameters) {
 							const parameters: Parameter[] = usedResource.parameters;
 							for (let k = 0; i < parameters.length; i++) {
 								const parameter: Parameter = parameters[k];
@@ -145,7 +145,7 @@ class Raml10Converter extends Converter {
 								map.push(item);
 							}
 						}
-						if (usedResource.hasOwnProperty('methods')) {
+						if (usedResource && usedResource.hasOwnProperty('methods') && usedResource.methods) {
 							const methods: Method[] = usedResource.methods;
 							for (let k = 0; k < methods.length; k++) {
 								const method: Method = methods[k];
@@ -154,26 +154,26 @@ class Raml10Converter extends Converter {
 						}
 					}
 				}
-				if (resource.hasOwnProperty('is')) {
+				if (resource.hasOwnProperty('is') && resource.is && traits) {
 					const isList: Item[] = resource.is;
 					for (let j = 0; j < isList.length; j++) {
 						const is = isList[j];
 						const usedTraitName: string = is.name;
 						const usedTrait: Trait = traits.filter(function (trait) { return usedTraitName === trait.name; })[0];
-						if (usedTrait) Raml10Converter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, 'all', is.value);
+						if (usedTrait && usedTrait.method) Raml10Converter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, 'all', is.value);
 					}
 				}
-				if (resource.hasOwnProperty('methods')) {
+				if (resource.hasOwnProperty('methods') && resource.methods) {
 					const methods: Method[] = resource.methods;
 					for (let j = 0; j < methods.length; j++) {
 						const method: Method = methods[j];
-						if (method.hasOwnProperty('is')) {
+						if (method.hasOwnProperty('is') && method.is && traits) {
 							const isList: Item[] = method.is;
 							for (let k = 0; k < isList.length; k++) {
 								const is = method.is[k];
 								const usedTraitName: string = is.name;
 								const usedTrait: Trait = traits.filter(function (trait) { return usedTraitName === trait.name; })[0];
-								if (usedTrait) Raml10Converter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, method.method, is.value);
+								if (usedTrait && usedTrait.method) Raml10Converter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, method.method, is.value);
 							}
 						}
 					}
@@ -182,27 +182,40 @@ class Raml10Converter extends Converter {
 			for (let i = 0; i < map.length; i++) {
 				const item: any = map[i];
 				const userResource: Resource = resources.filter(function (resource) { return resource.path === item.resource; })[0];
-				if (!userResource.hasOwnProperty('methods')) continue;
-				const userMethod: Method = userResource.methods.filter(function (method) { return item.method === 'all' || method.method === item.method; })[0];
-				if (item.type === 'body' && userMethod.bodies) {
-					const bodyMimeTypes = [];
-					for (let j = 0; j < userMethod.bodies.length; j++) { bodyMimeTypes.push(userMethod.bodies[j].mimeType); }
-					if (item.name && bodyMimeTypes.includes(item.name) && userMethod.hasOwnProperty('bodies')) {
-						const bodies = userMethod.bodies;
-						bodies.splice(bodyMimeTypes.indexOf(item.name), 1);
+				if (userResource.hasOwnProperty('methods') && userResource.methods) {
+					const userMethod: Method = userResource.methods.filter(function (method) {
+						return item.method === 'all' || method.method === item.method;
+					})[0];
+					if (item.type === 'body' && userMethod.bodies) {
+						const bodyMimeTypes = [];
+						for (let j = 0; j < userMethod.bodies.length; j++) {
+							bodyMimeTypes.push(userMethod.bodies[j].mimeType)
+						}
+						if (item.name && bodyMimeTypes.includes(item.name) && userMethod.hasOwnProperty('bodies')) {
+							const bodies = userMethod.bodies;
+							bodies.splice(bodyMimeTypes.indexOf(item.name), 1);
+						}
+					} else if (item.type === 'header' && userMethod.headers) {
+						const headerNames = userMethod.headers.map(function (header) {
+							return header.name
+						});
+						if (headerNames.includes(item.name) && userMethod.headers) userMethod.headers.splice(headerNames.indexOf(item.name), 1);
+					} else if (item.type === 'queryParameter' && userMethod.parameters) {
+						const parameterNames = userMethod.parameters.map(function (parameter) {
+							return parameter.name
+						});
+						if (parameterNames.includes(item.name) && userMethod.parameters) userMethod.parameters.splice(parameterNames.indexOf(item.name), 1);
+					} else if (item.type === 'uriParameter' && userResource.parameters) {
+						const parameterNames = userResource.parameters.map(function (parameter) {
+							return parameter.name
+						});
+						if (parameterNames.includes(item.name) && userResource.parameters) userResource.parameters.splice(parameterNames.indexOf(item.name), 1);
+					} else if (item.type === 'response' && userMethod.responses) {
+						const responseCodes = userMethod.responses.map(function (response) {
+							return response.httpStatusCode
+						});
+						if (responseCodes.includes(item.name) && userMethod.responses) userMethod.responses.splice(responseCodes.indexOf(item.name), 1);
 					}
-				} else if (item.type === 'header' && userMethod.headers) {
-					const headerNames = userMethod.headers.map(function (header) { return header.name; });
-					if (headerNames.includes(item.name)) userMethod.headers.splice(headerNames.indexOf(item.name), 1);
-				} else if (item.type === 'queryParameter' && userMethod.parameters) {
-					const parameterNames = userMethod.parameters.map(function (parameter) { return parameter.name; });
-					if (parameterNames.includes(item.name)) userMethod.parameters.splice(parameterNames.indexOf(item.name), 1);
-				} else if (item.type === 'uriParameter' && userResource.parameters) {
-					const parameterNames = userResource.parameters.map(function (parameter) { return parameter.name; });
-					if (parameterNames.includes(item.name)) userResource.parameters.splice(parameterNames.indexOf(item.name), 1);
-				} else if (item.type === 'response' && userMethod.responses) {
-					const responseCodes = userMethod.responses.map(function (response) { return response.httpStatusCode; });
-					if (responseCodes.includes(item.name)) userMethod.responses.splice(responseCodes.indexOf(item.name), 1);
 				}
 			}
 		}
@@ -213,7 +226,7 @@ class Raml10Converter extends Converter {
 	}
 	
 	static mapMethodProperties(map, method: Method, traitName, resourcePath, methodName, params) {
-		if (method.hasOwnProperty('bodies')) {
+		if (method.hasOwnProperty('bodies') && method.bodies != null) {
 			const bodies: Body[] = method.bodies;
 			
 			for (let l = 0; l < bodies.length; l++) {
@@ -229,7 +242,7 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('headers')) {
+		if (method.hasOwnProperty('headers') && method.headers != null) {
 			const headers: Header[] = method.headers;
 			for (let l = 0; l < headers.length; l++) {
 				const header: Header = headers[l];
@@ -244,7 +257,7 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('parameters')) {
+		if (method.hasOwnProperty('parameters') && method.parameters != null) {
 			const parameters: Parameter[] = method.parameters;
 			for (let l = 0; l < parameters.length; l++) {
 				const parameter: Parameter = parameters[l];
@@ -259,21 +272,23 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('responses')) {
+		if (method.hasOwnProperty('responses') && method.responses != null) {
 			const responses: Response[] = method.responses;
 			for (let l = 0; l < responses.length; l++) {
 				const response: Response = responses[l];
-				const mimeTypes = response.bodies.map(body => body.mimeType);
-				const item: any = {
-					type: 'response',
-					name: response.httpStatusCode,
-					resource: resourcePath,
-					method: methodName,
-					mimeTypes: mimeTypes,
-					params: params
-				};
-				if (traitName) item.trait = traitName;
-				map.push(item);
+				if (response.bodies) {
+					const mimeTypes = response.bodies.map(body => body.mimeType);
+					const item: any = {
+						type: 'response',
+						name: response.httpStatusCode,
+						resource: resourcePath,
+						method: methodName,
+						mimeTypes: mimeTypes,
+						params: params
+					};
+					if (traitName) item.trait = traitName;
+					map.push(item);
+				}
 			}
 		}
 	}

@@ -36,7 +36,7 @@ class Oas20RootConverter extends Converter {
 			oasDef.info = infoConverter.export(info);
 		}
 
-		if (model.hasOwnProperty('baseUri')) {
+		if (model.hasOwnProperty('baseUri') && model.baseUri) {
 			const baseUri: BaseUri = model.baseUri;
 			if (baseUri.hasOwnProperty('host')) oasDef.host = baseUri.host;
 			if (baseUri.hasOwnProperty('basePath')) {
@@ -47,13 +47,16 @@ class Oas20RootConverter extends Converter {
 				}
 			}
 			if (!baseUri.host && !baseUri.basePath) {
-				const parsedURL = url.parse(baseUri.uri);
-				oasDef['x-basePath'] = parsedURL.protocol ? baseUri.uri.replace(parsedURL.protocol + '//', '') : baseUri.uri;
+				const uri: ?string = baseUri.uri;
+				if (uri != null) {
+					const parsedURL = url.parse(uri);
+					oasDef['x-basePath'] = parsedURL.protocol ? uri.replace(parsedURL.protocol + '//', "") : uri;
+				}
 			}
 			Oas20RootConverter.exportAnnotations(baseUri, oasDef);
 		}
 		
-		if (model.hasOwnProperty('protocols')) {
+		if (model.hasOwnProperty('protocols') && model.protocols) {
 			const protocols: string[] = model.protocols;
 			const schemes: string[] = [];
 			for (let i = 0; i < protocols.length; i++) {
@@ -63,7 +66,7 @@ class Oas20RootConverter extends Converter {
 			oasDef.schemes = schemes;
 		}
 
-		if (model.hasOwnProperty('tags')) {
+		if (model.hasOwnProperty('tags') && model.tags) {
 			const tags: Tag[] = model.tags;
 			oasDef.tags = [];
 			for (let i = 0; i < tags.length; i++) {
@@ -78,7 +81,7 @@ class Oas20RootConverter extends Converter {
 			}
 		}
 
-		if (model.hasOwnProperty('mediaType')) {
+		if (model.hasOwnProperty('mediaType') && model.mediaType) {
 			const mediaType: MediaType = model.mediaType;
 			if (mediaType.hasOwnProperty('consumes')) oasDef.consumes = mediaType.consumes;
 			if (mediaType.hasOwnProperty('produces')) oasDef.produces = mediaType.produces;
@@ -139,16 +142,21 @@ class Oas20RootConverter extends Converter {
 			if (defExternalDocs.hasOwnProperty('url')) externalDocs.url = defExternalDocs.url;
 			if (defExternalDocs.hasOwnProperty('description')) externalDocs.description = defExternalDocs.description;
 			Oas20RootConverter.importAnnotations(oasDef.externalDocs, externalDocs, this.model);
-			if (!_.isEmpty(externalDocs)) model.externalDocs = externalDocs;
+			if (!_.isEmpty(externalDocs)) {
+				model.externalDocs = externalDocs;
+			}
 		}
 
 		const baseUri = new BaseUri();
 		if (oasDef.hasOwnProperty('x-basePath')) {
 			baseUri.uri = oasDef['x-basePath'];
 			if (oasDef.hasOwnProperty('host')) baseUri.host = oasDef.host;
-			const parsedURL = url.parse(baseUri.uri);
-			if (parsedURL.host && !baseUri.host) {
-				baseUri.host = parsedURL.host;
+			const uri: ?string = baseUri.uri;
+			if (uri != null) {
+				const parsedURL = url.parse(uri);
+				if (parsedURL.host && !baseUri.host) {
+					baseUri.host = parsedURL.host;
+				}
 			}
 		} else {
 			if (oasDef.hasOwnProperty('host')) baseUri.host = oasDef.host;
