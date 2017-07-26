@@ -144,7 +144,7 @@ class Toolbar extends Component {
 
                     <div className="pull-right">
                         <Button bsStyle="success"
-                                disabled={this.props.converting || this.state.toSelectionObj.index === -1 || this.state.toSelectionObj.name === this.state.fromSelectionObj.name}
+                                disabled={this.props.converting || this.state.toSelectionObj.index === -1}
                                 onClick={this.handleConvert.bind(this)}>
                             {this.props.converting ? 'Converting...' : 'Convert'}
                         </Button>

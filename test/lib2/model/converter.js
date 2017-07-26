@@ -120,7 +120,8 @@ describe('Oas20 to Oas20', () => {
 		};
 
 		return function (done) {
-			converter.convertFile(sourceFile, validateOptions)
+			const data = fs.readFileSync(sourceFile, 'utf8');
+			converter.convertData(data, validateOptions)
 				.then(resultOAS => {
 					try {
 						const notExistsTarget = !fs.existsSync(targetFile);
@@ -187,7 +188,6 @@ describe('Raml10 to Oas20', () => {
 		return function (done) {
 			const data = fs.readFileSync(sourceFile, 'utf8');
 			converter.convertData(data, validateOptions)
-			// converter.convertFile(sourceFile, validateOptions)
 				.then(resultOAS => {
 					try {
 						const notExistsTarget = !fs.existsSync(targetFile);
