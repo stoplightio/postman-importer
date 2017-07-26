@@ -1,4 +1,4 @@
-const Converter = require('../../src/index').Converter
+const Converter = require('../../src/index').NewConverter
 
 const stringify = (data) => {
   if (!data) return ''
@@ -17,18 +17,15 @@ const resolve = (error, result) => {
 
 self.addEventListener('message', (e) => {
   const message = e.data
-  const format = message.format.toLowerCase();
   const converter = new Converter(message.fromLanguage, message.toLanguage)
 
-  converter.loadData(message.rawData).then(() => {
-    converter.convert(format, {validate: true}).then((success) =>
-      resolve(null, success)
-    ).catch((error) => {
-      // if an error is found, try to retrieve the invalid output
-      converter.convert(format, {validate: false}).then((success) =>
-        resolve(error, success)
-      ).catch(resolve)
-    })
-  }).catch(resolve)
+	converter.convertData(message.rawData, {validate: true}).then((success) =>
+			resolve(null, success)
+	).catch((error) => {
+		// if an error is found, try to retrieve the invalid output
+		converter.convertData(message.rawData, {validate: false}).then((success) =>
+				resolve(error, success)
+		).catch(resolve)
+	})
 
 }, false)
