@@ -20,18 +20,28 @@ const Oas20TraitConverter = require('../oas20/oas20TraitConverter');
 
 class Oas20Converter extends Converter {
 	
-	loadFile(dataOrPath:any, options:any) {
+	loadFile(filePath:any, options:any) {
 		return new Promise((resolve, reject) => {
 			const validateOptions = _.cloneDeep(options || {});
 			const validate = options && (options.validate === true || options.validateImport === true);
 			validateOptions.validate = { schema: validate, spec: validate};
 			
-			const dataCopy = _.cloneDeep(dataOrPath);
+			const dataCopy = _.cloneDeep(filePath);
 			parser.validate(dataCopy, validateOptions)
 				.then(() => {
-					this._doParseData(dataOrPath, options || {}, resolve, reject);
+					this._doParseData(filePath, options || {}, resolve, reject);
 				})
 				.catch(reject);
+		});
+	}
+	
+	loadData(data:string, options:any) {
+		return new Promise((resolve, reject) => {
+			const YAML = require('js-yaml');
+			const dataObject = YAML.safeLoad(data);
+			parser.parse(dataObject, options).then((api) =>{
+				this._doParseData(api, options || {}, resolve, reject);
+			}).catch(reject);
 		});
 	}
 	
