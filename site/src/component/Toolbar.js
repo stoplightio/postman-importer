@@ -20,13 +20,12 @@ class Toolbar extends Component {
     constructor(props) {
         super(props)
 
-        const auto = supportedFormats.AUTO;
         this.state = {
             fromSelectionObj: {
-                name: auto.name,
-                index: 0,
-                formats: auto.formats,
-                selectedFormat: auto.formats[0]
+                name: Toolbar.defaultMessage,
+                index: -1,
+                formats: [],
+                selectedFormat: ""
             },
             toSelectionObj: {
                 name: Toolbar.defaultMessage,

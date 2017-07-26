@@ -21,29 +21,21 @@ describe('index', function() {
 		});
 	});
 
-	describe.skip('exporters', function(){
-		it('should expose raml 08 and 10 exporter api', function(){
-			const exporter08Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML);
-			expect(exporter08Instance).to.be.an.instanceof(require('../src/exporters/raml08'));
-			const exporter10Instance = new specConverter.Exporter.factory(specConverter.Formats.RAML);
-			expect(exporter10Instance).to.be.an.instanceof(require('../src/exporters/raml10'));
+	describe('converters', function(){
+		it('should expose raml 08 and 10 converter api', function(){
+			const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.RAML);
+			const ramlImporter = converter.importer;
+			const ramlExporter = converter.exporter;
+			expect(ramlImporter).to.be.an.instanceof(require('../src/raml10/raml10Converter'));
+			expect(ramlExporter).to.be.an.instanceof(require('../src/raml10/raml10Converter'));
 		});
-		it('should expose swagger exporter api', function(){
-			const exporterInstance = new specConverter.Exporter.factory(specConverter.Formats.SWAGGER);
-			expect(exporterInstance).to.be.an.instanceof(require('../src/exporters/swagger'));
+		it('should expose oas 20 converter api', function(){
+			const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.OAS20);
+			const oasImporter = converter.importer;
+			const oasExporter = converter.exporter;
+			expect(oasImporter).to.be.an.instanceof(require('../src/oas20/oas20Converter'));
+			expect(oasExporter).to.be.an.instanceof(require('../src/oas20/oas20Converter'));
 		});
 	});
 
-	describe.skip('importers', function(){
-		it('should expose raml importer api', function(){
-			const importer08Instance = specConverter.Importer.factory(specConverter.Formats.RAML);
-			expect(importer08Instance).to.be.an.instanceof(require('../src/importers/raml08'));
-			const importer10Instance = specConverter.Importer.factory(specConverter.Formats.RAML);
-			expect(importer10Instance).to.be.an.instanceof(require('../src/importers/raml10'));
-		});
-		it('should expose swagger importer api', function(){
-			const importerInstance = specConverter.Importer.factory(specConverter.Formats.SWAGGER);
-			expect(importerInstance).to.be.an.instanceof(require('../src/importers/swagger'));
-		});
-	});
 });

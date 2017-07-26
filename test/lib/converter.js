@@ -68,12 +68,6 @@ describe('Converter', function () {
 		});
 	});
 	
-	describe('loadData', function () {
-		//current function will work for only stoplight data and postman json data
-		it('should successfully load raw data');
-		it('should throw error for format incompatible data');
-	});
-	
 	describe('convert', function () {
 		it('should successfully convert and return converted data', function (done) {
 			converterInstance.convertFile(fullPath, {format: 'json'})
