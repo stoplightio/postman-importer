@@ -48,9 +48,8 @@ describe('Raml10 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.RAML);
 
-	const testWithData = function (sourceFile, targetFile, validate, extension) {
+	const testWithData = function (sourceFile, targetFile, extension) {
 		const validateOptions = {
-			validate: validate,
 			noExtension: !extension,
 			fsResolver: myFsResolver,
 			format: 'yaml'
@@ -87,20 +86,16 @@ describe('Raml10 to Raml10', () => {
 
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			const validate = !_.includes(testFile, 'novalidate');
-			const skip = _.includes(testFile, 'skip');
 			const extension = _.includes(testFile, 'extension');
-
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 
-			if (skip) return ;
 			if (process.env.testFile) {
 				if (_.endsWith(testFile, process.env.testFile)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 			}
 		}
 	});
@@ -111,9 +106,8 @@ describe('Oas20 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.OAS20);
 
-	const testWithData = function (sourceFile, targetFile, validate, extension) {
+	const testWithData = function (sourceFile, targetFile, extension) {
 		const validateOptions = {
-			validate: validate,
 			noExtension: !extension,
 			fsResolver: myFsResolver,
 			format: 'yaml'
@@ -151,20 +145,16 @@ describe('Oas20 to Oas20', () => {
 
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			const validate = !_.includes(testFile, 'novalidate');
-			const skip = _.includes(testFile, 'skip');
 			const extension = _.includes(testFile, 'extension');
-
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 
-			if (skip) return ;
 			if (process.env.testFile) {
 				if (_.endsWith(testFile, process.env.testFile)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 			}
 		}
 	});
@@ -175,9 +165,8 @@ describe('Raml10 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.OAS20);
 
-	const testWithData = function (sourceFile, targetFile, validate, extension) {
+	const testWithData = function (sourceFile, targetFile, extension) {
 		const validateOptions = {
-			validate: validate,
 			noExtension: !extension,
 			fsResolver: myFsResolver,
 			format: 'yaml',
@@ -217,20 +206,16 @@ describe('Raml10 to Oas20', () => {
 
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			const validate = !_.includes(testFile, 'novalidate');
-			const skip = _.includes(testFile, 'skip');
 			const extension = _.includes(testFile, 'extension');
-
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 
-			if (skip) return ;
 			if (process.env.testFile) {
 				if (_.endsWith(testFile, process.env.testFile)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 			}
 		}
 	});
@@ -241,9 +226,8 @@ describe('Oas20 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.RAML);
 
-	const testWithData = function (sourceFile, targetFile, validate, extension) {
+	const testWithData = function (sourceFile, targetFile, extension) {
 		const validateOptions = {
-			validate: validate,
 			noExtension: !extension,
 			fsResolver: myFsResolver,
 			format: 'yaml'
@@ -280,20 +264,16 @@ describe('Oas20 to Raml10', () => {
 
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			const validate = !_.includes(testFile, 'novalidate');
-			const skip = _.includes(testFile, 'skip');
 			const extension = _.includes(testFile, 'extension');
-
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 
-			if (skip) return ;
 			if (process.env.testFile) {
 				if (_.endsWith(testFile, process.env.testFile)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 			}
 		}
 	});
@@ -304,9 +284,8 @@ describe('Raml08 to Raml10', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.RAML);
 	
-	const testWithData = function (sourceFile, targetFile, validate, extension) {
+	const testWithData = function (sourceFile, targetFile, extension) {
 		const validateOptions = {
-			validate: validate,
 			noExtension: !extension,
 			fsResolver: myFsResolver,
 			format: 'yaml'
@@ -343,20 +322,16 @@ describe('Raml08 to Raml10', () => {
 	
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			const validate = !_.includes(testFile, 'novalidate');
-			const skip = _.includes(testFile, 'skip');
 			const extension = _.includes(testFile, 'extension');
-			
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
-			if (skip) return ;
 			if (process.env.testFile) {
 				if (_.endsWith(testFile, process.env.testFile)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 			}
 		}
 	});
@@ -367,9 +342,8 @@ describe('Raml08 to Oas20', () => {
 	const testFiles = fs.readdirSync(baseDir);
 	const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.OAS20);
 	
-	const testWithData = function (sourceFile, targetFile, validate, extension) {
+	const testWithData = function (sourceFile, targetFile, extension) {
 		const validateOptions = {
-			validate: validate,
 			noExtension: !extension,
 			fsResolver: myFsResolver,
 			format: 'yaml'
@@ -406,20 +380,16 @@ describe('Raml08 to Oas20', () => {
 	
 	testFiles.forEach(function (testFile) {
 		if (!_.startsWith(testFile, '.')) {
-			const validate = !_.includes(testFile, 'novalidate');
-			const skip = _.includes(testFile, 'skip');
 			const extension = _.includes(testFile, 'extension');
-			
 			const sourceFile = baseDir + '/' + testFile;
 			const targetFile = baseDir + '/../target/' + testFile;
 			
-			if (skip) return ;
 			if (process.env.testFile) {
 				if (_.endsWith(testFile, process.env.testFile)) {
-					it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 				}
 			} else {
-				it('test: ' + testFile, testWithData(sourceFile, targetFile, validate, extension));
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
 			}
 		}
 	});
