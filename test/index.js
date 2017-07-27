@@ -6,7 +6,7 @@ const describe = require('mocha/lib/mocha.js').describe;
 describe('index', function() {
 
 	it('should expose converter api', function(){
-		expect(specConverter.NewConverter).to.be.a('Function');
+		expect(specConverter.Converter).to.be.a('Function');
 	});
 
 	describe('formats', function(){
@@ -23,14 +23,14 @@ describe('index', function() {
 
 	describe('converters', function(){
 		it('should expose raml 08 and 10 converter api', function(){
-			const converter = new specConverter.NewConverter(specConverter.Formats.RAML, specConverter.Formats.RAML);
+			const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML);
 			const ramlImporter = converter.importer;
 			const ramlExporter = converter.exporter;
 			expect(ramlImporter).to.be.an.instanceof(require('../src/raml10/raml10Converter'));
 			expect(ramlExporter).to.be.an.instanceof(require('../src/raml10/raml10Converter'));
 		});
 		it('should expose oas 20 converter api', function(){
-			const converter = new specConverter.NewConverter(specConverter.Formats.OAS20, specConverter.Formats.OAS20);
+			const converter = new specConverter.Converter(specConverter.Formats.OAS20, specConverter.Formats.OAS20);
 			const oasImporter = converter.importer;
 			const oasExporter = converter.exporter;
 			expect(oasImporter).to.be.an.instanceof(require('../src/oas20/oas20Converter'));

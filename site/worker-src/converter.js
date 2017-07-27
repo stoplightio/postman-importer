@@ -1,4 +1,4 @@
-const Converter = require('../../src/index').NewConverter
+const Converter = require('../../src/index').Converter
 
 const stringify = (data) => {
   if (!data) return ''

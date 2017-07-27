@@ -2,7 +2,7 @@ const Converters = require('./converters/index');
 const YAML = require('js-yaml'); // eslint-disable-line no-unused-vars,FIXME
 const fs = require('fs'); // eslint-disable-line no-unused-vars,FIXME
 
-class NewConverter {
+class Converter {
 	constructor(fromFormat, toFormat) {
 		this.importer = Converters.factory(fromFormat);
 		if (!this.importer) {
@@ -78,4 +78,4 @@ class NewConverter {
 	}
 }
 
-exports.NewConverter = NewConverter;
+exports.Converter = Converter;
