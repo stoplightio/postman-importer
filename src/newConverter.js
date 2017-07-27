@@ -70,11 +70,7 @@ class NewConverter {
 	}
 
 	loadData(rawData, options) {
-		return new Promise((resolve, reject) => {
-			this.importer.loadData(rawData, options)
-        .then(resolve)
-        .catch(reject);
-		});
+		return this.importer.loadData(rawData, options);
 	}
 
 	_format(options) {
