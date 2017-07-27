@@ -1,7 +1,7 @@
-const newConverter = require('./newConverter');
+const converter = require('./converter');
 const Formats = require('./formats');
 
 module.exports = {
-	NewConverter: newConverter.NewConverter,
+	Converter: converter.Converter,
 	Formats: Formats
 };
