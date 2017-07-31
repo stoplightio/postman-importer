@@ -211,3 +211,357 @@ describe('from raml to swagger', function () {
 		}
 	});
 });
+
+
+describe('Raml10 to Raml10', () => {
+	const baseDir = __dirname + '/../data/raml10-raml10/source';
+	const testFiles = fs.readdirSync(baseDir);
+	const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML);
+
+	const testWithData = function (sourceFile, targetFile, extension) {
+		const validateOptions = {
+			noExtension: !extension,
+			fsResolver: myFsResolver,
+			format: 'yaml'
+		};
+
+		return function (done) {
+			converter.convertFile(sourceFile, validateOptions)
+				.then(resultRaml => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultRaml);
+							console.log('********** Finish file **********\n');
+							return done(resultRaml);
+						} else {
+							const formattedData = typeof resultRaml === 'object' ? JSON.stringify(resultRaml) : resultRaml;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultRaml, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
+		};
+	};
+
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const extension = _.includes(testFile, 'extension');
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../target/' + testFile;
+
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+			}
+		}
+	});
+});
+
+describe('Oas20 to Oas20', () => {
+	const baseDir = __dirname + '/../data/oas20-oas20/source';
+	const testFiles = fs.readdirSync(baseDir);
+	const converter = new specConverter.Converter(specConverter.Formats.OAS20, specConverter.Formats.OAS20);
+
+	const testWithData = function (sourceFile, targetFile, extension) {
+		const validateOptions = {
+			noExtension: !extension,
+			fsResolver: myFsResolver,
+			format: 'yaml'
+		};
+
+		return function (done) {
+			const data = fs.readFileSync(sourceFile, 'utf8');
+			converter.convertData(data, validateOptions)
+				.then(resultOAS => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultOAS);
+							console.log('********** Finish file **********\n');
+							return done(resultOAS);
+						} else {
+							const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultOAS, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
+		};
+	};
+
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const extension = _.includes(testFile, 'extension');
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../target/' + testFile;
+
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+			}
+		}
+	});
+});
+
+describe('Raml10 to Oas20', () => {
+	const baseDir = __dirname + '/../data/raml10-oas20/source';
+	const testFiles = fs.readdirSync(baseDir);
+	const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.OAS20);
+
+	const testWithData = function (sourceFile, targetFile, extension) {
+		const validateOptions = {
+			noExtension: !extension,
+			fsResolver: myFsResolver,
+			format: 'yaml',
+			attributeDefaults: false,
+			rejectOnErrors: true
+		};
+
+		return function (done) {
+			const data = fs.readFileSync(sourceFile, 'utf8');
+			converter.convertData(data, validateOptions)
+				.then(resultOAS => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultOAS);
+							console.log('********** Finish file **********\n');
+							return done(resultOAS);
+						} else {
+							const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultOAS, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
+		};
+	};
+
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const extension = _.includes(testFile, 'extension');
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../target/' + testFile;
+
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+			}
+		}
+	});
+});
+
+describe('Oas20 to Raml10', () => {
+	const baseDir = __dirname + '/../data/oas20-raml10/source';
+	const testFiles = fs.readdirSync(baseDir);
+	const converter = new specConverter.Converter(specConverter.Formats.OAS20, specConverter.Formats.RAML);
+
+	const testWithData = function (sourceFile, targetFile, extension) {
+		const validateOptions = {
+			noExtension: !extension,
+			fsResolver: myFsResolver,
+			format: 'yaml'
+		};
+
+		return function (done) {
+			converter.convertFile(sourceFile, validateOptions)
+				.then(resultRaml => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultRaml);
+							console.log('********** Finish file **********\n');
+							return done(resultRaml);
+						} else {
+							const formattedData = typeof resultRaml === 'object' ? JSON.stringify(resultRaml) : resultRaml;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultRaml, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
+		};
+	};
+
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const extension = _.includes(testFile, 'extension');
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../target/' + testFile;
+
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+			}
+		}
+	});
+});
+
+describe('Raml08 to Raml10', () => {
+	const baseDir = __dirname + '/../data/raml08-raml10/source';
+	const testFiles = fs.readdirSync(baseDir);
+	const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML);
+
+	const testWithData = function (sourceFile, targetFile, extension) {
+		const validateOptions = {
+			noExtension: !extension,
+			fsResolver: myFsResolver,
+			format: 'yaml'
+		};
+
+		return function (done) {
+			converter.convertFile(sourceFile, validateOptions)
+				.then(resultRaml => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultRaml);
+							console.log('********** Finish file **********\n');
+							return done(resultRaml);
+						} else {
+							const formattedData = typeof resultRaml === 'object' ? JSON.stringify(resultRaml) : resultRaml;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultRaml, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
+		};
+	};
+
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const extension = _.includes(testFile, 'extension');
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../target/' + testFile;
+
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+			}
+		}
+	});
+});
+
+describe('Raml08 to Oas20', () => {
+	const baseDir = __dirname + '/../data/raml08-oas20/source';
+	const testFiles = fs.readdirSync(baseDir);
+	const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.OAS20);
+
+	const testWithData = function (sourceFile, targetFile, extension) {
+		const validateOptions = {
+			noExtension: !extension,
+			fsResolver: myFsResolver,
+			format: 'yaml'
+		};
+
+		return function (done) {
+			converter.convertFile(sourceFile, validateOptions)
+				.then(resultOAS => {
+					try {
+						const notExistsTarget = !fs.existsSync(targetFile);
+						if (notExistsTarget) {
+							console.log('Content for non existing target file ' + targetFile + '\n.');
+							console.log('********** Begin file **********\n');
+							console.log(resultOAS);
+							console.log('********** Finish file **********\n');
+							return done(resultOAS);
+						} else {
+							const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
+							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+							if (!extension && _.includes(resultOAS, 'x-raml')) {
+								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
+							}
+							done();
+						}
+					} catch (e) {
+						done(e);
+					}
+				}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
+		};
+	};
+
+	testFiles.forEach(function (testFile) {
+		if (!_.startsWith(testFile, '.')) {
+			const extension = _.includes(testFile, 'extension');
+			const sourceFile = baseDir + '/' + testFile;
+			const targetFile = baseDir + '/../target/' + testFile;
+
+			if (process.env.testFile) {
+				if (_.endsWith(testFile, process.env.testFile)) {
+					it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+				}
+			} else {
+				it('test: ' + testFile, testWithData(sourceFile, targetFile, extension));
+			}
+		}
+	});
+});
+
