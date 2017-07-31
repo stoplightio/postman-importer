@@ -49,10 +49,10 @@ class Oas20ResourceConverter extends Converter {
 			let hasNestedResources: boolean = false;
 			for (let i = 0; i < models.length; i++) {
 				const resource: Resource = models[i];
-				if (!hasNestedResources && resource.path && model.path) hasNestedResources = resource.path.startsWith(model.path) && resource.path != model.path;
+				if (!hasNestedResources && resource.path && model.path) hasNestedResources = resource.path.startsWith(model.path) && resource.path !== model.path;
 			}
-			const hasOnlyUriParams: boolean = oasDef.hasOwnProperty('parameters') && oasDef.parameters.filter(param => { return param.in != 'path'; }).length === 0;
-			const ignore: boolean = hasNestedResources && _.keys(oasDef).length == 1 && hasOnlyUriParams;
+			const hasOnlyUriParams: boolean = oasDef.hasOwnProperty('parameters') && oasDef.parameters.filter(param => { return param.in !== 'path'; }).length === 0;
+			const ignore: boolean = hasNestedResources && _.keys(oasDef).length === 1 && hasOnlyUriParams;
 			if ((!(_.isEmpty(oasDef) || ignore) || model.hasOwnProperty('securedBy')) && model.path) {
 				result[model.path] = oasDef;
 			}

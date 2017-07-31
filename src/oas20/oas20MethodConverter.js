@@ -22,27 +22,27 @@ const stringsHelper = require('../utils/strings');
 const oasHelper = require('../helpers/oas20');
 
 class Oas20MethodConverter extends Converter {
-	
-	constructor(model:Root, dereferencedAPI:any, resourcePath:?string, def:any) {
+
+	constructor(model: Root, dereferencedAPI: any, resourcePath: ?string, def: any) {
 		super(model, '', def);
 		this.dereferencedAPI = dereferencedAPI;
 		this.resourcePath = resourcePath;
 	}
-	
-	export(models:Method[]) {
+
+	export(models: Method[]) {
 		const result = {};
 		if (_.isEmpty(models)) return result;
-		
+
 		for (let i = 0; i < models.length; i++) {
 			const model: Method = models[i];
 			result[model.method] = this._export(model);
 		}
-		
+
 		return result;
 	}
-	
+
 	// exports 1 method definition
-	_export(model:Method) {
+	_export(model: Method) {
 		const attrIdMap = {
 			'protocols': 'schemes',
 			'name': 'operationId'
@@ -50,9 +50,9 @@ class Oas20MethodConverter extends Converter {
 		const attrIdSkip = ['method', 'responses', 'headers', 'bodies', 'formBodies', 'parameters', 'queryStrings', 'is', 'path', 'produces', 'consumes', 'securedBy', 'annotations'];
 		const oasDef = Oas20MethodConverter.createOasDef(model, attrIdMap, attrIdSkip);
 		const definitionConverter = new Oas20DefinitionConverter(this.model, this.annotationPrefix, this.def);
-		
+
 		if (!oasDef.hasOwnProperty('operationId')) oasDef.operationId = stringsHelper.computeOperationId(model.method, model.path);
-		
+
 		if (model.hasOwnProperty('responses') && model.responses != null) {
 			const responsesModel: Response[] = model.responses;
 			if (_.isArray(responsesModel) && !_.isEmpty(responsesModel)) {
@@ -87,7 +87,7 @@ class Oas20MethodConverter extends Converter {
 												if (definition.hasOwnProperty('type')) header.type = definition.type;
 												if (definition.hasOwnProperty('format')) header.format = definition.format;
 											}
-											if (header.type === 'array' && !header.hasOwnProperty('items')) header.items = { type: 'string' };
+											if (header.type === 'array' && !header.hasOwnProperty('items')) header.items = {type: 'string'};
 										}
 										if (header.hasOwnProperty('example')) delete header.example;
 										if (header.hasOwnProperty('required')) delete header.required;
@@ -106,7 +106,7 @@ class Oas20MethodConverter extends Converter {
 										response.description = val.hasOwnProperty('description') && _.isEmpty(response.description) ? val.description : response.description;
 										const definition: ?Definition = val.definition;
 										if (definition != null) {
-											
+
 											Oas20MethodConverter.exportExamples(definition, response, val.mimeType, 'examples');
 											schema = definitionConverter._export(definition);
 											if (definition.hasOwnProperty('internalType') && definition.internalType === 'file') schema.type = 'file';
@@ -114,11 +114,11 @@ class Oas20MethodConverter extends Converter {
 											if (schema.hasOwnProperty('required') && schema.required === true) delete schema.required;
 											if (schema.hasOwnProperty('$ref')) {
 												Oas20MethodConverter.exportExamples(schema, response, val.mimeType, 'example');
-												schema = { $ref: schema.$ref };
+												schema = {$ref: schema.$ref};
 											}
 											Oas20RootConverter.exportAnnotations(val, schema);
 											if (!_.isEmpty(schema) && !response.schema) response.schema = schema;
-											else if (response.schema && response.schema.hasOwnProperty('$ref')) response.schema = { type: 'object' };
+											else if (response.schema && response.schema.hasOwnProperty('$ref')) response.schema = {type: 'object'};
 										}
 									}
 								}
@@ -142,9 +142,9 @@ class Oas20MethodConverter extends Converter {
 				}
 			};
 		}
-		
+
 		let parameters = Oas20MethodConverter.exportHeaders(model, definitionConverter);
-		
+
 		let consumes: ?string[] = [];
 		if (model.hasOwnProperty('consumes')) consumes = model.consumes;
 		if (model.hasOwnProperty('bodies') && model.bodies != null) {
@@ -158,7 +158,7 @@ class Oas20MethodConverter extends Converter {
 				parameter.name = 'body';
 				if (value.hasOwnProperty('description')) parameter.description = value.description;
 				if (bodies.length > 1) parameter.schema = {type: 'object'};
-				if (!parameter.schema.type && !parameter.schema.$ref){
+				if (!parameter.schema.type && !parameter.schema.$ref) {
 					if (parameter.schema.hasOwnProperty('properties'))
 						parameter.schema.type = 'object';
 					else
@@ -179,7 +179,7 @@ class Oas20MethodConverter extends Converter {
 				}
 			}
 		}
-		
+
 		if (model.hasOwnProperty('formBodies') && model.formBodies != null) {
 			const formBodies: Body[] = model.formBodies;
 			if (_.isArray(formBodies) && !_.isEmpty(formBodies)) {
@@ -188,7 +188,7 @@ class Oas20MethodConverter extends Converter {
 					if (body.mimeType && consumes != null && !consumes.includes(body.mimeType)) consumes.push(body.mimeType);
 					const definition: ?Definition = body.definition;
 					if (definition != null) {
-						
+
 						if (definition.internalType === 'file' && consumes != null && !consumes.includes('multipart/form-data')) consumes.push('multipart/form-data');
 						let input: Definition[] = [];
 						const propertiesRequired = definition.propsRequired ? definition.propsRequired : [];
@@ -232,13 +232,13 @@ class Oas20MethodConverter extends Converter {
 			}
 		}
 		if (!_.isEmpty(consumes)) oasDef.consumes = consumes;
-		
+
 		const queryParameters = Oas20MethodConverter.exportParameters(model, 'parameters', definitionConverter);
 		if (!_.isEmpty(queryParameters)) parameters = parameters.concat(queryParameters);
-		
+
 		const queryStrings = Oas20MethodConverter.exportParameters(model, 'queryStrings', definitionConverter);
 		if (!_.isEmpty(queryStrings)) parameters = parameters.concat(queryStrings);
-		
+
 		if (!_.isEmpty(parameters)) oasDef.parameters = parameters;
 
 		if (model.hasOwnProperty('securedBy') && model.securedBy != null && this.def && this.def.securityDefinitions) {
@@ -247,15 +247,15 @@ class Oas20MethodConverter extends Converter {
 			for (let i = 0; i < securedByModel.length; i++) {
 				const securityReq: SecurityRequirement = securedByModel[i];
 				if (securityReq.name !== null && Object.keys(this.def.securityDefinitions).includes(securityReq.name))
-					security.push({ [securityReq.name] : securityReq.scopes });
+					security.push({[securityReq.name]: securityReq.scopes});
 			}
-			if (!_.isEmpty(security)){
+			if (!_.isEmpty(security)) {
 				oasDef['security'] = security;
 			}
 		}
-		
+
 		Oas20RootConverter.exportAnnotations(model, oasDef);
-		
+
 		if (this.model && this.model.hasOwnProperty('mediaType')) {
 			const mediaType: MediaType = this.model.mediaType;
 			if (mediaType.hasOwnProperty('consumes') && oasDef.hasOwnProperty('consumes')) {
@@ -269,7 +269,7 @@ class Oas20MethodConverter extends Converter {
 			}
 			if (mediaType.hasOwnProperty('produces') && oasDef.hasOwnProperty('produces')) {
 				const produces: ?string[] = mediaType.produces;
-				if (produces!= null) {
+				if (produces != null) {
 					oasDef.produces = oasDef.produces.filter(function (produce) {
 						return !produces.includes(produce);
 					});
@@ -279,8 +279,8 @@ class Oas20MethodConverter extends Converter {
 		}
 		return oasDef;
 	}
-	
-	static exportExamples(source:Definition, target:any, mimeType:?string, exampleKey:string) {
+
+	static exportExamples(source: Definition, target: any, mimeType: ?string, exampleKey: string) {
 		switch (exampleKey) {
 			case 'example':
 				if (source.hasOwnProperty(exampleKey)) {
@@ -298,16 +298,16 @@ class Oas20MethodConverter extends Converter {
 				break;
 		}
 	}
-	
-	static exportRequired(source:any, target:any) {
+
+	static exportRequired(source: any, target: any) {
 		target.required = source.required;
 		if (target.hasOwnProperty('required') && !target.required)
 			delete target.required;
 	}
 
-	static exportHeaders(object:Method, converter:any) {
+	static exportHeaders(object: Method, converter: any) {
 		const headers = [];
-		
+
 		if (object.hasOwnProperty('headers') && object.headers != null) {
 			const headersModel: Header[] = object.headers;
 			if (_.isArray(headersModel) && !_.isEmpty(headersModel)) {
@@ -316,7 +316,7 @@ class Oas20MethodConverter extends Converter {
 					const definition: ?Definition = value.definition;
 					let header;
 					if (value.hasOwnProperty('reference')) {
-						header = { $ref: value.reference };
+						header = {$ref: value.reference};
 					} else {
 						header = Object.assign({}, converter._export(definition));
 						header.in = value._in;
@@ -335,8 +335,8 @@ class Oas20MethodConverter extends Converter {
 
 		return headers;
 	}
-	
-	static exportParameters(object:Method, paramsType:string, converter:any) {
+
+	static exportParameters(object: Method, paramsType: string, converter: any) {
 		let parameters = [];
 		if (object.hasOwnProperty(paramsType)) {
 			const parametersModel: ?Parameter[] = paramsType === 'parameters' ? object.parameters : object.queryStrings;
@@ -346,7 +346,7 @@ class Oas20MethodConverter extends Converter {
 					const definition: ?Definition = value.definition;
 					let parameter;
 					if (value.hasOwnProperty('reference')) {
-						parameter = { $ref: value.reference };
+						parameter = {$ref: value.reference};
 					} else if (paramsType === 'queryStrings' && definition != null && definition.hasOwnProperty('properties')) {
 						const queryStrings = Oas20MethodConverter.exportMultipleQueryStrings(value, converter);
 						if (!_.isEmpty(queryStrings)) parameters = parameters.concat(queryStrings);
@@ -371,11 +371,11 @@ class Oas20MethodConverter extends Converter {
 				}
 			}
 		}
-		
+
 		return parameters;
 	}
-	
-	static exportMultipleQueryStrings(object:Parameter, converter:any) {
+
+	static exportMultipleQueryStrings(object: Parameter, converter: any) {
 		const definition: ?Definition = object.definition;
 		const queryStrings = [];
 		if (definition != null && definition.properties != null) {
@@ -393,13 +393,13 @@ class Oas20MethodConverter extends Converter {
 				queryStrings.push(parameter);
 			}
 		}
-		
+
 		return queryStrings;
 	}
-	
-	static createOasDef(method:Method, attrIdMap, attrIdSkip) {
+
+	static createOasDef(method: Method, attrIdMap, attrIdSkip) {
 		const result = {};
-		
+
 		_.assign(result, method);
 		attrIdSkip.map(id => {
 			delete result[id];
@@ -411,13 +411,13 @@ class Oas20MethodConverter extends Converter {
 				delete result[id];
 			}
 		});
-		
+
 		return result;
 	}
-	
+
 	static createMethod(oasDef, attrIdMap, attrIdSkip, annotationPrefix) {
 		const object = {};
-		
+
 		_.entries(oasDef).map(([key, value]) => {
 			if (attrIdSkip.indexOf(key) < 0 && !key.startsWith('x-') && !key.startsWith(annotationPrefix)) {
 				object[attrIdMap.hasOwnProperty(key) ? attrIdMap[key] : key] = value;
@@ -425,29 +425,29 @@ class Oas20MethodConverter extends Converter {
 		});
 		const result = new Method();
 		_.assign(result, object);
-		
+
 		return result;
 	}
 
-	import(oasDefs:any) {
+	import(oasDefs: any) {
 		const validMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
 		let result: Method[] = [];
 		if (_.isEmpty(oasDefs)) return result;
-		
+
 		const parameters = [];
 		if (oasDefs.hasOwnProperty('parameters')) {
 			for (const id in oasDefs.parameters) {
 				if (!oasDefs.parameters.hasOwnProperty(id)) continue;
-				
+
 				const parameter = (oasHelper.isFilePath(oasDefs.parameters[id]) && this.dereferencedAPI) ? this.dereferencedAPI.parameters[id] : oasDefs.parameters[id];
 				if (parameter.in === 'header') parameters.push(parameter);
 			}
 		}
-		
+
 		for (const id in oasDefs) {
 			if (!oasDefs.hasOwnProperty(id) || !validMethods.includes(id)) continue;
-			
-			const oasDef = oasDefs[id].hasOwnProperty('$ref') ? this.dereferencedAPI[id]: oasDefs[id];
+
+			const oasDef = oasDefs[id].hasOwnProperty('$ref') ? this.dereferencedAPI[id] : oasDefs[id];
 			this.currentMethod = id;
 			const parametersDef = oasDef.parameters ? oasDef.parameters.concat(parameters) : parameters;
 			if (!_.isEmpty(parametersDef)) oasDef.parameters = parametersDef;
@@ -456,12 +456,12 @@ class Oas20MethodConverter extends Converter {
 			method.method = id;
 			result.push(method);
 		}
-		
+
 		return result;
 	}
 
 	// imports 1 method definition
-	_import(oasDef:any) {
+	_import(oasDef: any) {
 		const attrIdMap = {
 			'operationId': 'name',
 			'schemes': 'protocols'
@@ -470,7 +470,7 @@ class Oas20MethodConverter extends Converter {
 		const attrIdSkip = ['responses', 'description', 'parameters', 'security', 'externalDocs'];
 		const model = Oas20MethodConverter.createMethod(oasDef, attrIdMap, attrIdSkip, oasHelper.getAnnotationPrefix);
 		const definitionConverter = new Oas20DefinitionConverter(this.model, this.annotationPrefix, this.def);
-		
+
 		if (oasDef.hasOwnProperty('security')) {
 			const result: SecurityRequirement[] = [];
 			oasDef.security.map(security => {
@@ -493,13 +493,15 @@ class Oas20MethodConverter extends Converter {
 				const responses: Response[] = [];
 				for (const id in oasDef.responses) {
 					if (!oasDef.responses.hasOwnProperty(id)) continue;
-					
+
 					const value = oasDef.responses[id];
 					const response = new Response();
 					response.httpStatusCode = id;
 					if (value.hasOwnProperty('$ref') && this.model.responses) {
 						const reference: string = stringsHelper.computeResourceDisplayName(value.$ref);
-						const modelResponses: Response[] = this.model.responses.filter(modelResponse => { return modelResponse.name === reference; });
+						const modelResponses: Response[] = this.model.responses.filter(modelResponse => {
+							return modelResponse.name === reference;
+						});
 						const def: Response = modelResponses[0];
 						if (def.hasOwnProperty('description')) response.description = def.description;
 						if (def.hasOwnProperty('headers')) response.headers = def.headers;
@@ -537,7 +539,7 @@ class Oas20MethodConverter extends Converter {
 								const result = new Body();
 								const definition = new Definition();
 								definition.examples = val;
-								Oas20MethodConverter.importExamples({ examples: val }, definition, 'examples');
+								Oas20MethodConverter.importExamples({examples: val}, definition, 'examples');
 								result.definition = definition;
 								if (!body.definition) body.definition = new Definition();
 								_.assign(body.definition, result.definition);
@@ -559,7 +561,7 @@ class Oas20MethodConverter extends Converter {
 			if (defExternalDocs.hasOwnProperty('url')) externalDocs.url = defExternalDocs.url;
 			if (defExternalDocs.hasOwnProperty('description')) externalDocs.description = defExternalDocs.description;
 			if (!_.isEmpty(externalDocs)) {
-      	model.externalDocs = externalDocs;
+				model.externalDocs = externalDocs;
 			}
 		}
 		if (oasDef.hasOwnProperty('parameters')) {
@@ -571,9 +573,9 @@ class Oas20MethodConverter extends Converter {
 				const is: Item[] = [];
 				for (const index in oasDef.parameters) {
 					if (!oasDef.parameters.hasOwnProperty(index)) continue;
-					
+
 					const isExternal = oasHelper.isFilePath(oasDef.parameters[index]);
-					let dereferencedParam = (this.dereferencedAPI) ? (this.currentMethod ? (this.dereferencedAPI[this.currentMethod].parameters ? this.dereferencedAPI[this.currentMethod].parameters[index] : null): this.dereferencedAPI) : null;
+					let dereferencedParam = (this.dereferencedAPI) ? (this.currentMethod ? (this.dereferencedAPI[this.currentMethod].parameters ? this.dereferencedAPI[this.currentMethod].parameters[index] : null) : this.dereferencedAPI) : null;
 					const isInPath = this.resourcePath && dereferencedParam && dereferencedParam.in === 'path';
 					const val = (isExternal || isInPath) && dereferencedParam ? dereferencedParam : oasDef.parameters[index];
 					if (val.hasOwnProperty('$ref') && !isInPath) {
@@ -581,7 +583,7 @@ class Oas20MethodConverter extends Converter {
 						let traitName = stringsHelper.computeResourceDisplayName(val.$ref);
 						const match = traitName.match(regex);
 						if (match) traitName = match[2];
-						if (!is.map(object => object.name ).includes(traitName)) {
+						if (!is.map(object => object.name).includes(traitName)) {
 							const item = new Item();
 							item.name = traitName;
 							is.push(item);
@@ -653,21 +655,21 @@ class Oas20MethodConverter extends Converter {
 				if (!_.isEmpty(is)) model.is = is;
 			}
 		}
-		
+
 		Oas20RootConverter.importAnnotations(oasDef, model, this.model);
-		
+
 		return model;
 	}
-	
-	static importRequired(source:any, target:any) {
+
+	static importRequired(source: any, target: any) {
 		target.required = source.hasOwnProperty('required') ? source.required : false;
 	}
-	
-	static importExamples(source:any, target:Definition, property:string) {
+
+	static importExamples(source: any, target: Definition, property: string) {
 		let isJson: boolean = false;
 		try {
 			switch (property) {
-				case 'example' :{
+				case 'example' : {
 					const example = JSON.parse(source.example);
 					if (typeof source.example === 'string') {
 						target.example = example;

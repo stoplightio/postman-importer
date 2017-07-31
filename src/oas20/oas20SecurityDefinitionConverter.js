@@ -10,27 +10,27 @@ const oasHelper = require('../helpers/oas20');
 
 class Oas20SecurityDefinitionConverter extends Converter {
 
-	constructor(model:any, dereferencedAPI:any) {
+	constructor(model: any, dereferencedAPI: any) {
 		super(model);
 		this.dereferencedAPI = dereferencedAPI;
 	}
 
-	export(models:SecurityDefinition[]) {
+	export(models: SecurityDefinition[]) {
 		const result = {};
 		if (_.isEmpty(models)) return result;
 
 		for (let i = 0; i < models.length; i++) {
 			const model: SecurityDefinition = models[i];
 			const swaggerDef = this._export(model);
-			if (swaggerDef != null){
+			if (swaggerDef != null) {
 				result[model.schemaName] = swaggerDef;
 			}
 		}
-		
+
 		return result;
 	}
 
-	import(oasDefs:any) {
+	import(oasDefs: any) {
 		const result: SecurityDefinition[] = [];
 		if (_.isEmpty(oasDefs)) return result;
 
@@ -45,30 +45,30 @@ class Oas20SecurityDefinitionConverter extends Converter {
 			const securityDefinition: SecurityDefinition = this._import(oasDef);
 			result.push(securityDefinition);
 		}
-		
+
 		return result;
 	}
 
-	_export(model:SecurityDefinition) {
+	_export(model: SecurityDefinition) {
 		const attrIdMap = {};
 		const attrIdSkip = [
-			'type','schemaName', 'authorization', 'scopes', 'signatures', 'displayName',
+			'type', 'schemaName', 'authorization', 'scopes', 'signatures', 'displayName',
 			'describedBy', 'requestTokenUri', 'tokenUrl', 'authorizationUrl', 'name', '_in'
 		];
 		const oasValidSecurityTypes = ['oauth2', 'basic', 'apiKey'];
 		const oasDef = Oas20SecurityDefinitionConverter.createOasDef(model, attrIdMap, attrIdSkip);
 
 		const type: string = model.type;
-		if (oasValidSecurityTypes.indexOf(type) > -1){
+		if (oasValidSecurityTypes.indexOf(type) > -1) {
 			oasDef.type = type;
-		} else if (type.substr(0,2) === 'x-') {
+		} else if (type.substr(0, 2) === 'x-') {
 			oasDef.type = 'apiKey';
 		} else {
 			return;
 		}
 
 		switch (oasDef.type) {
-			case 'oauth2' :
+			case 'oauth2' : {
 				const authorizationUrlValidFlows = ['implicit', 'accessCode'];
 				const tokenUrlValidFlows = ['application', 'password', 'accessCode'];
 				if (model.hasOwnProperty('authorization') && model.authorization) oasDef.flow = model.authorization[0];
@@ -83,8 +83,9 @@ class Oas20SecurityDefinitionConverter extends Converter {
 					}
 				}
 				break;
+			}
 
-			case 'apiKey' :
+			case 'apiKey' : {
 				const describedBy: ?Method = model.describedBy;
 				if (!describedBy) {
 					oasDef.in = 'header';
@@ -97,12 +98,13 @@ class Oas20SecurityDefinitionConverter extends Converter {
 					oasDef.name = describedBy.parameters[0].name;
 				}
 				break;
+			}
 		}
 
 		return oasDef;
 	}
 
-	_import(oasDef:any) {
+	_import(oasDef: any) {
 		const attrIdMap = {};
 		const attrIdSkip = ['flow', 'scopes', 'in', 'name'];
 		const model = Oas20SecurityDefinitionConverter.createSecurityDefinition(oasDef, attrIdMap, attrIdSkip, oasHelper.getAnnotationPrefix);
@@ -125,7 +127,7 @@ class Oas20SecurityDefinitionConverter extends Converter {
 
 		if (oasDef.in && oasDef.name) {
 			const describedBy = {};
-			if (oasDef.in === 'header'){
+			if (oasDef.in === 'header') {
 				describedBy.headers = {};
 				describedBy.headers[oasDef.name] = {type: ['string'], name: oasDef.name};
 			}
@@ -139,7 +141,7 @@ class Oas20SecurityDefinitionConverter extends Converter {
 		}
 
 		Oas20RootConverter.importAnnotations(oasDef, model, this.model);
-		
+
 		return model;
 	}
 
@@ -154,13 +156,13 @@ class Oas20SecurityDefinitionConverter extends Converter {
 			result[attrIdMap[id]] = result[id];
 			delete result[id];
 		});
-		
+
 		return result;
 	}
-	
+
 	static createSecurityDefinition(model, attrIdMap, attrIdSkip, annotationPrefix) {
 		const object = {};
-		
+
 		_.assign(object, model);
 		attrIdSkip.map(id => {
 			delete object[id];
@@ -171,13 +173,13 @@ class Oas20SecurityDefinitionConverter extends Converter {
 		});
 		for (const id in object) {
 			if (!object.hasOwnProperty(id)) continue;
-			
+
 			if (id.startsWith(annotationPrefix) || id.startsWith('x-')) delete object[id];
 		}
-		
+
 		const result = new SecurityDefinition();
 		_.assign(result, object);
-		
+
 		return result;
 	}
 }

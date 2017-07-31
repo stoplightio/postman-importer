@@ -89,7 +89,7 @@ class Oas20Converter extends Converter {
 				const definitionConverter = new Oas20DefinitionConverter();
 				if (model.hasOwnProperty('types')) oasDef.definitions = definitionConverter.export(model.types);
 				const traitConverter = new Oas20TraitConverter();
-				if (model.hasOwnProperty('traits') && model.traits) {
+				if (model.hasOwnProperty('traits') && model.traits){
 					const traitsDef: any = traitConverter.export(model.traits);
 					if (!_.isEmpty(traitsDef.parameters)) oasDef.parameters = traitsDef.parameters;
 					if (!_.isEmpty(traitsDef.responses)) oasDef.responses = traitsDef.responses;
