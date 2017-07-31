@@ -50,7 +50,7 @@ class Oas20RootConverter extends Converter {
 				const uri: ?string = baseUri.uri;
 				if (uri != null) {
 					const parsedURL = url.parse(uri);
-					oasDef['x-basePath'] = parsedURL.protocol ? uri.replace(parsedURL.protocol + '//', "") : uri;
+					oasDef['x-basePath'] = parsedURL.protocol ? uri.replace(parsedURL.protocol + '//', '') : uri;
 				}
 			}
 			Oas20RootConverter.exportAnnotations(baseUri, oasDef);

@@ -1,87 +1,87 @@
-import React, {Component} from 'react'
-import './App.css'
-import {Col, Row} from 'react-bootstrap'
-import Toolbar from './component/Toolbar'
-import CodeEditor from './component/CodeEditor'
-import ace from 'brace'
-import AlertMessage from './component/AlertMessage'
-import NavBar from './component/NavBar'
+import React, {Component} from 'react';
+import './App.css';
+import {Col, Row} from 'react-bootstrap';
+import Toolbar from './component/Toolbar';
+import CodeEditor from './component/CodeEditor';
+import ace from 'brace';
+import AlertMessage from './component/AlertMessage';
+import NavBar from './component/NavBar';
 
 class App extends Component {
 
-  static leftEditorId = "leftEditor"
-  static rightEditorId = "rightEditor"
+	static leftEditorId = 'leftEditor'
+	static rightEditorId = 'rightEditor'
 
-  constructor(props) {
-    super(props)
+	constructor(props) {
+		super(props);
 
-    this.converterWorker = new Worker(`${process.env.PUBLIC_URL}/build/converter-bundle.js`)
+		this.converterWorker = new Worker(`${process.env.PUBLIC_URL}/build/converter-bundle.js`);
 
-    this.state = {
-      converting: false,
-      isAuto: true,
-      autoFormat: '',
-      showAlert: false
-    }
+		this.state = {
+			converting: false,
+			isAuto: true,
+			autoFormat: '',
+			showAlert: false
+		};
 
-    this.converterWorker.addEventListener('message', (e) => {
-      this.setState({converting: false})
+		this.converterWorker.addEventListener('message', (e) => {
+			this.setState({converting: false});
 
-      const response = e.data
-      const rightEditor = ace.edit(App.rightEditorId)
-      rightEditor.setValue(response.result)
-      rightEditor.gotoLine(0)
+			const response = e.data;
+			const rightEditor = ace.edit(App.rightEditorId);
+			rightEditor.setValue(response.result);
+			rightEditor.gotoLine(0);
 
-      if (response.error || response.message) {
-        this.setState({
-          errorMessage: response.message,
-          errorDetail: response.error,
-          showAlert: true
-        })
-      }
+			if (response.error || response.message) {
+				this.setState({
+					errorMessage: response.message,
+					errorDetail: response.error,
+					showAlert: true
+				});
+			}
 
-    }, false)
-  }
+		}, false);
+	}
 
-  renderEditor(name) {
-    return <CodeEditor name={name} autoMode={this.state.isAuto ? this.detectMode.bind(this) : undefined}/>
-  }
+	renderEditor(name) {
+		return <CodeEditor name={name} autoMode={this.state.isAuto ? this.detectMode.bind(this) : undefined}/>;
+	}
 
-  detectMode(editorText) {
-    const mode = editorText.charAt(0) === '{' ? 'json' : 'yaml'
-    this.setState({autoFormat: mode})
-    this.changeEditorMode(true, mode)
-  }
+	detectMode(editorText) {
+		const mode = editorText.charAt(0) === '{' ? 'json' : 'yaml';
+		this.setState({autoFormat: mode});
+		this.changeEditorMode(true, mode);
+	}
 
-  sendForConversion(from, to, toFormat) {
-    this.setState({converting: true, showAlert: false})
-    const leftEditor = ace.edit(App.leftEditorId)
-    const message = {rawData: leftEditor.getValue(), fromLanguage: from, toLanguage: to, format: toFormat}
-    this.converterWorker.postMessage(message)
-  }
+	sendForConversion(from, to, toFormat) {
+		this.setState({converting: true, showAlert: false});
+		const leftEditor = ace.edit(App.leftEditorId);
+		const message = {rawData: leftEditor.getValue(), fromLanguage: from, toLanguage: to, format: toFormat};
+		this.converterWorker.postMessage(message);
+	}
 
-  changeEditorMode(left, mode) {
-    let editor = left ? ace.edit(App.leftEditorId) : ace.edit(App.rightEditorId)
-    editor.session.setMode(`ace/mode/${mode}`)
-  }
+	changeEditorMode(left, mode) {
+		let editor = left ? ace.edit(App.leftEditorId) : ace.edit(App.rightEditorId);
+		editor.session.setMode(`ace/mode/${mode}`);
+	}
 
-  changeEditorsTheme(theme) {
-    let leftEditor = ace.edit(App.leftEditorId)
-    let rightEditor = ace.edit(App.rightEditorId)
-    leftEditor.setTheme(`ace/theme/${theme}`)
-    rightEditor.setTheme(`ace/theme/${theme}`)
-  }
+	changeEditorsTheme(theme) {
+		let leftEditor = ace.edit(App.leftEditorId);
+		let rightEditor = ace.edit(App.rightEditorId);
+		leftEditor.setTheme(`ace/theme/${theme}`);
+		rightEditor.setTheme(`ace/theme/${theme}`);
+	}
 
-  handleDetectionMode(isAuto) {
-    this.setState({isAuto: isAuto})
-  }
+	handleDetectionMode(isAuto) {
+		this.setState({isAuto: isAuto});
+	}
 
-  toggleAlert() {
-    this.setState({showAlert: false})
-  }
+	toggleAlert() {
+		this.setState({showAlert: false});
+	}
 
-  render() {
-    return (
+	render() {
+		return (
       <div className="app-container">
         <NavBar onTheme={this.changeEditorsTheme}/>
 
@@ -108,8 +108,8 @@ class App extends Component {
           </Row>
         </div>
       </div>
-    )
-  }
+		);
+	}
 }
 
-export default App
+export default App;

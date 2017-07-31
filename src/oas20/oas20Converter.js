@@ -80,7 +80,7 @@ class Oas20Converter extends Converter {
 				
 				const rootConverter = new Oas20RootConverter();
 				const oasDef = rootConverter.export(model);
-				oasDef.swagger = "2.0";
+				oasDef.swagger = '2.0';
 				if (model.hasOwnProperty('securityDefinitions') && model.securityDefinitions) {
 					const securityDefinitionConverter = new Oas20SecurityDefinitionConverter();
 					const securityDef = securityDefinitionConverter.export(model.securityDefinitions);
@@ -204,7 +204,7 @@ class Oas20Converter extends Converter {
 						const userMethod: Method = userMethods[m];
 						if (item.type === 'header' && userMethod && userMethod.headers != null && item.trait) {
 							const headers: Header[] = userMethod.headers;
-							const headerNames = headers.map(function (header) { return header.name });
+							const headerNames = headers.map(function (header) { return header.name; });
 							if (headerNames.includes(item.name)) {
 								headers.splice(headerNames.indexOf(item.name), 1);
 								const header = new Header();
@@ -214,7 +214,7 @@ class Oas20Converter extends Converter {
 							}
 						} else if (item.type === 'queryParameter' && userMethod && userMethod.parameters && item.trait) {
 							const parameters: Parameter[] = userMethod.parameters;
-							const parameterNames = parameters.map(function (parameter) { return parameter.name });
+							const parameterNames = parameters.map(function (parameter) { return parameter.name; });
 							if (parameterNames.includes(item.name)) {
 								parameters.splice(parameterNames.indexOf(item.name), 1);
 								const parameter = new Parameter();
@@ -224,7 +224,7 @@ class Oas20Converter extends Converter {
 							}
 						} else if (item.type === 'response' && userMethod && userMethod.responses && item.trait) {
 							const responses: Response[] = userMethod.responses;
-							const responseCodes = responses.map(function (response) { return response.httpStatusCode });
+							const responseCodes = responses.map(function (response) { return response.httpStatusCode; });
 							if (responseCodes.includes(item.name)) {
 								responses.splice(responseCodes.indexOf(item.name), 1);
 								const response = new Response();
