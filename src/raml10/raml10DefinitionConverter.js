@@ -359,7 +359,7 @@ class Raml10DefinitionConverter extends Converter {
 				result.push(definition);
 			}
 		}
-		const typeNames: string[] = result.map(type => { return type.name });
+		const typeNames: string[] = result.map(type => { return type.name; });
 		this.types = this.types ? this.types.concat(typeNames) : typeNames;
 		
 		return result;

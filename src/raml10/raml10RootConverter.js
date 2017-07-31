@@ -207,10 +207,10 @@ class Raml10RootConverter extends Converter {
 		}
 
 		if (ramlDef.hasOwnProperty('baseUri') && ramlDef.baseUri) {
-      const baseUri = new BaseUri();
-      baseUri.uri = ramlDef.baseUri;
-      const parsedURL = url.parse(ramlDef.baseUri);
-      if (parsedURL.hasOwnProperty('host') && parsedURL.host) {
+			const baseUri = new BaseUri();
+			baseUri.uri = ramlDef.baseUri;
+			const parsedURL = url.parse(ramlDef.baseUri);
+			if (parsedURL.hasOwnProperty('host') && parsedURL.host) {
       	const host: string = parsedURL.host;
 				const uri: ?string = baseUri.uri;
 				if (uri != null) {
@@ -219,23 +219,23 @@ class Raml10RootConverter extends Converter {
 						baseUri.host = host;
 					}
 				}
-      }
-      if (parsedURL.path && parsedURL.path !== '/') {
-        const basePath: string = parsedURL.path.replace(/%7B/g, '{').replace(/%7D/g, '}');
-        if (!basePath.startsWith('{')) {
-          baseUri.basePath = basePath;
-        }
-      }
-      if (parsedURL.protocol) {
-        const protocol: string = parsedURL.protocol.slice(0, -1).toLowerCase();
-        baseUri.protocol = protocol;
-        if (model.hasOwnProperty('protocols') && model.protocols) {
-          const protocols: string[] = model.protocols;
+			}
+			if (parsedURL.path && parsedURL.path !== '/') {
+				const basePath: string = parsedURL.path.replace(/%7B/g, '{').replace(/%7D/g, '}');
+				if (!basePath.startsWith('{')) {
+					baseUri.basePath = basePath;
+				}
+			}
+			if (parsedURL.protocol) {
+				const protocol: string = parsedURL.protocol.slice(0, -1).toLowerCase();
+				baseUri.protocol = protocol;
+				if (model.hasOwnProperty('protocols') && model.protocols) {
+					const protocols: string[] = model.protocols;
         	if (!_.includes(protocols, baseUri.protocol)) {
-						const protocol: ?string = baseUri.protocol;
-						if (protocol != null) protocols.push(protocol);
-          }
-        } else if (baseUri.protocol != null) {
+		const protocol: ?string = baseUri.protocol;
+		if (protocol != null) protocols.push(protocol);
+	}
+				} else if (baseUri.protocol != null) {
 					const protocols: string[] = [baseUri.protocol];
 					model.protocols = protocols;
 				}

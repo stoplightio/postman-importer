@@ -189,7 +189,7 @@ class Raml10Converter extends Converter {
 					if (item.type === 'body' && userMethod.bodies) {
 						const bodyMimeTypes = [];
 						for (let j = 0; j < userMethod.bodies.length; j++) {
-							bodyMimeTypes.push(userMethod.bodies[j].mimeType)
+							bodyMimeTypes.push(userMethod.bodies[j].mimeType);
 						}
 						if (item.name && bodyMimeTypes.includes(item.name) && userMethod.hasOwnProperty('bodies')) {
 							const bodies = userMethod.bodies;
@@ -197,22 +197,22 @@ class Raml10Converter extends Converter {
 						}
 					} else if (item.type === 'header' && userMethod.headers) {
 						const headerNames = userMethod.headers.map(function (header) {
-							return header.name
+							return header.name;
 						});
 						if (headerNames.includes(item.name) && userMethod.headers) userMethod.headers.splice(headerNames.indexOf(item.name), 1);
 					} else if (item.type === 'queryParameter' && userMethod.parameters) {
 						const parameterNames = userMethod.parameters.map(function (parameter) {
-							return parameter.name
+							return parameter.name;
 						});
 						if (parameterNames.includes(item.name) && userMethod.parameters) userMethod.parameters.splice(parameterNames.indexOf(item.name), 1);
 					} else if (item.type === 'uriParameter' && userResource.parameters) {
 						const parameterNames = userResource.parameters.map(function (parameter) {
-							return parameter.name
+							return parameter.name;
 						});
 						if (parameterNames.includes(item.name) && userResource.parameters) userResource.parameters.splice(parameterNames.indexOf(item.name), 1);
 					} else if (item.type === 'response' && userMethod.responses) {
 						const responseCodes = userMethod.responses.map(function (response) {
-							return response.httpStatusCode
+							return response.httpStatusCode;
 						});
 						if (responseCodes.includes(item.name) && userMethod.responses) userMethod.responses.splice(responseCodes.indexOf(item.name), 1);
 					}

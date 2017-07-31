@@ -189,7 +189,7 @@ class Oas20MethodConverter extends Converter {
 					const definition: ?Definition = body.definition;
 					if (definition != null) {
 						
-						if (definition.internalType === 'file' && consumes != null && !consumes.includes('multipart/form-data')) consumes.push('multipart/form-data')
+						if (definition.internalType === 'file' && consumes != null && !consumes.includes('multipart/form-data')) consumes.push('multipart/form-data');
 						let input: Definition[] = [];
 						const propertiesRequired = definition.propsRequired ? definition.propsRequired : [];
 						let hasProperties;
@@ -262,7 +262,7 @@ class Oas20MethodConverter extends Converter {
 				const consumes: ?string[] = mediaType.consumes;
 				if (consumes != null && oasDef.consumes != null) {
 					oasDef.consumes = oasDef.consumes.filter(function (consume) {
-						return !consumes.includes(consume)
+						return !consumes.includes(consume);
 					});
 				}
 				if (_.isEmpty(oasDef.consumes)) delete oasDef.consumes;
@@ -271,7 +271,7 @@ class Oas20MethodConverter extends Converter {
 				const produces: ?string[] = mediaType.produces;
 				if (produces!= null) {
 					oasDef.produces = oasDef.produces.filter(function (produce) {
-						return !produces.includes(produce)
+						return !produces.includes(produce);
 					});
 				}
 				if (_.isEmpty(oasDef.produces)) delete oasDef.produces;
@@ -390,7 +390,7 @@ class Oas20MethodConverter extends Converter {
 				parameter.in = object._in;
 				parameter.name = name;
 				Oas20MethodConverter.exportRequired(value, parameter);
-				queryStrings.push(parameter)
+				queryStrings.push(parameter);
 			}
 		}
 		
@@ -554,13 +554,13 @@ class Oas20MethodConverter extends Converter {
 		}
 
 		if (oasDef.hasOwnProperty('externalDocs')) {
-      const defExternalDocs = oasDef.externalDocs;
-      const externalDocs = new ExternalDocumentation();
-      if (defExternalDocs.hasOwnProperty('url')) externalDocs.url = defExternalDocs.url;
-      if (defExternalDocs.hasOwnProperty('description')) externalDocs.description = defExternalDocs.description;
-      if (!_.isEmpty(externalDocs)) {
+			const defExternalDocs = oasDef.externalDocs;
+			const externalDocs = new ExternalDocumentation();
+			if (defExternalDocs.hasOwnProperty('url')) externalDocs.url = defExternalDocs.url;
+			if (defExternalDocs.hasOwnProperty('description')) externalDocs.description = defExternalDocs.description;
+			if (!_.isEmpty(externalDocs)) {
       	model.externalDocs = externalDocs;
-      }
+			}
 		}
 		if (oasDef.hasOwnProperty('parameters')) {
 			if (_.isArray(oasDef.parameters) && !_.isEmpty(oasDef.parameters)) {

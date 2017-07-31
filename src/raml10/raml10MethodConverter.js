@@ -577,7 +577,7 @@ class Raml10MethodConverter extends Converter {
 				const def: ?Definition = body.definition;
 				if (model && def != null && def.hasOwnProperty('definitions')) {
 					const types: Definition[] = model.types ? model.types : [];
-					const typeNames = types.map(type => { return type.name });
+					const typeNames = types.map(type => { return type.name; });
 					const defs: ?any = def.definitions;
 					for (const typeName in defs) {
 						if (!defs.hasOwnProperty(typeName)) continue;
@@ -620,7 +620,7 @@ class Raml10MethodConverter extends Converter {
 			if (isReference) {
 				const type: string = definition.type;
 				const internalType: string = definition.internalType;
-				const typeNames: string[] = model && model.types ? model.types.map(type => { return type.name }) : [];
+				const typeNames: string[] = model && model.types ? model.types.map(type => { return type.name; }) : [];
 				if (type) {
 					definition = new Definition();
 					definition.reference = type;

@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
 import '../App.css';
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
-import FontAwesome from 'react-fontawesome'
+import FontAwesome from 'react-fontawesome';
 
 class NavBar extends Component {
 
-    constructor(props){
-        super(props)
+	constructor(props){
+		super(props);
 
-        this.themes = ["monokai", "github", "tomorrow", "kuroir", "twilight", "xcode", "textmate", "terminal"]
+		this.themes = ['monokai', 'github', 'tomorrow', 'kuroir', 'twilight', 'xcode', 'textmate', 'terminal'];
 
-        this.state = {
-            themeIndex: 1
-        }
-    }
+		this.state = {
+			themeIndex: 1
+		};
+	}
 
-    render() {
-        return (
+	render() {
+		return (
             <Navbar id="app-navbar" inverse fluid={true}>
                 <Navbar.Header>
                     <Navbar.Brand>
@@ -37,19 +37,19 @@ class NavBar extends Component {
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
-        );
-    }
+		);
+	}
 
-    renderThemes() {
-        return this.themes.map((theme, index) => (
+	renderThemes() {
+		return this.themes.map((theme, index) => (
             <MenuItem key={index} eventKey={index} disabled={this.state.themeIndex === index}> {theme} </MenuItem>
-        ))
-    }
+        ));
+	}
 
-    handleThemeSelection(idSelected) {
-        this.setState({themeIndex: idSelected})
-        this.props.onTheme(this.themes[idSelected])
-    }
+	handleThemeSelection(idSelected) {
+		this.setState({themeIndex: idSelected});
+		this.props.onTheme(this.themes[idSelected]);
+	}
 }
 
 export default NavBar;
