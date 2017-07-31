@@ -134,7 +134,7 @@ class Oas20DefinitionConverter extends Converter {
 			else oasDef.allOf = allOf;
 		}
 		
-		if (model.hasOwnProperty('schema') && model.schema != null) {
+		if (model.hasOwnProperty('schema') && model.schema != null){
 			const schema: Definition = model.schema;
 			oasDef.schema = this._export(schema);
 		}

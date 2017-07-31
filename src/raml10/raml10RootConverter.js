@@ -24,17 +24,17 @@ const url = require('url');
 
 class Raml10RootConverter extends Converter {
 
-	constructor(model:Root) {
+	constructor(model: Root) {
 		super(model, 'oas');
 	}
-	
-	export(model:Root) {
-		return _.isEmpty(model)? {} : this._export(model);
+
+	export(model: Root) {
+		return _.isEmpty(model) ? {} : this._export(model);
 	}
 
-	_export(model:Root) {
+	_export(model: Root) {
 		const attrIdMap = {};
-		const attrIdSkip = ['info', 'baseUri', 'baseUriParameters', 'mediaType', 'protocols','securityDefinitions','resources', 'types', 'resourceTypes', 'annotations', 'resourceAnnotations', 'tags', 'externalDocs', 'responses', 'documentation'];
+		const attrIdSkip = ['info', 'baseUri', 'baseUriParameters', 'mediaType', 'protocols', 'securityDefinitions', 'resources', 'types', 'resourceTypes', 'annotations', 'resourceAnnotations', 'tags', 'externalDocs', 'responses', 'documentation'];
 		const ramlDef = Raml10RootConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 
 		if (model.hasOwnProperty('info')) {
@@ -97,12 +97,12 @@ class Raml10RootConverter extends Converter {
 			const baseUri: BaseUri = model.baseUri;
 			if (baseUri.hasOwnProperty('annotations')) {
 				const annotationConverter = new Raml10AnnotationConverter(this.model, this.annotationPrefix, ramlDef);
-				ramlDef.baseUri = { value: baseUri.uri };
+				ramlDef.baseUri = {value: baseUri.uri};
 				_.assign(ramlDef.baseUri, annotationConverter._export(baseUri));
 			} else
 				ramlDef.baseUri = baseUri.uri;
 		}
-		
+
 		if (model.hasOwnProperty('documentation') && model.documentation) {
 			const documentationModel: Item[] = model.documentation;
 			const documentation = [];
@@ -116,7 +116,7 @@ class Raml10RootConverter extends Converter {
 			}
 			ramlDef.documentation = documentation;
 		}
-		
+
 		if (model.hasOwnProperty('responses') && model.responses) {
 			const responsesModel: Response[] = model.responses;
 			const responses = {};
@@ -146,14 +146,14 @@ class Raml10RootConverter extends Converter {
 				const name: ?string = response.name;
 				if (name) responses[name] = responseDef;
 			}
-			
+
 			if (!_.isEmpty(responses)) {
 				const id = this.annotationPrefix + '-responses';
 				Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
 				ramlDef['(' + id + ')'] = responses;
 			}
 		}
-		
+
 		if (model.hasOwnProperty('externalDocs') && model.externalDocs) {
 			const externalDocsModel: ExternalDocumentation = model.externalDocs;
 			const id = this.annotationPrefix + '-externalDocs';
@@ -176,19 +176,19 @@ class Raml10RootConverter extends Converter {
 
 		return ramlDef;
 	}
-	
-	static exportAnnotations(model:Root, annotationPrefix:string, ramlDef:any, source:any, target:any) {
+
+	static exportAnnotations(model: Root, annotationPrefix: string, ramlDef: any, source: any, target: any) {
 		if (source.hasOwnProperty('annotations') && _.isArray(source.annotations) && !_.isEmpty(source.annotations)) {
 			const annotationConverter = new Raml10AnnotationConverter(model, annotationPrefix, ramlDef);
 			_.assign(target, annotationConverter._export(source));
 		}
 	}
 
-	import(ramlDef:any):Root {
+	import(ramlDef: any): Root {
 		return _.isEmpty(ramlDef) ? new Root() : this._import(ramlDef);
 	}
-	
-	_import(ramlDef:any) {
+
+	_import(ramlDef: any) {
 		const model = new Root();
 
 		const infoConverter = new Raml10InfoConverter(model);
@@ -196,9 +196,11 @@ class Raml10RootConverter extends Converter {
 		const info: Info = infoConverter.import(ramlDef);
 		model.info = info;
 
-		if (ramlDef.hasOwnProperty('protocols')){
-			if (_.isArray(ramlDef.protocols)){
-				const protocols: string[] = ramlDef.protocols.map(function(protocol){ return protocol.toLowerCase(); }) ;
+		if (ramlDef.hasOwnProperty('protocols')) {
+			if (_.isArray(ramlDef.protocols)) {
+				const protocols: string[] = ramlDef.protocols.map(function (protocol) {
+					return protocol.toLowerCase();
+				});
 				model.protocols = protocols;
 			} else {
 				const protocols: string[] = [ramlDef.protocols.toLowerCase()];
@@ -211,7 +213,7 @@ class Raml10RootConverter extends Converter {
 			baseUri.uri = ramlDef.baseUri;
 			const parsedURL = url.parse(ramlDef.baseUri);
 			if (parsedURL.hasOwnProperty('host') && parsedURL.host) {
-      	const host: string = parsedURL.host;
+				const host: string = parsedURL.host;
 				const uri: ?string = baseUri.uri;
 				if (uri != null) {
 					const index = uri.indexOf(parsedURL.host);
@@ -231,10 +233,10 @@ class Raml10RootConverter extends Converter {
 				baseUri.protocol = protocol;
 				if (model.hasOwnProperty('protocols') && model.protocols) {
 					const protocols: string[] = model.protocols;
-        	if (!_.includes(protocols, baseUri.protocol)) {
-		const protocol: ?string = baseUri.protocol;
-		if (protocol != null) protocols.push(protocol);
-	}
+					if (!_.includes(protocols, baseUri.protocol)) {
+						const protocol: ?string = baseUri.protocol;
+						if (protocol != null) protocols.push(protocol);
+					}
 				} else if (baseUri.protocol != null) {
 					const protocols: string[] = [baseUri.protocol];
 					model.protocols = protocols;
@@ -250,7 +252,7 @@ class Raml10RootConverter extends Converter {
 				const baseUriParameters: Parameter[] = [];
 				for (const id in ramlDef.baseUriParameters) {
 					if (!ramlDef.baseUriParameters.hasOwnProperty(id)) continue;
-			
+
 					const parameter: Parameter = parameterConverter._import(ramlDef.baseUriParameters[id]);
 					baseUriParameters.push(parameter);
 				}
@@ -258,17 +260,16 @@ class Raml10RootConverter extends Converter {
 			}
 		}
 
-
 		if (ramlDef.hasOwnProperty('mediaType')) {
 			const mediaType = new MediaType();
-			const mimeTypes: string[] = _.isArray(ramlDef.mediaType)? ramlDef.mediaType : [ramlDef.mediaType];
+			const mimeTypes: string[] = _.isArray(ramlDef.mediaType) ? ramlDef.mediaType : [ramlDef.mediaType];
 			const mimes: string[] = [];
 			for (let i = 0; i < mimeTypes.length; i++) {
 				const mimeType: string = mimeTypes[i];
 				if (!_.includes(mimes, mimeType)) mimes.push(mimeType);
 			}
 			mediaType.mimeTypes = mimeTypes;
-			if (!_.isEmpty(mimes)){
+			if (!_.isEmpty(mimes)) {
 				mediaType.consumes = mimes;
 				mediaType.produces = mimes;
 			}
@@ -284,10 +285,10 @@ class Raml10RootConverter extends Converter {
 				item.value = doc.content;
 				documentation.push(item);
 			}
-			
+
 			model.documentation = documentation;
 		}
-		
+
 		if (ramlDef.hasOwnProperty('annotations') || ramlDef.hasOwnProperty('scalarsAnnotations')) {
 			const annotationsDef = ramlDef.annotations;
 			if (annotationsDef.hasOwnProperty('oas-tags-definition')) {
@@ -296,7 +297,7 @@ class Raml10RootConverter extends Converter {
 				const tags: Tag[] = model.tags ? model.tags : [];
 				if (tagDef.hasOwnProperty('structuredValue')) {
 					const structuredValue = tagDef.structuredValue;
-					structuredValue.map( value => {
+					structuredValue.map(value => {
 						const tag = new Tag();
 						tag.name = value.name;
 						if (value.hasOwnProperty('description')) tag.description = value.description;
@@ -304,7 +305,7 @@ class Raml10RootConverter extends Converter {
 							const externalDocs = value.externalDocs;
 							const result = new ExternalDocumentation();
 							if (externalDocs.hasOwnProperty('description')) result.description = externalDocs.description;
-							if (externalDocs.hasOwnProperty('url')) result.url= externalDocs.url;
+							if (externalDocs.hasOwnProperty('url')) result.url = externalDocs.url;
 							if (!_.isEmpty(result)) {
 								tag.externalDocs = result;
 							}
@@ -336,7 +337,7 @@ class Raml10RootConverter extends Converter {
 		return model;
 	}
 
-	static createRamlDef(root:Root, attrIdMap, attrIdSkip) {
+	static createRamlDef(root: Root, attrIdMap, attrIdSkip) {
 		const result = {};
 
 		_.assign(result, root);
@@ -350,7 +351,7 @@ class Raml10RootConverter extends Converter {
 
 		return result;
 	}
-	
+
 }
 
 module.exports = Raml10RootConverter;
