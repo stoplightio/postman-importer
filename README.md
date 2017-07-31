@@ -1,12 +1,8 @@
 # OAS RAML Converter [![npm version](https://badge.fury.io/js/oas-raml-converter.svg)](https://www.npmjs.com/package/oas-raml-converter)
 
-## Master
-[![Build Status](https://travis-ci.org/mulesoft/oas-raml-converter.svg?branch=master)](https://travis-ci.org/mulesoft/oas-raml-converter) 
-[![Coverage Status](https://coveralls.io/repos/github/mulesoft/oas-raml-converter/badge.svg?branch=master)](https://coveralls.io/github/mulesoft/oas-raml-converter?branch=master) 
+### Master [![Build Status](https://travis-ci.org/mulesoft/oas-raml-converter.svg?branch=master)](https://travis-ci.org/mulesoft/oas-raml-converter) [![Coverage Status](https://coveralls.io/repos/github/mulesoft/oas-raml-converter/badge.svg?branch=master)](https://coveralls.io/github/mulesoft/oas-raml-converter?branch=master) 
 
-## v0.2.x
-[![Build Status](https://travis-ci.org/mulesoft/oas-raml-converter.svg?branch=v0.2.x)](https://travis-ci.org/mulesoft/oas-raml-converter) 
-[![Coverage Status](https://coveralls.io/repos/github/mulesoft/oas-raml-converter/badge.svg?branch=v0.2.x)](https://coveralls.io/github/mulesoft/oas-raml-converter?branch=v0.2.x) 
+### v0.2.x [![Build Status](https://travis-ci.org/mulesoft/oas-raml-converter.svg?branch=v0.2.x)](https://travis-ci.org/mulesoft/oas-raml-converter) [![Coverage Status](https://coveralls.io/repos/github/mulesoft/oas-raml-converter/badge.svg?branch=v0.2.x)](https://coveralls.io/github/mulesoft/oas-raml-converter?branch=v0.2.x) 
 
 This package helps to convert between different API specifications. It was originally forked from [the stoplight.io converter](https://github.com/stoplightio/api-spec-converter). 
 
