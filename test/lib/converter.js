@@ -60,9 +60,9 @@ describe('Converter', function () {
 			expect(converterInstance).to.be.an.instanceof(specConverter.Converter);
 		});
 	});
-	describe('loadFile', function () {
+	describe('_loadFile', function () {
 		it('should successfully load "from"/"importer" compatible file', function (done) {
-			converterInstance.loadFile(fullPath).then(() => {
+			converterInstance._loadFile(fullPath).then(() => {
 				done();
 			});
 		});

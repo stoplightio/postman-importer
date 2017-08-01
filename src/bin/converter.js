@@ -2,7 +2,7 @@
 const program = require('commander');
 const util = require('./util');
 const formats = require('../formats');
-const specConverter = require('../../index');
+const specConverter = require('../index');
 
 let from = formats.AUTO;
 let to = formats.RAML;

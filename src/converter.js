@@ -1,6 +1,4 @@
 const Converters = require('./converters/index');
-const YAML = require('js-yaml'); // eslint-disable-line no-unused-vars,FIXME
-const fs = require('fs'); // eslint-disable-line no-unused-vars,FIXME
 
 class Converter {
 	constructor(fromFormat, toFormat) {
@@ -20,7 +18,7 @@ class Converter {
 
 	getModelFromData(data, options) {
 		return new Promise((resolve, reject) => {
-			this.loadData(data, options).then(() => {
+			this._loadData(data, options).then(() => {
 				const model = this.importer.import(this.importer.data);
 				resolve(model);
 			}).catch(reject);
@@ -30,7 +28,7 @@ class Converter {
 
 	getModelFromFile(file, options) {
 		return new Promise((resolve, reject) => {
-			this.loadFile(file, options).then(() => {
+			this._loadFile(file, options).then(() => {
 				const model = this.importer.import(this.importer.data);
 				resolve(model);
 			}).catch(reject);
@@ -65,16 +63,12 @@ class Converter {
 		});
 	}
 
-	loadFile(filePath, options) {
-		return this.importer.loadFile(filePath, options);
+	_loadFile(filePath, options) {
+		return this.importer._loadFile(filePath, options);
 	}
 
-	loadData(rawData, options) {
-		return this.importer.loadData(rawData, options);
-	}
-
-	_format(options) {
-		return (options && options.format) || this.format;
+	_loadData(rawData, options) {
+		return this.importer._loadData(rawData, options);
 	}
 }
 
