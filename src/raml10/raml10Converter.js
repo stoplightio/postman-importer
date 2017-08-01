@@ -34,7 +34,7 @@ class Raml10Converter extends Converter {
 		if (/#%RAML[\s]*0\.?8?/.test(data)) return 'RAML08';
 	}
 	
-	loadFile(filePath:string, options:any) {
+	_loadFile(filePath:string, options:any) {
 		const fileContent = fs.readFileSync(filePath, 'utf8');
 		this.format = Raml10Converter.detectFormat(fileContent);
 		return new Promise((resolve, reject) => {
@@ -50,7 +50,7 @@ class Raml10Converter extends Converter {
 		});
 	}
 	
-	loadData(data:string, options:any) {
+	_loadData(data:string, options:any) {
 		this.format = Raml10Converter.detectFormat(data);
 		return new Promise((resolve, reject) => {
 			const parsedData = parser.parseRAMLSync(data, options);
