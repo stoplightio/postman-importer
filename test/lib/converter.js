@@ -248,9 +248,9 @@ describe('Raml10 to Raml10', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -307,9 +307,9 @@ describe('Oas20 to Oas20', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -368,9 +368,9 @@ describe('Raml10 to Oas20', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -426,9 +426,9 @@ describe('Oas20 to Raml10', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -484,9 +484,9 @@ describe('Raml08 to Raml10', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
@@ -542,9 +542,9 @@ describe('Raml08 to Oas20', () => {
 						done(e);
 					}
 				}).catch((err) => {
-				console.error('error exporting file.');
-				done(err);
-			});
+					console.error('error exporting file.');
+					done(err);
+				});
 		};
 	};
 
