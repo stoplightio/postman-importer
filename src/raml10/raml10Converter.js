@@ -40,7 +40,7 @@ class Raml10Converter extends Converter {
 		return new Promise((resolve, reject) => {
 			parser.loadApi(filePath, Converter._options(options)).then((api) => {
 				try {
-					this.data = api.expand(true).toJSON({ serializeMetadata: false });
+					this.data = api.expand(true).toJSON(toJSONOptions);
 					resolve();
 				}
 				catch (e) {

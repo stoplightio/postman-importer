@@ -369,7 +369,6 @@ class Raml10DefinitionConverter extends Converter {
 
 	_import(ramlDef: any) {
 		const attrIdMap = {
-			'displayName': 'title',
 			'default': '_default'
 		};
 
