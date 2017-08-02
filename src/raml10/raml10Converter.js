@@ -44,7 +44,7 @@ class Raml10Converter extends Converter {
 			parser.loadApi(filePath, Converter._options(options)).then((api) => {
 				try {
 					if (!_.isEmpty(api.errors())) this.errors = jsonHelper.parse(api.errors()).filter(log => log.isWarning === false);
-					this.data = api.expand(true).toJSON({ serializeMetadata: false });
+					this.data = api.expand(true).toJSON(toJSONOptions);
 					resolve();
 				}
 				catch (e) {
