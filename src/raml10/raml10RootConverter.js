@@ -20,7 +20,7 @@ const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter')
 const ParameterConverter = require('../common/parameterConverter');
 const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
 const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
-const url = require('url');
+const { URL } = require('url');
 
 class Raml10RootConverter extends Converter {
 
@@ -208,36 +208,32 @@ class Raml10RootConverter extends Converter {
 			}
 		}
 
-		if (ramlDef.hasOwnProperty('baseUri') && ramlDef.baseUri) {
+		if (ramlDef.baseUri != null) {
 			const baseUri = new BaseUri();
-			baseUri.uri = ramlDef.baseUri;
-			const parsedURL = url.parse(ramlDef.baseUri);
-			if (parsedURL.hasOwnProperty('host') && parsedURL.host) {
+			const uri = ramlDef.baseUri;
+			baseUri.uri = uri;
+			const parsedURL = new URL(
+				uri.startsWith('http') || uri.startsWith('ws')
+					? uri : 'http://' + uri
+			);
+			if (parsedURL.host != null && baseUri.uri != null) {
 				const host: string = parsedURL.host;
-				const uri: ?string = baseUri.uri;
-				if (uri != null) {
-					const index = uri.indexOf(parsedURL.host);
-					if (uri.charAt(index + host.length) !== '{') {
-						baseUri.host = host;
-					}
+				const index = baseUri.uri.indexOf(host);
+				if (baseUri.uri != null && baseUri.uri.charAt(index + host.length) !== '{') {
+					baseUri.host = host;
 				}
 			}
-			if (parsedURL.path && parsedURL.path !== '/') {
-				const basePath: string = parsedURL.path.replace(/%7B/g, '{').replace(/%7D/g, '}');
+			if (parsedURL.pathname != null && parsedURL.pathname !== '/') {
+				const basePath: string = parsedURL.pathname.replace(/%7B/g, '{').replace(/%7D/g, '}');
 				if (!basePath.startsWith('{')) {
 					baseUri.basePath = basePath;
 				}
 			}
-			if (parsedURL.protocol) {
-				const protocol: string = parsedURL.protocol.slice(0, -1).toLowerCase();
-				baseUri.protocol = protocol;
-				if (model.hasOwnProperty('protocols') && model.protocols) {
-					const protocols: string[] = model.protocols;
-					if (!_.includes(protocols, baseUri.protocol)) {
-						const protocol: ?string = baseUri.protocol;
-						if (protocol != null) protocols.push(protocol);
-					}
-				} else if (baseUri.protocol != null) {
+			if (parsedURL.protocol != null) {
+				baseUri.protocol = parsedURL.protocol.slice(0, -1).toLowerCase();
+				if (model.protocols != null && baseUri.protocol != null && !_.includes(model.protocols, baseUri.protocol)) {
+					model.protocols.push(baseUri.protocol);
+				} else if (model.protocols == null && baseUri.protocol != null) {
 					const protocols: string[] = [baseUri.protocol];
 					model.protocols = protocols;
 				}
