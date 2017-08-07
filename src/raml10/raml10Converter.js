@@ -23,7 +23,7 @@ const helper = require('../helpers/raml10');
 const YAML = require('js-yaml');
 const fs = require('fs');
 const toJSONOptions = { serializeMetadata: false };
-const RamlErrorParser = require('../helpers/ramlParser');
+const RamlErrorParser = require('../helpers/ramlErrorParser');
 const jsonHelper = require('../utils/json');
 
 class Raml10Converter extends Converter {
