@@ -1,11 +1,12 @@
-const path = require('path');
+// @flow
+
 const _ = require('lodash');
 
 module.exports = {
-	isFilePath: function isFilePath(object) {
-		if (_.isEmpty(object)) return false;
+	isFilePath: function isFilePath(path: string) {
+		if (_.isEmpty(path)) return false;
 
-		const split = object.split(path.sep);
+		const split = path.split('/');
 		if (split.length === 0) return false;
 
 		let result = false;
