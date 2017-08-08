@@ -90,63 +90,59 @@ class RamlErrorParser {
 		}
 		else if (elem === 'types') {
 			const typeName = this.path.pop();
-			return this.getTypeFromPath(model.types, typeName);
+			let nodeType = this.getTypeFromPath(model.types, typeName);
+			if (this.path.isEmpty() || this.path.size() === 1){
+				return nodeType;
+			}
+
+			while (this.path.size() > 1) {
+				const elem = this.path.pop();
+				if (elem === 'properties') {
+					const propName = this.path.pop();
+					nodeType = this.getPropertyFrom(nodeType.properties, propName);
+				} else {
+					nodeType = nodeType[elem];
+				}
+			}
+
+			return nodeType;
 		}
+	}
+
+	getPropertyFrom(properties, propName) {
+		return properties.find(p => {
+			return p.name === propName;
+		});
 	}
 
 	getTypeFromPath(types, typeName) {
-		const result = types.filter(t => {
+		return types.find(t => {
 			return t.name === typeName;
 		});
-
-		if (this.path.isEmpty() || this.path.size() === 1) {
-			if (_.isArray(result) && result.length === 1) return result[0];
-
-			return result;
-		}
 	}
 
 	getBodyFromPath(bodies, mimeType) {
-		const result = bodies.filter(b => {
+		return bodies.find(b => {
 			return b.mimeType === mimeType;
 		});
-
-		if (_.isArray(result) && result.length === 1) return result[0];
-
-		return result;
 	}
 
 	getResponseNodeFromPath(methodResponses, statusCode) {
-		const result = methodResponses.filter(r => {
+		return methodResponses.find(r => {
 			return r.httpStatusCode === statusCode;
 		});
-
-		if (_.isArray(result) && result.length === 1) return result[0];
-
-		return result;
 	}
 
-
-
 	getMethodNodeFromPath(resourceMethods, method) {
-		const result = resourceMethods.filter(m => {
+		return resourceMethods.find(m => {
 			return m.method === method;
 		});
-
-		if (_.isArray(result) && result.length === 1) return result[0];
-
-		return result;
-
 	}
 
 	getResourceNodeFromPath(resources, fullPath) {
-		const result = resources.filter(r => {
+		return resources.find(r => {
 			return r.path === fullPath;
 		});
-
-		if (_.isArray(result) && result.length === 1) return result[0];
-
-		return result;
 	}
 }
 
