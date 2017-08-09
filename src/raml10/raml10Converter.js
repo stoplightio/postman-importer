@@ -23,6 +23,8 @@ const helper = require('../helpers/raml10');
 const YAML = require('js-yaml');
 const fs = require('fs');
 const toJSONOptions = { serializeMetadata: false };
+const RamlErrorParser = require('../helpers/ramlErrorParser');
+const jsonHelper = require('../utils/json');
 
 class Raml10Converter extends Converter {
 
@@ -35,18 +37,22 @@ class Raml10Converter extends Converter {
 	}
 	
 	_loadFile(filePath:string, options:any) {
+		this.filePath = filePath;
 		const fileContent = fs.readFileSync(filePath, 'utf8');
 		this.format = Raml10Converter.detectFormat(fileContent);
 		return new Promise((resolve, reject) => {
 			parser.loadApi(filePath, Converter._options(options)).then((api) => {
 				try {
+					if (!_.isEmpty(api.errors())) this.errors = jsonHelper.parse(api.errors()).filter(log => log.isWarning === false);
 					this.data = api.expand(true).toJSON(toJSONOptions);
 					resolve();
 				}
 				catch (e) {
 					reject(e);
 				}
-			}).catch(reject);
+			}, (error) => {
+				reject(error);
+			});
 		});
 	}
 	
@@ -114,6 +120,17 @@ class Raml10Converter extends Converter {
 		const annotationTypeConverter = new Raml10AnnotationTypeConverter(model);
 		if (ramlDef.annotationTypes) model.annotationTypes = annotationTypeConverter.import(ramlDef.annotationTypes);
 
+    //add errors to model
+		if (!_.isEmpty(this.errors)) {
+			try {
+				const ramlErrorParser = new RamlErrorParser();
+				ramlErrorParser.addErrorNodes(this.filePath, model, this.errors);
+			} catch (e) {
+				//ignore
+				console.log(e);
+			}
+		}
+
 		return model;
 	}
 	
@@ -170,7 +187,7 @@ class Raml10Converter extends Converter {
 						if (method.hasOwnProperty('is') && method.is && traits) {
 							const isList: Item[] = method.is;
 							for (let k = 0; k < isList.length; k++) {
-								const is = method.is[k];
+								const is = isList[k];
 								const usedTraitName: string = is.name;
 								const usedTrait: Trait = traits.filter(function (trait) { return usedTraitName === trait.name; })[0];
 								if (usedTrait && usedTrait.method) Raml10Converter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, method.method, is.value);
@@ -226,7 +243,7 @@ class Raml10Converter extends Converter {
 	}
 	
 	static mapMethodProperties(map, method: Method, traitName, resourcePath, methodName, params) {
-		if (method.hasOwnProperty('bodies') && method.bodies != null) {
+		if (method.hasOwnProperty('bodies') && method.bodies !== null) {
 			const bodies: Body[] = method.bodies;
 			
 			for (let l = 0; l < bodies.length; l++) {
@@ -242,7 +259,7 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('headers') && method.headers != null) {
+		if (method.hasOwnProperty('headers') && method.headers !== null) {
 			const headers: Header[] = method.headers;
 			for (let l = 0; l < headers.length; l++) {
 				const header: Header = headers[l];
@@ -257,7 +274,7 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('parameters') && method.parameters != null) {
+		if (method.hasOwnProperty('parameters') && method.parameters !== null) {
 			const parameters: Parameter[] = method.parameters;
 			for (let l = 0; l < parameters.length; l++) {
 				const parameter: Parameter = parameters[l];
@@ -272,7 +289,7 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('responses') && method.responses != null) {
+		if (method.hasOwnProperty('responses') && method.responses !== null) {
 			const responses: Response[] = method.responses;
 			for (let l = 0; l < responses.length; l++) {
 				const response: Response = responses[l];
