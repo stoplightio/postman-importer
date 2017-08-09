@@ -12,8 +12,8 @@ class RamlErrorParser {
 
 	addErrorNodes(filePath, model, errors) {
 		return errors.map(error => {
-			this.createtObjectPathFromLineNumber(filePath, error.range.start.line);
-			const node = this.getNodeFromPath(model);
+			this.createtPathFromLineNumber(filePath, error.range.start.line);
+			const node = this.getErrorNode(model);
 			node.error = {
 				message: error.message
 			};
@@ -22,7 +22,7 @@ class RamlErrorParser {
 		});
 	}
 
-	createtObjectPathFromLineNumber(filePath, lineNumber) {
+	createtPathFromLineNumber(filePath, lineNumber) {
 		const fileContent = fs.readFileSync(filePath, 'utf8');
 		const lines = fileContent.split('\n');
 		const line = lines[lineNumber];
@@ -55,91 +55,99 @@ class RamlErrorParser {
 		return line.length - trimStart.length;
 	}
 
-	getNodeFromPath(model) {
+	getErrorNode(model) {
 		let elem = this.path.pop();
-		if (elem.startsWith('/')) {
-      //resources
-			const resource = this.getResourceNodeFromPath(model.resources, elem);
-			if (this.path.isEmpty()) return resource;
+		if (elem.startsWith('/')) //resources
+			return this.getNodeFromResource(model, elem);
+		else if (elem === 'types') //types
+			return this.getNodeFromTypes(model);
+	}
 
-      //method
-			elem = this.path.pop();
-			if (methods.indexOf(elem) > -1) {
-				const method = this.getMethodNodeFromPath(resource.methods, elem);
-				if (_.isEmpty(this.path)) return method;
+	getNodeFromTypes(model) {
+		const typeName = this.path.pop();
+		let nodeType = this.getType(model.types, typeName);
+		if (this.path.isEmpty() || this.path.size() === 1){
+			return nodeType;
+		}
 
-        //responses
-				elem = this.path.pop();
-				if (elem === 'responses') {
-					const statusCode = this.path.pop();
-					const response = this.getResponseNodeFromPath(method.responses, statusCode);
-					if (this.path.isEmpty()) return response;
-
-          //bodies
-					elem = this.path.pop();
-					if (elem === 'body') {
-						const mimeType = this.path.pop();
-						const body = this.getBodyFromPath(response.bodies, mimeType);
-						if (this.path.isEmpty()) return body;
-						else return body.definition;
-					}
-					else
-						return response;
-				}
+		while (this.path.size() > 1) {
+			const elem = this.path.pop();
+			if (elem === 'properties') {
+				const propName = this.path.pop();
+				nodeType = this.getProperty(nodeType.properties, propName);
+			} else {
+				nodeType = nodeType[elem];
 			}
 		}
-		else if (elem === 'types') {
-			const typeName = this.path.pop();
-			let nodeType = this.getTypeFromPath(model.types, typeName);
-			if (this.path.isEmpty() || this.path.size() === 1){
-				return nodeType;
-			}
 
-			while (this.path.size() > 1) {
-				const elem = this.path.pop();
-				if (elem === 'properties') {
-					const propName = this.path.pop();
-					nodeType = this.getPropertyFrom(nodeType.properties, propName);
-				} else {
-					nodeType = nodeType[elem];
-				}
-			}
+		return nodeType;
+	}
 
-			return nodeType;
+	getNodeFromResource(model, elem) {
+		const resource = this.getResource(model.resources, elem);
+		if (this.path.isEmpty())
+			return resource;
+
+		//method
+		elem = this.path.pop();
+		if (methods.indexOf(elem) > -1) {
+			const method = this.getMethod(resource.methods, elem);
+			if (this.path.isEmpty())
+				return method;
+
+			//responses
+			elem = this.path.pop();
+			if (elem === 'responses') { //responses
+				const statusCode = this.path.pop();
+				const response = this.getResponse(method.responses, statusCode);
+				if (this.path.isEmpty())
+					return response;
+
+				//bodies
+				elem = this.path.pop();
+				if (elem === 'body')
+					return this.getBody(response);
+				else
+					return response;
+			} else if (elem === 'body')  //request
+				return this.getBody(method);
 		}
 	}
 
-	getPropertyFrom(properties, propName) {
+	getBody(method) {
+		const mimeType = this.path.pop();
+		const body = method.bodies.find(b => {
+			return b.mimeType === mimeType;
+		});
+		if (this.path.isEmpty()) return body;
+		else return body.definition;
+	}
+
+	getProperty(properties, propName) {
 		return properties.find(p => {
 			return p.name === propName;
 		});
 	}
 
-	getTypeFromPath(types, typeName) {
+	getType(types, typeName) {
 		return types.find(t => {
 			return t.name === typeName;
 		});
 	}
 
-	getBodyFromPath(bodies, mimeType) {
-		return bodies.find(b => {
-			return b.mimeType === mimeType;
-		});
-	}
-
-	getResponseNodeFromPath(methodResponses, statusCode) {
+	getResponse(methodResponses, statusCode) {
 		return methodResponses.find(r => {
 			return r.httpStatusCode === statusCode;
 		});
 	}
 
-	getMethodNodeFromPath(resourceMethods, method) {
+	getMethod(resourceMethods, method) {
 		return resourceMethods.find(m => {
 			return m.method === method;
 		});
 	}
 
-	getResourceNodeFromPath(resources, fullPath) {
+	getResource(resources, fullPath) {
 		return resources.find(r => {
 			return r.path === fullPath;
 		});
