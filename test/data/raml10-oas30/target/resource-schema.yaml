@@ -1,0 +1,165 @@
+openapi: 3.0.0
+servers: []
+info:
+  title: Petstore
+  version: '1'
+paths:
+  /bottles:
+    get:
+      operationId: getBottlesByValues
+      description: Get a list of bottles filtered by status and/or patient(s).
+      responses:
+        '200':
+          description: Query completed; results returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bottle'
+        '400':
+          description: Incomplete or invalid pagination or sort parameters.
+        '405':
+          description: Validation exception.
+      parameters:
+        - required: true
+          description: Flag that indicates if bottle is active.
+          in: query
+          name: isActive
+          schema:
+            type: boolean
+        - required: true
+          description: Flag that indicates if reminders are active.
+          in: query
+          name: remindersActive
+          schema:
+            type: boolean
+        - required: true
+          description: Flag that indicates if visual alarms are active.
+          in: query
+          name: onBottleLights
+          schema:
+            type: boolean
+        - required: true
+          description: Flag that indicates if auditory alarms are active.
+          in: query
+          name: onBottleSounds
+          schema:
+            type: boolean
+        - required: true
+          description: Flag that indicates if feedback requests are active.
+          in: query
+          name: feedbackActive
+          schema:
+            type: boolean
+        - required: true
+          description: The ID of the patient using this bottle.
+          in: query
+          name: patientUid
+          schema:
+            type: integer
+        - required: true
+          description: Current front-end page number; required for pagination.
+          in: query
+          name: page
+          schema:
+            type: integer
+        - required: true
+          description: Current front-end items per page value; required for pagination.
+          in: query
+          name: itemsPerPage
+          schema:
+            type: integer
+        - required: true
+          description: >-
+            Attribute(s) and order(s) to sort by in the following example format
+            - "uid desc, timeoccurred asc" etc. Attribute names are
+            case-sensitive. Omit to sort by 'uid' ascending as default.
+          in: query
+          name: sort
+          schema:
+            type: string
+  '/bottles/{bottleUid}':
+    get:
+      operationId: getBottle
+      description: Get a bottle by its UID.
+      responses:
+        '200':
+          description: Bottle found and returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bottle'
+        '404':
+          description: Bottle not found.
+    put:
+      operationId: updateBottle
+      description: Modify a bottle by its UID.
+      responses:
+        '200':
+          description: Bottle found and modified.
+        '404':
+          description: Bottle not found.
+        '405':
+          description: Validation exception.
+    parameters:
+      - required: true
+        description: Bottle UID
+        in: path
+        name: bottleUid
+        schema:
+          type: string
+  /employees:
+    get:
+      operationId: GET_employees
+      responses:
+        default:
+          description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          text/xml:
+            schema:
+              type: boolean
+          application/xml:
+            schema:
+              type: string
+        required: true
+components:
+  schemas:
+    Pet:
+      type: string
+    Bottle:
+      title: Bottle
+      required:
+        - bottleUid
+      type: object
+      properties:
+        bottleUid:
+          type: string
+        isActive:
+          type: boolean
+        remindersActive:
+          type: boolean
+        onBottleLights:
+          type: boolean
+        onBottleSounds:
+          type: boolean
+        doseOne:
+          type: string
+        doseTwo:
+          type: string
+        doseThree:
+          type: string
+        feedbackActive:
+          type: boolean
+        patientUid:
+          type: string
+  responses: {}
+  parameters: {}
+  examples: {}
+  requestBodies: {}
+  securitySchemes: {}
+  headers: {}
+  callbacks: {}
+  links: {}

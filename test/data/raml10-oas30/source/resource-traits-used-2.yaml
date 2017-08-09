@@ -1,0 +1,60 @@
+#%RAML 1.0
+title: Petstore
+version: 1
+traits:
+  pets:
+    description: pets
+    headers:
+      h_pets: string
+    queryParameters:
+      qp_pets: string
+    body:
+      application/json:
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+  employees:
+    description: employees
+    headers:
+      h_employees: string
+    queryParameters:
+      qp_employees: string
+    body:
+      application/xml:
+        type: integer
+    responses:
+      201:
+        body:
+          application/json:
+            type: integer
+/pets:
+  get:
+    description: pets
+    is:
+      - pets
+/employees:
+  get:
+    description: employees
+    is:
+      - employees
+/both:
+  get:
+    description: both
+    is:
+      - pets
+      - employees
+    headers:
+      h_both: string
+    queryParameters:
+      qp_both: string
+    body:
+      text/xml:
+        type: boolean
+    responses:
+      202:
+        body:
+          application/json:
+            type: boolean

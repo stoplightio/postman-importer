@@ -1,6 +1,7 @@
 const importers = {
 	RAML: require('../raml10/raml10Converter'),
-	OAS20: require('../oas20/oas20Converter')
+	OAS20: require('../oas20/oas20Converter'),
+	OAS30: require('../oas30/oas30Converter')
 };
 
 function doesSupportFormat(format) {

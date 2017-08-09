@@ -1,0 +1,126 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://zencoder.com/api'
+    variables:
+      environment:
+        default: environment
+        enum:
+          - 'stg'
+          - 'dev'
+          - 'test'
+          - 'prod'
+  - url: 'https://zencoder.com/api'
+    variables:
+      environment:
+        default: environment
+        enum:
+          - 'stg'
+          - 'dev'
+          - 'test'
+          - 'prod'
+info:
+  version: 1.0.0
+  title: ZEncoder API
+  description: Example API
+paths:
+  /employees:
+    post:
+      operationId: POST_employees
+      parameters:
+        - name: reviews
+          in: header
+          description: Employee´s reviews
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: names
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: nicknames
+          in: header
+          schema:
+            type: string
+        - name: age
+          in: header
+          schema:
+            type: integer
+      responses:
+        default:
+          description: ''
+    get:
+      operationId: GET_employees
+      responses:
+        default:
+          description: ''
+      requestBody:
+        content:
+          text/xml:
+            schema:
+              type: boolean
+          application/xml:
+            schema:
+              type: string
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pet'
+        required: true
+components:
+  schemas:
+    pet:
+      type: string
+  responses: {}
+  parameters: {}
+  examples: {}
+  requestBodies: {}
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: my oauth 2.0 security scheme.
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://api.dropbox.com/1/oauth2/token'
+          scopes:
+            'write:pets': ''
+            'read:pets': ''
+    oauth22:
+      type: oauth2
+      description: my oauth 2.0 security scheme. Version 2.
+      flows:
+        implicit:
+          authorizationUrl: 'http://swagger2.io/api/oauth/dialog'
+          scopes: {}
+    basicAuth:
+      type: http
+      description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+      scheme: basic
+    basicAuth2:
+      type: http
+      description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`. Version 2.
+      scheme: basic
+    internalApiKey:
+      name: api_key
+      type: apiKey
+      in: header
+      description: Api Key Authentication
+    internalApiKey2:
+      name: api_key2
+      type: apiKey
+      in: header
+      description: Api Key Authentication. Version 2.
+    internalApiKey3:
+      name: api_key3
+      type: apiKey
+      in: query
+      description: Api Key Authentication. Version 3.
+    internalApiKey4:
+      name: api_key4
+      type: apiKey
+      in: query
+      description: Api Key Authentication. Version 4.
+  headers: {}
+  callbacks: {}
+  links: {}

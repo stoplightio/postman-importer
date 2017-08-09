@@ -1,0 +1,65 @@
+openapi: 3.0.0
+servers: []
+info:
+  title: Petstore
+  version: '1'
+paths:
+  /pets:
+    get:
+      parameters:
+        - in: header
+          name: codes
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/trait_pets_reviews'
+        - in: query
+          name: nicknames
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/trait_pets_names'
+      responses:
+        '200':
+          $ref: '#/components/responses/trait_pets_200'
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                example: Cat
+      operationId: GET_pets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+components:
+  schemas: {}
+  responses:
+    trait_pets_200:
+      description: ''
+      content:
+        application/json:
+          schema:
+            example: Dog
+  parameters:
+    trait_pets_names:
+      in: query
+      name: names
+      required: true
+      schema:
+        type: string
+    trait_pets_reviews:
+      in: header
+      name: reviews
+      required: true
+      schema:
+        type: string
+  examples: {}
+  requestBodies: {}
+  securitySchemes: {}
+  headers: {}
+  callbacks: {}
+  links: {}
