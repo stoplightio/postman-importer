@@ -1,0 +1,161 @@
+#%RAML 1.0
+title: American Flights API
+version: 2.0.0
+baseUri: https://mocksvc.mulesoft.com/mocks/21d01ac7-3cd8-4348-b8d0-2dc61f05bb92/api
+
+types:
+  Flight: 
+    type: object
+    properties:
+      id?: integer
+      code: string
+      price: number
+      departureDate: string
+      origin: string
+      destination: string
+      emptySeats: integer
+      plane?:
+        type: object
+        properties:
+          type: string
+          totalSeats: integer
+    example:
+      id: 1
+      code: ER38sd
+      price: 400
+      departureDate: 2016/03/20
+      origin: MUA
+      destination: SFO
+      emptySeats: 2
+      plane: 
+        type: Boeing 737
+        totalSeats: 150
+      
+  Flights: 
+    type: Flight[]
+    example:
+      -
+        id: 1
+        code: ER38sd
+        price: 400
+        departureDate: 2016/03/20
+        origin: MUA
+        destination: SFO
+        emptySeats: 2
+        plane: 
+          type: Boeing 737
+          totalSeats: 150
+      -
+        id: 2
+        code: ER45if
+        price: 345.99
+        departureDate: 2016/02/11
+        origin: MUA
+        destination: LAX
+        emptySeats: 52
+        plane: 
+          type: Boeing 777
+          totalSeats: 300
+    
+/flights:
+  get:
+    queryParameters:
+      destination:
+        enum: [SFO, LAX, CLE]
+    responses:
+      200:
+        body:
+          application/json:
+            type: Flights
+            example:
+              -
+                id: 1
+                code: ER38sd
+                price: 400
+                departureDate: 2016/03/20
+                origin: MUA
+                destination: SFO
+                emptySeats: 2
+                plane: 
+                  type: Boeing 737
+                  totalSeats: 150
+              -
+                id: 2
+                code: ER45if
+                price: 345.99
+                departureDate: 2016/02/11
+                origin: MUA
+                destination: LAX
+                emptySeats: 52
+                plane: 
+                  type: Boeing 777
+                  totalSeats: 300
+
+  post:
+    body:
+      application/json:
+        type: Flight       
+        example: 
+          code: ER38sd
+          price: 400
+          departureDate: 2016/03/20
+          origin: MUA
+          destination: SFO
+          emptySeats: 2
+          plane: 
+            type: Boeing 737
+            totalSeats: 150
+    responses:
+      201:
+        body:
+          application/json:
+            example: 
+              message: Flight added (but not really)
+              
+  /{ID}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Flight
+              example:
+                id: 1
+                code: ER38sd
+                price: 400
+                departureDate: 2016/03/20
+                origin: MUA
+                destination: SFO
+                emptySeats: 2
+                plane: 
+                  type: Boeing 737
+                  totalSeats: 150
+              
+    delete:
+      responses:
+        200:
+          body:
+            application/json:
+              example: 
+                message: Flight deleted (but not really)
+    
+    put:
+      body:
+        application/json:
+          type: Flight
+          example: 
+            code: ER38sd
+            price: 400
+            departureDate: 2016/03/20
+            origin: MUA
+            destination: SFO
+            emptySeats: 2
+            plane: 
+              type: Boeing 737
+              totalSeats: 150
+      responses:
+        200:
+          body:
+            application/json:
+              example: 
+                message: Flight updated (but not really)

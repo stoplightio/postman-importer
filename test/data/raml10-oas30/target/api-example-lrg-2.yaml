@@ -1,0 +1,75 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://muleadore64.cloudhub.io/api'
+info:
+  title: muleadore64
+  version: 1.0.0
+paths:
+  /beep:
+    put:
+      description: Make muleadore64 play a series of tones
+      operationId: PUT_beep
+      responses:
+        '200':
+          description: Beep command sent
+  /color:
+    post:
+      description: Change the border or background color of the muleadore64
+      operationId: POST_color
+      responses:
+        '200':
+          description: Color change command successfully sent
+          content:
+            application/json:
+              schema:
+                example:
+                  colortype: border
+                  color: yellow
+                  poke: 7
+                  hex: '#EEEE77'
+        '500':
+          description: Error sending color change command
+  /lastMsg:
+    get:
+      description: >-
+        Returns the last command message that was sent to muleadore64 for
+        informational purposes
+      operationId: GET_lastMsg
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                example: 'SF: 83F Clouds, BA: 7C Clear'
+  /tweet:
+    post:
+      description: Send a tweet to @muleadore64
+      operationId: POST_tweet
+      responses:
+        '200':
+          description: Tweet sent successfully
+          content:
+            application/json:
+              schema:
+                example:
+                  tweet: hello @muleadore64 how are you?
+        '500':
+          description: Error sending tweet
+  /weather:
+    get:
+      description: Update the weather information with current conditions
+      operationId: GET_weather
+      responses:
+        '200':
+          description: Weather command successfully sent
+components:
+  schemas: {}
+  responses: {}
+  parameters: {}
+  examples: {}
+  requestBodies: {}
+  securitySchemes: {}
+  headers: {}
+  callbacks: {}
+  links: {}
