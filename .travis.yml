@@ -1,10 +1,13 @@
 language: node_js
 node_js:
-- '7'
+- '6'
+- '8'
 branches:
   except:
   - gh-pages
-script: npm run coverage && npm run coveralls && npm run eslint && cd site && npm install && mkdir -p public/build && npm run build && mv ../id_rsa . && npm run gh-pages-travis
+script:
+  - npm run coverage && npm run coveralls && npm run eslint
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && cd site && npm install && mkdir -p public/build && npm run build && mv ../id_rsa . && npm run gh-pages-travis || true'
 env:
   global:
   - DEPLOY_BRANCH="master"
@@ -14,5 +17,5 @@ env:
   - GIT_NAME="travis"
   - GIT_EMAIL="deploy@travis-ci.org"
 before_install:
-- openssl aes-256-cbc -K $encrypted_36827dbbeefb_key -iv $encrypted_36827dbbeefb_iv
-  -in id_rsa.enc -out id_rsa -d
+- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && openssl aes-256-cbc -K $encrypted_36827dbbeefb_key -iv $encrypted_36827dbbeefb_iv
+  -in id_rsa.enc -out id_rsa -d || true'
