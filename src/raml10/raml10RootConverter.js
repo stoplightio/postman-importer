@@ -20,7 +20,7 @@ const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter')
 const ParameterConverter = require('../common/parameterConverter');
 const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
 const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
-const { URL } = require('url');
+const { URL } = require('url-polyfill/url');
 
 class Raml10RootConverter extends Converter {
 
@@ -213,8 +213,7 @@ class Raml10RootConverter extends Converter {
 			const uri = ramlDef.baseUri;
 			baseUri.uri = uri;
 			const parsedURL = new URL(
-				uri.startsWith('http') || uri.startsWith('ws')
-					? uri : 'http://' + uri
+				uri.startsWith('http') || uri.startsWith('ws') ? uri : 'http://' + uri
 			);
 			if (parsedURL.host != null && baseUri.uri != null) {
 				const host: string = parsedURL.host;
