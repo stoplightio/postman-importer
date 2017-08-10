@@ -42,15 +42,13 @@ class Oas30RootConverter extends Converter {
 				const params = model.baseUriParameters;
 
 				for (const param of params) {
-					/// the to lowercase should be removed if you ever change the url parsing again
-					const var_ = new ServerVariable(param.name.toLowerCase());
+					const var_ = new ServerVariable(param.name);
 					var_.description = param.description;
 					if (param.definition != null && param.definition._enum != null) {
 						var_.enum = param.definition._enum;
 					}
 
-					// also here
-					variables[param.name.toLowerCase()] = var_;
+					variables[param.name] = var_;
 				}
 			}
 
