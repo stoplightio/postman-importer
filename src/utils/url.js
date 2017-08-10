@@ -29,6 +29,6 @@ module.exports = {
 	
 	isTemplateUri: (uri) => {
 		const decodeUri = decodeURI(uri);
-		return decodeUri.indexOf('{') !== -1 || decodeUri.indexOf('}') !== -1;
+		return decodeUri.indexOf('{') !== -1 && decodeUri.indexOf('}') !== -1;
 	}
 };

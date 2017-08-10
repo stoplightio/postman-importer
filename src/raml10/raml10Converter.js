@@ -243,7 +243,7 @@ class Raml10Converter extends Converter {
 	}
 	
 	static mapMethodProperties(map, method: Method, traitName, resourcePath, methodName, params) {
-		if (method.hasOwnProperty('bodies') && method.bodies !== null) {
+		if (method.hasOwnProperty('bodies') && method.bodies != null) {
 			const bodies: Body[] = method.bodies;
 			
 			for (let l = 0; l < bodies.length; l++) {
@@ -259,7 +259,7 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('headers') && method.headers !== null) {
+		if (method.hasOwnProperty('headers') && method.headers != null) {
 			const headers: Header[] = method.headers;
 			for (let l = 0; l < headers.length; l++) {
 				const header: Header = headers[l];
@@ -274,7 +274,7 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('parameters') && method.parameters !== null) {
+		if (method.hasOwnProperty('parameters') && method.parameters != null) {
 			const parameters: Parameter[] = method.parameters;
 			for (let l = 0; l < parameters.length; l++) {
 				const parameter: Parameter = parameters[l];
@@ -289,7 +289,7 @@ class Raml10Converter extends Converter {
 				map.push(item);
 			}
 		}
-		if (method.hasOwnProperty('responses') && method.responses !== null) {
+		if (method.hasOwnProperty('responses') && method.responses != null) {
 			const responses: Response[] = method.responses;
 			for (let l = 0; l < responses.length; l++) {
 				const response: Response = responses[l];
