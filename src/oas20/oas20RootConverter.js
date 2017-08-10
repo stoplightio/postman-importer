@@ -38,19 +38,24 @@ class Oas20RootConverter extends Converter {
 
 		if (model.hasOwnProperty('baseUri') && model.baseUri) {
 			const baseUri: BaseUri = model.baseUri;
-			if (baseUri.hasOwnProperty('host')) oasDef.host = baseUri.host;
-			if (baseUri.hasOwnProperty('basePath')) {
-				if (urlHelper.isTemplateUri(baseUri.basePath)) {
-					oasDef['x-basePath'] = baseUri.basePath;
-				} else {
-					oasDef.basePath = baseUri.basePath;
+			if (baseUri.host != null && urlHelper.isTemplateUri(baseUri.host)) {
+				oasDef['x-basePath'] = baseUri.host + (baseUri.basePath != null ? baseUri.basePath : '');
+			} else {
+				if (baseUri.host != null) oasDef.host = baseUri.host;
+				if (baseUri.hasOwnProperty('host')) oasDef.host = baseUri.host;
+				if (baseUri.hasOwnProperty('basePath')) {
+					if (urlHelper.isTemplateUri(baseUri.basePath)) {
+						oasDef['x-basePath'] = baseUri.basePath;
+					} else {
+						oasDef.basePath = baseUri.basePath;
+					}
 				}
-			}
-			if (!baseUri.host && !baseUri.basePath) {
-				const uri: ?string = baseUri.uri;
-				if (uri != null) {
-					const parsedURL = url.parse(uri);
-					oasDef['x-basePath'] = parsedURL.protocol ? uri.replace(parsedURL.protocol + '//', '') : uri;
+				if (!baseUri.host && !baseUri.basePath) {
+					const uri: ?string = baseUri.uri;
+					if (uri != null) {
+						const parsedURL = url.parse(uri);
+						oasDef['x-basePath'] = parsedURL.protocol ? uri.replace(parsedURL.protocol + '//', '') : uri;
+					}
 				}
 			}
 			Oas20RootConverter.exportAnnotations(baseUri, oasDef);

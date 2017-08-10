@@ -1,0 +1,126 @@
+openapi: 3.0.0
+servers: []
+info:
+  title: Petstore
+  version: '1'
+paths:
+  /pets:
+    get:
+      description: pets
+      operationId: GET_pets
+      parameters:
+        - $ref: '#/components/parameters/trait_pets_h_pets'
+        - $ref: '#/components/parameters/trait_pets_qp_pets'
+      responses:
+        '200':
+          $ref: '#/components/responses/trait_pets_200'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+  /employees:
+    get:
+      description: employees
+      operationId: GET_employees
+      parameters:
+        - $ref: '#/components/parameters/trait_employees_h_employees'
+        - $ref: '#/components/parameters/trait_employees_qp_employees'
+      responses:
+        '201':
+          $ref: '#/components/responses/trait_employees_201'
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              type: integer
+        required: true
+  /both:
+    get:
+      description: both
+      operationId: GET_both
+      parameters:
+        - in: header
+          name: h_both
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/trait_pets_h_pets'
+        - $ref: '#/components/parameters/trait_employees_h_employees'
+        - in: query
+          name: qp_both
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/trait_pets_qp_pets'
+        - $ref: '#/components/parameters/trait_employees_qp_employees'
+      responses:
+        '200':
+          $ref: '#/components/responses/trait_pets_200'
+        '201':
+          $ref: '#/components/responses/trait_employees_201'
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: boolean
+      requestBody:
+        content:
+          text/xml:
+            schema:
+              type: boolean
+          application/json:
+            schema:
+              type: string
+          application/xml:
+            schema:
+              type: integer
+        required: true
+components:
+  schemas: {}
+  responses:
+    trait_pets_200:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: string
+    trait_employees_201:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: integer
+  parameters:
+    trait_employees_h_employees:
+      in: header
+      name: h_employees
+      required: true
+      schema:
+        type: string
+    trait_employees_qp_employees:
+      in: query
+      name: qp_employees
+      required: true
+      schema:
+        type: string
+    trait_pets_h_pets:
+      in: header
+      name: h_pets
+      required: true
+      schema:
+        type: string
+    trait_pets_qp_pets:
+      in: query
+      name: qp_pets
+      required: true
+      schema:
+        type: string
+  examples: {}
+  requestBodies: {}
+  securitySchemes: {}
+  headers: {}
+  callbacks: {}
+  links: {}
