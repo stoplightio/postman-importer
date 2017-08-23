@@ -14,7 +14,7 @@ class Definition {
 	required: ?boolean;
 	format: ?string;
 	description: ?string;
-	_default: ?string;
+	_default: ?any;
 	multipleOf: ?number;
 	maximum: ?number;
 	minimum: ?number;
