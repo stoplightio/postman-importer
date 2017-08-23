@@ -792,7 +792,6 @@ class Raml10DefinitionConverter extends Converter {
 			ramlDef.type = 'date-only';
 		} else if (internalType === 'datetime') {
 			ramlDef.type = 'datetime';
-			ramlDef.format = 'rfc3339';
 		} else if (internalType === 'timeonly') {
 			ramlDef.type = 'time-only';
 		} else if (internalType === 'datetimeonly') {
