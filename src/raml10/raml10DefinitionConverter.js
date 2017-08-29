@@ -72,7 +72,7 @@ class Raml10DefinitionConverter extends Converter {
 			this._convertFromInternalType(ramlDef);
 		}
 
-		if (ramlDef.type !== 'string') {
+		if (ramlDef.type !== 'string' && !model.reference) {
 			if (ramlDef.hasOwnProperty('minLength')) delete ramlDef.minLength;
 			if (ramlDef.hasOwnProperty('maxLength')) delete ramlDef.maxLength;
 		}
@@ -237,13 +237,13 @@ class Raml10DefinitionConverter extends Converter {
 			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.externalDocs;
 		}
-		if (ramlDef.hasOwnProperty('maximum') && ramlDef.hasOwnProperty('type') && scalarNumberTypes.indexOf(ramlDef.type) < 0) {
+		if (ramlDef.hasOwnProperty('maximum') && ramlDef.hasOwnProperty('type') && scalarNumberTypes.indexOf(ramlDef.type) < 0 && !model.reference) {
 			const id = this.annotationPrefix + '-maximum';
 			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = ramlDef.maximum;
 			delete ramlDef.maximum;
 		}
-		if (ramlDef.hasOwnProperty('minimum') && ramlDef.hasOwnProperty('type') && scalarNumberTypes.indexOf(ramlDef.type) < 0) {
+		if (ramlDef.hasOwnProperty('minimum') && ramlDef.hasOwnProperty('type') && scalarNumberTypes.indexOf(ramlDef.type) < 0 && !model.reference) {
 			const id = this.annotationPrefix + '-minimum';
 			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = ramlDef.minimum;
