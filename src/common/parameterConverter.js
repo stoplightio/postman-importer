@@ -16,26 +16,26 @@ class ParameterConverter extends Converter {
 		if (!_.isEmpty(_in)) this._in = _in;
 	}
 	
-	export(models:any[]) {
+	export(models:any[], exportRaml:boolean) {
 		const result = {};
 		if (_.isEmpty(models)) return result;
 		
 		for (let i = 0; i < models.length; i++) {
 			const model: Parameter = models[i];
 			if (model && !model.hasOwnProperty('reference') && (!this._in || model._in === this._in))
-				result[model.name] = this._export(model);
+				result[model.name] = this._export(model, exportRaml);
 		}
 		
 		return result;
 	}
 	
 	// exports 1 parameter definition
-	_export(model:Parameter) {
+	_export(model:Parameter, exportRaml:boolean) {
 		const definitionConverter = new Raml10DefinitionConverter(this.model, this.annotationPrefix, this.def);
 		
 		const definition: ?Definition = model.definition;
 		const ramlDef = definitionConverter._export(definition);
-		if (model._in === 'header' && ((ramlDef.type && !ramlHelper.getBuiltinTypes.includes(ramlDef.type)) || !ramlDef.type)) ramlDef.type = 'string';
+		if (!exportRaml && model._in === 'header' && ((ramlDef.type && !ramlHelper.getBuiltinTypes.includes(ramlDef.type)) || !ramlDef.type)) ramlDef.type = 'string';
 		
 		if (model.hasOwnProperty('displayName')) ramlDef.displayName = model.displayName;
 		if (model.hasOwnProperty('annotations')) {

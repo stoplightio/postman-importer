@@ -76,7 +76,7 @@ class Raml10MethodConverter extends Converter {
 							const headersModel: Header[] = val.headers;
 							if (_.isArray(headersModel) && !_.isEmpty(headersModel)) {
 								const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
-								const headers = parameterConverter.export(headersModel);
+								const headers = parameterConverter.export(headersModel, true);
 								if (!_.isEmpty(headers)) response.headers = headers;
 							}
 						}
@@ -122,7 +122,7 @@ class Raml10MethodConverter extends Converter {
 			const headersModel: Header[] = model.headers;
 			if (_.isArray(headersModel) && !_.isEmpty(headersModel)) {
 				const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
-				const headers = parameterConverter.export(headersModel);
+				const headers = parameterConverter.export(headersModel, true);
 				if (!_.isEmpty(headers)) ramlDef.headers = headers;
 			}
 		}
