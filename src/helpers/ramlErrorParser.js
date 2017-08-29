@@ -12,7 +12,7 @@ class RamlErrorParser {
 
 	addErrorNodes(filePath, model, errors) {
 		return errors.map(error => {
-			this.createtPathFromLineNumber(filePath, error.range.start.line);
+			this.createPathFromLineNumber(filePath, error.range.start.line);
 			const node = this.getErrorNode(model);
 			node.error = {
 				message: error.message
@@ -22,7 +22,7 @@ class RamlErrorParser {
 		});
 	}
 
-	createtPathFromLineNumber(filePath, lineNumber) {
+	createPathFromLineNumber(filePath, lineNumber) {
 		const fileContent = fs.readFileSync(filePath, 'utf8');
 		const lines = fileContent.split('\n');
 		const line = lines[lineNumber];
