@@ -123,7 +123,9 @@ class Oas20Converter extends Converter {
 			});
 		}
 		const resourceConverter = new Oas20ResourceConverter(model, oasDef.dereferencedAPI.paths, oasDef);
-		if (oasDef.hasOwnProperty('paths')) model.resources = resourceConverter.import(oasDef.paths);
+		const paths = {};
+		Object.keys(oasDef.paths).sort().forEach(path => paths[path] = oasDef.paths[path]);
+		if (oasDef.hasOwnProperty('paths')) model.resources = resourceConverter.import(paths);
 
 		return model;
 	}
