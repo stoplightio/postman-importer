@@ -4,7 +4,7 @@ const Stack = require('../utils/stack');
 
 const methods = ['get', 'post', 'put', 'patch', 'options', 'head', 'delete'];
 
-class RamlErrorParser {
+class RamlErrorModel {
 
 	constructor () {
 		this.path = new Stack();
@@ -26,13 +26,13 @@ class RamlErrorParser {
 		const fileContent = fs.readFileSync(filePath, 'utf8');
 		const lines = fileContent.split('\n');
 		const line = lines[lineNumber];
-		let lineIndent = RamlErrorParser.getIndentCount(line);
+		let lineIndent = RamlErrorModel.getIndentCount(line);
 		this.path.push(_.trimStart(line.substr(0, line.indexOf(':'))));
 		let resource = '';
 
 		for (let count = lineNumber; count > 0; count--) {
 			const currentLine = lines[count];
-			const currentIndent = RamlErrorParser.getIndentCount(currentLine);
+			const currentIndent = RamlErrorModel.getIndentCount(currentLine);
 			if (currentIndent < lineIndent) {
 				lineIndent = currentIndent;
 				let elem = _.trimStart(currentLine.substr(0, currentLine.indexOf(':')));
@@ -155,4 +155,4 @@ class RamlErrorParser {
 }
 
 
-module.exports = RamlErrorParser;
+module.exports = RamlErrorModel;

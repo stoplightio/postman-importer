@@ -23,7 +23,7 @@ const helper = require('../helpers/raml10');
 const YAML = require('js-yaml');
 const fs = require('fs');
 const toJSONOptions = { serializeMetadata: false };
-const RamlErrorParser = require('../helpers/ramlErrorParser');
+const RamlErrorModel = require('../helpers/ramlErrorModel');
 const jsonHelper = require('../utils/json');
 
 class Raml10Converter extends Converter {
@@ -123,8 +123,8 @@ class Raml10Converter extends Converter {
     //add errors to model
 		if (!_.isEmpty(this.errors)) {
 			try {
-				const ramlErrorParser = new RamlErrorParser();
-				ramlErrorParser.addErrorNodes(this.filePath, model, this.errors);
+				const ramlErrorModel = new RamlErrorModel();
+				ramlErrorModel.addErrorNodes(this.filePath, model, this.errors);
 			} catch (e) {
 				//ignore
 				console.log(e);
