@@ -53,7 +53,7 @@ class Raml10ResourceConverter extends Converter {
 				return {result: result, uriParameters: value.uriParameters};
 			}
 		} else {
-			const value = this.mapResource(model, result[path] , paths, relativePath);
+			const value = this.mapResource(model, result[path], paths, relativePath);
 			if (!_.isEmpty(value.uriParameters)) {
 				const uriParameters = result[path].uriParameters ? result[path].uriParameters : {};
 				Raml10ResourceConverter.mapUriParameters(value.uriParameters, path, uriParameters, result[path]);
