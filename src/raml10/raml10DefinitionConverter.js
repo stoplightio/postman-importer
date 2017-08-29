@@ -154,7 +154,9 @@ class Raml10DefinitionConverter extends Converter {
 						delete val.type;
 						_.merge(result, val);
 					} else if (result.hasOwnProperty('type') && val.hasOwnProperty('type')) {
-						result.type = [result.type, val.type];
+						const type = result.type
+						if (typeof type == 'string') result.type = [result.type, val.type];
+						else if (_.isArray(type)) result.type = result.type.concat(val.type);
 						delete val.type;
 						_.merge(result, val);
 					} else {
