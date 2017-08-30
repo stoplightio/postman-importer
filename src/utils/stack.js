@@ -1,3 +1,5 @@
+// @flow
+
 class Stack {
 
 	constructor() {
@@ -28,6 +30,14 @@ class Stack {
 
 	isEmpty() {
 		return this.size() === 0;
+	}
+
+	static create(data: string, sep: string) : Stack {
+		const dataArray = data.split(sep).reverse();
+		const result = new Stack();
+		dataArray.forEach(elem => result.push(elem));
+
+		return result;
 	}
 }
 

@@ -49,4 +49,9 @@ module.exports = {
 		components[0] = components[0].replace(/[^A-Za-z0-9_\-.]+|\s+/gm, '_');
 		return components.join('/');
 	},
+
+	getIndentCount: function (line: string) : number {
+		const trimStart = _.trimStart(line);
+		return line.length - trimStart.length;
+	}
 };
