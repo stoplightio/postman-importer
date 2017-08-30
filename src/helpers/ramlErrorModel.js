@@ -1,6 +1,7 @@
 const fs = require('fs');
 const _ = require('lodash');
 const Stack = require('../utils/stack');
+const stringsHelper = require('../utils/strings');
 
 const methods = ['get', 'post', 'put', 'patch', 'options', 'head', 'delete'];
 
@@ -26,13 +27,13 @@ class RamlErrorModel {
 		const fileContent = fs.readFileSync(filePath, 'utf8');
 		const lines = fileContent.split('\n');
 		const line = lines[lineNumber];
-		let lineIndent = RamlErrorModel.getIndentCount(line);
+		let lineIndent = stringsHelper.getIndentCount(line);
 		this.path.push(_.trimStart(line.substr(0, line.indexOf(':'))));
 		let resource = '';
 
 		for (let count = lineNumber; count > 0; count--) {
 			const currentLine = lines[count];
-			const currentIndent = RamlErrorModel.getIndentCount(currentLine);
+			const currentIndent = stringsHelper.getIndentCount(currentLine);
 			if (currentIndent < lineIndent) {
 				lineIndent = currentIndent;
 				let elem = _.trimStart(currentLine.substr(0, currentLine.indexOf(':')));
@@ -48,11 +49,6 @@ class RamlErrorModel {
 				}
 			}
 		}
-	}
-
-	static getIndentCount(line) {
-		const trimStart = _.trimStart(line);
-		return line.length - trimStart.length;
 	}
 
 	getErrorNode(model) {
