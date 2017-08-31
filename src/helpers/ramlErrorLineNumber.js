@@ -17,7 +17,6 @@ class RamlErrorLineNumber {
 		}
 	}
 	
-	//return 0 if line with indentCount were not found.
 	getLineFromContent(data, fromLineNumber = 0, indentCount = 0) {
 		let lineCount = 0;
 		
