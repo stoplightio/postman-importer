@@ -28,13 +28,13 @@ class RamlErrorModel {
 		const fileContent = fs.readFileSync(filePath, 'utf8');
 		const lines = fileContent.split(os.EOL);
 		const line = lines[lineNumber];
-		let lineIndent = stringsHelper.getIndentCount(line);
+		let lineIndent = stringsHelper.getIndent(line);
 		this.path.push(_.trimStart(line.substr(0, line.indexOf(':'))));
 		let resource = '';
 
 		for (let count = lineNumber; count > 0; count--) {
 			const currentLine = lines[count];
-			const currentIndent = stringsHelper.getIndentCount(currentLine);
+			const currentIndent = stringsHelper.getIndent(currentLine);
 			if (currentIndent < lineIndent) {
 				lineIndent = currentIndent;
 				let elem = _.trimStart(currentLine.substr(0, currentLine.indexOf(':')));
