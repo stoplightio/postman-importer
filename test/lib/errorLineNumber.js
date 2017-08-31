@@ -17,7 +17,7 @@ describe('Raml10 to line number ', () => {
 	const testWithData = (sourceFile, targetFile) => {
 		return done => {
 			const fileContent = fs.readFileSync(sourceFile, 'utf8');
-			const modelPath = _.trim(fs.readFileSync(sourceFile.replace('.yaml', '.modelPath'), 'utf8'));
+			const modelPath = _.trim(fs.readFileSync(sourceFile.replace('.yaml', '.path'), 'utf8'));
 			const ramlErrorLineNumber = new RamlErrorLineNumber(fileContent, modelPath);
 			const lineNumber = ramlErrorLineNumber.getLineNumber();
 			expect(lineNumber).to.be.equal(_.toInteger(_.trim(fs.readFileSync(targetFile, 'utf8'))));
