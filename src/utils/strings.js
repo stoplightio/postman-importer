@@ -50,7 +50,7 @@ module.exports = {
 		return components.join('/');
 	},
 
-	getIndentCount: function (line: string) : number {
+	getIndent: function (line: string) : number {
 		const trimStart = _.trimStart(line);
 		return line.length - trimStart.length;
 	}
