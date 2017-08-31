@@ -2,6 +2,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const Stack = require('../utils/stack');
 const stringsHelper = require('../utils/strings');
+const os = require('os');
 
 const methods = ['get', 'post', 'put', 'patch', 'options', 'head', 'delete'];
 
@@ -25,7 +26,7 @@ class RamlErrorModel {
 
 	createPathFromLineNumber(filePath, lineNumber) {
 		const fileContent = fs.readFileSync(filePath, 'utf8');
-		const lines = fileContent.split('\n');
+		const lines = fileContent.split(os.EOL);
 		const line = lines[lineNumber];
 		let lineIndent = stringsHelper.getIndentCount(line);
 		this.path.push(_.trimStart(line.substr(0, line.indexOf(':'))));
