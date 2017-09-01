@@ -1,71 +1,74 @@
 // @flow
 
 const Stack = require('../utils/stack');
-const stringsHelper = require('../utils/strings');
-const os = require('os');
-const _ = require('lodash');
+const Document = require('../utils/document');
+const Line = require('../utils/line');
 
 class RamlErrorLineNumber {
 	
-	fileContent: string;
+	document: Document;
 	path: Stack;
 	
 	constructor (fileContent: string, modelPath : string) {
-		this.fileContent = fileContent;
+		this.document = Document.create(fileContent);
 		this.path = Stack.create(modelPath, '.');
 	}
 
-	getLineNumber() {
+	getLineNumber() : number {
 		const line = this.path.pop();
 		if (line === 'types') {
 			return this.getType();
 		}
+		
+		return -1;
 	}
 	
-	getLineByContent(data: string, fromLineNumber: number = 0, indent: number = 0) {
-		let lineNumber = 0;
+	getLineByContent(data: string, fromLineNumber: number = 0, indent: number = 0) : ?Line {
+		const partialDoc = this.document.getLinesFrom(fromLineNumber);
 		
-		const lines = this.fileContent.split(os.EOL);
-		lines.every(line => {
-			lineNumber = lineNumber + 1;
-			if (lineNumber < fromLineNumber) return true;
-			return stringsHelper.getIndent(line) !== indent || !line.trim().startsWith(data);
-		});
+		for (const l of partialDoc) {
+			if (l.getIndent() === indent && l.getData().startsWith(data)) return l;
+		}
+	}
+	
+	getLineByIndex(index: number, fromLineNumber: number = 0, indent: number): ?Line  {
 
-		return lineNumber;
-	}
-	
-	getLineByIndex(index: number, fromLineNumber: number = 0, indent: number) {
-		let lineNumber = 0;
+		const partialDoc = this.document.getLinesFrom(fromLineNumber);
 		let currentIndex = 0;
-		const lines = this.fileContent.split(os.EOL);
-		lines.every(line => {
-			lineNumber = lineNumber + 1;
-			if (lineNumber < fromLineNumber) return true;
-			
-			if (stringsHelper.getIndent(line) === indent) {
-				// eslint-disable-next-line eqeqeq
-				if (index == currentIndex) return false;
-				currentIndex = currentIndex + 1;
+
+		for (const l of partialDoc) {
+			if (l.getIndent() === indent) {
+				if (currentIndex === index) return l;
+				else currentIndex = currentIndex + 1;
 			}
-			return true;
-		});
-		
-		return lineNumber;
+		}
 	}
 	
-	getType() {
-		let lineNumber = this.getLineByContent('types:');
-		let indent = 2;
+	getType() : number {
+		let line: ?Line = this.getLineByContent('types:');
+		if (line === undefined || line === null) return -1;
+		
+		let indent = this.getNextIndent(line);
 		
 		while (!this.path.isEmpty()) {
-			const value = this.path.pop();
-			lineNumber = _.toNumber(value) ? this.getLineByIndex(value, lineNumber, indent): this.getLineByContent(value, lineNumber, indent);
-			if (this.path.isEmpty()) return lineNumber;
-			indent = indent + 2;
+			const value : any = this.path.pop();
+			if (isNaN(value)) {
+				line = this.getLineByContent(value, line.getLineNumber(), indent);
+			} else {
+				line = this.getLineByIndex(parseInt(value), line.getLineNumber(), indent);
+			}
+			if (line === undefined || line === null) return -1;
+			
+			if (this.path.isEmpty()) return line.getLineNumber();
+			indent = this.getNextIndent(line);
 		}
 		
-		return lineNumber;
+		return line.getLineNumber();
+	}
+	
+	getNextIndent(line: ?Line) : number {
+		if (line === undefined || line === null) return 0;
+		return this.document.getLine(line.getLineNumber() + 1).getIndent();
 	}
 	
 }
