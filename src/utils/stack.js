@@ -1,13 +1,16 @@
 // @flow
 
 class Stack {
-
+	
+	count: number;
+	storage: any;
+	
 	constructor() {
 		this.count = 0;
 		this.storage = {};
 	}
 
-	push(value) {
+	push(value: any) {
 		this.storage[this.count] = value;
 		this.count++;
 	}
