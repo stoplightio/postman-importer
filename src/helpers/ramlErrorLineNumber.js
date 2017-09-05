@@ -85,7 +85,10 @@ class RamlErrorLineNumber {
 			if (value === 'methods' || value === 'mimeType' || value === 'definition') continue;
 			else if (value === 'bodies')
 				/*$ExpectError*/
-				line = this.getLineByContent('body', line.getLineNumber(), indent); 
+				line = this.getLineByContent('body', line.getLineNumber(), indent);
+			else if (value === 'parameters')
+			/*$ExpectError*/
+				line = this.getLineByContent('queryParameters', line.getLineNumber(), indent);
 			else if (isNaN(value))
 				/*$ExpectError*/
 				line = this.getLineByContent(value, line.getLineNumber(), indent);
