@@ -17,17 +17,19 @@ class RamlErrorLineNumber {
 	getLineNumber() : number {
 		const line = this.path.pop();
 		if (line === 'types') {
-			return this.getType();
+			return this.getTypeLine();
+		} else if (line === 'resources') {
+			return this.getResourceLine();
 		}
 		
 		return -1;
 	}
 	
-	getLineByContent(data: string, fromLineNumber: number = 0, indent: number = 0) : ?Line {
+	getLineByContent(data: string, fromLineNumber: number = 0, indent: number = -1) : ?Line {
 		const partialDoc = this.document.getLinesFrom(fromLineNumber);
 		
 		for (const l of partialDoc) {
-			if (l.getIndent() === indent && l.getData().startsWith(data)) return l;
+			if ((indent === -1 || l.getIndent() === indent) && l.getData().startsWith(data)) return l;
 		}
 	}
 	
@@ -44,7 +46,7 @@ class RamlErrorLineNumber {
 		}
 	}
 	
-	getType() : number {
+	getTypeLine() : number {
 		let line: ?Line = this.getLineByContent('types:');
 		if (line === undefined || line === null) return -1;
 		
@@ -52,17 +54,52 @@ class RamlErrorLineNumber {
 		
 		while (!this.path.isEmpty()) {
 			const value : any = this.path.pop();
-			if (isNaN(value)) {
-				line = this.getLineByContent(value, line.getLineNumber(), indent);
-			} else {
-				line = this.getLineByIndex(parseInt(value), line.getLineNumber(), indent);
-			}
+			line = isNaN(value) ? this.getLineByContent(value, line.getLineNumber(), indent) : this.getLineByIndex(parseInt(value), line.getLineNumber(), indent);
 			if (line === undefined || line === null) return -1;
 			
 			if (this.path.isEmpty()) return line.getLineNumber();
 			indent = this.getNextIndent(line);
 		}
 		
+		return line.getLineNumber();
+	}
+
+	getResourceLine() : number {
+		//discard resources
+		//iterates over lines starting with /
+		
+		const resourceIndex : any = this.path.pop();
+		let line : ?Line;
+		let fromLine : number = 0;
+		let indent : number = 0;
+		for (let index = 0; index <= parseInt(resourceIndex); index = index + 1) {
+			line = this.getLineByContent('/', fromLine);
+			if (line === undefined || line === null) return -1;
+			fromLine = line.getLineNumber() + 1;
+		}
+		
+		indent = this.getNextIndent(line);
+		
+		while (!this.path.isEmpty()) {
+			const value : any = this.path.pop();
+			if (value === 'methods' || value === 'mimeType' || value === 'definition') continue;
+			else if (value === 'bodies')
+				/*$ExpectError*/
+				line = this.getLineByContent('body', line.getLineNumber(), indent); 
+			else if (isNaN(value))
+				/*$ExpectError*/
+				line = this.getLineByContent(value, line.getLineNumber(), indent);
+			else
+				/*$ExpectError*/
+				line = this.getLineByIndex(parseInt(value), line.getLineNumber(), indent);
+			
+			if (line === undefined || line === null) return -1;
+
+			if (this.path.isEmpty()) return line.getLineNumber();
+			indent = this.getNextIndent(line);
+		}
+
+		/*$ExpectError*/
 		return line.getLineNumber();
 	}
 	
