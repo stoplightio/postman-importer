@@ -12,7 +12,7 @@ chai.use(require('chai-string'));
 describe('Raml10 to Model errors', () => {
 	const baseDir = __dirname + '/../data/modelErrors/raml';
 	const testFiles = fs.readdirSync(baseDir);
-	const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML);
+	const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML, true);
 
 	const testWithData = function (sourceFile, targetFile) {
 		const validateOptions = {
