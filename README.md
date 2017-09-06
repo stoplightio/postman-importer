@@ -24,6 +24,8 @@ For an online conversion, use: [https://mulesoft.github.io/oas-raml-converter](h
 This utility helps you converting local files from your command line.
 
 ```
+npm run build
+
 ./lib/bin/converter.js --from OAS --to RAML10 ./path/to/swagger.json
 ./lib/bin/converter.js --from OAS --to RAML10 ./path/to/swagger.json > output.raml
 ```
