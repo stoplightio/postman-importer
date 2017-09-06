@@ -4,15 +4,15 @@ const util = require('./util');
 const formats = require('../formats');
 const specConverter = require('../index');
 
-let from = formats.AUTO;
+let from = formats.OAS20;
 let to = formats.RAML;
 let validate = false;
 let file = undefined;
 
 program
   .arguments('<file>')
-  .option('-f, --from <from>', 'the from/input spec, valid values are: swagger, raml08, raml10 and auto (default)')
-  .option('-t, --to <to>', 'the to/target spec, valid values are: swagger, raml08 and raml10 (default)')
+  .option('-f, --from <from>', 'the from/input spec, valid values are: RAML, OAS20 (default)')
+  .option('-t, --to <to>', 'the to/target spec, valid values are: OAS20, RAML (default)')
   .option('-v, --validate <validate>', 'true to validate the output (defaults to false)')
   .action(f => {
 	file = f;
