@@ -1,7 +1,8 @@
 const Converters = require('./converters/index');
 
 class Converter {
-	constructor(fromFormat, toFormat) {
+	constructor(fromFormat, toFormat, modelErrors = false) {
+		this.modelErrors = modelErrors;
 		this.importer = Converters.factory(fromFormat);
 		if (!this.importer) {
 			throw new Error('from format ' + fromFormat.name + ' not supported');
@@ -19,7 +20,7 @@ class Converter {
 	getModelFromData(data, options) {
 		return new Promise((resolve, reject) => {
 			this._loadData(data, options).then(() => {
-				const model = this.importer.import(this.importer.data);
+				const model = this.importer.import(this.importer.data, this.modelErrors);
 				resolve(model);
 			}).catch(reject);
 		});
@@ -29,7 +30,7 @@ class Converter {
 	getModelFromFile(file, options) {
 		return new Promise((resolve, reject) => {
 			this._loadFile(file, options).then(() => {
-				const model = this.importer.import(this.importer.data);
+				const model = this.importer.import(this.importer.data, this.modelErrors);
 				resolve(model);
 			}).catch(reject);
 		});

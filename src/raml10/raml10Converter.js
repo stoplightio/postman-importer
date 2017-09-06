@@ -98,7 +98,7 @@ class Raml10Converter extends Converter {
 		});
 	}
 
-	import(ramlDef:any) {
+	import(ramlDef:any, addErrorsToModel:boolean) {
 		const rootConverter = new Raml10RootConverter(new Root());
 		rootConverter.version = this.format;
 		const model: Root = rootConverter.import(ramlDef);
@@ -121,7 +121,7 @@ class Raml10Converter extends Converter {
 		if (ramlDef.annotationTypes) model.annotationTypes = annotationTypeConverter.import(ramlDef.annotationTypes);
 
     //add errors to model
-		if (!_.isEmpty(this.errors)) {
+		if (addErrorsToModel && !_.isEmpty(this.errors)) {
 			try {
 				const ramlErrorModel = new RamlErrorModel();
 				ramlErrorModel.addErrorNodes(this.filePath, model, this.errors);
