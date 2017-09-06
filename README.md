@@ -29,15 +29,19 @@ npm run build
 This utility helps you converting local files from your command line.
 
 ```
-./lib/bin/converter.js --from OAS --to RAML10 ./path/to/swagger.json
-./lib/bin/converter.js --from OAS --to RAML10 ./path/to/swagger.json > output.raml
+./lib/bin/converter.js --from OAS20 --to RAML ./path/to/swagger.json
+./lib/bin/converter.js --from OAS20 --to RAML ./path/to/swagger.json > output.raml
+
+./lib/bin/converter.js --from RAML --to OAS20 ./path/to/source.raml > swagger.json
 ```
 
 Or install globally and then:
 
 ```
-oas-raml-converter --from OAS --to RAML10 ./path/to/swagger.json
-oas-raml-converter --from OAS --to RAML10 ./path/to/swagger.json > output.raml
+oas-raml-converter --from OAS20 --to RAML ./path/to/swagger.json
+oas-raml-converter --from OAS20 --to RAML ./path/to/swagger.json > output.raml
+
+oas-raml-converter --from RAML --to OAS20 ./path/to/source.raml > swagger.json
 ```
 
 ### 3. As a service
