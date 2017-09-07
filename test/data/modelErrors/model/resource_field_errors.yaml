@@ -1,0 +1,101 @@
+info:
+  title: My API With Types
+resources:
+  - methods:
+    - bodies:
+      - definition:
+          internalType: object
+          name: application/json
+          properties:
+            - _default: some
+              example: some
+              internalType: string
+              name: missPattern
+              pattern: "/some"
+              error:
+                example: "String should match to '/some'"
+                default: "String should match to '/some'"
+          propsRequired:
+            - missPattern
+        mimeType: application/json
+        required: true
+      headers:
+        - _in: header
+          definition:
+            _default: 3
+            example: 3
+            internalType: number
+            maximum: 2
+            minimum: 1
+            name: header
+            error:
+              default: "'header.maximum=2' i.e. value should not be more than 2"
+              example: "'header.maximum=2' i.e. value should not be more than 2"
+          name: header
+          required: true
+      method: get
+      parameters:
+        - _in: query
+          definition:
+            internalType: string
+            maxLength: 5
+            minLength: 10
+            name: missRange
+            error:
+              root: "Restrictions conflict in type 'missRange': ['missRange.maxLength=5' is less than 'missRange.minLength=10'. The minLength cannot be higher than the maxLength.]"
+          name: missRange
+          required: true
+      path: "/path"
+      responses:
+        - bodies:
+          - definition:
+              _default: 5
+              example: 5
+              internalType: number
+              multipleOf: 2
+              name: text/xml
+              error:
+                default: "result of division of 5 on 2 should be integer"
+                example: "result of division of 5 on 2 should be integer"
+            mimeType: text/xml
+            required: true
+          - definition:
+              internalType: number
+              maximum: 5
+              minimum: 10
+              name: image/png
+              error:
+                root: "Restrictions conflict in type 'image/png': ['image/png.maximum=5' is less than 'image/png.minimum=10'. The minimum cannot be higher than the maximum.]"
+            mimeType: image/png
+            required: true
+          httpStatusCode: '200'
+        - bodies:
+          - definition:
+              _default: 1.2
+              example: 1.2
+              internalType: integer
+              name: application/json
+              error:
+                default: "integer is expected"
+                example: "integer is expected"
+            mimeType: application/json
+            required: true
+          httpStatusCode: '201'
+    path: "/path"
+    relativePath: "/path"
+  - path: "/other/{id}"
+    relativePath: "/other/{id}"
+    parameters:
+      - _in: path
+        definition:
+          example: example text
+          _default: default text
+          internalType: string
+          maxLength: 2
+          minLength: 1
+          name: id
+          error:
+            default: "'id.maxLength=2' i.e. string length should not be more than 2"
+            example: "'id.maxLength=2' i.e. string length should not be more than 2"
+        name: id
+        required: true
