@@ -40,7 +40,7 @@ class Oas20DefinitionConverter extends Converter {
 			'displayName': 'title'
 		};
 
-		const attrIdSkip = ['name', 'fileReference', 'reference', 'properties', 'compositionType', 'schema', 'items', 'itemsList', 'additionalProperties', 'jsonValue', 'schemaPath', 'examples', '$schema', 'id', 'annotations'];
+		const attrIdSkip = ['name', 'fileReference', 'reference', 'properties', 'compositionType', 'schema', 'items', 'itemsList', 'additionalProperties', 'jsonValue', 'schemaPath', 'examples', '$schema', 'id', 'fileTypes', 'annotations'];
 		const oasDef = Oas20DefinitionConverter.createOasDef(model, attrIdMap, attrIdSkip);
 
 		if (oasDef.hasOwnProperty('internalType')) {

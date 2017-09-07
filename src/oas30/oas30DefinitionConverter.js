@@ -66,6 +66,7 @@ class Oas30DefinitionConverter extends Converter {
 			'$schema',
 			'id',
 			'annotations',
+			'fileTypes',
 			'propsRequired'
 		];
 

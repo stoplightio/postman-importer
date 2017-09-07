@@ -45,7 +45,7 @@ class Raml10DefinitionConverter extends Converter {
 		};
 
 		const attrIdSkip = ['name', 'type', 'reference', 'properties', 'items', 'compositionType', 'in', 'schema', 'additionalProperties', 'title', 'items', 'itemsList',
-			'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference', '_enum'];
+			'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference', '_enum', 'error'];
 
 		const ramlDef = Raml10DefinitionConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 
@@ -72,7 +72,7 @@ class Raml10DefinitionConverter extends Converter {
 			this._convertFromInternalType(ramlDef);
 		}
 
-		if (ramlDef.type !== 'string' && !model.reference) {
+		if (ramlDef.type !== 'string' && ramlDef.type !== 'file' && !model.reference) {
 			if (ramlDef.hasOwnProperty('minLength')) delete ramlDef.minLength;
 			if (ramlDef.hasOwnProperty('maxLength')) delete ramlDef.maxLength;
 		}
@@ -376,7 +376,7 @@ class Raml10DefinitionConverter extends Converter {
 
 		Raml10DefinitionConverter._convertAnnotations(ramlDef);
 
-		const attrIdCopyRaml = ['title', 'format', 'maxLength', 'minLength', 'exclusiveMaximum', 'exclusiveMinimum', 'maximum', 'minimum', 'definitions', 'minProperties', 'maxProperties', 'minItems', 'maxItems', 'default', 'uniqueItems'];
+		const attrIdCopyRaml = ['title', 'format', 'maxLength', 'minLength', 'exclusiveMaximum', 'exclusiveMinimum', 'maximum', 'minimum', 'definitions', 'minProperties', 'maxProperties', 'minItems', 'maxItems', 'default', 'uniqueItems', 'fileTypes'];
 		const attrIdCopyRaml10 = _.concat(attrIdCopyRaml, ['name', 'discriminator', 'multipleOf', 'pattern', 'displayName', 'default', 'schemaPath', 'required', 'xml', 'additionalProperties', 'minItems', 'maxItems', 'annotations', 'allowedTargets', '$ref', 'minProperties', 'maxProperties']);
 		const attrIdCopyRaml08 = _.concat(attrIdCopyRaml, ['pattern', 'additionalProperties']);
 		const jsonType = ramlDef.hasOwnProperty('typePropertyKind') ? ramlDef.typePropertyKind === 'JSON' : false;
@@ -705,8 +705,8 @@ class Raml10DefinitionConverter extends Converter {
 		if (type === 'any') model.internalType = 'string';
 		if (type === 'date') model.internalType = 'datetime';
 		if (type === 'time-only') model.internalType = 'timeonly';
-		if (type === 'datetime' && (format === 'rfc3339' || !format)) model.internalType = 'datetime';
-		if (type === 'datetime' && format && format !== 'rfc3339') model.internalType = 'string';
+		if (type === 'datetime' && (format === 'rfc3339' || format === 'rfc2616' || !format)) model.internalType = 'datetime';
+		else if (type === 'datetime' && format) model.internalType = 'string';
 		if (type === 'datetime-only') model.internalType = 'datetimeonly';
 		if (type === 'date-only') model.internalType = 'dateonly';
 		if (type === 'file') model.internalType = 'file';
@@ -717,7 +717,7 @@ class Raml10DefinitionConverter extends Converter {
 
 		if (model.hasOwnProperty('internalType')) {
 			delete model.type;
-			delete model.format;
+			if (model.format !== 'rfc2616') delete model.format;
 		}
 	}
 

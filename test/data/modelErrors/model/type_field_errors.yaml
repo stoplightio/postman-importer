@@ -1,0 +1,84 @@
+info:
+  title: My API With Types
+types:
+  - name: sameName
+    internalType: number
+    error:
+      root: Type 'sameName' already exists
+  - name: sameName
+    internalType: string
+  - name: stringType
+    internalType: string
+    minLength: 1
+    maxLength: 2
+    _default: default text
+    example: example text
+    error:
+      example: "'stringType.maxLength=2' i.e. string length should not be more than 2"
+      default: "'stringType.maxLength=2' i.e. string length should not be more than 2"
+  - name: objectType
+    internalType: object
+    properties:
+      - name: someString
+        internalType: string
+        minLength: 1
+        maxLength: 3
+        _default: some default text
+        example: some example text
+        error:
+          example: "'objectType.someString.maxLength=3' i.e. string length should not be more than 3"
+          default: "'objectType.someString.maxLength=3' i.e. string length should not be more than 3"
+    propsRequired:
+      - someString
+  - name: missPattern
+    internalType: string
+    pattern: /some
+    _default: some
+    example: some
+    error:
+      example: "String should match to '/some'"
+      default: "String should match to '/some'"
+  - name: missRange
+    internalType: string
+    minLength: 10
+    maxLength: 5
+    error:
+      root: "Restrictions conflict in type 'missRange': ['missRange.maxLength=5' is less than 'missRange.minLength=10'. The minLength cannot be higher than the maxLength.]"
+  - name: ints
+    internalType: object
+    properties:
+      - name: int1
+        internalType: integer
+        minimum: 1
+        maximum: 2
+        _default: 3
+        example: 3
+        error:
+          default: "'ints.int1.maximum=2' i.e. value should not be more than 2"
+          example: "'ints.int1.maximum=2' i.e. value should not be more than 2"
+      - name: int2
+        internalType: integer
+        multipleOf: 2
+        _default: 5
+        example: 5
+        error:
+          default: "result of division of 5 on 2 should be integer"
+          example: "result of division of 5 on 2 should be integer"
+      - name: int3
+        internalType: integer
+        _default: 1.2
+        example: 1.2
+        error:
+          default: "integer is expected"
+          example: "integer is expected"
+      - name: int4
+        internalType: integer
+        minimum: 10
+        maximum: 5
+        error:
+          root: "Restrictions conflict in type 'ints,int4': ['ints.int4.maximum=5' is less than 'ints.int4.minimum=10'. The minimum cannot be higher than the maximum.]"
+    propsRequired:
+      - int1
+      - int2
+      - int3
+      - int4

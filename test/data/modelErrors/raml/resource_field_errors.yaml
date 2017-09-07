@@ -1,0 +1,51 @@
+#%RAML 1.0
+title: My API With Types
+/path:
+  get:
+    body:
+      application/json:
+        type: object
+        properties:
+          missPattern:
+            type: string
+            pattern: /some
+            example: some
+            default: some
+    queryParameters:
+      missRange:
+        type: string
+        minLength: 10
+        maxLength: 5
+    headers:
+      header:
+        type: number
+        minimum: 1
+        maximum: 2
+        default: 3
+        example: 3
+    responses:
+      200:
+        body:
+          text/xml:
+            type: number
+            multipleOf: 2
+            default: 5
+            example: 5
+          image/png:
+            type: number
+            minimum: 10
+            maximum: 5
+      201:
+        body:
+          application/json:
+            type: integer
+            default: 1.2
+            example: 1.2
+/other/{id}:
+  uriParameters:
+    id:
+      type: string
+      minLength: 1
+      maxLength: 2
+      default: default text
+      example: example text
