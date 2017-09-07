@@ -12,9 +12,17 @@ class RamlErrorModel {
 		this.path = new Stack();
 	}
 
-	addErrorNodes(filePath, model, errors) {
+	addErrorNodesFromPath(filePath, model, errors) {
 		return errors.forEach(error => {
-			this.createPathFromLineNumber(filePath, error.range.start.line);
+			const fileContent = fs.readFileSync(filePath, 'utf8');
+			this.createPathFromLineNumber(fileContent, error.range.start.line);
+			this.addErrorToModel(model, error);
+		});
+	}
+	
+	addErrorNodesFromContent(fileContent, model, errors) {
+		return errors.forEach(error => {
+			this.createPathFromLineNumber(fileContent, error.range.start.line);
 			this.addErrorToModel(model, error);
 		});
 	}
@@ -99,8 +107,7 @@ class RamlErrorModel {
 		}
 	}
 
-	createPathFromLineNumber(filePath, lineNumber) {
-		const fileContent = fs.readFileSync(filePath, 'utf8');
+	createPathFromLineNumber(fileContent, lineNumber) {
 		const lines = fileContent.split(os.EOL);
 		const line = lines[lineNumber];
 		let lineIndent = stringsHelper.getIndent(line);

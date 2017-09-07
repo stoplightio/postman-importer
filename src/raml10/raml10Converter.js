@@ -57,6 +57,7 @@ class Raml10Converter extends Converter {
 	}
 	
 	_loadData(data:string, options:any) {
+		this.fileContent = data
 		this.format = Raml10Converter.detectFormat(data);
 		return new Promise((resolve, reject) => {
 			const parsedData = parser.parseRAMLSync(data, options);
@@ -125,7 +126,8 @@ class Raml10Converter extends Converter {
 		if (addErrorsToModel && !_.isEmpty(this.errors)) {
 			try {
 				const ramlErrorModel = new RamlErrorModel();
-				ramlErrorModel.addErrorNodes(this.filePath, model, this.errors);
+				if (this.filePath) ramlErrorModel.addErrorNodesFromPath(this.filePath, model, this.errors);
+				else ramlErrorModel.addErrorNodesFromContent(this.fileContent, model, this.errors);
 			} catch (e) {
 				//ignore
 				console.log(e);
