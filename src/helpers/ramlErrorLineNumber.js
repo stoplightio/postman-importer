@@ -71,14 +71,14 @@ class RamlErrorLineNumber {
 		const resourceIndex : any = this.path.pop();
 		let line : ?Line;
 		let fromLine : number = 0;
-		let indent : number = 0;
+
 		for (let index = 0; index <= parseInt(resourceIndex); index = index + 1) {
 			line = this.getLineByContent('/', fromLine);
 			if (line === undefined || line === null) return -1;
 			fromLine = line.getLineNumber() + 1;
 		}
 		
-		indent = this.getNextIndent(line);
+		let indent : number = this.getNextIndent(line);
 		
 		while (!this.path.isEmpty()) {
 			const value : any = this.path.pop();
