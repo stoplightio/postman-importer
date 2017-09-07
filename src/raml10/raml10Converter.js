@@ -57,7 +57,7 @@ class Raml10Converter extends Converter {
 	}
 	
 	_loadData(data:string, options:any) {
-		this.fileContent = data
+		this.fileContent = data;
 		this.format = Raml10Converter.detectFormat(data);
 		return new Promise((resolve, reject) => {
 			const parsedData = parser.parseRAMLSync(data, options);
