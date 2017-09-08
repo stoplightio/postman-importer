@@ -44,7 +44,8 @@ class Raml10Converter extends Converter {
 		return new Promise((resolve, reject) => {
 			parser.loadApi(filePath, Converter._options(options)).then((api) => {
 				try {
-					if (!_.isEmpty(api.errors())) this.errors = jsonHelper.parse(api.errors()).filter(log => log.isWarning === false);
+					const errors = api.errors();
+					if (!_.isEmpty(errors)) this.errors = jsonHelper.parse(errors);
 					this.data = api.expand(true).toJSON(toJSONOptions);
 					resolve();
 				}
@@ -65,7 +66,8 @@ class Raml10Converter extends Converter {
 			if (parsedData.name === 'Error') {
 				reject();
 			} else {
-				if (!_.isEmpty(parsedData.errors())) this.errors = jsonHelper.parse(parsedData.errors()).filter(log => log.isWarning === false);
+				const errors = parsedData.errors();
+				if (!_.isEmpty(errors)) this.errors = jsonHelper.parse(errors).filter(log => log.isWarning === false);
 				this.data = parsedData.expand(true).toJSON(toJSONOptions);
 				resolve();
 			}
