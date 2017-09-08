@@ -1,8 +1,9 @@
 // @flow
 const _ = require('lodash');
 
-const Converter = require('../model/converter');
-const Definition = require('../model/definition');
+const ConverterModel = require('oas-raml-converter-model');
+const Converter = require('../converters/converter');
+const Definition = ConverterModel.Definition;
 const jsonHelper = require('../utils/json');
 const stringHelper = require('../utils/strings');
 

@@ -1,9 +1,10 @@
 // @flow
 const _ = require('lodash');
-const Root = require('../model/root');
-const Definition = require('../model/definition');
-const Annotation = require('../model/annotation');
-const Converter = require('../model/converter');
+const ConverterModel = require('oas-raml-converter-model');
+const Root = ConverterModel.Root;
+const Definition = ConverterModel.Definition;
+const Annotation = ConverterModel.Annotation;
+const Converter = require('../converters/converter');
 const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
 const ramlHelper = require('../helpers/raml10');
 
