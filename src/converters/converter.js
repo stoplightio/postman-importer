@@ -1,5 +1,6 @@
 const _ = require('lodash');
-const Root = require('./root');
+const ConverterModel = require('oas-raml-converter-model');
+const Root = ConverterModel.Root;
 
 class Converter {
 
@@ -8,7 +9,7 @@ class Converter {
 		this.annotationPrefix = annotationPrefix;
 		this.def = def;
 	}
-	
+
 	static _options(options) {
 		const validate = options && (options.validate === true || options.validateImport === true);
 		const parseOptions = {
@@ -17,7 +18,7 @@ class Converter {
 		};
 		return !options ? parseOptions : _.merge(parseOptions, options);
 	}
-	
+
 	export(models) {
 		const result = {};
 		_.entries(models).map(([key, value]) => {

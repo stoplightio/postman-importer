@@ -1,8 +1,9 @@
 // @flow
 const _ = require('lodash');
-const Trait = require('../model/trait');
-const Method = require('../model/method');
-const Converter = require('../model/converter');
+const ConverterModel = require('oas-raml-converter-model');
+const Trait = ConverterModel.Trait;
+const Method = ConverterModel.Method;
+const Converter = require('../converters/converter');
 const Oas20MethodConverter = require('../oas20/oas20MethodConverter');
 
 class Oas20TraitConverter extends Converter {

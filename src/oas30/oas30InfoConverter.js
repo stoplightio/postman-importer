@@ -1,7 +1,8 @@
 // @flow
-const Converter = require('../model/converter');
+const Converter = require('../converters/converter');
+const ConverterModel = require('oas-raml-converter-model');
 const Oas20AnnotationConverter = require('../oas20/oas20AnnotationConverter');
-const Info = require('../model/info');
+const Info = ConverterModel.Info;
 const _ = require('lodash');
 
 const { Contact, License } = require('./oas30Types');

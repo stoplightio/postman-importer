@@ -1,10 +1,11 @@
 // @flow
 const _ = require('lodash');
 
-const Converter = require('../model/converter');
-const SecurityDefinition = require('../model/securityDefinition');
-const SecurityScope = require('../model/securityScope');
-const Method = require('../model/method');
+const ConverterModel = require('oas-raml-converter-model');
+const Converter = require('../converters/converter');
+const SecurityDefinition = ConverterModel.SecurityDefinition;
+const SecurityScope = ConverterModel.SecurityScope;
+const Method = ConverterModel.Method;
 
 const { OAuthFlows, OAuthFlow } = require('./oas30Types');
 

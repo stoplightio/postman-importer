@@ -1,9 +1,10 @@
 // @flow
-const Converter = require('../model/converter');
+const Converter = require('../converters/converter');
+const ConverterModel = require('oas-raml-converter-model');
 const _ = require('lodash');
-const SecurityScope = require('../model/securityScope');
-const Method = require('../model/method');
-const SecurityDefinition = require('../model/securityDefinition');
+const SecurityScope = ConverterModel.SecurityScope;
+const Method = ConverterModel.Method;
+const SecurityDefinition = ConverterModel.SecurityDefinition;
 const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
 const Oas20RootConverter = require('../oas20/oas20RootConverter');
 const oasHelper = require('../helpers/oas20');

@@ -1,12 +1,13 @@
 // @flow
 const _ = require('lodash');
 
-const Resource = require('../model/resource');
-const Root = require('../model/root');
-const Method = require('../model/method');
-const Definition = require('../model/definition');
-const Parameter = require('../model/parameter');
-const Converter = require('../model/converter');
+const ConverterModel = require('oas-raml-converter-model');
+const Resource = ConverterModel.Resource;
+const Root = ConverterModel.Root;
+const Method = ConverterModel.Method;
+const Definition = ConverterModel.Definition;
+const Parameter = ConverterModel.Parameter;
+const Converter = require('../converters/converter');
 const helper = require('../helpers/converter');
 
 const Oas30DefinitionConverter = require('./oas30DefinitionConverter');
