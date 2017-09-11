@@ -42,8 +42,7 @@ class Oas20RootConverter extends Converter {
 			if (baseUri.host != null && urlHelper.isTemplateUri(baseUri.host)) {
 				oasDef['x-basePath'] = baseUri.host + (baseUri.basePath != null ? baseUri.basePath : '');
 			} else {
-				if (baseUri.host != null) oasDef.host = baseUri.host;
-				if (baseUri.hasOwnProperty('host')) oasDef.host = baseUri.host;
+				if (baseUri.hasOwnProperty('host') && !_.isEmpty(baseUri.host)) oasDef.host = baseUri.host;
 				if (baseUri.hasOwnProperty('basePath')) {
 					if (urlHelper.isTemplateUri(baseUri.basePath)) {
 						oasDef['x-basePath'] = baseUri.basePath;
