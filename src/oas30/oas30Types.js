@@ -401,6 +401,9 @@ export type Schema = {
 	definitions?: { [key: any]: Schema };
 	patternProperties?: { [key: any]: Schema };
 	dependencies?: { [key: any]: Schema | StringArray };
+
+	// only for conversion and flow needs it
+	internalType?: string;
 }
 
 class Discriminator {

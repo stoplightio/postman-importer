@@ -81,7 +81,7 @@ class Oas30MethodConverter extends Converter {
 								const headers: Header[] = value.headers;
 								if (Array.isArray(headers) && headers.length > 0) {
 									const parameterConverter = new ParameterConverter(this.model, this.annotationPrefix, this.def, '');
-									const result: { [string]: OasHeader } = parameterConverter.export(headers);
+									const result: { [string]: OasHeader } = parameterConverter.export(headers, false);
 
 									for (let j = 0; j < headers.length; j++) {
 										const modelHeader: Header = headers[j];
