@@ -125,7 +125,7 @@ class Raml10Converter extends Converter {
 		const annotationTypeConverter = new Raml10AnnotationTypeConverter(model);
 		if (ramlDef.annotationTypes) model.annotationTypes = annotationTypeConverter.import(ramlDef.annotationTypes);
 
-    //add errors to model
+		//add errors to model
 		if (addErrorsToModel && !_.isEmpty(this.errors)) {
 			try {
 				const ramlErrorModel = new RamlErrorModel();
