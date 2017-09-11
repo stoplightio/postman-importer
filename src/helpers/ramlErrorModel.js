@@ -27,6 +27,12 @@ class RamlErrorModel {
 		});
 	}
 	
+	addError(model, field, error) {
+		const key = error.isWarning ? 'warning' : 'error';
+		if (!model[key]) model[key] = {};
+		model[key][field] = error.message;
+	}
+	
 	addErrorToModel(model, error) {
 		let elem = this.path.pop();
 		if (elem.startsWith('/')) //resources
@@ -39,12 +45,10 @@ class RamlErrorModel {
 		const typeName = this.path.pop();
 		let type = this.getType(model.types, typeName);
 		if (this.path.isEmpty()) {
-			if (!type.error) type.error = {};
-			type.error.root = error.message;
+			this.addError(type, 'root', error);
 		} else if (this.path.size() === 1) {
 			const field = this.path.pop();
-			if (!type.error) type.error = {};
-			type.error[field] = error.message;
+			this.addError(type, field, error);
 		} else if (this.path.pop() === 'properties') {
 			const propName = this.path.pop();
 			this.addErrorToProp(this.getProperty(type.properties, propName), error);
@@ -53,12 +57,10 @@ class RamlErrorModel {
 	
 	addErrorToProp(prop, error) {
 		if (this.path.isEmpty()) {
-			if (!prop.error) prop.error = {};
-			prop.error.root = error.message;
+			this.addError(prop, 'root', error);
 		} else if (this.path.size() === 1) {
 			const field = this.path.pop();
-			if (!prop.error) prop.error = {};
-			prop.error[field] = error.message;
+			this.addError(prop, field, error);
 		} else if (this.path.pop() === 'properties') {
 			const propName = this.path.pop();
 			this.addErrorToProp(this.getProperty(prop.properties, propName), error);
@@ -68,24 +70,23 @@ class RamlErrorModel {
 	addErrorToResource(model, path, error) {
 		const resource = this.getResource(model.resources, path);
 		if (this.path.isEmpty()) {
-			if (!resource.error) resource.error = {};
-			resource.error.root = error.message;
-		}
-		const elem = this.path.pop();
-		if (methods.indexOf(elem) === -1) { // uriParameters
-			const paramName = this.path.pop();
-			let param = this.getParameter(resource.parameters, paramName);
-			this.addErrorToProp(param.definition, error);
-		} else { // methods
-			const method = this.getMethod(resource.methods, elem);
-			this.addErrorToResourceProp(method, error);
+			this.addError(resource, 'root', error);
+		} else {
+			const elem = this.path.pop();
+			if (methods.indexOf(elem) === -1) { // uriParameters
+				const paramName = this.path.pop();
+				let param = this.getParameter(resource.parameters, paramName);
+				this.addErrorToProp(param.definition, error);
+			} else { // methods
+				const method = this.getMethod(resource.methods, elem);
+				this.addErrorToResourceProp(method, error);
+			}
 		}
 	}
 	
 	addErrorToResourceProp(prop, error) {
 		if (this.path.isEmpty()) {
-			if (!prop.error) prop.error = {};
-			prop.error.root = error.message;
+			this.addError(prop, 'root', error);
 		} else {
 			const elem = this.path.pop();
 			if (elem === 'body') { // request bodies
@@ -101,8 +102,7 @@ class RamlErrorModel {
 				const response = this.getResponse(prop.responses, this.path.pop());
 				this.addErrorToResourceProp(response, error);
 			} else {
-				if (!prop.error) prop.error = {};
-				prop.error.root = error.message;
+				this.addError(prop, 'root', error);
 			}
 		}
 	}
