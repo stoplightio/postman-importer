@@ -10,6 +10,7 @@ This package helps to convert between different API specifications. It was origi
 
 - OAS (OAS 2.0) -> RAML 1.0: [Complete Functional Specification](./docs/OAS20-to-RAML10.md)
 - RAML 1.0 -> OAS (OAS 2.0): [Complete Functional Specification](./docs/RAML10-to-OAS20.md)
+- RAML 1.0 -> OAS (OAS 3.0): [Complete Functional Specification](./docs/RAML10-to-OAS30.md)
 - RAML 0.8 -> OAS (OAS 2.0)
 - RAML 0.8 -> RAML 1.0
 
