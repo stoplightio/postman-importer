@@ -67,7 +67,7 @@ class Raml10Converter extends Converter {
 				reject();
 			} else {
 				const errors = parsedData.errors();
-				if (!_.isEmpty(errors)) this.errors = jsonHelper.parse(errors).filter(log => log.isWarning === false);
+				if (!_.isEmpty(errors)) this.errors = jsonHelper.parse(errors);
 				this.data = parsedData.expand(true).toJSON(toJSONOptions);
 				resolve();
 			}
