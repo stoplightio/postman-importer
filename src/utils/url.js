@@ -2,6 +2,21 @@ const request = require('request');
 const _ = require('lodash');
 
 module.exports = {
+	parseURL: url => {
+		const indexProtocol = url.indexOf('://');
+		const protocol = (indexProtocol !== -1) ? url.substr(0, indexProtocol) : '';
+		const protocolLength = (indexProtocol !== -1) ? protocol.length + 3 : 0;
+		const indexPath = url.indexOf('/', protocolLength);
+		const hostnameLength = (indexPath !== -1) ? indexPath - protocolLength : url.length - protocolLength;
+		const host = url.substr(protocolLength, hostnameLength);
+		const path = (indexPath !== -1) ? url.substr(indexPath) : '';
+		
+		return {
+			protocol: protocol.startsWith('http') || protocol.startsWith('ws') ? protocol : 'http',
+			host: host,
+			pathname: path
+		};
+	}, 
 	isURL: path =>{
 		if (!path) {
 			throw new Error('Invalid path/url string given.');
