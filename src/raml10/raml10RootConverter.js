@@ -21,7 +21,7 @@ const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter')
 const ParameterConverter = require('../common/parameterConverter');
 const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
 const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
-const { URL } = require('url-polyfill/url');
+const urlHelper = require('../utils/url');
 
 class Raml10RootConverter extends Converter {
 
@@ -194,18 +194,15 @@ class Raml10RootConverter extends Converter {
 
 		const infoConverter = new Raml10InfoConverter(model);
 		infoConverter.version = this.version;
-		const info: Info = infoConverter.import(ramlDef);
-		model.info = info;
+		model.info = infoConverter.import(ramlDef);
 
 		if (ramlDef.hasOwnProperty('protocols')) {
 			if (_.isArray(ramlDef.protocols)) {
-				const protocols: string[] = ramlDef.protocols.map(function (protocol) {
+				model.protocols = ramlDef.protocols.map(function (protocol) {
 					return protocol.toLowerCase();
 				});
-				model.protocols = protocols;
 			} else {
-				const protocols: string[] = [ramlDef.protocols.toLowerCase()];
-				model.protocols = protocols;
+				model.protocols = [ramlDef.protocols.toLowerCase()];
 			}
 		}
 
@@ -213,9 +210,8 @@ class Raml10RootConverter extends Converter {
 			const baseUri = new BaseUri();
 			const uri = ramlDef.baseUri;
 			baseUri.uri = uri;
-			const parsedURL = new URL(
-				uri.startsWith('http') || uri.startsWith('ws') ? uri : 'http://' + uri
-			);
+			const parsedURL = urlHelper.parseURL(uri);
+			
 			if (parsedURL.host != null && baseUri.uri != null) {
 				const host: string = parsedURL.host;
 				const index = baseUri.uri.indexOf(host);
@@ -230,12 +226,11 @@ class Raml10RootConverter extends Converter {
 				}
 			}
 			if (parsedURL.protocol != null) {
-				baseUri.protocol = parsedURL.protocol.slice(0, -1).toLowerCase();
+				baseUri.protocol = parsedURL.protocol.toLowerCase();
 				if (model.protocols != null && baseUri.protocol != null && !_.includes(model.protocols, baseUri.protocol)) {
 					model.protocols.push(baseUri.protocol);
 				} else if (model.protocols == null && baseUri.protocol != null) {
-					const protocols: string[] = [baseUri.protocol];
-					model.protocols = protocols;
+					model.protocols = [baseUri.protocol];
 				}
 			}
 			model.baseUri = baseUri;
