@@ -160,7 +160,7 @@ class RamlErrorModel {
 
 	getResponse(methodResponses, statusCode) {
 		return methodResponses.find(r => {
-			return r.httpStatusCode === statusCode;
+			return r.httpStatusCode === statusCode || r.httpStatusCode === statusCode.split("'")[1];
 		});
 	}
 
