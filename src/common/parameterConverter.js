@@ -17,7 +17,7 @@ class ParameterConverter extends Converter {
 		if (!_.isEmpty(_in)) this._in = _in;
 	}
 	
-	export(models:any[], exportRaml:boolean) {
+	export(models:any[], exportRaml?:boolean) {
 		const result = {};
 		if (_.isEmpty(models)) return result;
 		
@@ -31,7 +31,7 @@ class ParameterConverter extends Converter {
 	}
 	
 	// exports 1 parameter definition
-	_export(model:Parameter, exportRaml:boolean) {
+	_export(model:Parameter, exportRaml?:boolean) {
 		const definitionConverter = new Raml10DefinitionConverter(this.model, this.annotationPrefix, this.def);
 		
 		const definition: ?Definition = model.definition;
