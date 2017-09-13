@@ -86,7 +86,7 @@ class Raml10ResourceConverter extends Converter {
 	_export(model:Resource) {
 		const attrIdMap = {};
 
-		const attrIdSkip = ['path', 'relativePath', 'methods', 'resources', 'parameters', 'securedBy', 'annotations', 'resourceType'];
+		const attrIdSkip = ['path', 'relativePath', 'methods', 'resources', 'parameters', 'securedBy', 'annotations', 'resourceType', 'error', 'warning'];
 		const ramlDef = Raml10ResourceConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 		const methodConverter = new Raml10MethodConverter(this.model, this.annotationPrefix, this.def);
 
