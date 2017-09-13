@@ -46,7 +46,7 @@ class Raml10DefinitionConverter extends Converter {
 		};
 
 		const attrIdSkip = ['name', 'type', 'reference', 'properties', 'items', 'compositionType', 'in', 'schema', 'additionalProperties', 'title', 'items', 'itemsList',
-			'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference', '_enum', 'error'];
+			'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference', '_enum', 'error', 'warning'];
 
 		const ramlDef = Raml10DefinitionConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 

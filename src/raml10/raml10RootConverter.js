@@ -35,7 +35,7 @@ class Raml10RootConverter extends Converter {
 
 	_export(model: Root) {
 		const attrIdMap = {};
-		const attrIdSkip = ['info', 'baseUri', 'baseUriParameters', 'mediaType', 'protocols', 'securityDefinitions', 'resources', 'types', 'resourceTypes', 'annotations', 'resourceAnnotations', 'tags', 'externalDocs', 'responses', 'documentation'];
+		const attrIdSkip = ['info', 'baseUri', 'baseUriParameters', 'mediaType', 'protocols', 'securityDefinitions', 'resources', 'types', 'resourceTypes', 'annotations', 'resourceAnnotations', 'tags', 'externalDocs', 'responses', 'documentation', 'error', 'warning'];
 		const ramlDef = Raml10RootConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 
 		if (model.hasOwnProperty('info')) {
