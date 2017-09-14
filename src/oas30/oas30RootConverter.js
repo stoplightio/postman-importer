@@ -53,8 +53,8 @@ class Oas30RootConverter extends Converter {
 				}
 			}
 
-			if (model.protocols != null && host != null) {
-				const protocols = model.protocols;
+			if (host != null) {
+				const protocols = model.protocols != null ? model.protocols : ['http']; //default protocol if it not exists.
 				if (protocol != null && !protocols.includes(protocol)) {
 					protocols.push(protocol);
 				}

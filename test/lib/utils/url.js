@@ -6,10 +6,10 @@ const urlHelper = require('../../../src/utils/url');
 describe('url utility library', function () {
 	describe('parse url', function () {
 		it('should parse common url', function () {
-			const url = urlHelper.parseURL('http://www.gmail.com/mail');
+			const url = urlHelper.parseURL('http://www.gmail.com/mail/');
 			expect(url.protocol).to.be.equal('http');
 			expect(url.host).to.be.equal('www.gmail.com');
-			expect(url.pathname).to.be.equal('/mail');
+			expect(url.pathname).to.be.equal('/mail/');
 		});
 
 		it('should parse https', function () {
@@ -30,64 +30,64 @@ describe('url utility library', function () {
 			const url = urlHelper.parseURL('https://www.gmail.com/');
 			expect(url.protocol).to.be.equal('https');
 			expect(url.host).to.be.equal('www.gmail.com');
-			expect(url.pathname).to.be.equal('/');
+			expect(url.pathname).to.be.undefined;
 		});
 
 		it('should parse no path', function () {
 			const url = urlHelper.parseURL('https://www.gmail.com');
 			expect(url.protocol).to.be.equal('https');
 			expect(url.host).to.be.equal('www.gmail.com');
-			expect(url.pathname).to.be.equal('');
+			expect(url.pathname).to.be.undefined;
 		});
 
 		it('should parse no protocol many paths', function () {
-			const url = urlHelper.parseURL('www.gmail.com/mail/mail2/mail3');
-			expect(url.protocol).to.be.equal('http');
+			const url = urlHelper.parseURL('www.gmail.com/mail/mail2/mail3?param1=value1');
+			expect(url.protocol).to.be.undefined;
 			expect(url.host).to.be.equal('www.gmail.com');
 			expect(url.pathname).to.be.equal('/mail/mail2/mail3');
 		});
 
 		it('should parse no protocol one path', function () {
-			const url = urlHelper.parseURL('www.gmail.com/mail');
-			expect(url.protocol).to.be.equal('http');
+			const url = urlHelper.parseURL('www.gmail.com/mail#value1');
+			expect(url.protocol).to.be.undefined;
 			expect(url.host).to.be.equal('www.gmail.com');
 			expect(url.pathname).to.be.equal('/mail');
 		});
 
 		it('should parse no protocol empty path', function () {
 			const url = urlHelper.parseURL('www.gmail.com/');
-			expect(url.protocol).to.be.equal('http');
+			expect(url.protocol).to.be.undefined;
 			expect(url.host).to.be.equal('www.gmail.com');
-			expect(url.pathname).to.be.equal('/');
+			expect(url.pathname).to.be.undefined;
 		});
 
 		it('should parse no protocol no path', function () {
 			const url = urlHelper.parseURL('www.gmail.com');
-			expect(url.protocol).to.be.equal('http');
+			expect(url.protocol).to.be.undefined;
 			expect(url.host).to.be.equal('www.gmail.com');
-			expect(url.pathname).to.be.equal('');
+			expect(url.pathname).to.be.undefined;
 		});
 
 		it('should parse protocol no host no path', function () {
 			const url = urlHelper.parseURL('https://');
 			expect(url.protocol).to.be.equal('https');
-			expect(url.host).to.be.equal('');
-			expect(url.pathname).to.be.equal('');
+			expect(url.host).to.be.undefined;
+			expect(url.pathname).to.be.undefined;
 		});
 
 		it('should parse url defined using variables', function () {
 			const url = urlHelper.parseURL('{protocol}://{domain}/rest/api/{version}');
-			expect(url.protocol).to.be.equal('http');
+			expect(url.protocol).to.be.undefined;
 			expect(url.host).to.be.equal('{domain}');
 			expect(url.pathname).to.be.equal('/rest/api/{version}');
 		});
 
 		it('should parse url defined using variables with port', function () {
 			const url = urlHelper.parseURL('{protocol}://{domain}:{port}/rest/api/{version}');
-			expect(url.protocol).to.be.equal('http');
+			expect(url.protocol).to.be.undefined;
 			expect(url.host).to.be.equal('{domain}:{port}');
 			expect(url.pathname).to.be.equal('/rest/api/{version}');
 		});
-		
+
 	});
 });

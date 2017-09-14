@@ -9,13 +9,25 @@ module.exports = {
 		const indexPath = url.indexOf('/', protocolLength);
 		const hostnameLength = (indexPath !== -1) ? indexPath - protocolLength : url.length - protocolLength;
 		const host = url.substr(protocolLength, hostnameLength);
-		const path = (indexPath !== -1) ? url.substr(indexPath) : '';
+		let path = (indexPath !== -1) ? url.substr(indexPath) : '';
 		
-		return {
-			protocol: protocol.startsWith('http') || protocol.startsWith('ws') ? protocol : 'http',
-			host: host,
-			pathname: path
-		};
+		const result = {};
+		if (!_.isEmpty(protocol) && protocol.startsWith('http') || protocol.startsWith('ws'))
+			result.protocol = protocol;
+		
+		if (!_.isEmpty(host))
+			result.host = host;
+		
+		if (!_.isEmpty(path)) {
+			const queryIndex = path.indexOf('?');
+			const pathWOQuery = queryIndex !== -1 ? path.substr(0, queryIndex) : path;
+			const musicIndex = pathWOQuery.indexOf('#');
+			const basePath = musicIndex !== -1 ? pathWOQuery.substr(0, musicIndex) : pathWOQuery;
+			if (!_.isEmpty(basePath) && basePath !== '/')
+				result.pathname = basePath;
+		} 
+		
+		return result;
 	}, 
 	isURL: path =>{
 		if (!path) {
