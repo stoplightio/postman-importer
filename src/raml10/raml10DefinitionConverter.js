@@ -691,16 +691,8 @@ class Raml10DefinitionConverter extends Converter {
 		const type = model.type;
 		const format = hasFormat ? model.format : null;
 
-		if (type === 'integer' && !hasFormat) model.internalType = 'integer';
-		if (type === 'number' && !hasFormat) model.internalType = 'number';
-		if (type === 'integer' && format === 'int') model.internalType = 'int';
-		if (type === 'integer' && format === 'int8') model.internalType = 'int8';
-		if (type === 'integer' && format === 'int16') model.internalType = 'int16';
-		if (type === 'integer' && format === 'int32') model.internalType = 'int32';
-		if (type === 'integer' && format === 'int64') model.internalType = 'int64';
-		if (type === 'number' && format === 'float') model.internalType = 'float';
-		if (type === 'number' && format === 'double') model.internalType = 'double';
-		if (type === 'number' && format === 'long') model.internalType = 'number';
+		if (type === 'integer') model.internalType = 'integer';
+		if (type === 'number') model.internalType = 'number';
 		if (type === 'boolean') model.internalType = 'boolean';
 		if (type === 'string' && !hasFormat) model.internalType = 'string';
 		if (type === 'any') model.internalType = 'string';
@@ -718,7 +710,9 @@ class Raml10DefinitionConverter extends Converter {
 
 		if (model.hasOwnProperty('internalType')) {
 			delete model.type;
-			if (model.format !== 'rfc2616') delete model.format;
+			if ((model.internalType === 'integer' && !integerValidFormats.includes(format)) ||
+				(model.internalType === 'number' && !numberValidFormats.includes(format)))
+				delete model.format;
 		}
 	}
 
@@ -814,7 +808,7 @@ class Raml10DefinitionConverter extends Converter {
 const scalarNumberTypes = ['number', 'integer'];
 const scalarTypes = _.concat(scalarNumberTypes, ['string', 'boolean', 'datetime', 'date-only', 'file', 'time-only', 'datetime-only', 'nil', 'null', 'timestamp']);
 const integerValidFormats = ['int', 'int8', 'int16', 'int32', 'int64'];
-const numberValidFormats = _.concat(integerValidFormats, ['long', 'float', 'double']); // eslint-disable-line no-unused-vars,FIXME
+const numberValidFormats = _.concat(integerValidFormats, ['long', 'float', 'double']);
 const raml10BuiltinTypes = _.concat(scalarTypes, ['any', 'array', 'object', 'union']);
 const raml08BuiltinTypes = _.concat(raml10BuiltinTypes, ['date']);
 
