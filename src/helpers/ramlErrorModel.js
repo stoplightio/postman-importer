@@ -43,7 +43,10 @@ class RamlErrorModel {
 			this.addError(model, 'title', error);
 		else if (elem === 'documentation')
 			this.addErrorToDocumentation(model, error);
-		else this.addError(model, 'root', error);
+		else if (elem === 'baseUriParameters') {
+			const param = this.getParameter(model.baseUriParameters, this.path.pop());
+			this.addErrorToProp(param.definition, error);
+		} else this.addError(model, 'root', error);
 	}
 	
 	addErrorToDocumentation(model, error) {
