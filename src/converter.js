@@ -40,8 +40,8 @@ class Converter {
 		return new Promise((resolve, reject) => {
 			try {
 				this.exporter.export(model)
-					.then(resolve)
-					.catch(reject);
+          .then(resolve)
+          .catch(reject);
 			} catch (e) {
 				reject(e);
 			}

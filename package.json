@@ -1,7 +1,7 @@
 {
   "name": "oas-raml-converter",
-  "version": "1.0.9",
-  "description": "This package helps to convert between different API specifications. Supports OAS (Swagger 2), RAML 0.8, RAML 1.0. ",
+  "version": "1.0.20",
+  "description": "This package helps to convert between different API specifications. Supports OAS (Swagger 2), RAML 0.8, RAML 1.0.",
   "main": "lib/index.js",
   "files": [
     "lib/",
@@ -12,7 +12,7 @@
     "test": "mocha --compilers js:babel-register && npm run eslint",
     "start": "node ./lib/bin/converter.js",
     "build": "babel src -d lib && flow-copy-source -v src lib",
-    "publish": "npm install && npm test && npm run build",
+    "build-and-publish": "rm -rf lib && npm install && npm test && npm run build && npm publish",
     "eslint": "./node_modules/.bin/eslint ./src index.js ./src",
     "coverage": "babel-node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
@@ -38,8 +38,8 @@
     "js-yaml": "3.x.x",
     "json-schema-compatibility": "1.x.x",
     "lodash": "4.x.x",
-    "oas-raml-converter-model": "0.0.7",
-    "raml-1-parser": "1.1.29",
+    "oas-raml-converter-model": "0.0.15",
+    "raml-1-parser": "1.1.30",
     "request": "2.x.x",
     "swagger-parser": "4.0.0-beta.2",
     "xml2js": "^0.4.17"
@@ -63,6 +63,7 @@
     "flow-copy-source": "^1.2.0",
     "istanbul": "^1.0.0-alpha.2",
     "mocha": "^2.4.5",
+    "serializer.ts": "0.0.12",
     "slugify": "^1.0.2"
   },
   "browser": {

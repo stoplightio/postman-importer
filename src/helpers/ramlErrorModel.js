@@ -39,6 +39,23 @@ class RamlErrorModel {
 			this.addErrorToResource(model, elem, error);
 		else if (elem === 'types') //types
 			this.addErrorToType(model, error);
+		else if (elem === 'version' && error.message === "Missing required property 'title'")
+			this.addError(model, 'title', error);
+		else if (elem === 'documentation')
+			this.addErrorToDocumentation(model, error);
+		else if (elem === 'baseUriParameters') {
+			const param = this.getParameter(model.baseUriParameters, this.path.pop());
+			this.addErrorToProp(param.definition, error);
+		} else this.addError(model, 'root', error);
+	}
+	
+	addErrorToDocumentation(model, error) {
+		const index = this.path.pop();
+		const field = error.message === "Missing required property 'title'" ? 'name' : error.message === "Missing required property 'content'" ? 'value' : 'root';
+		const item = model.documentation[index];
+		if (field === 'name') delete item.name;
+		else if (field === 'value') delete item.value;
+		this.addError(item, field, error);
 	}
 	
 	addErrorToType(model, error) {
@@ -111,27 +128,46 @@ class RamlErrorModel {
 		const lines = fileContent.split(os.EOL);
 		const line = lines[lineNumber];
 		let lineIndent = stringsHelper.getIndent(line);
-		this.path.push(_.trimStart(line.substr(0, line.indexOf(':'))));
-		let resource = '';
-
-		for (let count = lineNumber; count > 0; count--) {
-			const currentLine = lines[count];
-			const currentIndent = stringsHelper.getIndent(currentLine);
-			if (currentIndent < lineIndent) {
-				lineIndent = currentIndent;
-				let elem = _.trimStart(currentLine.substr(0, currentLine.indexOf(':')));
-				if (elem.startsWith('/') && currentIndent > 0) {
-					resource = elem + resource;
-				} else {
-					if (resource !== '') {
+		if (line.substr(lineIndent).startsWith('-')) {
+			this.createListPath(lines, lineNumber, lineIndent);
+		} else {
+			this.path.push(_.trimStart(line.substr(0, line.indexOf(':'))));
+			let resource = '';
+			
+			for (let count = lineNumber; count > 0; count--) {
+				const currentLine = lines[count];
+				const currentIndent = stringsHelper.getIndent(currentLine);
+				if (currentIndent < lineIndent) {
+					lineIndent = currentIndent;
+					let elem = _.trimStart(currentLine.substr(0, currentLine.indexOf(':')));
+					if (elem.startsWith('/') && currentIndent > 0) {
 						resource = elem + resource;
-						this.path.push(resource);
 					} else {
-						this.path.push(elem);
+						if (resource !== '') {
+							resource = elem + resource;
+							this.path.push(resource);
+						} else {
+							this.path.push(elem);
+						}
 					}
 				}
 			}
 		}
+	}
+	
+	createListPath(lines, lineNumber, lineIndent) {
+		let i = lineNumber;
+		let newLineIndent = lineIndent;
+		let line = '';
+		let index = 0;
+		while (newLineIndent >= lineIndent && i >= 0) {
+			i = i - 1;
+			line = lines[i];
+			newLineIndent = stringsHelper.getIndent(line);
+			if (line.substr(newLineIndent).startsWith('-')) index = index + 1;
+		}
+		this.path.push(index + '');
+		this.path.push(_.trimStart(line.substr(0, line.indexOf(':'))));
 	}
 
 	getBody(bodies, mimeType) {

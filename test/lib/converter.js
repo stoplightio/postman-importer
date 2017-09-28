@@ -582,31 +582,31 @@ describe('Raml10 to Oas30', () => {
 		return function (done) {
 			const data = fs.readFileSync(sourceFile, 'utf8');
 			converter
-				.convertData(data, validateOptions)
-				.then(resultOAS => {
-					try {
-						const notExistsTarget = !fs.existsSync(targetFile);
-						if (notExistsTarget) {
-							console.log('Content for non existing target file ' + targetFile + '\n.');
-							console.log('********** Begin file **********\n');
-							console.log(resultOAS);
-							console.log('********** Finish file **********\n');
-							return done(resultOAS);
-						} else {
-							const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
-							expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
-							if (!extension && _.includes(resultOAS, 'x-raml')) {
-								return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
-							}
-							done();
+			.convertData(data, validateOptions)
+			.then(resultOAS => {
+				try {
+					const notExistsTarget = !fs.existsSync(targetFile);
+					if (notExistsTarget) {
+						console.log('Content for non existing target file ' + targetFile + '\n.');
+						console.log('********** Begin file **********\n');
+						console.log(resultOAS);
+						console.log('********** Finish file **********\n');
+						return done(resultOAS);
+					} else {
+						const formattedData = typeof resultOAS === 'object' ? JSON.stringify(resultOAS) : resultOAS;
+						expect(YAML.safeLoad(formattedData)).to.deep.equal(YAML.safeLoad(fs.readFileSync(targetFile, 'utf8')));
+						if (!extension && _.includes(resultOAS, 'x-raml')) {
+							return done('error: output file contains extension property.\n sourceFile:[' + sourceFile + ']\n targetFile:[' + targetFile + ']');
 						}
-					} catch (e) {
-						done(e);
+						done();
 					}
-				}).catch((err) => {
-					console.error('error exporting file.');
-					done(err);
-				});
+				} catch (e) {
+					done(e);
+				}
+			}).catch((err) => {
+				console.error('error exporting file.');
+				done(err);
+			});
 		};
 	};
 
