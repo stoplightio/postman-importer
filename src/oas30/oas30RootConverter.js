@@ -53,6 +53,15 @@ class Oas30RootConverter extends Converter {
 				}
 			}
 
+			if (model.protocols == null && host != null) {
+				const url: string =  host + (basePath || '/');
+				const server = new Server(url);
+				if(!_.isEmpty(variables)) {
+					server.variables = variables;
+				}
+				servers.push(server);
+			}
+
 			if (model.protocols != null && host != null) {
 				const protocols = model.protocols;
 				if (protocol != null && !protocols.includes(protocol)) {
