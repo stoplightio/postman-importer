@@ -61,7 +61,7 @@ class Raml10ResourceConverter extends Converter {
 				Raml10ResourceConverter.mapUriParameters(value.uriParameters, path, uriParameters, result[path]);
 			}
 			return {result: result, uriParameters: value.uriParameters};
-		} else return {result: undefined}
+		} else return {result: undefined};
 	}
 
 	static mapUriParameters(source:any, path:?string, uriParameters:any, target:any) {
