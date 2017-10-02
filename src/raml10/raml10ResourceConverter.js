@@ -25,11 +25,12 @@ class Raml10ResourceConverter extends Converter {
 		for (let i = 0; i < models.length; i++) {
 			const model: Resource = models[i];
 			const path: ?string = model.path;
-			if (path) {
+			if (path && path.startsWith('/')) {
 				const paths: string[] = path.split('/');
 				paths.shift();
 				const relativePath: string = path.substring(path.lastIndexOf('/'));
-				result = this.mapResource(model, result, paths, relativePath).result;
+				const resource = this.mapResource(model, result, paths, relativePath).result;
+				if (resource) result = resource;
 			}
 		}
 		
@@ -53,14 +54,14 @@ class Raml10ResourceConverter extends Converter {
 				result[path] = value.result;
 				return {result: result, uriParameters: value.uriParameters};
 			}
-		} else {
+		} else if (paths.length > 0) {
 			const value = this.mapResource(model, result[path], paths, relativePath);
 			if (!_.isEmpty(value.uriParameters)) {
 				const uriParameters = result[path].uriParameters ? result[path].uriParameters : {};
 				Raml10ResourceConverter.mapUriParameters(value.uriParameters, path, uriParameters, result[path]);
 			}
 			return {result: result, uriParameters: value.uriParameters};
-		}
+		} else return {result: undefined}
 	}
 
 	static mapUriParameters(source:any, path:?string, uriParameters:any, target:any) {
