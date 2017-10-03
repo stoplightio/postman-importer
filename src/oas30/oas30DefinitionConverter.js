@@ -9,6 +9,8 @@ const stringHelper = require('../utils/strings');
 
 const Oas30AnnotationConverter = require('./oas30AnnotationConverter');
 
+const { Discriminator } = require('./oas30Types');
+
 import type { Schema } from './oas30Types';
 
 class Oas30DefinitionConverter extends Converter {
@@ -54,6 +56,7 @@ class Oas30DefinitionConverter extends Converter {
 		const attrIdSkip = [
 			'name',
 			'fileReference',
+			'discriminator',
 			'reference',
 			'properties',
 			'compositionType',
@@ -75,6 +78,10 @@ class Oas30DefinitionConverter extends Converter {
 
 		if (oasDef.internalType != null) {
 			Oas30DefinitionConverter._convertFromInternalType(oasDef, this.level);
+		}
+
+		if (model.discriminator != null) {
+			oasDef.discriminator = new Discriminator(model.discriminator);
 		}
 
 		if (model.example != null) {
@@ -218,6 +225,36 @@ class Oas30DefinitionConverter extends Converter {
 		_.assign(result, object);
 
 		return result;
+	}
+
+	static _convertToInternalType(model) {
+		const hasFormat = model.format != null;
+		const type = model.type;
+		const format = hasFormat ? model.format : null;
+
+		if (type === 'integer' && !hasFormat) model.internalType = 'integer';
+		if (type === 'number' && !hasFormat) model.internalType = 'number';
+		if (type === 'integer' && format === 'int') model.internalType = 'int';
+		if (type === 'integer' && format === 'int8') model.internalType = 'int8';
+		if (type === 'integer' && format === 'int16') model.internalType = 'int16';
+		if (type === 'integer' && format === 'int32') model.internalType = 'int32';
+		if (type === 'integer' && format === 'int64') model.internalType = 'int64';
+		if (type === 'number' && format === 'float') model.internalType = 'float';
+		if (type === 'number' && format === 'double') model.internalType = 'double';
+		if (type === 'boolean') model.internalType = 'boolean';
+		if (type === 'string' && !hasFormat) model.internalType = 'string';
+		if (type === 'string' && format === 'byte') model.internalType = 'byte';
+		if (type === 'string' && format === 'binary') model.internalType = 'binary';
+		if (type === 'string' && format === 'password') model.internalType = 'password';
+		if (type === 'string' && format === 'date') model.internalType = 'dateonly';
+		if (type === 'string' && format === 'date-time') model.internalType = 'datetime';
+		if (type === 'object') model.internalType = 'object';
+		if (type === 'array') model.internalType = 'array';
+
+		if (model.internalType != null) {
+			delete model.type;
+			delete model.format;
+		}
 	}
 
 	static _convertFromInternalType(oasDef, level) {
