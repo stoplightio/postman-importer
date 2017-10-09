@@ -112,7 +112,7 @@ class Raml10MethodConverter extends Converter {
 							const id = this.annotationPrefix + '-responses-default';
 							Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 							ramlDef['(' + id + ')'] = response;
-						} else if (httpStatusCode) responses[httpStatusCode] = response;
+						} else if (httpStatusCode) responses[httpStatusCode] = (_.isEmpty(response)) ? null : response;
 					}
 				}
 				if (!_.isEmpty(responses)) ramlDef.responses = responses;
