@@ -13,15 +13,15 @@ const Definition = ConverterModel.Definition;
 const Annotation = ConverterModel.Annotation;
 const SecurityRequirement = ConverterModel.SecurityRequirement;
 const Converter = require('../converters/converter');
-const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
+const RamlDefinitionConverter = require('../raml/ramlDefinitionConverter');
 const ParameterConverter = require('../common/parameterConverter');
-const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
-const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
+const RamlAnnotationConverter = require('../raml/ramlAnnotationConverter');
+const RamlCustomAnnotationConverter = require('../raml/ramlCustomAnnotationConverter');
 const helper = require('../helpers/converter');
 const ramlHelper = require('../helpers/raml');
 const jsonHelper = require('../utils/json');
 
-class Raml10MethodConverter extends Converter {
+class RamlMethodConverter extends Converter {
 	
 	export(models:Method[]) {
 		const result = {};
@@ -43,8 +43,8 @@ class Raml10MethodConverter extends Converter {
 		};
 
 		const attrIdSkip = ['responses', 'headers', 'bodies', 'formBodies', 'method', 'parameters', 'queryStrings', 'consumes', 'usage', 'path', 'produces', 'securedBy', 'annotations', 'tags', 'summary', 'externalDocs', 'deprecated', 'protocols'];
-		const ramlDef = Raml10MethodConverter.createRamlDef(model, attrIdMap, attrIdSkip);
-		const definitionConverter = new Raml10DefinitionConverter(this.model, this.annotationPrefix, this.def);
+		const ramlDef = RamlMethodConverter.createRamlDef(model, attrIdMap, attrIdSkip);
+		const definitionConverter = new RamlDefinitionConverter(this.model, this.annotationPrefix, this.def);
 		
 		if (model.hasOwnProperty('is')) {
 			if (_.isArray(model.is) && !_.isEmpty(model.is) && model.is != null) {
@@ -84,13 +84,13 @@ class Raml10MethodConverter extends Converter {
 						const internalMimeTypes = model.hasOwnProperty('produces') ? model.produces : [];
 						const globalMimeTypes = this.model.hasOwnProperty('mediaType') && this.model.mediaType.hasOwnProperty('produces') ? this.model.mediaType.produces : [];
 						const mimeTypes = !_.isEmpty(internalMimeTypes) ? internalMimeTypes : globalMimeTypes;
-						const body = Raml10MethodConverter.exportBodies(val, definitionConverter, mimeTypes, this.model, this.annotationPrefix, this.def);
+						const body = RamlMethodConverter.exportBodies(val, definitionConverter, mimeTypes, this.model, this.annotationPrefix, this.def);
 						const bodyDef = body[Object.keys(body)[0]];
 						if (bodyDef && bodyDef.hasOwnProperty('examples')) {
 							const examples: any = bodyDef.examples;
 							if (bodyDef.invalidJsonExample || (bodyDef.type && bodyDef.type !== 'string' && typeof examples === 'string')) {
 								const id = this.annotationPrefix + '-responses-example';
-								Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+								RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 								bodyDef['(' + id + ')'] = bodyDef.hasOwnProperty('example') ? _.concat(examples, bodyDef.example) : examples;
 								delete bodyDef.invalidJsonExample;
 							} else {
@@ -103,14 +103,14 @@ class Raml10MethodConverter extends Converter {
 						if (val.hasOwnProperty('globalResponseDefinition')) {
 							const responseDef: ?string = val.globalResponseDefinition;
 							const id = this.annotationPrefix + '-global-response-definition';
-							Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+							RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 							response['(' + id + ')'] = responseDef;
 						}
-						Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, val, response);
+						RamlAnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, val, response);
 						const httpStatusCode: ?string = val.httpStatusCode;
 						if (httpStatusCode === 'default') {
 							const id = this.annotationPrefix + '-responses-default';
-							Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+							RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 							ramlDef['(' + id + ')'] = response;
 						} else if (httpStatusCode) responses[httpStatusCode] = (_.isEmpty(response)) ? null : response;
 					}
@@ -149,11 +149,11 @@ class Raml10MethodConverter extends Converter {
 		const internalMimeTypes = model.hasOwnProperty('consumes') ? model.consumes : [];
 		const globalMimeTypes = this.model.hasOwnProperty('mediaType') && this.model.mediaType.hasOwnProperty('consumes') ? this.model.mediaType.consumes : [];
 		const mimeTypes = !_.isEmpty(internalMimeTypes) ? internalMimeTypes : globalMimeTypes;
-		const body = Raml10MethodConverter.exportBodies(model, definitionConverter, mimeTypes, this.model, this.annotationPrefix, this.def);
+		const body = RamlMethodConverter.exportBodies(model, definitionConverter, mimeTypes, this.model, this.annotationPrefix, this.def);
 		if (!_.isEmpty(body)) ramlDef.body = body;
 		
 		if (model.hasOwnProperty('securedBy')) {
-			ramlDef.securedBy = Raml10MethodConverter.exportSecurityRequirements(model);
+			ramlDef.securedBy = RamlMethodConverter.exportSecurityRequirements(model);
 		}
 
 		if (model.hasOwnProperty('protocols') && model.protocols != null) {
@@ -163,25 +163,25 @@ class Raml10MethodConverter extends Converter {
 		
 		if (model.hasOwnProperty('summary')) {
 			const id = this.annotationPrefix + '-summary';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.summary;
 		}
 		if (model.hasOwnProperty('tags')) {
 			const id = this.annotationPrefix + '-tags';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.tags;
 		}
 		if (model.hasOwnProperty('deprecated') && model.deprecated) {
 			const id = this.annotationPrefix + '-deprecated';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.deprecated;
 		}
 		if (model.hasOwnProperty('externalDocs')) {
 			const id = this.annotationPrefix + '-externalDocs';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.externalDocs;
 		}
-		Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
+		RamlAnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
 		
 		return ramlDef;
 	}
@@ -226,13 +226,13 @@ class Raml10MethodConverter extends Converter {
 						_.assign(bodyDef, bodyDef.schema);
 						delete bodyDef.schema;
 					}
-					Raml10MethodConverter.exportRequired(val, bodyDef);
+					RamlMethodConverter.exportRequired(val, bodyDef);
 					if (val.hasOwnProperty('name')) {
 						const id = annotationPrefix + '-body-name';
-						Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, annotationPrefix, id);
+						RamlCustomAnnotationConverter._createAnnotationType(ramlDef, annotationPrefix, id);
 						bodyDef['(' + id + ')'] = val.name;
 					}
-					Raml10AnnotationConverter.exportAnnotations(model, annotationPrefix, ramlDef, val, bodyDef);
+					RamlAnnotationConverter.exportAnnotations(model, annotationPrefix, ramlDef, val, bodyDef);
 					if (val.mimeType) {
 						const mimeType: string = val.mimeType;
 						body[mimeType] = bodyDef;
@@ -255,8 +255,8 @@ class Raml10MethodConverter extends Converter {
 					const mimeType: string = val.mimeType ? val.mimeType : (!_.isEmpty(mimeTypes) && helper.getValidFormDataMimeTypes.includes(mimeTypes[0]) ? mimeTypes[0] : 'multipart/form-data');
 					const bodyDef = converter._export(definition);
 					if (val.hasOwnProperty('description')) bodyDef.description = val.description;
-					Raml10MethodConverter.exportRequired(val, bodyDef);
-					Raml10AnnotationConverter.exportAnnotations(model, annotationPrefix, ramlDef, val, bodyDef);
+					RamlMethodConverter.exportRequired(val, bodyDef);
+					RamlAnnotationConverter.exportAnnotations(model, annotationPrefix, ramlDef, val, bodyDef);
 					if (!body[mimeType]) {
 						body[mimeType] = {};
 						body[mimeType].properties = {};
@@ -341,8 +341,8 @@ class Raml10MethodConverter extends Converter {
 		};
 
 		const attrIdSkip = ['responses', 'description', 'headers', 'body', 'queryParameters', 'queryString', 'name', 'usage', 'is', 'securedBy', 'baseUriParameters', 'annotations', 'protocols'];
-		const model: Method = Raml10MethodConverter.createMethod(ramlDef, attrIdMap, attrIdSkip);
-		const definitionConverter = new Raml10DefinitionConverter(null, null, this.def);
+		const model: Method = RamlMethodConverter.createMethod(ramlDef, attrIdMap, attrIdSkip);
+		const definitionConverter = new RamlDefinitionConverter(null, null, this.def);
 		definitionConverter.version = this.version;
 		const isRaml08Version = ramlHelper.isRaml08Version(this.version);
 		
@@ -381,8 +381,8 @@ class Raml10MethodConverter extends Converter {
 					if (!ramlDef.responses.hasOwnProperty(id)) continue;
 
 					const value = ramlDef.responses[id];
-					const hasParams: boolean = Raml10MethodConverter.hasParams(value);
-					const response: Response = Raml10MethodConverter.createResponse(ramlDef.responses[id], attrSecurityIdMap, []);
+					const hasParams: boolean = RamlMethodConverter.hasParams(value);
+					const response: Response = RamlMethodConverter.createResponse(ramlDef.responses[id], attrSecurityIdMap, []);
 					if (hasParams) response.hasParams = true;
 					responses.push(response);
 				}
@@ -391,15 +391,15 @@ class Raml10MethodConverter extends Converter {
 					if (!ramlDef.responses.hasOwnProperty(id)) continue;
 
 					const value = ramlDef.responses[id];
-					const hasParams: boolean = Raml10MethodConverter.hasParams(value);
+					const hasParams: boolean = RamlMethodConverter.hasParams(value);
 					let response = new Response();
 					response.httpStatusCode = id;
 					if (value.hasOwnProperty('description')) response.description = value.description;
-					const headers: Header[] = Raml10MethodConverter.importHeaders(value);
+					const headers: Header[] = RamlMethodConverter.importHeaders(value);
 					if (!_.isEmpty(headers)) response.headers = headers;
-					const bodies: Body[] = Raml10MethodConverter.importBodies(value, definitionConverter, this.model, isRaml08Version);
+					const bodies: Body[] = RamlMethodConverter.importBodies(value, definitionConverter, this.model, isRaml08Version);
 					if (!_.isEmpty(bodies)) response.bodies = bodies;
-					Raml10AnnotationConverter.importAnnotations(value, response, this.model);
+					RamlAnnotationConverter.importAnnotations(value, response, this.model);
 					if (hasParams) response.hasParams = true;
 					responses.push(response);
 				}
@@ -407,7 +407,7 @@ class Raml10MethodConverter extends Converter {
 			model.responses = responses;
 		}
 		
-		const headers: Header[] = Raml10MethodConverter.importHeaders(ramlDef);
+		const headers: Header[] = RamlMethodConverter.importHeaders(ramlDef);
 		if (!_.isEmpty(headers)) model.headers = headers;
 		
 		if (ramlDef.hasOwnProperty('queryParameters')) {
@@ -418,7 +418,7 @@ class Raml10MethodConverter extends Converter {
 				
 				const value = ramlDef.queryParameters[id];
 				if (_.isArray(value)) continue;
-				const hasParams: boolean = Raml10MethodConverter.hasParams(value);
+				const hasParams: boolean = RamlMethodConverter.hasParams(value);
 				const parameter: Parameter = parameterConverter._import(value);
 				parameter._in = 'query';
 				if (hasParams) parameter.hasParams = true;
@@ -432,14 +432,14 @@ class Raml10MethodConverter extends Converter {
 			const queryString = new Parameter();
 			const definition: Definition = definitionConverter._import(ramlDef.queryString);
 			queryString.definition = definition;
-			Raml10MethodConverter.importRequired(ramlDef.queryString, queryString, isRaml08Version);
+			RamlMethodConverter.importRequired(ramlDef.queryString, queryString, isRaml08Version);
 			queryString._in = 'query';
 			queryString.name = 'queryString';
 			queryStrings.push(queryString);
 			model.queryStrings = queryStrings;
 		}
 
-		const bodies: Body[] = Raml10MethodConverter.importBodies(ramlDef, definitionConverter, this.model, isRaml08Version);
+		const bodies: Body[] = RamlMethodConverter.importBodies(ramlDef, definitionConverter, this.model, isRaml08Version);
 		if (!_.isEmpty(bodies)) model.bodies = bodies;
 		
 		if (ramlDef.hasOwnProperty('body') && _.isEmpty(model.bodies)) {
@@ -453,11 +453,11 @@ class Raml10MethodConverter extends Converter {
 						if (!value.hasOwnProperty('formParameters')) continue;
 						
 						const val = value.formParameters[index];
-						const formBody: Body = Raml10MethodConverter.importFormBodies(val, id, index, definitionConverter, isRaml08Version);
+						const formBody: Body = RamlMethodConverter.importFormBodies(val, id, index, definitionConverter, isRaml08Version);
 						formBodies.push(formBody);
 					}
 				} else {
-					const formBody: Body = Raml10MethodConverter.importFormBodies(value, id, 'formData', definitionConverter, isRaml08Version);
+					const formBody: Body = RamlMethodConverter.importFormBodies(value, id, 'formData', definitionConverter, isRaml08Version);
 					formBodies.push(formBody);
 				}
 			}
@@ -481,14 +481,14 @@ class Raml10MethodConverter extends Converter {
 					model.tags = tags;
 					delete ramlDef.annotations['oas-tags'];
 				}
-				const annotationConverter = new Raml10AnnotationConverter();
+				const annotationConverter = new RamlAnnotationConverter();
 				const annotations: Annotation[] = annotationConverter._import(ramlDef);
 				if (!_.isEmpty(annotations)) model.annotations = annotations;
 			}
 		}
 
 		if (ramlDef.hasOwnProperty('securedBy')) {
-			const securedBy: SecurityRequirement[] = Raml10MethodConverter.importSecurityRequirements(ramlDef);
+			const securedBy: SecurityRequirement[] = RamlMethodConverter.importSecurityRequirements(ramlDef);
 			model.securedBy = securedBy;
 		}
 
@@ -532,10 +532,10 @@ class Raml10MethodConverter extends Converter {
 		const definition: Definition = converter._import(object);
 		definition.name = name;
 		if (object.hasOwnProperty('description')) body.description = object.description;
-		Raml10MethodConverter.importRequired(object, body, isRaml08Version);
-		if (object.hasOwnProperty('examples')) Raml10MethodConverter.importExamples(object, definition);
+		RamlMethodConverter.importRequired(object, body, isRaml08Version);
+		if (object.hasOwnProperty('examples')) RamlMethodConverter.importExamples(object, definition);
 		body.definition = definition;
-		Raml10AnnotationConverter.importAnnotations(object, body, this.model);
+		RamlAnnotationConverter.importAnnotations(object, body, this.model);
 		
 		return body;
 	}
@@ -548,7 +548,7 @@ class Raml10MethodConverter extends Converter {
 				if (!object.body.hasOwnProperty(id) || helper.getValidFormDataMimeTypes.includes(id)) continue;
 				
 				const value = object.body[id];
-				const hasParams: boolean = Raml10MethodConverter.hasParams(value);
+				const hasParams: boolean = RamlMethodConverter.hasParams(value);
 				const body = new Body();
 				body.mimeType = id;
 				if (value.hasOwnProperty('description')) {
@@ -561,7 +561,7 @@ class Raml10MethodConverter extends Converter {
 				}
 				if (value.schema == null) delete value.schema;
 				let schema: any = value.hasOwnProperty('schema') ? value.schema : value;
-				if (isRaml08Version) Raml10MethodConverter.importRaml08Schema(value, body, converter, model);
+				if (isRaml08Version) RamlMethodConverter.importRaml08Schema(value, body, converter, model);
 				else {
 					if (_.isArray(schema)) {
 						if (helper.isJson(schema[0])) {
@@ -594,10 +594,10 @@ class Raml10MethodConverter extends Converter {
 				}
 				if (def != null) {
 					if (!schema.hasOwnProperty('type') && !jsonHelper.parse(schema).hasOwnProperty('type')) delete def.internalType;
-					Raml10MethodConverter.importRequired(value, body, isRaml08Version);
-					Raml10MethodConverter.importExamples(value, def);
+					RamlMethodConverter.importRequired(value, body, isRaml08Version);
+					RamlMethodConverter.importExamples(value, def);
 				}
-				Raml10AnnotationConverter.importAnnotations(value, body, this.model);
+				RamlAnnotationConverter.importAnnotations(value, body, this.model);
 				if (hasParams) body.hasParams = true;
 				bodies.push(body);
 			}
@@ -647,7 +647,7 @@ class Raml10MethodConverter extends Converter {
 				if (!object.headers.hasOwnProperty(id)) continue;
 				
 				const headerDef = object.headers[id];
-				const hasParams: boolean = Raml10MethodConverter.hasParams(headerDef);
+				const hasParams: boolean = RamlMethodConverter.hasParams(headerDef);
 				const parameter: Parameter = parameterConverter._import(headerDef);
 				const header = new Header();
 				_.assign(header, parameter);
@@ -690,7 +690,7 @@ class Raml10MethodConverter extends Converter {
 				(typeof value === 'number' && isNaN(value))) {
 				return true;
 			} else if (typeof value === 'object') {
-				hasParams = Raml10MethodConverter.hasParams(value);
+				hasParams = RamlMethodConverter.hasParams(value);
 			}
 		}
 		
@@ -699,4 +699,4 @@ class Raml10MethodConverter extends Converter {
 	
 }
 
-module.exports = Raml10MethodConverter;
+module.exports = RamlMethodConverter;

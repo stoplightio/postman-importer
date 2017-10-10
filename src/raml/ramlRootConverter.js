@@ -16,14 +16,14 @@ const Item = ConverterModel.Item;
 const Annotation = ConverterModel.Annotation;
 const Response = ConverterModel.Response;
 const ExternalDocumentation = ConverterModel.ExternalDocumentation;
-const Raml10InfoConverter = require('../raml10/raml10InfoConverter');
-const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
+const RamlInfoConverter = require('../raml/ramlInfoConverter');
+const RamlDefinitionConverter = require('../raml/ramlDefinitionConverter');
 const ParameterConverter = require('../common/parameterConverter');
-const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
-const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
+const RamlAnnotationConverter = require('../raml/ramlAnnotationConverter');
+const RamlCustomAnnotationConverter = require('../raml/ramlCustomAnnotationConverter');
 const urlHelper = require('../utils/url');
 
-class Raml10RootConverter extends Converter {
+class RamlRootConverter extends Converter {
 
 	constructor(model: Root) {
 		super(model, 'oas');
@@ -36,10 +36,10 @@ class Raml10RootConverter extends Converter {
 	_export(model: Root) {
 		const attrIdMap = {};
 		const attrIdSkip = ['info', 'baseUri', 'baseUriParameters', 'mediaType', 'protocols', 'securityDefinitions', 'resources', 'types', 'resourceTypes', 'annotations', 'resourceAnnotations', 'tags', 'externalDocs', 'responses', 'documentation', 'error', 'warning'];
-		const ramlDef = Raml10RootConverter.createRamlDef(model, attrIdMap, attrIdSkip);
+		const ramlDef = RamlRootConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 
 		if (model.hasOwnProperty('info')) {
-			const infoConverter = new Raml10InfoConverter(this.model, this.annotationPrefix, ramlDef);
+			const infoConverter = new RamlInfoConverter(this.model, this.annotationPrefix, ramlDef);
 			const info: Info = model.info;
 			_.merge(ramlDef, infoConverter.export(info));
 		}
@@ -62,7 +62,7 @@ class Raml10RootConverter extends Converter {
 			}
 			if (!_.isEmpty(tagsDef)) {
 				const id = this.annotationPrefix + '-tags-definition';
-				Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
+				RamlCustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
 				ramlDef['(' + id + ')'] = tagsDef;
 			}
 		}
@@ -97,7 +97,7 @@ class Raml10RootConverter extends Converter {
 		if (model.hasOwnProperty('baseUri') && model.baseUri) {
 			const baseUri: BaseUri = model.baseUri;
 			if (baseUri.hasOwnProperty('annotations')) {
-				const annotationConverter = new Raml10AnnotationConverter(this.model, this.annotationPrefix, ramlDef);
+				const annotationConverter = new RamlAnnotationConverter(this.model, this.annotationPrefix, ramlDef);
 				ramlDef.baseUri = {value: baseUri.uri};
 				_.assign(ramlDef.baseUri, annotationConverter._export(baseUri));
 			} else
@@ -126,7 +126,7 @@ class Raml10RootConverter extends Converter {
 				const responseDef = {};
 				if (response.hasOwnProperty('description')) responseDef.description = response.description;
 				const headersDef = {};
-				const definitionConverter = new Raml10DefinitionConverter();
+				const definitionConverter = new RamlDefinitionConverter();
 				if (response.hasOwnProperty('headers') && response.headers) {
 					const headers: Header[] = response.headers;
 					for (let j = 0; j < headers.length; j++) {
@@ -150,7 +150,7 @@ class Raml10RootConverter extends Converter {
 
 			if (!_.isEmpty(responses)) {
 				const id = this.annotationPrefix + '-responses';
-				Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
+				RamlCustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
 				ramlDef['(' + id + ')'] = responses;
 			}
 		}
@@ -158,29 +158,29 @@ class Raml10RootConverter extends Converter {
 		if (model.hasOwnProperty('externalDocs') && model.externalDocs) {
 			const externalDocsModel: ExternalDocumentation = model.externalDocs;
 			const id = this.annotationPrefix + '-externalDocs';
-			Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
 			const externalDocs = {};
 			if (externalDocsModel.hasOwnProperty('url')) externalDocs.url = externalDocsModel.url;
 			if (externalDocsModel.hasOwnProperty('description')) externalDocs.description = externalDocsModel.description;
-			Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, externalDocsModel, externalDocs);
+			RamlAnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, externalDocsModel, externalDocs);
 			ramlDef['(' + id + ')'] = externalDocs;
 		}
 		if (model.hasOwnProperty('resourceAnnotations') && model.resourceAnnotations) {
 			const resourceAnnotationsModel: Resource = model.resourceAnnotations;
 			const id = this.annotationPrefix + '-paths';
-			Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
 			const resourceAnnotations = {};
-			Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, resourceAnnotationsModel, resourceAnnotations);
+			RamlAnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, resourceAnnotationsModel, resourceAnnotations);
 			ramlDef['(' + id + ')'] = resourceAnnotations;
 		}
-		Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, model, ramlDef);
+		RamlAnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, ramlDef, model, ramlDef);
 
 		return ramlDef;
 	}
 
 	static exportAnnotations(model: Root, annotationPrefix: string, ramlDef: any, source: any, target: any) {
 		if (source.hasOwnProperty('annotations') && _.isArray(source.annotations) && !_.isEmpty(source.annotations)) {
-			const annotationConverter = new Raml10AnnotationConverter(model, annotationPrefix, ramlDef);
+			const annotationConverter = new RamlAnnotationConverter(model, annotationPrefix, ramlDef);
 			_.assign(target, annotationConverter._export(source));
 		}
 	}
@@ -192,7 +192,7 @@ class Raml10RootConverter extends Converter {
 	_import(ramlDef: any) {
 		const model = new Root();
 
-		const infoConverter = new Raml10InfoConverter(model);
+		const infoConverter = new RamlInfoConverter(model);
 		infoConverter.version = this.version;
 		model.info = infoConverter.import(ramlDef);
 
@@ -234,7 +234,7 @@ class Raml10RootConverter extends Converter {
 				}
 			}
 			model.baseUri = baseUri;
-			Raml10AnnotationConverter.importAnnotations(ramlDef.baseUri, model, model);
+			RamlAnnotationConverter.importAnnotations(ramlDef.baseUri, model, model);
 		}
 
 		if (ramlDef.hasOwnProperty('baseUriParameters')) {
@@ -320,7 +320,7 @@ class Raml10RootConverter extends Converter {
 				if (!_.isEmpty(externalDocs)) model.externalDocs = externalDocs;
 			}
 
-			const annotationConverter = new Raml10AnnotationConverter(model);
+			const annotationConverter = new RamlAnnotationConverter(model);
 			const annotations: Annotation[] = annotationConverter._import(ramlDef);
 			if (!_.isEmpty(annotations)) model.annotations = annotations;
 		}
@@ -345,4 +345,4 @@ class Raml10RootConverter extends Converter {
 
 }
 
-module.exports = Raml10RootConverter;
+module.exports = RamlRootConverter;

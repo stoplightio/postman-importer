@@ -6,13 +6,13 @@ const Resource = ConverterModel.Resource;
 const Method = ConverterModel.Method;
 const Parameter = ConverterModel.Parameter;
 const Converter = require('../converters/converter');
-const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
-const Raml10ResourceConverter = require('../raml10/raml10ResourceConverter');
-const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
+const RamlDefinitionConverter = require('../raml/ramlDefinitionConverter');
+const RamlResourceConverter = require('../raml/ramlResourceConverter');
+const RamlMethodConverter = require('../raml/ramlMethodConverter');
 const helper = require('../helpers/converter');
 const ramlHelper = require('../helpers/raml');
  
-class Raml10ResourceTypeConverter extends Converter {
+class RamlResourceTypeConverter extends Converter {
 	
 	export(models:ResourceType[]) {
 		const result = {};
@@ -31,8 +31,8 @@ class Raml10ResourceTypeConverter extends Converter {
 		const attrIdMap = {};
 
 		const attrIdSkip = ['name', 'parameters', 'methods', 'resource'];
-		const ramlDef = Raml10ResourceTypeConverter.createRamlDef(model, attrIdMap, attrIdSkip);
-		const resourceConverter = new Raml10ResourceConverter(this.model);
+		const ramlDef = RamlResourceTypeConverter.createRamlDef(model, attrIdMap, attrIdSkip);
+		const resourceConverter = new RamlResourceConverter(this.model);
 		
 		if (model.hasOwnProperty('resource') && !_.isEmpty(model.resource)) {
 			const resourceModel: ?Resource = model.resource;
@@ -104,9 +104,9 @@ class Raml10ResourceTypeConverter extends Converter {
 		
 		const attrIdSkip = ['description', 'displayName', 'uriParameters'];
 		const validMethods = helper.getValidMethods;
-		const definitionConverter = new Raml10DefinitionConverter();
-		const methodConverter = new Raml10MethodConverter();
-		const model = Raml10ResourceTypeConverter.createResourceType(ramlDef[Object.keys(ramlDef)[0]], attrIdMap, attrIdSkip.concat(validMethods));
+		const definitionConverter = new RamlDefinitionConverter();
+		const methodConverter = new RamlMethodConverter();
+		const model = RamlResourceTypeConverter.createResourceType(ramlDef[Object.keys(ramlDef)[0]], attrIdMap, attrIdSkip.concat(validMethods));
 		const isRaml08Version = ramlHelper.isRaml08Version(this.version);
 		
 		const resource = new Resource();
@@ -148,4 +148,4 @@ class Raml10ResourceTypeConverter extends Converter {
 	}
 }
 
-module.exports = Raml10ResourceTypeConverter;
+module.exports = RamlResourceTypeConverter;

@@ -5,7 +5,7 @@ const _ = require('lodash');
 const SecurityScope = ConverterModel.SecurityScope;
 const Method = ConverterModel.Method;
 const SecurityDefinition = ConverterModel.SecurityDefinition;
-const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
+const RamlMethodConverter = require('../raml/ramlMethodConverter');
 const Oas20RootConverter = require('../oas20/oas20RootConverter');
 const oasHelper = require('../helpers/oas20');
 
@@ -136,8 +136,8 @@ class Oas20SecurityDefinitionConverter extends Converter {
 				describedBy.queryParameters = {};
 				describedBy.queryParameters[oasDef.name] = {type: ['string'], name: oasDef.name};
 			}
-			const raml10MethodConverter = new Raml10MethodConverter();
-			const describedByModel: Method = raml10MethodConverter._import(describedBy);
+			const ramlMethodConverter = new RamlMethodConverter();
+			const describedByModel: Method = ramlMethodConverter._import(describedBy);
 			model.describedBy = describedByModel;
 		}
 

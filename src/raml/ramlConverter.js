@@ -13,21 +13,21 @@ const Body = ConverterModel.Body;
 const Header = ConverterModel.Header;
 const Response = ConverterModel.Response;
 const parser = require('raml-1-parser');
-const Raml10RootConverter = require('../raml10/raml10RootConverter');
-const Raml10SecurityDefinitionConverter = require('../raml10/raml10SecurityDefinitionConverter');
-const Raml10ResourceConverter = require('../raml10/raml10ResourceConverter');
-const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
-const Raml10ResourceTypeConverter = require('../raml10/raml10ResourceTypeConverter');
-const Raml10TraitConverter = require('../raml10/raml10TraitConverter');
-const Raml10AnnotationTypeConverter = require('../raml10/raml10AnnotationTypeConverter');
-const helper = require('../helpers/raml10');
+const RamlRootConverter = require('../raml/ramlRootConverter');
+const RamlSecurityDefinitionConverter = require('../raml/ramlSecurityDefinitionConverter');
+const RamlResourceConverter = require('../raml/ramlResourceConverter');
+const RamlDefinitionConverter = require('../raml/ramlDefinitionConverter');
+const RamlResourceTypeConverter = require('../raml/ramlResourceTypeConverter');
+const RamlTraitConverter = require('../raml/ramlTraitConverter');
+const RamlAnnotationTypeConverter = require('../raml/ramlAnnotationTypeConverter');
+const helper = require('../helpers/raml');
 const YAML = require('js-yaml');
 const fs = require('fs');
 const toJSONOptions = { serializeMetadata: false };
 const RamlErrorModel = require('../helpers/ramlErrorModel');
 const jsonHelper = require('../utils/json');
 
-class Raml10Converter extends Converter {
+class RamlConverter extends Converter {
 
 	static detectFormat(data) {
 		if (!data) return;
@@ -40,7 +40,7 @@ class Raml10Converter extends Converter {
 	_loadFile(filePath:string, options:any) {
 		this.filePath = filePath;
 		const fileContent = fs.readFileSync(filePath, 'utf8');
-		this.format = Raml10Converter.detectFormat(fileContent);
+		this.format = RamlConverter.detectFormat(fileContent);
 		return new Promise((resolve, reject) => {
 			parser.loadApi(filePath, Converter._options(options)).then((api) => {
 				try {
@@ -60,7 +60,7 @@ class Raml10Converter extends Converter {
 	
 	_loadData(data:string, options:any) {
 		this.fileContent = data;
-		this.format = Raml10Converter.detectFormat(data);
+		this.format = RamlConverter.detectFormat(data);
 		return new Promise((resolve, reject) => {
 			const parsedData = parser.parseRAMLSync(data, options);
 			if (parsedData.name === 'Error') {
@@ -77,26 +77,26 @@ class Raml10Converter extends Converter {
 	export(model:Root) {
 		return new Promise((resolve, reject) => {
 			try {
-				Raml10Converter.fixInheritedProperties(model);
+				RamlConverter.fixInheritedProperties(model);
 				
-				const rootConverter = new Raml10RootConverter(model);
+				const rootConverter = new RamlRootConverter(model);
 				const ramlDef = {};
 				_.assign(ramlDef, rootConverter.export(model));
-				const securityDefinitionConverter = new Raml10SecurityDefinitionConverter(model, rootConverter.annotationPrefix, ramlDef);
+				const securityDefinitionConverter = new RamlSecurityDefinitionConverter(model, rootConverter.annotationPrefix, ramlDef);
 				if (model.securityDefinitions) ramlDef.securitySchemes = securityDefinitionConverter.export(model.securityDefinitions);
-				const definitionConverter = new Raml10DefinitionConverter(model, rootConverter.annotationPrefix, ramlDef);
+				const definitionConverter = new RamlDefinitionConverter(model, rootConverter.annotationPrefix, ramlDef);
 				if (model.types) ramlDef.types = definitionConverter.export(model.types);
-				const resourceTypeConverter = new Raml10ResourceTypeConverter(model);
+				const resourceTypeConverter = new RamlResourceTypeConverter(model);
 				if (model.resourceTypes) ramlDef.resourceTypes = resourceTypeConverter.export(model.resourceTypes);
-				const traitConverter = new Raml10TraitConverter(model, rootConverter.annotationPrefix, ramlDef);
+				const traitConverter = new RamlTraitConverter(model, rootConverter.annotationPrefix, ramlDef);
 				if (model.traits) ramlDef.traits = traitConverter.export(model);
 				if (ramlDef.traits && _.isEmpty(ramlDef.traits)) delete ramlDef.traits;
-				const annotationTypeConverter = new Raml10AnnotationTypeConverter(model, rootConverter.annotationPrefix, ramlDef);
+				const annotationTypeConverter = new RamlAnnotationTypeConverter(model, rootConverter.annotationPrefix, ramlDef);
 				if (model.annotationTypes) ramlDef.annotationTypes = annotationTypeConverter.export(model.annotationTypes);
-				const resourceConverter = new Raml10ResourceConverter(model, rootConverter.annotationPrefix, ramlDef);
+				const resourceConverter = new RamlResourceConverter(model, rootConverter.annotationPrefix, ramlDef);
 				if (model.resources) _.merge(ramlDef, resourceConverter.export(model.resources));
 
-				resolve(Raml10Converter.getData(ramlDef));
+				resolve(RamlConverter.getData(ramlDef));
 			} catch (err) {
 				reject(err);
 			}
@@ -104,25 +104,25 @@ class Raml10Converter extends Converter {
 	}
 
 	import(ramlDef:any, addErrorsToModel:boolean) {
-		const rootConverter = new Raml10RootConverter(new Root());
+		const rootConverter = new RamlRootConverter(new Root());
 		rootConverter.version = this.format;
 		const model: Root = rootConverter.import(ramlDef);
-		const securityDefinitionConverter = new Raml10SecurityDefinitionConverter();
+		const securityDefinitionConverter = new RamlSecurityDefinitionConverter();
 		if (ramlDef.securitySchemes) model.securityDefinitions = securityDefinitionConverter.import(ramlDef.securitySchemes);
-		const definitionConverter = new Raml10DefinitionConverter(model, null, ramlDef);
+		const definitionConverter = new RamlDefinitionConverter(model, null, ramlDef);
 		definitionConverter.version = this.format;
 		const types = ramlDef.types ? ramlDef.types : ramlDef.schemas;
 		if (types) model.types = definitionConverter.import(types);
-		const resourceTypeConverter = new Raml10ResourceTypeConverter();
+		const resourceTypeConverter = new RamlResourceTypeConverter();
 		resourceTypeConverter.version = this.format;
 		if (ramlDef.resourceTypes) model.resourceTypes = resourceTypeConverter.import(ramlDef.resourceTypes);
-		const traitConverter = new Raml10TraitConverter();
+		const traitConverter = new RamlTraitConverter();
 		traitConverter.version = this.format;
 		if (ramlDef.traits) model.traits = traitConverter.import(ramlDef.traits);
-		const resourceConverter = new Raml10ResourceConverter(model, null, ramlDef);
+		const resourceConverter = new RamlResourceConverter(model, null, ramlDef);
 		resourceConverter.version = this.format;
 		if (ramlDef.resources) model.resources = resourceConverter.import(ramlDef.resources);
-		const annotationTypeConverter = new Raml10AnnotationTypeConverter(model);
+		const annotationTypeConverter = new RamlAnnotationTypeConverter(model);
 		if (ramlDef.annotationTypes) model.annotationTypes = annotationTypeConverter.import(ramlDef.annotationTypes);
 
     //add errors to model
@@ -172,7 +172,7 @@ class Raml10Converter extends Converter {
 							const methods: Method[] = usedResource.methods;
 							for (let k = 0; k < methods.length; k++) {
 								const method: Method = methods[k];
-								Raml10Converter.mapMethodProperties(map, method, null, resource.path, method.method, type.value);
+								RamlConverter.mapMethodProperties(map, method, null, resource.path, method.method, type.value);
 							}
 						}
 					}
@@ -183,7 +183,7 @@ class Raml10Converter extends Converter {
 						const is = isList[j];
 						const usedTraitName: string = is.name;
 						const usedTrait: Trait = traits.filter(function (trait) { return usedTraitName === trait.name; })[0];
-						if (usedTrait && usedTrait.method) Raml10Converter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, 'all', is.value);
+						if (usedTrait && usedTrait.method) RamlConverter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, 'all', is.value);
 					}
 				}
 				if (resource.hasOwnProperty('methods') && resource.methods) {
@@ -196,7 +196,7 @@ class Raml10Converter extends Converter {
 								const is = isList[k];
 								const usedTraitName: string = is.name;
 								const usedTrait: Trait = traits.filter(function (trait) { return usedTraitName === trait.name; })[0];
-								if (usedTrait && usedTrait.method) Raml10Converter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, method.method, is.value);
+								if (usedTrait && usedTrait.method) RamlConverter.mapMethodProperties(map, usedTrait.method, usedTrait.name, resource.path, method.method, is.value);
 							}
 						}
 					}
@@ -317,4 +317,4 @@ class Raml10Converter extends Converter {
 	}
 }
 
-module.exports = Raml10Converter;
+module.exports = RamlConverter;

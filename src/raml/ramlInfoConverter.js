@@ -5,10 +5,10 @@ const Info = ConverterModel.Info;
 const InfoData = ConverterModel.InfoData;
 const Converter = require('../converters/converter');
 const ramlHelper = require('../helpers/raml');
-const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
-const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
+const RamlAnnotationConverter = require('../raml/ramlAnnotationConverter');
+const RamlCustomAnnotationConverter = require('../raml/ramlCustomAnnotationConverter');
 
-class Raml10InfoConverter extends Converter {
+class RamlInfoConverter extends Converter {
 	
 	export(model:Info) {
 		return _.isEmpty(model)? {} : this._export(model);
@@ -21,7 +21,7 @@ class Raml10InfoConverter extends Converter {
 	_export(model:Info) {
 		const attrIdMap = {};
 		const attrIdSkip = ['description', 'contact', 'license', 'termsOfService', 'version', 'annotations'];
-		const ramlDef = Raml10InfoConverter.createRamlDef(model, attrIdMap, attrIdSkip);
+		const ramlDef = RamlInfoConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 
 		if (model.hasOwnProperty('description') && !_.isEmpty(model.description)) ramlDef.description = model.description;
 		
@@ -40,7 +40,7 @@ class Raml10InfoConverter extends Converter {
 			if (contactModel.hasOwnProperty('url')) contact.url = contactModel.url;
 			if (contactModel.hasOwnProperty('email')) contact.email = contactModel.email;
 			if (contactModel.hasOwnProperty('annotations') && _.isArray(contactModel.annotations) && !_.isEmpty(contactModel.annotations)) {
-				const annotationConverter = new Raml10AnnotationConverter(this.model, this.annotationPrefix, this.def);
+				const annotationConverter = new RamlAnnotationConverter(this.model, this.annotationPrefix, this.def);
 				_.assign(contact, annotationConverter._export(contactModel));
 			}
 			if (!_.isEmpty(contact)) oasInfo.contact = contact;
@@ -52,14 +52,14 @@ class Raml10InfoConverter extends Converter {
 			if (licenseModel.hasOwnProperty('name')) license.name = licenseModel.name;
 			if (licenseModel.hasOwnProperty('url')) license.url = licenseModel.url;
 			if (licenseModel.hasOwnProperty('annotations') && _.isArray(licenseModel.annotations) && !_.isEmpty(licenseModel.annotations)) {
-				const annotationConverter = new Raml10AnnotationConverter(this.model, this.annotationPrefix, this.def);
+				const annotationConverter = new RamlAnnotationConverter(this.model, this.annotationPrefix, this.def);
 				_.assign(license, annotationConverter._export(licenseModel));
 			}
 			if (!_.isEmpty(license)) oasInfo.license = license;
 		}
 
 		if (model.hasOwnProperty('annotations') && _.isArray(model.annotations) && !_.isEmpty(model.annotations)) {
-			const annotationConverter = new Raml10AnnotationConverter(this.model, this.annotationPrefix, this.def);
+			const annotationConverter = new RamlAnnotationConverter(this.model, this.annotationPrefix, this.def);
 			_.assign(oasInfo, annotationConverter._export(model));
 		}
 		
@@ -68,7 +68,7 @@ class Raml10InfoConverter extends Converter {
 			const annotationId = '(' + id + ')';
 			ramlDef[annotationId] = oasInfo;
 			if (!this.model.annotationTypes || !this.model.annotationTypes.hasOwnProperty('oas-info'))
-				Raml10CustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
+				RamlCustomAnnotationConverter._createAnnotationType(ramlDef, this.annotationPrefix, id);
 		}
 		
 		return ramlDef;
@@ -107,7 +107,7 @@ class Raml10InfoConverter extends Converter {
 					delete oasInfo.license;
 				}
 
-				Raml10AnnotationConverter.importAnnotations({annotations: oasInfo}, model, this.model);
+				RamlAnnotationConverter.importAnnotations({annotations: oasInfo}, model, this.model);
 			}
 		}
 
@@ -130,4 +130,4 @@ class Raml10InfoConverter extends Converter {
 	}
 }
 
-module.exports = Raml10InfoConverter;
+module.exports = RamlInfoConverter;

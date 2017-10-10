@@ -6,9 +6,9 @@ const Parameter = ConverterModel.Parameter;
 const Annotation = ConverterModel.Annotation;
 const Definition = ConverterModel.Definition;
 const Converter = require('../converters/converter');
-const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
-const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
-const ramlHelper = require('../helpers/raml10');
+const RamlDefinitionConverter = require('../raml/ramlDefinitionConverter');
+const RamlAnnotationConverter = require('../raml/ramlAnnotationConverter');
+const ramlHelper = require('../helpers/raml');
 
 class ParameterConverter extends Converter {
 	
@@ -32,7 +32,7 @@ class ParameterConverter extends Converter {
 	
 	// exports 1 parameter definition
 	_export(model:Parameter, exportRaml?:boolean) {
-		const definitionConverter = new Raml10DefinitionConverter(this.model, this.annotationPrefix, this.def);
+		const definitionConverter = new RamlDefinitionConverter(this.model, this.annotationPrefix, this.def);
 		
 		const definition: ?Definition = model.definition;
 		const ramlDef = definitionConverter._export(definition);
@@ -40,7 +40,7 @@ class ParameterConverter extends Converter {
 		
 		if (model.hasOwnProperty('displayName')) ramlDef.displayName = model.displayName;
 		if (model.hasOwnProperty('annotations')) {
-			const annotationConverter = new Raml10AnnotationConverter(this.model, this.annotationPrefix, this.def);
+			const annotationConverter = new RamlAnnotationConverter(this.model, this.annotationPrefix, this.def);
 			_.assign(ramlDef, annotationConverter._export(model));
 		}
 		ParameterConverter.exportRequired(model, ramlDef);
@@ -56,7 +56,7 @@ class ParameterConverter extends Converter {
 	
 	// imports 1 parameter definition
 	_import(ramlDef:any) {
-		const definitionConverter = new Raml10DefinitionConverter();
+		const definitionConverter = new RamlDefinitionConverter();
 		
 		let model = new Parameter();
 		model.name = ramlDef.name;
@@ -68,7 +68,7 @@ class ParameterConverter extends Converter {
 		if (!ramlDef.hasOwnProperty('type') && definition) delete definition.internalType;
 		ParameterConverter.importRequired(ramlDef, model);
 		if (ramlDef.hasOwnProperty('annotations') && !_.isEmpty(ramlDef.annotations)) {
-			const annotationConverter = new Raml10AnnotationConverter();
+			const annotationConverter = new RamlAnnotationConverter();
 			const annotations: Annotation[] = annotationConverter._import(ramlDef);
 			if (!_.isEmpty(annotations)) model.annotations = annotations;
 			delete definition.annotations;

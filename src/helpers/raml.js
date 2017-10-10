@@ -14,7 +14,9 @@ module.exports = {
 	getRAML08ScalarTypes: ['string', 'number', 'integer', 'boolean', 'datetime', 'date-only', 'file', 'array', 'null', 'time-only', 'datetime-only'],
 	getNumberTypes: ['number' , 'integer'],
 	getValidFormat: ['byte', 'binary', 'password', 'date', 'date-time'],
-	
+	getAnnotationPrefix: '(',
+	getBuiltinTypes : ['string', 'number', 'integer', 'boolean', 'datetime', 'date-only', 'file', 'time-only', 'datetime-only', 'nil', 'null', 'any', 'array', 'object', 'union'],
+
 	parameterMappings: {},
 	
 	getSupportedParameterFields: [
@@ -70,5 +72,14 @@ module.exports = {
 	
 	isRaml08Version: function (version) {
 		return version === 'RAML08';
+	},
+
+	unescapeYamlIncludes: function (yaml) {
+		const start = yaml.indexOf("'!include ");
+		if (start === -1) return yaml;
+		const end = yaml.indexOf("'", start + 1);
+		if (end === -1) return yaml;
+		return yaml.substring(0, start) + yaml.substring(start + 1, end) + this.unescapeYamlIncludes(yaml.substring(end + 1));
 	}
+
 };

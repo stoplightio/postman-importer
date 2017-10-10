@@ -4,10 +4,10 @@ const ConverterModel = require('oas-raml-converter-model');
 const Trait = ConverterModel.Trait;
 const Method = ConverterModel.Method;
 const Converter = require('../converters/converter');
-const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
+const RamlMethodConverter = require('../raml/ramlMethodConverter');
 const helper = require('../helpers/converter');
  
-class Raml10TraitConverter extends Converter {
+class RamlTraitConverter extends Converter {
 	
 	export(models:any) {
 		const traits: Trait[] = models.traits;
@@ -28,8 +28,8 @@ class Raml10TraitConverter extends Converter {
 		const attrIdMap = {};
 		
 		const attrIdSkip = ['name', 'method'];
-		const ramlDef = Raml10TraitConverter.createRamlDef(model, attrIdMap, attrIdSkip);
-		const methodConverter = new Raml10MethodConverter(this.model, this.annotationPrefix, this.def);
+		const ramlDef = RamlTraitConverter.createRamlDef(model, attrIdMap, attrIdSkip);
+		const methodConverter = new RamlMethodConverter(this.model, this.annotationPrefix, this.def);
 		
 		if (model.hasOwnProperty('method') && !_.isEmpty(model.method)) {
 			const methodModel: ?Method = model.method;
@@ -77,7 +77,7 @@ class Raml10TraitConverter extends Converter {
 	// imports 1 trait definition
 	_import(ramlDef:any) {
 		const model = new Trait();
-		const methodConverter = new Raml10MethodConverter();
+		const methodConverter = new RamlMethodConverter();
 		methodConverter.version = this.version;
 		
 		if (!_.isEmpty(ramlDef)) {
@@ -93,4 +93,4 @@ class Raml10TraitConverter extends Converter {
 	}
 }
 
-module.exports = Raml10TraitConverter;
+module.exports = RamlTraitConverter;

@@ -11,10 +11,10 @@ const arrayHelper = require('../utils/array');
 const ramlHelper = require('../helpers/raml');
 const stringHelper = require('../utils/strings');
 const xmlHelper = require('../utils/xml');
-const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
-const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
+const RamlAnnotationConverter = require('../raml/ramlAnnotationConverter');
+const RamlCustomAnnotationConverter = require('../raml/ramlCustomAnnotationConverter');
 
-class Raml10DefinitionConverter extends Converter {
+class RamlDefinitionConverter extends Converter {
 
 	export(models: Definition[]) {
 		const result = {};
@@ -27,7 +27,7 @@ class Raml10DefinitionConverter extends Converter {
 			result[name] = this._export(model);
 			if (modelName !== name) {
 				const annotationName = this.annotationPrefix + '-definition-name';
-				Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, annotationName);
+				RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, annotationName);
 				result[name]['(' + annotationName + ')'] = modelName;
 			}
 		}
@@ -48,7 +48,7 @@ class Raml10DefinitionConverter extends Converter {
 		const attrIdSkip = ['name', 'type', 'reference', 'properties', 'items', 'compositionType', 'in', 'schema', 'additionalProperties', 'title', 'items', 'itemsList',
 			'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference', '_enum', 'error', 'warning'];
 
-		const ramlDef = Raml10DefinitionConverter.createRamlDef(model, attrIdMap, attrIdSkip);
+		const ramlDef = RamlDefinitionConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 
 		if (model.hasOwnProperty('type')) {
 			if (typeof model.type === 'object' && model.type) {
@@ -58,7 +58,7 @@ class Raml10DefinitionConverter extends Converter {
 				ramlDef.type = model.type;
 				if (model.hasOwnProperty('format')) {
 					const id = this.annotationPrefix + '-format';
-					Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+					RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 					ramlDef['(' + id + ')'] = model.format;
 					delete ramlDef.format;
 				}
@@ -194,7 +194,7 @@ class Raml10DefinitionConverter extends Converter {
 			} else {
 				let example = jsonHelper.parse(model.example);
 				if (typeof example === 'object' && !_.isArray(example)) {
-					ramlDef['example'] = Raml10DefinitionConverter.exportExample(example, this.model, this.def);
+					ramlDef['example'] = RamlDefinitionConverter.exportExample(example, this.model, this.def);
 					if (this.level === 'type' && !ramlDef.hasOwnProperty('type') && !ramlDef.hasOwnProperty('properties')) ramlDef.type = 'object';
 				} else {
 					if (_.isNumber(example) && ramlDef.type === 'string') example = example.toString();
@@ -205,53 +205,53 @@ class Raml10DefinitionConverter extends Converter {
 
 		if (model.hasOwnProperty('exclusiveMaximum')) {
 			const id = this.annotationPrefix + '-exclusiveMaximum';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.exclusiveMaximum;
 		}
 		if (model.hasOwnProperty('exclusiveMinimum')) {
 			const id = this.annotationPrefix + '-exclusiveMinimum';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.exclusiveMinimum;
 		}
 		if (model.hasOwnProperty('title')) {
 			const id = this.annotationPrefix + '-schema-title';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.title;
 		}
 		if (model.hasOwnProperty('readOnly')) {
 			const id = this.annotationPrefix + '-readOnly';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.readOnly;
 		}
 		if (model.hasOwnProperty('collectionFormat')) {
 			const id = this.annotationPrefix + '-collectionFormat';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.collectionFormat;
 		}
 		if (model.hasOwnProperty('allowEmptyValue')) {
 			const id = this.annotationPrefix + '-allowEmptyValue';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.allowEmptyValue;
 		}
 		if (model.hasOwnProperty('externalDocs')) {
 			const id = this.annotationPrefix + '-externalDocs';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = model.externalDocs;
 		}
 		if (ramlDef.hasOwnProperty('maximum') && ramlDef.maximum && ramlDef.hasOwnProperty('type') && scalarNumberTypes.indexOf(ramlDef.type) < 0 && !model.reference) {
 			const id = this.annotationPrefix + '-maximum';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = ramlDef.maximum;
 			delete ramlDef.maximum;
 		}
 		if (ramlDef.hasOwnProperty('minimum') && ramlDef.minimum && ramlDef.hasOwnProperty('type') && scalarNumberTypes.indexOf(ramlDef.type) < 0 && !model.reference) {
 			const id = this.annotationPrefix + '-minimum';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = ramlDef.minimum;
 			delete ramlDef.minimum;
 		}
 		if (model.hasOwnProperty('annotations') && _.isArray(model.annotations) && !_.isEmpty(model.annotations)) {
-			const annotationConverter = new Raml10AnnotationConverter(this.model, this.annotationPrefix, this.def);
+			const annotationConverter = new RamlAnnotationConverter(this.model, this.annotationPrefix, this.def);
 			_.assign(ramlDef, annotationConverter._export(model));
 		}
 
@@ -316,10 +316,10 @@ class Raml10DefinitionConverter extends Converter {
 				if (!entry.hasOwnProperty(key)) continue;
 				const value = entry[key];
 				if (value.hasOwnProperty('typePropertyKind') && value.typePropertyKind === 'JSON') {
-					const jsonValue = Raml10DefinitionConverter._readTypeAttribute(value.type);
+					const jsonValue = RamlDefinitionConverter._readTypeAttribute(value.type);
 					const parse = jsonHelper.parse(jsonValue);
 					if (parse.hasOwnProperty('definitions')) {
-						const definitions: Definition[] = this.import(Raml10DefinitionConverter._convertMapToArray(parse.definitions));
+						const definitions: Definition[] = this.import(RamlDefinitionConverter._convertMapToArray(parse.definitions));
 						result = result.concat(definitions);
 						delete parse.definitions;
 						value.type[0] = jsonHelper.stringify(parse);
@@ -352,7 +352,7 @@ class Raml10DefinitionConverter extends Converter {
 				if (this.types && this.types.includes(name)) continue;
 				let schema = helper.isJson(value[name]) ? JSON.parse(value[name]) : value[name];
 				if (schema.hasOwnProperty('definitions')) {
-					const definitions: Definition[] = this.importRAML08(Raml10DefinitionConverter._convertMapToArray(schema.definitions));
+					const definitions: Definition[] = this.importRAML08(RamlDefinitionConverter._convertMapToArray(schema.definitions));
 					result = result.concat(definitions);
 					delete schema.definitions;
 				}
@@ -375,7 +375,7 @@ class Raml10DefinitionConverter extends Converter {
 			'default': '_default'
 		};
 
-		Raml10DefinitionConverter._convertAnnotations(ramlDef);
+		RamlDefinitionConverter._convertAnnotations(ramlDef);
 
 		const attrIdCopyRaml = ['title', 'format', 'maxLength', 'minLength', 'exclusiveMaximum', 'exclusiveMinimum', 'maximum', 'minimum', 'definitions', 'minProperties', 'maxProperties', 'minItems', 'maxItems', 'default', 'uniqueItems', 'fileTypes'];
 		const attrIdCopyRaml10 = _.concat(attrIdCopyRaml, ['name', 'discriminator', 'multipleOf', 'pattern', 'displayName', 'default', 'schemaPath', 'required', 'xml', 'additionalProperties', 'minItems', 'maxItems', 'annotations', 'allowedTargets', '$ref', 'minProperties', 'maxProperties']);
@@ -389,7 +389,7 @@ class Raml10DefinitionConverter extends Converter {
 		if (inplaceType) {
 			let value;
 			if (ramlDef.hasOwnProperty('type')) {
-				value = jsonHelper.parse(Raml10DefinitionConverter._readTypeAttribute(ramlDef.type));
+				value = jsonHelper.parse(RamlDefinitionConverter._readTypeAttribute(ramlDef.type));
 				if (typeof value === 'object') {
 					if (isRaml08Version) {
 						_.assign(ramlDef, value);
@@ -400,13 +400,13 @@ class Raml10DefinitionConverter extends Converter {
 					}
 				}
 			} else if (ramlDef.hasOwnProperty('schema')) {
-				value = Raml10DefinitionConverter._readTypeAttribute(ramlDef.schema);
+				value = RamlDefinitionConverter._readTypeAttribute(ramlDef.schema);
 				_.assign(ramlDef, jsonHelper.parse(value));
 				delete ramlDef.schema;
 			}
 		}
 
-		const model: Definition = isRaml08Version ? Raml10DefinitionConverter.createDefinition(ramlDef, attrIdMap, attrIdCopyRaml08) : Raml10DefinitionConverter.createDefinition(ramlDef, attrIdMap, attrIdCopyRaml10);
+		const model: Definition = isRaml08Version ? RamlDefinitionConverter.createDefinition(ramlDef, attrIdMap, attrIdCopyRaml08) : RamlDefinitionConverter.createDefinition(ramlDef, attrIdMap, attrIdCopyRaml10);
 
 		if (isRaml08Version) {
 			if (ramlDef.hasOwnProperty('$ref')) {
@@ -424,7 +424,7 @@ class Raml10DefinitionConverter extends Converter {
 		}
 
 		if (jsonType) {
-			model.jsonValue = Raml10DefinitionConverter._readTypeAttribute(ramlDef.type);
+			model.jsonValue = RamlDefinitionConverter._readTypeAttribute(ramlDef.type);
 		}
 		else {
 			if (ramlDef.hasOwnProperty('schemaPath')) {
@@ -448,7 +448,7 @@ class Raml10DefinitionConverter extends Converter {
 						}
 					}*/
 				}
-				const value = Raml10DefinitionConverter._readTypeAttribute(ramlDef.type);
+				const value = RamlDefinitionConverter._readTypeAttribute(ramlDef.type);
 				if (_.isArray(value)) {
 					const compositionType: Definition[] = [];
 					value.map(entry => {
@@ -475,7 +475,7 @@ class Raml10DefinitionConverter extends Converter {
 					model.type = 'string';
 			}
 
-			Raml10DefinitionConverter._convertToInternalType(model);
+			RamlDefinitionConverter._convertToInternalType(model);
 		}
 
 		if (ramlDef.hasOwnProperty('properties')) {
@@ -501,7 +501,7 @@ class Raml10DefinitionConverter extends Converter {
 					if (_.isArray(value)) {
 						const val = {name: id, type: []};
 						value.map(v => {
-							val.type.push(Raml10DefinitionConverter._readTypeAttribute(v.type));
+							val.type.push(RamlDefinitionConverter._readTypeAttribute(v.type));
 						});
 						value = val;
 					}
@@ -524,18 +524,18 @@ class Raml10DefinitionConverter extends Converter {
 		}
 
 		if (ramlDef.hasOwnProperty('items')) {
-			const value = Raml10DefinitionConverter._readTypeAttribute(ramlDef.items);
+			const value = RamlDefinitionConverter._readTypeAttribute(ramlDef.items);
 			if (typeof value === 'string') {
 				const modelItems = new Definition();
 				if (value.endsWith('[]')) {
 					modelItems.type = 'array';
 					const def = new Definition();
 					this._convertSimpleType(value.replace('[]', ''), def);
-					Raml10DefinitionConverter._convertToInternalType(def);
+					RamlDefinitionConverter._convertToInternalType(def);
 					modelItems.items = def;
 				} else {
 					this._convertSimpleType(value, modelItems);
-					Raml10DefinitionConverter._convertToInternalType(modelItems);
+					RamlDefinitionConverter._convertToInternalType(modelItems);
 				}
 				model.items = modelItems;
 			} else if (isRaml08Version && _.isArray(ramlDef.items)) {
@@ -555,7 +555,7 @@ class Raml10DefinitionConverter extends Converter {
 					if (!_.isEmpty(modelItems)) model.itemsList = modelItems;
 				}
 			} else {
-				const items = Raml10DefinitionConverter._readTypeAttribute(ramlDef.items);
+				const items = RamlDefinitionConverter._readTypeAttribute(ramlDef.items);
 				model.items = this._import(items);
 			}
 		}
@@ -610,7 +610,7 @@ class Raml10DefinitionConverter extends Converter {
 		if (ramlDef.hasOwnProperty('example')) {
 			let example: any;
 			if (typeof ramlDef.example === 'object' && !_.isArray(ramlDef.example) && !_.isEmpty(ramlDef.example)) {
-				const annotationConverter = new Raml10AnnotationConverter();
+				const annotationConverter = new RamlAnnotationConverter();
 				const annotations: Annotation[] = annotationConverter._import(ramlDef.example);
 				if (!_.isEmpty(annotations)) ramlDef.example.annotations = annotations;
 				example = ramlDef.example;
@@ -681,7 +681,7 @@ class Raml10DefinitionConverter extends Converter {
 	}
 
 	static _convertAnnotations(ramlDef) {
-		const annotationConverter = new Raml10AnnotationConverter();
+		const annotationConverter = new RamlAnnotationConverter();
 		const annotations: Annotation[] = annotationConverter._import(ramlDef);
 		if (!_.isEmpty(annotations)) ramlDef.annotations = annotations;
 	}
@@ -719,7 +719,7 @@ class Raml10DefinitionConverter extends Converter {
 	static exportExample(example: any, model: Root, def: any) {
 		let ramlDef = example;
 		if (ramlDef.hasOwnProperty('annotations')) {
-			const annotationConverter = new Raml10AnnotationConverter(model, '', def);
+			const annotationConverter = new RamlAnnotationConverter(model, '', def);
 			_.assign(ramlDef, annotationConverter._export(ramlDef));
 			delete ramlDef.annotations;
 		}
@@ -727,7 +727,7 @@ class Raml10DefinitionConverter extends Converter {
 			if (!ramlDef.hasOwnProperty(id)) continue;
 
 			if (typeof ramlDef[id] === 'object' && !_.isEmpty(ramlDef[id]))
-				ramlDef[id] = Raml10DefinitionConverter.exportExample(ramlDef[id], model, def);
+				ramlDef[id] = RamlDefinitionConverter.exportExample(ramlDef[id], model, def);
 		}
 
 		return ramlDef;
@@ -771,17 +771,17 @@ class Raml10DefinitionConverter extends Converter {
 		} else if (internalType === 'byte') {
 			ramlDef.type = 'string';
 			const id = this.annotationPrefix + '-format';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = 'byte';
 		} else if (internalType === 'binary') {
 			ramlDef.type = 'string';
 			const id = this.annotationPrefix + '-format';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = 'binary';
 		} else if (internalType === 'password') {
 			ramlDef.type = 'string';
 			const id = this.annotationPrefix + '-format';
-			Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
+			RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 			ramlDef['(' + id + ')'] = 'password';
 		} else if (internalType === 'file') {
 			ramlDef.type = 'file';
@@ -812,4 +812,4 @@ const numberValidFormats = _.concat(integerValidFormats, ['long', 'float', 'doub
 const raml10BuiltinTypes = _.concat(scalarTypes, ['any', 'array', 'object', 'union']);
 const raml08BuiltinTypes = _.concat(raml10BuiltinTypes, ['date']);
 
-module.exports = Raml10DefinitionConverter;
+module.exports = RamlDefinitionConverter;

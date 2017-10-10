@@ -1,5 +1,5 @@
 // @flow
-class Raml10CustomAnnotationConverter {
+class RamlCustomAnnotationConverter {
 
 	static _createAnnotationType(ramlDef, prefix, id, value) {
 		let definition;
@@ -169,4 +169,4 @@ class Raml10CustomAnnotationConverter {
 	}
 }
 
-module.exports = Raml10CustomAnnotationConverter;
+module.exports = RamlCustomAnnotationConverter;

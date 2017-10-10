@@ -5,10 +5,10 @@ const Root = ConverterModel.Root;
 const Definition = ConverterModel.Definition;
 const Annotation = ConverterModel.Annotation;
 const Converter = require('../converters/converter');
-const Raml10CustomAnnotationConverter = require('../raml10/raml10CustomAnnotationConverter');
-const ramlHelper = require('../helpers/raml10');
+const RamlCustomAnnotationConverter = require('../raml/ramlCustomAnnotationConverter');
+const ramlHelper = require('../helpers/raml');
 
-class Raml10AnnotationConverter extends Converter {
+class RamlAnnotationConverter extends Converter {
 	
 	_export(model:any) {
 		const ramlDef = {};
@@ -31,7 +31,7 @@ class Raml10AnnotationConverter extends Converter {
 				this.exportAnnotation(ramlDef[name], value);
 			}
 		}
-		if (this.def) Raml10CustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, value.name, value.definition);
+		if (this.def) RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, value.name, value.definition);
 	}
 	
 	_import(ramlDef:any) {
@@ -117,7 +117,7 @@ class Raml10AnnotationConverter extends Converter {
 	
 	static exportAnnotations(model:Root, annotationPrefix:string, ramlDef:any, source:any, target:any) {
 		if (source.hasOwnProperty('annotations') && _.isArray(source.annotations) && !_.isEmpty(source.annotations)) {
-			const annotationConverter = new Raml10AnnotationConverter(model, annotationPrefix, ramlDef);
+			const annotationConverter = new RamlAnnotationConverter(model, annotationPrefix, ramlDef);
 			_.assign(target, annotationConverter._export(source));
 		}
 	}
@@ -125,7 +125,7 @@ class Raml10AnnotationConverter extends Converter {
 	static importAnnotations(source:any, target:any, model:Root) {
 		if ((source.hasOwnProperty('annotations') && !_.isEmpty(source.annotations))
 			|| (source.hasOwnProperty('scalarsAnnotations') && !_.isEmpty(source.scalarsAnnotations))) {
-			const annotationConverter = new Raml10AnnotationConverter(model);
+			const annotationConverter = new RamlAnnotationConverter(model);
 			const annotations: Annotation[] = annotationConverter._import(source);
 			if (!_.isEmpty(annotations)) target.annotations = annotations;
 			if (target.definition) {
@@ -136,4 +136,4 @@ class Raml10AnnotationConverter extends Converter {
 	}
 }
 
-module.exports = Raml10AnnotationConverter;
+module.exports = RamlAnnotationConverter;

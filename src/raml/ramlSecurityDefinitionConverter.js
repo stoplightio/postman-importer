@@ -5,10 +5,10 @@ const Converter = require('../converters/converter');
 const SecurityScope = ConverterModel.SecurityScope;
 const Method = ConverterModel.Method;
 const SecurityDefinition = ConverterModel.SecurityDefinition;
-const Raml10MethodConverter = require('../raml10/raml10MethodConverter');
-const Raml10AnnotationConverter = require('../raml10/raml10AnnotationConverter');
+const RamlMethodConverter = require('../raml/ramlMethodConverter');
+const RamlAnnotationConverter = require('../raml/ramlAnnotationConverter');
 
-class Raml10SecurityDefinitionConverter extends Converter {
+class RamlSecurityDefinitionConverter extends Converter {
 
 	export(models:SecurityDefinition[]) {
 		const result = {};
@@ -28,7 +28,7 @@ class Raml10SecurityDefinitionConverter extends Converter {
 			'type', 'signatures','authorization', 'authorizationUrl', 'tokenUrl', 'scopes', 'name',
 			'_in', 'requestTokenUri', 'schemaName', 'describedBy', 'annotations'
 		];
-		const ramlDef = Raml10SecurityDefinitionConverter.createRamlDef(model, attrIdMap, attrIdSkip);
+		const ramlDef = RamlSecurityDefinitionConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 
 		let settings = {};
 		if (model.hasOwnProperty('type')) {
@@ -104,14 +104,14 @@ class Raml10SecurityDefinitionConverter extends Converter {
 		}
 
 		if (model.describedBy) {
-			const methodConverter = new Raml10MethodConverter(this.model);
+			const methodConverter = new RamlMethodConverter(this.model);
 			const describedBy: Method = model.describedBy;
 			const method = methodConverter._export(describedBy);
 			delete method.displayName;
 			ramlDef.describedBy = method;
 		}
 
-		Raml10AnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
+		RamlAnnotationConverter.exportAnnotations(this.model, this.annotationPrefix, this.def, model, ramlDef);
 		
 		return ramlDef;
 	}
@@ -137,7 +137,7 @@ class Raml10SecurityDefinitionConverter extends Converter {
 			'name' : 'schemaName'
 		};
 		const attrIdSkip = ['type', 'settings', 'describedBy', 'authorizationGrants'];
-		const model = Raml10SecurityDefinitionConverter.createSecurityDefinition(ramlDef, attrIdMap, attrIdSkip);
+		const model = RamlSecurityDefinitionConverter.createSecurityDefinition(ramlDef, attrIdMap, attrIdSkip);
 
 		if (ramlDef.hasOwnProperty('type')) {
 			const type: string = ramlDef.type;
@@ -177,7 +177,7 @@ class Raml10SecurityDefinitionConverter extends Converter {
 				'authorizationGrants': 'authorization',
 			};
 			const attrSettingsIdSkip = ['scopes', 'authorizationGrants'];
-			const settingsModel = Raml10SecurityDefinitionConverter.createSecurityDefinition(settings, attrSettingsIdMap, attrSettingsIdSkip);
+			const settingsModel = RamlSecurityDefinitionConverter.createSecurityDefinition(settings, attrSettingsIdMap, attrSettingsIdSkip);
 			_.merge(model, settingsModel);
 
 			if (settings.hasOwnProperty('scopes')) {
@@ -217,7 +217,7 @@ class Raml10SecurityDefinitionConverter extends Converter {
 		}
 
 		if (ramlDef.hasOwnProperty('describedBy')) {
-			const methodConverter = new Raml10MethodConverter();
+			const methodConverter = new RamlMethodConverter();
 			const describedBy: Method = methodConverter._import(ramlDef.describedBy);
 			model.describedBy = describedBy;
 			model._in = 'header';
@@ -270,4 +270,4 @@ class Raml10SecurityDefinitionConverter extends Converter {
 	}
 }
 
-module.exports = Raml10SecurityDefinitionConverter;
+module.exports = RamlSecurityDefinitionConverter;

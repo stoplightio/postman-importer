@@ -26,8 +26,8 @@ describe('index', function() {
 			const converter = new specConverter.Converter(specConverter.Formats.RAML, specConverter.Formats.RAML);
 			const ramlImporter = converter.importer;
 			const ramlExporter = converter.exporter;
-			expect(ramlImporter).to.be.an.instanceof(require('../src/raml10/raml10Converter'));
-			expect(ramlExporter).to.be.an.instanceof(require('../src/raml10/raml10Converter'));
+			expect(ramlImporter).to.be.an.instanceof(require('../src/raml/ramlConverter'));
+			expect(ramlExporter).to.be.an.instanceof(require('../src/raml/ramlConverter'));
 		});
 		it('should expose oas 20 converter api', function(){
 			const converter = new specConverter.Converter(specConverter.Formats.OAS20, specConverter.Formats.OAS20);

@@ -4,10 +4,10 @@ const Converter = require('../converters/converter');
 const ConverterModel = require('oas-raml-converter-model');
 const Definition = ConverterModel.Definition;
 const AnnotationType = ConverterModel.AnnotationType;
-const Raml10DefinitionConverter = require('../raml10/raml10DefinitionConverter');
+const RamlDefinitionConverter = require('../raml/ramlDefinitionConverter');
 const helper = require('../helpers/converter');
  
-class Raml10AnnotationTypeConverter extends Converter {
+class RamlAnnotationTypeConverter extends Converter {
 	
 	export(models:AnnotationType[]) {
 		const result = {};
@@ -23,7 +23,7 @@ class Raml10AnnotationTypeConverter extends Converter {
 	
 	// exports 1 annotation type definition
 	_export(model:AnnotationType) {
-		const definitionConverter = new Raml10DefinitionConverter(this.model, this.annotationPrefix, this.def);
+		const definitionConverter = new RamlDefinitionConverter(this.model, this.annotationPrefix, this.def);
 		let ramlDef;
 		if (model.hasOwnProperty('definition') && typeof model.definition === 'object') {
 			const definition: Definition = model.definition;
@@ -61,7 +61,7 @@ class Raml10AnnotationTypeConverter extends Converter {
 	}
 	
 	_import(ramlDef:any) {
-		const definitionConverter = new Raml10DefinitionConverter();
+		const definitionConverter = new RamlDefinitionConverter();
 		const model = new AnnotationType();
 		const definition: Definition = definitionConverter._import(ramlDef);
 		model.definition = definition;
@@ -75,4 +75,4 @@ class Raml10AnnotationTypeConverter extends Converter {
 
 }
 
-module.exports = Raml10AnnotationTypeConverter;
+module.exports = RamlAnnotationTypeConverter;
