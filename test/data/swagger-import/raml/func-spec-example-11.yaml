@@ -1,20 +1,32 @@
 #%RAML 1.0
 title: Simple API
 version: 1.1.0
-/persons:
-  '/{username}':
-    uriParameters:
-      username:
-        description: The person's username
-        type: string
-    get:
-      displayName: readPerson
-      description: Returns a single person for its username.
-      (oas-summary): Gets a person
-      (oas-responses-default):
-        (oas-global-response-definition):
-                         TotallyUnexpectedResponse
-        description: A totally unexpected response
+/persons/{username}:
+  uriParameters:
+    username:
+      description: The person's username
+      type: string
+  get:
+    displayName: readPerson
+    description: Returns a single person for its username.
+    (oas-summary): Gets a person
+    (oas-responses-default):
+      (oas-global-response-definition):
+                       TotallyUnexpectedResponse
+      description: A totally unexpected response
+      headers:
+        X-Rate-Limit-Remaining:
+          type: integer
+          description: How many calls consumer can do
+        X-Rate-Limit-Reset:
+          type: datetime
+          description: When rate limit will be reset
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Person
+        description: A Person
         headers:
           X-Rate-Limit-Remaining:
             type: integer
@@ -22,49 +34,36 @@ version: 1.1.0
           X-Rate-Limit-Reset:
             type: datetime
             description: When rate limit will be reset
-      responses:
-        '200':
-          body:
-            application/json:
-              type: Person
-          description: A Person
-          headers:
-            X-Rate-Limit-Remaining:
-              type: integer
-              description: How many calls consumer can do
-            X-Rate-Limit-Reset:
-              type: datetime
-              description: When rate limit will be reset
-        '404':
-          (oas-global-response-definition):
-                        PersonDoesNotExistResponse
-          description: Person does not exist.
-          headers:
-            X-Rate-Limit-Remaining:
-              type: integer
-              description: How many calls consumer can do
-            X-Rate-Limit-Reset:
-              type: datetime
-              description: When rate limit will be reset
-        '500':
-          (oas-global-response-definition):
-                          Standard500ErrorResponse
-          body:
-            application/json:
-              type: Error
-          description: An unexpected error occured.
-          headers:
-            X-Rate-Limit-Remaining:
-              type: integer
-              description: How many calls consumer can do
-            X-Rate-Limit-Reset:
-              type: datetime
-              description: When rate limit will be reset
-      (oas-tags):
-        - Persons
-    is:
-      - userAgent
-      - pageSize
+      '404':
+        (oas-global-response-definition):
+                      PersonDoesNotExistResponse
+        description: Person does not exist.
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+      '500':
+        (oas-global-response-definition):
+                        Standard500ErrorResponse
+        body:
+          application/json:
+            type: Error
+        description: An unexpected error occured.
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
+    (oas-tags):
+      - Persons
+  is:
+    - userAgent
+    - pageSize
 types:
   Person:
     description: A person which can be the user itself or one of his friend

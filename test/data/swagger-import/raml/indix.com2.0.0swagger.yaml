@@ -920,31 +920,11 @@ annotationTypes:
           (oas-tags):
             - 3 - Product Lookup
   /bulk:
-    /ase:
-      '/{jobId}':
-        /download:
-          get:
-            description: API downloads the products as a file. This API does not consume any credits.
-            (oas-summary): 'ASE Bulk - Download the products as a file - Credits: 　0'
-            responses:
-              '200':
-                description: Response
-            queryParameters:
-              app_id:
-                description: Your application id
-                type: string
-              app_key:
-                description: Your application key
-                type: string
-            (oas-tags):
-              - 8 - Advanced Search Endpoint
-        uriParameters:
-          jobId:
-            description: The id that would be used to query the status of the submitted job and download the final products
-            type: string
+    /ase/{jobId}:
+      /download:
         get:
-          description: API returns the status  of  the bulk  Job. This API does not consume any credits.
-          (oas-summary): 'ASE Bulk - Get job status - Credits: 　0'
+          description: API downloads the products as a file. This API does not consume any credits.
+          (oas-summary): 'ASE Bulk - Download the products as a file - Credits: 　0'
           responses:
             '200':
               description: Response
@@ -957,31 +937,30 @@ annotationTypes:
               type: string
           (oas-tags):
             - 8 - Advanced Search Endpoint
-    /jobs:
-      '/{jobId}':
-        /download:
-          get:
-            description: API downloads the products as a file. This API does not consume any credits.
-            (oas-summary): 'Bulk - Download the products as a file - Credits: 　0'
-            responses:
-              '200':
-                description: Response
-            queryParameters:
-              app_id:
-                description: Your application id
-                type: string
-              app_key:
-                description: Your application key
-                type: string
-            (oas-tags):
-              - 7 - Bulk job status and download
-        uriParameters:
-          jobId:
-            description: The id that would be used to query the status of the submitted job and download the final products
+      uriParameters:
+        jobId:
+          description: The id that would be used to query the status of the submitted job and download the final products
+          type: string
+      get:
+        description: API returns the status  of  the bulk  Job. This API does not consume any credits.
+        (oas-summary): 'ASE Bulk - Get job status - Credits: 　0'
+        responses:
+          '200':
+            description: Response
+        queryParameters:
+          app_id:
+            description: Your application id
             type: string
+          app_key:
+            description: Your application key
+            type: string
+        (oas-tags):
+          - 8 - Advanced Search Endpoint
+    /jobs/{jobId}:
+      /download:
         get:
-          description: API returns the status  of  the bulk  Job. This API does not consume any credits.
-          (oas-summary): 'Bulk - Get job status - Credits: 　0'
+          description: API downloads the products as a file. This API does not consume any credits.
+          (oas-summary): 'Bulk - Download the products as a file - Credits: 　0'
           responses:
             '200':
               description: Response
@@ -994,6 +973,25 @@ annotationTypes:
               type: string
           (oas-tags):
             - 7 - Bulk job status and download
+      uriParameters:
+        jobId:
+          description: The id that would be used to query the status of the submitted job and download the final products
+          type: string
+      get:
+        description: API returns the status  of  the bulk  Job. This API does not consume any credits.
+        (oas-summary): 'Bulk - Get job status - Credits: 　0'
+        responses:
+          '200':
+            description: Response
+        queryParameters:
+          app_id:
+            description: Your application id
+            type: string
+          app_key:
+            description: Your application key
+            type: string
+        (oas-tags):
+          - 7 - Bulk job status and download
   /catalogPremium:
     /bulk:
       /products:
@@ -1265,29 +1263,28 @@ annotationTypes:
             type: string
         (oas-tags):
           - 2 - Product Search
-  /products:
-    /suggestions:
-      get:
-        description: <p>Lists all search suggestions matching the query term. Does not support wildcards. Limit 100 results per query. This API does not consume any credits.
-        (oas-summary): 'Search Suggestions - Lists all product search suggestions - Credits: 　0'
-        responses:
-          '200':
-            description: Response
-        queryParameters:
-          countryCode:
-            description: Limits results to products of the geography with this code.
-            type: string
-          q:
-            description: Query term for which suggestions are to be provided
-            type: string
-          app_id:
-            description: Your application id
-            type: string
-          app_key:
-            description: Your application key
-            type: string
-        (oas-tags):
-          - 4 - Search suggestions
+  /products/suggestions:
+    get:
+      description: <p>Lists all search suggestions matching the query term. Does not support wildcards. Limit 100 results per query. This API does not consume any credits.
+      (oas-summary): 'Search Suggestions - Lists all product search suggestions - Credits: 　0'
+      responses:
+        '200':
+          description: Response
+      queryParameters:
+        countryCode:
+          description: Limits results to products of the geography with this code.
+          type: string
+        q:
+          description: Query term for which suggestions are to be provided
+          type: string
+        app_id:
+          description: Your application id
+          type: string
+        app_key:
+          description: Your application key
+          type: string
+      (oas-tags):
+        - 4 - Search suggestions
   /catalogStandard:
     /bulk:
       /products:

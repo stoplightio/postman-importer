@@ -34,7 +34,7 @@ class RamlResourceConverter extends Converter {
 			}
 		}
 		
-		return result;
+		return RamlResourceConverter.reduceResources(result);
 	}
 
 	mapResource(model:Resource, result:any, paths:string[], relativePath:string) {
@@ -263,7 +263,24 @@ class RamlResourceConverter extends Converter {
 			}
 		}
 	}
-	
+
+	static reduceResources(resource:any) {
+		for (const node in resource) {
+			if (!resource.hasOwnProperty(node)) continue;
+
+			if (node.startsWith('/')) {
+				resource[node] = RamlResourceConverter.reduceResources(resource[node]);
+				const resourceNodes:string[] = Object.keys(resource[node]);
+				if (resourceNodes.length === 1 && resourceNodes[0].startsWith('/')) {
+					resource[node + resourceNodes[0]] = resource[node][resourceNodes[0]];
+					delete resource[node];
+				}
+			}
+		}
+
+		return resource;
+	}
+
 	static createRamlDef(resource:Resource, attrIdMap, attrIdSkip) {
 		const result = {};
 		

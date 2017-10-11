@@ -446,37 +446,35 @@ securitySchemes:
           required: false
       (oas-tags):
         - Media
-/geographies:
-  '/{geo-id}':
+/geographies/{geo-id}:
     uriParameters:
       geo-id:
         type: integer
         description: Geolocation ID
-    /media:
-      /recent:
-        get:
-          description: |
-            Get recent media from a geography subscription that you created.
-            **Note**: You can only access Geographies that were explicitly created
-            by your OAuth client. Check the Geography Subscriptions section of the
-            [real-time updates page](https://instagram.com/developer/realtime/).
-            When you create a subscription to some geography
-            that you define, you will be returned a unique geo-id that can be used
-            in this query. To backfill photos from the location covered by this
-            geography, use the [media search endpoint
-            ](https://instagram.com/developer/endpoints/media/).
-          responses:
-            '200':
-              description: OK
-          queryParameters:
-            count:
-              description: Max number of media to return.
-              type: integer
-              required: false
-            min_id:
-              description: Return media before this `min_id`.
-              type: integer
-              required: false
+    /media/recent:
+      get:
+        description: |
+          Get recent media from a geography subscription that you created.
+          **Note**: You can only access Geographies that were explicitly created
+          by your OAuth client. Check the Geography Subscriptions section of the
+          [real-time updates page](https://instagram.com/developer/realtime/).
+          When you create a subscription to some geography
+          that you define, you will be returned a unique geo-id that can be used
+          in this query. To backfill photos from the location covered by this
+          geography, use the [media search endpoint
+          ](https://instagram.com/developer/endpoints/media/).
+        responses:
+          '200':
+            description: OK
+        queryParameters:
+          count:
+            description: Max number of media to return.
+            type: integer
+            required: false
+          min_id:
+            description: Return media before this `min_id`.
+            type: integer
+            required: false
 /users:
   '/{user-id}':
     uriParameters:
@@ -502,47 +500,46 @@ securitySchemes:
               - basic
       (oas-tags):
         - Users
-    /media:
-      /recent:
-        get:
-          responses:
-            '200':
-              body:
-                application/json:
-                  type: object
-                  properties:
-                    data:
-                      type: array
-                      items:
-                        type: Media
-                      required: false
-              description: |
-                Get the most recent media published by a user. To get the most recent
-                media published by the owner of the access token, you can use `self`
-                instead of the `user-id`.
-          queryParameters:
-            count:
-              description: Count of media to return.
-              type: integer
-              required: false
-            max_timestamp:
-              description: Return media before this UNIX timestamp.
-              type: integer
-              required: false
-            min_timestamp:
-              description: Return media after this UNIX timestamp.
-              type: integer
-              required: false
-            min_id:
-              description: Return media later than this min_id.
-              type: string
-              required: false
-            max_id:
-              description: Return media earlier than this max_id.
-              type: string
-              required: false
-          (oas-tags):
-            - Users
+    /media/recent:
+      get:
+        responses:
+          '200':
+            body:
+              application/json:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: Media
+                    required: false
+            description: |
+              Get the most recent media published by a user. To get the most recent
+              media published by the owner of the access token, you can use `self`
+              instead of the `user-id`.
+        queryParameters:
+          count:
+            description: Count of media to return.
+            type: integer
+            required: false
+          max_timestamp:
+            description: Return media before this UNIX timestamp.
+            type: integer
+            required: false
+          min_timestamp:
+            description: Return media after this UNIX timestamp.
+            type: integer
+            required: false
+          min_id:
+            description: Return media later than this min_id.
+            type: string
+            required: false
+          max_id:
+            description: Return media earlier than this max_id.
+            type: string
+            required: false
+        (oas-tags):
+          - Users
     /followed-by:
       get:
         description: Get the list of users this user is followed by.
@@ -634,37 +631,36 @@ securitySchemes:
       (oas-tags):
         - Users
   /self:
-    /media:
-      /liked:
-        get:
-          description: |
-            See the list of media liked by the authenticated user.
-            Private media is returned as long as the authenticated user
-            has permissionto view that media. Liked media lists are only
-            available for the currently authenticated user.
-          responses:
-            '200':
-              body:
-                application/json:
-                  type: object
-                  properties:
-                    data:
-                      type: array
-                      items:
-                        type: Media
-                      required: false
-              description: OK
-          queryParameters:
-            count:
-              description: Count of media to return.
-              type: integer
-              required: false
-            max_like_id:
-              description: Return media liked before this id.
-              type: integer
-              required: false
-          (oas-tags):
-            - Users
+    /media/liked:
+      get:
+        description: |
+          See the list of media liked by the authenticated user.
+          Private media is returned as long as the authenticated user
+          has permissionto view that media. Liked media lists are only
+          available for the currently authenticated user.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: Media
+                    required: false
+            description: OK
+        queryParameters:
+          count:
+            description: Count of media to return.
+            type: integer
+            required: false
+          max_like_id:
+            description: Return media liked before this id.
+            type: integer
+            required: false
+        (oas-tags):
+          - Users
     /feed:
       get:
         description: See the authenticated user's feed.
@@ -734,26 +730,25 @@ securitySchemes:
           description: OK
       (oas-tags):
         - Tags
-    /media:
-      /recent:
-        get:
-          description: |
-            Get a list of recently tagged media. Use the `max_tag_id` and
-            `min_tag_id` parameters in the pagination response to paginate through
-            these objects.
-          responses:
-            '200':
-              body:
-                application/json:
-                  properties:
-                    data:
-                      type: array
-                      items:
-                        type: Tag
-                      required: false
-              description: OK
-          (oas-tags):
-            - Tags
+    /media/recent:
+      get:
+        description: |
+          Get a list of recently tagged media. Use the `max_tag_id` and
+          `min_tag_id` parameters in the pagination response to paginate through
+          these objects.
+        responses:
+          '200':
+            body:
+              application/json:
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: Tag
+                    required: false
+            description: OK
+        (oas-tags):
+          - Tags
   /search:
     get:
       responses:
@@ -782,27 +777,26 @@ securitySchemes:
           required: false
       (oas-tags):
         - Tags
-/media1:
-  '/{shortcode}':
-    uriParameters:
-      shortcode:
-        description: The media shortcode
-        type: string
-    get:
-      description: |
-        This endpoint returns the same response as **GET** `/media/media-id`.
+/media1/{shortcode}:
+  uriParameters:
+    shortcode:
+      description: The media shortcode
+      type: string
+  get:
+    description: |
+      This endpoint returns the same response as **GET** `/media/media-id`.
 
-        A media object's shortcode can be found in its shortlink URL.
-        An example shortlink is `http://instagram.com/p/D/`
-        Its corresponding shortcode is D.
-      responses:
-        '200':
-          body:
-            application/json:
-              type: Media
-          description: OK
-      (oas-tags):
-        - Media
+      A media object's shortcode can be found in its shortlink URL.
+      An example shortlink is `http://instagram.com/p/D/`
+      Its corresponding shortcode is D.
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Media
+        description: OK
+    (oas-tags):
+      - Media
 /locations:
   /search:
     get:
@@ -857,42 +851,41 @@ securitySchemes:
       (oas-tags):
         - Location
   '/{location-id}':
-    /media:
-      /recent:
-        get:
-          description: Get a list of recent media objects from a given location.
-          responses:
-            '200':
-              body:
-                application/json:
-                  type: object
-                  properties:
-                    data:
-                      type: array
-                      items:
-                        type: Media
-                      required: false
-              description: OK
-          queryParameters:
-            max_timestamp:
-              description: Return media before this UNIX timestamp.
-              type: integer
-              required: false
-            min_timestamp:
-              description: Return media after this UNIX timestamp.
-              type: integer
-              required: false
-            min_id:
-              description: Return media later than this min_id.
-              type: string
-              required: false
-            max_id:
-              description: Return media earlier than this max_id.
-              type: string
-              required: false
-          (oas-tags):
-            - Location
-            - Media
+    /media/recent:
+      get:
+        description: Get a list of recent media objects from a given location.
+        responses:
+          '200':
+            body:
+              application/json:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: Media
+                    required: false
+            description: OK
+        queryParameters:
+          max_timestamp:
+            description: Return media before this UNIX timestamp.
+            type: integer
+            required: false
+          min_timestamp:
+            description: Return media after this UNIX timestamp.
+            type: integer
+            required: false
+          min_id:
+            description: Return media later than this min_id.
+            type: string
+            required: false
+          max_id:
+            description: Return media earlier than this max_id.
+            type: string
+            required: false
+        (oas-tags):
+          - Location
+          - Media
     uriParameters:
       location-id:
         description: Location ID

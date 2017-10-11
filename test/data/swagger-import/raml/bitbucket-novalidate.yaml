@@ -204,34 +204,33 @@ securitySchemes:
 /repositories:
   '/{username}':
     '/{repo_slug}':
-      /patch:
-        '/{spec}':
-          uriParameters:
-            spec:
-              type: string
-          get:
-            responses:
-              '200':
-                description: The raw patches
-              '555':
-                body:
-                  application/json:
-                    type: error
-                description: |-
-                  If the diff was too large and timed out.
+      /patch/{spec}:
+        uriParameters:
+          spec:
+            type: string
+        get:
+          responses:
+            '200':
+              description: The raw patches
+            '555':
+              body:
+                application/json:
+                  type: error
+              description: |-
+                If the diff was too large and timed out.
 
-                  Since this endpoint does not employ any form of pagination, but
-                  instead returns the diff as a single document, it can run into
-                  trouble on very large diffs. If Bitbucket times out in cases
-                  like these, a 555 status code is returned.
-            securedBy:
-              - oauth2:
-                  scopes:
-                    - repository
-              - basic
-              - api_key
-            (oas-tags):
-              - commits
+                Since this endpoint does not employ any form of pagination, but
+                instead returns the diff as a single document, it can run into
+                trouble on very large diffs. If Bitbucket times out in cases
+                like these, a 555 status code is returned.
+          securedBy:
+            - oauth2:
+                scopes:
+                  - repository
+            - basic
+            - api_key
+          (oas-tags):
+            - commits
       /pullrequests:
         get:
           (oas-responses-default):
@@ -1259,43 +1258,42 @@ securitySchemes:
             - api_key
           (oas-tags):
             - repositories
-      /diff:
-        '/{spec}':
-          uriParameters:
-            spec:
-              type: string
-          get:
-            responses:
-              '200':
-                description: The raw diff
-              '555':
-                body:
-                  application/json:
-                    type: error
-                description: |-
-                  If the diff was too large and timed out.
+      /diff/{spec}:
+        uriParameters:
+          spec:
+            type: string
+        get:
+          responses:
+            '200':
+              description: The raw diff
+            '555':
+              body:
+                application/json:
+                  type: error
+              description: |-
+                If the diff was too large and timed out.
 
-                  Since this endpoint does not employ any form of pagination, but
-                  instead returns the diff as a single document, it can run into
-                  trouble on very large diffs. If Bitbucket times out in cases
-                  like these, a 555 status code is returned.
-            queryParameters:
-              context:
-                description: Generate diffs with <n> lines of context instead of the usual three
-                required: false
-                type: integer
-              path:
-                description: Limit the diff to a single file
-                required: false
-                type: string
-            securedBy:
-              - oauth2:
-                  scopes:
-                    - repository
-              - basic
-              - api_key
-            (oas-tags):
-              - commits
+                Since this endpoint does not employ any form of pagination, but
+                instead returns the diff as a single document, it can run into
+                trouble on very large diffs. If Bitbucket times out in cases
+                like these, a 555 status code is returned.
+          queryParameters:
+            context:
+              description: Generate diffs with <n> lines of context instead of the usual three
+              required: false
+              type: integer
+            path:
+              description: Limit the diff to a single file
+              required: false
+              type: string
+          securedBy:
+            - oauth2:
+                scopes:
+                  - repository
+            - basic
+            - api_key
+          (oas-tags):
+            - commits
       /downloads:
         post:
           (oas-responses-default):
@@ -2068,209 +2066,134 @@ securitySchemes:
       - api_key
     (oas-tags):
       - repositories
-/users:
-  '/{username}':
-    /repositories:
-      get:
-        (oas-responses-default):
-          body:
-            application/json:
-              type: error
-          description: Unexpected error.
-        securedBy:
-          - oauth2:
-              scopes:
-                - repository
-          - basic
-          - api_key
-        (oas-tags):
-          - users
-          - teams
-    uriParameters:
-      username:
-        type: string
-        description: The account's username or UUID.
+/users/{username}:
+  /repositories:
+    get:
+      (oas-responses-default):
+        body:
+          application/json:
+            type: error
+        description: Unexpected error.
+      securedBy:
+        - oauth2:
+            scopes:
+              - repository
+        - basic
+        - api_key
+      (oas-tags):
+        - users
+        - teams
+  uriParameters:
+    username:
+      type: string
+      description: The account's username or UUID.
+  get:
+    responses:
+      '200':
+        body:
+          application/json:
+            type: user
+        description: The user object
+      '404':
+        body:
+          application/json:
+            type: error
+        description: 'If no user exists for the specified name or UUID, or if the specified account is a team account, not a personal account.'
+    securedBy:
+      - oauth2
+      - basic
+      - api_key
+    (oas-tags):
+      - users
+  /followers:
     get:
       responses:
         '200':
           body:
             application/json:
-              type: user
-          description: The user object
+              type: paginated_users
+          description: A paginated list of user objects.
         '404':
           body:
             application/json:
               type: error
-          description: 'If no user exists for the specified name or UUID, or if the specified account is a team account, not a personal account.'
+          description: 'If no account exists for the specified name, or if the specified account is a team account, not a personal account.'
       securedBy:
         - oauth2
         - basic
         - api_key
       (oas-tags):
         - users
-    /followers:
-      get:
+  /following:
+    get:
+      responses:
+        '200':
+          body:
+            application/json:
+              type: paginated_users
+          description: A paginated list of user objects.
+        '404':
+          body:
+            application/json:
+              type: error
+          description: 'If no user exists for the specified name, or if the specified account is a team account, not a personal account.'
+      securedBy:
+        - oauth2:
+            scopes:
+              - account
+        - basic
+        - api_key
+      (oas-tags):
+        - users
+  /hooks:
+    get:
+      responses:
+        '200':
+          body:
+            application/json:
+              type: paginated_webhook_subscriptions
+          description: The paginated list of installed webhooks.
+        '403':
+          body:
+            application/json:
+              type: error
+          description: If the authenticated user is accessing an account other than their own.
+        '404':
+          body:
+            application/json:
+              type: error
+          description: If the specified account does not exist.
+      securedBy:
+        - oauth2:
+            scopes:
+              - webhook
+        - basic
+        - api_key
+      (oas-tags):
+        - users
+        - webhooks
+    '/{uid}':
+      uriParameters:
+        uid:
+          type: string
+          description: The installed webhook's id
+      put:
         responses:
           '200':
-            body:
-              application/json:
-                type: paginated_users
-            description: A paginated list of user objects.
-          '404':
-            body:
-              application/json:
-                type: error
-            description: 'If no account exists for the specified name, or if the specified account is a team account, not a personal account.'
-        securedBy:
-          - oauth2
-          - basic
-          - api_key
-        (oas-tags):
-          - users
-    /following:
-      get:
-        responses:
-          '200':
-            body:
-              application/json:
-                type: paginated_users
-            description: A paginated list of user objects.
-          '404':
-            body:
-              application/json:
-                type: error
-            description: 'If no user exists for the specified name, or if the specified account is a team account, not a personal account.'
-        securedBy:
-          - oauth2:
-              scopes:
-                - account
-          - basic
-          - api_key
-        (oas-tags):
-          - users
-    /hooks:
-      get:
-        responses:
-          '200':
-            body:
-              application/json:
-                type: paginated_webhook_subscriptions
-            description: The paginated list of installed webhooks.
-          '403':
-            body:
-              application/json:
-                type: error
-            description: If the authenticated user is accessing an account other than their own.
-          '404':
-            body:
-              application/json:
-                type: error
-            description: If the specified account does not exist.
-        securedBy:
-          - oauth2:
-              scopes:
-                - webhook
-          - basic
-          - api_key
-        (oas-tags):
-          - users
-          - webhooks
-      '/{uid}':
-        uriParameters:
-          uid:
-            type: string
-            description: The installed webhook's id
-        put:
-          responses:
-            '200':
-              body:
-                application/json:
-                  type: webhook_subscription
-              description: The webhook subscription object.
-            '403':
-              body:
-                application/json:
-                  type: error
-              description: If the authenticated user does not have permission to update the webhook.
-            '404':
-              body:
-                application/json:
-                  type: error
-              description: If the webhook or user does not exist.
-          securedBy:
-            - oauth2:
-                scopes:
-                  - webhook
-            - basic
-            - api_key
-          (oas-tags):
-            - users
-            - webhooks
-        get:
-          responses:
-            '200':
-              body:
-                application/json:
-                  type: webhook_subscription
-              description: The webhook subscription object.
-            '404':
-              body:
-                application/json:
-                  type: error
-              description: If the webhook or user does not exist.
-          securedBy:
-            - oauth2:
-                scopes:
-                  - webhook
-            - basic
-            - api_key
-          (oas-tags):
-            - users
-            - webhooks
-        delete:
-          responses:
-            '204':
-              description: When the webhook was deleted successfully
-            '403':
-              body:
-                application/json:
-                  type: error
-              description: If the authenticated user does not have permission to delete the webhook.
-            '404':
-              body:
-                application/json:
-                  type: error
-              description: If the webhook or user does not exist.
-          securedBy:
-            - oauth2:
-                scopes:
-                  - webhook
-            - basic
-            - api_key
-          (oas-tags):
-            - users
-            - webhooks
-      post:
-        responses:
-          '201':
             body:
               application/json:
                 type: webhook_subscription
-            description: The newly installed webhook.
-            headers:
-              Location:
-                type: string
-                description: The URL of new newly created webhook.
+            description: The webhook subscription object.
           '403':
             body:
               application/json:
                 type: error
-            description: If the authenticated user is accessing an account other than their own.
+            description: If the authenticated user does not have permission to update the webhook.
           '404':
             body:
               application/json:
                 type: error
-            description: If the specified account does not exist.
+            description: If the webhook or user does not exist.
         securedBy:
           - oauth2:
               scopes:
@@ -2280,12 +2203,131 @@ securitySchemes:
         (oas-tags):
           - users
           - webhooks
-/account:
-  '/{username}':
-    uriParameters:
-      username:
-        type: string
-    /addons:
+      get:
+        responses:
+          '200':
+            body:
+              application/json:
+                type: webhook_subscription
+            description: The webhook subscription object.
+          '404':
+            body:
+              application/json:
+                type: error
+            description: If the webhook or user does not exist.
+        securedBy:
+          - oauth2:
+              scopes:
+                - webhook
+          - basic
+          - api_key
+        (oas-tags):
+          - users
+          - webhooks
+      delete:
+        responses:
+          '204':
+            description: When the webhook was deleted successfully
+          '403':
+            body:
+              application/json:
+                type: error
+            description: If the authenticated user does not have permission to delete the webhook.
+          '404':
+            body:
+              application/json:
+                type: error
+            description: If the webhook or user does not exist.
+        securedBy:
+          - oauth2:
+              scopes:
+                - webhook
+          - basic
+          - api_key
+        (oas-tags):
+          - users
+          - webhooks
+    post:
+      responses:
+        '201':
+          body:
+            application/json:
+              type: webhook_subscription
+          description: The newly installed webhook.
+          headers:
+            Location:
+              type: string
+              description: The URL of new newly created webhook.
+        '403':
+          body:
+            application/json:
+              type: error
+          description: If the authenticated user is accessing an account other than their own.
+        '404':
+          body:
+            application/json:
+              type: error
+          description: If the specified account does not exist.
+      securedBy:
+        - oauth2:
+            scopes:
+              - webhook
+        - basic
+        - api_key
+      (oas-tags):
+        - users
+        - webhooks
+/account/{username}:
+  uriParameters:
+    username:
+      type: string
+  /addons:
+    get:
+      (oas-responses-default):
+        body:
+          application/json:
+            type: error
+        description: Unexpected error.
+      securedBy:
+        - oauth2:
+            scopes:
+              - 'account:write'
+        - basic
+        - api_key
+      (oas-tags):
+        - addon
+    '/{encoded_context_id}':
+      uriParameters:
+        encoded_context_id:
+          type: string
+      delete:
+        (oas-responses-default):
+          body:
+            application/json:
+              type: error
+          description: Unexpected error.
+        securedBy:
+          - oauth2:
+              scopes:
+                - 'account:write'
+          - basic
+          - api_key
+        (oas-tags):
+          - addon
+      put:
+        (oas-responses-default):
+          body:
+            application/json:
+              type: error
+          description: Unexpected error.
+        securedBy:
+          - oauth2:
+              scopes:
+                - 'account:write'
+          - basic
+          - api_key
+        (oas-tags):
+          - addon
       get:
         (oas-responses-default):
           body:
@@ -2300,24 +2342,7 @@ securitySchemes:
           - api_key
         (oas-tags):
           - addon
-      '/{encoded_context_id}':
-        uriParameters:
-          encoded_context_id:
-            type: string
-        delete:
-          (oas-responses-default):
-            body:
-              application/json:
-                type: error
-            description: Unexpected error.
-          securedBy:
-            - oauth2:
-                scopes:
-                  - 'account:write'
-            - basic
-            - api_key
-          (oas-tags):
-            - addon
+      /refresh:
         put:
           (oas-responses-default):
             body:
@@ -2332,49 +2357,20 @@ securitySchemes:
             - api_key
           (oas-tags):
             - addon
-        get:
-          (oas-responses-default):
-            body:
-              application/json:
-                type: error
-            description: Unexpected error.
-          securedBy:
-            - oauth2:
-                scopes:
-                  - 'account:write'
-            - basic
-            - api_key
-          (oas-tags):
-            - addon
-        /refresh:
-          put:
-            (oas-responses-default):
-              body:
-                application/json:
-                  type: error
-              description: Unexpected error.
-            securedBy:
-              - oauth2:
-                  scopes:
-                    - 'account:write'
-              - basic
-              - api_key
-            (oas-tags):
-              - addon
-      post:
-        (oas-responses-default):
-          body:
-            application/json:
-              type: error
-          description: Unexpected error.
-        securedBy:
-          - oauth2:
-              scopes:
-                - 'account:write'
-          - basic
-          - api_key
-        (oas-tags):
-          - addon
+    post:
+      (oas-responses-default):
+        body:
+          application/json:
+            type: error
+        description: Unexpected error.
+      securedBy:
+        - oauth2:
+            scopes:
+              - 'account:write'
+        - basic
+        - api_key
+      (oas-tags):
+        - addon
 /addon:
   delete:
     (oas-responses-default):
@@ -3214,40 +3210,39 @@ securitySchemes:
             - api_key
           (oas-tags):
             - snippets
-        /files:
-          '/{path}':
-            uriParameters:
-              path:
-                type: string
-            get:
-              responses:
-                '200':
-                  description: Returns the contents of the specified file.
-                  headers:
-                    Content-Disposition:
-                      type: string
-                      description: attachment
-                    Content-Type:
-                      type: string
-                      description: The mime type as derived from the filename
-                '403':
-                  body:
-                    application/json:
-                      type: error
-                  description: If the authenticated user does not have access to the snippet.
-                '404':
-                  body:
-                    application/json:
-                      type: error
-                  description: If the file or snippet does not exist.
-              securedBy:
-                - oauth2:
-                    scopes:
-                      - snippet
-                - basic
-                - api_key
-              (oas-tags):
-                - snippets
+        /files/{path}:
+          uriParameters:
+            path:
+              type: string
+          get:
+            responses:
+              '200':
+                description: Returns the contents of the specified file.
+                headers:
+                  Content-Disposition:
+                    type: string
+                    description: attachment
+                  Content-Type:
+                    type: string
+                    description: The mime type as derived from the filename
+              '403':
+                body:
+                  application/json:
+                    type: error
+                description: If the authenticated user does not have access to the snippet.
+              '404':
+                body:
+                  application/json:
+                    type: error
+                description: If the file or snippet does not exist.
+            securedBy:
+              - oauth2:
+                  scopes:
+                    - snippet
+              - basic
+              - api_key
+            (oas-tags):
+              - snippets
       '/{revision}':
         uriParameters:
           revision:

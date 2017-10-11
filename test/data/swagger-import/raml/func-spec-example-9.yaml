@@ -1,33 +1,32 @@
 #%RAML 1.0
 title: Simple API
 version: 1.1.0
-/persons:
-  '/{username}':
-    uriParameters:
-      username:
-        description: The person's username
-        type: string
-    get:
-      displayName: readPerson
-      description: Returns a single person for its username.
-      (oas-summary): Gets a person
-      responses:
-        '200':
-          body:
-            application/json:
-              type: Person
-          description: A Person
-          headers:
-            X-Rate-Limit-Remaining:
-              type: integer
-              description: How many calls consumer can do
-            X-Rate-Limit-Reset:
-              type: datetime
-              description: When rate limit will be reset
+/persons/{username}:
+  uriParameters:
+    username:
+      description: The person's username
+      type: string
+  get:
+    displayName: readPerson
+    description: Returns a single person for its username.
+    (oas-summary): Gets a person
+    responses:
+      '200':
+        body:
+          application/json:
+            type: Person
+        description: A Person
+        headers:
+          X-Rate-Limit-Remaining:
+            type: integer
+            description: How many calls consumer can do
+          X-Rate-Limit-Reset:
+            type: datetime
+            description: When rate limit will be reset
 
-    is:
-      - userAgent
-      - pageSize
+  is:
+    - userAgent
+    - pageSize
 
 types:
   Person:

@@ -22,33 +22,32 @@ annotationTypes:
   oas-summary:
     type: string
     allowedTargets: Method
-/pet:
-  '/{petId}':
-    uriParameters:
-      petId:
-        description: ID of pet that needs to be updated
-        type: integer
-        format: int64
-    post:
-      displayName: updatePetWithForm
-      (oas-summary): Updates a pet in the store
-                     with form data
-      body:
-        application/x-www-form-urlencoded:
-          properties:
-            name:
-              description: Updated name of the pet
-              required: false
-              type: string
-            status:
-              description: Updated status of the pet
-              required: false
-              type: string
-      responses:
-        '405':
-          description: Invalid input
-      (oas-tags):
-        - pet
+/pet/{petId}:
+  uriParameters:
+    petId:
+      description: ID of pet that needs to be updated
+      type: integer
+      format: int64
+  post:
+    displayName: updatePetWithForm
+    (oas-summary): Updates a pet in the store
+                   with form data
+    body:
+      application/x-www-form-urlencoded:
+        properties:
+          name:
+            description: Updated name of the pet
+            required: false
+            type: string
+          status:
+            description: Updated status of the pet
+            required: false
+            type: string
+    responses:
+      '405':
+        description: Invalid input
+    (oas-tags):
+      - pet
 types:
   Order:
     type: object
