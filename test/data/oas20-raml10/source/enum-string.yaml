@@ -1,0 +1,32 @@
+swagger: '2.0'
+info:
+  title: Enum example
+  version: '1'
+definitions:
+  ApiResponse:
+    type: object
+paths:
+  /temperature/{zoneId}/heater/{state}:
+    post:
+      tags:
+      - Environment
+      description: turns the heater on or off
+      operationId: setHeaterState
+      parameters:
+        - name: zoneId
+          in: path
+          required: true
+          type: string
+        - name: state
+          in: path
+          required: true
+          type: string
+          enum:
+            - false
+            - true
+      responses:
+        200:
+          description: Status of the operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      x-swagger-router-controller: Environment

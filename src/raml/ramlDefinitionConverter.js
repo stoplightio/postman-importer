@@ -116,11 +116,12 @@ class RamlDefinitionConverter extends Converter {
 
 		if (model.hasOwnProperty('_enum') && model._enum != null) {
 			const enumModel: string[] = model._enum;
+			const isString: boolean = ramlDef.type === 'string';
 			const isDateOnly: boolean = ramlDef.type === 'date-only';
 			const _enum: string[] = [];
 			for (let i = 0; i < enumModel.length; i++) {
 				const item: string = enumModel[i];
-				_enum.push(isDateOnly ? item.replace('_', '-').replace('_', '-') : item);
+				_enum.push(isDateOnly ? item.replace('_', '-').replace('_', '-') : (isString ? item.toString() : item));
 			}
 			ramlDef.enum = _enum;
 		}
