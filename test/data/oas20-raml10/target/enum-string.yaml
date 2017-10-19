@@ -1,18 +1,13 @@
 #%RAML 1.0
 title: Enum example
 version: 1
-annotationTypes:
-  oas-tags:
-    allowedTargets: Method
-    type: string[]
-  swagger-router-controller: any
-types:
-  ApiResponse:
-    type: object
 /temperature/{zoneId}:
   uriParameters:
     zoneId:
-      type: string
+      type: integer
+      enum:
+        - 1
+        - 2
   /heater/{state}:
     uriParameters:
       state:
@@ -20,15 +15,23 @@ types:
         enum:
           - "false"
           - "true"
+          - "4"
     post:
-      (oas-tags):
-        - Environment
-      (swagger-router-controller): Environment
       description: turns the heater on or off
       displayName: setHeaterState
+      queryParameters:
+        other:
+          type: boolean
+          required: false
+        numeric:
+          type: number
+          required: false
+          enum:
+            - 1.1
+            - 2.2
       responses:
         200:
           body:
             application/json:
-              type: ApiResponse
+              type: string
           description: Status of the operation
