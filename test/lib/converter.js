@@ -46,7 +46,7 @@ const myFsResolver = {
 	}
 };
 
-describe('Converter', function () {
+describe('Converter from RAML to OAS20', function () {
 	const fullPath = __dirname + '/../data/raml-import/raml/raml08.yaml';
 	let converterInstance;
 	beforeEach(function () {
@@ -69,12 +69,62 @@ describe('Converter', function () {
 	});
 	
 	describe('convert', function () {
-		it('should successfully convert and return converted data', function (done) {
-			converterInstance.convertFile(fullPath, {format: 'json'})
+		describe ('should successfully convert and return converted data', () => {
+			it('using json format', function (done) {
+				converterInstance.convertFile(fullPath, {format: 'json'})
+					.then((returnedData) => {
+						expect(returnedData).to.be.an('string');
+						expect(returnedData).to.include('"swagger": "2.0"');
+						done();
+					})
+					.catch((err) => {
+						done(err);
+					});
+			});
+
+			it('using yaml format', function (done) {
+				converterInstance.convertFile(fullPath, {format: 'yaml'})
+					.then((returnedData) => {
+						expect(returnedData).to.be.an('string');
+						expect(returnedData).to.include('swagger: \'2.0\'');
+						done();
+					})
+					.catch((err) => {
+						done(err);
+					});
+			});
+		});
+	});
+});
+
+describe('Converter from OAS20 to RAML', function () {
+	const fullPath = __dirname + '/../data/swagger.json';
+	let converterInstance;
+	beforeEach(function () {
+		converterInstance = new specConverter.Converter(specConverter.Formats.OAS20, specConverter.Formats.RAML);
+	});
+	afterEach(function () {
+		converterInstance = null;
+	});
+	describe('constructor', function () {
+		it('should successfully create new converter instance', function () {
+			expect(converterInstance).to.be.an.instanceof(specConverter.Converter);
+		});
+	});
+	describe('_loadFile', function () {
+		it('should successfully load "from"/"importer" compatible file', function (done) {
+			converterInstance._loadFile(fullPath).then(() => {
+				done();
+			});
+		});
+	});
+
+	describe('convert', function () {
+		it('using yaml format', function (done) {
+			converterInstance.convertFile(fullPath, {format: 'yaml'})
 				.then((returnedData) => {
-					expect(returnedData).to.be.an('object');
-					expect(returnedData).to.include.keys('swagger');
-					expect(returnedData.swagger).to.be.equal('2.0');
+					expect(returnedData).to.be.an('string');
+					expect(returnedData).to.include('#%RAML 1.0');
 					done();
 				})
 				.catch((err) => {
