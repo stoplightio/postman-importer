@@ -48,7 +48,8 @@ class Oas20MethodConverter extends Converter {
 			'protocols': 'schemes',
 			'name': 'operationId'
 		};
-		const attrIdSkip = ['method', 'responses', 'headers', 'bodies', 'formBodies', 'parameters', 'queryStrings', 'is', 'path', 'produces', 'consumes', 'securedBy', 'annotations'];
+		const attrIdSkip = ['method', 'responses', 'headers', 'bodies', 'formBodies', 'parameters', 'queryStrings', 
+			'is', 'path', 'produces', 'consumes', 'securedBy', 'annotations', 'includePath'];
 		const oasDef = Oas20MethodConverter.createOasDef(model, attrIdMap, attrIdSkip);
 		const definitionConverter = new Oas20DefinitionConverter(this.model, this.annotationPrefix, this.def);
 

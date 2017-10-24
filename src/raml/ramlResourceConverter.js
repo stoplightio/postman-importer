@@ -339,7 +339,8 @@ class RamlResourceConverter extends Converter {
 			'relativeUri': 'relativePath'
 		};
 
-		const attrIdSkip = ['type', 'methods', 'resources', 'relativeUriPathSegments', 'uriParameters', 'baseUriParameters', 'annotations', 'absoluteUri', 'is', 'securedBy'];
+		const attrIdSkip = ['type', 'methods', 'resources', 'relativeUriPathSegments', 'uriParameters', 'baseUriParameters', 
+			'annotations', 'absoluteUri', 'is', 'securedBy', 'sourceMap'];
 		const model: Resource = RamlResourceConverter.createResource(ramlDef, attrIdMap, attrIdSkip);
 		const isRaml08Version: boolean = ramlHelper.isRaml08Version(this.version);
 
