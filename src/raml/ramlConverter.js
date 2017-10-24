@@ -89,6 +89,12 @@ class RamlConverter extends Converter {
 				if (ramlDef.hasOwnProperty('queryParameters')) {
 					this._removeSourceMapRecursive(ramlDef['queryParameters'], ramlDef['sourceMap']['path']);
 				}
+				if (ramlDef.hasOwnProperty('headers')) {
+					this._removeSourceMapRecursive(ramlDef['headers'], ramlDef['sourceMap']['path']);
+				}
+				if (ramlDef.hasOwnProperty('responses')) {
+					this._removeSourceMapRecursive(ramlDef['responses'], ramlDef['sourceMap']['path']);
+				}
 			}
 		}
 		
