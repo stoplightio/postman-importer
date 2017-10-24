@@ -42,7 +42,9 @@ class RamlMethodConverter extends Converter {
 			'name': 'displayName'
 		};
 
-		const attrIdSkip = ['responses', 'headers', 'bodies', 'formBodies', 'method', 'parameters', 'queryStrings', 'consumes', 'usage', 'path', 'produces', 'securedBy', 'annotations', 'tags', 'summary', 'externalDocs', 'deprecated', 'protocols'];
+		const attrIdSkip = ['responses', 'headers', 'bodies', 'formBodies', 'method', 'parameters', 'queryStrings', 
+			'consumes', 'usage', 'path', 'produces', 'securedBy', 'annotations', 'tags', 'summary', 'externalDocs', 
+			'deprecated', 'protocols', 'includePath'];
 		const ramlDef = RamlMethodConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 		const definitionConverter = new RamlDefinitionConverter(this.model, this.annotationPrefix, this.def);
 		
@@ -340,7 +342,8 @@ class RamlMethodConverter extends Converter {
 			'displayName': 'name'
 		};
 
-		const attrIdSkip = ['responses', 'description', 'headers', 'body', 'queryParameters', 'queryString', 'name', 'usage', 'is', 'securedBy', 'baseUriParameters', 'annotations', 'protocols'];
+		const attrIdSkip = ['responses', 'description', 'headers', 'body', 'queryParameters', 'queryString', 'name', 
+			'usage', 'is', 'securedBy', 'baseUriParameters', 'annotations', 'protocols', 'sourceMap'];
 		const model: Method = RamlMethodConverter.createMethod(ramlDef, attrIdMap, attrIdSkip);
 		const definitionConverter = new RamlDefinitionConverter(null, null, this.def);
 		definitionConverter.version = this.version;
@@ -500,6 +503,10 @@ class RamlMethodConverter extends Converter {
 				const protocols: string[] = [ramlDef.protocols.toLowerCase()];
 				model.protocols = protocols;
 			}
+		}
+
+		if (ramlDef.hasOwnProperty('sourceMap') && ramlDef['sourceMap'].hasOwnProperty('path')) {
+			model['includePath'] = ramlDef['sourceMap']['path'];
 		}
 
 		return model;
