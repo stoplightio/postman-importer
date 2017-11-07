@@ -36,10 +36,10 @@ class Converter {
 		});
 	}
 
-	convertFromModel(model) {
+	convertFromModel(model, options) {
 		return new Promise((resolve, reject) => {
 			try {
-				this.exporter.export(model)
+				this.exporter.export(model, this._getFormat(options))
           .then(resolve)
           .catch(reject);
 			} catch (e) {
@@ -51,7 +51,7 @@ class Converter {
 	convertFile(file, options) {
 		return new Promise((resolve, reject) => {
 			this.getModelFromFile(file, options).then((model) => {
-				this.convertFromModel(model).then(resolve).catch(reject);
+				this.convertFromModel(model, options).then(resolve).catch(reject);
 			}).catch(reject);
 		});
 	}
@@ -59,7 +59,7 @@ class Converter {
 	convertData(data, options) {
 		return new Promise((resolve, reject) => {
 			this.getModelFromData(data, options).then((model) => {
-				this.convertFromModel(model).then(resolve).catch(reject);
+				this.convertFromModel(model, options).then(resolve).catch(reject);
 			}).catch(reject);
 		});
 	}
@@ -70,6 +70,10 @@ class Converter {
 
 	_loadData(rawData, options) {
 		return this.importer._loadData(rawData, options);
+	}
+
+	_getFormat(options) {
+		return (!options || !options.format || this.exporter.type.formats.indexOf(options.format) < 0) ? this.format : options.format;
 	}
 }
 

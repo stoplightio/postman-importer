@@ -136,7 +136,7 @@ class RamlSecurityDefinitionConverter extends Converter {
 		const attrIdMap = {
 			'name' : 'schemaName'
 		};
-		const attrIdSkip = ['type', 'settings', 'describedBy', 'authorizationGrants'];
+		const attrIdSkip = ['type', 'settings', 'describedBy', 'authorizationGrants', 'sourceMap'];
 		const model = RamlSecurityDefinitionConverter.createSecurityDefinition(ramlDef, attrIdMap, attrIdSkip);
 
 		if (ramlDef.hasOwnProperty('type')) {
@@ -176,7 +176,7 @@ class RamlSecurityDefinitionConverter extends Converter {
 				'authorizationUri': 'authorizationUrl',
 				'authorizationGrants': 'authorization',
 			};
-			const attrSettingsIdSkip = ['scopes', 'authorizationGrants'];
+			const attrSettingsIdSkip = ['scopes', 'authorizationGrants', 'sourceMap'];
 			const settingsModel = RamlSecurityDefinitionConverter.createSecurityDefinition(settings, attrSettingsIdMap, attrSettingsIdSkip);
 			_.merge(model, settingsModel);
 

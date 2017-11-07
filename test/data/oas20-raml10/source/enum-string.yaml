@@ -1,0 +1,42 @@
+swagger: '2.0'
+info:
+  title: Enum example
+  version: '1'
+paths:
+  /temperature/{zoneId}/heater/{state}:
+    post:
+      description: turns the heater on or off
+      operationId: setHeaterState
+      parameters:
+        - name: zoneId
+          in: path
+          required: true
+          type: integer
+          enum:
+            - '1'
+            - 2
+        - name: state
+          in: path
+          required: true
+          type: string
+          enum:
+            - false
+            - true
+            - 4
+        - name: other
+          in: query
+          type: boolean
+          enum:
+            - false
+            - true
+        - name: numeric
+          in: query
+          type: number
+          enum:
+            - '1.1'
+            - 2.2
+      responses:
+        200:
+          description: Status of the operation
+          schema:
+            type: string

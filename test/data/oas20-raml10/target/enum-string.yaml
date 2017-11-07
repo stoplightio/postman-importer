@@ -1,0 +1,37 @@
+#%RAML 1.0
+title: Enum example
+version: 1
+/temperature/{zoneId}:
+  uriParameters:
+    zoneId:
+      type: integer
+      enum:
+        - 1
+        - 2
+  /heater/{state}:
+    uriParameters:
+      state:
+        type: string
+        enum:
+          - "false"
+          - "true"
+          - "4"
+    post:
+      description: turns the heater on or off
+      displayName: setHeaterState
+      queryParameters:
+        other:
+          type: boolean
+          required: false
+        numeric:
+          type: number
+          required: false
+          enum:
+            - 1.1
+            - 2.2
+      responses:
+        200:
+          body:
+            application/json:
+              type: string
+          description: Status of the operation

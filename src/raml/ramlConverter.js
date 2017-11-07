@@ -23,9 +23,10 @@ const RamlAnnotationTypeConverter = require('../raml/ramlAnnotationTypeConverter
 const helper = require('../helpers/raml');
 const YAML = require('js-yaml');
 const fs = require('fs');
-const toJSONOptions = { serializeMetadata: false };
+const toJSONOptions = { serializeMetadata: false, sourceMap: true };
 const RamlErrorModel = require('../helpers/ramlErrorModel');
 const jsonHelper = require('../utils/json');
+const path = require('path');
 
 class RamlConverter extends Converter {
 
@@ -40,6 +41,7 @@ class RamlConverter extends Converter {
 	_loadFile(filePath:string, options:any) {
 		this.filePath = filePath;
 		const fileContent = fs.readFileSync(filePath, 'utf8');
+		
 		this.format = RamlConverter.detectFormat(fileContent);
 		return new Promise((resolve, reject) => {
 			parser.loadApi(filePath, Converter._options(options)).then((api) => {
@@ -47,6 +49,7 @@ class RamlConverter extends Converter {
 					const errors = api.errors();
 					if (!_.isEmpty(errors)) this.errors = jsonHelper.parse(errors);
 					this.data = api.expand(true).toJSON(toJSONOptions);
+					this._removeSourceMapLocalRef(this.data, path.basename(filePath));
 					resolve();
 				}
 				catch (e) {
@@ -69,9 +72,56 @@ class RamlConverter extends Converter {
 				const errors = parsedData.errors();
 				if (!_.isEmpty(errors)) this.errors = jsonHelper.parse(errors);
 				this.data = parsedData.expand(true).toJSON(toJSONOptions);
+				this._removeSourceMapLocalRef(this.data, '#local.raml');
 				resolve();
 			}
 		});
+	}
+	
+	_removeSourceMapLocalRef(ramlDef:any, filePath: string) {
+		if (!_.isEmpty(ramlDef) && typeof ramlDef === 'object' && ramlDef.hasOwnProperty('sourceMap') && ramlDef['sourceMap'].hasOwnProperty('path')) {
+			if (ramlDef['sourceMap']['path'] === '#local.raml' || ramlDef['sourceMap']['path'] === filePath) {
+				delete ramlDef['sourceMap'];
+			} else {
+				if (ramlDef.hasOwnProperty('properties')) {
+					this._removeSourceMapRecursive(ramlDef['properties'], ramlDef['sourceMap']['path']);
+				}
+				if (ramlDef.hasOwnProperty('queryParameters')) {
+					this._removeSourceMapRecursive(ramlDef['queryParameters'], ramlDef['sourceMap']['path']);
+				}
+				if (ramlDef.hasOwnProperty('headers')) {
+					this._removeSourceMapRecursive(ramlDef['headers'], ramlDef['sourceMap']['path']);
+				}
+				if (ramlDef.hasOwnProperty('responses')) {
+					this._removeSourceMapRecursive(ramlDef['responses'], ramlDef['sourceMap']['path']);
+				}
+			}
+		}
+		
+		for (const id in ramlDef) {
+			if (!ramlDef.hasOwnProperty(id)) continue;
+			const value = ramlDef[id];
+			
+			if (typeof value === 'object') {
+				this._removeSourceMapLocalRef(value, filePath);
+			}
+		}
+	}
+	
+	_removeSourceMapRecursive(ramlDef: any, pathId: string) {
+		for (const id in ramlDef) {
+			if (!ramlDef.hasOwnProperty(id)) continue;
+			const value = ramlDef[id];
+
+			if (id === 'sourceMap' && typeof value === 'object' && value.hasOwnProperty('path') && value['path'] === pathId) {
+				delete ramlDef[id];
+				continue;
+			}
+
+			if (typeof value === 'object') {
+				this._removeSourceMapRecursive(value, pathId);
+			}
+		}
 	}
 	
 	export(model:Root) {

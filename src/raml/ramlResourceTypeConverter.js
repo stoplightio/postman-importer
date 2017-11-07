@@ -30,7 +30,7 @@ class RamlResourceTypeConverter extends Converter {
 	_export(model:ResourceType) {
 		const attrIdMap = {};
 
-		const attrIdSkip = ['name', 'parameters', 'methods', 'resource'];
+		const attrIdSkip = ['name', 'parameters', 'methods', 'resource', 'includePath'];
 		const ramlDef = RamlResourceTypeConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 		const resourceConverter = new RamlResourceConverter(this.model);
 		
@@ -102,17 +102,20 @@ class RamlResourceTypeConverter extends Converter {
 	_import(ramlDef:any) {
 		const attrIdMap = {};
 		
-		const attrIdSkip = ['description', 'displayName', 'uriParameters'];
+		const attrIdSkip = ['description', 'displayName', 'uriParameters', 'sourceMap'];
 		const validMethods = helper.getValidMethods;
 		const definitionConverter = new RamlDefinitionConverter();
 		const methodConverter = new RamlMethodConverter();
-		const model = RamlResourceTypeConverter.createResourceType(ramlDef[Object.keys(ramlDef)[0]], attrIdMap, attrIdSkip.concat(validMethods));
+		const def = ramlDef[Object.keys(ramlDef)[0]];
+		const model = RamlResourceTypeConverter.createResourceType(def, attrIdMap, attrIdSkip.concat(validMethods));
+		if (def.hasOwnProperty('sourceMap') && def['sourceMap'].hasOwnProperty('path')) {
+			model['includePath'] = def['sourceMap']['path'];
+		}
 		const isRaml08Version = ramlHelper.isRaml08Version(this.version);
 		
 		const resource = new Resource();
 		if (!_.isEmpty(ramlDef)) {
 			const methods: Method[] = [];
-			const def = ramlDef[Object.keys(ramlDef)[0]];
 			
 			for (const id in def) {
 				if (!def.hasOwnProperty(id) || !validMethods.includes(id)) continue;

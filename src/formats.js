@@ -9,7 +9,7 @@ const supportedFormats = {
 	OAS20: {
 		name: 'OAS 2.0',
 		className: 'OAS20',
-		formats: ['yaml'],
+		formats: ['json', 'yaml'],
 		import: true,
 		export: true
 	},

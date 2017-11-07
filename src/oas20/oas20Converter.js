@@ -18,6 +18,8 @@ const Oas20SecurityDefinitionConverter = require('../oas20/oas20SecurityDefiniti
 const Oas20ResourceConverter = require('../oas20/oas20ResourceConverter');
 const Oas20DefinitionConverter = require('../oas20/oas20DefinitionConverter');
 const Oas20TraitConverter = require('../oas20/oas20TraitConverter');
+const YAML = require('js-yaml');
+const jsonHelper = require('../utils/json');
 
 class Oas20Converter extends Converter {
 	
@@ -38,7 +40,6 @@ class Oas20Converter extends Converter {
 	
 	_loadData(data:string, options:any) {
 		return new Promise((resolve, reject) => {
-			const YAML = require('js-yaml');
 			const dataObject = YAML.safeLoad(data);
 			parser.parse(dataObject, options).then((api) =>{
 				this._doParseData(api, options || {}, resolve, reject);
@@ -74,7 +75,7 @@ class Oas20Converter extends Converter {
 			.catch(reject);
 	}
 	
-	export(model:Root) {
+	export(model:Root, format: string) {
 		return new Promise((resolve, reject) => {
 			try {
 				Oas20Converter.fixInheritedProperties(model);
@@ -101,8 +102,8 @@ class Oas20Converter extends Converter {
 				} else {
 					oasDef.paths = {};
 				}
-				
-				resolve(oasDef);
+
+				resolve(Oas20Converter._getData(oasDef, format));
 			} catch (err) {
 				reject(err);
 			}
@@ -318,6 +319,14 @@ class Oas20Converter extends Converter {
 				}
 			}
 		}
+	}
+
+	static _getData(oasDef, format) {
+		if (format === 'yaml')
+			return YAML.dump(jsonHelper.parse(oasDef));
+
+		if (format === 'json')
+			return jsonHelper.stringify(oasDef, 2);
 	}
 }
 
