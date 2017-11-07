@@ -64,6 +64,7 @@ class RamlConverter extends Converter {
 	_loadData(data:string, options:any) {
 		this.fileContent = data;
 		this.format = RamlConverter.detectFormat(data);
+		if (!options.hasOwnProperty('attributeDefaults') || options.attributeDefaults) options.attributeDefaults = false;
 		return new Promise((resolve, reject) => {
 			const parsedData = parser.parseRAMLSync(data, options);
 			if (parsedData.name === 'Error') {
