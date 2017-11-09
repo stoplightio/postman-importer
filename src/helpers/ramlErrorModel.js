@@ -63,12 +63,15 @@ class RamlErrorModel {
 		let type = this.getType(model.types, typeName);
 		if (this.path.isEmpty()) {
 			this.addError(type, 'root', error);
-		} else if (this.path.size() === 1) {
+		} else {
 			const field = this.path.pop();
-			this.addError(type, field, error);
-		} else if (this.path.pop() === 'properties') {
-			const propName = this.path.pop();
-			this.addErrorToProp(this.getProperty(type.properties, propName), error);
+			if (this.path.isEmpty()) this.addError(type, field, error);
+			else if (field === 'properties') {
+				const propName = this.path.pop();
+				this.addErrorToProp(this.getProperty(type.properties, propName), error);
+			} else if (field === 'example') {
+				this.addExampleError(type, error);
+			}
 		}
 	}
 	
@@ -122,6 +125,16 @@ class RamlErrorModel {
 				this.addError(prop, 'root', error);
 			}
 		}
+	}
+	
+	addExampleError(prop, error) {
+		let prefix = '';
+		let errorMsg = error.message;
+		while (!this.path.isEmpty()) {
+			prefix = prefix + (prefix !== '' ? '.' : '') + this.path.pop();
+		}
+		if (!prop.error) prop.error = {};
+		prop.error.example = prefix + ': ' + errorMsg;
 	}
 
 	createPathFromLineNumber(fileContent, lineNumber) {
