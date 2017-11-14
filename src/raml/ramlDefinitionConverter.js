@@ -48,7 +48,7 @@ class RamlDefinitionConverter extends Converter {
 		const attrIdSkip = ['name', 'type', 'reference', 'properties', 'items', 'compositionType', 'in', 'schema', 
 			'additionalProperties', 'title', 'items', 'itemsList', 'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 
 			'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference', 
-			'_enum', 'error', 'warning', 'includePath'];
+			'_enum', 'error', 'warning', 'includePath', 'expanded'];
 
 		const ramlDef = RamlDefinitionConverter.createRamlDef(model, attrIdMap, attrIdSkip);
 

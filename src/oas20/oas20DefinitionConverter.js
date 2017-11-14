@@ -43,7 +43,7 @@ class Oas20DefinitionConverter extends Converter {
 
 		const attrIdSkip = ['name', 'fileReference', 'reference', 'properties', 'compositionType', 'schema', 'items', 
 			'itemsList', 'additionalProperties', 'jsonValue', 'schemaPath', 'examples', '$schema', 'id', 
-			'fileTypes', 'annotations', 'includePath'];
+			'fileTypes', 'annotations', 'includePath', 'expanded'];
 		
 		const oasDef = Oas20DefinitionConverter.createOasDef(model, attrIdMap, attrIdSkip);
 

@@ -71,7 +71,8 @@ class Oas30DefinitionConverter extends Converter {
 			'id',
 			'annotations',
 			'fileTypes',
-			'propsRequired'
+			'propsRequired',
+			'expanded'
 		];
 
 		const oasDef: Schema = Oas30DefinitionConverter.createOasDef(model, attrIdMap, attrIdSkip);
