@@ -323,9 +323,10 @@ class RamlDefinitionConverter extends Converter {
 				if (!entry.hasOwnProperty(key)) continue;
 				const value = entry[key];
 				if (value.hasOwnProperty('typePropertyKind') && value.typePropertyKind === 'JSON') {
-					const jsonValue = RamlDefinitionConverter._readTypeAttribute(value.type);
+					const schema = value.schema && _.isArray(value.schema) ? value.schema : value.type;
+					const jsonValue = RamlDefinitionConverter._readTypeAttribute(schema);
 					const parse = jsonHelper.parse(jsonValue);
-					if (parse.hasOwnProperty('definitions')) {
+					if (parse && parse.hasOwnProperty('definitions')) {
 						const definitions: Definition[] = this.import(RamlDefinitionConverter._convertMapToArray(parse.definitions));
 						result = result.concat(definitions);
 						delete parse.definitions;
