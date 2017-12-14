@@ -504,10 +504,12 @@ class Oas20MethodConverter extends Converter {
 						const modelResponses: Response[] = this.model.responses.filter(modelResponse => {
 							return modelResponse.name === reference;
 						});
-						const def: Response = modelResponses[0];
-						if (def.hasOwnProperty('description')) response.description = def.description;
-						if (def.hasOwnProperty('headers')) response.headers = def.headers;
-						if (def.hasOwnProperty('bodies')) response.bodies = def.bodies;
+						if (!_.isEmpty(modelResponses)) {
+							const def: Response = modelResponses[0];
+							if (def.hasOwnProperty('description')) response.description = def.description;
+							if (def.hasOwnProperty('headers')) response.headers = def.headers;
+							if (def.hasOwnProperty('bodies')) response.bodies = def.bodies;
+						}
 						response.globalResponseDefinition = reference;
 					} else {
 						if (value.hasOwnProperty('description')) response.description = value.description;

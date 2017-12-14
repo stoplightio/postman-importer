@@ -91,7 +91,16 @@ class Oas20RootConverter extends Converter {
 			if (mediaType.hasOwnProperty('consumes')) oasDef.consumes = mediaType.consumes;
 			if (mediaType.hasOwnProperty('produces')) oasDef.produces = mediaType.produces;
 		}
-		
+
+		if (oasDef.hasOwnProperty('responses')) {
+			for (const id in oasDef.responses) {
+				if (!oasDef.responses.hasOwnProperty(id)) continue;
+
+				const response = oasDef.responses[id];
+				if (!response.httpStatusCode) delete response.httpStatusCode;
+			}
+		}
+
 		Oas20RootConverter.exportAnnotations(model, oasDef);
 
 		return oasDef;
