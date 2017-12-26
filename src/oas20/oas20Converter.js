@@ -81,8 +81,8 @@ class Oas20Converter extends Converter {
 				Oas20Converter.fixInheritedProperties(model);
 				
 				const rootConverter = new Oas20RootConverter();
-				const oasDef = rootConverter.export(model);
-				oasDef.swagger = '2.0';
+				const oasDef = { swagger: '2.0' };
+				_.assign(oasDef, rootConverter.export(model));
 				if (model.hasOwnProperty('securityDefinitions') && model.securityDefinitions) {
 					const securityDefinitionConverter = new Oas20SecurityDefinitionConverter();
 					const securityDef = securityDefinitionConverter.export(model.securityDefinitions);
