@@ -30,7 +30,7 @@ class RamlMethodConverter extends Converter {
 		for (let i = 0; i < models.length; i++) {
 			const model: Method = models[i];
 			const method = this._export(model);
-			result[model.method] = !_.isEmpty(method) ? method : null;
+			result[model.method] = !_.isEmpty(method) ? method : {};
 		}
 		
 		return result;
@@ -114,7 +114,7 @@ class RamlMethodConverter extends Converter {
 							const id = this.annotationPrefix + '-responses-default';
 							RamlCustomAnnotationConverter._createAnnotationType(this.def, this.annotationPrefix, id);
 							ramlDef['(' + id + ')'] = response;
-						} else if (httpStatusCode) responses[httpStatusCode] = (_.isEmpty(response)) ? null : response;
+						} else if (httpStatusCode) responses[httpStatusCode] = (_.isEmpty(response)) ? {} : response;
 					}
 				}
 				if (!_.isEmpty(responses)) ramlDef.responses = responses;
