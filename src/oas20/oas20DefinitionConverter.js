@@ -274,7 +274,7 @@ class Oas20DefinitionConverter extends Converter {
 			model.schema = this._import(oasDef.schema);
 		}
 
-		if (oasDef.hasOwnProperty('example')) {
+		if (oasDef.hasOwnProperty('example') && oasDef.example) {
 			if (typeof oasDef.example === 'object' && !_.isArray(oasDef.example)) {
 				model.example = Oas20DefinitionConverter.importExample(oasDef.example);
 			} else {
