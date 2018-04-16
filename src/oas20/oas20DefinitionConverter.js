@@ -249,9 +249,11 @@ class Oas20DefinitionConverter extends Converter {
 			const modelProps: Definition[] = [];
 
 			_.entries(oasDef.properties).map(([key, value]) => {
-				const prop: Definition = this._import(value);
-				prop.name = key;
-				modelProps.push(prop);
+				if (value) {
+					const prop: Definition = this._import(value);
+					prop.name = key;
+					modelProps.push(prop);
+				}
 			});
 
 			model.properties = modelProps;
