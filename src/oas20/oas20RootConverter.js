@@ -246,7 +246,17 @@ class Oas20RootConverter extends Converter {
 			}
 			model.responses = responses;
 		}
-		
+
+		if (oasDef.hasOwnProperty('security')) {
+			model.securedBy = [];
+			oasDef.security.map(sec => {
+				const key = _.keys(sec)[0];
+				const obj = {};
+				obj[key] = {scopes: sec[key]};
+				model.securedBy = model.securedBy.concat(sec[key].length === 0 ? key : obj);
+			});
+		}
+
 		Oas20RootConverter.importAnnotations(oasDef, model, model);
 
 		return model;

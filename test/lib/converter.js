@@ -262,7 +262,6 @@ describe('from raml to swagger', function () {
 	});
 });
 
-
 describe('Raml10 to Raml10', () => {
 	const baseDir = __dirname + '/../data/raml10-raml10/source';
 	const testFiles = fs.readdirSync(baseDir);

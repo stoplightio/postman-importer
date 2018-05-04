@@ -1,0 +1,27 @@
+#%RAML 1.0
+title: Security tryout
+version: 1.0.0
+securitySchemes:
+  apiKeyHeader:
+    type: Pass Through
+    describedBy:
+      headers:
+        Ocp-Apim-Subscription-Key:
+          type: string
+  apiKeyQuery:
+    type: Pass Through
+    describedBy:
+      queryParameters:
+        subscription-key:
+          type: string
+securedBy:
+  - apiKeyHeader
+  - apiKeyQuery
+/something:
+  post:
+    responses:
+      200:
+        description: 200 response
+        body:
+          some:
+            example: value
