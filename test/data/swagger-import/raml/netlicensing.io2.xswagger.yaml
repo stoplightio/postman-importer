@@ -1661,28 +1661,22 @@ types:
       active:
         description: 'If set to ''false'', the license is disabled. License can be re-enabled, but as long as it is disabled, the license is excluded from the validation process.'
         type: boolean
-        required: false
       currency:
         description: 'specifies currency for the license price. Check data types to discover which currencies are supported. Read-only, set from license template on creation.'
         type: string
-        required: false
       hidden:
         description: 'If set to ''true'', this license is not shown in NetLicensing Shop as purchased license. Set from license template on creation, if not specified explicitly.'
         type: boolean
-        required: false
       name:
         description: 'Name for the licensed item. Set from license template on creation, if not specified explicitly.'
         type: string
-        required: false
       number:
         description: Unique number (across all products/licensees of a vendor) that identifies the license. Vendor can assign this number when creating a license or let NetLicensing generate one. Read-only after corresponding creation transaction status is set to closed.
         type: string
-        required: false
       price:
         description: 'price for the license. If >0, it must always be accompanied by the currency specification. Read-only, set from license template on creation.'
         format: double
         type: number
-        required: false
     xml:
       name: license
   LicenseTemplate:
@@ -1691,43 +1685,34 @@ types:
       active:
         description: 'If set to ''false'', the license template is disabled. Licensee can not obtain any new licenses off this license template.'
         type: boolean
-        required: false
       automatic:
         description: 'If set to ''true'', every new licensee automatically gets one license out of this license template on creation. Automatic licenses must have their price set to 0.'
         type: boolean
-        required: false
       currency:
         description: specifies currency for the license price. Check data types to discover which currencies are supported.
         type: string
-        required: false
       hidden:
         description: 'If set to ''true'', this license template is not shown in NetLicensing Shop as offered for purchase.'
         type: boolean
-        required: false
       hiddenLicenses:
         description: 'If set to ''true'', licenses from this license template are not visible to the end customer, but participate in validation.'
         type: boolean
-        required: false
       licenseType:
         description: type of licenses created from this license template
         enum:
           - FEATURE
           - TIMEVOLUME
         type: string
-        required: false
       name:
         description: Name for the licensed item.
         type: string
-        required: false
       number:
         description: Unique number (across all products of a vendor) that identifies the license template. Vendor can assign this number when creating a license template or let NetLicensing generate one. Read-only after creation of the first license from this license template.
         type: string
-        required: false
       price:
         description: 'price for the license. If >0, it must always be accompanied by the currency specification.'
         format: double
         type: number
-        required: false
     xml:
       name: licensetemplate
   Licensee:
@@ -1736,11 +1721,9 @@ types:
       active:
         description: 'If set to ''false'', the licensee is disabled. Licensee can not obtain new licenses, and validation is disabled.'
         type: boolean
-        required: false
       number:
         description: Unique number (across all products of a vendor) that identifies the licensee. Vendor can assign this number when creating a licensee or let NetLicensing generate one. Read-only after creation of the first license for the licensee.
         type: string
-        required: false
     xml:
       name: licensee
   PaymentMethod:
@@ -1748,10 +1731,8 @@ types:
     properties:
       active:
         type: boolean
-        required: false
       number:
         type: string
-        required: false
     xml:
       name: paymentmethod
   Product:
@@ -1760,23 +1741,18 @@ types:
       active:
         description: 'If set to ''false'', the product is disabled. No new licensees can be registered for the product, existing licensees can not obtain new licenses'
         type: boolean
-        required: false
       licenseeAutoCreate:
         description: 'If set to ''true'', non-existing licensees will be created at first validation attempt.'
         type: boolean
-        required: false
       name:
         description: Product name. Together with the version identifies the product for the end customer
         type: string
-        required: false
       number:
         description: Unique number that identifies the product. Vendor can assign this number when creating a product or let NetLicensing generate one. Read-only after creation of the first licensee for the product.
         type: string
-        required: false
       version:
         description: 'Product version. Convenience parameter, additional to the product name.'
         type: string
-        required: false
     xml:
       name: product
   ProductModule:
@@ -1785,19 +1761,15 @@ types:
       active:
         description: 'If set to ''false'', the product module is disabled. Licensees can not obtain any new licenses for this product module.'
         type: boolean
-        required: false
       licensingInfo:
         description: Licensing model applied to this product module. Defines what license templates can be configured for the product module and how licenses for this product module are processed during validation.
         type: string
-        required: false
       name:
         description: Product module name that is visible to the end customers in NetLicensing Shop.
         type: string
-        required: false
       number:
         description: Unique number (across all products of a vendor) that identifies the product module. Vendor can assign this number when creating a product module or let NetLicensing generate one. Read-only after creation of the first licensee for the product.
         type: string
-        required: false
     xml:
       name: productmodule
   Token:
@@ -1805,25 +1777,18 @@ types:
     properties:
       active:
         type: boolean
-        required: false
       expirationTime:
         type: datetime
-        required: false
       licenseNumber:
         type: string
-        required: false
       number:
         type: string
-        required: false
       shopURL:
         type: string
-        required: false
       tokenType:
         type: string
-        required: false
       vensorNumber:
         type: string
-        required: false
     xml:
       name: token
   Transaction:
@@ -1832,23 +1797,19 @@ types:
       active:
         description: Always true for the transactions
         type: string
-        required: false
       number:
         description: Unique number (across all products of a vendor) that identifies the transaction. This number is always generated by NetLicensing.
         type: string
-        required: false
       source:
         enum:
           - SHOP
         type: string
-        required: false
       status:
         enum:
           - CANCELLED
           - CLOSED
           - PENDING
         type: string
-        required: false
     xml:
       name: transaction
   discount:
@@ -1856,14 +1817,11 @@ types:
     properties:
       amountPercent:
         type: string
-        required: false
       currency:
         type: string
-        required: false
       totalPrice:
         format: double
         type: number
-        required: false
     xml:
       name: discount
   infos:
@@ -1877,16 +1835,13 @@ types:
     properties:
       name:
         type: string
-        required: false
     xml:
       name: licensingModel
   netlicensing:
     properties:
       infos:
         type: infos
-        required: false
       items:
         type: items
-        required: false
     xml:
       name: netlicensing
