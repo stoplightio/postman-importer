@@ -247,11 +247,13 @@ class Oas20DefinitionConverter extends Converter {
 		
 		if (oasDef.hasOwnProperty('properties')) {
 			const modelProps: Definition[] = [];
+			const required = [];
 
 			_.entries(oasDef.properties).map(([key, value]) => {
 				if (value) {
 					const prop: Definition = this._import(value);
 					prop.name = key;
+					if (!value.hasOwnProperty('required') || value.required) required.push(prop.name);
 					modelProps.push(prop);
 				}
 			});
@@ -259,6 +261,8 @@ class Oas20DefinitionConverter extends Converter {
 			model.properties = modelProps;
 			if (oasDef.hasOwnProperty('required') && _.isArray(oasDef.required)) {
 				model.propsRequired = oasDef.required;
+			} else {
+				model.propsRequired = required;
 			}
 		}
 
