@@ -60,6 +60,7 @@ class Oas30DefinitionConverter extends Converter {
 			'reference',
 			'properties',
 			'compositionType',
+			'oneOf',
 			'schema',
 			'items',
 			'itemsList',
@@ -185,6 +186,14 @@ class Oas30DefinitionConverter extends Converter {
 			} else {
 				oasDef.allOf = allOf;
 			}
+		}
+
+		if (model.oneOf != null) {
+			const oneOf: string[] = [];
+			_.values(model.oneOf).map(val => {
+				oneOf.push(this._export(val));
+			});
+			oasDef.oneOf = oneOf;
 		}
 
 		// if (model.schema != null) {
@@ -335,7 +344,7 @@ class Oas30DefinitionConverter extends Converter {
 				oasDef.type = 'object';
 			} else if (oasDef.items != null) {
 				oasDef.type = 'array';
-			} else if (oasDef.$ref == null && !oasDef.allOf != null) {
+			} else if (oasDef.$ref == null && !oasDef.allOf != null && oasDef.oneOf == null) {
 				oasDef.type = 'string';
 			}
 		}

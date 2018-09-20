@@ -11,7 +11,9 @@ definitions:
       name:
         type: object
       race:
-        type: object
+        oneOf:
+          - type: nil
+          - type: string
     required:
       - name
       - race
@@ -25,12 +27,16 @@ definitions:
           intValue:
             type: object
           boolValue:
-            type: object
+            oneOf:
+              - type: nil
+              - type: boolean
         required:
           - intValue
           - boolValue
       race:
-        type: object
+        oneOf:
+          - type: nil
+          - type: string
       intProp:
         type: array
         items:
@@ -49,7 +55,9 @@ definitions:
       - $ref: '#/definitions/Cat'
       - $ref: '#/definitions/Dog'
   Pet:
-    type: object
+    oneOf:
+      - $ref: '#/definitions/Cat'
+      - $ref: '#/definitions/Dog'
   PetCatDog:
     allOf:
       - $ref: '#/definitions/Pet'

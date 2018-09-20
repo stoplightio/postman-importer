@@ -357,7 +357,12 @@ components:
         A single data entry(row) with any number of field-name, field-value
         pairs
       additionalProperties:
-        type: object
+        oneOf:
+          - "$ref": "#/components/schemas/Integer"
+          - "$ref": "#/components/schemas/Float"
+          - "$ref": "#/components/schemas/Location"
+          - "$ref": "#/components/schemas/Timestamp"
+          - "$ref": "#/components/schemas/String"
     DataField:
       description: A single data field(column) with specified field name and field type
       type: object

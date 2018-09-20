@@ -10,7 +10,12 @@ definitions:
       time: 12565
     description: 'A single data entry(row) with any number of field-name, field-value pairs'
     additionalProperties:
-      type: object
+      oneOf:
+        - "$ref": "#/definitions/Integer"
+        - "$ref": "#/definitions/Float"
+        - "$ref": "#/definitions/Location"
+        - "$ref": "#/definitions/Timestamp"
+        - "$ref": "#/definitions/String"
   DataField:
     description: A single data field(column) with specified field name and field type
     type: object

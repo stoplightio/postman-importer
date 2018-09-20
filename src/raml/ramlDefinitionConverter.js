@@ -45,7 +45,7 @@ class RamlDefinitionConverter extends Converter {
 			'_default': 'default'
 		};
 
-		const attrIdSkip = ['name', 'type', 'reference', 'properties', 'items', 'compositionType', 'in', 'schema', 
+		const attrIdSkip = ['name', 'type', 'reference', 'properties', 'items', 'compositionType', 'oneOf', 'in', 'schema',
 			'additionalProperties', 'title', 'items', 'itemsList', 'exclusiveMaximum', 'exclusiveMinimum', 'readOnly', 
 			'externalDocs', '$schema', 'annotations', 'collectionFormat', 'allowEmptyValue', 'fileReference', 
 			'_enum', 'error', 'warning', 'includePath', 'expanded'];
@@ -175,6 +175,18 @@ class RamlDefinitionConverter extends Converter {
 
 			_.assign(ramlDef, result);
 			delete ramlDef.compositionType;
+		}
+
+		if (model.hasOwnProperty('oneOf')) {
+			let result = '';
+			for (let i = 0; i < model.oneOf.length; i++) {
+				if (result.length > 0) result = result.concat(' | ');
+				const value: Definition = model.oneOf[i];
+				const val = this._export(value);
+				result = result.concat(val.type);
+			}
+
+			ramlDef.type = result;
 		}
 
 		if (model.hasOwnProperty('schema') && model.schema != null) {
@@ -477,6 +489,8 @@ class RamlDefinitionConverter extends Converter {
 					if (typeof value === 'object') {
 						// TODO: check lrg cases
 						// model.type = this._import(value);
+					} else if (value.indexOf('|') > -1) {
+						this._convertOneOfType(value, model);
 					} else {
 						this._convertSimpleType(value, model);
 					}
@@ -688,6 +702,16 @@ class RamlDefinitionConverter extends Converter {
 			}
 			else model.type = val;
 		}
+	}
+
+	_convertOneOfType(values: string, model: any) {
+		const types = values.split('|');
+		const oneOf: Definition[] = [];
+		for (let i = 0; i < types.length; i++) {
+			const type: string = types[i];
+			oneOf.push(this._import({ type: type.split(' ').join('') }));
+		}
+		model.oneOf = oneOf;
 	}
 
 	static _readTypeAttribute(value) {

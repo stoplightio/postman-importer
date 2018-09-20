@@ -41,7 +41,7 @@ class Oas20DefinitionConverter extends Converter {
 			'displayName': 'title'
 		};
 
-		const attrIdSkip = ['name', 'fileReference', 'reference', 'properties', 'compositionType', 'schema', 'items', 
+		const attrIdSkip = ['name', 'fileReference', 'reference', 'properties', 'compositionType', 'oneOf', 'schema', 'items',
 			'itemsList', 'additionalProperties', 'jsonValue', 'schemaPath', 'examples', '$schema', 'id', 
 			'fileTypes', 'annotations', 'includePath', 'expanded'];
 		
@@ -138,6 +138,14 @@ class Oas20DefinitionConverter extends Converter {
 			if (allOf.length === 1) oasDef.type = allOf[0].type;
 			else oasDef.allOf = allOf;
 		}
+
+		if (model.hasOwnProperty('oneOf')) {
+			const oneOf: string[] = [];
+			_.values(model.oneOf).map(val => {
+				oneOf.push(this._export(val));
+			});
+			oasDef.oneOf = oneOf;
+		}
 		
 		if (model.hasOwnProperty('schema') && model.schema != null){
 			const schema: Definition = model.schema;
@@ -201,7 +209,7 @@ class Oas20DefinitionConverter extends Converter {
 			'default': '_default'
 		};
 
-		const attrIdSkip = ['enum', '$ref', 'properties', 'allOf', 'schema', 'items', 'additionalProperties', 'example', 'required'];
+		const attrIdSkip = ['enum', '$ref', 'properties', 'allOf', 'oneOf', 'schema', 'items', 'additionalProperties', 'example', 'required'];
 		const model: Definition = Oas20DefinitionConverter.createDefinition(oasDef, attrIdMap, attrIdSkip);
 
 		if (model.hasOwnProperty('type')) {
@@ -274,6 +282,16 @@ class Oas20DefinitionConverter extends Converter {
 			});
 
 			model.compositionType = composition;
+		}
+
+		if (oasDef.hasOwnProperty('oneOf')) {
+			const oneOf: Definition[] = [];
+
+			_.values(oasDef['oneOf']).map(val => {
+				oneOf.push(this._import(val));
+			});
+
+			model.oneOf = oneOf;
 		}
 
 		if (oasDef.hasOwnProperty('schema')) {
@@ -402,7 +420,7 @@ class Oas20DefinitionConverter extends Converter {
 				oasDef.type = 'object';
 			} else if (oasDef.hasOwnProperty('items')) {
 				oasDef.type = 'array';
-			} else if (!oasDef.hasOwnProperty('$ref') && !oasDef.hasOwnProperty('allOf')) {
+			} else if (!oasDef.hasOwnProperty('$ref') && !oasDef.hasOwnProperty('allOf') && !oasDef.hasOwnProperty('oneOf')) {
 				oasDef.type = 'string';
 			}
 		}
